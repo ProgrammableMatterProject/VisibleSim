@@ -17,7 +17,6 @@ string AddTupleMessage::getMessageName(){
       return "Add Tuple Message";
 }
 
-
 RemoveTupleMessage::RemoveTupleMessage(tuple_t tpl, unsigned int s) : Message(){
       tuple = tpl;
       messageSize = s;

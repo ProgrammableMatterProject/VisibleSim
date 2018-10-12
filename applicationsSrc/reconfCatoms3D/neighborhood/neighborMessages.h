@@ -115,6 +115,8 @@ public:
     Plane_finished_message() { id = PLANE_FINISHED_MSG_ID; };
 
     void handle(BlockCode *blockCode);
+    virtual Message* clone() { return new Plane_finished_message(*this); }
+    virtual string getName() { return "Plane Finished"; }
 };
 
 class Plane_finished_ack_message : public HandleableMessage {
@@ -122,6 +124,9 @@ public:
     Plane_finished_ack_message() { id = PLANE_FINISHED_ACK_MSG_ID; };
 
     void handle(BlockCode *blockCode);
+
+    virtual Message* clone() { return new Plane_finished_ack_message(*this); }
+    virtual string getName() { return "Plane Finished Ack"; }
 };
 
 class Can_start_next_plane_message : public Message {

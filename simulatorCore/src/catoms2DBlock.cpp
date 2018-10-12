@@ -21,12 +21,14 @@ namespace Catoms2D {
 
 Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb)
   : BaseSimulator::BuildingBlock(bId, bcb, HLattice::MAX_NB_NEIGHBORS) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms2DBlock constructor" << endl;
+#endif
 
     angle = 0;
     doubleRNG g = Random::getNormalDoubleRNG(getRandomUint(),CATOMS2D_MOTION_SPEED_MEAN,CATOMS2D_MOTION_SPEED_SD);
     RandomRate *speed = new RandomRate(g);
-    motionEngine = new MotionEngine(speed);
+    motionEngine = new Catoms2DMotionEngine(speed);
 }
 
 Catoms2DBlock::~Catoms2DBlock() {
@@ -324,16 +326,20 @@ void Catoms2DBlock::startMove(Rotation2DMove &m) {
 }
 
 void Catoms2DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
-    // OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-	// 	   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#ifdef DEBUG_NEIGHBORHOOD
+    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
+	 	   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
 getScheduler()->schedule(
 	new AddNeighborEvent(getScheduler()->now(), this,
 						 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void Catoms2DBlock::removeNeighbor(P2PNetworkInterface *ni) {
-    // OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-	// 	   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#ifdef DEBUG_NEIGHBORHOOD
+    OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
+	 	   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));

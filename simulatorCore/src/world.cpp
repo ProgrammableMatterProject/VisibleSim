@@ -20,7 +20,9 @@ map<bID, BuildingBlock*>World::buildingBlocksMap;
 vector <GlBlock*>World::tabGlBlocks;
 
 World::World(int argc, char *argv[]) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "World constructor" << endl;
+#endif
 	selectedGlBlock = NULL;
 	numSelectedFace=0;
 	numSelectedGlBlock=0;
@@ -70,7 +72,9 @@ World::~World() {
     delete objBlockForPicking;
     delete objRepere;
 
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "World destructor" << endl;
+#endif
 }
 
 
@@ -84,7 +88,7 @@ BuildingBlock* World::getBlockById(int bId) {
 	}
 }
 
-BuildingBlock* World::getBlockByPosition(Cell3DPosition pos) {
+BuildingBlock* World::getBlockByPosition(const Cell3DPosition &pos) {
 	map<bID, BuildingBlock*>::iterator it;
     for (it = buildingBlocksMap.begin(); it != buildingBlocksMap.end(); it++) {
         if (it->second->position == pos)
@@ -113,17 +117,22 @@ void World::updateGlData(BuildingBlock*blc, Vector3D &p) {
 }
 
 void World::linkBlocks() {
-	Cell3DPosition p;
+    //TODO: Might not be necessary anymore, since a module is now linked to its neighbors when added to the lattice
+    const Cell3DPosition& lb = lattice->getGridLowerBounds();
+    const Cell3DPosition& ub = lattice->getGridUpperBounds();
+    Cell3DPosition p;
 
-	for (p.pt[2] = 0; p[2] < lattice->gridSize[2]; p.pt[2]++) { // z
-		for (p.pt[1] = 0; p[1] < lattice->gridSize[1]; p.pt[1]++) { // y
-			for(p.pt[0] = 0; p[0] < lattice->gridSize[0]; p.pt[0]++) { // x
-				if (lattice->cellHasBlock(p)) {
-					// cerr << "l.cellHasBlock(" << p << "/" << lattice->getIndex(p) << ")  = true ; id: "
+	for (p.pt[2] = lb.pt[2]; p[2] < ub.pt[2]; p.pt[2]++) { // z
+        for (p.pt[1] = lb.pt[1]; p[1] < ub.pt[1]; p.pt[1]++) { // y
+            for (p.pt[0] = lb.pt[0]; p[0] < ub.pt[0]; p.pt[0]++) { // x
+                if (lattice->cellHasBlock(p)) {
+					// cerr << "l.cellHasBlock(" << p << "/"
+                    //   << lattice->getIndex(p) << ")  = true ; id: "
 					//	 << lattice->getBlock(p)->blockId << endl;
+                    
 					linkBlock(p);
 				}
-			}
+            }
 		}
 	}
 }
@@ -152,17 +161,17 @@ void World::disconnectBlock(BuildingBlock *block) {
     for(int i = 0; i < block->getNbInterfaces(); i++) {
         fromBlock = block->getInterface(i);
         if (fromBlock && fromBlock->connectedInterface) {
-	    toBlock = fromBlock->connectedInterface;
+            toBlock = fromBlock->connectedInterface;
 
-	    // Clear message queue
-	    fromBlock->outgoingQueue.clear();
-	    toBlock->outgoingQueue.clear();
+            // Clear message queue
+            fromBlock->outgoingQueue.clear();
+            toBlock->outgoingQueue.clear();
 
-	    // Notify respective codeBlocks
-	    block->removeNeighbor(fromBlock);
-	    fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
+            // Notify respective codeBlocks
+            block->removeNeighbor(fromBlock);
+            fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
 
-	    // Disconnect the interfaces
+            // Disconnect the interfaces
             fromBlock->connectedInterface = NULL;
             toBlock->connectedInterface = NULL;
         }
@@ -177,7 +186,8 @@ void World::disconnectBlock(BuildingBlock *block) {
 void World::deleteBlock(BuildingBlock *bb) {
     if (bb->getState() >= BuildingBlock::ALIVE ) {
         // cut links between bb and others and remove it from the grid
-		disconnectBlock(bb);
+        disconnectBlock(bb);
+        bb->setState(BuildingBlock::REMOVED);
     }
 
     if (selectedGlBlock == bb->ptrGlBlock) {
@@ -186,6 +196,7 @@ void World::deleteBlock(BuildingBlock *bb) {
     }
 
     // remove the associated glBlock
+    // FIXME: Block removal corrupts tabGlBlocks that is accessed through the OpenGL interaction menu menu by blockId == index
     std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
     if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
     else {
@@ -207,8 +218,9 @@ void World::stopSimulation() {
 
 bool World::canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace) {
 	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-	Cell3DPosition pos = bb->position;
-	vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(pos);
+	const Cell3DPosition &pos = bb->position;
+    cout << pos << endl;
+	const vector<Cell3DPosition> &nCells = lattice->getRelativeConnectivity(pos);
 	// if (numSelectedFace < lattice->getMaxNumNeighbors())
 	// 	cerr << "numSelectedFace: " << numSelectedFace << " f"
 	// 		 << pos << "+" << nCells[numSelectedFace]
@@ -257,7 +269,8 @@ void World::tapBlock(Time date, bID bId, int face) {
 }
 
 void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
-	GlBlock *glBlock = new GlBlock(-1);
+    // FIXME: Block with -1 id corrupts tabGlBlocks that is accessed through the OpenGL interaction menu by blockId == index
+	GlBlock *glBlock = new GlBlock(-1); 
     Vector3D position(lattice->gridScale[0]*pos[0],
 					  lattice->gridScale[1]*pos[1],
 					  lattice->gridScale[2]*pos[2]);
@@ -282,7 +295,8 @@ cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(num
          << " selected" << endl;
 	// cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
 
-	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
+	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock,
+                                                          (int)numSelectedFace));
 	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
 	GlutContext::popupMenu->show(true);
 }

@@ -16,6 +16,7 @@
 #include <thread>
 #include <functional>
 #include <mutex>
+#include <condition_variable>
 
 #include "sema.h"
 #include "events.h"
@@ -25,7 +26,7 @@ using namespace std;
 
 // Scheduler execution modes (defines the pace at which the event list is processed)
 #define SCHEDULER_MODE_FASTEST		1 //!< Execute events as fast as possible. (Default in terminal mode)
-#define SCHEDULER_MODE_REALTIME		2 //!< Execute events in a realistic fashion. Sleep for a while after processing an event, so that execution can be analysed in the graphical window. 
+#define SCHEDULER_MODE_REALTIME		2 //!< Execute events in a realistic fashion. Sleep for a while after processing an event, so that execution can be analysed in the graphical window.
 #define SCHEDULER_MODE_DEBUG		3 //!< Debugger mode, execute events in steps. Not Implemented Yet!
 
 // Scheduler termination modes (defines the conditions for the scheduler to terminate)
@@ -52,7 +53,7 @@ public:
 
 /**
  * @brief Abstract Scheduler Class
- *  Scheduler is executed on a separate thread 
+ *  Scheduler is executed on a separate thread
  */
 class Scheduler {
 protected:
@@ -74,7 +75,7 @@ protected:
 
 	bool autoStart = false;		//!< Indicates if the scheduler has to wait for user input to start (false = yes, true = no)
 	bool autoStop = false;		//!< Indicates if the simulation has to terminate at scheduler end (Graphical window closes if true)
-	
+
 	Scheduler();
 	virtual ~Scheduler();
 
@@ -87,10 +88,12 @@ public:
 		ENDED = 2,				//!< Termination condition(s) have been reached, scheduler execution has ended
 		PAUSED = 3,				//!< Scheduler execution is paused (during debuging for example)
 		RUNNING = 4				//!< Scheduler execution is in progress
-	}; 
+	};
 	State state;				//!< Current state of the scheduler accoring to the State enum
 	atomic<bool> terminate{false}; //!< Indicates if the scheduler has been instructed to terminate. Atomic value used for synchronising deletion of the scheduler and other simulation components. If terminate equals true, it means that other components are waiting for the scheduler to terminate before they can be deleted. Scheduler will finish processing current event and terminate.
-
+    static std::mutex pause_mtx; //!< Mutex used to force the scheduler into a waiting state when it is paused
+    static std::condition_variable pause_cv; //!< Condition variable used alongside pause_mtx
+        
 	//!< @brief Static getter for the global instance of Scheduler
 	static Scheduler* getScheduler() {
 		assert(scheduler != NULL);
@@ -113,8 +116,8 @@ public:
 					if (scheduler->state == NOTSTARTED) {
 						scheduler->state = ENDED;
 						scheduler->start(SCHEDULER_MODE_FASTEST);
-					}					   
-						
+					}
+
 					// Wait until scheduler termination
 					scheduler->schedulerThread->join();
 				}
@@ -125,7 +128,7 @@ public:
 			}
 			// Release lock, even though another thread was waiting, double deletion cannot occur
 			delMutex.unlock();
-		}    	
+		}
 	}
 
 	//!< @brief set a custom maximum date for the scheduler, to be used in BOUNDED termination mode
@@ -146,7 +149,7 @@ public:
 	int getMode() { return schedulerMode; };
 	//!< @brief Setter for Scheduler::schedulerLength
 	inline void setSchedulerLength(int sl) { schedulerLength = sl; }
-	//!< @brief Getter for Scheduler::schedulerLength	
+	//!< @brief Getter for Scheduler::schedulerLength
 	inline int getSchedulerLength() { return schedulerLength; }
 
 	//!< @brief Setter for Scheduler::schedulerMode
@@ -168,15 +171,17 @@ public:
 	 *  @param ev event to schedule
 	 *	Adds the event to the event list corresponding to its date (ev->date), or ignore it if event date is in the past,
 	 *   or after the maximum simulation date. Event list update done in mutual exclusion.
-	 *  @return true if event has been added to the event list, false otherwise 
+	 *  @return true if event has been added to the event list, false otherwise
 	 */
 	virtual bool schedule(Event *ev);
 
 
 	/** @brief Return current scheduler date
 	 *  @return Scheduler::currentDate
-	 */   	
+	 */
 	inline Time now() { return(currentDate); };
+
+        void toggle_pause();
 
 	/** @brief Print a block-relative colored message to the console
 	 *  @param message String to print
@@ -195,7 +200,7 @@ public:
 	//!< @brief Unlock the event list mutex
 	inline void unlock() { mutex_schedule.unlock(); };
 
-	//!< @brief Start scheduler execution according to the specified mode	
+	//!< @brief Start scheduler execution according to the specified mode
 	virtual void start(int mode);
 
 	//!< @attention Related to debugger, not completely implemented yet. (incomplete feature)
@@ -242,12 +247,12 @@ public:
     void printStats();
 };
 
-//!< @brief Call Scheduler::deleteScheduler on the simulation's Scheduler instance 
+//!< @brief Call Scheduler::deleteScheduler on the simulation's Scheduler instance
 static inline void deleteScheduler() {
 	Scheduler::deleteScheduler();
 }
 
-//!< @brief Return a pointer to the simulation's Scheduler instance 
+//!< @brief Return a pointer to the simulation's Scheduler instance
 static inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
 
 } // BaseSimulator namespace

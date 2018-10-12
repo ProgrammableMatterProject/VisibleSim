@@ -32,23 +32,51 @@ namespace Catoms3D {
 */
 Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 							 int argc, char *argv[]):World(argc, argv) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "\033[1;31mCatoms3DWorld constructor\033[0m" << endl;
+#endif
 
     if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
-											"catom3DV2connectorID.obj");
-		objBlockForPicking =
-			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
-									 "catom3D_picking.obj");
-		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
-	}   
+/* Toggle to use catoms3D with max connector size (no rotation) but very simple models*/
+#define CATOMS3D_TEXTURE_ID 0
+        
+#if CATOMS3D_TEXTURE_ID == 1 // Standard, no conID
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2.obj");
+		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");
+#elif CATOMS3D_TEXTURE_ID == 2 // w/ coordinates
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures", "catom3Drepere3.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+#elif CATOMS3D_TEXTURE_ID == 2 // filled catoms
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+#else // 0 standard, with conIDs
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2connectorID.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");        
 
+#endif        
+
+		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
+	}
+    
+#define UseC3DSkewFCC 1
+#if UseC3DSkewFCC == 1
+    lattice = new SkewFCCLattice(gridSize,
+                                 gridScale.hasZero() ? defaultBlockSize : gridScale);
+#else
     lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+#endif
+    
+    motionRules = new Catoms3DMotionRules();
 }
 
+
+
 Catoms3DWorld::~Catoms3DWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms3DWorld destructor" << endl;
+#endif
     /*	block linked are deleted by world::~world() */
+    delete motionRules;
 }
 
 void Catoms3DWorld::deleteWorld() {
@@ -61,12 +89,16 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
 		maxBlockId = blockId;
 	else if (blockId == 0)
 		blockId = incrementBlockId();
-	
+
     Catoms3DBlock *catom = new Catoms3DBlock(blockId,bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (catom->blockId, (BaseSimulator::BuildingBlock*)catom));
 
-    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
+    // FIXME: Adversarial start, randomly initiate start event
+    std::mt19937 rng;
+    rng.seed(std::random_device()());
+    std::uniform_int_distribution<std::mt19937::result_type> u500(0,500); 
+    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + u500(rng), catom));
 
 
     Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);
@@ -78,6 +110,7 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     lattice->insert(catom, pos);
 
     tabGlBlocks.push_back(glBlock);
+    linkBlock(pos);
 }
 
 /**
@@ -87,7 +120,9 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
     Catoms3DBlock *catom = (Catoms3DBlock *)lattice->getBlock(pos);
 
     if (catom) {
-		OUTPUT << "link catom " << catom->blockId << endl;
+#ifdef DEBUG_NEIGHBORHOOD
+        OUTPUT << "link catom " << catom->blockId << endl;
+#endif
 
 		Cell3DPosition neighborPos;
 		Catoms3DBlock* neighborBlock;
@@ -95,11 +130,15 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 		for (int i=0; i<12; i++) {
 			if (catom->getNeighborPos(i,neighborPos)
 				&& (neighborBlock = (Catoms3DBlock *)lattice->getBlock(neighborPos))!=NULL) {
-				catom->getInterface(i)->connect(neighborBlock->getInterface(lattice->getOppositeDirection(i)));
+				catom->getInterface(i)->connect(neighborBlock->getInterface(pos));
+#ifdef DEBUG_NEIGHBORHOOD
 				OUTPUT << "connection #" << catom->blockId << "(" << i << ") to #"
 					   << neighborBlock->blockId << endl;
+#endif
 			}
 		}
+    } else {
+        OUTPUT << "ERROR: trying to link a block in an empty cell!" << endl;
     }
 }
 
@@ -113,17 +152,143 @@ void Catoms3DWorld::glDraw() {
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     lock();
     while (ic!=tabGlBlocks.end()) {
-        ((Catoms3DGlBlock*)(*ic))->glDraw(objBlock);
+        ((Catoms3DGlBlock*)(*ic))->glDraw(objBlock)            ;
         ic++;
     }
     unlock();
     glPopMatrix();
 
+	// draw the goal surface
+	/*if (buildingBlocksMap.begin()!=buildingBlocksMap.end()) {
+		map<bID, BuildingBlock*>::iterator it = buildingBlocksMap.begin();
+		it->second->blockCode->target->glDraw();
+	}*/
+/*	GLfloat mat_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat mat_diffuse[] = { 0.8, 0.2, 0.8, 1.0 };
+    GLfloat mat_specular[] = { 0.8, 0.8, 0.8, 1.0 };
+    GLfloat mat_shininess[] = { 50.0 };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	enableTexture(false);
+	glPushMatrix();
+        // Nurbs surface
+	//glScalef(45,45,45);
+        //Nurbs car
+        //glScalef(33.33,33.33,33.33);
+        //Nurbs mirror
+        glScalef(10,10,10);
+	gluBeginSurface(theNurb);
+	gluNurbsSurface(theNurb,
+		S_NUMKNOTS, sknots,
+		T_NUMKNOTS, tknots,
+		4 * T_NUMPOINTS,
+		4,
+		&ctlpoints[0][0][0],
+		S_ORDER, T_ORDER,
+		GL_MAP2_VERTEX_4);
+	gluEndSurface(theNurb);
+
+	glPopMatrix();
+*/
+	if (polymer) {
+		polymer->glDraw();
+	}
+    
 // material for the grid walls
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    if (background) {
-        glDrawBackground();
-    }
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+		gray[]={0.2f,0.2f,0.2f,1.0f};
+
+		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+		glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+
+		glPushMatrix();
+		enableTexture(true);
+		glBindTexture(GL_TEXTURE_2D,idTextureGrid);
+		glTranslatef(0,0,lattice->gridScale[2]*(0.5-M_SQRT2_2));
+		glScalef(lattice->gridSize[0]*lattice->gridScale[0],lattice->gridSize[1]*lattice->gridScale[1],lattice->gridSize[2]*lattice->gridScale[2]*M_SQRT2_2);
+		glBegin(GL_QUADS);
+		// bottom
+		glNormal3f(0,0,1.0f);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,-0.0f);
+		glTexCoord2f(0.5f*lattice->gridSize[0],0);
+		glVertex3f(1.0f,0.0f,0.0f);
+		glTexCoord2f(0.5f*lattice->gridSize[0],0.5f*lattice->gridSize[1]);
+		glVertex3f(1.0,1.0,0.0f);
+		glTexCoord2f(0,0.5f*lattice->gridSize[1]);
+		glVertex3f(0.0,1.0,0.0f);
+		// top
+		glNormal3f(0,0,-1.0f);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,1.0f);
+		glTexCoord2f(0.5f*lattice->gridSize[0],0);
+		glVertex3f(0.0,1.0,1.0f);
+		glTexCoord2f(0.5f*lattice->gridSize[0],0.5f*lattice->gridSize[1]);
+		glVertex3f(1.0,1.0,1.0f);
+		glTexCoord2f(0,0.5f*lattice->gridSize[1]);
+		glVertex3f(1.0f,0.0f,1.0f);
+		glEnd();
+		// draw hexa
+		glBindTexture(GL_TEXTURE_2D,idTextureHexa);
+		glBegin(GL_QUADS);
+		// left
+		glNormal3f(1.0f,0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[1]/3.0f,0);
+		glVertex3f(0.0f,1.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
+		glVertex3f(0.0,1.0,1.0f);
+		glTexCoord2f(0,lattice->gridSize[2]/1.5f);
+		glVertex3f(0.0,0.0,1.0f);
+		// right
+		glNormal3f(-1.0f,0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(1.0f,0.0f,0.0f);
+		glTexCoord2f(0,lattice->gridSize[2]/1.5f);
+		glVertex3f(1.0,0.0,1.0f);
+		glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
+		glVertex3f(1.0,1.0,1.0f);
+		glTexCoord2f(lattice->gridSize[1]/3.0f,0);
+		glVertex3f(1.0f,1.0f,0.0f);
+		// back
+		glNormal3f(0,-1.0f,0);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,1.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[0]/3.0f,0);
+		glVertex3f(1.0f,1.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
+		glVertex3f(1.0f,1.0,1.0f);
+		glTexCoord2f(0,lattice->gridSize[2]/1.5f);
+		glVertex3f(0.0,1.0,1.0f);
+		// front
+		glNormal3f(0,1.0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,0.0f);
+		glTexCoord2f(0,lattice->gridSize[2]/1.5f);
+		glVertex3f(0.0,0.0,1.0f);
+		glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
+		glVertex3f(1.0f,0.0,1.0f);
+		glTexCoord2f(lattice->gridSize[0]/3.0f,0);
+		glVertex3f(1.0f,0.0f,0.0f);
+		glEnd();
+		glPopMatrix();
+		// draw the axes
+		glPushMatrix();
+		objRepere->glDraw();
+		glPopMatrix();
+
+        lattice->glDraw();
+
+        // if (BlockCode::target and dynamic_cast<TargetCSG*>(BlockCode::target)) {
+        //     glScalef(lattice->gridScale[0], lattice->gridScale[1], lattice->gridScale[2]);
+        //     static_cast<TargetCSG*>(BlockCode::target)->highlight();
+        // }
 }
 
 void Catoms3DWorld::glDrawId() {
@@ -138,8 +303,6 @@ void Catoms3DWorld::glDrawId() {
     }
     unlock();
     glPopMatrix();
-
-    glDrawBackground();
 }
 
 void Catoms3DWorld::glDrawIdByMaterial() {
@@ -374,4 +537,63 @@ void Catoms3DWorld::exportConfiguration() {
   memset(targetGrid,emptyCell,sz*sizeof(presence));
   }
 */
-} // RobotBlock namespace
+
+void Catoms3DWorld::simulatePolymer() {
+
+	if (polymer == NULL) {
+		polymer = new Polymer(lattice->gridSize[0],lattice->gridSize[1],4,lattice->gridSize[2]*lattice->gridScale[2],lattice->gridScale[0],lattice->gridScale[0],lattice->gridScale[1]);
+
+		cout << "---------------------------SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
+		Vector3D pt;
+		// calculer un table de Zmax
+		vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+		lock();
+		while (ic!=tabGlBlocks.end()) {
+			if ((*ic)->color[3]!=0) {
+				//pt.set((*ic)->position,3);
+				pt.pt[0] = (*ic)->position[0];
+				pt.pt[1] = (*ic)->position[1];
+				pt.pt[2] = (*ic)->position[2];
+				polymer->tabPt.push_back(pt);
+			}
+			ic++;
+		}
+		unlock();
+	}
+	double v;
+	int i=100;
+	do {
+		v = polymer->positionInstant(0.01);
+		cout << "*";
+	} while (i--); //fabs(v)>2.0);
+	cout << endl;
+
+	polymer->calculerPolymer();
+	cout << "--------------------END OF SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
+	ofstream file ("polypnts.m");
+        file << "polypnts = [" << endl;
+        for (int x=0; x <= polymer->_nx ; x++){
+            for (int y=0; y <= polymer->_ny ; y++){
+                file << polymer->_tabGeom[((y*((polymer->_nx)+1)+x)*6)+3] << " " << polymer->_tabGeom[((y*((polymer->_nx)+1)+x)*6)+4] << " " << polymer->_tabGeom[((y*((polymer->_nx)+1)+x)*6)+5] << ";" << endl;
+            }
+        }
+        file << "]" << endl;
+        file.close();
+        ofstream file2 ("polygrid.m");
+        file2 << "polyx = [" << endl;
+        for (int x=0; x <= polymer->_nx ; x++){
+            file2 << polymer->_tabGeom[(x*6)+3] << ";" << endl;
+        }
+        file2 << "];" << endl;
+        file2 << "polyy = [" << endl;
+	for (int y=0; y <= polymer->_ny ; y++){
+            file2 << polymer->_tabGeom[(y*((polymer->_nx)+1)*6)+4] << ";" << endl;
+        }
+        file2 << "];" << endl;
+        file2.close();
+        cout << "file written" << endl;
+}
+
+
+
+} // Catoms3DBlock namespace

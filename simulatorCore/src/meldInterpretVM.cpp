@@ -45,7 +45,9 @@ MeldInterpretVM::MeldInterpretVM(BaseSimulator::BuildingBlock *b){
     TYPE_AT = -1;
     TYPE_MOVETO = -1;
 
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "MeldInterpretVM constructor" << endl;
+#endif
     host = b;
     blockId = (NodeID)b->blockId;
     

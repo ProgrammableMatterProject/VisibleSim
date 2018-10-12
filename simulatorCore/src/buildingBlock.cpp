@@ -27,8 +27,10 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 //===========================================================================================================
 
   BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "BuildingBlock constructor (id:" << nextId << ")" << endl;
-	
+#endif
+    
     if (bId < 0) {
       blockId = nextId;
       nextId++;
@@ -68,7 +70,9 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 
 BuildingBlock::~BuildingBlock() {
     delete blockCode;
-	OUTPUT << "BuildingBlock destructor" << endl;    
+#ifdef DEBUG_OBJECT_LIFECYCLE    
+	OUTPUT << "BuildingBlock destructor" << endl;
+#endif
 
 	if (clock != NULL) {
 		delete clock;
@@ -203,13 +207,15 @@ void BuildingBlock::setColor(int idColor) {
 void BuildingBlock::setColor(const Color &c) {
     if (state.load() >= ALIVE) {
 		color = c;
+        getWorld()->updateGlData(this);
     }
-    getWorld()->updateGlData(this);
 }
 
 void BuildingBlock::setPosition(const Cell3DPosition &p) {
-    position = p;
-    getWorld()->updateGlData(this);
+    if (state.load() >= ALIVE) {
+        position = p;
+        getWorld()->updateGlData(this);
+    }
 }
     
 void BuildingBlock::tap(Time date, int face) {

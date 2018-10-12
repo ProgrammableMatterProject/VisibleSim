@@ -41,7 +41,9 @@ MultiRobotsWorld::MultiRobotsWorld(const Cell3DPosition &gridSize, const Vector3
 }
 
 MultiRobotsWorld::~MultiRobotsWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE   
 	OUTPUT << "MultiRobotsWorld destructor" << endl;
+#endif
 }
 
 void MultiRobotsWorld::deleteWorld() {

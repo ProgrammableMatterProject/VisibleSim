@@ -59,12 +59,13 @@ private :
     static void motionFunc(int x,int y);
     static void mouseFunc(int button,int state,int x,int y);
     static void keyboardFunc(unsigned char c, int x, int y);
+    static void specialFunc(int key, int x, int y);
     static void drawFunc(void);
     static void idleFunc(void);
     static int selectFunc(int x,int y);
     static int selectFaceFunc(int x,int y);
     static int processHits(GLint hits, GLuint *buffer);
-    static bool saveScreen(char *title);
+    static bool saveScreen(const char *title);
     static void *lanceScheduler(void *param);
     static void calculateFPS(void);
     static void showFPS(void);

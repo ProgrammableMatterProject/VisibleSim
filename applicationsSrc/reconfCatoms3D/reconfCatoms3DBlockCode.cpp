@@ -98,7 +98,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 	switch (pev->eventType) {
     case EVENT_NI_RECEIVE: {
       message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-        if (message->isMessageHandeable()) {
+        if (message->isMessageHandleable()) {
             shared_ptr<HandleableMessage> hm = static_pointer_cast<HandleableMessage>(message);
             int connectedBlockId = message->sourceInterface->getConnectedBlockId();
             BlockCode *block = World::getWorld()->getBlockById(connectedBlockId)->blockCode;

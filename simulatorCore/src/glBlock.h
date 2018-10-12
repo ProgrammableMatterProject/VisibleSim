@@ -34,11 +34,17 @@ public :
     virtual void setPosition(const Vector3D &p);
     virtual void setColor(const Color &c);
     virtual void setColor(const Vector3D &c);
+    virtual bool isVisible();
     virtual void setVisible(bool visible);
     virtual void toggleHighlight();
     virtual string getInfo();
     virtual string getPopupInfo();
     virtual const Vector3D getPosition() { return Vector3D(position[0],position[1],position[2],1); };
+
+    /** 
+     * Triggers the function of this GlBlock's BlockCode that should be called when this block is selected
+     */
+    virtual void fireSelectedTrigger();
 
     virtual void glDraw(ObjLoader::ObjLoader *ptrObj) {};
     virtual void glDrawId(ObjLoader::ObjLoader *ptrObj,int &n);

@@ -23,7 +23,7 @@ using namespace BaseSimulator::utils;
 uint64_t Message::nextId = 0;
 uint64_t Message::nbMessages = 0;
 
-unsigned int P2PNetworkInterface::nextId = 0;
+bID P2PNetworkInterface::nextId = 0;
 int P2PNetworkInterface::defaultDataRate = 1000000;
 
 //===========================================================================================================
@@ -53,11 +53,11 @@ string Message::getMessageName() {
 }
 
 Message* Message::clone() {
-    Message* ptr = new Message();
+    Message* ptr = new Message(*this);
     ptr->sourceInterface = sourceInterface;
     ptr->destinationInterface = destinationInterface;
     ptr->type = type;
-    return ptr;
+	return ptr;
 }
 
 //===========================================================================================================
@@ -80,7 +80,9 @@ HandleableMessage::~HandleableMessage() {
 
 P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 #ifndef NDEBUG
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "P2PNetworkInterface constructor" << endl;
+#endif
 #endif
 	hostBlock = b;
 	connectedInterface = NULL;
@@ -98,7 +100,9 @@ void P2PNetworkInterface::setDataRate(Rate *r) {
 
 P2PNetworkInterface::~P2PNetworkInterface() {
 #ifndef NDEBUG
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "P2PNetworkInterface destructor" << endl;
+#endif
 #endif
 	delete dataRate;
 }
@@ -196,6 +200,6 @@ Time P2PNetworkInterface::getTransmissionDuration(MessagePtr &m) {
   return transmissionDuration;
 }
 
-bool P2PNetworkInterface::isConnected() {
+bool P2PNetworkInterface::isConnected() const {
   return connectedInterface != NULL;
 }

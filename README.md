@@ -28,6 +28,8 @@ brew install boost --with-mpi --without-single
 brew install freeglut
 brew install glew
 brew install sbcl
+
+brew install ffmpeg # for video export
 ```
 2\. `make`
 
@@ -48,6 +50,8 @@ sudo apt-get install freeglut3-dev
 sudo apt-get install libglew-dev
 sudo apt-get install sbcl
 sudo apt-get install libmuparser-dev
+
+sudo apt-get install ffmpeg # for video export
 ```
 2\. `make`
 

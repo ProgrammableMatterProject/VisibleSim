@@ -26,4 +26,11 @@ void RobotBlocksGlBlock::setPrevNext(int p,int n) {
 	nextId = n;
 }
 
+string RobotBlocksGlBlock::getPopupInfo() {
+    ostringstream out;
+	out << blockId;
+	if (popupString!="") out << ":" << popupString;
+	return out.str();
+}
+
 }

@@ -68,8 +68,11 @@ public :
   void updateIntrinsics(double a,double rwh,double np,double fp);
   void setW_H(double r) { w_h=r; };
   void setNearFar(double n,double f) { near_plane=n; far_plane=f; };
+  void getNearFar(double &n,double &f) { n=near_plane; f=far_plane; };
   void setAngle(double a) { angle=a; };
   inline const double getAngle() { return angle; };
+  inline const double getNearPlane() { return near_plane; };
+  inline const double getFarPlane() { return far_plane; };
   inline void setTarget(const Vector3D &p) { target=p; updatePositionFromAngles(); }
   inline const Vector3D& getTarget() { return target; }
   inline void setDirection(double az,double ele) { theta=az*M_PI/180.0; phi=ele*M_PI/180.0; updatePositionFromAngles(); }
@@ -77,8 +80,8 @@ public :
   void glLookAt();
   void setLightParameters(const Vector3D &t,double th,double ph, double d,double angle,double nearplane,double farplane);
   void glProjection();
-  const Vector3D getDirectionSpherical();  
-  
+  const Vector3D getDirectionSpherical();
+
   friend ostream& operator<<(ostream& f,const Camera &c);
 protected :
   void updatePositionFromAngles();

@@ -19,33 +19,50 @@ namespace Catoms3D {
 
 Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms3DBlock constructor" << endl;
+#endif
 
     orientationCode=0; // connector 0 is along X axis
 }
 
 Catoms3DBlock::~Catoms3DBlock() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms3DBlock destructor " << blockId << endl;
+#endif
 }
 
 void Catoms3DBlock::setVisible(bool visible) {
     getWorld()->updateGlData(this,visible);
 }
 
-void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code) {
-    orientationCode = code;
-    position = p;
+Matrix Catoms3DBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,
+                                                          short code) {
+    short orientation = code%12;
+    short up = code/12;
 
     Matrix M1,M2,M3,M;
-    M1.setRotationZ(tabOrientationAngles[code][0]);
-    M2.setRotationY(tabOrientationAngles[code][1]);
-    M3.setRotationX(tabOrientationAngles[code][2]);
+    M1.setRotationZ(tabOrientationAngles[orientation][2]);
+    M2.setRotationY(tabOrientationAngles[orientation][1]);
+    M3.setRotationX(tabOrientationAngles[orientation][0]+up*180.0);
     M = M2*M1;
     M1 = M3*M;
-    M2.setTranslation(getWorld()->lattice->gridToWorldPosition(p));
+    M2.setTranslation(getWorld()->lattice->gridToWorldPosition(pos));
     M = M2*M1;
-    OUTPUT << M << endl;
+    return M;
+}
+
+void Catoms3DBlock::setPosition(const Cell3DPosition &p) {
+    setPositionAndOrientation(p, orientationCode);
+}
+
+void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &pos, short code) {
+    orientationCode = code;
+    position = pos;
+
+    Matrix M=getMatrixFromPositionAndOrientation(pos,code);
     getWorld()->updateGlData(this,M);
+    getWorld()->updateGlData(this,position);
 }
 
 short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
@@ -66,6 +83,28 @@ short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
             psmax=v[0];
         }
     }
+    // orientation autour du connecteur
+    Matrix M1,M2,M3,M;
+    M1.setRotationZ(tabOrientationAngles[current][2]);
+    M2.setRotationY(tabOrientationAngles[current][1]);
+    M3.setRotationX(tabOrientationAngles[current][0]);
+    M = M2*M1;
+    M1 = M3*M;
+    M1.inverse(M);
+    M.m[15]=0;
+    /*OUTPUT << "----- ref -----" << endl;
+      OUTPUT << M << endl;
+      OUTPUT << "----- mat -----" << endl;*/
+    M3 = mat;
+    //OUTPUT << M3 << endl;
+
+    M2 = mat*M;
+    //OUTPUT << M2 << endl;
+    // detection of a rotation matrix PI around X axis if M2.m[10]=env.-1
+    if (M2.m[10]<0) {
+        current = current+12;
+    }
+
     //OUTPUT << "result =" << current << endl;
     return current;
 }
@@ -80,12 +119,43 @@ int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
     return -1;
 }
 
+short Catoms3DBlock::getAbsoluteDirection(short connector) {
+    Cell3DPosition conPos; // cell adjacent to connector
+    bool posIsValid = getNeighborPos(connector, conPos);
+
+    if (!posIsValid) return -1;
+    Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
+    return lattice->getDirection(position, conPos);
+}
+
+short Catoms3DBlock::getAbsoluteDirection(const Cell3DPosition& pos) {
+    return getAbsoluteDirection(getConnectorId(pos));
+}
+
+short Catoms3DBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos,
+                                                      short nDirection) const {
+    // cout << "pAND: " << "nPos: " << nPos << "/" << nDirection << endl
+    //      << "\tPosition: " << position << endl;
+
+    // Find cell on direction nDirection of neighbor at nPos
+    Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
+    Cell3DPosition projectedPos = lattice->getCellInDirection(nPos, nDirection);
+    // cout << "\tproj: " << projectedPos << endl;
+
+    // No corresponding connector on current module
+    if (!lattice->cellsAreAdjacent(position, projectedPos)) return -1;
+
+    // Find connector adjacent to projectedPos on current module
+    return getConnectorId(projectedPos);
+}
+
+
 std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
     stream << bb.blockId << "\tcolor: " << bb.color;
     return stream;
 }
 
-bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) {
+bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const {
     Vector3D realPos;
 
     Catoms3DWorld *wrl = getWorld();
@@ -102,7 +172,17 @@ bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) {
 }
 
 P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
+    short conId = getConnectorId(pos);
+
+    return conId >= 0 ? P2PNetworkInterfaces[conId] : NULL;
+}
+
+short Catoms3DBlock::getConnectorId(const Cell3DPosition& pos) const {
     Catoms3DWorld *wrl = getWorld();
+
+    if (!wrl->lattice->isInGrid(pos))
+        return -1;
+
     Vector3D realPos = wrl->lattice->gridToWorldPosition(pos);
 
     Matrix m_1;
@@ -124,23 +204,53 @@ P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
         d=x*x+y*y+z*z;
         i++;
     }
-    return (d>0.1)?NULL:P2PNetworkInterfaces[i-1];
+    
+    return d > 0.1 ? -1 : i - 1;
+}
+
+Catoms3DBlock* Catoms3DBlock::getNeighborOnCell(const Cell3DPosition &pos) const {
+    Lattice *lattice = getWorld()->lattice;
+
+    if (!lattice->cellsAreAdjacent(position, pos)) return NULL;
+
+    return static_cast<Catoms3DBlock*>(lattice->getBlock(pos));
+}
+
+bool Catoms3DBlock::areOrientationsInverted(short otherOriCode) const {
+    return ((orientationCode / 12) + (otherOriCode / 12)) == 1;
 }
 
 void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void Catoms3DBlock::removeNeighbor(P2PNetworkInterface *ni) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
+}
+
+Catoms3DBlock *Catoms3DBlock::getNeighborBlock(const Cell3DPosition& nPos) const {     
+    return static_cast<Catoms3DBlock*>(getWorld()->lattice->getBlock(nPos));
+}
+
+Catoms3DBlock *Catoms3DBlock::getNeighborBlock(short conId) const {
+    P2PNetworkInterface *itfId = getInterface(conId);
+
+    if (itfId and itfId->isConnected())
+        return static_cast<Catoms3DBlock*>(itfId->connectedInterface->hostBlock);
+
+    return NULL;
 }
 
 }

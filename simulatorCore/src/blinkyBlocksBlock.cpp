@@ -33,7 +33,9 @@ namespace BlinkyBlocks {
 
   BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
-    OUTPUT << "BlinkyBlocksBlock constructor" << endl;
+#ifdef DEBUG_OBJECT_LIFECYCLE
+      OUTPUT << "BlinkyBlocksBlock constructor" << endl;
+#endif
     
     double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8) / (BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
     double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)  / (BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
@@ -76,16 +78,20 @@ void BlinkyBlocksBlock::shake(Time date, int f) {
 }
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
