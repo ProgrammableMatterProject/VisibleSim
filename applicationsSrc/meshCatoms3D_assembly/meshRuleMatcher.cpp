@@ -55,6 +55,9 @@ bool MeshRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
     return pos[1] == (int)(-(int)(pos[2] / B) / 2 * B) and m_mod(pos[2], B) == 0;
 }
 
+bool MeshRuleMatcher::isOnXOppBorder(const Cell3DPosition& pos) const {
+    return pos[1] == (int)(-(int)(pos[2] / B) / 2 * B) + X_MAX - 1 and m_mod(pos[2], B) == 0;
+}
 
 bool MeshRuleMatcher::isOnYBranch(const Cell3DPosition& pos) const {
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0;
@@ -62,6 +65,10 @@ bool MeshRuleMatcher::isOnYBranch(const Cell3DPosition& pos) const {
 
 bool MeshRuleMatcher::isOnYBorder(const Cell3DPosition& pos) const {
     return pos[0] == (int)(-(int)(pos[2] / B) / 2 * B) and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnYOppBorder(const Cell3DPosition& pos) const {
+    return pos[0] == (int)(-(int)(pos[2] / B) / 2 * B) + Y_MAX - 1 and m_mod(pos[2], B) == 0;
 }
 
 bool MeshRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {

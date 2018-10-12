@@ -12,11 +12,14 @@
 #include <sstream>
 
 #include "utils.h"
+
 #include "teleportationEvents.h"
+#include "rotation3DEvents.h"
 
 #include "meshRuleMatcher.hpp"
 #include "meshAssemblyBlockCode.hpp"
 #include "meshAssemblyMessages.hpp"
+
 
 void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);    
@@ -80,10 +83,16 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                 nextHop = mabc.catom->position + Cell3DPosition(-1,-1,1);
 
         } else if (bi == RevZBranch) {
-            nextHop = mabc.catom->position + Cell3DPosition(0,0,1);
+            if (mabc.ruleMatcher->isOnXOppBorder(mabc.norm(mabc.coordinatorPos))
+                and mabc.ruleMatcher->isOnYOppBorder(mabc.norm(mabc.coordinatorPos)))
+                // Mesh farthest corner
+                nextHop = mabc.catom->position + Cell3DPosition(-1,-1,2);
+            else 
+                nextHop = mabc.catom->position + Cell3DPosition(0,0,1);
 
         } else if (bi == LeftZBranch) {
-            if (mabc.ruleMatcher->isOnXBorder(mabc.norm(mabc.coordinatorPos))) {
+            if (mabc.ruleMatcher->isOnXBorder(mabc.norm(mabc.coordinatorPos))
+                or mabc.ruleMatcher->isOnYOppBorder(mabc.norm(mabc.coordinatorPos))) {
                 nextHop = mabc.catom->position + Cell3DPosition(0,-1,1);
             } else {
                 VS_ASSERT(false);
@@ -92,6 +101,8 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         } else if (bi == RightZBranch) {
             if (mabc.ruleMatcher->isOnYBorder(mabc.norm(mabc.coordinatorPos))) {
                 nextHop = mabc.catom->position + Cell3DPosition(-1,-1,1);
+            } else if (mabc.ruleMatcher->isOnXOppBorder(mabc.norm(mabc.coordinatorPos))) {
+                nextHop = mabc.catom->position + Cell3DPosition(0,0,1);
             } else {
                 VS_ASSERT(false);
             }
@@ -100,9 +111,21 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             VS_ASSERT(false);
         }
     }
-    
-    mabc.scheduler->schedule(
-        new TeleportationStartEvent(getScheduler()->now(), mabc.catom, nextHop));
+
+    try {
+        mabc.console << "Rotating to " << nextHop << " from " << mabc.catom->position << "\n";
+        mabc.scheduler->schedule(
+            new Rotation3DStartEvent(getScheduler()->now(), mabc.catom, nextHop));
+    } catch (const NoAvailableRotationPivotException& e_piv) {
+        cerr << e_piv.what();
+        cerr << "target position: " << nextHop << endl;
+        mabc.catom->setColor(RED);
+        VS_ASSERT(false);
+    } catch (std::exception const& e) {
+        cerr << "exception: " << e.what() << endl;
+        VS_ASSERT(false);
+    }
+
 
 #ifdef INTERACTIVE_MODE
     awaitKeyPressed();

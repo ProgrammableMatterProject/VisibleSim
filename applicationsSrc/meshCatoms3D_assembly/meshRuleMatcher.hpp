@@ -32,8 +32,10 @@ class MeshRuleMatcher {
 public:
     bool isOnXBranch(const Cell3DPosition& pos) const;
     bool isOnXBorder(const Cell3DPosition& pos) const;
-    bool isOnYBranch(const Cell3DPosition& pos) const;
+    bool isOnXOppBorder(const Cell3DPosition& pos) const;
+    bool isOnYBranch(const Cell3DPosition& pos) const;    
     bool isOnYBorder(const Cell3DPosition& pos) const;
+    bool isOnYOppBorder(const Cell3DPosition& pos) const;
     bool isOnZBranch(const Cell3DPosition& pos) const;
     bool isOnRevZBranch(const Cell3DPosition& pos) const;
     bool isOnRightZBranch(const Cell3DPosition& pos) const;

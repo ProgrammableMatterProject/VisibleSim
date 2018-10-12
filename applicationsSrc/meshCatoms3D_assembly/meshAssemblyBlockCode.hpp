@@ -44,6 +44,11 @@ public:
          Cell3DPosition(-1,0,0), // XBranch
          Cell3DPosition(0,-1,0) // YBranch
         };
+
+    inline static Time getRoundDuration() {
+        return (2 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
+                + Rotations3D::COM_DELAY);// + (getScheduler()->now() / 1000);
+    }
     
     int debugColorIndex = 0;
     
@@ -61,6 +66,8 @@ public:
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
     std::array<Cell3DPosition, 4> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
     bool hasToGrowFourDiagBranches = false;
+
+    int counter = 0;
     
     // TargetCSG *target;
     MeshAssemblyBlockCode(Catoms3D::Catoms3DBlock *host);
