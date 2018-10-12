@@ -3,6 +3,8 @@
 #define UTILS_H__
 
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 #include "tDefs.h"
 
@@ -78,12 +80,26 @@ bool file_exists(const std::string fileName);
 //!< Swaps the value of two pointers a and b
 void swap(int* a, int* b);
 
+//!< https://stackoverflow.com/questions/19483663/vector-intersection-in-c
+template<typename T>
+std::vector<T> intersection(std::vector<T> &v1, std::vector<T> &v2) {
+    std::vector<T> v3;
+
+    std::sort(v1.begin(), v1.end());
+    std::sort(v2.begin(), v2.end());
+
+    std::set_intersection(v1.begin(),v1.end(),v2.begin(),v2.end(),std::back_inserter(v3));
+
+    return v3;
+}
+
+
 template< typename ContainerT, typename PredicateT >
-     void erase_if( ContainerT& items, const PredicateT& predicate ) {
-     for( auto it = items.begin(); it != items.end(); ) {
-          if( predicate(*it) ) it = items.erase(it);
-          else ++it;
-     }
+void erase_if( ContainerT& items, const PredicateT& predicate ) {
+    for( auto it = items.begin(); it != items.end(); ) {
+        if( predicate(*it) ) it = items.erase(it);
+        else ++it;
+    }
 };
 
 } // namespace utils

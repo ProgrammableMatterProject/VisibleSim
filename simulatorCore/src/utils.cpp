@@ -19,12 +19,12 @@ using namespace BaseSimulator;
 using namespace utils;
 using namespace std;
 
-int BaseSimulator::utils::m_mod(int l, int mod) {
+int utils::m_mod(int l, int mod) {
     VS_ASSERT_MSG(mod != 0, "Modulus cannot be 0!");
     return l < 0 and l % mod != 0 ? mod - (-l % mod) : l % mod;
 }
 
-bool BaseSimulator::utils::assert_handler(bool cond, const char *file, const int line,
+bool utils::assert_handler(bool cond, const char *file, const int line,
                     const char *func, const char* msg) {
     if (msg) std::cerr << msg << endl;
     
@@ -37,12 +37,12 @@ bool BaseSimulator::utils::assert_handler(bool cond, const char *file, const int
     return true;
 }
 
-void BaseSimulator::utils::awaitKeyPressed() {
+void utils::awaitKeyPressed() {
     std::cout << "Press any key to continue..." << std::endl; std::cin.ignore();
 }
 
 const std::string
-BaseSimulator::utils::generateTimestampedFilename(const std::string& prefix, const std::string& ext) {
+utils::generateTimestampedFilename(const std::string& prefix, const std::string& ext) {
     std::ostringstream out;
 
     time_t now = time(0);
@@ -55,7 +55,7 @@ BaseSimulator::utils::generateTimestampedFilename(const std::string& prefix, con
 }
 
 const std::string
-BaseSimulator::utils::generateTimestampedDirName(const std::string& dirBasename) {
+utils::generateTimestampedDirName(const std::string& dirBasename) {
     std::ostringstream out;
 
     time_t now = time(0);
@@ -67,12 +67,12 @@ BaseSimulator::utils::generateTimestampedDirName(const std::string& dirBasename)
     return out.str();
 }
 
-bool BaseSimulator::utils::file_exists(const std::string fileName) {
+bool utils::file_exists(const std::string fileName) {
     std::ifstream infile(fileName);
     return infile.good();
 }
 
-void BaseSimulator::utils::swap(int* a, int* b) {
+void utils::swap(int* a, int* b) {
 	int temp = *a;
 	*a = *b;
 	*b = temp;
