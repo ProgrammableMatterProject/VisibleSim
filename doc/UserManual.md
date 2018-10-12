@@ -756,15 +756,20 @@ When running VisibleSim in graphical mode (enabled by default), the user is give
 
 ### Base Interactions
 
-- <kbd>ctrl</kbd> + `left-click`: __Block Selection__
+- <kbd>ctrl</kbd> + <kbd>Left-Click</kbd>: __Block Selection__
 	- When performed on a block, selects the clicked block (Show its information and messages on the left interface panel. Selected block is _blinking_).
 	- When performed elsewhere, unselect previously selected block.
-- <kbd>ctrl</kbd> + `right-click`: __Display Contextual Menu__
+- <kbd>ctrl</kbd> + <kbd>Right-Click</kbd>: __Display Contextual Menu__
 	- Makes the contextual menu appear when on a block.
 	- Does nothing otherwise.
 - <kbd>r</kbd> / <kbd>R</kbd>: __Simulation Start__
 	- <kbd>r</kbd> starts the simulation in realtime mode.
 	- <kbd>R</kbd> starts the simulation in fastest mode.
+- <kbd>s</kbd>: __Export Screenshot__ (both _.ppm_ and _.jpeg_).
+- <kbd>S</kbd>: __Start/End Video Capture__ (_.mkv_, package `ffmpeg` must be installed! `sudo apt-get install ffmpeg`).
+- <kbd>Page-Up</kbd>: __Increase Rotation Speed__ (only _Catoms3D_ supported).
+- <kbd>Page-Down</kbd>: __Decrease Rotation Speed__ (only _Catoms3D_ supported).
+- <kbd>Space</kbd>: __Pause/Resume Simulation__
 - <kbd>z</kbd>: __Camera Centering__
 	- Centers the camera on the selected block if there is one.
 - <kbd>w</kbd> / <kbd>W</kbd>: __Toggle Full Screen__
