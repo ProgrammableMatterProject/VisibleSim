@@ -51,7 +51,7 @@ sudo apt-get install libglew-dev
 sudo apt-get install sbcl
 sudo apt-get install libmuparser-dev
 
-sudo apt-get install # for video export
+sudo apt-get install ffmpeg # for video export
 ```
 2\. `make`
 
