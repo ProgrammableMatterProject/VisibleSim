@@ -363,7 +363,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                                             << vidName << endl;
                                    } else {
                                        cerr << animationDirName.c_str()
-                                            << " conversion failure" << endl;
+                                            << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
                                    }
                                }, animationDirName);
 #endif
