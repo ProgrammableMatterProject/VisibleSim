@@ -64,8 +64,8 @@ public:
                                                                  RotationLinkType ft);
 
     /** 
-     * Computes and return the mirror connector of _mirroringCon_ of m1, on the surface of m2 with m1 and m2 connected through the connector of id _dockingConM1_  and _dockingConM2_, of m1 and m2, respectively.
-     * @note If m1 was to rotate from its _mirroringCon_ connector to its _dockingConM1_ connector using m2 as pivot, the mirror connector of _mirroringCon_ corresponds to the connector of m2 on which m1 is now attached.
+     * Computes and return the mirror connector of mirroringCon of m1, on the surface of m2 with m1 and m2 connected through the connector of id dockingConM1  and dockingConM2, of m1 and m2, respectively.
+     * @note If m1 was to rotate from its mirroringCon connector to its dockingConM1 connector using m2 as pivot, the mirror connector of mirroringCon corresponds to the connector of m2 on which m1 is now attached.
      * @param m1 reference module. Module that wants to move.
      * @param m2 pivot module
      * @param dockingConM1 connector through which m1 is attached to m2 (belongs to m1).
@@ -76,6 +76,16 @@ public:
     static short getMirrorConnectorOnModule(Catoms3DBlock *m1, Catoms3DBlock *m2,
                                             short dockingConM1, short dockingConM2,
                                             short mirroringCon);
+
+
+    /** 
+     * Tries to find a neighbor module of m that can be used as a pivot to move m to tPos
+     * @param m mobile that should move
+     * @param tPos target position of m
+     * @return a pointer to a potential pivot, or NULL if none exist
+     * @todo Implement function
+     */
+    static Catoms3DBlock* findMotionPivot(Catoms3DBlock* m, const Cell3DPosition& tPos);
 };
 
 };

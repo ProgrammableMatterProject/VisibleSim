@@ -30,6 +30,18 @@ public:
         : VisibleSimException(std::string("Feature not yet implemented: ") + featureName) {}        
 };
 
+//!< An exception for notifying invalid uses of functions
+class InvalidArgumentException : public VisibleSimException {
+public:
+    InvalidArgumentException()
+        : VisibleSimException(std::string("Invalid argument supplied to function")) {}
+    InvalidArgumentException(const std::string &function_name)
+        : VisibleSimException(std::string("Invalid argument supplied to function: ") + function_name) {}
+    InvalidArgumentException(const std::string &function_name, const std::string &arg_name)
+        : VisibleSimException(std::string("Invalid argument supplied to function: ") + function_name + std::string(" -- arg: ") + arg_name) {}        
+
+};
+
 } // namespace BaseSimulator
 
 #endif // EXCEPTIONS_H__

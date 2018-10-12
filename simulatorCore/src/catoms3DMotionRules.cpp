@@ -40,7 +40,9 @@ Catoms3DMotionRules::getMirrorConnectorDirection(ConnectorDirection d,
         case SOUTH_EAST: return inverted ? NORTH_EAST : SOUTH_WEST;
         case EAST: return inverted ? EAST : WEST;
         case WEST: return inverted ? WEST : EAST;
-        default: throw "invalid direction";
+        default:
+            throw InvalidArgumentException(__PRETTY_FUNCTION__,
+                                           std::string("d = ") + to_string(d));
     }
 }
 
@@ -70,7 +72,8 @@ const short *Catoms3DMotionRules::getNeighborConnectors(short conFrom) {
 const vector<Catoms3DMotionRulesLink*>&
 Catoms3DMotionRules::getMotionRulesLinksForConnector(short con) {
     if (con < 0 || con > 11)
-        throw "error: invalid input connector";
+        throw InvalidArgumentException(__PRETTY_FUNCTION__,
+                                       std::string("con = ") + to_string(con));
 
     return tabConnectors[con]->tabLinks;
 }

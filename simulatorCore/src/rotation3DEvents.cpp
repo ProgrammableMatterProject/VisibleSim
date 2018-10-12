@@ -13,8 +13,9 @@
 
 using namespace BaseSimulator::utils;
 
-const int ANIMATION_DELAY=100000;
-const int COM_DELAY=2000;
+const int Rotations3D::ANIMATION_DELAY;
+const int Rotations3D::COM_DELAY;
+const int Rotations3D::nbRotationSteps;
 float Rotations3D::rotationDelayMultiplier = 1.0f;
 
 //===========================================================================================================
@@ -35,14 +36,21 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
     : Rotation3DStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1, ft)
 {}
 
+Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Cell3DPosition& tPos)
+    : Rotation3DStartEvent(t, m, Catoms3DMotionEngine::findMotionPivot(m, tPos), tPos, RotationLinkType::Any)
+{}
+
 Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot,
                                            short toCon,
                                            RotationLinkType ft) : BlockEvent(t, m) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_START;
 
-    VS_ASSERT_MSG(m and pivot, "mobile or pivot module pointers cannot be NULL!");
-
+    if (not m)
+        throw InvalidArgumentException(__PRETTY_FUNCTION__, "m = NULL");
+    else if (not pivot)
+        throw NoAvailableRotationPivotException(m->position);
+    
     // Determine anchor connectors of module _pivot_ and m are connected to each other_
     short fromConM = m->getConnectorId(pivot->position);
     short fromConP = pivot->getConnectorId(m->position);
@@ -51,22 +59,29 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
     short toConM = Catoms3DMotionEngine::getMirrorConnectorOnModule(pivot, m, fromConP,
                                                                     fromConM, toCon);
 
-    VS_ASSERT_MSG(toConM != -1, "cannot compute mirror connector of toCon on mobile module");
-    
     // Determine target cell of motion
     Cell3DPosition tPos = Cell3DPosition(-1,-1,-1);
     pivot->getNeighborPos(toCon, tPos);
-    cerr << "Building rotation from piv_con " << fromConP << " / " << m->position
-         << " to piv_con " << toCon << "/ " << tPos
-         << " [m_con(" << fromConM << " -> " << toConM << ")]"
-         << " on surface of pivot #" << pivot->blockId << " " << pivot->position <<  endl;
+    
+    if (toConM == -1) {
+        cerr << "cannot compute mirror connector of #" << pivot->blockId << "("
+             << toCon << ") on module #" << m->blockId << endl;
+        throw NoRotationPathForFaceException(m->position, pivot->position, tPos, ft);
+    }
+    
     OUTPUT << "Building rotation from piv_con " << fromConP << " / " << m->position
            << " to piv_con " << toCon << "/ " << tPos
            << " [m_con(" << fromConM << " -> " << toConM << ")]"
            << " on surface of pivot #" << pivot->blockId << " " << pivot->position <<  endl;
     
-    VS_ASSERT_MSG(fromConM >= 0 and toConM >= 0,
-                  "attempting rotation to or from an unreachable position");
+    // VS_ASSERT_MSG(fromConM >= 0 and toConM >= 0,
+    //               "attempting rotation to or from an unreachable position");
+    if (fromConM < 0 or toConM < 0) {
+        cerr << "attempting rotation to or from an unreachable position: " << m->position
+             << " -> " << tPos<< endl;
+        throw NoRotationPathForFaceException(m->position, pivot->position, tPos, ft);
+    }
+
     
     // Get valid links on surface of m
     const Catoms3DMotionRulesLink* link =
@@ -94,7 +109,7 @@ void Rotation3DStartEvent::consume() {
 //    catom->setColor(DARKGREY);
     rot.init(((Catoms3DGlBlock*)catom->ptrGlBlock)->mat);
     scheduler->schedule(
-        new Rotation3DStepEvent(scheduler->now()+(Rotations3D::rotationDelayMultiplier*ANIMATION_DELAY),
+        new Rotation3DStepEvent(scheduler->now()+(Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / Rotations3D::nbRotationSteps)),
                                 catom, rot));
 }
 
@@ -135,11 +150,11 @@ void Rotation3DStepEvent::consume() {
     if (rotationEnd) {
         scheduler->schedule(
             new Rotation3DStopEvent(scheduler->now() +
-                                    Rotations3D::rotationDelayMultiplier*ANIMATION_DELAY,
+                                    Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / Rotations3D::nbRotationSteps),
                                     catom, rot));
     } else {
         scheduler->schedule(new Rotation3DStepEvent(scheduler->now() +
-                                                    Rotations3D::rotationDelayMultiplier*ANIMATION_DELAY,
+                                                    Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / Rotations3D::nbRotationSteps),
                                                     catom, rot));
     }
 }
@@ -188,7 +203,7 @@ void Rotation3DStopEvent::consume() {
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(
         new Rotation3DEndEvent(scheduler->now() +
-                               Rotations3D::rotationDelayMultiplier*ANIMATION_DELAY, catom));
+                               Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / Rotations3D::nbRotationSteps), catom));
 }
 
 const string Rotation3DStopEvent::getEventName() {
@@ -218,7 +233,7 @@ void Rotation3DEndEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
     // Bizarre !
-    concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DEndEvent(date+COM_DELAY,rb)));
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DEndEvent(date+Rotations3D::COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(rb->stats);
 }
@@ -294,7 +309,7 @@ Rotations3D::Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,double rprim,
 bool Rotations3D::nextStep(Matrix &m) {
     if (firstRotation) {
         step++;
-        double angle=angle1*step/nbRotationSteps;
+        double angle=angle1*step/Rotations3D::nbRotationSteps;
         //OUTPUT << "step=" << step << "   angle=" << angle << endl;
         Matrix mr;
         mr.setRotation(angle,axe1);
@@ -306,12 +321,12 @@ bool Rotations3D::nextStep(Matrix &m) {
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = initialMatrix * m;
 //        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
-        if (step==nbRotationSteps) {
+        if (step==Rotations3D::nbRotationSteps) {
             firstRotation=false;
         }
     } else {
         step--;
-        double angle=-angle2*step/nbRotationSteps;
+        double angle=-angle2*step/Rotations3D::nbRotationSteps;
         // TRT-1R
         Matrix mr;
         mr.setRotation(angle,axe2);

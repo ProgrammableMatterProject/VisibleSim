@@ -15,8 +15,6 @@
 #include "catoms3DBlock.h"
 #include "events.h"
 
-const int nbRotationSteps = 20;
-
 using namespace Catoms3D;
 
 namespace Catoms3D {
@@ -24,6 +22,9 @@ namespace Catoms3D {
 class Rotations3D {    
 public :
     static float rotationDelayMultiplier;
+    static const int ANIMATION_DELAY = 400000;
+    static const int COM_DELAY = 2000;
+    static const int nbRotationSteps = 20;
     
 /**
    \brief Create a couple of rotations
@@ -72,6 +73,17 @@ protected :
 //          RotationExceptions
 //
 //===========================================================================================================
+class NoAvailableRotationPivotException : public VisibleSimException {
+public:
+    NoAvailableRotationPivotException(const Cell3DPosition& mPos)
+        {
+            stringstream ss;
+            ss << "Cannot find pivot for rotating " << mPos << " to target position" << endl;
+            m_msg = ss.str();
+        }        
+};
+
+
 class NoRotationPathForFaceException : public VisibleSimException {
 public:
     NoRotationPathForFaceException(const Cell3DPosition& mPos,
@@ -103,21 +115,7 @@ public:
 class Rotation3DStartEvent : public BlockEvent {
     Rotations3D rot;
 public:
-	Rotation3DStartEvent(Time, Catoms3DBlock *block,const Rotations3D& r);
-
-    /** 
-     * Attemps to create a single rotation that moves module m from its current position     
-     *  to position tPos using module a pivot module.
-     * @param t time
-     * @param m mobile module
-     * @param pivot pivot module
-     * @param tPos target position that must be a neighbor position of pivot
-     * @param ft link type to be used (Any by default)
-     * @throw NoRotationPathForFaceException if no feasible rotations can be found.
-     */
-    Rotation3DStartEvent(Time t, Catoms3DBlock*m, Catoms3DBlock *pivot,
-                         const Cell3DPosition& tPos,
-                         RotationLinkType faceType = RotationLinkType::Any);
+	Rotation3DStartEvent(Time t, Catoms3DBlock *block,const Rotations3D& r);
 
     /** 
      * Attemps to create a single rotation that moves module m on the surface of a pivot 
@@ -128,9 +126,37 @@ public:
      * @param conToId target connector on the surface of the pivot
      * @param ft link type to be used (Any by default)
      * @throw NoRotationPathForFaceException if no feasible rotations can be found.
+     * @throw InvalidArgumentException if one of the arguments is invalid
      */
     Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot, short conToId,
                          RotationLinkType faceType = RotationLinkType::Any);
+
+    /** 
+     * Attemps to create a single rotation that moves module m from its current position     
+     *  to position tPos using module a pivot module.
+     * @param t time
+     * @param m mobile module
+     * @param pivot pivot module
+     * @param tPos target position that must be a neighbor position of pivot
+     * @param ft link type to be used (Any by default)
+     * @throw NoRotationPathForFaceException if no feasible rotations can be found.
+     * @throw InvalidArgumentException if one of the arguments is invalid
+     * @attention constructor chaining with Rotation3DStartEvent(Time t, Catoms3DBlock*m, Catoms3DBlock *, short, RotationLinkType)         
+     */
+    Rotation3DStartEvent(Time t, Catoms3DBlock*m, Catoms3DBlock *pivot,
+                         const Cell3DPosition& tPos,
+                         RotationLinkType faceType = RotationLinkType::Any);
+
+    /** 
+     * Attemps to create a single rotation that moves module m on the surface of _an autonomously selected_ pivot module, from its current anchor connector to neighbor position tPos
+     * @param t time
+     * @param m mobile module
+     * @param tPos destination position
+     * @throw NoRotationPathForFaceException if no feasible rotations can be found.
+     * @throw InvalidArgumentException if one of the arguments is invalid
+     * @attention constructor chaining with Rotation3DStartEvent(Time t, Catoms3DBlock*m, Catoms3DBlock *, const Cell3DPosition&, RotationLinkType)
+     */
+    Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Cell3DPosition& tPos);
     
     Rotation3DStartEvent(Rotation3DStartEvent *ev);
     ~Rotation3DStartEvent();

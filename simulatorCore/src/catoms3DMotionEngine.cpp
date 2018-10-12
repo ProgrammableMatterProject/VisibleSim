@@ -1,6 +1,9 @@
 
 #include "catoms3DMotionEngine.h"
 
+#include "utils.h"
+#include <vector>
+
 const Catoms3DMotionRulesLink*
 Catoms3DMotionEngine::findConnectorLink(Catoms3DBlock *module,
                                         short conFrom, short conTo,
@@ -57,7 +60,47 @@ short Catoms3DMotionEngine::getMirrorConnectorOnModule(Catoms3DBlock *m1, Catoms
     bool inverted = m1->areOrientationsInverted(m2->orientationCode);
     short mirroringConDir = getMotionRules()->getConnectorDirection(dockingConM1, mirroringCon);
 
-    return mirroringConDir >= 0 ? getMotionRules()->
+    short mirrorCon = mirroringConDir >= 0 ? getMotionRules()->
         getMirrorNeighborConnector(dockingConM2, (ConnectorDirection)mirroringConDir, inverted)
         : -1;
+
+    // cerr << "#" << m1->blockId << "(" << mirroringCon << ") -> #" << m2->blockId
+    //      << "(" << mirrorCon << ") --- dir: "
+    //      << mirroringConDir << " / inv: " << inverted << endl;
+
+    return mirrorCon;
+}
+
+Catoms3DBlock* Catoms3DMotionEngine::findMotionPivot(Catoms3DBlock* m,
+                                                     const Cell3DPosition& tPos) {
+    if (m == NULL) return NULL;
+    
+    // TODO:
+    // A pivot module is necessarily one which is both adjacent to m and the target position
+    /// (1) Get all occupied positions that qualify
+    Catoms3DWorld* world = Catoms3D::getWorld();
+    Lattice* lattice = world->lattice;
+    
+    vector<Cell3DPosition> mActiveCells = lattice->getActiveNeighborCells(m->position);
+    vector<Cell3DPosition> tPosActiveCells = lattice->getActiveNeighborCells(tPos);
+
+    const vector<Cell3DPosition>& adjacentCells =
+        utils::intersection(mActiveCells, tPosActiveCells);
+
+    // Check for a pivot with a direct connector path between the two cells
+    Catoms3DBlock* pivot = NULL;
+    for (const Cell3DPosition& pPos : adjacentCells) {
+        pivot = static_cast<Catoms3DBlock*>(lattice->getBlock(pPos));
+
+        // Determine pivot connectors and check if a possible path exists 
+        short conFrom = pivot->getConnectorId(m->position);
+        short conTo = pivot->getConnectorId(tPos);
+        const Catoms3DMotionRulesLink *link = findPivotConnectorLink(pivot, conFrom, conTo,
+                                                                     RotationLinkType::Any);
+
+        // Return first available pivot
+        if (link) return pivot;
+    }
+
+    return NULL;
 }
