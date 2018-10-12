@@ -382,7 +382,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                                              + " >/dev/null 2>/dev/null").c_str());
                            });
 #endif
-                cerr << "Screenshot saved to files: " << ssName
+                cout << "Screenshot saved to files: " << ssName
                      << " and " << ssNameJpg << endl;
             } break;
 
@@ -393,6 +393,12 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 32: { // SPACE
                 Scheduler *scheduler = getScheduler();
                 scheduler->toggle_pause();
+                if (scheduler->state == Scheduler::State::PAUSED)
+                    cout << "[t-" << scheduler->now()
+                         << "] Simulation Paused. Press <space> again to resume..." << endl;
+                else
+                    cout << "[t-" << scheduler->now()
+                         << "] Simulation Resumed." << endl;
             } break;
             case 'p' :
                 BaseSimulator::getWorld()->simulatePolymer();
