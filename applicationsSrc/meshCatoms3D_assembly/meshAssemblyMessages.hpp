@@ -21,9 +21,10 @@ static const uint MSG_DELAY = 0;
 using namespace MeshCoating;
 
 class RequestTargetCellMessage : public HandleableMessage {
+    const Cell3DPosition srcPos;
 public:
-    RequestTargetCellMessage()
-        : HandleableMessage() {};
+    RequestTargetCellMessage(const Cell3DPosition& _srcPos)
+        : HandleableMessage(), srcPos(_srcPos) {};
     virtual ~RequestTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
@@ -33,9 +34,10 @@ public:
 
 class ProvideTargetCellMessage : public HandleableMessage {
     const Cell3DPosition tPos;
+    const Cell3DPosition dstPos;
 public:
-    ProvideTargetCellMessage(const Cell3DPosition& _tPos)
-        : HandleableMessage(), tPos(_tPos) {};
+    ProvideTargetCellMessage(const Cell3DPosition& _tPos, const Cell3DPosition& _dstPos)
+        : HandleableMessage(), tPos(_tPos), dstPos(_dstPos) {};
     virtual ~ProvideTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);

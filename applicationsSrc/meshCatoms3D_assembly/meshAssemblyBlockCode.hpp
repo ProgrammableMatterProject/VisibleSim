@@ -26,7 +26,7 @@
 
 // #define INTERACTIVE_MODE
 
-enum AgentRole { FreeAgent, Coordinator, PassiveBeam };
+enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip };
 enum EntryPointDirection { Dir8, Dir9, Dir10, Dir11, NUM_EPD };
 
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
@@ -39,12 +39,12 @@ public:
         {
          Cell3DPosition(0,0,-1), // ZBranch
          Cell3DPosition(1,1,-1), // RevZBranch
-         Cell3DPosition(0,1,-1), // LeftZBranch
-         Cell3DPosition(1,0,-1), // RightZBranch
+         Cell3DPosition(1,0,-1), // LeftZBranch
+         Cell3DPosition(0,1,-1), // RightZBranch
          Cell3DPosition(-1,0,0), // XBranch
          Cell3DPosition(0,-1,0) // YBranch
         };
-
+    
     inline static Time getRoundDuration() {
         return (2 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
                 + Rotations3D::COM_DELAY);// + (getScheduler()->now() / 1000);
@@ -58,6 +58,7 @@ public:
     Catoms3D::Catoms3DBlock *catom;
     MeshCoating::MeshRuleMatcher *ruleMatcher;
 
+    BranchIndex branch;
     AgentRole role;
     Cell3DPosition coordinatorPos;
     Cell3DPosition targetPosition;
@@ -66,7 +67,7 @@ public:
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
     std::array<Cell3DPosition, 4> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
     bool hasToGrowFourDiagBranches = false;
-
+    
     int counter = 0;
     
     // TargetCSG *target;
@@ -142,6 +143,12 @@ y the module
      */
     bool isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi);
 
+    /** 
+     * Adds a new tile root meta-module (tile root + infcoming vertical
+     *  branches tips at the location in argument
+     * @param pos position of the tile root module to be added
+     */
+    void addNewGroundTileRoot(const Cell3DPosition& pos);
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

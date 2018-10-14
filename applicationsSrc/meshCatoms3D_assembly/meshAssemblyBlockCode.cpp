@@ -80,6 +80,9 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << " ]" << endl;
 
     // catom->setColor(debugColorIndex++);
+
+    cout << "branch: " << branch << endl;
+    cout << "coordinatorPos: " << coordinatorPos << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -91,6 +94,13 @@ void MeshAssemblyBlockCode::startup() {
         // Switch role
         role = Coordinator;
         coordinatorPos = catom->position;
+
+        // Make incoming vertical branch tips appear already in place if at ground level
+        if (catom->position[2] == meshSeedPosition[2]) {
+            for (int i = 0; i < XBranch; i++)
+                world->addBlock(++id, buildNewBlockCode,
+                                catom->position + incidentTipRelativePos[i], ORANGE);
+        }
         
         // Determine how many branches need to grow from here
         // and initialize growth data structures
@@ -120,21 +130,30 @@ void MeshAssemblyBlockCode::startup() {
             new InterruptionEvent(getScheduler()->now(),
                                   catom, IT_MODE_TILEROOT_ACTIVATION));
         console << "Scheduled Coordinator IT" << "\n";
+    } else if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {            
+        role = ActiveBeamTip; // nothing to be done, wait for tPos requests
+        
+        // Add z = B to ensure that level -1 catoms are handled properly
+        short bi = ruleMatcher->determineBranchForPosition(
+            norm(catom->position + Cell3DPosition(0,0,B)));
+        VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
+        branch = static_cast<BranchIndex>(bi);
+        coordinatorPos = catom->position - incidentTipRelativePos[branch];
     } else {
         role = FreeAgent;
-        
-        // Ask parent module where it should be headed
+
         for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
-            if (ruleMatcher->isTileRoot(norm(nPos))) {
+            if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {
+                // Module is delegate coordinator
                 P2PNetworkInterface* nItf = catom->getInterface(nPos);
                 VS_ASSERT(nItf);
-                
-                sendMessage(new RequestTargetCellMessage(), nItf, MSG_DELAY_MC, 0);
-                return; // Await answer
+                sendMessage(new RequestTargetCellMessage(catom->position), nItf,
+                            MSG_DELAY_MC, 0);
+                return;
             }
         }
-
-        VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a tile root in its vicinity.");
+        
+        VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a delegate coordinator in its vicinity.");        
     }
 }
 
@@ -206,8 +225,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         lattice->unhighlightCell(nextPos);
                         cout << "Ready to insert tile root at " << nextPos << endl;
                         awaitKeyPressed();
-#endif                        
-                        world->addBlock(++id, buildNewBlockCode, nextPos, RED);
+#endif
+                        addNewGroundTileRoot(nextPos);                        
                     } else {
 #ifdef INTERACTIVE_MODE
                         cout << "Some branches are missing around " << nextPos << endl;
@@ -414,7 +433,7 @@ Cell3DPosition MeshAssemblyBlockCode::getEntryPointForBranch(BranchIndex bi) {
             else
                 throw NotImplementedException("getEP for non XYZ branches");
     
-        case XBranch: return Cell3DPosition(1,0,-1);
+        case XBranch: return Cell3DPosition(2,0,-1);
         case YBranch: return Cell3DPosition(0,1,-1);
         case RevZBranch: return Cell3DPosition(1,1,-1);
         case LeftZBranch:
@@ -438,7 +457,11 @@ Cell3DPosition MeshAssemblyBlockCode::getEntryPointForBranch(BranchIndex bi) {
 }
 
 bool MeshAssemblyBlockCode::handleNewCatomInsertion(BranchIndex bi) {
-    if (catomsReqByBranch[bi] > 0 and not fedCatomOnLastRound[bi]) {
+    if (catomsReqByBranch[bi] > 0 
+        // FIXME:
+        and not (fedCatomOnLastRound[bi] or bi == ZBranch or bi == RevZBranch
+                 or bi == LeftZBranch or bi == RightZBranch or bi == YBranch)
+        ) {
         // FIXME: What if cell has module?
         const Cell3DPosition& entryPos =
             catom->position + getEntryPointForBranch(bi);
@@ -482,4 +505,13 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& tipp = trp + incidentTipRelativePos[bi];
     return (not ruleMatcher->isInMesh(norm(tipp)))
         or lattice->cellHasBlock(tipp);
+}
+
+void MeshAssemblyBlockCode::addNewGroundTileRoot(const Cell3DPosition& pos) {
+    // The tile root itself
+    world->addBlock(++id, buildNewBlockCode, pos, RED);
+
+    // Tips of incoming vertical branches to tile root
+    // for (int i = 0; i < XBranch; i++)
+    //     world->addBlock(++id, buildNewBlockCode, pos + incidentTipRelativePos[i], ORANGE);
 }
