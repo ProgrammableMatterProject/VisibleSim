@@ -122,6 +122,11 @@ bool MeshRuleMatcher::isOnPartialBorderMesh(const Cell3DPosition& pos) const {
             );
 }
 
+bool MeshRuleMatcher::isVerticalBranchTip(const Cell3DPosition& pos) const {
+    return (isOnZBranch(pos) or isOnRevZBranch(pos)
+            or isOnLeftZBranch(pos) or isOnRightZBranch(pos)) and m_mod(pos[2], B) == (B - 1);
+}
+
 BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos) {
     VS_ASSERT_MSG(isInMesh(pos) and not isTileRoot(pos), "attempting to get branch index of tile root position or position outside of mesh");
 
@@ -328,4 +333,17 @@ getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const {
     OUTPUT << "NumberExpectedConfirms for " << pos << " : " << expectedConfirms << endl;
     
     return expectedConfirms;
+}
+
+short MeshRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) const {
+    if (isInMesh(pos) and not isTileRoot(pos)) {
+        if (isOnZBranch(pos)) return ZBranch;
+        if (isOnRevZBranch(pos)) return RevZBranch;
+        if (isOnLeftZBranch(pos)) return LeftZBranch;
+        if (isOnRightZBranch(pos)) return RightZBranch;
+        if (isOnXBranch(pos)) return XBranch;
+        if (isOnYBranch(pos)) return YBranch;
+    }
+    
+    return -1;
 }

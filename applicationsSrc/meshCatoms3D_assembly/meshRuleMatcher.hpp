@@ -39,8 +39,8 @@ public:
     bool isOnZBranch(const Cell3DPosition& pos) const;
     bool isOnRevZBranch(const Cell3DPosition& pos) const;
     bool isOnRightZBranch(const Cell3DPosition& pos) const;
-    bool isOnLeftZBranch(const Cell3DPosition& pos) const;
-
+    bool isOnLeftZBranch(const Cell3DPosition& pos) const;    
+    
     bool shouldGrowZBranch(const Cell3DPosition& pos) const;
     bool shouldGrowRevZBranch(const Cell3DPosition& pos) const;
     bool shouldGrowLeftZBranch(const Cell3DPosition& pos) const;
@@ -57,9 +57,10 @@ public:
     virtual ~MeshRuleMatcher() {};
     
     bool isInGrid(const Cell3DPosition& pos) const;
+    bool isInMesh(const Cell3DPosition& pos) const;
     bool isOnPartialBorderMesh(const Cell3DPosition& pos) const;
-
     bool isTileRoot(const Cell3DPosition& pos) const;
+    bool isVerticalBranchTip(const Cell3DPosition& pos) const;
 
     bool upwardBranchRulesApply(const Cell3DPosition& own,
                                 const Cell3DPosition& other) const;
@@ -76,9 +77,15 @@ public:
     bool shouldSendToNeighbor(const Cell3DPosition& own,
                               const Cell3DPosition& other) const;
 
-    bool isInMesh(const Cell3DPosition& pos) const;
-
     void printDebugInfo(const Cell3DPosition& pos) const;
+
+    /** 
+     * For a given position, return the branch index of the branch to which it belongs
+     * @param pos input position 
+     * @attention pos should not be tile root position or non-mesh position
+     * @return branch index of the branch to which pos belongs, or -1 if invalid
+     */
+    short determineBranchForPosition(const Cell3DPosition& pos) const;
     
     /** 
      * @param pos position of the module to consider
