@@ -72,7 +72,7 @@ World::~World() {
     delete objBlockForPicking;
     delete objRepere;
 
-#ifdef DEBUG_OBJECT_LIFECYCLE    
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "World destructor" << endl;
 #endif
 }
@@ -129,7 +129,7 @@ void World::linkBlocks() {
 					// cerr << "l.cellHasBlock(" << p << "/"
                     //   << lattice->getIndex(p) << ")  = true ; id: "
 					//	 << lattice->getBlock(p)->blockId << endl;
-                    
+
 					linkBlock(p);
 				}
             }
@@ -236,12 +236,14 @@ void World::menuChoice(int n) {
 	switch (n) {
 	case 1 : {
 		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
-		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
-
-		addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
-		linkBlock(nPos);
-		linkNeighbors(nPos);
+		Cell3DPosition nPos;
+		if (bb->getNeighborPos(numSelectedFace,nPos)) {
+			addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
+			linkBlock(nPos);
+			linkNeighbors(nPos);
+		} else {
+			cerr << "Position out of the grid" << endl;
+		}
 	} break;
 	case 2 : {
 		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
@@ -270,7 +272,7 @@ void World::tapBlock(Time date, bID bId, int face) {
 
 void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
     // FIXME: Block with -1 id corrupts tabGlBlocks that is accessed through the OpenGL interaction menu by blockId == index
-	GlBlock *glBlock = new GlBlock(-1); 
+	GlBlock *glBlock = new GlBlock(-1);
     Vector3D position(lattice->gridScale[0]*pos[0],
 					  lattice->gridScale[1]*pos[1],
 					  lattice->gridScale[2]*pos[2]);
@@ -278,7 +280,6 @@ void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
 	glBlock->setColor(col);
 	tabGlBlocks.push_back(glBlock);
 }
-
 
 void World::createPopupMenu(int ix, int iy) {
 	if (!GlutContext::popupMenu) {
@@ -304,10 +305,10 @@ cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(num
 void World::glDrawBackground() {
     if (background) {
         glClearColor(0.3f, 0.3f, 0.8f, 1.0f);
-        glDrawSpecificBg(); 
+        glDrawSpecificBg();
     }
-    else { 
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
+    else {
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 }
 

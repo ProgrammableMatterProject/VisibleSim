@@ -251,7 +251,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
                 int n=selectFaceFunc(x,y);
-                cout << "selected " << n << endl;
+                cout << "selected face #" << n << endl;
                 if (n>0) {
                     BaseSimulator::getWorld()->setSelectedFace(n-1);
                     BaseSimulator::getWorld()->createPopupMenu(x,y);
@@ -327,7 +327,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 'S' : {
                 if (not saveScreenMode) {
                     // Will start animation capture,
-                    //  make sure animation directory exists 
+                    //  make sure animation directory exists
                     int err; extern int errno;
                     struct stat sb;
                     animationDirName = generateTimestampedDirName("animation");
@@ -356,7 +356,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                                        string("ffmpeg -pattern_type glob -framerate 30 -i \""
                                               + animationDirName + "/*.ppm\" " + vidName
                                               + ">/dev/null 2>/dev/null").c_str());
-                                   
+
                                    if (r == 0) {
                                        system(string("rm -rf " + animationDirName).c_str());
                                        cerr << "Animation video exported to "
@@ -368,7 +368,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                                }, animationDirName);
 #endif
                 }
-                
+
                 saveScreenMode=!saveScreenMode;
             } break;
             case 's' : {
@@ -462,7 +462,7 @@ void GlutContext::idleFunc(void) {
         char title[32];
         strncpy(title, animationDirName.c_str(), sizeof(title));
         strncat(title, "/save%04d.ppm", sizeof(title));
-                
+
         sprintf(title,title,num++);
         saveScreen(title);
     }
