@@ -49,4 +49,3 @@ realclean:
 	@for dir in $(SUBDIRS); do \
 	rm -f ../../applicationsBin/$$dir/simulation.log; \
 	done
-
