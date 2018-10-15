@@ -33,15 +33,16 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     } else if (mabc.role == Coordinator) {
         // A neighboring catom requested an objective, check needs an make decision based on their distance.
         // FIXME: For now, route towards horizontal growth
-        const Cell3DPosition& nPos = sourceInterface->hostBlock->position;
-        const Cell3DPosition& rPos = nPos - mabc.catom->position;
-        short epd = mabc.getEntryPointDirectionForCell(nPos);
+        // const Cell3DPosition& rPos = srcPos - mabc.catom->position;
+        // short epd = mabc.getEntryPointDirectionForCell(rPos);
+
         const Cell3DPosition& tPos =
-            mabc.targetForEntryPoint[mabc.getEntryPointDirectionForCell(nPos)];
-        cout << "Spawnee Position: " << nPos 
-             << " -- Target Position: " << tPos
-             << " -- Relative Position: " << rPos
-             << " -- epd" << epd << endl;
+            mabc.targetForEntryPoint[mabc.getEntryPointDirectionForCell(srcPos)];
+
+        // cout << "Spawnee Position: " << srcPos 
+        //      << " -- Target Position: " << tPos
+        //      << " -- Relative Position: " << rPos
+        //      << " -- epd: " << epd << endl;
     
         // Send to requesting catom
         VS_ASSERT(destinationInterface->isConnected());
@@ -65,11 +66,20 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     } else {
         const Cell3DPosition& adjustedSenderPos =
             mabc.catom->position[2] == mabc.meshSeedPosition[2] - 1 ?
-            sourceInterface->hostBlock->position
-            : sourceInterface->hostBlock->position + Cell3DPosition(0,0,mabc.B);
+            sourceInterface->hostBlock->position + Cell3DPosition(0,0,mabc.B)
+            : sourceInterface->hostBlock->position;
+
+
+        // cout << "sourceInterface->hostBlock->position: " <<sourceInterface->hostBlock->position
+        //      << " -- adjustedPosition: " << adjustedSenderPos << endl;
         
-        mabc.coordinatorPos = sourceInterface->hostBlock->position -mabc.incidentTipRelativePos[
+        mabc.coordinatorPos = sourceInterface->hostBlock->position-mabc.incidentTipRelativePos[
             mabc.ruleMatcher->determineBranchForPosition(mabc.norm(adjustedSenderPos))];
+
+        // cout << "mabc.coordinatorPos: " << mabc.coordinatorPos << " -- branch: "
+        //      << mabc.ruleMatcher->determineBranchForPosition(mabc.norm(adjustedSenderPos))
+        //      << " -- delegatePos: " << mabc.coordinatorPos + mabc.incidentTipRelativePos[mabc.ruleMatcher->determineBranchForPosition(mabc.norm(adjustedSenderPos))] << endl;
+
         mabc.targetPosition = tPos;
 
         Cell3DPosition nextHop;
@@ -102,9 +112,7 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
             else if (bi == ZBranch) {
                 if (mabc.coordinatorPos == mabc.meshSeedPosition)
-                    nextHop = mabc.catom->position + Cell3DPosition(-1,-1,2);
-                else
-                    nextHop = mabc.catom->position + Cell3DPosition(-1,-1,1);
+                    nextHop = mabc.catom->position + mabc.ruleMatcher->getBranchUnitOffset(bi);
 
             } else if (bi == RevZBranch) {
                 if (mabc.ruleMatcher->isOnXOppBorder(mabc.norm(mabc.coordinatorPos))

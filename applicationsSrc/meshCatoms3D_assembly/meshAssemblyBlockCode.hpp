@@ -27,7 +27,8 @@
 // #define INTERACTIVE_MODE
 
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip };
-enum EntryPointDirection { Dir8, Dir9, Dir10, Dir11, NUM_EPD };
+enum EntryPointDirection { FrontLeft, LeftFront, LeftBack, BackLeft,
+                           BackRight, RightBack, RightFront, FrontRight, N_EPD };
 
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
@@ -36,14 +37,25 @@ public:
     static uint X_MAX, Y_MAX, Z_MAX; // const
     static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(1,1,1);
     static constexpr std::array<Cell3DPosition, 6> incidentTipRelativePos =
-        {
-         Cell3DPosition(0,0,-1), // ZBranch
-         Cell3DPosition(1,1,-1), // RevZBranch
-         Cell3DPosition(1,0,-1), // LeftZBranch
-         Cell3DPosition(0,1,-1), // RightZBranch
-         Cell3DPosition(-1,0,0), // XBranch
-         Cell3DPosition(0,-1,0) // YBranch
-        };
+    {
+        Cell3DPosition(0,0,-1), // ZBranch
+        Cell3DPosition(1,1,-1), // RevZBranch
+        Cell3DPosition(1,0,-1), // LeftZBranch
+        Cell3DPosition(0,1,-1), // RightZBranch
+        Cell3DPosition(-1,0,0), // XBranch
+        Cell3DPosition(0,-1,0) // YBranch
+    };
+    static constexpr std::array<Cell3DPosition, 8> entryPointRelativePos =
+    {
+        Cell3DPosition(0,-1,-1), // FrontLeft
+        Cell3DPosition(-1,0,-1), // LeftFront
+        Cell3DPosition(-1,1,-1), // LeftBack
+        Cell3DPosition(0,2,-1), // BackLeft
+        Cell3DPosition(1,2,-1), // BackRight
+        Cell3DPosition(2,1,-1), // RightBack 
+        Cell3DPosition(2,0,-1), // RightFront
+        Cell3DPosition(1,-1,-1) // FrontRight
+    };
     
     inline static Time getRoundDuration() {
         return (2 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
@@ -65,7 +77,7 @@ public:
     std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
     std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
-    std::array<Cell3DPosition, 4> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
+    std::array<Cell3DPosition, 8> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
     bool hasToGrowFourDiagBranches = false;
     
     int counter = 0;
