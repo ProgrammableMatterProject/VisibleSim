@@ -4,7 +4,7 @@
           angle="45" near="0.1" far="2000.0" />
 
   <blockList color="128,128,128" blocksize="10,10,10">
-    <block position="1,1,1" color="0,255,0"/>
+    <block position="3,3,3" color="0,255,0"/>
   </blockList>
 
 </world>

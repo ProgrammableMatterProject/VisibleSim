@@ -84,9 +84,6 @@ void MeshAssemblyBlockCode::onBlockSelected() {
 
     cout << "branch: " << branch << endl;
     cout << "coordinatorPos: " << coordinatorPos << endl;
-
-    if (ruleMatcher->isOnLeftZBranch(norm(catom->position))) catom->setColor(WHITE);
-    if (ruleMatcher->isOnRightZBranch(norm(catom->position))) catom->setColor(BLACK);
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -101,9 +98,13 @@ void MeshAssemblyBlockCode::startup() {
 
         // Make incoming vertical branch tips appear already in place if at ground level
         if (catom->position[2] == meshSeedPosition[2]) {
-            for (int i = 0; i < XBranch; i++)
+            for (int i = 0; i < XBranch; i++) {
                 world->addBlock(++id, buildNewBlockCode,
                                 catom->position + incidentTipRelativePos[i], PINK);
+                world->addBlock(++id, buildNewBlockCode, catom->position +
+                                incidentTipRelativePos[i] + incidentTipRelativePos[i], GREY);
+                world->addBlock(++id, buildNewBlockCode, catom->position + incidentTipRelativePos[i] + incidentTipRelativePos[i] + incidentTipRelativePos[i], GREY);
+            }
         }
         
         // Determine how many branches need to grow from here
@@ -143,6 +144,8 @@ void MeshAssemblyBlockCode::startup() {
         VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
         branch = static_cast<BranchIndex>(bi);
         coordinatorPos = catom->position - incidentTipRelativePos[branch];
+    } else if (meshSeedPosition[2] - catom->position[2] > 1) {
+        role = PassiveBeam; // nothing to be done here for visual decoration only        
     } else {
         role = FreeAgent;
 
