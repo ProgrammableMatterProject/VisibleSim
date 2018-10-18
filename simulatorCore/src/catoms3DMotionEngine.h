@@ -82,6 +82,8 @@ public:
      * Tries to find a neighbor module of m that can be used as a pivot to move m to tPos
      * @param m mobile that should move
      * @param tPos target position of m
+     * @param faceReq if specified, only pivots that can perform a motion using the 
+     *  requested face type will be evaluated
      * @return a pointer to a potential pivot, or NULL if none exist
      * @todo Implement function
      */

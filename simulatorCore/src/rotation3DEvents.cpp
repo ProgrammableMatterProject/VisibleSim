@@ -32,17 +32,24 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *block,const Ro
 
 Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot,
                                            const Cell3DPosition& tPos,
-                                           RotationLinkType ft)
-    : Rotation3DStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1, ft)
+                                           RotationLinkType faceReq, bool exclusivelyReq)
+    : Rotation3DStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1, faceReq)
 {}
 
-Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Cell3DPosition& tPos)
-    : Rotation3DStartEvent(t, m, Catoms3DMotionEngine::findMotionPivot(m, tPos), tPos, RotationLinkType::Any)
+Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Cell3DPosition& tPos,
+                                           RotationLinkType faceReq, bool exclusively)
+    : Rotation3DStartEvent(t, m,
+                           // If not exclusively, fall back to any face type
+                           (Catoms3DMotionEngine::findMotionPivot(m, tPos, faceReq) == NULL
+                            and (faceReq != RotationLinkType::Any and not exclusively) ?
+                            Catoms3DMotionEngine::findMotionPivot(m, tPos, faceReq)
+                            : Catoms3DMotionEngine::findMotionPivot(m, tPos, Any)),
+                           tPos, faceReq)
 {}
 
 Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot,
-                                           short toCon,
-                                           RotationLinkType ft) : BlockEvent(t, m) {
+                                           short toCon, RotationLinkType faceReq,
+                                           bool exclusively) : BlockEvent(t, m) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_START;
 
@@ -66,7 +73,7 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
     if (toConM == -1) {
         cerr << "cannot compute mirror connector of #" << pivot->blockId << "("
              << toCon << ") on module #" << m->blockId << endl;
-        throw NoRotationPathForFaceException(m->position, pivot->position, tPos, ft);
+        throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
     }
     
     OUTPUT << "Building rotation from piv_con " << fromConP << " / " << m->position
@@ -79,16 +86,16 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
     if (fromConM < 0 or toConM < 0) {
         cerr << "attempting rotation to or from an unreachable position: " << m->position
              << " -> " << tPos<< endl;
-        throw NoRotationPathForFaceException(m->position, pivot->position, tPos, ft);
+        throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
     }
 
     
     // Get valid links on surface of m
     const Catoms3DMotionRulesLink* link =
-        Catoms3DMotionEngine::findConnectorLink(m, fromConM, toConM, ft);
+        Catoms3DMotionEngine::findConnectorLink(m, fromConM, toConM, faceReq);
 
     if (link == NULL)
-        throw NoRotationPathForFaceException(m->position, pivot->position, tPos, ft);
+        throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
     else rot = link->getRotations(m, pivot);
 }
 

@@ -252,6 +252,6 @@ Catoms3DBlock *Catoms3DBlock::getNeighborBlock(short conId) const {
 }
 
 bool Catoms3DBlock::canRotateToPosition(const Cell3DPosition &pos,
-                                        RotationLinkType conReq) const {
-    return Catoms3DMotionEngine::findMotionPivot(this, pos, conReq) != NULL;
+                                        RotationLinkType faceReq) const {
+    return Catoms3DMotionEngine::findMotionPivot(this, pos, faceReq) != NULL;
 }
