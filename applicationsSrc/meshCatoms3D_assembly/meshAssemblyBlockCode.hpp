@@ -22,6 +22,8 @@
 #include "meshAssemblyMessages.hpp"
 #include "meshRuleMatcher.hpp"
 
+#include "meshAssemblyLocalRules.hpp"
+
 #define IT_MODE_TILEROOT_ACTIVATION 1 
 
 // #define INTERACTIVE_MODE
