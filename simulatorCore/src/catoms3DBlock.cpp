@@ -11,11 +11,9 @@
 #include "catoms3DWorld.h"
 #include "catoms3DSimulator.h"
 #include "trace.h"
+#include "catoms3DMotionEngine.h"
 
 using namespace std;
-
-//! \namespace Catoms3D
-namespace Catoms3D {
 
 Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
@@ -253,4 +251,7 @@ Catoms3DBlock *Catoms3DBlock::getNeighborBlock(short conId) const {
     return NULL;
 }
 
+bool Catoms3DBlock::canRotateToPosition(const Cell3DPosition &pos,
+                                        RotationLinkType conReq) const {
+    return Catoms3DMotionEngine::findMotionPivot(this, pos, conReq) != NULL;
 }

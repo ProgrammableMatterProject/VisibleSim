@@ -44,7 +44,7 @@ public:
      * @attention @todo This function does not currently check for further blocking modules
      * @return a connector link that can be used for the desired motion if it exists, NULL otherwise
      */
-    static const Catoms3DMotionRulesLink* findConnectorLink(Catoms3DBlock *module,
+    static const Catoms3DMotionRulesLink* findConnectorLink(const Catoms3DBlock *module,
                                                             short conFrom, short conTo,
                                                             RotationLinkType ft);
 
@@ -59,7 +59,7 @@ public:
      * @deprecated 
      * @return 
      */
-    static const Catoms3DMotionRulesLink* findPivotConnectorLink(Catoms3DBlock *pivot,
+    static const Catoms3DMotionRulesLink* findPivotConnectorLink(const Catoms3DBlock *pivot,
                                                                  short conFrom, short conTo,
                                                                  RotationLinkType ft);
 
@@ -73,7 +73,7 @@ public:
      * @param mirroringCon connector to be mirrored on m2 (belongs to m1).
      * @return mirror connector of dockingCon on m2 (belongs to m2), or -1 if the two connectors are not neighbors (not connected through a face).
      */
-    static short getMirrorConnectorOnModule(Catoms3DBlock *m1, Catoms3DBlock *m2,
+    static short getMirrorConnectorOnModule(const Catoms3DBlock *m1, const Catoms3DBlock *m2,
                                             short dockingConM1, short dockingConM2,
                                             short mirroringCon);
 
@@ -85,7 +85,8 @@ public:
      * @return a pointer to a potential pivot, or NULL if none exist
      * @todo Implement function
      */
-    static Catoms3DBlock* findMotionPivot(Catoms3DBlock* m, const Cell3DPosition& tPos);
+    static Catoms3DBlock* findMotionPivot(const Catoms3DBlock* m, const Cell3DPosition& tPos,
+                                          RotationLinkType conReq = RotationLinkType::Any);
 };
 
 };

@@ -163,6 +163,19 @@ public:
      * @return a pointer to the neighbor on cell pos or NULL if pos is not adjacent to the module or out of lattice
      */
     Catoms3DBlock* getNeighborOnCell(const Cell3DPosition &pos) const;
+
+    /** 
+     * Indicates whether the module is can reach position pos in a single rotation,
+     *  given its current local neighborhood
+     * @param pos target position
+     * @param conReq connector requirement, if indicated the function will return true only 
+     *  if motion is possible using the type of connector passed as argument. Any by default.
+     * @attention this does not guarantee an absence of collision, as might occur if 
+     *  a blocking modules exists in the 2nd-order neighborhood of the current block
+     * @return true if motion is possible, false otherwise
+     */
+    bool canRotateToPosition(const Cell3DPosition &pos,
+                             RotationLinkType conReq = RotationLinkType::Any) const;
     
     // MeldInterpreter
     /**

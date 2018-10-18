@@ -5,7 +5,7 @@
 #include <vector>
 
 const Catoms3DMotionRulesLink*
-Catoms3DMotionEngine::findConnectorLink(Catoms3DBlock *module,
+Catoms3DMotionEngine::findConnectorLink(const Catoms3DBlock *module,
                                         short conFrom, short conTo,
                                         RotationLinkType ft) {
     vector<Catoms3DMotionRulesLink*> motionRulesLinksFrom;
@@ -27,7 +27,7 @@ Catoms3DMotionEngine::findConnectorLink(Catoms3DBlock *module,
 }
 
 const Catoms3DMotionRulesLink*
-Catoms3DMotionEngine::findPivotConnectorLink(Catoms3DBlock *pivot,
+Catoms3DMotionEngine::findPivotConnectorLink(const Catoms3DBlock *pivot,
                                              short conFrom, short conTo,
                                              RotationLinkType ft) {
     vector<Catoms3DMotionRulesLink*> motionRulesLinks;
@@ -54,7 +54,8 @@ Catoms3DMotionEngine::findPivotConnectorLink(Catoms3DBlock *pivot,
     return NULL;
 }
 
-short Catoms3DMotionEngine::getMirrorConnectorOnModule(Catoms3DBlock *m1, Catoms3DBlock *m2,
+short Catoms3DMotionEngine::getMirrorConnectorOnModule(const Catoms3DBlock *m1,
+                                                       const Catoms3DBlock *m2,
                                                        short dockingConM1, short dockingConM2,
                                                        short mirroringCon) {
     bool inverted = m1->areOrientationsInverted(m2->orientationCode);
@@ -71,8 +72,9 @@ short Catoms3DMotionEngine::getMirrorConnectorOnModule(Catoms3DBlock *m1, Catoms
     return mirrorCon;
 }
 
-Catoms3DBlock* Catoms3DMotionEngine::findMotionPivot(Catoms3DBlock* m,
-                                                     const Cell3DPosition& tPos) {
+Catoms3DBlock* Catoms3DMotionEngine::findMotionPivot(const Catoms3DBlock* m,
+                                                     const Cell3DPosition& tPos,
+                                                     RotationLinkType conReq) {
     if (m == NULL) return NULL;
     
     // TODO:
@@ -96,7 +98,7 @@ Catoms3DBlock* Catoms3DMotionEngine::findMotionPivot(Catoms3DBlock* m,
         short conFrom = pivot->getConnectorId(m->position);
         short conTo = pivot->getConnectorId(tPos);
         const Catoms3DMotionRulesLink *link = findPivotConnectorLink(pivot, conFrom, conTo,
-                                                                     RotationLinkType::Any);
+                                                                     conReq);
 
         // Return first available pivot
         if (link) return pivot;
