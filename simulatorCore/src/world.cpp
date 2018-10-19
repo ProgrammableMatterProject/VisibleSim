@@ -218,16 +218,9 @@ void World::stopSimulation() {
 
 bool World::canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace) {
 	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-	const Cell3DPosition &pos = bb->position;
-    cout << pos << endl;
-	const vector<Cell3DPosition> &nCells = lattice->getRelativeConnectivity(pos);
-	// if (numSelectedFace < lattice->getMaxNumNeighbors())
-	// 	cerr << "numSelectedFace: " << numSelectedFace << " f"
-	// 		 << pos << "+" << nCells[numSelectedFace]
-	// 		 << " = " << lattice->isFree(pos + nCells[numSelectedFace]) << endl;
-
-	return numSelectedFace < lattice->getMaxNumNeighbors() ?
-		lattice->isFree(pos + nCells[numSelectedFace]) : false;
+	Cell3DPosition nPos;
+	bool isInGrid = bb->getNeighborPos(numSelectedFace,nPos);
+	return isInGrid && lattice->isFree(nPos);
 }
 
 void World::menuChoice(int n) {
