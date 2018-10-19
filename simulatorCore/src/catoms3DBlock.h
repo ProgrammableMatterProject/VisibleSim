@@ -9,6 +9,7 @@
 #define CATOMS3DBLOCK_H_
 
 #include <stdexcept>
+#include <bitset>
 
 #include "buildingBlock.h"
 #include "catoms3DBlockCode.h"
@@ -73,7 +74,7 @@ public:
        @brief Get the interface from the neighbor position in the grid
        @param pos: position of the cell (if in the grid)
        @return return interface if it exists one connected, NULL otherwise */
-    P2PNetworkInterface* getInterface(const Cell3DPosition &pos);
+    P2PNetworkInterface* getInterface(const Cell3DPosition &pos) const;
     /**
        @brief Get the interface from the interface id
        @param id: interface number
@@ -176,6 +177,16 @@ public:
      */
     bool canRotateToPosition(const Cell3DPosition &pos,
                              RotationLinkType faceReq = RotationLinkType::Any) const;
+
+    /** 
+     * Queries each of the module interface to determine the state of the local neighborhood.
+     *  i.e., for each connector, if one module is connected or not
+     * @return a 12-bit bitset where the n-th bit is set to true if interface in direction n 
+     *  is connected to another module, 0 otherwise
+     * @attention a P2PNetworkInterface at DIRECTION d = m corresponds to the interface that 
+     *  is located at the same location as interface #m when block is at orientation 0
+     */
+    std::bitset<12> getLocalNeighborhoodState() const;
     
     // MeldInterpreter
     /**

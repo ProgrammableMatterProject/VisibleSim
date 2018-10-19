@@ -84,6 +84,8 @@ void MeshAssemblyBlockCode::onBlockSelected() {
 
     cout << "branch: " << branch << endl;
     cout << "coordinatorPos: " << coordinatorPos << endl;
+    cout << "localNeighborhood: " << catom->getLocalNeighborhoodState() << endl;
+    cout << "nextHop: " << matchLocalRules(catom->getLocalNeighborhoodState(), norm(catom->position)) << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {

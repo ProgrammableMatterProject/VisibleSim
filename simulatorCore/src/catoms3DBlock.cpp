@@ -169,7 +169,7 @@ bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const 
     return wrl->lattice->isInGrid(pos);
 }
 
-P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
+P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) const {
     short conId = getConnectorId(pos);
 
     return conId >= 0 ? P2PNetworkInterfaces[conId] : NULL;
@@ -254,4 +254,17 @@ Catoms3DBlock *Catoms3DBlock::getNeighborBlock(short conId) const {
 bool Catoms3DBlock::canRotateToPosition(const Cell3DPosition &pos,
                                         RotationLinkType faceReq) const {
     return Catoms3DMotionEngine::findMotionPivot(this, pos, faceReq) != NULL;
+}
+
+std::bitset<12> Catoms3DBlock::getLocalNeighborhoodState() const {
+    bitset<12> bitset;
+    const vector<Cell3DPosition> localNeighborhood =
+        Catoms3DWorld::getWorld()->lattice->getNeighborhood(position);
+        
+    for (int i = 0; i < 12; i++) {
+        P2PNetworkInterface *itf = getInterface(localNeighborhood[i]);
+        bitset.set(i, itf->isConnected());
+    }
+
+    return bitset;
 }
