@@ -15,6 +15,7 @@
 #include "network.h"
 #include "cell3DPosition.h"
 #include "catoms3DBlockCode.h"
+#include "color.h"
 
 #define MSG_DELAY_MC 5000
 
@@ -25,6 +26,7 @@ namespace MeshCoating {
 
 enum BranchIndex { ZBranch, RevZBranch, LeftZBranch,
                        RightZBranch, XBranch, YBranch, N_BRANCHES };
+enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip, Support};
 
 class MeshRuleMatcher {
     const int X_MAX, Y_MAX, Z_MAX, B;
@@ -40,6 +42,9 @@ public:
     bool isOnRevZBranch(const Cell3DPosition& pos) const;
     bool isOnRightZBranch(const Cell3DPosition& pos) const;
     bool isOnLeftZBranch(const Cell3DPosition& pos) const;    
+    bool isTileRoot(const Cell3DPosition& pos) const;
+    bool isVerticalBranchTip(const Cell3DPosition& pos) const;
+    bool isTileSupport(const Cell3DPosition& pos) const;
     
     bool shouldGrowZBranch(const Cell3DPosition& pos) const;
     bool shouldGrowRevZBranch(const Cell3DPosition& pos) const;
@@ -59,8 +64,7 @@ public:
     bool isInGrid(const Cell3DPosition& pos) const;
     bool isInMesh(const Cell3DPosition& pos) const;
     bool isOnPartialBorderMesh(const Cell3DPosition& pos) const;
-    bool isTileRoot(const Cell3DPosition& pos) const;
-    bool isVerticalBranchTip(const Cell3DPosition& pos) const;
+
 
     bool upwardBranchRulesApply(const Cell3DPosition& own,
                                 const Cell3DPosition& other) const;
@@ -106,6 +110,21 @@ public:
      * @return the position of the nearest tile root
      */
     const Cell3DPosition getNearestTileRootPosition(const Cell3DPosition& pos) const;
+
+    /** 
+     * For a catom at position pos, determines which role it should be assigned based on 
+     *  its position in the mesh structure
+     * @param pos position to evaluate
+     * @return AgentRole for position pos
+     */
+    AgentRole getRoleForPosition(const Cell3DPosition& pos) const;
+
+    /** 
+     * Returns the color assiociated with the AgentRole corresponding with position pos
+     * @param pos position to evaluate
+     * @return the color assiociated with the AgentRole corresponding with position pos
+     */
+    Color getColorForPosition(const Cell3DPosition& pos) const;
 };
 
 }

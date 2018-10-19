@@ -37,7 +37,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         // short epd = mabc.getEntryPointDirectionForCell(rPos);
 
         const Cell3DPosition& tPos =
-            mabc.targetForEntryPoint[mabc.getEntryPointDirectionForCell(srcPos)];
+            mabc.targetForEntryPoint[mabc.getEntryPointLocationForCell(srcPos)];
 
         // cout << "Spawnee Position: " << srcPos 
         //      << " -- Target Position: " << tPos
@@ -84,8 +84,8 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
         Cell3DPosition nextHop;
 
-        cout << "received tPos for module " << destinationInterface->hostBlock->blockId
-             << ": " << tPos << endl;
+        // cout << "received tPos for module " << destinationInterface->hostBlock->blockId
+        //      << ": " << tPos << endl;
     
         // Consider ack
         if (mabc.lattice->cellsAreAdjacent(mabc.catom->position, tPos)) {
@@ -104,8 +104,8 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             BranchIndex bi = mabc.ruleMatcher->
                 getBranchIndexForNonRootPosition(mabc.norm(tPos));
 
-            cout << "Relative position to local coordinator: " <<  relPos
-                 << " -- branch: " << bi << endl;
+            // cout << "Relative position to local coordinator: " <<  relPos
+            //      << " -- branch: " << bi << endl;
         
             if (bi > 3)
                 nextHop = mabc.catom->position + mabc.ruleMatcher->getBranchUnitOffset(bi);
