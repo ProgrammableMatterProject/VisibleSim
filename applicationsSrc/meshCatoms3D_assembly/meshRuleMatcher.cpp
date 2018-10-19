@@ -347,3 +347,31 @@ short MeshRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) con
     
     return -1;
 }
+
+const Cell3DPosition
+MeshRuleMatcher::getNearestTileRootPosition(const Cell3DPosition& pos) const {
+    int trX;
+    if (m_mod(pos[0], B) >= B / 2) // over
+        trX = pos[0] + (B - m_mod(pos[0], B));
+    else // under
+        trX = pos[0] - m_mod(pos[0], B);
+
+    int trY;
+    if (m_mod(pos[1], B) >= B / 2) // over
+        trY = pos[1] + (B - m_mod(pos[1], B));
+    else // under
+        trY = pos[1] - m_mod(pos[1], B);
+
+    int trZ;
+    if (m_mod(pos[2], B) >= B / 2) // over
+        trZ = pos[2] + (B - m_mod(pos[2], B));
+    else // under
+        trZ = pos[2] - m_mod(pos[2], B);
+    
+    const Cell3DPosition nearestTileRootPos = Cell3DPosition(trX, trY, trZ);
+    
+    VS_ASSERT_MSG(isTileRoot(nearestTileRootPos), "computed position is not tile root!");
+
+    return nearestTileRootPos;
+}
+                      

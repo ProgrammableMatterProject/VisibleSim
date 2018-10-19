@@ -99,6 +99,13 @@ public:
      *  propagating a response up the tree
      */
     unsigned int getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const;
+
+    /** 
+     * Returns the position of the nearest tile root around pos
+     * @param pos 
+     * @return the position of the nearest tile root
+     */
+    const Cell3DPosition getNearestTileRootPosition(const Cell3DPosition& pos) const;
 };
 
 }

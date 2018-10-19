@@ -37,7 +37,7 @@ private:
 public:
     static const uint B = 6;
     static uint X_MAX, Y_MAX, Z_MAX; // const
-    static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(3,3,3);
+    static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(3,3,3);    
     static constexpr std::array<Cell3DPosition, 6> incidentTipRelativePos =
     {
         Cell3DPosition(0,0,-1), // ZBranch
@@ -58,10 +58,14 @@ public:
         Cell3DPosition(2,0,-1), // RightFront
         Cell3DPosition(1,-1,-1) // FrontRight
     };
-    
+        
     inline static Time getRoundDuration() {
         return (2 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
                 + Rotations3D::COM_DELAY);// + (getScheduler()->now() / 1000);
+    }
+    
+    inline const Cell3DPosition getTileRelativePosition() const {
+        return catom->position - coordinatorPos;
     }
     
     int debugColorIndex = 0;
@@ -111,6 +115,16 @@ y the module
      * @return the corresponding position of pos in the coordinate system of the mesh
      */
     static const Cell3DPosition norm(const Cell3DPosition& pos);
+
+    /** 
+     * Inverse function of norm
+     * @note This has to be used due to the mesh seed being offsetted in order to leave space 
+     *  for spawning modules 
+     * @param pos position to denormalize
+     * @return the corresponding position of pos in the absolute coordinate system 
+     */
+    static const Cell3DPosition denorm(const Cell3DPosition& pos);
+    
     void updateOpenPositions();
         
     /** 
@@ -157,12 +171,8 @@ y the module
      */
     bool isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi);
 
-    /** 
-     * Adds a new tile root meta-module (tile root + infcoming vertical
-     *  branches tips at the location in argument
-     * @param pos position of the tile root module to be added
-     */
-    void addNewGroundTileRoot(const Cell3DPosition& pos);
+    // TODO:
+    void scheduleRotationTo(const Cell3DPosition& pos);
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

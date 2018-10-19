@@ -45,11 +45,12 @@ localMotionRules =
  * @param pos position of the module awaiting action
  * @return the matched next position if there is one, pos otherwise (meaning no movement)
  */
-inline static const Cell3DPosition& matchLocalRules(const std::bitset<12>& localNeighborhood,
-                                                    const Cell3DPosition& pos) {
+inline static const Cell3DPosition matchLocalRules(const std::bitset<12>& localNeighborhood,
+                                                    const Cell3DPosition& pos,
+                                                    const Cell3DPosition& tileRootPos) {
     auto match = localMotionRules.find(make_pair(localNeighborhood, pos));
 
-    return match != localMotionRules.end() ? match->second : pos;
+    return match != localMotionRules.end() ? match->second + tileRootPos : pos + tileRootPos;
 }
 
 #endif /* MESHASSEMBLYLOCALRULES_HPP__ */
