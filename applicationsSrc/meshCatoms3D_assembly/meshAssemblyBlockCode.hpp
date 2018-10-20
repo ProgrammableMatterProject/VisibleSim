@@ -28,9 +28,19 @@
 
 // #define INTERACTIVE_MODE
 
-enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip };
-enum EntryPointDirection { FrontLeft, LeftFront, LeftBack, BackLeft,
-                           BackRight, RightBack, RightFront, FrontRight, N_EPD };
+enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
+                     X_1, X_2, X_3, X_4, X_5,
+                     Y_1, Y_2, Y_3, Y_4, Y_5,
+                     Z_1, Z_2, Z_3, Z_4, Z_5,
+                     RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
+                     LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
+                     RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,};
+
+enum EntryPointLocation { RevZ_EPL, RevZ_Right_EPL, RZ_Left_EPL, RZ_EPL,
+                          RZ_Right_EPL, Z_Right_EPL, Z_EPL,
+                          Z_Left_EPL, LZ_Right_EPL, LZ_EPL,
+                          LZ_LEFT_EPL, RevZ_Left_EPL,
+                          N_EPL };
 
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
@@ -38,6 +48,7 @@ public:
     static const uint B = 6;
     static uint X_MAX, Y_MAX, Z_MAX; // const
     static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(3,3,3);    
+
     static constexpr std::array<Cell3DPosition, 6> incidentTipRelativePos =
     {
         Cell3DPosition(0,0,-1), // ZBranch
@@ -47,16 +58,25 @@ public:
         Cell3DPosition(-1,0,0), // XBranch
         Cell3DPosition(0,-1,0) // YBranch
     };
-    static constexpr std::array<Cell3DPosition, 8> entryPointRelativePos =
+
+    
+    static constexpr std::array<Cell3DPosition, 12> entryPointRelativePos =
     {
-        Cell3DPosition(0,-1,-1), // FrontLeft
-        Cell3DPosition(-1,0,-1), // LeftFront
-        Cell3DPosition(-1,1,-1), // LeftBack
-        Cell3DPosition(0,2,-1), // BackLeft
-        Cell3DPosition(1,2,-1), // BackRight
-        Cell3DPosition(2,1,-1), // RightBack 
-        Cell3DPosition(2,0,-1), // RightFront
-        Cell3DPosition(1,-1,-1) // FrontRight
+        Cell3DPosition(-1,-1,-1), // RevZ_EPL
+        Cell3DPosition(0,-1,-1), // RevZ_Right_EPL
+        Cell3DPosition(1,-1,-1), // RZ_Left_EPL
+        Cell3DPosition(2,-1,-1), // RZ_EPL
+
+        Cell3DPosition(2,0,-1), // RZ_Right_EPL
+        Cell3DPosition(2,1,-1), // Z_Right_EPL
+        Cell3DPosition(2,2,-1), // Z_EPL
+
+        Cell3DPosition(1,2,-1), // Z_Left_EPL
+        Cell3DPosition(0,2,-1), // LZ_Right_EPL
+        Cell3DPosition(-1,2,-1), // LZ_EPL
+
+        Cell3DPosition(-1,1,-1), // LZ_Left_EPL
+        Cell3DPosition(-1,0,-1), // RevZ_Left_EPL
     };
         
     inline static Time getRoundDuration() {
@@ -84,7 +104,6 @@ public:
     std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
     std::array<Cell3DPosition, 8> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
-    bool hasToGrowFourDiagBranches = false;
     
     int counter = 0;
     
@@ -133,7 +152,7 @@ y the module
      * @attention pos is not a relative position but an absolute one!
      * @return entry point direction id corresponding to pos or -1 if pos not adjacent to module or if cell is not on a module's lower connectors
      */
-    short getEntryPointDirectionForCell(const Cell3DPosition& pos);
+    short getEntryPointLocationForCell(const Cell3DPosition& pos);
 
     /** 
      * Checks if a new catom should be inserted for branch bi, proceed if necessary, and update internal state
@@ -143,18 +162,11 @@ y the module
     bool handleNewCatomInsertion(BranchIndex bi);
 
     /** 
-     * Finds an entry point for a catom required by branch whose index is bi
-     * @param bi index of branch for which to get an entry point
-     * @return position of chosen entry point (relative to the root calling this function)
+     * Finds an entry point index for a catom required to fill component mc
+     * @param mc mesh component type of the catom
+     * @return entry point position / spawn location for component mc
      */
-    Cell3DPosition getEntryPointForBranch(BranchIndex bi);
-
-    /** 
-     * Finds an entry point index for a catom required by branch whose index is bi
-     * @param bi index of branch for which to get an entry point index
-     * @return index of chosen entry point
-     */
-    short getEntryPointDirectionForBranch(BranchIndex bi);
+    const Cell3DPosition getEntryPointForMeshComponent(MeshComponent mc);
 
     /** 
      * Checks if all the incident branches around a tile root are complete
@@ -173,6 +185,15 @@ y the module
 
     // TODO:
     void scheduleRotationTo(const Cell3DPosition& pos);
+
+    // TODO:
+    void initializeTileRoot();
+
+    /** 
+     * @param epl Entry point location name of the desired entry point
+     * @return absolute position of the requested entry point location
+     */
+    const Cell3DPosition getEntryPointPosition(EntryPointLocation epl) const;
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

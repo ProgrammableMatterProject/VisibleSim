@@ -44,7 +44,8 @@ bool MeshRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
 bool MeshRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
     return isInGrid(pos) and ((isOnXBranch(pos) or isOnYBranch(pos) or isOnZBranch(pos)
                                or isOnRevZBranch(pos) or isOnRightZBranch(pos)
-                               or isOnLeftZBranch(pos)));
+                               or isOnLeftZBranch(pos)
+                               or isTileSupport(pos)));
 }
 
 bool MeshRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
@@ -125,6 +126,12 @@ bool MeshRuleMatcher::isOnPartialBorderMesh(const Cell3DPosition& pos) const {
 bool MeshRuleMatcher::isVerticalBranchTip(const Cell3DPosition& pos) const {
     return (isOnZBranch(pos) or isOnRevZBranch(pos)
             or isOnLeftZBranch(pos) or isOnRightZBranch(pos)) and m_mod(pos[2], B) == (B - 1);
+}
+
+bool MeshRuleMatcher::isTileSupport(const Cell3DPosition& pos) const {
+    return (m_mod(pos[0], B) == 1 or m_mod(pos[0], B) == B - 1)
+        and (m_mod(pos[1], B) == 1 or m_mod(pos[1], B) == B - 1)
+        and m_mod(pos[2], B) == 0;
 }
 
 BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos) {
@@ -375,3 +382,24 @@ MeshRuleMatcher::getNearestTileRootPosition(const Cell3DPosition& pos) const {
     return nearestTileRootPos;
 }
                       
+AgentRole MeshRuleMatcher::getRoleForPosition(const Cell3DPosition& pos) const {
+    if (not isInMesh(pos)) return AgentRole::FreeAgent;
+    else {
+        if (isTileRoot(pos)) return AgentRole::Coordinator;
+        else if (isVerticalBranchTip(pos)) return AgentRole::ActiveBeamTip;
+        else if (isTileSupport(pos)) return AgentRole::Support;
+        else return AgentRole::PassiveBeam;            
+    }
+}
+
+Color MeshRuleMatcher::getColorForPosition(const Cell3DPosition& pos) const {
+    switch(getRoleForPosition(pos)) {
+        case Coordinator: return GREEN;
+        case Support: return YELLOW;
+        case FreeAgent: return ORANGE;
+        case ActiveBeamTip: return RED;
+        case PassiveBeam: return BLUE;
+    }
+
+    return GREY;
+}
