@@ -49,6 +49,7 @@ GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
 GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
 GlutPopupWindow *GlutContext::popup=NULL;
 GlutPopupMenuWindow *GlutContext::popupMenu=NULL;
+GlutPopupMenuWindow *GlutContext::popupSubMenu=NULL;
 GlutHelpWindow *GlutContext::helpWindow=NULL;
 int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
@@ -172,7 +173,11 @@ void GlutContext::passiveMotionFunc(int x,int y) {
         glutPostRedisplay();
         return;
     }
-    if (mainWindow->passiveMotionFunc(x,screenHeight - y)) {
+		if (popupMenu && popupSubMenu && popupSubMenu->passiveMotionFunc(x,screenHeight - y)) {
+				glutPostRedisplay();
+				return;
+		}
+		if (mainWindow->passiveMotionFunc(x,screenHeight - y)) {
         glutPostRedisplay();
         return;
     }
@@ -199,10 +204,17 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
         glutPostRedisplay();
         return;
     }
-    if (popupMenu) {
+    if (popupMenu && popupMenu->isVisible) {
         int n=popupMenu->mouseFunc(button,state,x,screenHeight - y);
         if (n) {
             popupMenu->show(false);
+            getWorld()->menuChoice(n);
+        }
+    }
+		if (popupSubMenu && popupSubMenu->isVisible) {
+        int n=popupSubMenu->mouseFunc(button,state,x,screenHeight - y);
+        if (n) {
+            popupSubMenu->show(false);
             getWorld()->menuChoice(n);
         }
     }
@@ -537,7 +549,10 @@ void GlutContext::drawFunc(void) {
     mainWindow->glDraw();
     debugWindow->glDraw();
     popup->glDraw();
-    if (popupMenu) popupMenu->glDraw();
+		if (popupMenu && popupMenu->isVisible) {
+			popupMenu->glDraw();
+			if (popupSubMenu && popupSubMenu->isVisible) popupSubMenu->glDraw();
+		}
     if (helpWindow) helpWindow->glDraw();
 #ifdef showStatsFPS
     showFPS();

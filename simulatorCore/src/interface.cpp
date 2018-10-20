@@ -43,8 +43,8 @@ GlutWindow::GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,
 
 GlutWindow::~GlutWindow() {
 	vector <GlutWindow*>::const_iterator cw = children.begin();
-	while (cw!=children.end())
-	{	delete (*cw);
+	while (cw!=children.end()) {
+		delete (*cw);
 		cw++;
 	}
 	children.clear();
@@ -57,13 +57,13 @@ void GlutWindow::addChild(GlutWindow *child) {
 void GlutWindow::glDraw() {
 	vector <GlutWindow*>::const_iterator cw = children.begin();
 	while (cw!=children.end()) {
-        if ((*cw)->isVisible) {
-            glPushMatrix();
-            glTranslatef(x,y,0);
-            (*cw)->glDraw();
-            glPopMatrix();
-        }
-        cw++;
+		if ((*cw)->isVisible) {
+			  glPushMatrix();
+        glTranslatef(x,y,0);
+        (*cw)->glDraw();
+        glPopMatrix();
+    }
+    cw++;
 	}
 }
 
@@ -181,8 +181,8 @@ GlutWindow(NULL,1,px,py,pw,ph,titreTexture) {
 	slider = new GlutSlider(this,ID_SW_SLD,pw+SLIDING_WINDOW_STANDARD_WIDTH-20,5,ph-60,
 							"../../simulatorCore/resources/textures/UITextures/slider.tga",(ph-60)/13);
 	selectedGlBlock=NULL;
-	slider->setVisible(false);
-	buttonSize->setVisible(false);
+	slider->isVisible=false;
+	buttonSize->isVisible=false;
 }
 
 GlutSlidingMainWindow::~GlutSlidingMainWindow() {
@@ -238,7 +238,7 @@ void GlutSlidingMainWindow::glDraw() {
 		if (selectedGlBlock) {
             GLfloat posy = h-40;
             int ss = 0; // index of slice start
-            uint str_length; 
+            uint str_length;
 			sprintf(str,"Selected Block : %s",selectedGlBlock->getInfo().c_str());
             str_length = strlen(str);
             for (uint i = 0; i < str_length + 1; i++) { // draw lines one at a time
@@ -246,8 +246,8 @@ void GlutSlidingMainWindow::glDraw() {
                     str[i] = '\0';
                     posy = drawString(42.0,posy,str + ss,TextMode::TEXTMODE_TITLE);
                     ss = i + 1;
-                } 
-            }                                                      
+                }
+            }
 			multimap<Time,BlockDebugData*>::iterator it = traces.begin();
 			//GLfloat posy = h-65;
 			stringstream line;
@@ -350,8 +350,8 @@ void GlutSlidingMainWindow::reshapeFunc(int mx,int my,int mw,int mh) {
 
 void GlutSlidingMainWindow::updateSliderWindow() {
     slider->setGeometry(w-20,5,11,h-60);
-    slider->setVisible(openningLevel>0);
-    buttonSize->setVisible(openningLevel>0);
+    slider->isVisible=(openningLevel>0);
+    buttonSize->isVisible=(openningLevel>0);
     buttonSize->setGeometry(w-40,h-40,32,32);
     slider->update();
 }
@@ -550,39 +550,37 @@ GlutButton::GlutButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,
 	isHighlighted=false;
 }
 
+void GlutButton::addSubMenu(GlutWindow *child) {
+	addChild(child);
+  child->isVisible = false;
+}
+
+
 void GlutButton::glDraw()
 {	GLfloat tx=0,ty=0.5;
 
     bindTexture();
     if (isActive) {
     	if (isDown) {
-    		tx=0.0;
-    		ty=0.0;
+    		tx=0.0; ty=0.0;
     	} else if (isHighlighted){
-    		tx=0.5;
-    		ty=0.0;
+    		tx=0.5; ty=0.0;
     	} else {
-    		tx=0.5;
-    		ty=0.5;
+    		tx=0.5;	ty=0.5;
     	}
-
-    } else {
-    	tx=0.0;
-    	ty=0.5;
     }
     glPushMatrix();
-	glTranslatef(x,y,0.0f);
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0,0);
-	glTexCoord2f(tx+0.5f,ty);
-	glVertex2i(w,0);
-	glTexCoord2f(tx+0.5f,ty+0.5f);
-	glVertex2i(w,h);
-	glTexCoord2f(tx,ty+0.5f);
+		glTranslatef(x,y,0.0f);
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0,0);
+		glTexCoord2f(tx+0.5f,ty);
+		glVertex2i(w,0);
+		glTexCoord2f(tx+0.5f,ty+0.5f);
+		glVertex2i(w,h);
+		glTexCoord2f(tx,ty+0.5f);
   	glVertex2i(0,h);
   	glEnd();
-
   	glPopMatrix();
 }
 
@@ -759,15 +757,18 @@ GlutPopupMenuWindow::GlutPopupMenuWindow(GlutWindow *parent,GLint px,GLint py,GL
 	isVisible=false;
 }
 
-void GlutPopupMenuWindow::addButton(int i,const char *titre) {
+void GlutPopupMenuWindow::addButton(int i,const char *titre,GlutPopupMenuWindow *subMenuWindow) {
 	int py=0;
 	std::vector <GlutWindow*>::const_iterator cb=children.begin();
 	while (cb!=children.end()) {
-		py+=(*cb)->h+5;
+		if ((*cb)->isVisible) py+=(*cb)->h+5;
 		cb++;
 	}
 	GlutButton *button = new GlutButton(this,i,0,0,0,0,titre);
 	button->setGeometry(10,h-5-button->h/2-py,button->w/2,button->h/2);
+	if (subMenuWindow) {
+		button->addSubMenu(subMenuWindow);
+	}
 }
 
 void GlutPopupMenuWindow::glDraw() {
@@ -803,6 +804,18 @@ void GlutPopupMenuWindow::activate(unsigned int id,bool value) {
 		((GlutButton*)(*cb))->activate(value);
 	}
 }
+
+GlutWindow *GlutPopupMenuWindow::getButton(unsigned int id) {
+	std::vector <GlutWindow*>::const_iterator cb=children.begin();
+	while (cb!=children.end() && (*cb)->id!=id) {
+		cb++;
+	}
+	if (cb!=children.end()) {
+		return (*cb);
+	}
+	return NULL;
+}
+
 
 /***************************************************************************************/
 /* GlutHelpWindow */
