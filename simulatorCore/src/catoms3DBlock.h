@@ -64,7 +64,10 @@ public:
     Catoms3DBlock(int bId, BlockCodeBuilder bcb);
     ~Catoms3DBlock();
 
-    inline virtual Catoms3DGlBlock* getGlBlock() { return static_cast<Catoms3DGlBlock*>(ptrGlBlock); };
+    inline virtual Catoms3DGlBlock* getGlBlock() const {
+        return static_cast<Catoms3DGlBlock*>(ptrGlBlock);
+    };
+    
     inline void setGlBlock(Catoms3DGlBlock*ptr) { ptrGlBlock=ptr;};
     /**
        @brief Show/Hide a catom in the interface
@@ -118,15 +121,15 @@ public:
     /** 
      * @attention SHOULD BE getConnector(p2p...)!
      */
-    int getDirection(P2PNetworkInterface*);
+    int getDirection(P2PNetworkInterface*) const;
     
     /** 
      * @brief For a given connector, returns the direction corresponding to this connector 
      *  relative to a catom whose 0 connector is aligned with the x-axis
      * @param connector the connector for which the absolute direction wants to be known
      * @return a short int in {0..11}, the direction of the connector, or -1 if connector is invalid or adjacent to a cell outside the lattice */
-    short getAbsoluteDirection(short connector);    
-    short getAbsoluteDirection(const Cell3DPosition& pos);
+    short getAbsoluteDirection(short connector) const;    
+    short getAbsoluteDirection(const Cell3DPosition& pos) const;
     
     /**
      * @brief Sets the grid position of the catom, and updates its position matrix

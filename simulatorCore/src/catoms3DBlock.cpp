@@ -107,7 +107,7 @@ short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
     return current;
 }
 
-int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
+int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) const {
     if( !given_interface) {
         return -1;
     }
@@ -117,7 +117,7 @@ int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
     return -1;
 }
 
-short Catoms3DBlock::getAbsoluteDirection(short connector) {
+short Catoms3DBlock::getAbsoluteDirection(short connector) const {
     Cell3DPosition conPos; // cell adjacent to connector
     bool posIsValid = getNeighborPos(connector, conPos);
 
@@ -126,7 +126,7 @@ short Catoms3DBlock::getAbsoluteDirection(short connector) {
     return lattice->getDirection(position, conPos);
 }
 
-short Catoms3DBlock::getAbsoluteDirection(const Cell3DPosition& pos) {
+short Catoms3DBlock::getAbsoluteDirection(const Cell3DPosition& pos) const {
     return getAbsoluteDirection(getConnectorId(pos));
 }
 

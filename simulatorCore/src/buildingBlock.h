@@ -90,13 +90,16 @@ public:
 	 * @brief Getter for P2PNetworkInterfaces attribute
 	 * @return A vector containing pointers to the block's interfaces
 	 */
-    vector<P2PNetworkInterface*>& getP2PNetworkInterfaces() { return P2PNetworkInterfaces; }
+    const vector<P2PNetworkInterface*>& getP2PNetworkInterfaces() const {
+        return P2PNetworkInterfaces;
+    }
+    
 	/**
 	 * @brief Getter for a specific P2PNetworkInterface
 	 * @param i : index of interface to return
 	 * @return A pointer to the P2PNeighborInterface at index i of interface vector
 	 */
-    P2PNetworkInterface *getInterface(int i) { return P2PNetworkInterfaces[i]; }
+    P2PNetworkInterface *getInterface(int i) const { return P2PNetworkInterfaces[i]; }
 	/**
 	 * @brief Getter for a specific P2PNetworkInterface, identified by its direction
 	 * For all blocks that cannot rotate, the direction will always be equal to the index in the P2PNetworkInterfaces array.
@@ -109,7 +112,7 @@ public:
 	 * @param destBlockId : id of the block connected to the interface we are looking for
 	 * @return a pointer to the interface connected to the requested block, or NULL
 	 */
-	P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(bID destBlockId);
+	P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(bID destBlockId) const;
 	/**
 	 * @brief Creates a new interface to this block and connects it to destBlock
 	 * @param destBlock : pointer to the building block to connect to the newly created interface
@@ -127,7 +130,7 @@ public:
 	 * @param destBlock : pointer to a connected block
 	 * @return a pointer to the interface connected to destBlock if there is one, NULL otherwise
 	 */
-	P2PNetworkInterface *getP2PNetworkInterfaceByBlockRef(BuildingBlock *destBlock);
+	P2PNetworkInterface *getP2PNetworkInterfaceByBlockRef(BuildingBlock *destBlock) const;
 	/**
 	 * @brief Schedules a local event for this block to process when available
 	 * @param pev : pointer to the event to schedule
@@ -140,7 +143,7 @@ public:
 	/**
 	 * @brief Returns the GlBlock corresponding to this BuildingBlock
 	 */
-	inline virtual GlBlock* getGlBlock() { return ptrGlBlock; };
+	inline virtual GlBlock* getGlBlock() const { return ptrGlBlock; };
 	/**
 	 * @brief Setter for ptrGlBlock
 	 * @param ptr : a ptr to a GlBlock corresponding to this block
@@ -168,7 +171,10 @@ public:
 	 *
 	 * @return the position of the block represented as a double Vector3D
 	 */
-	inline Vector3D getPositionVector() { return Vector3D(position[0], position[1], position[2]);};
+	inline Vector3D getPositionVector() const {
+        return Vector3D(position[0], position[1], position[2]);
+    };
+    
 	/**
 	 * @brief Schedules an AddNewNeighbor event
 	 * @param ni : pointer to the interface that was just connected
@@ -184,12 +190,12 @@ public:
 	 * @brief Returns the number of interfaces for this block
 	 * @return number of interface for this block
 	 */
-	inline unsigned short getNbInterfaces() {	return P2PNetworkInterfaces.size(); };
+	inline unsigned short getNbInterfaces() const {	return P2PNetworkInterfaces.size(); };
 	/**
 	 * @brief Returns the number of neighbors (connected interfaces) for this block
 	 * @return number of neighbor for this block
 	 */
-	unsigned short getNbNeighbors();
+	unsigned short getNbNeighbors() const;
 	/**
 	 * @brief Schedules a stop event for this block at a given date and update its state
 	 * @param date : date at which the stop event must be processed
@@ -201,7 +207,7 @@ public:
 	 * @param p2p interface to consider
 	 * @return direction on which p2p is
 	 */
-	virtual int getDirection(P2PNetworkInterface *p2p) = 0;
+	virtual int getDirection(P2PNetworkInterface *p2p) const = 0;
 	/**
 	 * @brief Returns if the neighbor is in the grid
 	 * @param connectorId : id of the face in the direction of the neighbors
@@ -244,18 +250,18 @@ public:
 	 * @brief Returns the current local time of the block according to its internal clock
 	 * @return current local time of the block according to its internal clock
 	 */
-	Time getLocalTime();
+	Time getLocalTime() const ;
 	/**
 	 * @brief Returns the local time of the block according to its internal clock
 	 * @para simTime simulation time for which this function returns the block clock local time
 	 * @return local time of the block according to its internal clock
 	 */
-	Time getLocalTime(Time simTime);
+	Time getLocalTime(Time simTime) const;
 	/**
 	 * @brief Converts the block's local time into the global time of the simulation and returns it
 	 * @return global time corresponding to the local time in parameter
 	 */
-	Time getSimulationTime(Time localTime);
+	Time getSimulationTime(Time localTime) const;
 
 	/*************************************************
 	 *            MeldInterpreter Functions
@@ -265,13 +271,13 @@ public:
 	 * @param faceNum : id of the connected interface
 	 * @return id of the block connected to interface faceNum
 	 */
-	unsigned short getNeighborIDForFace(int faceNum);
+	unsigned short getNeighborIDForFace(int faceNum) const;
 	/**
 	 * @brief Returns the id of the face from this block connected to block of id nId
 	 * @param nId : id of the connected block
 	 * @return the id of the face connected to block nId, or -1 if the two blocks are not neighbors
 	 */
-	int getFaceForNeighborID(int nId);
+	int getFaceForNeighborID(int nId) const;
 };
 
 } // BaseSimulator namespace

@@ -57,7 +57,7 @@ void BlinkyBlocksBlock::pauseClock(Time delay, Time start) {
 
 }
     
-int BlinkyBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
+int BlinkyBlocksBlock::getDirection(P2PNetworkInterface *given_interface) const {
     if( !given_interface) {
 		return SCLattice::Direction(0);
     }
