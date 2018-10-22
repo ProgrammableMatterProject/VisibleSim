@@ -19,7 +19,7 @@
 #include "meshRuleMatcher.hpp"
 #include "meshAssemblyBlockCode.hpp"
 #include "meshAssemblyMessages.hpp"
-
+#include "meshAssemblyLocalRules.hpp"
 
 void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);    
@@ -42,15 +42,16 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         // const Cell3DPosition& rPos = srcPos - mabc.catom->position;
         // short epd = mabc.getEntryPointDirectionForCell(rPos);
 
+        short epl = mabc.getEntryPointLocationForCell(srcPos);
         const Cell3DPosition& tPos =
-            mabc.targetForEntryPoint[mabc.getEntryPointLocationForCell(srcPos)];
+            mabc.targetForEntryPoint[epl];
 
-        // cout << "Spawnee Position: " << srcPos 
-        //      << " -- Target Position: " << tPos
-        //      << " -- Relative Position: " << rPos
-        //      << " -- epd: " << epd << endl;
+        cout << "Spawnee Position: " << srcPos 
+             << " -- Target Position: " << tPos
+             << " -- Relative Position: " << srcPos - mabc.catom->position 
+             << " -- epl: " << epl << endl;
     
-        // Send to requesting catom
+        // send to requesting catom
         VS_ASSERT(destinationInterface->isConnected());
         mabc.sendMessage(new ProvideTargetCellMessage(tPos, srcPos),
                          destinationInterface, MSG_DELAY_MC, 0);
@@ -63,115 +64,32 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 
-    if (mabc.role == ActiveBeamTip) {
-        // Forward message to coordinator
-        P2PNetworkInterface* dstItf =
-            mabc.catom->getInterface(dstPos);
-        VS_ASSERT_MSG(dstItf, "cannot find destination among neighbor interfaces");
-        mabc.sendMessage(this->clone(), dstItf, MSG_DELAY_MC, 0);        
+    if (mabc.role == ActiveBeamTip or mabc.role == Support) {
+        cout << mabc.catom->blockId << "    " <<
+            mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(mabc.norm(mabc.catom->position))) << endl;
+        // Forward message to mobile module or support depending on case
+        P2PNetworkInterface* itf =
+            mabc.catom->getInterface(dstPos) ?: mabc.catom->getInterface(
+                mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(
+                                    mabc.norm(mabc.catom->position))));  
+        VS_ASSERT_MSG(itf, "cannot find neither dest or support among neighbor interfaces");
+        mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
     } else {
-        const Cell3DPosition& adjustedSenderPos =
-            mabc.catom->position[2] == mabc.meshSeedPosition[2] - 1 ?
-            sourceInterface->hostBlock->position + Cell3DPosition(0,0,mabc.B)
-            : sourceInterface->hostBlock->position;
-
-
-        // cout << "sourceInterface->hostBlock->position: " <<sourceInterface->hostBlock->position
-        //      << " -- adjustedPosition: " << adjustedSenderPos << endl;
-        
-        mabc.coordinatorPos = sourceInterface->hostBlock->position-mabc.incidentTipRelativePos[
-            mabc.ruleMatcher->determineBranchForPosition(mabc.norm(adjustedSenderPos))];
-
-        // cout << "mabc.coordinatorPos: " << mabc.coordinatorPos << " -- branch: "
-        //      << mabc.ruleMatcher->determineBranchForPosition(mabc.norm(adjustedSenderPos))
-        //      << " -- delegatePos: " << mabc.coordinatorPos + mabc.incidentTipRelativePos[mabc.ruleMatcher->determineBranchForPosition(mabc.norm(adjustedSenderPos))] << endl;
-
         mabc.targetPosition = tPos;
-
-        Cell3DPosition nextHop;
-
-        // cout << "received tPos for module " << destinationInterface->hostBlock->blockId
-        //      << ": " << tPos << endl;
+        cout << "Target position for #" << mabc.catom->blockId << " is " << tPos << endl;
     
-        // Consider ack
-        if (mabc.lattice->cellsAreAdjacent(mabc.catom->position, tPos)) {
-            VS_ASSERT_MSG(mabc.lattice->isFree(tPos), "target branch position must be free!!!");
-            nextHop = tPos;
+        if (tPos == mabc.catom->position) {
+            mabc.role = mabc.ruleMatcher->getRoleForPosition(mabc.norm(mabc.catom->position));
+            mabc.catom->setColor(mabc.ruleMatcher->getColorForPosition(
+                                     mabc.norm(mabc.catom->position)));
         } else {
-            // Determine position relative to branch that is being grown.
-            /// If catom has been properly introduced, then it should be on one of the four bottom
-            ///  connectors of the local coordinator. The simplest rule is to simply move along
-            ///  the direction of the branch until reaching a neighboring position to the target;
-            ///  this should always be possible.        
-            const Cell3DPosition& relPos =
-                mabc.catom->position - mabc.coordinatorPos;
-
-            // Deduce next position
-            BranchIndex bi = mabc.ruleMatcher->
-                getBranchIndexForNonRootPosition(mabc.norm(tPos));
-
-            // cout << "Relative position to local coordinator: " <<  relPos
-            //      << " -- branch: " << bi << endl;
-        
-            if (bi > 3)
-                nextHop = mabc.catom->position + mabc.ruleMatcher->getBranchUnitOffset(bi);
-
-            else if (bi == ZBranch) {
-                if (mabc.coordinatorPos == mabc.meshSeedPosition)
-                    nextHop = mabc.catom->position + mabc.ruleMatcher->getBranchUnitOffset(bi);
-
-            } else if (bi == RevZBranch) {
-                if (mabc.ruleMatcher->isOnXOppBorder(mabc.norm(mabc.coordinatorPos))
-                    and mabc.ruleMatcher->isOnYOppBorder(mabc.norm(mabc.coordinatorPos)))
-                    // Mesh farthest corner
-                    nextHop = mabc.catom->position + Cell3DPosition(-1,-1,2);
-                else 
-                    nextHop = mabc.catom->position + Cell3DPosition(0,0,1);
-
-            } else if (bi == LeftZBranch) {
-                if (mabc.ruleMatcher->isOnXBorder(mabc.norm(mabc.coordinatorPos))
-                    or mabc.ruleMatcher->isOnYOppBorder(mabc.norm(mabc.coordinatorPos))) {
-                    nextHop = mabc.catom->position + Cell3DPosition(0,-1,1);
-                } else {
-                    VS_ASSERT(false);
-                }
-
-            } else if (bi == RightZBranch) {
-                if (mabc.ruleMatcher->isOnYBorder(mabc.norm(mabc.coordinatorPos))) {
-                    nextHop = mabc.catom->position + Cell3DPosition(-1,-1,1);
-                } else if (mabc.ruleMatcher->isOnXOppBorder(mabc.norm(mabc.coordinatorPos))) {
-                    nextHop = mabc.catom->position + Cell3DPosition(0,0,1);
-                } else {
-                    VS_ASSERT(false);
-                }
-
-            } else {
-                VS_ASSERT(false);
-            }
+            Cell3DPosition nextHop;
+            bool matched = matchLocalRules(mabc.catom->getLocalNeighborhoodState(),
+                                           mabc.targetPosition,
+                                           mabc.coordinatorPos, nextHop);
+            VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
+    
+            mabc.scheduleRotationTo(nextHop);
         }
-
-        try {
-            mabc.console << "Rotating to " << nextHop << " from " << mabc.catom->position << "\n";
-            mabc.scheduler->schedule(
-                new Rotation3DStartEvent(getScheduler()->now(), mabc.catom, nextHop));
-        } catch (const NoAvailableRotationPivotException& e_piv) {
-            cerr << e_piv.what();
-            cerr << "target position: " << nextHop << endl;
-            mabc.catom->setColor(RED);
-            VS_ASSERT(false);
-        } catch (std::exception const& e) {
-            cerr << "exception: " << e.what() << endl;
-            VS_ASSERT(false);
-        }
-
-
-#ifdef INTERACTIVE_MODE
-        awaitKeyPressed();
-#endif
-
-    // } else {
-    //     mabc.catom->setColor(BLACK);
-    //     VS_ASSERT_MSG(false, "Non coordinator or active beam module should not have received a ProvideTargetCellMessage");
-    // }
-    }
+    }    
 }

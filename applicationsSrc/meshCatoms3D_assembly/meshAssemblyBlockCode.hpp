@@ -28,14 +28,6 @@
 
 // #define INTERACTIVE_MODE
 
-enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
-                     X_1, X_2, X_3, X_4, X_5,
-                     Y_1, Y_2, Y_3, Y_4, Y_5,
-                     Z_1, Z_2, Z_3, Z_4, Z_5,
-                     RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
-                     LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
-                     RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,};
-
 enum EntryPointLocation { RevZ_EPL, RevZ_Right_EPL, RZ_Left_EPL, RZ_EPL,
                           RZ_Right_EPL, Z_Right_EPL, Z_EPL,
                           Z_Left_EPL, LZ_Right_EPL, LZ_EPL,
@@ -104,9 +96,10 @@ public:
     std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
     std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
-    std::array<Cell3DPosition, 8> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
+    std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
     
-    int counter = 0;
+    int itCounter = 0; // When t > 5 all supports are in place 
+    bool fedCatomsOnLastRound = false;
     
     // TargetCSG *target;
     MeshAssemblyBlockCode(Catoms3D::Catoms3DBlock *host);
@@ -144,6 +137,18 @@ y the module
      * @return the corresponding position of pos in the absolute coordinate system 
      */
     static const Cell3DPosition denorm(const Cell3DPosition& pos);
+
+    /** 
+     * Transforms an absolute position into a tile-relative position
+     * @param pos position to relatify
+     * @return the corresponding position of pos in the tile-relative coordinate system 
+     */
+    const Cell3DPosition relatify(const Cell3DPosition& pos);
+
+    /** 
+     * Inverse operation of relatify
+     */
+    const Cell3DPosition derelatify(const Cell3DPosition& pos);
     
     void updateOpenPositions();
         
@@ -156,11 +161,11 @@ y the module
     short getEntryPointLocationForCell(const Cell3DPosition& pos);
 
     /** 
-     * Checks if a new catom should be inserted for branch bi, proceed if necessary, and update internal state
-     * @param bi index of branch to be handled
-     * @return true if a catom has been inserted for that branch, false otherwise.
+     * Adds a new mesh component to the grid at its predetermined entry point, 
+     *  and prepare to send it its coordinates
+     * @param mc mesh component of catom to add
      */
-    bool handleNewCatomInsertion(BranchIndex bi);
+    void handleMeshComponentInsertion(MeshComponent mc);
 
     /** 
      * Finds an entry point index for a catom required to fill component mc

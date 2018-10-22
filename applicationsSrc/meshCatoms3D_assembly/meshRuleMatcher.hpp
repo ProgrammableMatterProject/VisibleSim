@@ -27,6 +27,13 @@ namespace MeshCoating {
 enum BranchIndex { ZBranch, RevZBranch, LeftZBranch,
                        RightZBranch, XBranch, YBranch, N_BRANCHES };
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip, Support};
+enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
+                     X_1, X_2, X_3, X_4, X_5,
+                     Y_1, Y_2, Y_3, Y_4, Y_5,
+                     Z_1, Z_2, Z_3, Z_4, Z_5,
+                     RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
+                     LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
+                     RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,};
 
 class MeshRuleMatcher {
     const int X_MAX, Y_MAX, Z_MAX, B;
@@ -112,6 +119,13 @@ public:
     const Cell3DPosition getNearestTileRootPosition(const Cell3DPosition& pos) const;
 
     /** 
+     * Computes the position of the support responsible for module at position pos
+     * @param pos position to evaluate. Expects a position that belongs to a branch.
+     * @return position of support next to position pos
+     */
+    const Cell3DPosition getSupportPositionForPosition(const Cell3DPosition& pos) const;
+    
+    /** 
      * For a catom at position pos, determines which role it should be assigned based on 
      *  its position in the mesh structure
      * @param pos position to evaluate
@@ -120,11 +134,18 @@ public:
     AgentRole getRoleForPosition(const Cell3DPosition& pos) const;
 
     /** 
+     * Return the expected position of a catom representing a certain mesh component
+     * @param component component to evaluate
+     * @return position of module with evaluated role 
+     */
+    const Cell3DPosition getPositionForMeshComponent(MeshComponent component) const;
+    
+    /** 
      * Returns the color assiociated with the AgentRole corresponding with position pos
      * @param pos position to evaluate
      * @return the color assiociated with the AgentRole corresponding with position pos
      */
-    Color getColorForPosition(const Cell3DPosition& pos) const;
+    const Color& getColorForPosition(const Cell3DPosition& pos) const;
 };
 
 }

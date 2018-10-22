@@ -36,9 +36,10 @@ void MeshRuleMatcher::printDebugInfo(const Cell3DPosition& pos) const {
 }
 
 bool MeshRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
-    return isInRange(pos[0], 0 - pos[2]/ 2, X_MAX - pos[2] / 2 - 1)
-        && isInRange(pos[1], 0 - pos[2] / 2, Y_MAX - pos[2] / 2 - 1)
-        && isInRange(pos[2], 0, Z_MAX - 1);
+    // add -2 for new tile construction using modules below R
+    return isInRange(pos[0], 0 - pos[2]/ 2 - 2, X_MAX - pos[2] / 2 - 1)
+        && isInRange(pos[1], 0 - pos[2] / 2 - 2, Y_MAX - pos[2] / 2 - 1)
+        && isInRange(pos[2], 0 - 2, Z_MAX - 1);
 }
 
 bool MeshRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
@@ -135,6 +136,7 @@ bool MeshRuleMatcher::isTileSupport(const Cell3DPosition& pos) const {
 }
 
 BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos) {
+    cout << pos << endl;
     VS_ASSERT_MSG(isInMesh(pos) and not isTileRoot(pos), "attempting to get branch index of tile root position or position outside of mesh");
 
     if (isOnXBranch(pos)) return XBranch;
@@ -381,7 +383,17 @@ MeshRuleMatcher::getNearestTileRootPosition(const Cell3DPosition& pos) const {
 
     return nearestTileRootPos;
 }
-                      
+
+const Cell3DPosition
+MeshRuleMatcher::getSupportPositionForPosition(const Cell3DPosition& pos) const {
+    if (isOnZBranch(pos)) return Cell3DPosition(1, 1, 0);
+    if (isOnRevZBranch(pos)) return Cell3DPosition(-1, -1, 0);
+    if (isOnRightZBranch(pos)) return Cell3DPosition(-1, 1, 0);
+    if (isOnLeftZBranch(pos)) return Cell3DPosition(1, -1, 0);
+
+    return Cell3DPosition();
+}
+
 AgentRole MeshRuleMatcher::getRoleForPosition(const Cell3DPosition& pos) const {
     if (not isInMesh(pos)) return AgentRole::FreeAgent;
     else {
@@ -392,7 +404,38 @@ AgentRole MeshRuleMatcher::getRoleForPosition(const Cell3DPosition& pos) const {
     }
 }
 
-Color MeshRuleMatcher::getColorForPosition(const Cell3DPosition& pos) const {
+const Cell3DPosition MeshRuleMatcher::getPositionForMeshComponent(MeshComponent mc) const {
+    switch(mc) {
+        case R: return Cell3DPosition(0,0,0);
+        case S_Z: return Cell3DPosition(1,1,0);
+        case S_RevZ: return Cell3DPosition(-1,-1,0);
+        case S_LZ: return Cell3DPosition(-1,1,0);
+        case S_RZ: return Cell3DPosition(1,-1,0);
+
+        case X_1: case X_2: case X_3: case X_4: case X_5:
+            return Cell3DPosition(1 * (mc - X_1 + 1), 0, 0);
+       
+        case Y_1: case Y_2: case Y_3: case Y_4: case Y_5:
+            return Cell3DPosition(0, 1 * (mc - Y_1 + 1), 0);
+
+        case Z_1: case Z_2: case Z_3: case Z_4: case Z_5:
+            return Cell3DPosition(0, 0, 1 * (mc - Z_1 + 1));
+
+        case RevZ_1: case RevZ_2: case RevZ_3: case RevZ_4: case RevZ_5:
+            return Cell3DPosition(-1 * (mc - RevZ_1 + 1), -1 * (mc - RevZ_1 + 1),
+                                  1 * (mc - RevZ_1 + 1));
+
+        case LZ_1: case LZ_2: case LZ_3: case LZ_4: case LZ_5:
+            return Cell3DPosition(-1 * (mc - LZ_1 + 1), 0, 1 * (mc - LZ_1 + 1));
+
+        case RZ_1: case RZ_2: case RZ_3: case RZ_4: case RZ_5:
+            return Cell3DPosition(0, -1 * (mc - RZ_1 + 1), 1 * (mc - RZ_1 + 1));
+    }
+
+    return Cell3DPosition(); // unreachable
+}
+
+const Color& MeshRuleMatcher::getColorForPosition(const Cell3DPosition& pos) const {
     switch(getRoleForPosition(pos)) {
         case Coordinator: return GREEN;
         case Support: return YELLOW;
