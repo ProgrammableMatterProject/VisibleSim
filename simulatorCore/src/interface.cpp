@@ -8,6 +8,7 @@
 #include "interface.h"
 #include "trace.h"
 #include "scheduler.h"
+#include "catoms3DMotionRules.h"
 
 #define __STDC_FORMAT_MACROS
 #include <cinttypes>
@@ -42,16 +43,20 @@ GlutWindow::GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,
 }
 
 GlutWindow::~GlutWindow() {
+	clearChilden();
+}
+
+void GlutWindow::addChild(GlutWindow *child) {
+	children.push_back(child);
+}
+
+void GlutWindow::clearChilden() {
 	vector <GlutWindow*>::const_iterator cw = children.begin();
 	while (cw!=children.end()) {
 		delete (*cw);
 		cw++;
 	}
 	children.clear();
-}
-
-void GlutWindow::addChild(GlutWindow *child) {
-	children.push_back(child);
 }
 
 void GlutWindow::glDraw() {
@@ -598,6 +603,63 @@ bool GlutButton::passiveMotionFunc(int mx,int my) {
 	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
 	return isHighlighted;
 }
+
+/***************************************************************************************/
+/* GlutRotationButton */
+/***************************************************************************************/
+
+GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest) :
+		GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
+	isBlue = blue;
+	id0 = idSrc;
+	id1 = idDest;
+	isHighlighted = false;
+}
+
+void GlutRotationButton::glDraw() {
+	  GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
+					  ty=0.0;
+
+	// draw background
+    bindTexture();
+		glPushMatrix();
+		glTranslatef(x,y,0.0f);
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0,0);
+		glTexCoord2f(tx+0.25f,ty);
+		glVertex2i(w,0);
+		glTexCoord2f(tx+0.25f,ty+0.5f);
+		glVertex2i(w,h);
+		glTexCoord2f(tx,ty+0.5f);
+  	glVertex2i(0,h);
+  	glEnd();
+// draw X->Y
+		tx = id0/16.0;
+		ty=0.5;
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0.125,0);
+		glTexCoord2f(tx+0.0625f,ty);
+		glVertex2i(0.375,0);
+		glTexCoord2f(tx+0.0625f,ty+0.5f);
+		glVertex2i(0.375,h);
+		glTexCoord2f(tx,ty+0.5f);
+  	glVertex2i(0,h);
+  	glEnd();
+  	glPopMatrix();
+}
+
+int GlutRotationButton::mouseFunc(int button,int state,int mx,int my) {
+	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+	return (isHighlighted && state==GLUT_UP)? id:0;
+}
+
+bool GlutRotationButton::passiveMotionFunc(int mx,int my) {
+	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+	return isHighlighted;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 // loadTextures

@@ -107,7 +107,7 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 	}
 
   // update rotateSubMenu depending on rotation catoms3DCapabilities
-	//GlutPopupMenuWindow *rotateBlockSubMenu  = 
+	//GlutPopupMenuWindow *rotateBlockSubMenu  =
 
 	if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 	cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
@@ -127,9 +127,12 @@ void Catoms3DWorld::menuChoice(int n) {
 		  GlutContext::popupMenu->show(true);
 			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(1)->getChild(0);
 			GlutContext::popupSubMenu->show(true);
-			GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupSubMenu->w;
+			GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupSubMenu->w+5;
 			GlutContext::popupSubMenu->y=GlutContext::popupMenu->y+GlutContext::popupMenu->h-GlutContext::popupSubMenu->h/2;
-
+			// avoid placing submenu over the top of the window
+			if (GlutContext::popupSubMenu->y+GlutContext::popupSubMenu->h > GlutContext::screenHeight) {
+				GlutContext::popupSubMenu->y = GlutContext::screenHeight-GlutContext::popupSubMenu->h;
+			}
 		break;
 		case 11:
 			GlutContext::popupSubMenu->show(false);
