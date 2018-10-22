@@ -99,6 +99,7 @@ public:
     BranchIndex branch;
     AgentRole role;
     Cell3DPosition coordinatorPos;
+    Cell3DPosition branchTipPos; // For Support role only
     Cell3DPosition targetPosition;
     std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
     std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
@@ -188,6 +189,7 @@ y the module
 
     // TODO:
     void initializeTileRoot();
+    void initializeSupportModule();
 
     /** 
      * @param epl Entry point location name of the desired entry point

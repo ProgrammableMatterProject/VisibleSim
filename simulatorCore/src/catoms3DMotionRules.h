@@ -54,6 +54,7 @@ public :
 
     inline bool isOctaFace() const { return MRLT==OctaFace; };
     inline bool isHexaFace() const { return MRLT==HexaFace; };
+    inline RotationLinkType getMRLT() const { return MRLT; };
 
     // inline Catoms3DLinkDirection getDirection() { return Catoms3DLinkDirection(axis1, axis2); };
 
@@ -62,7 +63,7 @@ public :
      * @param pivot Fixed catom that will be used as a pivot
      * @return Rotation object corresponding to this specific connector link on surface of pivot
      */
-    Rotations3D getRotations(Catoms3DBlock* mobile, Catoms3DBlock* pivot) const;
+    Rotations3D getRotations(const Catoms3DBlock* mobile, const Catoms3DBlock* pivot) const;
     
     /**
        \brief Returns an array containing the ids of the two connectors forming the link such that [fromCon, ToCon]
@@ -215,6 +216,32 @@ public:
     bool getValidSurfaceLinksOnCatom(const Catoms3DBlock* pivot,
                                      vector<Catoms3DMotionRulesLink*>& links);
 
+    /** 
+     * Attempts to mtach a surface link from a pivot to a connector link for a connected 
+     *  mobile module to follow
+     * @param pivLink link to match
+     * @param m module that seeks to use surface link
+     * @param pivot pivot module
+     * @return a link of m that matches pivLink
+     */
+    const Catoms3DMotionRulesLink*
+    getMobileModuleLinkMatchingPivotLink(const Catoms3DMotionRulesLink* pivLink,
+                                         const Catoms3DBlock* m,
+                                         const Catoms3DBlock* pivot);
+
+    /** 
+     * Computes and return the mirror connector of mirroringCon of m1, on the surface of m2 with m1 and m2 connected through the connector of id dockingConM1  and dockingConM2, of m1 and m2, respectively.
+     * @note If m1 was to rotate from its mirroringCon connector to its dockingConM1 connector using m2 as pivot, the mirror connector of mirroringCon corresponds to the connector of m2 on which m1 is now attached.
+     * @param m1 reference module. Module that wants to move.
+     * @param m2 pivot module
+     * @param dockingConM1 connector through which m1 is attached to m2 (belongs to m1).
+     * @param dockingConM2 connector through which m2 is attached to m1 (belongs to m2).
+     * @param mirroringCon connector to be mirrored on m2 (belongs to m1).
+     * @return mirror connector of dockingCon on m2 (belongs to m2), or -1 if the two connectors are not neighbors (not connected through a face).
+     */
+    static short getMirrorConnectorOnModule(const Catoms3DBlock *m1, const Catoms3DBlock *m2,
+                                            short dockingConM1, short dockingConM2,
+                                            short mirroringCon);
 protected:
 private:
     void addLinks3(int id1, int id2, int id3,

@@ -11,6 +11,8 @@
 #ifndef __CATOMS3D_MOTION_ENGINE_H__
 #define __CATOMS3D_MOTION_ENGINE_H__
 
+#include <utility>
+
 #include "catoms3DMotionRules.h"
 #include "catoms3DWorld.h"
 
@@ -79,6 +81,19 @@ public:
 
 
     /** 
+     * Attempts to find all pairs of pivot and connector link on that pivot that would allow
+     *  module m to rotate to position tPos under face requirement faceReq
+     * @param m module attempting the motion
+     * @param tPos target location of the motion
+     * @param faceReq if specified, until searches for rotations using one 
+     *  type of face of the module
+     * @return a vector of {pivot, link} pair representing the possible motions
+     */
+    static std::vector<std::pair<Catoms3DBlock*, const Catoms3DMotionRulesLink*>>
+    findPivotLinkPairsForTargetCell(const Catoms3DBlock* m, const Cell3DPosition& tPos,
+                                    RotationLinkType faceReq = RotationLinkType::Any);
+    
+    /** 
      * Tries to find a neighbor module of m that can be used as a pivot to move m to tPos
      * @param m mobile that should move
      * @param tPos target position of m
@@ -87,8 +102,17 @@ public:
      * @return a pointer to a potential pivot, or NULL if none exist
      * @todo Implement function
      */
-    static Catoms3DBlock* findMotionPivot(const Catoms3DBlock* m, const Cell3DPosition& tPos,
-                                          RotationLinkType conReq = RotationLinkType::Any);
+    static Catoms3DBlock*
+    findMotionPivot(const Catoms3DBlock* m, const Cell3DPosition& tPos,
+                    RotationLinkType faceReq = RotationLinkType::Any);
+
+    /** 
+     * Computes a list of all possible rotations for module m
+     * @param m module to evaluate
+     * @return a vector containing all possible rotations for catom
+     */
+    static const vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>>
+    getAllRotationsForModule(const Catoms3DBlock* m);
 };
 
 };

@@ -34,7 +34,9 @@ public :
    \param ax2 : rotation axe for the second rotation
    \param ang2 : rotation angle for the second rotation
 */
-    Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,double rprim,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2);
+    Rotations3D(const Catoms3DBlock *mobile, const Catoms3DBlock *fixe, double rprim,
+                const Vector3D &ax1, double ang1,
+                const Vector3D &ax2, double ang2);
     Rotations3D() {};
 
     void init(const Matrix& m) {
@@ -65,7 +67,9 @@ protected :
     Vector3D axe2;
     double angle1;
     double angle2;
+    friend std::ostream& operator<<(std::ostream &stream, Rotations3D const& rots);    
 };
+std::ostream& operator<<(std::ostream &stream, Rotations3D const& rots);
 };
 
 //===========================================================================================================

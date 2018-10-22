@@ -12,11 +12,17 @@
 #include "catoms3DMotionEngine.h"
 
 using namespace BaseSimulator::utils;
+using namespace Catoms3D;
 
 const int Rotations3D::ANIMATION_DELAY;
 const int Rotations3D::COM_DELAY;
 const int Rotations3D::nbRotationSteps;
 float Rotations3D::rotationDelayMultiplier = 1.0f;
+
+std::ostream& Catoms3D::operator<<(std::ostream &stream, Rotations3D const& rots) {
+    stream << rots.axe1 << "/" << rots.angle1 << " -- " << rots.axe2 << "/" << rots.angle2;
+    return stream;
+}
 
 //===========================================================================================================
 //
@@ -255,8 +261,9 @@ const string Rotation3DEndEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotations3D::Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,double rprim,const Vector3D &ax1,
-                         double ang1,const Vector3D &ax2,double ang2):angle1(ang1),angle2(ang2) {
+Rotations3D::Rotations3D(const Catoms3DBlock *mobile, const Catoms3DBlock *fixe, double rprim,
+                         const Vector3D &ax1, double ang1,
+                         const Vector3D &ax2, double ang2) : angle1(ang1),angle2(ang2) {
     static const double c_2 = 1.0/(3+sqrt(2));
     Matrix MA = ((Catoms3DGlBlock*)mobile->getGlBlock())->mat;
     Matrix MB = ((Catoms3DGlBlock*)fixe->getGlBlock())->mat;

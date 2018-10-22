@@ -30,6 +30,12 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             mabc.catom->getInterface(mabc.coordinatorPos);
         VS_ASSERT_MSG(coordItf, "cannot find coordinator among neighbor interfaces");
         mabc.sendMessage(this->clone(), coordItf, MSG_DELAY_MC, 0);        
+    } else if (mabc.role == Support) {
+        // Forward message to ActiveBeamTip for forwarding to root
+        P2PNetworkInterface* btItf =
+            mabc.catom->getInterface(mabc.branchTipPos);
+        VS_ASSERT_MSG(btItf, "cannot find branch tip among neighbor interfaces");
+        mabc.sendMessage(this->clone(), btItf, MSG_DELAY_MC, 0);
     } else if (mabc.role == Coordinator) {
         // A neighboring catom requested an objective, check needs an make decision based on their distance.
         // FIXME: For now, route towards horizontal growth

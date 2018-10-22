@@ -257,13 +257,13 @@ bool Catoms3DBlock::canRotateToPosition(const Cell3DPosition &pos,
 }
 
 std::bitset<12> Catoms3DBlock::getLocalNeighborhoodState() const {
-    bitset<12> bitset;
+    bitset<12> bitset = {0};
     const vector<Cell3DPosition> localNeighborhood =
         Catoms3DWorld::getWorld()->lattice->getNeighborhood(position);
         
-    for (int i = 0; i < 12; i++) {
-        P2PNetworkInterface *itf = getInterface(localNeighborhood[i]);
-        bitset.set(i, itf->isConnected());
+    for (const Cell3DPosition& nPos : localNeighborhood) {
+        P2PNetworkInterface *itf = getInterface(nPos);
+        bitset.set(getAbsoluteDirection(nPos), itf->isConnected());
     }
 
     return bitset;

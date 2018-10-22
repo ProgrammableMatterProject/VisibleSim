@@ -19,6 +19,7 @@
 
 #include "teleportationEvents.h"
 #include "rotation3DEvents.h"
+#include "catoms3DMotionEngine.h"
 
 #include "meshAssemblyBlockCode.hpp"
 
@@ -88,16 +89,28 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << "nextHop: " << getTileRelativePosition() << " -> " <<
         matchLocalRules(catom->getLocalNeighborhoodState(),
                         getTileRelativePosition(), coordinatorPos) << endl;
+
+    cout << catom->getLocalNeighborhoodState() << endl;
+    
+    cout << "Possible Rotations: " << endl;
+    const vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> allRotations =
+        Catoms3DMotionEngine::getAllRotationsForModule(catom);
+
+    for (const auto& rotation : allRotations) {
+            cout << *rotation.first << " --> " << rotation.second << endl;
+    }
 }
 
 void MeshAssemblyBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
-    // Do stuff
-    if (catom->blockId == 1) { // FIXME:
-        coordinatorPos =
+    coordinatorPos =
             denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
+    
+    // Do stuff
+    if (catom->position == getEntryPointForMeshComponent(MeshComponent::R)
+        and lattice->isFree(coordinatorPos)) {
         targetPosition = meshSeedPosition;
 
         const Cell3DPosition& nextPos = matchLocalRules(catom->getLocalNeighborhoodState(),
@@ -105,23 +118,23 @@ void MeshAssemblyBlockCode::startup() {
                                                         coordinatorPos);
         VS_ASSERT_MSG(nextPos != catom->position, "DID NOT FIND RULE TO MATCH.");
         scheduleRotationTo(nextPos);
-    } else if (ruleMatcher->isTileRoot(norm(catom->position))) {
     } else if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {            
         role = ActiveBeamTip; // nothing to be done, wait for tPos requests
         
         // Add z = B to ensure that level -1 catoms are handled properly
         short bi = ruleMatcher->determineBranchForPosition(
-            norm(catom->position + Cell3DPosition(0,0,B)));
+            norm(catom->position[2] < meshSeedPosition[2] ?
+                 catom->position + Cell3DPosition(0,0,B) : catom->position));
         VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
         branch = static_cast<BranchIndex>(bi);
-        coordinatorPos = catom->position - incidentTipRelativePos[branch];
     } else if (meshSeedPosition[2] - catom->position[2] > 1) {
-        role = PassiveBeam; // nothing to be done here for visual decoration only        
+        role = PassiveBeam; // nothing to be done here for visual decoration only
     } else {
         role = FreeAgent;
 
         for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
-            if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {
+            if (ruleMatcher->isVerticalBranchTip(norm(nPos))
+                or ruleMatcher->isTileSupport(norm(nPos))) {
                 // Module is delegate coordinator
                 P2PNetworkInterface* nItf = catom->getInterface(nPos);
                 VS_ASSERT(nItf);
@@ -193,6 +206,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                 if (ruleMatcher->isTileRoot(norm(catom->position)))
                     initializeTileRoot();
+                else if (ruleMatcher->isTileSupport(norm(catom->position)))
+                    initializeSupportModule();
                 else {
                     BranchIndex bi = 
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
@@ -305,7 +320,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                     getScheduler()->schedule(
                         new InterruptionEvent(getScheduler()->now() +
-                                              (getRoundDuration() * (1 + (catom->position[0] * 0.05))),
+                                              (getRoundDuration() *
+                                               (1 + (catom->position[0] * 0.05))),
                                               catom, IT_MODE_TILEROOT_ACTIVATION));
                 } break;
             }            
@@ -339,7 +355,7 @@ short MeshAssemblyBlockCode::getEntryPointLocationForCell(const Cell3DPosition& 
 
 const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshComponent mc) {
     switch(mc) {
-        case R: return getEntryPointPosition(Z_Left_EPL);
+        case R: return getEntryPointPosition(Z_Right_EPL);
         case S_Z: return getEntryPointPosition(LZ_EPL);
         case S_RevZ: return getEntryPointPosition(RZ_EPL);
         case S_LZ: return getEntryPointPosition(LZ_Right_EPL);
@@ -474,6 +490,17 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     getScheduler()->schedule(
         new InterruptionEvent(getScheduler()->now(),
                               catom, IT_MODE_TILEROOT_ACTIVATION));
+}
+
+void MeshAssemblyBlockCode::initializeSupportModule() {
+    for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
+        if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {
+            branchTipPos = nPos;
+            return;
+        }
+    }
+
+    VS_ASSERT_MSG(false, "cannot find branch tip among neighbor modules");
 }
 
 const Cell3DPosition
