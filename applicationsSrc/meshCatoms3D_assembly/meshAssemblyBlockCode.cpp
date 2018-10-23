@@ -93,7 +93,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
                                    catom->position,
                                    targetPosition,
-                                   coordinatorPos, nextHop);            
+                                   coordinatorPos, step, nextHop);            
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     
     cout << "Possible Rotations: " << endl;
@@ -135,7 +135,7 @@ void MeshAssemblyBlockCode::startup() {
         bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
                                        catom->position,
                                        targetPosition,
-                                       coordinatorPos, nextPos);
+                                       coordinatorPos, step, nextPos);
         VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
         
             VS_ASSERT_MSG(nextPos != catom->position, "DID NOT FIND RULE TO MATCH.");
@@ -231,7 +231,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
         case EVENT_ROTATION3D_END:
             console << "Rotation to " << catom->position << " over" << "\n";
-        case EVENT_TELEPORTATION_END: {            
+        case EVENT_TELEPORTATION_END: {
+            step++;
             if (catom->position == targetPosition) {
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
@@ -281,7 +282,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
                                                catom->position,
                                                targetPosition,
-                                               coordinatorPos, nextHop);
+                                               coordinatorPos, step, nextHop);
                 if (not matched) {
                     catom->setColor(RED);
                     cout << "#" << catom->blockId << endl;
@@ -334,19 +335,33 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             catomsReqByBranch[YBranch]--;
                         }
                             
-                        // if (catomsReqByBranch[ZBranch] > 0 and itCounter > 5) {
-                        //     handleMeshComponentInsertion(static_cast<MeshComponent>
-                        //                                  (Z_1 + B -
-                        //                                   catomsReqByBranch[ZBranch] - 1));
-                        //     catomsReqByBranch[ZBranch]--;
-                        // }                        
+                        if (catomsReqByBranch[ZBranch] > 0 and itCounter > 5) {
+                            handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                         (Z_1 + B -
+                                                          catomsReqByBranch[ZBranch] - 1));
+                            catomsReqByBranch[ZBranch]--;
+                        }                        
 
-                        // if (catomsReqByBranch[RevZBranch] > 0 and itCounter > 5) {
-                        //     handleMeshComponentInsertion(static_cast<MeshComponent>
-                        //                                  (RevZ_1 + B -
-                        //                                   catomsReqByBranch[RevZBranch] - 1));
-                        //     catomsReqByBranch[RevZBranch]--;
-                        // }
+                        if (catomsReqByBranch[RevZBranch] > 0 and itCounter > 5) {
+                            handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                         (RevZ_1 + B -
+                                                          catomsReqByBranch[RevZBranch] - 1));
+                            catomsReqByBranch[RevZBranch]--;
+                        }
+
+                        if (catomsReqByBranch[LZBranch] > 0 and itCounter > 11) {
+                            handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                         (LZ_1 + B -
+                                                          catomsReqByBranch[LZBranch] - 1));
+                            catomsReqByBranch[LZBranch]--;
+                        }
+
+                        if (catomsReqByBranch[RZBranch] > 0 and itCounter > 11) {
+                            handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                         (RZ_1 + B -
+                                                          catomsReqByBranch[RZBranch] - 1));
+                            catomsReqByBranch[RZBranch]--;
+                        }
                         
                         fedCatomsOnLastRound = true;
                     } else {
@@ -479,10 +494,10 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
         shouldGrowZBranch(norm(catom->position)) ? B - 1 : -1;
     catomsReqByBranch[RevZBranch] = ruleMatcher->
         shouldGrowRevZBranch(norm(catom->position)) ? B - 1 : -1;
-    catomsReqByBranch[LeftZBranch] = ruleMatcher->
-        shouldGrowLeftZBranch(norm(catom->position)) ? B - 1 : -1;       
-    catomsReqByBranch[RightZBranch] = ruleMatcher->
-        shouldGrowRightZBranch(norm(catom->position)) ? B - 1 : -1;
+    catomsReqByBranch[LZBranch] = ruleMatcher->
+        shouldGrowLZBranch(norm(catom->position)) ? B - 1 : -1;       
+    catomsReqByBranch[RZBranch] = ruleMatcher->
+        shouldGrowRZBranch(norm(catom->position)) ? B - 1 : -1;
     catomsReqByBranch[XBranch] = ruleMatcher->
         shouldGrowXBranch(norm(catom->position)) ? B - 1 : -1;        
     catomsReqByBranch[YBranch] = ruleMatcher->

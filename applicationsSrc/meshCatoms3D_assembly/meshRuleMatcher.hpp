@@ -24,8 +24,8 @@ static const uint MC_ST_B = 69;
 
 namespace MeshCoating {
 
-enum BranchIndex { ZBranch, RevZBranch, LeftZBranch,
-                       RightZBranch, XBranch, YBranch, N_BRANCHES };
+enum BranchIndex { ZBranch, RevZBranch, LZBranch,
+                       RZBranch, XBranch, YBranch, N_BRANCHES };
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip, Support};
 enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
                      X_1, X_2, X_3, X_4, X_5,
@@ -47,16 +47,16 @@ public:
     bool isOnYOppBorder(const Cell3DPosition& pos) const;
     bool isOnZBranch(const Cell3DPosition& pos) const;
     bool isOnRevZBranch(const Cell3DPosition& pos) const;
-    bool isOnRightZBranch(const Cell3DPosition& pos) const;
-    bool isOnLeftZBranch(const Cell3DPosition& pos) const;    
+    bool isOnRZBranch(const Cell3DPosition& pos) const;
+    bool isOnLZBranch(const Cell3DPosition& pos) const;    
     bool isTileRoot(const Cell3DPosition& pos) const;
     bool isVerticalBranchTip(const Cell3DPosition& pos) const;
     bool isTileSupport(const Cell3DPosition& pos) const;
     
     bool shouldGrowZBranch(const Cell3DPosition& pos) const;
     bool shouldGrowRevZBranch(const Cell3DPosition& pos) const;
-    bool shouldGrowLeftZBranch(const Cell3DPosition& pos) const;
-    bool shouldGrowRightZBranch(const Cell3DPosition& pos) const;
+    bool shouldGrowLZBranch(const Cell3DPosition& pos) const;
+    bool shouldGrowRZBranch(const Cell3DPosition& pos) const;
     bool shouldGrowXBranch(const Cell3DPosition& pos) const;
     bool shouldGrowYBranch(const Cell3DPosition& pos) const;    
 
