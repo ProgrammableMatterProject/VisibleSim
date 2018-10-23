@@ -45,6 +45,7 @@ public :
 
 	GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutWindow();
+	void clearChilden();
 	inline void setGeometry(GLint px,GLint py,GLint pw,GLint ph) { x=px; y=py; w=pw; h=ph; };
 	inline GlutWindow *getChild(int n) { return children[n]; };
 	virtual void glDraw();
@@ -79,6 +80,20 @@ public :
 	bool passiveMotionFunc(int mx,int my);
 	void glDraw();
 };
+
+class GlutRotationButton : public GlutWindow {
+	bool isHighlighted;
+	bool isBlue;
+	uint8_t id0,id1;
+public :
+  GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest);
+  virtual ~GlutRotationButton() {};
+	int mouseFunc(int button,int state,int x,int y);
+	bool passiveMotionFunc(int mx,int my);
+	void glDraw();
+};
+
+
 //
 class BlockDebugData {
 public :
