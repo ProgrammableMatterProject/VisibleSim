@@ -305,7 +305,7 @@ MeshRuleMatcher::getTreeParentPosition(const Cell3DPosition& pos) const {
                 pos + Cell3DPosition(1, 1, -1) : pos + Cell3DPosition(0, 0, -1);
         }
     }
-
+\
     if (isOnPartialBorderMesh(pos)) {
         // parent is either x - 1 or y - 1 if planar
         if (isOnYBranch(pos)) return pos + Cell3DPosition(0,1,0);
@@ -385,9 +385,16 @@ MeshRuleMatcher::getNearestTileRootPosition(const Cell3DPosition& pos) const {
 }
 
 const Cell3DPosition
+MeshRuleMatcher::getTileRootPositionForMeshPosition(const Cell3DPosition& pos) const {
+    return Cell3DPosition(pos[0] - m_mod(pos[0], B),
+                          pos[1] - m_mod(pos[1], B),
+                          pos[2] - m_mod(pos[2], B));
+}
+
+const Cell3DPosition
 MeshRuleMatcher::getSupportPositionForPosition(const Cell3DPosition& pos) const {
-    if (isOnZBranch(pos)) return Cell3DPosition(1, 1, 0);
-    if (isOnRevZBranch(pos)) return Cell3DPosition(-1, -1, 0);
+    if (isOnZBranch(pos)) return Cell3DPosition(-1, -1, 0);
+    if (isOnRevZBranch(pos)) return Cell3DPosition(1, 1, 0);
     if (isOnRightZBranch(pos)) return Cell3DPosition(-1, 1, 0);
     if (isOnLeftZBranch(pos)) return Cell3DPosition(1, -1, 0);
 
