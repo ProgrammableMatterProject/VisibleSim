@@ -97,6 +97,13 @@ public:
      * @return branch index of the branch to which pos belongs, or -1 if invalid
      */
     short determineBranchForPosition(const Cell3DPosition& pos) const;
+
+    /** 
+     * @param pos position of the module to consider, has to be a valid mesh component
+     * @return the position of the tile root to which this module belongs
+     * @attention returned position might be out of mesh is pos is an out of mesh component
+     */
+    const Cell3DPosition getTileRootPositionForMeshPosition(const Cell3DPosition& pos) const;
     
     /** 
      * @param pos position of the module to consider
