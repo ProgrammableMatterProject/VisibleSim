@@ -168,6 +168,20 @@ void Catoms3DWorld::menuChoice(int n) {
 				cerr << "Position out of the grid" << endl;
 			}
 		break;
+		case 6:
+			GlutContext::popupMenu->show(true);
+			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(6)->getChild(0);
+			GlutContext::popupSubMenu->show(true);
+			GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupSubMenu->w+5;
+			GlutContext::popupSubMenu->y=GlutContext::popupMenu->y+GlutContext::popupMenu->h-GlutContext::popupSubMenu->h/2;
+			// avoid placing submenu over the top of the window
+			if (GlutContext::popupSubMenu->y+GlutContext::popupSubMenu->h > GlutContext::screenHeight) {
+				GlutContext::popupSubMenu->y = GlutContext::screenHeight-GlutContext::popupSubMenu->h;
+			}
+			GlutContext::popupSubMenu->clearChildren();
+			GlutContext::popupSubMenu->addButton(new GlutRotationButton(NULL,101,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",false,0,11));
+			GlutContext::popupSubMenu->addButton(new GlutRotationButton(NULL,101,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",true,3,9));
+		break;
     default: World::menuChoice(n); break; // For all non-catoms2D-specific cases
     }
 }

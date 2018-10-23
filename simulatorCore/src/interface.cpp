@@ -43,14 +43,14 @@ GlutWindow::GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,
 }
 
 GlutWindow::~GlutWindow() {
-	clearChilden();
+	clearChildren();
 }
 
 void GlutWindow::addChild(GlutWindow *child) {
 	children.push_back(child);
 }
 
-void GlutWindow::clearChilden() {
+void GlutWindow::clearChildren() {
 	vector <GlutWindow*>::const_iterator cw = children.begin();
 	while (cw!=children.end()) {
 		delete (*cw);
@@ -635,19 +635,48 @@ void GlutRotationButton::glDraw() {
   	glVertex2i(0,h);
   	glEnd();
 // draw X->Y
-		tx = id0/16.0;
+		glDisable(GL_DEPTH_TEST);
+		// first id
+		tx = id0*0.0625f;
 		ty=0.5;
 		glBegin(GL_QUADS);
 		glTexCoord2f(tx,ty);
-		glVertex2i(0.125,0);
+		glVertex2i(0.125*w,0);
 		glTexCoord2f(tx+0.0625f,ty);
-		glVertex2i(0.375,0);
+		glVertex2i(0.375*w,0);
 		glTexCoord2f(tx+0.0625f,ty+0.5f);
-		glVertex2i(0.375,h);
+		glVertex2i(0.375*w,h);
 		glTexCoord2f(tx,ty+0.5f);
-  	glVertex2i(0,h);
+  	glVertex2i(0.125*w,h);
   	glEnd();
+		// arrow
+    tx = 12*0.0625f;
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0.375*w,0);
+		glTexCoord2f(tx+0.0625f,ty);
+		glVertex2i(0.625*w,0);
+		glTexCoord2f(tx+0.0625f,ty+0.5f);
+		glVertex2i(0.625*w,h);
+		glTexCoord2f(tx,ty+0.5f);
+  	glVertex2i(0.375*w,h);
+  	glEnd();
+		// second id
+		tx = id1*0.0625f;
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0.625*w,0);
+		glTexCoord2f(tx+0.0625f,ty);
+		glVertex2i(0.875*w,0);
+		glTexCoord2f(tx+0.0625f,ty+0.5f);
+		glVertex2i(0.875*w,h);
+		glTexCoord2f(tx,ty+0.5f);
+  	glVertex2i(0.625*w,h);
+  	glEnd();
+
   	glPopMatrix();
+		glEnable(GL_DEPTH_TEST);
+
 }
 
 int GlutRotationButton::mouseFunc(int button,int state,int mx,int my) {
@@ -832,6 +861,18 @@ void GlutPopupMenuWindow::addButton(int i,const char *titre,GlutPopupMenuWindow 
 		button->addSubMenu(subMenuWindow);
 	}
 }
+
+void GlutPopupMenuWindow::addButton(GlutWindow *button) {
+	int py=0;
+	std::vector <GlutWindow*>::const_iterator cb=children.begin();
+	while (cb!=children.end()) {
+		if ((*cb)->isVisible) py+=(*cb)->h+5;
+		cb++;
+	}
+	addChild(button);
+	button->setGeometry(10,h-5-button->h/2-py,button->w/4,button->h/2);
+}
+
 
 void GlutPopupMenuWindow::glDraw() {
 	if (isVisible) {
