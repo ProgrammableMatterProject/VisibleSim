@@ -467,8 +467,9 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
 
 void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos) {
     try {
-        scheduler->schedule(
-            new Rotation3DStartEvent(getScheduler()->now(), catom, pos));
+        scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
+                                                     catom, pos,
+                                                     RotationLinkType::OctaFace, false));
 #ifdef INTERACTIVE_MODE
         awaitKeyPressed();
 #endif

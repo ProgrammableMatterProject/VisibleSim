@@ -72,7 +72,7 @@ public:
     };
         
     inline static Time getRoundDuration() {
-        return (2.5 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
+        return (2 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
                 + Rotations3D::COM_DELAY);// + (getScheduler()->now() / 1000);
     }
     
