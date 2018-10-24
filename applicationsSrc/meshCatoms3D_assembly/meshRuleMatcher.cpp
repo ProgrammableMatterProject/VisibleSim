@@ -30,8 +30,8 @@ void MeshRuleMatcher::printDebugInfo(const Cell3DPosition& pos) const {
   cout << "isOnYBorder(pos): " << isOnYBorder(pos) << endl;
   cout << "isOnZBranch(pos): " << isOnZBranch(pos) << endl;
   cout << "isOnRevZBranch(pos): " << isOnRevZBranch(pos) << endl;
-  cout << "isOnRightZBranch(pos): " << isOnRightZBranch(pos) << endl;
-  cout << "isOnLeftZBranch(pos): " << isOnLeftZBranch(pos) << endl;
+  cout << "isOnRZBranch(pos): " << isOnRZBranch(pos) << endl;
+  cout << "isOnLZBranch(pos): " << isOnLZBranch(pos) << endl;
   cout << "--- END DEBUG INFO ---" << endl << endl;
 }
 
@@ -44,8 +44,8 @@ bool MeshRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
 
 bool MeshRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
     return isInGrid(pos) and ((isOnXBranch(pos) or isOnYBranch(pos) or isOnZBranch(pos)
-                               or isOnRevZBranch(pos) or isOnRightZBranch(pos)
-                               or isOnLeftZBranch(pos)
+                               or isOnRevZBranch(pos) or isOnRZBranch(pos)
+                               or isOnLZBranch(pos)
                                or isTileSupport(pos)));
 }
 
@@ -88,7 +88,7 @@ bool MeshRuleMatcher::isOnRevZBranch(const Cell3DPosition& pos) const {
     return m_mod(x, B) == m_mod(y, B) and m_mod(z, B) == m_mod(B - x, B);
 }
 
-bool MeshRuleMatcher::isOnLeftZBranch(const Cell3DPosition& pos) const {
+bool MeshRuleMatcher::isOnLZBranch(const Cell3DPosition& pos) const {
     const int x = (pos[0] < 0 ? B + pos[0] : pos[0]);
     const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
     const int z = pos[2];
@@ -96,7 +96,7 @@ bool MeshRuleMatcher::isOnLeftZBranch(const Cell3DPosition& pos) const {
     return (m_mod(x, B) + m_mod(z, B) == (int)B and m_mod(y, B) == 0);
 }
 
-bool MeshRuleMatcher::isOnRightZBranch(const Cell3DPosition& pos) const {
+bool MeshRuleMatcher::isOnRZBranch(const Cell3DPosition& pos) const {
     const int x = (pos[0] < 0 ? B + pos[0] : pos[0]);
     const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
     const int z = pos[2];
@@ -126,7 +126,7 @@ bool MeshRuleMatcher::isOnPartialBorderMesh(const Cell3DPosition& pos) const {
 
 bool MeshRuleMatcher::isVerticalBranchTip(const Cell3DPosition& pos) const {
     return (isOnZBranch(pos) or isOnRevZBranch(pos)
-            or isOnLeftZBranch(pos) or isOnRightZBranch(pos)) and m_mod(pos[2], B) == (B - 1);
+            or isOnLZBranch(pos) or isOnRZBranch(pos)) and m_mod(pos[2], B) == (B - 1);
 }
 
 bool MeshRuleMatcher::isTileSupport(const Cell3DPosition& pos) const {
@@ -143,8 +143,8 @@ BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPositi
     if (isOnYBranch(pos)) return YBranch;
     if (isOnZBranch(pos)) return ZBranch;
     if (isOnRevZBranch(pos)) return RevZBranch;
-    if (isOnLeftZBranch(pos)) return LeftZBranch;
-    if (isOnRightZBranch(pos)) return RightZBranch;
+    if (isOnLZBranch(pos)) return LZBranch;
+    if (isOnRZBranch(pos)) return RZBranch;
 
     VS_ASSERT(false); // Unreachable
     
@@ -164,7 +164,7 @@ shouldGrowRevZBranch(const Cell3DPosition& pos) const {
 }
 
 bool MeshRuleMatcher::
-shouldGrowLeftZBranch(const Cell3DPosition& pos) const {
+shouldGrowLZBranch(const Cell3DPosition& pos) const {
     return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0] - (B - 1),
                                                        pos[1],
                                                        pos[2] + (B - 1)));
@@ -172,7 +172,7 @@ shouldGrowLeftZBranch(const Cell3DPosition& pos) const {
 
 
 bool MeshRuleMatcher::
-shouldGrowRightZBranch(const Cell3DPosition& pos) const {
+shouldGrowRZBranch(const Cell3DPosition& pos) const {
     return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0],
                                                        pos[1] - (B - 1),
                                                        pos[2] + (B - 1)));
@@ -196,8 +196,8 @@ Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(int bi) {
     switch(bi) {
         case ZBranch: return Cell3DPosition(0,0,1);
         case RevZBranch: return Cell3DPosition(-1,-1,1);
-        case RightZBranch: return Cell3DPosition(0,-1,1);
-        case LeftZBranch: return Cell3DPosition(-1,0,1);
+        case RZBranch: return Cell3DPosition(0,-1,1);
+        case LZBranch: return Cell3DPosition(-1,0,1);
         case XBranch: return Cell3DPosition(1,0,0);
         case YBranch: return Cell3DPosition(0,1,0);
         default: VS_ASSERT_MSG(false, "invalid branch index");
@@ -305,7 +305,7 @@ MeshRuleMatcher::getTreeParentPosition(const Cell3DPosition& pos) const {
                 pos + Cell3DPosition(1, 1, -1) : pos + Cell3DPosition(0, 0, -1);
         }
     }
-
+\
     if (isOnPartialBorderMesh(pos)) {
         // parent is either x - 1 or y - 1 if planar
         if (isOnYBranch(pos)) return pos + Cell3DPosition(0,1,0);
@@ -313,8 +313,8 @@ MeshRuleMatcher::getTreeParentPosition(const Cell3DPosition& pos) const {
         //  or z + 1 if on an incomplete downward branch
         else if (isOnZBranch(pos)) return pos + Cell3DPosition(0,0,1);
         else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(-1,-1,1);
-        else if (isOnLeftZBranch(pos)) return pos + Cell3DPosition(-1,0,1);
-        else if (isOnRightZBranch(pos)) return pos + Cell3DPosition(0,-1,1);
+        else if (isOnLZBranch(pos)) return pos + Cell3DPosition(-1,0,1);
+        else if (isOnRZBranch(pos)) return pos + Cell3DPosition(0,-1,1);
         
         assert(false);
     }
@@ -325,8 +325,8 @@ MeshRuleMatcher::getTreeParentPosition(const Cell3DPosition& pos) const {
     // Branch cases
     else if (isOnZBranch(pos)) return pos + Cell3DPosition(0,0,-1);
     else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(1,1,-1);
-    else if (isOnLeftZBranch(pos)) return pos + Cell3DPosition(1,0,-1);
-    else if (isOnRightZBranch(pos)) return pos + Cell3DPosition(0,1,-1);
+    else if (isOnLZBranch(pos)) return pos + Cell3DPosition(1,0,-1);
+    else if (isOnRZBranch(pos)) return pos + Cell3DPosition(0,1,-1);
 
     assert(false);
 }
@@ -348,8 +348,8 @@ short MeshRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) con
     if (isInMesh(pos) and not isTileRoot(pos)) {
         if (isOnZBranch(pos)) return ZBranch;
         if (isOnRevZBranch(pos)) return RevZBranch;
-        if (isOnLeftZBranch(pos)) return LeftZBranch;
-        if (isOnRightZBranch(pos)) return RightZBranch;
+        if (isOnLZBranch(pos)) return LZBranch;
+        if (isOnRZBranch(pos)) return RZBranch;
         if (isOnXBranch(pos)) return XBranch;
         if (isOnYBranch(pos)) return YBranch;
     }
@@ -385,11 +385,18 @@ MeshRuleMatcher::getNearestTileRootPosition(const Cell3DPosition& pos) const {
 }
 
 const Cell3DPosition
+MeshRuleMatcher::getTileRootPositionForMeshPosition(const Cell3DPosition& pos) const {
+    return Cell3DPosition(pos[0] - m_mod(pos[0], B),
+                          pos[1] - m_mod(pos[1], B),
+                          pos[2] - m_mod(pos[2], B));
+}
+
+const Cell3DPosition
 MeshRuleMatcher::getSupportPositionForPosition(const Cell3DPosition& pos) const {
-    if (isOnZBranch(pos)) return Cell3DPosition(1, 1, 0);
-    if (isOnRevZBranch(pos)) return Cell3DPosition(-1, -1, 0);
-    if (isOnRightZBranch(pos)) return Cell3DPosition(-1, 1, 0);
-    if (isOnLeftZBranch(pos)) return Cell3DPosition(1, -1, 0);
+    if (isOnZBranch(pos)) return Cell3DPosition(-1, -1, 0);
+    if (isOnRevZBranch(pos)) return Cell3DPosition(1, 1, 0);
+    if (isOnRZBranch(pos)) return Cell3DPosition(-1, 1, 0);
+    if (isOnLZBranch(pos)) return Cell3DPosition(1, -1, 0);
 
     return Cell3DPosition();
 }

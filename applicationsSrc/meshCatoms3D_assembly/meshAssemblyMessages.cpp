@@ -85,8 +85,9 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         } else {
             Cell3DPosition nextHop;
             bool matched = matchLocalRules(mabc.catom->getLocalNeighborhoodState(),
+                                           mabc.catom->position,
                                            mabc.targetPosition,
-                                           mabc.coordinatorPos, nextHop);
+                                           mabc.coordinatorPos, mabc.step, nextHop);
             VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
     
             mabc.scheduleRotationTo(nextHop);

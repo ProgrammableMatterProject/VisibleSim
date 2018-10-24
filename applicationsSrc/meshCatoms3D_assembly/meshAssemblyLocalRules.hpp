@@ -19,133 +19,153 @@
 
 using namespace BaseSimulator;
 using namespace std;
+
+class LRKeyTuple {
+    const std::bitset<12> lnBitset;
+    const Cell3DPosition tPos;
+    const short step;
+public:
+    constexpr LRKeyTuple(int ln, const Cell3DPosition& _tPos, const short _step)
+        : lnBitset(bitset<12>(ln)), tPos(_tPos), step(_step) {}
+
+    constexpr LRKeyTuple(const bitset<12>& _lnBitset, const Cell3DPosition& _tPos,
+                         const short _step)
+        : lnBitset(bitset<12>(_lnBitset)), tPos(_tPos), step(_step) {}
     
-template<size_t sz> struct localrule_comparer {
-    bool operator() (const std::pair<const std::bitset<sz>, const Cell3DPosition> &p1,
-                     const std::pair<const std::bitset<sz>, const Cell3DPosition> &p2) const {
-        if (p1.first.to_ulong() < p2.first.to_ulong()) return true;
-        else if (p1.first.to_ulong() > p2.first.to_ulong()) return false;
-        else return p1.second < p2.second;
+    bool operator<(const LRKeyTuple &lrkt) const {
+        if (lnBitset.to_ulong() < lrkt.lnBitset.to_ulong()) return true;
+        else if (lnBitset.to_ulong() > lrkt.lnBitset.to_ulong()) return false;
+        else if (step < lrkt.step) return true;
+        else if (step > lrkt.step) return false;
+        else return tPos < lrkt.tPos;
+    }
+
+    bool operator==(const LRKeyTuple &lrkt) const {       
+        return lnBitset.to_ulong() == lrkt.lnBitset.to_ulong()
+            and tPos == lrkt.tPos
+            and step == lrkt.step;
     }
 };
 
-static const std::map <const std::pair<const std::bitset<12>, const Cell3DPosition>,
-                       const Cell3DPosition, localrule_comparer<12>>
-localMotionRules = 
+static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules = 
 {
     // Corner XY Cases
-    { { bitset<12>(0x400), Cell3DPosition(-1, -1, 0) }, Cell3DPosition(0, -1, 0) }, // S_RevZ
-    { { bitset<12>(0xC03), Cell3DPosition(-1, -1, 0) }, Cell3DPosition(-1, -1, 0) }, // S_RevZ
+    { LRKeyTuple(0x400, Cell3DPosition(-1, -1, 0), 3), Cell3DPosition(0, 1, -1) }, // S_RevZ 3
+    { LRKeyTuple(0xC03, Cell3DPosition(-1, -1, 0), 4), Cell3DPosition(-1, 0, 0) }, // S_RevZ 4
 
+    // Border OppX Cases
+    { LRKeyTuple(0x380, Cell3DPosition(0, 0, 2), 3), Cell3DPosition(0, -1, 1) }, // Z2 3
+
+    // Border OppY Cases
+    { LRKeyTuple(0x940, Cell3DPosition(0, -2, 2), 3), Cell3DPosition(-1, -1, 1) }, // RZ2 3    
+    
     // Normal Cases
-    { { bitset<12>(0x840), Cell3DPosition(0, 0, 0) }, Cell3DPosition(1, 1, 0) }, // R
-    { { bitset<12>(0x100), Cell3DPosition(0, 0, 0) }, Cell3DPosition(0, 0, 0) }, // R
-    { { bitset<12>(0x140), Cell3DPosition(1, -1, 0) }, Cell3DPosition(1, -1, 0) }, // S_RZ
-    { { bitset<12>(0x180), Cell3DPosition(-1, 1, 0) }, Cell3DPosition(-1, 1, 0) }, // S_LZ
-    { { bitset<12>(0x840), Cell3DPosition(1, 0, 0) }, Cell3DPosition(1, 0, 0) }, // X1
-    { { bitset<12>(0x280), Cell3DPosition(0, 1, 0) }, Cell3DPosition(0, 1, 0) }, // Y1
-    { { bitset<12>(0x220), Cell3DPosition(1, 1, 0) }, Cell3DPosition(-2, 1, 1) }, // S_Z
-    { { bitset<12>(0x808), Cell3DPosition(-1, -1, 0) }, Cell3DPosition(1, -2, 1) }, // S_RevZ
-    { { bitset<12>(0x200), Cell3DPosition(1, 1, 0) }, Cell3DPosition(-1, 1, 1) }, // S_Z
-    { { bitset<12>(0x800), Cell3DPosition(-1, -1, 0) }, Cell3DPosition(0, -2, 1) }, // S_RevZ
-    { { bitset<12>(0x300), Cell3DPosition(1, 1, 0) }, Cell3DPosition(0, 1, 1) }, // S_Z
-    { { bitset<12>(0xC00), Cell3DPosition(-1, -1, 0) }, Cell3DPosition(1, -2, 1) }, // S_RevZ
-    { { bitset<12>(0x808), Cell3DPosition(2, 0, 0) }, Cell3DPosition(2, -1, 0) }, // X2
-    { { bitset<12>(0x220), Cell3DPosition(0, 2, 0) }, Cell3DPosition(-1, 2, 0) }, // Y2
-    { { bitset<12>(0x100), Cell3DPosition(1, 1, 0) }, Cell3DPosition(1, 1, 0) }, // S_Z
-    { { bitset<12>(0x400), Cell3DPosition(-1, -1, 0) }, Cell3DPosition(-1, -1, 0) }, // S_RevZ
-    { { bitset<12>(0x040), Cell3DPosition(2, 0, 0) }, Cell3DPosition(1, -1, 1) }, // X2
-    { { bitset<12>(0x080), Cell3DPosition(0, 2, 0) }, Cell3DPosition(-1, 1, 1) }, // Y2
-    { { bitset<12>(0x900), Cell3DPosition(2, 0, 0) }, Cell3DPosition(2, 0, 0) }, // X2
-    { { bitset<12>(0x300), Cell3DPosition(0, 2, 0) }, Cell3DPosition(0, 2, 0) }, // Y2
-    { { bitset<12>(0x110), Cell3DPosition(0, 0, 1) }, Cell3DPosition(1, 1, 1) }, // Z1
-    { { bitset<12>(0x404), Cell3DPosition(-1, -1, 1) }, Cell3DPosition(-2, -2, 1) }, // RevZ1
-    { { bitset<12>(0x808), Cell3DPosition(3, 0, 0) }, Cell3DPosition(2, -1, 0) }, // X3
-    { { bitset<12>(0x220), Cell3DPosition(0, 3, 0) }, Cell3DPosition(-1, 2, 0) }, // Y3
-    { { bitset<12>(0x100), Cell3DPosition(0, 0, 1) }, Cell3DPosition(0, 0, 1) }, // Z1
-    { { bitset<12>(0x404), Cell3DPosition(-1, -1, 1) }, Cell3DPosition(-1, -1, 1) }, // RevZ1
-    { { bitset<12>(0x042), Cell3DPosition(3, 0, 0) }, Cell3DPosition(3, 0, 0) }, // X3
-    { { bitset<12>(0x081), Cell3DPosition(0, 3, 0) }, Cell3DPosition(0, 3, 0) }, // Y3
-    { { bitset<12>(0x110), Cell3DPosition(0, 0, 2) }, Cell3DPosition(1, 1, 1) }, // Z2
-    { { bitset<12>(0x404), Cell3DPosition(-2, -2, 2) }, Cell3DPosition(-2, -2, 1) }, // RevZ2
-    { { bitset<12>(0x808), Cell3DPosition(4, 0, 0) }, Cell3DPosition(2, -1, 0) }, // X4
-    { { bitset<12>(0x220), Cell3DPosition(0, 4, 0) }, Cell3DPosition(-1, 2, 0) }, // Y4
-    { { bitset<12>(0x110), Cell3DPosition(0, 0, 2) }, Cell3DPosition(0, 1, 1) }, // Z2
-    { { bitset<12>(0x404), Cell3DPosition(-2, -2, 2) }, Cell3DPosition(-1, -2, 1) }, // RevZ2
-    { { bitset<12>(0x042), Cell3DPosition(4, 0, 0) }, Cell3DPosition(2, -1, 1) }, // X4
-    { { bitset<12>(0x081), Cell3DPosition(0, 4, 0) }, Cell3DPosition(-1, 2, 1) }, // Y4
-    { { bitset<12>(0x110), Cell3DPosition(0, 0, 3) }, Cell3DPosition(1, 1, 1) }, // Z3
-    { { bitset<12>(0x404), Cell3DPosition(-3, -3, 3) }, Cell3DPosition(-2, -2, 1) }, // RevZ3
-    { { bitset<12>(0x808), Cell3DPosition(5, 0, 0) }, Cell3DPosition(2, -1, 0) }, // X5
-    { { bitset<12>(0x220), Cell3DPosition(0, 5, 0) }, Cell3DPosition(-1, 2, 0) }, // Y5
-    { { bitset<12>(0xA80), Cell3DPosition(0, 0, 2) }, Cell3DPosition(0, 0, 2) }, // Z2
-    { { bitset<12>(0xA02), Cell3DPosition(-2, -2, 2) }, Cell3DPosition(-2, -2, 2) }, // RevZ2
-    { { bitset<12>(0xC00), Cell3DPosition(4, 0, 0) }, Cell3DPosition(3, -1, 1) }, // X4
-    { { bitset<12>(0x600), Cell3DPosition(0, 4, 0) }, Cell3DPosition(-1, 3, 1) }, // Y4
-    { { bitset<12>(0x800), Cell3DPosition(4, 0, 0) }, Cell3DPosition(4, 0, 0) }, // X4
-    { { bitset<12>(0x200), Cell3DPosition(0, 4, 0) }, Cell3DPosition(0, 4, 0) }, // Y4
-    { { bitset<12>(0x110), Cell3DPosition(0, 0, 3) }, Cell3DPosition(0, 0, 3) }, // Z3
-    { { bitset<12>(0x404), Cell3DPosition(-3, -3, 3) }, Cell3DPosition(-3, -3, 3) }, // RevZ3
-    { { bitset<12>(0x042), Cell3DPosition(5, 0, 0) }, Cell3DPosition(2, -1, 1) }, // X5
-    { { bitset<12>(0x081), Cell3DPosition(0, 5, 0) }, Cell3DPosition(-1, 2, 1) }, // Y5
-    { { bitset<12>(0x110), Cell3DPosition(0, 0, 4) }, Cell3DPosition(1, 1, 1) }, // Z4
-    { { bitset<12>(0x404), Cell3DPosition(-4, -4, 4) }, Cell3DPosition(-2, -2, 1) }, // RevZ4
-    { { bitset<12>(0x808), Cell3DPosition(0, -1, 1) }, Cell3DPosition(1, -2, 1) }, // RZ1
-    { { bitset<12>(0x220), Cell3DPosition(-1, 0, 1) }, Cell3DPosition(-2, 1, 1) }, // LZ1
-    { { bitset<12>(0xC00), Cell3DPosition(5, 0, 0) }, Cell3DPosition(3, -1, 1) }, // X5
-    { { bitset<12>(0x600), Cell3DPosition(0, 5, 0) }, Cell3DPosition(-1, 3, 1) }, // Y5
-    { { bitset<12>(0x110), Cell3DPosition(0, 0, 4) }, Cell3DPosition(0, 1, 2) }, // Z4
-    { { bitset<12>(0x404), Cell3DPosition(-4, -4, 4) }, Cell3DPosition(-2, -3, 2) }, // RevZ4
-    { { bitset<12>(0x800), Cell3DPosition(0, -1, 1) }, Cell3DPosition(0, -1, 1) }, // RZ1
-    { { bitset<12>(0x200), Cell3DPosition(-1, 0, 1) }, Cell3DPosition(-1, 0, 1) }, // LZ1
-    { { bitset<12>(0xC00), Cell3DPosition(5, 0, 0) }, Cell3DPosition(4, -1, 1) }, // X5
-    { { bitset<12>(0x600), Cell3DPosition(0, 5, 0) }, Cell3DPosition(-1, 4, 1) }, // Y5
-    { { bitset<12>(0xA0), Cell3DPosition(0, 0, 4) }, Cell3DPosition(-1, 0, 4) }, // Z4
-    { { bitset<12>(0xA), Cell3DPosition(-4, -4, 4) }, Cell3DPosition(-3, -4, 4) }, // RevZ4
-    { { bitset<12>(0x800), Cell3DPosition(5, 0, 0) }, Cell3DPosition(5, 0, 0) }, // X5
-    { { bitset<12>(0x200), Cell3DPosition(0, 5, 0) }, Cell3DPosition(0, 5, 0) }, // Y5
-    { { bitset<12>(0x110), Cell3DPosition(0, 0, 5) }, Cell3DPosition(1, 1, 1) }, // Z5
-    { { bitset<12>(0x404), Cell3DPosition(-5, -5, 5) }, Cell3DPosition(-2, -2, 1) }, // RevZ5
-    { { bitset<12>(0x808), Cell3DPosition(0, -2, 2) }, Cell3DPosition(1, -2, 1) }, // RZ2
-    { { bitset<12>(0x220), Cell3DPosition(-2, 0, 2) }, Cell3DPosition(-2, 1, 1) }, // LZ2
-    { { bitset<12>(0x200), Cell3DPosition(0, 0, 4) }, Cell3DPosition(0, 0, 4) }, // Z4
-    { { bitset<12>(0x800), Cell3DPosition(-4, -4, 4) }, Cell3DPosition(-4, -4, 4) }, // RevZ4
-    { { bitset<12>(0x110), Cell3DPosition(0, 0, 5) }, Cell3DPosition(0, 1, 2) }, // Z5
-    { { bitset<12>(0x404), Cell3DPosition(-5, -5, 5) }, Cell3DPosition(-2, -3, 2) }, // RevZ5
-    { { bitset<12>(0x800), Cell3DPosition(0, -2, 2) }, Cell3DPosition(1, -1, 1) }, // RZ2
-    { { bitset<12>(0x200), Cell3DPosition(-2, 0, 2) }, Cell3DPosition(-2, 0, 1) }, // LZ2
-    { { bitset<12>(0xA0), Cell3DPosition(0, 0, 5) }, Cell3DPosition(0, 1, 3) }, // Z5
-    { { bitset<12>(0xA), Cell3DPosition(-5, -5, 5) }, Cell3DPosition(-3, -4, 3) }, // RevZ5
-    { { bitset<12>(0xD40), Cell3DPosition(0, -2, 2) }, Cell3DPosition(0, -2, 2) }, // RZ2
-    { { bitset<12>(0x701), Cell3DPosition(-2, 0, 2) }, Cell3DPosition(-2, 0, 2) }, // LZ2
-    { { bitset<12>(0x808), Cell3DPosition(0, -3, 3) }, Cell3DPosition(1, -2, 1) }, // RZ3
-    { { bitset<12>(0x220), Cell3DPosition(-3, 0, 3) }, Cell3DPosition(-2, 1, 1) }, // LZ3
-    { { bitset<12>(0xA0), Cell3DPosition(0, 0, 5) }, Cell3DPosition(-1, 0, 5) }, // Z5
-    { { bitset<12>(0x840), Cell3DPosition(-5, -5, 5) }, Cell3DPosition(-4, -5, 0) }, // RevZ5
-    { { bitset<12>(0x808), Cell3DPosition(0, -3, 3) }, Cell3DPosition(0, -3, 3) }, // RZ3
-    { { bitset<12>(0x220), Cell3DPosition(-3, 0, 3) }, Cell3DPosition(-3, 0, 3) }, // LZ3
-    { { bitset<12>(0x200), Cell3DPosition(0, 0, 5) }, Cell3DPosition(0, 0, 5) }, // Z5
-    { { bitset<12>(0x800), Cell3DPosition(-5, -5, 5) }, Cell3DPosition(-5, -5, 5) }, // RevZ5
-    { { bitset<12>(0x808), Cell3DPosition(0, -4, 4) }, Cell3DPosition(1, -2, 1) }, // RZ4
-    { { bitset<12>(0x220), Cell3DPosition(-4, 0, 4) }, Cell3DPosition(-2, 1, 1) }, // LZ4
-    { { bitset<12>(0x808), Cell3DPosition(0, -4, 4) }, Cell3DPosition(1, -2, 2) }, // RZ4
-    { { bitset<12>(0x220), Cell3DPosition(-4, 0, 4) }, Cell3DPosition(-3, 0, 2) }, // LZ4
-    { { bitset<12>(0x050), Cell3DPosition(0, -4, 4) }, Cell3DPosition(1, -3, 3) }, // RZ4
-    { { bitset<12>(0x005), Cell3DPosition(-4, 0, 4) }, Cell3DPosition(-4, 0, 3) }, // LZ4
-    { { bitset<12>(0x808), Cell3DPosition(0, -5, 5) }, Cell3DPosition(1, -2, 1) }, // RZ5
-    { { bitset<12>(0x220), Cell3DPosition(-5, 0, 5) }, Cell3DPosition(-2, 1, 1) }, // LZ5
-    { { bitset<12>(0x040), Cell3DPosition(0, -4, 4) }, Cell3DPosition(0, -4, 4) }, // RZ4
-    { { bitset<12>(0x001), Cell3DPosition(-4, 0, 4) }, Cell3DPosition(-4, 0, 4) }, // LZ4
-    { { bitset<12>(0x808), Cell3DPosition(0, -5, 5) }, Cell3DPosition(1, -2, 1) }, // RZ5
-    { { bitset<12>(0x220), Cell3DPosition(-5, 0, 5) }, Cell3DPosition(-2, 1, 1) }, // LZ5
-    { { bitset<12>(0x808), Cell3DPosition(0, -5, 5) }, Cell3DPosition(1, -2, 2) }, // RZ5
-    { { bitset<12>(0x220), Cell3DPosition(-5, 0, 5) }, Cell3DPosition(-3, 0, 2) }, // LZ5
-    { { bitset<12>(0x050), Cell3DPosition(0, -5, 5) }, Cell3DPosition(1, -3, 3) }, // RZ5
-    { { bitset<12>(0x005), Cell3DPosition(-5, 0, 5) }, Cell3DPosition(-4, 0, 3) }, // LZ5
-    { { bitset<12>(0x050), Cell3DPosition(0, -5, 5) }, Cell3DPosition(0, -4, 5) }, // RZ5
-    { { bitset<12>(0x005), Cell3DPosition(-5, 0, 5) }, Cell3DPosition(-5, -1, 5) }, // LZ5
-    { { bitset<12>(0x100), Cell3DPosition(0, -5, 5) }, Cell3DPosition(0, -5, 5) }, // RZ5
-    { { bitset<12>(0x400), Cell3DPosition(-5, 0, 5) }, Cell3DPosition(-5, 0, 5) } // LZ5 
+    { LRKeyTuple(0x840, Cell3DPosition(0, 0, 0), 1), Cell3DPosition(-1, 0, 1) }, // R 1
+    { LRKeyTuple(0x100, Cell3DPosition(0, 0, 0), 2), Cell3DPosition(-1, -1, 0) }, // R 2
+    { LRKeyTuple(0x140, Cell3DPosition(1, -1, 0), 1), Cell3DPosition(-1, -1, 1) }, // S_RZ 1
+    { LRKeyTuple(0x180, Cell3DPosition(-1, 1, 0), 1), Cell3DPosition(-1, -1, 1) }, // S_LZ 1
+    { LRKeyTuple(0x840, Cell3DPosition(1, 0, 0), 1), Cell3DPosition(-1, -1, 1) }, // X1 1
+    { LRKeyTuple(0x280, Cell3DPosition(0, 1, 0), 1), Cell3DPosition(-1, -1, 1) }, // Y1 1
+    { LRKeyTuple(0x220, Cell3DPosition(1, 1, 0), 1), Cell3DPosition(-1, -1, 2) }, // S_Z 1
+    { LRKeyTuple(0x808, Cell3DPosition(-1, -1, 0), 1), Cell3DPosition(-1, -1, 2) }, // S_RevZ 1
+    { LRKeyTuple(0x200, Cell3DPosition(1, 1, 0), 2), Cell3DPosition(1, 0, 0) }, // S_Z 2
+    { LRKeyTuple(0x800, Cell3DPosition(-1, -1, 0), 2), Cell3DPosition(-1, 0, 0) }, // S_RevZ 2
+    { LRKeyTuple(0x300, Cell3DPosition(1, 1, 0), 3), Cell3DPosition(1, 0, 0) }, // S_Z 3
+    { LRKeyTuple(0xD00, Cell3DPosition(-1, -1, 0), 3), Cell3DPosition(-1, 0, 0) }, // S_RevZ 3
+    { LRKeyTuple(0x808, Cell3DPosition(2, 0, 0), 1), Cell3DPosition(0, 0, 1) }, // X2 1
+    { LRKeyTuple(0x220, Cell3DPosition(0, 2, 0), 1), Cell3DPosition(0, 0, 1) }, // Y2 1
+    { LRKeyTuple(0x100, Cell3DPosition(1, 1, 0), 4), Cell3DPosition(1, 0, -1) }, // S_Z 4
+    { LRKeyTuple(0x600, Cell3DPosition(-1, -1, 0), 4), Cell3DPosition(0, 1, -1) }, // S_RevZ 4
+    { LRKeyTuple(0x040, Cell3DPosition(2, 0, 0), 2), Cell3DPosition(-1, 0, 1) }, // X2 2
+    { LRKeyTuple(0x080, Cell3DPosition(0, 2, 0), 2), Cell3DPosition(0, -1, 1) }, // Y2 2
+    { LRKeyTuple(0x900, Cell3DPosition(2, 0, 0), 3), Cell3DPosition(1, 1, -1) }, // X2 3
+    { LRKeyTuple(0x300, Cell3DPosition(0, 2, 0), 3), Cell3DPosition(1, 1, -1) }, // Y2 3
+    { LRKeyTuple(0x110, Cell3DPosition(0, 0, 1), 1), Cell3DPosition(-1, -1, 2) }, // Z1 1
+    { LRKeyTuple(0x404, Cell3DPosition(-1, -1, 1), 1), Cell3DPosition(-1, -1, 2) }, // RevZ1 1
+    { LRKeyTuple(0x808, Cell3DPosition(3, 0, 0), 1), Cell3DPosition(0, 0, 1) }, // X3 1
+    { LRKeyTuple(0x220, Cell3DPosition(0, 3, 0), 1), Cell3DPosition(0, 0, 1) }, // Y3 1
+    { LRKeyTuple(0x100, Cell3DPosition(0, 0, 1), 2), Cell3DPosition(-1, -1, 0) }, // Z1 2
+    { LRKeyTuple(0x400, Cell3DPosition(-1, -1, 1), 2), Cell3DPosition(1, 1, 0) }, // RevZ1 2
+    { LRKeyTuple(0x042, Cell3DPosition(3, 0, 0), 2), Cell3DPosition(1, 1, 0) }, // X3 2
+    { LRKeyTuple(0x081, Cell3DPosition(0, 3, 0), 2), Cell3DPosition(1, 1, 0) }, // Y3 2
+    { LRKeyTuple(0x110, Cell3DPosition(0, 0, 2), 1), Cell3DPosition(-1, -1, 2) }, // Z2 1
+    { LRKeyTuple(0x404, Cell3DPosition(-2, -2, 2), 1), Cell3DPosition(-1, -1, 2) }, // RevZ2 1
+    { LRKeyTuple(0x808, Cell3DPosition(4, 0, 0), 1), Cell3DPosition(0, 0, 1) }, // X4 1
+    { LRKeyTuple(0x220, Cell3DPosition(0, 4, 0), 1), Cell3DPosition(0, 0, 1) }, // Y4 1
+    { LRKeyTuple(0x100, Cell3DPosition(0, 0, 2), 2), Cell3DPosition(-1, 0, 0) }, // Z2 2
+    { LRKeyTuple(0x400, Cell3DPosition(-2, -2, 2), 2), Cell3DPosition(1, 0, 0) }, // RevZ2 2
+    { LRKeyTuple(0x042, Cell3DPosition(4, 0, 0), 2), Cell3DPosition(0, 0, 1) }, // X4 2
+    { LRKeyTuple(0x081, Cell3DPosition(0, 4, 0), 2), Cell3DPosition(0, 0, 1) }, // Y4 2
+    { LRKeyTuple(0x110, Cell3DPosition(0, 0, 3), 1), Cell3DPosition(-1, -1, 2) }, // Z3 1
+    { LRKeyTuple(0x404, Cell3DPosition(-3, -3, 3), 1), Cell3DPosition(-1, -1, 2) }, // RevZ3 1
+    { LRKeyTuple(0x808, Cell3DPosition(5, 0, 0), 1), Cell3DPosition(0, 0, 1) }, // X5 1
+    { LRKeyTuple(0x220, Cell3DPosition(0, 5, 0), 1), Cell3DPosition(0, 0, 1) }, // Y5 1
+    { LRKeyTuple(0xB80, Cell3DPosition(0, 0, 2), 3), Cell3DPosition(0, -1, 1) }, // Z2 3
+    { LRKeyTuple(0xE02, Cell3DPosition(-2, -2, 2), 3), Cell3DPosition(-1, 0, 1) }, // RevZ2 3
+    { LRKeyTuple(0xC00, Cell3DPosition(4, 0, 0), 3), Cell3DPosition(1, 0, 0) }, // X4 3
+    { LRKeyTuple(0x600, Cell3DPosition(0, 4, 0), 3), Cell3DPosition(0, 1, 0) }, // Y4 3
+    { LRKeyTuple(0x800, Cell3DPosition(4, 0, 0), 4), Cell3DPosition(1, 1, -1) }, // X4 4
+    { LRKeyTuple(0x200, Cell3DPosition(0, 4, 0), 4), Cell3DPosition(1, 1, -1) }, // Y4 4
+    { LRKeyTuple(0x110, Cell3DPosition(0, 0, 3), 2), Cell3DPosition(-1, -1, 2) }, // Z3 2
+    { LRKeyTuple(0x404, Cell3DPosition(-3, -3, 3), 2), Cell3DPosition(-1, -1, 2) }, // RevZ3 2
+    { LRKeyTuple(0x042, Cell3DPosition(5, 0, 0), 2), Cell3DPosition(0, 0, 1) }, // X5 2
+    { LRKeyTuple(0x081, Cell3DPosition(0, 5, 0), 2), Cell3DPosition(0, 0, 1) }, // Y5 2
+    { LRKeyTuple(0x110, Cell3DPosition(0, 0, 4), 1), Cell3DPosition(-1, -1, 2) }, // Z4 1
+    { LRKeyTuple(0x404, Cell3DPosition(-4, -4, 4), 1), Cell3DPosition(-1, -1, 2) }, // RevZ4 1
+    { LRKeyTuple(0x808, Cell3DPosition(0, -1, 1), 1), Cell3DPosition(-1, -1, 2) }, // RZ1 1
+    { LRKeyTuple(0x220, Cell3DPosition(-1, 0, 1), 1), Cell3DPosition(-1, -1, 2) }, // LZ1 1
+    { LRKeyTuple(0xC00, Cell3DPosition(5, 0, 0), 3), Cell3DPosition(1, 0, 0) }, // X5 3
+    { LRKeyTuple(0x600, Cell3DPosition(0, 5, 0), 3), Cell3DPosition(0, 1, 0) }, // Y5 3
+    { LRKeyTuple(0x110, Cell3DPosition(0, 0, 4), 2), Cell3DPosition(-1, 0, 1) }, // Z4 2
+    { LRKeyTuple(0x404, Cell3DPosition(-4, -4, 4), 2), Cell3DPosition(0, -1, 1) }, // RevZ4 2
+    { LRKeyTuple(0x800, Cell3DPosition(0, -1, 1), 2), Cell3DPosition(-1, 1, 0) }, // RZ1 2
+    { LRKeyTuple(0x200, Cell3DPosition(-1, 0, 1), 2), Cell3DPosition(1, -1, 0) }, // LZ1 2
+    { LRKeyTuple(0xC00, Cell3DPosition(5, 0, 0), 4), Cell3DPosition(1, 0, 0) }, // X5 4
+    { LRKeyTuple(0x600, Cell3DPosition(0, 5, 0), 4), Cell3DPosition(0, 1, 0) }, // Y5 4
+    { LRKeyTuple(0xA0, Cell3DPosition(0, 0, 4), 3), Cell3DPosition(-1, -1, 2) }, // Z4 3
+    { LRKeyTuple(0xA, Cell3DPosition(-4, -4, 4), 3), Cell3DPosition(-1, -1, 2) }, // RevZ4 3
+    { LRKeyTuple(0x800, Cell3DPosition(5, 0, 0), 5), Cell3DPosition(1, 1, -1) }, // X5 5
+    { LRKeyTuple(0x200, Cell3DPosition(0, 5, 0), 5), Cell3DPosition(1, 1, -1) }, // Y5 5
+    { LRKeyTuple(0x110, Cell3DPosition(0, 0, 5), 1), Cell3DPosition(-1, -1, 2) }, // Z5 1
+    { LRKeyTuple(0x404, Cell3DPosition(-5, -5, 5), 1), Cell3DPosition(-1, -1, 2) }, // RevZ5 1
+    { LRKeyTuple(0x808, Cell3DPosition(0, -2, 2), 1), Cell3DPosition(-1, -1, 2) }, // RZ2 1
+    { LRKeyTuple(0x220, Cell3DPosition(-2, 0, 2), 1), Cell3DPosition(-1, -1, 2) }, // LZ2 1
+    { LRKeyTuple(0x200, Cell3DPosition(0, 0, 4), 4), Cell3DPosition(1, 0, 0) }, // Z4 4
+    { LRKeyTuple(0x800, Cell3DPosition(-4, -4, 4), 4), Cell3DPosition(-1, 0, 0) }, // RevZ4 4
+    { LRKeyTuple(0x110, Cell3DPosition(0, 0, 5), 2), Cell3DPosition(-1, 0, 1) }, // Z5 2
+    { LRKeyTuple(0x404, Cell3DPosition(-5, -5, 5), 2), Cell3DPosition(0, -1, 1) }, // RevZ5 2
+    { LRKeyTuple(0x800, Cell3DPosition(0, -2, 2), 2), Cell3DPosition(0, 1, 0) }, // RZ2 2
+    { LRKeyTuple(0x200, Cell3DPosition(-2, 0, 2), 2), Cell3DPosition(0, -1, 0) }, // LZ2 2
+    { LRKeyTuple(0xA0, Cell3DPosition(0, 0, 5), 3), Cell3DPosition(0, 0, 1) }, // Z5 3
+    { LRKeyTuple(0xA, Cell3DPosition(-5, -5, 5), 3), Cell3DPosition(-1, -1, 2) }, // RevZ5 3
+    { LRKeyTuple(0xD40, Cell3DPosition(0, -2, 2), 3), Cell3DPosition(-1, -1, 1) }, // RZ2 3
+    { LRKeyTuple(0x701, Cell3DPosition(-2, 0, 2), 3), Cell3DPosition(0, 0, 1) }, // LZ2 3
+    { LRKeyTuple(0x808, Cell3DPosition(0, -3, 3), 1), Cell3DPosition(-1, -1, 2) }, // RZ3 1
+    { LRKeyTuple(0x220, Cell3DPosition(-3, 0, 3), 1), Cell3DPosition(-1, -1, 2) }, // LZ3 1
+    { LRKeyTuple(0xA0, Cell3DPosition(0, 0, 5), 4), Cell3DPosition(-1, -1, 2) }, // Z5 4
+    { LRKeyTuple(0x840, Cell3DPosition(-5, -5, 5), 4), Cell3DPosition(-1, -1, 1) }, // RevZ5 4
+    { LRKeyTuple(0x808, Cell3DPosition(0, -3, 3), 2), Cell3DPosition(-1, -1, 2) }, // RZ3 2
+    { LRKeyTuple(0x220, Cell3DPosition(-3, 0, 3), 2), Cell3DPosition(-1, -1, 2) }, // LZ3 2
+    { LRKeyTuple(0x200, Cell3DPosition(0, 0, 5), 5), Cell3DPosition(1, 0, 0) }, // Z5 5
+    { LRKeyTuple(0x800, Cell3DPosition(-5, -5, 5), 5), Cell3DPosition(-1, 0, 0) }, // RevZ5 5
+    { LRKeyTuple(0x808, Cell3DPosition(0, -4, 4), 1), Cell3DPosition(-1, -1, 2) }, // RZ4 1
+    { LRKeyTuple(0x220, Cell3DPosition(-4, 0, 4), 1), Cell3DPosition(-1, -1, 2) }, // LZ4 1
+    { LRKeyTuple(0x808, Cell3DPosition(0, -4, 4), 2), Cell3DPosition(0, 0, 1) }, // RZ4 2
+    { LRKeyTuple(0x220, Cell3DPosition(-4, 0, 4), 2), Cell3DPosition(-1, -1, 1) }, // LZ4 2
+    { LRKeyTuple(0x050, Cell3DPosition(0, -4, 4), 3), Cell3DPosition(0, -1, 1) }, // RZ4 3
+    { LRKeyTuple(0x005, Cell3DPosition(-4, 0, 4), 3), Cell3DPosition(-1, 0, 1) }, // LZ4 3
+    { LRKeyTuple(0x808, Cell3DPosition(0, -5, 5), 1), Cell3DPosition(-1, -1, 2) }, // RZ5 1
+    { LRKeyTuple(0x220, Cell3DPosition(-5, 0, 5), 1), Cell3DPosition(-1, -1, 2) }, // LZ5 1
+    { LRKeyTuple(0x040, Cell3DPosition(0, -4, 4), 4), Cell3DPosition(-1, -1, 1) }, // RZ4 4
+    { LRKeyTuple(0x001, Cell3DPosition(-4, 0, 4), 4), Cell3DPosition(0, 0, 1) }, // LZ4 4
+    { LRKeyTuple(0x808, Cell3DPosition(0, -5, 5), 2), Cell3DPosition(0, 0, 1) }, // RZ5 2
+    { LRKeyTuple(0x220, Cell3DPosition(-5, 0, 5), 2), Cell3DPosition(-1, -1, 1) }, // LZ5 2
+    { LRKeyTuple(0x050, Cell3DPosition(0, -5, 5), 3), Cell3DPosition(0, -1, 1) }, // RZ5 3
+    { LRKeyTuple(0x005, Cell3DPosition(-5, 0, 5), 3), Cell3DPosition(-1, 0, 1) }, // LZ5 3
+    { LRKeyTuple(0x050, Cell3DPosition(0, -5, 5), 4), Cell3DPosition(-1, -1, 2) }, // RZ5 4
+    { LRKeyTuple(0x005, Cell3DPosition(-5, 0, 5), 4), Cell3DPosition(-1, -1, 2) }, // LZ5 4
+    { LRKeyTuple(0x100, Cell3DPosition(0, -5, 5), 5), Cell3DPosition(0, -1, 0) }, // RZ5 5
+    { LRKeyTuple(0x400, Cell3DPosition(-5, 0, 5), 5), Cell3DPosition(0, 1, 0) } // LZ5 5    
 };
 
 
@@ -153,23 +173,27 @@ localMotionRules =
  * Search for the next action among the local rules library 
  * @param localNeighborhood a bitset representing the local neighborhood 
  *  of module at position pos
+ * @param pos position of the rule matching module 
  * @param tPos final target position of the module awaiting action
  * @param tileRootPos the position of the nearest tile root, for normalizing the coordinates
  * @param nextPos next position that the moving module has occupy
  * @return the matched next position if there is one, pos otherwise (meaning no movement)
  */
 inline static bool matchLocalRules(const std::bitset<12>& localNeighborhood,
+                                   const Cell3DPosition& pos,
                                    const Cell3DPosition& tPos,
                                    const Cell3DPosition& tileRootPos,
+                                   const short step,
                                    Cell3DPosition& nextPos) {
     cout << "{ " << localNeighborhood << "("
          << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
-         << ", " << tPos - tileRootPos << " }" << " -> ";
+         << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
 
-    auto match = localMotionRules.find(make_pair(localNeighborhood, tPos - tileRootPos));
+    auto match = localMotionRules.find(LRKeyTuple(localNeighborhood,
+                                                  tPos - tileRootPos, step));
         
     if (match != localMotionRules.end()) {
-        nextPos =  match->second + tileRootPos;
+        nextPos =  match->second + pos;
         cout << match->second << endl;
     } else {
         cout << "NO MATCH" << endl;

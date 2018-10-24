@@ -42,15 +42,18 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
     : Rotation3DStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1, faceReq)
 {}
 
-Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Cell3DPosition& tPos,
+Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m,
+                                           const Cell3DPosition& tPos,
                                            RotationLinkType faceReq, bool exclusively)
     : Rotation3DStartEvent(t, m,
                            // If not exclusively, fall back to any face type
                            (Catoms3DMotionEngine::findMotionPivot(m, tPos, faceReq) == NULL
                             and (faceReq != RotationLinkType::Any and not exclusively) ?
-                            Catoms3DMotionEngine::findMotionPivot(m, tPos, faceReq)
-                            : Catoms3DMotionEngine::findMotionPivot(m, tPos, Any)),
-                           tPos, faceReq)
+                            Catoms3DMotionEngine::findMotionPivot(m, tPos, Any)
+                            : Catoms3DMotionEngine::findMotionPivot(m, tPos, faceReq)),
+                           tPos, (Catoms3DMotionEngine::findMotionPivot(m, tPos, faceReq)==NULL
+                                  and (faceReq != RotationLinkType::Any and not exclusively) ?
+                                  Any : faceReq), exclusively)
 {}
 
 Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot,
@@ -63,7 +66,7 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
         throw InvalidArgumentException(__PRETTY_FUNCTION__, "m = NULL");
     else if (not pivot)
         throw NoAvailableRotationPivotException(m->position);
-    
+
     // Determine anchor connectors of module _pivot_ and m are connected to each other_
     short fromConM = m->getConnectorId(pivot->position);
     short fromConP = pivot->getConnectorId(m->position);

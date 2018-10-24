@@ -148,8 +148,8 @@ short Catoms3DBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos
 }
 
 
-std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
-    stream << bb.blockId << "\tcolor: " << bb.color;
+std::ostream& Catoms3D::operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
+    stream << "#" << bb.blockId;
     return stream;
 }
 

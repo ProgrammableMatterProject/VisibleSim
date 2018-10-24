@@ -45,8 +45,8 @@ public:
     {
         Cell3DPosition(0,0,-1), // ZBranch
         Cell3DPosition(1,1,-1), // RevZBranch
-        Cell3DPosition(1,0,-1), // LeftZBranch
-        Cell3DPosition(0,1,-1), // RightZBranch
+        Cell3DPosition(1,0,-1), // LZBranch
+        Cell3DPosition(0,1,-1), // RZBranch
         Cell3DPosition(-1,0,0), // XBranch
         Cell3DPosition(0,-1,0) // YBranch
     };
@@ -98,7 +98,8 @@ public:
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
     std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
     
-    int itCounter = 0; // When t > 5 all supports are in place 
+    int itCounter = 0; // When t > 5 all supports are in place
+    short step = 1; // For moving FreeAgents
     bool fedCatomsOnLastRound = false;
     
     // TargetCSG *target;
