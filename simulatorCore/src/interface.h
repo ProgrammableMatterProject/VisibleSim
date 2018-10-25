@@ -45,7 +45,7 @@ public :
 
 	GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutWindow();
-	void clearChilden();
+	virtual void clearChildren();
 	inline void setGeometry(GLint px,GLint py,GLint pw,GLint ph) { x=px; y=py; w=pw; h=ph; };
 	inline GlutWindow *getChild(int n) { return children[n]; };
 	virtual void glDraw();
@@ -197,6 +197,7 @@ public :
 	virtual ~GlutPopupMenuWindow() {};
 
 	void setCenterPosition(int ix,int iy) { x=ix-w/2; y=iy; };
+	void addButton(GlutWindow *button);
 	void addButton(int id,const char *titre,GlutPopupMenuWindow *subMenu=NULL);
 	GlutWindow *getButton(unsigned int id);
 	int mouseFunc(int button,int state,int x,int y);
