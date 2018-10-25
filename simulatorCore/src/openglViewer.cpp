@@ -256,7 +256,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             if (slct) slct->toggleHighlight();
             // set n-1 block selected block (no selected block if n=0
             if (n) {
-                GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n-1);
+                GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n);
                 glB->toggleHighlight();
                 glB->fireSelectedTrigger();
             } else BaseSimulator::getWorld()->setselectedGlBlock(-1);
@@ -483,7 +483,7 @@ void GlutContext::idleFunc(void) {
         if (tm-lastMotionTime>100) {
             int n=selectFunc(lastMousePos[0],lastMousePos[1]);
             if (n) {
-                GlBlock *slct=BaseSimulator::getWorld()->getBlockByNum(n-1);
+                GlBlock *slct=BaseSimulator::getWorld()->getBlockByNum(n);
                 popup->setCenterPosition(lastMousePos[0],screenHeight - lastMousePos[1]);
                 popup->setInfo(slct->getPopupInfo());
                 popup->show(true);
