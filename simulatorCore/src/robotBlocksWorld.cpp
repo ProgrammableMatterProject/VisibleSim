@@ -62,7 +62,7 @@ void RobotBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DP
 	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), robotBlock));
 
 	RobotBlocksGlBlock *glBlock = new RobotBlocksGlBlock(blockId);
-	tabGlBlocks.push_back(glBlock);
+	mapGlBlocks.insert(make_pair(blockId, glBlock));
 	robotBlock->setGlBlock(glBlock);
 	robotBlock->setPosition(pos);
 	robotBlock->setColor(col);
@@ -109,12 +109,10 @@ void RobotBlocksWorld::glDraw() {
 		glPushMatrix();
 		glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 		glDisable(GL_TEXTURE_2D);
-		vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 		lock();
-		while (ic!=tabGlBlocks.end()) {
-			((RobotBlocksGlBlock*)(*ic))->glDraw(objBlock);
-			ic++;
-		}
+        for (const auto& pair : mapGlBlocks) {
+            ((RobotBlocksGlBlock*)pair.second)->glDraw(objBlock);
+        }
 		unlock();
 
 		glPopMatrix();
@@ -202,13 +200,10 @@ void RobotBlocksWorld::glDrawId() {
 	glPushMatrix();
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-	int n=1;
 	lock();
-	while (ic!=tabGlBlocks.end()) {
-		((RobotBlocksGlBlock*)(*ic))->glDrawId(objBlock,n);
-		ic++;
-	}
+    for (const auto& pair : mapGlBlocks) {
+        ((RobotBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
+    }        
 	unlock();
 	glPopMatrix();
 }
@@ -218,13 +213,11 @@ void RobotBlocksWorld::glDrawIdByMaterial() {
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 
 	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 	int n=1;
 	lock();
-	while (ic!=tabGlBlocks.end()) {
-		((RobotBlocksGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
-		ic++;
-	}
+    for (const auto& pair : mapGlBlocks) {
+        ((RobotBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
+    }
 	unlock();
 	glPopMatrix();
 
