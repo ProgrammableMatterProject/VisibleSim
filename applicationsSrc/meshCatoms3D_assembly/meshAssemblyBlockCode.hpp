@@ -70,7 +70,7 @@ public:
     };
                
     inline static Time getRoundDuration() {
-        return (2 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
+        return (2.2 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
                 + Rotations3D::COM_DELAY);// + (getScheduler()->now() / 1000);
     }
 
@@ -211,6 +211,13 @@ y the module
      * @return absolute position of the requested entry point location
      */
     const Cell3DPosition getEntryPointPosition(MeshComponent epl) const;
+
+    /** 
+     * Indicates whether position pos is an entry point location
+     * @param pos position to evaluate
+     * @return true if pos is an EPL, false otherwise
+     */
+    bool isOnEntryPoint(const Cell3DPosition& pos) const;    
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

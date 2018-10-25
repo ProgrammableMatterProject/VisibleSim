@@ -41,15 +41,12 @@ MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     catom = host;
     
     const Cell3DPosition& ub = lattice->getGridUpperBounds();
-    // Round down mesh dimensions to multiple of B
+    // Round down mesh dimensions to previous multiple of B
     // TODO: Adapt to CSG
     X_MAX = ub[0] - (B - ub[0] % B); 
     Y_MAX = ub[1] - (B - ub[1] % B);
     Z_MAX = ub[2] - (B - ub[2] % B);
-
-    ruleMatcher = new MeshRuleMatcher(X_MAX - meshSeedPosition[0],
-                                      Y_MAX - meshSeedPosition[1],
-                                      Z_MAX - meshSeedPosition[2], B);
+    ruleMatcher = new MeshRuleMatcher(X_MAX, Y_MAX, Z_MAX, B);
 }
 
 MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
@@ -101,6 +98,11 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     for (const auto& rotation : allRotations) {
             cout << *rotation.first << " --> " << rotation.second << endl;
     }
+
+    cout << "isOnEntryPoint: " << isOnEntryPoint(catom->position) << endl;
+    cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
+    cout << "isOnOppXBorder: " << ruleMatcher->isOnXOppBorder(norm(catom->position)) << endl;
+    cout << "isOnOppYBorder: " << ruleMatcher->isOnYOppBorder(norm(catom->position)) << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -231,7 +233,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             console << "Rotation to " << catom->position << " over" << "\n";
         case EVENT_TELEPORTATION_END: {
             step++;
-            if (catom->position == targetPosition) {
+            if (catom->position == targetPosition and not isOnEntryPoint(catom->position)) {
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
 
@@ -274,8 +276,24 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         }
                     }
                 }
-                
             } else {
+                if (catom->position == targetPosition and isOnEntryPoint(catom->position)) {
+                    // Update tile belonging
+                    coordinatorPos = denorm(ruleMatcher->
+                                            getNearestTileRootPosition(norm(catom->position)));
+
+                    // Reset step counter for matching a new ruleset
+                    step = 1;
+                    
+                    // Check that that new tile root is in place and fill that role if absent
+                    if (lattice->isFree(coordinatorPos)) {
+                        targetPosition = coordinatorPos;
+                    } else {
+                        // Otherwise ask it for a new targetPosition
+                        catom->setColor(BLACK);
+                    }
+                }
+                
                 Cell3DPosition nextHop;
                 bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
                                                catom->position,
@@ -288,12 +306,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 }
 
                 scheduleRotationTo(nextHop);                
-            }
-                
-        } break;            
+            }            
+    } break;            
             
-        case EVENT_TAP: {
-        } break;
+    case EVENT_TAP: {
+    } break;
 
         case EVENT_INTERRUPTION: {            
             std::shared_ptr<InterruptionEvent> itev =
@@ -304,79 +321,82 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             switch(itev->mode) {
 
                 case IT_MODE_TILEROOT_ACTIVATION: {
-                    if (itCounter == 0) {
-                        handleMeshComponentInsertion(S_RZ);
-                        handleMeshComponentInsertion(S_LZ);        
-                    } else if (itCounter == 1) {
-                        handleMeshComponentInsertion(X_1);
-                        catomsReqByBranch[XBranch]--;
-                        
-                        handleMeshComponentInsertion(Y_1);
-                        catomsReqByBranch[YBranch]--;
-                    } else if (itCounter == 2) {
-                        handleMeshComponentInsertion(S_Z);
-                        handleMeshComponentInsertion(S_RevZ);
-                        fedCatomsOnLastRound = true;
-                    } else if (not fedCatomsOnLastRound) {
-                        // Spawning Rules
-                        if (catomsReqByBranch[XBranch] > 0) {
-                            handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                         (X_1 + B -
-                                                          catomsReqByBranch[XBranch] - 1));
+                    // Only introduce catoms if on the lower tile level
+                    if (catom->position[2] == meshSeedPosition[2]) {
+                        if (itCounter == 0) {
+                            handleMeshComponentInsertion(S_RZ);
+                            handleMeshComponentInsertion(S_LZ);        
+                        } else if (itCounter == 1) {
+                            handleMeshComponentInsertion(X_1);
                             catomsReqByBranch[XBranch]--;
-                        }
-
-                        if (catomsReqByBranch[YBranch] > 0) {                            
-                            handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                         (Y_1 + B -
-                                                          catomsReqByBranch[YBranch] - 1));
-                            catomsReqByBranch[YBranch]--;
-                        }
-                            
-                        if (catomsReqByBranch[ZBranch] > 0 and itCounter > 5) {
-                            handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                         (Z_1 + B -
-                                                          catomsReqByBranch[ZBranch] - 1));
-                            catomsReqByBranch[ZBranch]--;
-                        }                        
-
-                        if (catomsReqByBranch[RevZBranch] > 0 and itCounter > 5) {
-                            handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                         (RevZ_1 + B -
-                                                          catomsReqByBranch[RevZBranch] - 1));
-                            catomsReqByBranch[RevZBranch]--;
-                        }
-
-                        if (catomsReqByBranch[LZBranch] > 0 and itCounter > 11) {
-                            handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                         (LZ_1 + B -
-                                                          catomsReqByBranch[LZBranch] - 1));
-                            catomsReqByBranch[LZBranch]--;
-                        }
-
-                        if (catomsReqByBranch[RZBranch] > 0 and itCounter > 11) {
-                            handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                         (RZ_1 + B -
-                                                          catomsReqByBranch[RZBranch] - 1));
-                            catomsReqByBranch[RZBranch]--;
-                        }
-
-                        // if (itCounter == 22) {
-                        //     handleMeshComponentInsertion(static_cast<MeshComponent>
-                        //                                  ());
-                        //     catomsReqByBranch[RZBranch]--;
-                        // }
                         
-                        fedCatomsOnLastRound = true;
-                    } else {
-                        fedCatomsOnLastRound = false;
+                            handleMeshComponentInsertion(Y_1);
+                            catomsReqByBranch[YBranch]--;
+                        } else if (itCounter == 2) {
+                            handleMeshComponentInsertion(S_Z);
+                            handleMeshComponentInsertion(S_RevZ);
+                            fedCatomsOnLastRound = true;
+                        } else if (not fedCatomsOnLastRound) {
+                            // Spawning Rules
+                            if (catomsReqByBranch[XBranch] > 0) {
+                                handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                             (X_1 + B -
+                                                              catomsReqByBranch[XBranch] - 1));
+                                catomsReqByBranch[XBranch]--;
+                            }
+
+                            if (catomsReqByBranch[YBranch] > 0) {                            
+                                handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                             (Y_1 + B -
+                                                              catomsReqByBranch[YBranch] - 1));
+                                catomsReqByBranch[YBranch]--;
+                            }
+                            
+                            if (catomsReqByBranch[ZBranch] > 0 and itCounter > 5) {
+                                handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                             (Z_1 + B -
+                                                              catomsReqByBranch[ZBranch] - 1));
+                                catomsReqByBranch[ZBranch]--;
+                            }                        
+
+                            if (catomsReqByBranch[RevZBranch] > 0 and itCounter > 5) {
+                                handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                             (RevZ_1 + B -
+                                                              catomsReqByBranch[RevZBranch] - 1));
+                                catomsReqByBranch[RevZBranch]--;
+                            }
+
+                            if (catomsReqByBranch[LZBranch] > 0 and itCounter > 11) {
+                                handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                             (LZ_1 + B -
+                                                              catomsReqByBranch[LZBranch] - 1));
+                                catomsReqByBranch[LZBranch]--;
+                            }
+
+                            if (catomsReqByBranch[RZBranch] > 0 and itCounter > 11) {
+                                handleMeshComponentInsertion(static_cast<MeshComponent>
+                                                             (RZ_1 + B -
+                                                              catomsReqByBranch[RZBranch] - 1));
+                                catomsReqByBranch[RZBranch]--;
+                            }
+
+                            if (itCounter == 16
+                                and not ruleMatcher->isOnXBorder(norm(catom->position))
+                                and not ruleMatcher->isOnYBorder(norm(catom->position))) {
+                                handleMeshComponentInsertion(Z_R_EPL);
+                            }
+                        
+                            fedCatomsOnLastRound = true;
+                        } else {
+                            fedCatomsOnLastRound = false;
+                        }
                     }
 
                     itCounter++;
                     getScheduler()->schedule(
                         new InterruptionEvent(getScheduler()->now() +
                                               (getRoundDuration() *
-                                               (1 + (catom->position[0] * 0.05))),
+                                               (1 + (catom->position[0] * 0.005))),
                                               catom, IT_MODE_TILEROOT_ACTIVATION));
                 } break;
             }            
@@ -455,12 +475,15 @@ void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     // Introduce new catoms
     world->addBlock(0, buildNewBlockCode,
                     getEntryPointForMeshComponent(mc), ORANGE);
-
+    
     // Set target position for introduced catom
     Cell3DPosition ep = getEntryPointForMeshComponent(mc);
     short idx = getEntryPointLocationForCell(ep) - RevZ_EPL;
-    // cout << "mc: " << mc << " -- ep: " << ep << " -- idx: " << idx << endl;
-    targetForEntryPoint[idx] = catom->position + ruleMatcher->getPositionForMeshComponent(mc);
+    // cout << "mc: " << mc << " -- ep: " << ep << " -- idx: " << idx << endl;    
+    targetForEntryPoint[idx] = catom->position +
+        (mc < RevZ_EPL ? ruleMatcher->getPositionForMeshComponent(mc)
+         : ruleMatcher->getPositionForMeshComponent(mc)
+         + Cell3DPosition(-(short)B,-(short)B,B));
 }
 
 bool MeshAssemblyBlockCode::
@@ -545,4 +568,15 @@ void MeshAssemblyBlockCode::initializeSupportModule() {
 const Cell3DPosition
 MeshAssemblyBlockCode::getEntryPointPosition(MeshComponent epl) const {    
     return getEntryPointRelativePos(epl) + coordinatorPos;
+}
+
+bool MeshAssemblyBlockCode::isOnEntryPoint(const Cell3DPosition& pos) const {
+    const Cell3DPosition& nearestTR = denorm(
+        ruleMatcher->getNearestTileRootPosition(norm(pos)));
+    
+    for (const Cell3DPosition& ep : entryPointRelativePos) {
+        if (pos == ep + nearestTR) return true;
+    }
+
+    return false;
 }

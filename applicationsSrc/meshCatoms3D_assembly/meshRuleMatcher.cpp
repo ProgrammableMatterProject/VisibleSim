@@ -37,8 +37,8 @@ void MeshRuleMatcher::printDebugInfo(const Cell3DPosition& pos) const {
 
 bool MeshRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
     // add -2 for new tile construction using modules below R
-    return isInRange(pos[0], 0 - pos[2]/ 2 - 2, X_MAX - pos[2] / 2 - 1)
-        && isInRange(pos[1], 0 - pos[2] / 2 - 2, Y_MAX - pos[2] / 2 - 1)
+    return isInRange(pos[0], 0 - pos[2]/ 2 - 2, X_MAX - pos[2] / 2 + 1)
+        && isInRange(pos[1], 0 - pos[2] / 2 - 2, Y_MAX - pos[2] / 2 + 1)
         && isInRange(pos[2], 0 - 2, Z_MAX - 1);
 }
 
@@ -58,7 +58,12 @@ bool MeshRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
 }
 
 bool MeshRuleMatcher::isOnXOppBorder(const Cell3DPosition& pos) const {
-    return pos[1] == (int)(-(int)(pos[2] / B) / 2 * B) + X_MAX - 1 and m_mod(pos[2], B) == 0;
+    short a = (pos[2] / B) / 2 * B;
+    short b = X_MAX - 2;
+    cout << "pos: " << pos << endl;
+    cout << "a: " << a << " " << "b: " << b << endl;
+    cout << "(int)(-(int)a + b): " << (int)(-(int)a + b) << endl;
+    return pos[1] == (int)(-(int)a + b) and m_mod(pos[2], B) == 0;
 }
 
 bool MeshRuleMatcher::isOnYBranch(const Cell3DPosition& pos) const {
@@ -70,7 +75,12 @@ bool MeshRuleMatcher::isOnYBorder(const Cell3DPosition& pos) const {
 }
 
 bool MeshRuleMatcher::isOnYOppBorder(const Cell3DPosition& pos) const {
-    return pos[0] == (int)(-(int)(pos[2] / B) / 2 * B) + Y_MAX - 1 and m_mod(pos[2], B) == 0;
+    short a = (pos[2] / B) / 2 * B;
+    short b = Y_MAX - 2;
+    cout << "pos: " << pos << endl;
+    cout << "a: " << a << " " << "b: " << b << endl;
+    cout << "(int)(-(int)a + b): " << (int)(-(int)a + b) << endl;
+    return pos[0] == (int)(-(int)a + b) and m_mod(pos[2], B) == 0;
 }
 
 bool MeshRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
@@ -152,7 +162,8 @@ BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPositi
 
 bool MeshRuleMatcher::
 shouldGrowZBranch(const Cell3DPosition& pos) const {
-    return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0], pos[1], pos[2] + (B - 1)));
+    return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0], pos[1], pos[2] + (B - 1)))
+        and not isOnYOppBorder(pos) and not isOnXOppBorder(pos);
 }
 
 bool MeshRuleMatcher::
@@ -166,7 +177,8 @@ bool MeshRuleMatcher::
 shouldGrowLZBranch(const Cell3DPosition& pos) const {
     return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0] - (B - 1),
                                                        pos[1],
-                                                       pos[2] + (B - 1)));
+                                                       pos[2] + (B - 1)))
+        and not isOnXOppBorder(pos);
 }
 
 
@@ -174,7 +186,8 @@ bool MeshRuleMatcher::
 shouldGrowRZBranch(const Cell3DPosition& pos) const {
     return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0],
                                                        pos[1] - (B - 1),
-                                                       pos[2] + (B - 1)));
+                                                       pos[2] + (B - 1)))
+        and not isOnYOppBorder(pos);
 }
 
 bool MeshRuleMatcher::
@@ -344,6 +357,8 @@ getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const {
 }
 
 short MeshRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) const {
+    cout << pos << endl;
+    
     if (isInMesh(pos) and not isTileRoot(pos)) {
         if (isOnZBranch(pos)) return ZBranch;
         if (isOnRevZBranch(pos)) return RevZBranch;

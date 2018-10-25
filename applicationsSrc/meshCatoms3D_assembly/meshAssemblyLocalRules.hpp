@@ -191,10 +191,6 @@ inline static bool matchLocalRules(const std::bitset<12>& localNeighborhood,
                                    const Cell3DPosition& tileRootPos,
                                    const short step,
                                    Cell3DPosition& nextPos) {
-    // cout << "{ " << localNeighborhood << "("
-    //      << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
-    //      << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
-
     auto match = localMotionRules.find(LRKeyTuple(localNeighborhood,
                                                   tPos - tileRootPos, step));
         
@@ -202,6 +198,9 @@ inline static bool matchLocalRules(const std::bitset<12>& localNeighborhood,
         nextPos =  match->second + pos;
         // cout << match->second << endl;
     } else {
+        cout << "{ " << localNeighborhood << "("
+             << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
+             << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
         cout << "NO MATCH" << endl;
     }        
 
