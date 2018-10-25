@@ -13,6 +13,7 @@
 #include <map>
 #include <vector>
 #include <mutex>
+#include <unordered_map>
 
 #include "assert.h"
 #include "buildingBlock.h"
@@ -39,7 +40,8 @@ protected:
      *   Global variable
      ************************************************************/
     static World *world;        //!< Global variable to access the single simulation instance of World
-    static vector<GlBlock*>tabGlBlocks; //!< A vector containing pointers to all graphical blocks
+    // static vector<GlBlock*>tabGlBlocks; //!< A vector containing pointers to all graphical blocks
+    static unordered_map<bID, GlBlock*>mapGlBlocks; //!< A hash map containing pointers to all graphical blocks, indexed by block id
     static map<bID, BuildingBlock*>buildingBlocksMap; //!< A map containing all BuildingBlocks in the world, indexed by their blockId
 
     /************************************************************
@@ -206,7 +208,11 @@ public:
      * @param n : id of the new selectedGlBlock
      * @return a pointer to the selected GlBlock
      */
-    inline GlBlock* setselectedGlBlock(int n) { return (selectedGlBlock=(n>=0)?tabGlBlocks[n]:NULL); };
+    inline GlBlock* setselectedGlBlock(int n) {
+        auto const &glBlock = mapGlBlocks.find(n);        
+        return (selectedGlBlock=(glBlock != mapGlBlocks.end()) ? (*glBlock).second : NULL);
+    };
+    
     /**
      * @brief Setter for selected picking face
      * @param n : id of the texture that has been clicked by the user
@@ -214,11 +220,16 @@ public:
      *   numSelectedFace variable to the corresponding face
      */
     virtual void setSelectedFace(int n) = 0;
-    /**
+
+/**
      * @brief Returns the Glblock of id n
      * @param n : id of the Glblock to retrieve
      */
-    inline GlBlock* getBlockByNum(bID n) { return tabGlBlocks[n]; };
+    inline GlBlock* getBlockByNum(bID n) {
+        auto const &glBlock = mapGlBlocks.find(n);       
+        return glBlock != mapGlBlocks.end() ? (*glBlock).second : NULL;
+    };
+    
     /**
      * @brief Returns the total number of blocks in the world
      * @return the number of blocks in the world
@@ -295,12 +306,16 @@ public:
      * @brief Sets the path to the texture folder for drawing
      */
     virtual void loadTextures(const string &str) { };
+
     /**
      * @brief Returns the BuildingBlock corresponding to the selected GlBlock
      * @return a pointer to the BuildingBlock corresponding to the selected GlBlock, or NULL if there is none
      */
-    inline BuildingBlock *getSelectedBuildingBlock()
-        { return getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId); };
+    inline BuildingBlock *getSelectedBuildingBlock() {
+        auto const &glBlock = mapGlBlocks.find(numSelectedFace);       
+        return glBlock != mapGlBlocks.end() ? getBlockById((*glBlock).second->blockId) : NULL;
+    };
+    
     /**
      * @brief Schedules a tap event for block with id bId, at time date.
      *

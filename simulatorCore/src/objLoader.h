@@ -156,7 +156,7 @@ public:
 	void createVertexArrays();
 	void glDraw(void);
 	void glDrawIdByMaterial(int &i);
-	void glDrawId(int &i);
+	void glDrawId(int i);
 	void setLightedColor(GLfloat *color);
 	inline string getObjMtlName(int pos) { return tabObj[pos]->objMtl->name; };
 };
