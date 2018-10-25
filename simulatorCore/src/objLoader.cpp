@@ -307,10 +307,10 @@ void ObjLoader::glDraw(void) {
 	}
 }
 
-void ObjLoader::glDrawId(int &n) {
+void ObjLoader::glDrawId(int n) {
 	vector <ObjData*>::const_iterator ci = tabObj.begin();
 
-	glLoadName(n++);
+	glLoadName(n);
 	while (ci!=tabObj.end()) {
 		(*ci)->glDrawId();
 		ci++;

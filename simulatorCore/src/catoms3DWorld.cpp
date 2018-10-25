@@ -119,10 +119,10 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 }
 
 void Catoms3DWorld::menuChoice(int n) {
-    Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-		Cell3DPosition nPos;
+    Catoms3DBlock *bb = (Catoms3DBlock *)getSelectedBuildingBlock();
+    Cell3DPosition nPos;
 
-		switch (n) {
+    switch (n) {
     case 1:
 		  GlutContext::popupMenu->show(true);
 			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(1)->getChild(0);
@@ -173,8 +173,8 @@ void Catoms3DWorld::menuChoice(int n) {
 }
 
 
-void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-							 short orientation, bool master) {
+void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos,
+                             const Color &col, short orientation, bool master) {
 	if (blockId > maxBlockId)
 		maxBlockId = blockId;
 	else if (blockId == 0)
@@ -198,7 +198,7 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     catom->setColor(col);
     lattice->insert(catom, pos);
 
-    tabGlBlocks.push_back(glBlock);
+    mapGlBlocks.insert(make_pair(blockId, glBlock));
     linkBlock(pos);
 }
 
@@ -237,12 +237,10 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 void Catoms3DWorld::glDraw() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-// draw catoms
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+    // draw catoms
     lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((Catoms3DGlBlock*)(*ic))->glDraw(objBlock)            ;
-        ic++;
+    for (const auto& pair : mapGlBlocks) {
+        ((Catoms3DGlBlock*)pair.second)->glDraw(objBlock);
     }
     unlock();
     glPopMatrix();
@@ -383,28 +381,23 @@ void Catoms3DWorld::glDraw() {
 void Catoms3DWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
     lock();
-    while (ic!=tabGlBlocks.end()) {
-			((Catoms3DGlBlock*)(*ic))->glDrawId(objBlock,n);
-			ic++;
-    }
+    for (const auto& pair : mapGlBlocks) {
+        ((Catoms3DGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
+    }    
     unlock();
     glPopMatrix();
 }
 
 void Catoms3DWorld::glDrawIdByMaterial() {
     glPushMatrix();
-
     glDisable(GL_TEXTURE_2D);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
     lock();
-    while (ic!=tabGlBlocks.end()) {
-			((Catoms3DGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
-			ic++;
-    }
+    for (const auto& pair : mapGlBlocks) {
+        ((Catoms3DGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
+    }    
     unlock();
     glPopMatrix();
 }
@@ -635,18 +628,17 @@ void Catoms3DWorld::simulatePolymer() {
 		cout << "---------------------------SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
 		Vector3D pt;
 		// calculer un table de Zmax
-		vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 		lock();
-		while (ic!=tabGlBlocks.end()) {
-			if ((*ic)->color[3]!=0) {
+        for (const auto& pair : mapGlBlocks) {
+             Catoms3DGlBlock* c3dGlBlock = (Catoms3DGlBlock*)pair.second;
+            if (c3dGlBlock->color[3]!=0) {
 				//pt.set((*ic)->position,3);
-				pt.pt[0] = (*ic)->position[0];
-				pt.pt[1] = (*ic)->position[1];
-				pt.pt[2] = (*ic)->position[2];
+				pt.pt[0] = c3dGlBlock->position[0];
+				pt.pt[1] = c3dGlBlock->position[1];
+				pt.pt[2] = c3dGlBlock->position[2];
 				polymer->tabPt.push_back(pt);
 			}
-			ic++;
-		}
+        }    
 		unlock();
 	}
 	double v;
