@@ -28,14 +28,32 @@
 
 // #define INTERACTIVE_MODE
 
-enum EntryPointLocation { RevZ_EPL, RevZ_Right_EPL, RZ_Left_EPL, RZ_EPL,
-                          RZ_Right_EPL, Z_Right_EPL, Z_EPL,
-                          Z_Left_EPL, LZ_Right_EPL, LZ_EPL,
-                          LZ_LEFT_EPL, RevZ_Left_EPL,
-                          N_EPL };
+// enum EntryPointLocation { RevZ_EPL, RevZ_R_EPL, RZ_L_EPL, RZ_EPL,
+//                           RZ_R_EPL, Z_R_EPL, Z_EPL,
+//                           Z_L_EPL, LZ_R_EPL, LZ_EPL,
+//                           LZ_LEFT_EPL, RevZ_L_EPL,
+//                           N_EPL };
 
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
+    static constexpr std::array<Cell3DPosition, 12> entryPointRelativePos =
+    {
+        Cell3DPosition(-1,-1,-1), // RevZ_EPL
+        Cell3DPosition(0,-1,-1), // RevZ_R_EPL
+        Cell3DPosition(1,-1,-1), // RZ_L_EPL
+        Cell3DPosition(2,-1,-1), // RZ_EPL
+
+        Cell3DPosition(2,0,-1), // RZ_R_EPL
+        Cell3DPosition(2,1,-1), // Z_R_EPL
+        Cell3DPosition(2,2,-1), // Z_EPL
+
+        Cell3DPosition(1,2,-1), // Z_L_EPL
+        Cell3DPosition(0,2,-1), // LZ_R_EPL
+        Cell3DPosition(-1,2,-1), // LZ_EPL
+
+        Cell3DPosition(-1,1,-1), // LZ_L_EPL
+        Cell3DPosition(-1,0,-1) // RevZ_L_EPL
+    };
 public:
     static const uint B = 6;
     static uint X_MAX, Y_MAX, Z_MAX; // const
@@ -50,30 +68,15 @@ public:
         Cell3DPosition(-1,0,0), // XBranch
         Cell3DPosition(0,-1,0) // YBranch
     };
-
-    
-    static constexpr std::array<Cell3DPosition, 12> entryPointRelativePos =
-    {
-        Cell3DPosition(-1,-1,-1), // RevZ_EPL
-        Cell3DPosition(0,-1,-1), // RevZ_Right_EPL
-        Cell3DPosition(1,-1,-1), // RZ_Left_EPL
-        Cell3DPosition(2,-1,-1), // RZ_EPL
-
-        Cell3DPosition(2,0,-1), // RZ_Right_EPL
-        Cell3DPosition(2,1,-1), // Z_Right_EPL
-        Cell3DPosition(2,2,-1), // Z_EPL
-
-        Cell3DPosition(1,2,-1), // Z_Left_EPL
-        Cell3DPosition(0,2,-1), // LZ_Right_EPL
-        Cell3DPosition(-1,2,-1), // LZ_EPL
-
-        Cell3DPosition(-1,1,-1), // LZ_Left_EPL
-        Cell3DPosition(-1,0,-1), // RevZ_Left_EPL
-    };
-        
+               
     inline static Time getRoundDuration() {
         return (2 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
                 + Rotations3D::COM_DELAY);// + (getScheduler()->now() / 1000);
+    }
+
+    inline const Cell3DPosition& getEntryPointRelativePos(MeshComponent mc) const {
+        VS_ASSERT_MSG(mc >= RevZ_EPL, "Attempting to getEntryPointRelativePos for non EPL component");
+        return entryPointRelativePos[mc - RevZ_EPL];
     }
     
     inline const Cell3DPosition getTileRelativePosition() const {
@@ -91,17 +94,23 @@ public:
     BranchIndex branch;
     AgentRole role;
     Cell3DPosition coordinatorPos;
-    Cell3DPosition branchTipPos; // For Support role only
     Cell3DPosition targetPosition;
-    std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
-    std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
-    std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
-    std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
-    
-    int itCounter = 0; // When t > 5 all supports are in place
+
+    // Free Agent Vars
     short step = 1; // For moving FreeAgents
-    bool fedCatomsOnLastRound = false;
+
+    // Support Agent Vars
+    Cell3DPosition branchTipPos; // For Support role only    
     
+    // Coordinator Vars
+    int itCounter = 0; // When t > 5 all supports are in place
+    bool fedCatomsOnLastRound = false;
+    std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
+    // std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
+    std::array<Cell3DPosition*, 6> openPositions = {0};
+    std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
+    std::array<bool, 6> feedBranch = {0};
+   
     // TargetCSG *target;
     MeshAssemblyBlockCode(Catoms3D::Catoms3DBlock *host);
     ~MeshAssemblyBlockCode();          
@@ -201,7 +210,7 @@ y the module
      * @param epl Entry point location name of the desired entry point
      * @return absolute position of the requested entry point location
      */
-    const Cell3DPosition getEntryPointPosition(EntryPointLocation epl) const;
+    const Cell3DPosition getEntryPointPosition(MeshComponent epl) const;
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

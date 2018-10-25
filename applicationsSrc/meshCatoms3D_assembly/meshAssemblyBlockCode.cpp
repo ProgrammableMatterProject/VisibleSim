@@ -32,7 +32,6 @@ uint MeshAssemblyBlockCode::Z_MAX;
 constexpr std::array<Cell3DPosition, 6> MeshAssemblyBlockCode::incidentTipRelativePos;
 constexpr std::array<Cell3DPosition, 12> MeshAssemblyBlockCode::entryPointRelativePos;
 constexpr Cell3DPosition MeshAssemblyBlockCode::meshSeedPosition;
-bID id = 1;
 
 MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     Catoms3DBlockCode(host) {
@@ -65,17 +64,16 @@ void MeshAssemblyBlockCode::onBlockSelected() {
             cout << catomsReqByBranch[i] << ", ";
         cout << " ]" << endl;
 
-        cout << "Last Round: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << fedCatomOnLastRound[i] << ", ";
-        cout << " ]" << endl;
+        // cout << "Last Round: [ ";
+        // for (int i = 0; i < 6; i++)
+        //     cout << fedCatomOnLastRound[i] << ", ";
+        // cout << " ]" << endl;
 
         cout << "Open Positions: [ ";
         for (int i = 0; i < 6; i++)
             cout << endl << "\t\t  "
                  <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
         cout << " ]" << endl;
-
     
         cout << "Targets for Entry Points: [ ";
         for (int i = 0; i < 8; i++)
@@ -120,11 +118,11 @@ void MeshAssemblyBlockCode::startup() {
         // Make incoming vertical branch tips appear already in place if at ground level
         if (coordinatorPos != meshSeedPosition) {
             for (int i = 0; i < XBranch; i++) {
-                world->addBlock(++id, buildNewBlockCode,
+                world->addBlock(0, buildNewBlockCode,
                                 coordinatorPos + incidentTipRelativePos[i], PINK);
-                world->addBlock(++id, buildNewBlockCode, coordinatorPos +
+                world->addBlock(0, buildNewBlockCode, coordinatorPos +
                                 incidentTipRelativePos[i] + incidentTipRelativePos[i], GREY);
-                world->addBlock(++id, buildNewBlockCode,
+                world->addBlock(0, buildNewBlockCode,
                                 coordinatorPos + incidentTipRelativePos[i]
                                 + incidentTipRelativePos[i] + incidentTipRelativePos[i],
                                 GREY);
@@ -264,7 +262,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                 denorm(ruleMatcher->
                                        getNearestTileRootPosition(norm(catom->position)));
                             
-                            world->addBlock(++id, buildNewBlockCode,
+                            world->addBlock(0, buildNewBlockCode,
                                             getEntryPointForMeshComponent(R), CYAN);
                         } else {
                             lattice->highlightCell(nextPosAlongBranch, YELLOW);
@@ -362,6 +360,12 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                                           catomsReqByBranch[RZBranch] - 1));
                             catomsReqByBranch[RZBranch]--;
                         }
+
+                        // if (itCounter == 22) {
+                        //     handleMeshComponentInsertion(static_cast<MeshComponent>
+                        //                                  ());
+                        //     catomsReqByBranch[RZBranch]--;
+                        // }
                         
                         fedCatomsOnLastRound = true;
                     } else {
@@ -389,7 +393,6 @@ void MeshAssemblyBlockCode::updateOpenPositions() {
         if (catomsReqByBranch[i] > 0 and openPositions[i]) {
             *openPositions[i] = Cell3DPosition(catom->position + multiplier * ruleMatcher->
                                                getBranchUnitOffset((BranchIndex)i));
-            
         } else if (catomsReqByBranch[i] > 0 and not openPositions[i]) {
             openPositions[i] = new Cell3DPosition(catom->position + multiplier * ruleMatcher->
                                                   getBranchUnitOffset((BranchIndex)i));
@@ -399,23 +402,23 @@ void MeshAssemblyBlockCode::updateOpenPositions() {
 
 short MeshAssemblyBlockCode::getEntryPointLocationForCell(const Cell3DPosition& pos) {
     for (int i = 0; i < 12; i++)
-        if (pos == catom->position + entryPointRelativePos[i]) return i;
+        if (pos == catom->position + entryPointRelativePos[i]) return i + RevZ_EPL;
     
     return -1;
 } 
 
 const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshComponent mc) {
     switch(mc) {
-        case R: return getEntryPointPosition(Z_Right_EPL);
+        case R: return getEntryPointPosition(Z_R_EPL);
         case S_Z: return getEntryPointPosition(LZ_EPL);
         case S_RevZ: return getEntryPointPosition(RZ_EPL);
-        case S_LZ: return getEntryPointPosition(LZ_Right_EPL);
-        case S_RZ: return getEntryPointPosition(RZ_Right_EPL);
+        case S_LZ: return getEntryPointPosition(LZ_R_EPL);
+        case S_RZ: return getEntryPointPosition(RZ_R_EPL);
 
-        case X_1: return getEntryPointPosition(Z_Right_EPL);
+        case X_1: return getEntryPointPosition(Z_R_EPL);
         case X_2: case X_3: case X_4: case X_5: return getEntryPointPosition(RZ_EPL);
 
-        case Y_1: return getEntryPointPosition(Z_Left_EPL);
+        case Y_1: return getEntryPointPosition(Z_L_EPL);
         case Y_2: case Y_3: case Y_4: case Y_5: return getEntryPointPosition(LZ_EPL);
 
         case Z_1: case Z_2: case Z_3: case Z_4: case Z_5:
@@ -429,6 +432,20 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
 
         case RZ_1: case RZ_2: case RZ_3: case RZ_4: case RZ_5:
             return getEntryPointPosition(RZ_EPL);
+
+        // case EPLs
+        case RevZ_EPL: return getEntryPointPosition(R);
+        case RevZ_R_EPL: return getEntryPointPosition(R);
+        case RZ_L_EPL: return getEntryPointPosition(R);
+        case RZ_EPL: return getEntryPointPosition(R);
+        case RZ_R_EPL: return getEntryPointPosition(R);
+        case Z_R_EPL: return getEntryPointPosition(RevZ_EPL);
+        case Z_EPL: return getEntryPointPosition(R);
+        case Z_L_EPL: return getEntryPointPosition(R);
+        case LZ_R_EPL: return getEntryPointPosition(R);
+        case LZ_EPL: return getEntryPointPosition(R);
+        case LZ_L_EPL: return getEntryPointPosition(R);
+        case RevZ_L_EPL: return getEntryPointPosition(R);
     }
 
     return Cell3DPosition(); // unreachable
@@ -436,13 +453,14 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
 
 void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     // Introduce new catoms
-    world->addBlock(++id, buildNewBlockCode,
+    world->addBlock(0, buildNewBlockCode,
                     getEntryPointForMeshComponent(mc), ORANGE);
 
     // Set target position for introduced catom
-    targetForEntryPoint
-        [getEntryPointLocationForCell(getEntryPointForMeshComponent(mc))] =
-        catom->position + ruleMatcher->getPositionForMeshComponent(mc);
+    Cell3DPosition ep = getEntryPointForMeshComponent(mc);
+    short idx = getEntryPointLocationForCell(ep) - RevZ_EPL;
+    // cout << "mc: " << mc << " -- ep: " << ep << " -- idx: " << idx << endl;
+    targetForEntryPoint[idx] = catom->position + ruleMatcher->getPositionForMeshComponent(mc);
 }
 
 bool MeshAssemblyBlockCode::
@@ -525,6 +543,6 @@ void MeshAssemblyBlockCode::initializeSupportModule() {
 }
 
 const Cell3DPosition
-MeshAssemblyBlockCode::getEntryPointPosition(EntryPointLocation epl) const {
-    return entryPointRelativePos[epl] + coordinatorPos;
+MeshAssemblyBlockCode::getEntryPointPosition(MeshComponent epl) const {    
+    return getEntryPointRelativePos(epl) + coordinatorPos;
 }

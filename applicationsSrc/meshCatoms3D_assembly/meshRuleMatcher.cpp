@@ -136,7 +136,6 @@ bool MeshRuleMatcher::isTileSupport(const Cell3DPosition& pos) const {
 }
 
 BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos) {
-    cout << pos << endl;
     VS_ASSERT_MSG(isInMesh(pos) and not isTileRoot(pos), "attempting to get branch index of tile root position or position outside of mesh");
 
     if (isOnXBranch(pos)) return XBranch;
@@ -437,6 +436,20 @@ const Cell3DPosition MeshRuleMatcher::getPositionForMeshComponent(MeshComponent 
 
         case RZ_1: case RZ_2: case RZ_3: case RZ_4: case RZ_5:
             return Cell3DPosition(0, -1 * (mc - RZ_1 + 1), 1 * (mc - RZ_1 + 1));
+            
+        // case EPLs
+        case RevZ_EPL: return Cell3DPosition(-1,-1,-1);
+        case RevZ_R_EPL: return Cell3DPosition(0,-1,-1);
+        case RZ_L_EPL: return Cell3DPosition(1,-1,-1);
+        case RZ_EPL: return Cell3DPosition(2,-1,-1);
+        case RZ_R_EPL: return Cell3DPosition(2,0,-1);
+        case Z_R_EPL: return Cell3DPosition(2,1,-1);
+        case Z_EPL: return Cell3DPosition(2,2,-1);
+        case Z_L_EPL: return Cell3DPosition(1,2,-1);
+        case LZ_R_EPL: return Cell3DPosition(0,2,-1);
+        case LZ_EPL: return Cell3DPosition(-1,2,-1);
+        case LZ_L_EPL: return Cell3DPosition(-1,1,-1);
+        case RevZ_L_EPL: return Cell3DPosition(-1,0,-1);
     }
 
     return Cell3DPosition(); // unreachable

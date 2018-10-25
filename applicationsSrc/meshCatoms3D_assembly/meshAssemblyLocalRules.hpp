@@ -165,7 +165,13 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x050, Cell3DPosition(0, -5, 5), 4), Cell3DPosition(-1, -1, 2) }, // RZ5 4
     { LRKeyTuple(0x005, Cell3DPosition(-5, 0, 5), 4), Cell3DPosition(-1, -1, 2) }, // LZ5 4
     { LRKeyTuple(0x100, Cell3DPosition(0, -5, 5), 5), Cell3DPosition(0, -1, 0) }, // RZ5 5
-    { LRKeyTuple(0x400, Cell3DPosition(-5, 0, 5), 5), Cell3DPosition(0, 1, 0) } // LZ5 5    
+    { LRKeyTuple(0x400, Cell3DPosition(-5, 0, 5), 5), Cell3DPosition(0, 1, 0) }, // LZ5 5
+
+    // Vertical Branches Climbing Rules
+    { LRKeyTuple(0x404, Cell3DPosition(-4, -5, 5), 1), Cell3DPosition(-1, -1, 2) }, //Z_R_EPL 1
+    { LRKeyTuple(0x404, Cell3DPosition(-4, -5, 5), 2), Cell3DPosition(0, -1, 1) }, // Z_R_EPL 2
+    { LRKeyTuple(0xA, Cell3DPosition(-4, -5, 5), 3), Cell3DPosition(-1, -1, 2) }, // Z_R_EPL 3
+    { LRKeyTuple(0x840, Cell3DPosition(-4, -5, 5), 4), Cell3DPosition(-1, -1, 1) } //Z_R_EPL 4    
 };
 
 
@@ -185,16 +191,16 @@ inline static bool matchLocalRules(const std::bitset<12>& localNeighborhood,
                                    const Cell3DPosition& tileRootPos,
                                    const short step,
                                    Cell3DPosition& nextPos) {
-    cout << "{ " << localNeighborhood << "("
-         << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
-         << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
+    // cout << "{ " << localNeighborhood << "("
+    //      << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
+    //      << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
 
     auto match = localMotionRules.find(LRKeyTuple(localNeighborhood,
                                                   tPos - tileRootPos, step));
         
     if (match != localMotionRules.end()) {
         nextPos =  match->second + pos;
-        cout << match->second << endl;
+        // cout << match->second << endl;
     } else {
         cout << "NO MATCH" << endl;
     }        

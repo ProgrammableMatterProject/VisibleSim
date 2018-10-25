@@ -33,7 +33,12 @@ enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
                      Z_1, Z_2, Z_3, Z_4, Z_5,
                      RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
                      LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
-                     RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,};
+                     RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,
+                     // EPLs
+                     RevZ_EPL, RevZ_R_EPL, RZ_L_EPL, RZ_EPL,
+                     RZ_R_EPL, Z_R_EPL, Z_EPL,
+                     Z_L_EPL, LZ_R_EPL, LZ_EPL,
+                     LZ_L_EPL, RevZ_L_EPL };
 
 class MeshRuleMatcher {
     const int X_MAX, Y_MAX, Z_MAX, B;

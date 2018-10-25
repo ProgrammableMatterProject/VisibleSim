@@ -42,7 +42,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         // const Cell3DPosition& rPos = srcPos - mabc.catom->position;
         // short epd = mabc.getEntryPointDirectionForCell(rPos);
 
-        short epl = mabc.getEntryPointLocationForCell(srcPos);
+        short epl = mabc.getEntryPointLocationForCell(srcPos) - RevZ_EPL;
         const Cell3DPosition& tPos =
             mabc.targetForEntryPoint[epl];
 
@@ -65,8 +65,8 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 
     if (mabc.role == ActiveBeamTip or mabc.role == Support) {
-        cout << mabc.catom->blockId << "    " <<
-            mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(mabc.norm(mabc.catom->position))) << endl;
+        // cout << mabc.catom->blockId << "    " <<
+        //     mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(mabc.norm(mabc.catom->position))) << endl;
         // Forward message to mobile module or support depending on case
         P2PNetworkInterface* itf =
             mabc.catom->getInterface(dstPos) ?: mabc.catom->getInterface(
@@ -76,7 +76,7 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
     } else {
         mabc.targetPosition = tPos;
-        cout << "Target position for #" << mabc.catom->blockId << " is " << tPos << endl;
+        // cout << "Target position for #" << mabc.catom->blockId << " is " << tPos << endl;
     
         if (tPos == mabc.catom->position) {
             mabc.role = mabc.ruleMatcher->getRoleForPosition(mabc.norm(mabc.catom->position));
