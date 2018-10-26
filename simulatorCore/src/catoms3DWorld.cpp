@@ -108,11 +108,9 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 	}
 
   // update rotateSubMenu depending on rotation catoms3DCapabilities
-    cout << "numSelectedGlBlock=" << numSelectedGlBlock << endl;
 	Catoms3DBlock *bb = (Catoms3DBlock *)getSelectedBuildingBlock();
 	vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> tab = Catoms3DMotionEngine::getAllRotationsForModule(bb);
 	int nbreMenus=tab.size();
-    cout << nbreMenus << endl;
 	if (nbreMenus==0) {
 			((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(false);
 	} else {
@@ -141,8 +139,7 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 void Catoms3DWorld::menuChoice(int n) {
     Catoms3DBlock *bb = (Catoms3DBlock *)getSelectedBuildingBlock();
     Cell3DPosition nPos;
-    cout << "menu:" << n << " on " << bb->blockId << endl;
-	switch (n) {
+    switch (n) {
         case 1: case 6:
 		    GlutContext::popupMenu->show(true);
 			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(n)->getChild(0);
@@ -157,10 +154,8 @@ void Catoms3DWorld::menuChoice(int n) {
         case 11:
 			GlutContext::popupSubMenu->show(false);
 			GlutContext::popupMenu->show(false);
-            cout << numSelectedFace << endl;
-			if (bb->getNeighborPos(numSelectedFace,nPos)) {
-                cout << "nPos=" << nPos << endl;
-				addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0,false);
+            if (bb->getNeighborPos(numSelectedFace,nPos)) {
+                addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0,false);
 				linkBlock(nPos);
 				linkNeighbors(nPos);
 			} else {

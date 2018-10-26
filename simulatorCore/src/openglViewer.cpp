@@ -263,9 +263,8 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
                 int n=selectFaceFunc(x,y);
-                cout << "selected face #" << n << endl;
                 if (n>0) {
-                    BaseSimulator::getWorld()->setSelectedFace(n-1);
+                    BaseSimulator::getWorld()->setSelectedFace(n);
                     BaseSimulator::getWorld()->createPopupMenu(x,y);
                 }
             }
