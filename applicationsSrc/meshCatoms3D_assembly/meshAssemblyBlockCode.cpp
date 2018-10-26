@@ -72,7 +72,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                  <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
         cout << " ]" << endl;
     
-        cout << "Targets for Entry Points: [ ";
+        cout << "Target for Entry Points: [ ";
         for (int i = 0; i < 8; i++)
             cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
         cout << " ]" << endl;
@@ -82,27 +82,26 @@ void MeshAssemblyBlockCode::onBlockSelected() {
 
     cout << "branch: " << branch << endl;
     cout << "coordinatorPos: " << coordinatorPos << endl;
+    cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
     cout << "role: " << role << endl;
     cout << "localNeighborhood: " << catom->getLocalNeighborhoodState() << endl;
     Cell3DPosition nextHop;
-    bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
-                                   catom->position,
-                                   targetPosition,
-                                   coordinatorPos, step, nextHop);            
+    matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
+                    targetPosition, coordinatorPos, step, nextHop);            
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     
-    cout << "Possible Rotations: " << endl;
-    const vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> allRotations =
-        Catoms3DMotionEngine::getAllRotationsForModule(catom);
+    // cout << "Possible Rotations: " << endl;
+    // const vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> allRotations =
+    //     Catoms3DMotionEngine::getAllRotationsForModule(catom);
 
-    for (const auto& rotation : allRotations) {
-            cout << *rotation.first << " --> " << rotation.second << endl;
-    }
+    // for (const auto& rotation : allRotations) {
+    //         cout << *rotation.first << " --> " << rotation.second << endl;
+    // }
 
-    cout << "isOnEntryPoint: " << isOnEntryPoint(catom->position) << endl;
-    cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
-    cout << "isOnOppXBorder: " << ruleMatcher->isOnXOppBorder(norm(catom->position)) << endl;
-    cout << "isOnOppYBorder: " << ruleMatcher->isOnYOppBorder(norm(catom->position)) << endl;
+    // cout << "isOnEntryPoint: " << isOnEntryPoint(catom->position) << endl;
+    // cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
+    // cout << "isOnOppXBorder: " << ruleMatcher->isOnXOppBorder(norm(catom->position)) << endl;
+    // cout << "isOnOppYBorder: " << ruleMatcher->isOnYOppBorder(norm(catom->position)) << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -138,7 +137,7 @@ void MeshAssemblyBlockCode::startup() {
                                        coordinatorPos, step, nextPos);
         VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
         
-            VS_ASSERT_MSG(nextPos != catom->position, "DID NOT FIND RULE TO MATCH.");
+        VS_ASSERT_MSG(nextPos != catom->position, "DID NOT FIND RULE TO MATCH.");
         scheduleRotationTo(nextPos);
     } else if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {            
         role = ActiveBeamTip; // nothing to be done, wait for tPos requests
@@ -153,20 +152,8 @@ void MeshAssemblyBlockCode::startup() {
         role = PassiveBeam; // nothing to be done here for visual decoration only
     } else {
         role = FreeAgent;
-
-        for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
-            if (ruleMatcher->isVerticalBranchTip(norm(nPos))
-                or ruleMatcher->isTileSupport(norm(nPos))) {
-                // Module is delegate coordinator
-                P2PNetworkInterface* nItf = catom->getInterface(nPos);
-                VS_ASSERT(nItf);
-                sendMessage(new RequestTargetCellMessage(catom->position), nItf,
-                            MSG_DELAY_MC, 0);
-                return;
-            }
-        }
-        
-        VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a delegate coordinator in its vicinity.");        
+        if (not requestTargetCellFromTileRoot())         
+            VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a delegate coordinator in its vicinity.");        
     }
 }
 
@@ -237,6 +224,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
 
+                if (ruleMatcher->isVerticalBranchTip(norm(catom->position)))
+                    coordinatorPos =
+                        denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
+                
                 if (ruleMatcher->isTileRoot(norm(catom->position)))
                     initializeTileRoot();
                 else if (ruleMatcher->isTileSupport(norm(catom->position)))
@@ -291,6 +282,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     } else {
                         // Otherwise ask it for a new targetPosition
                         catom->setColor(BLACK);
+                        if (not requestTargetCellFromTileRoot())
+                            VS_ASSERT_MSG(false, "arriving module cannot be without delegate coordinator in its vicinity.");
+                        return;
                     }
                 }
                 
@@ -385,6 +379,13 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                 and not ruleMatcher->isOnYBorder(norm(catom->position))) {
                                 handleMeshComponentInsertion(Z_R_EPL);
                             }
+
+                            // At relative time step 38, new root in place on LZ child tile
+                            if (itCounter == 36
+                                and not ruleMatcher->isOnYBorder(norm(catom->position))
+                                and not ruleMatcher->isOnXOppBorder(norm(catom->position))) {
+                                handleMeshComponentInsertion(RZ_R_EPL);
+                            }
                         
                             fedCatomsOnLastRound = true;
                         } else {
@@ -421,7 +422,7 @@ void MeshAssemblyBlockCode::updateOpenPositions() {
 }
 
 short MeshAssemblyBlockCode::getEntryPointLocationForCell(const Cell3DPosition& pos) {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < 12; i++)                                               
         if (pos == catom->position + entryPointRelativePos[i]) return i + RevZ_EPL;
     
     return -1;
@@ -454,18 +455,19 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
             return getEntryPointPosition(RZ_EPL);
 
         // case EPLs
-        case RevZ_EPL: return getEntryPointPosition(R);
-        case RevZ_R_EPL: return getEntryPointPosition(R);
-        case RZ_L_EPL: return getEntryPointPosition(R);
-        case RZ_EPL: return getEntryPointPosition(R);
-        case RZ_R_EPL: return getEntryPointPosition(R);
+        // case RevZ_EPL: return getEntryPointPosition(R);
+        // case RevZ_R_EPL: return getEntryPointPosition(R);
+        // case RZ_L_EPL: return getEntryPointPosition(R);
+        // case RZ_EPL: return getEntryPointPosition(R);
+        case RZ_R_EPL: return getEntryPointPosition(LZ_EPL);
         case Z_R_EPL: return getEntryPointPosition(RevZ_EPL);
-        case Z_EPL: return getEntryPointPosition(R);
-        case Z_L_EPL: return getEntryPointPosition(R);
-        case LZ_R_EPL: return getEntryPointPosition(R);
-        case LZ_EPL: return getEntryPointPosition(R);
-        case LZ_L_EPL: return getEntryPointPosition(R);
-        case RevZ_L_EPL: return getEntryPointPosition(R);
+        // case Z_EPL: return getEntryPointPosition(R);
+        // case Z_L_EPL: return getEntryPointPosition(R);
+        // case LZ_R_EPL: return getEntryPointPosition(R);
+        // case LZ_EPL: return getEntryPointPosition(R);
+        // case LZ_L_EPL: return getEntryPointPosition(R);
+        // case RevZ_L_EPL: return getEntryPointPosition(R);
+        default: throw NotImplementedException("Entry point for EPL mesh component");
     }
 
     return Cell3DPosition(); // unreachable
@@ -474,7 +476,7 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
 void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     // Introduce new catoms
     world->addBlock(0, buildNewBlockCode,
-                    getEntryPointForMeshComponent(mc), ORANGE);
+                    getEntryPointForMeshComponent(mc), ORANGE);       
     
     // Set target position for introduced catom
     Cell3DPosition ep = getEntryPointForMeshComponent(mc);
@@ -482,8 +484,7 @@ void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     // cout << "mc: " << mc << " -- ep: " << ep << " -- idx: " << idx << endl;    
     targetForEntryPoint[idx] = catom->position +
         (mc < RevZ_EPL ? ruleMatcher->getPositionForMeshComponent(mc)
-         : ruleMatcher->getPositionForMeshComponent(mc)
-         + Cell3DPosition(-(short)B,-(short)B,B));
+         : ruleMatcher->getPositionForChildTileMeshComponent(mc));
 }
 
 bool MeshAssemblyBlockCode::
@@ -576,6 +577,22 @@ bool MeshAssemblyBlockCode::isOnEntryPoint(const Cell3DPosition& pos) const {
     
     for (const Cell3DPosition& ep : entryPointRelativePos) {
         if (pos == ep + nearestTR) return true;
+    }
+
+    return false;
+}
+
+bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
+    for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
+        if (ruleMatcher->isVerticalBranchTip(norm(nPos))
+            or ruleMatcher->isTileSupport(norm(nPos))) {
+            // Module is delegate coordinator
+            P2PNetworkInterface* nItf = catom->getInterface(nPos);
+            VS_ASSERT(nItf);
+            sendMessage(new RequestTargetCellMessage(catom->position), nItf,
+                        MSG_DELAY_MC, 0);
+            return true;
+        }
     }
 
     return false;

@@ -36,19 +36,20 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             mabc.catom->getInterface(mabc.branchTipPos);
         VS_ASSERT_MSG(btItf, "cannot find branch tip among neighbor interfaces");
         mabc.sendMessage(this->clone(), btItf, MSG_DELAY_MC, 0);
-    } else if (mabc.role == Coordinator) {
-        // A neighboring catom requested an objective, check needs an make decision based on their distance.
-        // FIXME: For now, route towards horizontal growth
-        // const Cell3DPosition& rPos = srcPos - mabc.catom->position;
-        // short epd = mabc.getEntryPointDirectionForCell(rPos);
-
+    } else if (mabc.role == Coordinator) {        
         short epl = mabc.getEntryPointLocationForCell(srcPos) - RevZ_EPL;
-        const Cell3DPosition& tPos =
-            mabc.targetForEntryPoint[epl];
+
+        Cell3DPosition tPos;
+        if (mabc.catom->position[2] == mabc.meshSeedPosition[2])
+            tPos = mabc.targetForEntryPoint[epl];
+        else {
+            tPos = mabc.catom->position + mabc.targetQueueForEPL[epl].front();
+            mabc.targetQueueForEPL[epl].pop();
+        }
 
         cout << "Spawnee Position: " << srcPos 
              << " -- Target Position: " << tPos
-             << " -- Relative Position: " << srcPos - mabc.catom->position 
+             << " -- epl Position: " << srcPos - mabc.catom->position 
              << " -- epl: " << epl << endl;
     
         // send to requesting catom

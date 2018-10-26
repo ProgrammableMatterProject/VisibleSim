@@ -151,6 +151,14 @@ public:
      * @return position of module with evaluated role 
      */
     const Cell3DPosition getPositionForMeshComponent(MeshComponent component) const;
+
+    /** 
+     * Return the expected position of a catom representing a certain mesh component,
+     *  but for in the relevant child tile of the this tile
+     * @param component component to evaluate
+     * @return position of module with evaluated component in relevant child tile 
+     */
+    const Cell3DPosition getPositionForChildTileMeshComponent(MeshComponent component) const;
     
     /** 
      * Returns the color assiociated with the AgentRole corresponding with position pos

@@ -12,6 +12,8 @@
 #ifndef MESHCATOMS3DBLOCKCODE_H_
 #define MESHCATOMS3DBLOCKCODE_H_
 
+#include <queue>
+
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
 #include "catoms3DMotionRules.h"
@@ -109,8 +111,25 @@ public:
     // std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {0};
     std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
-    std::array<bool, 6> feedBranch = {0};
-   
+    // // std::array<bool, 6> feedBranch = {0};
+    // std::array<MeshComponent, 12> componentForEntryPoint; //<! for a coordinator, the targetcomponent to which each of the modules that it has received should move to once they are initialized
+    // std::array<bool, 6> feedBranch = {0};
+    std::array<bool, 6> moduleReadyOnEPL = {0}; //<! keeps track of modules which arrived on Tile Entry Point Locations
+    std::queue<Cell3DPosition> targetQueueForEPL[12] = {
+        {}, // RevZ_EPL
+        {}, // RevZ_R_EPL
+        {}, // RZ_R_EPL
+        {}, // RZ_EPL
+        queue<Cell3DPosition>({Cell3DPosition(1, -1, 0)}), // RZ_R_EPL
+        {}, // Z_R_EPL
+        {}, // Z_EPL
+        {}, // Z_L_EPL
+        {}, // LZ_R_EPL
+        {}, // LZ_EPL
+        {}, // LZ_L_EPL
+        {} // RevZ_L_EPL    
+    }; 
+    
     // TargetCSG *target;
     MeshAssemblyBlockCode(Catoms3D::Catoms3DBlock *host);
     ~MeshAssemblyBlockCode();          
@@ -217,7 +236,14 @@ y the module
      * @param pos position to evaluate
      * @return true if pos is an EPL, false otherwise
      */
-    bool isOnEntryPoint(const Cell3DPosition& pos) const;    
+    bool isOnEntryPoint(const Cell3DPosition& pos) const;
+
+    /** 
+     * Locates a route for communicating with the tile root and sends 
+     *  a RequestTargetCell message through that route
+     * @return true if a message could be sent, false otherwise
+     */
+    bool requestTargetCellFromTileRoot();
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

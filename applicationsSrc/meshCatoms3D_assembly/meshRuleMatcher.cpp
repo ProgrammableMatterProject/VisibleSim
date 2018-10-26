@@ -60,9 +60,9 @@ bool MeshRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
 bool MeshRuleMatcher::isOnXOppBorder(const Cell3DPosition& pos) const {
     short a = (pos[2] / B) / 2 * B;
     short b = X_MAX - 2;
-    cout << "pos: " << pos << endl;
-    cout << "a: " << a << " " << "b: " << b << endl;
-    cout << "(int)(-(int)a + b): " << (int)(-(int)a + b) << endl;
+    // cout << "pos: " << pos << endl;
+    // cout << "a: " << a << " " << "b: " << b << endl;
+    // cout << "(int)(-(int)a + b): " << (int)(-(int)a + b) << endl;
     return pos[1] == (int)(-(int)a + b) and m_mod(pos[2], B) == 0;
 }
 
@@ -77,9 +77,9 @@ bool MeshRuleMatcher::isOnYBorder(const Cell3DPosition& pos) const {
 bool MeshRuleMatcher::isOnYOppBorder(const Cell3DPosition& pos) const {
     short a = (pos[2] / B) / 2 * B;
     short b = Y_MAX - 2;
-    cout << "pos: " << pos << endl;
-    cout << "a: " << a << " " << "b: " << b << endl;
-    cout << "(int)(-(int)a + b): " << (int)(-(int)a + b) << endl;
+    // cout << "pos: " << pos << endl;
+    // cout << "a: " << a << " " << "b: " << b << endl;
+    // cout << "(int)(-(int)a + b): " << (int)(-(int)a + b) << endl;
     return pos[0] == (int)(-(int)a + b) and m_mod(pos[2], B) == 0;
 }
 
@@ -357,8 +357,6 @@ getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const {
 }
 
 short MeshRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) const {
-    cout << pos << endl;
-    
     if (isInMesh(pos) and not isTileRoot(pos)) {
         if (isOnZBranch(pos)) return ZBranch;
         if (isOnRevZBranch(pos)) return RevZBranch;
@@ -465,6 +463,30 @@ const Cell3DPosition MeshRuleMatcher::getPositionForMeshComponent(MeshComponent 
         case LZ_EPL: return Cell3DPosition(-1,2,-1);
         case LZ_L_EPL: return Cell3DPosition(-1,1,-1);
         case RevZ_L_EPL: return Cell3DPosition(-1,0,-1);
+    }
+
+    return Cell3DPosition(); // unreachable
+}
+
+const Cell3DPosition
+MeshRuleMatcher::getPositionForChildTileMeshComponent(MeshComponent mc) const {
+    switch(mc) {            
+        // case EPLs
+        // case RevZ_EPL: return Cell3DPosition(-1,-1,-1);
+        // case RevZ_R_EPL: return Cell3DPosition(0,-1,-1);
+        // case RZ_L_EPL: return Cell3DPosition(1,-1,-1);
+        // case RZ_EPL: return Cell3DPosition(2,-1,-1);
+        case RZ_R_EPL:
+            return getPositionForMeshComponent(mc) + Cell3DPosition(-(short)B,0,B);
+        case Z_R_EPL:
+            return getPositionForMeshComponent(mc) + Cell3DPosition(-(short)B,-(short)B,B);
+        // case Z_EPL: return Cell3DPosition(2,2,-1);
+        // case Z_L_EPL: return Cell3DPosition(1,2,-1);
+        // case LZ_R_EPL: return Cell3DPosition(0,2,-1);
+        // case LZ_EPL: return Cell3DPosition(-1,2,-1);
+        // case LZ_L_EPL: return Cell3DPosition(-1,1,-1);
+        // case RevZ_L_EPL: return Cell3DPosition(-1,0,-1);
+        default: VS_ASSERT_MSG(false, "Child tile mesh component must be an EPL");
     }
 
     return Cell3DPosition(); // unreachable
