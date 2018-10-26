@@ -312,7 +312,7 @@ public:
      * @return a pointer to the BuildingBlock corresponding to the selected GlBlock, or NULL if there is none
      */
     inline BuildingBlock *getSelectedBuildingBlock() {
-        auto const &glBlock = mapGlBlocks.find(numSelectedFace);       
+        auto const &glBlock = mapGlBlocks.find(numSelectedGlBlock);   
         return glBlock != mapGlBlocks.end() ? getBlockById((*glBlock).second->blockId) : NULL;
     };
     

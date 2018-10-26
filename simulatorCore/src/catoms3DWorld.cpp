@@ -14,6 +14,7 @@
 
 #include "catoms3DWorld.h"
 #include "catoms3DBlock.h"
+#include "catoms3DMotionEngine.h"
 #include "trace.h"
 #include "configExporter.h"
 
@@ -86,15 +87,15 @@ void Catoms3DWorld::deleteWorld() {
 
 void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 	if (!GlutContext::popupMenu) {
-		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,215);
+		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,202,215);
 		// create submenu "Add"
-		GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,200,112);
+		GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,202,112);
 		addBlockSubMenu->id=50;
 		addBlockSubMenu->addButton(11,"../../simulatorCore/resources/textures/menuTextures/menu_add_normal.tga");
 		addBlockSubMenu->addButton(12,"../../simulatorCore/resources/textures/menuTextures/menu_add_same.tga");
 		addBlockSubMenu->addButton(13,"../../simulatorCore/resources/textures/menuTextures/menu_add_random.tga");
     // create submenu "Rotate"
-		GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,200,40);
+		GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,116,40);
 		rotateBlockSubMenu->id=51;
 
 		GlutContext::popupMenu->addButton(1,"../../simulatorCore/resources/textures/menuTextures/menu_add_sub.tga",addBlockSubMenu);
@@ -107,7 +108,26 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 	}
 
   // update rotateSubMenu depending on rotation catoms3DCapabilities
-	//GlutPopupMenuWindow *rotateBlockSubMenu  =
+    cout << "numSelectedGlBlock=" << numSelectedGlBlock << endl;
+	Catoms3DBlock *bb = (Catoms3DBlock *)getSelectedBuildingBlock();
+	vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> tab = Catoms3DMotionEngine::getAllRotationsForModule(bb);
+	int nbreMenus=tab.size();
+    cout << nbreMenus << endl;
+	if (nbreMenus==0) {
+			((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(false);
+	} else {
+		((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(true);
+		GlutPopupMenuWindow *rotateBlockSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(6)->getChild(0);
+		rotateBlockSubMenu->h = nbreMenus*35+10;
+		rotateBlockSubMenu->clearChildren();
+
+		int i=100;
+		for(auto &elem:tab) {
+            rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",
+				elem.first->isOctaFace(),elem.first->getConFromID(),elem.first->getConToID()));
+            i++;
+		}
+	}
 
 	if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 	cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
@@ -121,23 +141,25 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 void Catoms3DWorld::menuChoice(int n) {
     Catoms3DBlock *bb = (Catoms3DBlock *)getSelectedBuildingBlock();
     Cell3DPosition nPos;
-
-    switch (n) {
-    case 1:
-		  GlutContext::popupMenu->show(true);
-			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(1)->getChild(0);
+    cout << "menu:" << n << " on " << bb->blockId << endl;
+	switch (n) {
+        case 1: case 6:
+		    GlutContext::popupMenu->show(true);
+			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(n)->getChild(0);
 			GlutContext::popupSubMenu->show(true);
-			GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupSubMenu->w+5;
-			GlutContext::popupSubMenu->y=GlutContext::popupMenu->y+GlutContext::popupMenu->h-GlutContext::popupSubMenu->h/2;
+			GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupMenu->w+5;
+			GlutContext::popupSubMenu->y=GlutContext::popupMenu->y+GlutContext::popupMenu->getButton(n)->y-GlutContext::popupSubMenu->h/2;
 			// avoid placing submenu over the top of the window
 			if (GlutContext::popupSubMenu->y+GlutContext::popupSubMenu->h > GlutContext::screenHeight) {
 				GlutContext::popupSubMenu->y = GlutContext::screenHeight-GlutContext::popupSubMenu->h;
 			}
 		break;
-		case 11:
+        case 11:
 			GlutContext::popupSubMenu->show(false);
 			GlutContext::popupMenu->show(false);
+            cout << numSelectedFace << endl;
 			if (bb->getNeighborPos(numSelectedFace,nPos)) {
+                cout << "nPos=" << nPos << endl;
 				addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0,false);
 				linkBlock(nPos);
 				linkNeighbors(nPos);
@@ -168,21 +190,12 @@ void Catoms3DWorld::menuChoice(int n) {
 				cerr << "Position out of the grid" << endl;
 			}
 		break;
-		case 6:
-			GlutContext::popupMenu->show(true);
-			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(6)->getChild(0);
-			GlutContext::popupSubMenu->show(true);
-			GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupSubMenu->w+5;
-			GlutContext::popupSubMenu->y=GlutContext::popupMenu->y+GlutContext::popupMenu->h-GlutContext::popupSubMenu->h/2;
-			// avoid placing submenu over the top of the window
-			if (GlutContext::popupSubMenu->y+GlutContext::popupSubMenu->h > GlutContext::screenHeight) {
-				GlutContext::popupSubMenu->y = GlutContext::screenHeight-GlutContext::popupSubMenu->h;
-			}
-			GlutContext::popupSubMenu->clearChildren();
-			GlutContext::popupSubMenu->addButton(new GlutRotationButton(NULL,101,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",false,0,11));
-			GlutContext::popupSubMenu->addButton(new GlutRotationButton(NULL,101,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",true,3,9));
+    default:
+		  if (n>=100) {
+				GlutContext::popupSubMenu->show(false);
+				GlutContext::popupMenu->show(false);
+			} else World::menuChoice(n); // For all non-catoms2D-specific cases
 		break;
-    default: World::menuChoice(n); break; // For all non-catoms2D-specific cases
     }
 }
 
@@ -395,11 +408,10 @@ void Catoms3DWorld::glDraw() {
 void Catoms3DWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-    int n=1;
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((Catoms3DGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
-    }    
+    }
     unlock();
     glPopMatrix();
 }
@@ -407,11 +419,12 @@ void Catoms3DWorld::glDrawId() {
 void Catoms3DWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-    int n=1;
     lock();
+    int n;
     for (const auto& pair : mapGlBlocks) {
+        n = pair.first*13;
         ((Catoms3DGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
-    }    
+    }
     unlock();
     glPopMatrix();
 }
@@ -570,7 +583,8 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrix &mat) {
 }
 
 void Catoms3DWorld::setSelectedFace(int n) {
-    numSelectedGlBlock = n / 13;
+    cout << "code=" <<n << endl;
+    numSelectedGlBlock = n/13;
     string name = objBlockForPicking->getObjMtlName(n%13);
 
 	if (name == "Material__66") numSelectedFace = 0;
@@ -652,7 +666,7 @@ void Catoms3DWorld::simulatePolymer() {
 				pt.pt[2] = c3dGlBlock->position[2];
 				polymer->tabPt.push_back(pt);
 			}
-        }    
+        }
 		unlock();
 	}
 	double v;
