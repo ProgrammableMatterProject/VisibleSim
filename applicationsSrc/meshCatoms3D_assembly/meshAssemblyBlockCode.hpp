@@ -110,22 +110,62 @@ public:
     std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
     // std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {0};
-    std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
-    // // std::array<bool, 6> feedBranch = {0};
+    // std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
+    // std::array<bool, 6> feedBranch = {0};
     // std::array<MeshComponent, 12> componentForEntryPoint; //<! for a coordinator, the targetcomponent to which each of the modules that it has received should move to once they are initialized
     // std::array<bool, 6> feedBranch = {0};
     std::array<bool, 6> moduleReadyOnEPL = {0}; //<! keeps track of modules which arrived on Tile Entry Point Locations
     std::queue<Cell3DPosition> targetQueueForEPL[12] = {
-        {}, // RevZ_EPL
+        queue<Cell3DPosition>({
+                Cell3DPosition(-1, -1, 1),
+                Cell3DPosition(-2, -2, 2),
+                Cell3DPosition(-3, -3, 3),
+                Cell3DPosition(-4, -4, 4),
+                Cell3DPosition(-5, -5, 5),
+                Cell3DPosition(-4, -5, 5)
+            }), // RevZ_EPL
         {}, // RevZ_R_EPL
-        {}, // RZ_R_EPL
-        {}, // RZ_EPL
-        queue<Cell3DPosition>({Cell3DPosition(1, -1, 0)}), // RZ_R_EPL
-        {}, // Z_R_EPL
-        {}, // Z_EPL
-        {}, // Z_L_EPL
-        {}, // LZ_R_EPL
-        {}, // LZ_EPL
+        {},  // RZ_R_EPL
+        queue<Cell3DPosition>({
+                Cell3DPosition(-1, -1, 0),
+                Cell3DPosition(2, 0, 0),
+                Cell3DPosition(3, 0, 0),
+                Cell3DPosition(4, 0, 0),
+                Cell3DPosition(5, 0, 0),
+                Cell3DPosition(0, -1, 1),
+                Cell3DPosition(0, -2, 2),
+                Cell3DPosition(0, -3, 3),
+                Cell3DPosition(0, -4, 4),
+                Cell3DPosition(0, -5, 5),
+                Cell3DPosition(0, -4, 5)
+            }), // RZ_EPL
+        queue<Cell3DPosition>({ Cell3DPosition(1, -1, 0) }), // RZ_R_EPL
+        queue<Cell3DPosition>({
+                // Cell3DPosition(0, 0, 0),
+                Cell3DPosition(1, 0, 0)
+            }), // Z_R_EPL
+        queue<Cell3DPosition>({
+                Cell3DPosition(0, 0, 1),
+                Cell3DPosition(0, 0, 2),
+                Cell3DPosition(0, 0, 3),
+                Cell3DPosition(0, 0, 4),
+                Cell3DPosition(0, 0, 5)
+            }), // Z_EPL
+        queue<Cell3DPosition>({ Cell3DPosition(0, 1, 0) }), // Z_L_EPL
+        queue<Cell3DPosition>({ Cell3DPosition(-1, 1, 0) }), // LZ_R_EPL
+        queue<Cell3DPosition>({
+                Cell3DPosition(1, 1, 0),
+                Cell3DPosition(0, 2, 0),
+                Cell3DPosition(0, 3, 0),
+                Cell3DPosition(0, 4, 0),
+                Cell3DPosition(0, 5, 0),
+                Cell3DPosition(-1, 0, 1),
+                Cell3DPosition(-2, 0, 2),
+                Cell3DPosition(-3, 0, 3),
+                Cell3DPosition(-4, 0, 4),
+                Cell3DPosition(-5, 0, 5),
+                Cell3DPosition(-4, 0, 5)
+            }), // LZ_EPL
         {}, // LZ_L_EPL
         {} // RevZ_L_EPL    
     }; 

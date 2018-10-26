@@ -40,12 +40,8 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         short epl = mabc.getEntryPointLocationForCell(srcPos) - RevZ_EPL;
 
         Cell3DPosition tPos;
-        if (mabc.catom->position[2] == mabc.meshSeedPosition[2])
-            tPos = mabc.targetForEntryPoint[epl];
-        else {
-            tPos = mabc.catom->position + mabc.targetQueueForEPL[epl].front();
-            mabc.targetQueueForEPL[epl].pop();
-        }
+        tPos = mabc.catom->position + mabc.targetQueueForEPL[epl].front();
+        mabc.targetQueueForEPL[epl].pop();
 
         cout << "Spawnee Position: " << srcPos 
              << " -- Target Position: " << tPos
@@ -89,7 +85,11 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                                            mabc.catom->position,
                                            mabc.targetPosition,
                                            mabc.coordinatorPos, mabc.step, nextHop);
-            VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
+            if (not matched) {
+                mabc.catom->setColor(RED);
+                cout << "#" << mabc.catom->blockId << endl;
+                VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
+            }
     
             mabc.scheduleRotationTo(nextHop);
         }

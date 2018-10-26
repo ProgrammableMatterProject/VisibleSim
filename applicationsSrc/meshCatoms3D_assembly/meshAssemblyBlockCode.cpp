@@ -72,10 +72,10 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                  <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
         cout << " ]" << endl;
     
-        cout << "Target for Entry Points: [ ";
-        for (int i = 0; i < 8; i++)
-            cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
-        cout << " ]" << endl;
+        // cout << "Target for Entry Points: [ ";
+        // for (int i = 0; i < 8; i++)
+        //     cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
+        // cout << " ]" << endl;
     }
     
     // catom->setColor(debugColorIndex++);
@@ -135,9 +135,13 @@ void MeshAssemblyBlockCode::startup() {
                                        catom->position,
                                        targetPosition,
                                        coordinatorPos, step, nextPos);
-        VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
-        
-        VS_ASSERT_MSG(nextPos != catom->position, "DID NOT FIND RULE TO MATCH.");
+
+        if (not matched) {
+            catom->setColor(RED);
+            cout << "#" << catom->blockId << endl;
+            VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
+        }
+
         scheduleRotationTo(nextPos);
     } else if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {            
         role = ActiveBeamTip; // nothing to be done, wait for tPos requests
@@ -381,13 +385,17 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             }
 
                             // At relative time step 38, new root in place on LZ child tile
-                            if (itCounter == 36
-                                and not ruleMatcher->isOnYBorder(norm(catom->position))
-                                and not ruleMatcher->isOnXOppBorder(norm(catom->position))) {
-                                handleMeshComponentInsertion(RZ_R_EPL);
+                            if (itCounter == 38) {
+                                if (not ruleMatcher->isOnYBorder(norm(catom->position)) and
+                                    not ruleMatcher->isOnXOppBorder(norm(catom->position)))
+                                    handleMeshComponentInsertion(RZ_R_EPL);
+
+                                if (not ruleMatcher->isOnXBorder(norm(catom->position)) and
+                                    not ruleMatcher->isOnYOppBorder(norm(catom->position)))
+                                    handleMeshComponentInsertion(LZ_R_EPL);
                             }
                         
-                            fedCatomsOnLastRound = true;
+                            fedCatomsOnLastRound = true; // FIXME
                         } else {
                             fedCatomsOnLastRound = false;
                         }
@@ -463,7 +471,7 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
         case Z_R_EPL: return getEntryPointPosition(RevZ_EPL);
         // case Z_EPL: return getEntryPointPosition(R);
         // case Z_L_EPL: return getEntryPointPosition(R);
-        // case LZ_R_EPL: return getEntryPointPosition(R);
+        case LZ_R_EPL: return getEntryPointPosition(RZ_EPL);
         // case LZ_EPL: return getEntryPointPosition(R);
         // case LZ_L_EPL: return getEntryPointPosition(R);
         // case RevZ_L_EPL: return getEntryPointPosition(R);
@@ -478,13 +486,13 @@ void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     world->addBlock(0, buildNewBlockCode,
                     getEntryPointForMeshComponent(mc), ORANGE);       
     
-    // Set target position for introduced catom
-    Cell3DPosition ep = getEntryPointForMeshComponent(mc);
-    short idx = getEntryPointLocationForCell(ep) - RevZ_EPL;
-    // cout << "mc: " << mc << " -- ep: " << ep << " -- idx: " << idx << endl;    
-    targetForEntryPoint[idx] = catom->position +
-        (mc < RevZ_EPL ? ruleMatcher->getPositionForMeshComponent(mc)
-         : ruleMatcher->getPositionForChildTileMeshComponent(mc));
+    // // Set target position for introduced catom
+    // Cell3DPosition ep = getEntryPointForMeshComponent(mc);
+    // short idx = getEntryPointLocationForCell(ep) - RevZ_EPL;
+    // // cout << "mc: " << mc << " -- ep: " << ep << " -- idx: " << idx << endl;    
+    // targetForEntryPoint[idx] = catom->position +
+    //     (mc < RevZ_EPL ? ruleMatcher->getPositionForMeshComponent(mc)
+    //      : ruleMatcher->getPositionForChildTileMeshComponent(mc));
 }
 
 bool MeshAssemblyBlockCode::

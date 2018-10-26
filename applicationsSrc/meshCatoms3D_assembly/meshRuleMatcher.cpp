@@ -482,7 +482,8 @@ MeshRuleMatcher::getPositionForChildTileMeshComponent(MeshComponent mc) const {
             return getPositionForMeshComponent(mc) + Cell3DPosition(-(short)B,-(short)B,B);
         // case Z_EPL: return Cell3DPosition(2,2,-1);
         // case Z_L_EPL: return Cell3DPosition(1,2,-1);
-        // case LZ_R_EPL: return Cell3DPosition(0,2,-1);
+        case LZ_R_EPL:
+            return getPositionForMeshComponent(mc) + Cell3DPosition(0,-(short)B,B);
         // case LZ_EPL: return Cell3DPosition(-1,2,-1);
         // case LZ_L_EPL: return Cell3DPosition(-1,1,-1);
         // case RevZ_L_EPL: return Cell3DPosition(-1,0,-1);
