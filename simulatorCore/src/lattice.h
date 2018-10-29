@@ -20,15 +20,6 @@
 
 namespace BaseSimulator {
 
-class HighlightedCell {
-public :
-	Cell3DPosition pos;
-	Color color;
-	
-	HighlightedCell(const Cell3DPosition &p,const Color&c=YELLOW):pos(p),color(c) {};
-
-};
-
 /*! @brief Abstract class Lattice
  *
  */
@@ -66,7 +57,7 @@ public:
 protected:
     static const string directionName[];
 	
-	vector<HighlightedCell> tabHighlightedCells;
+	map<const Cell3DPosition, Color> mapHighlightedCells;
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< Labels for a lattice cell's neighboring cells (virtual)
     /**
@@ -249,10 +240,9 @@ public:
     
     virtual void glDraw() {};
 	
-	virtual void highlightCell(const Cell3DPosition& pos, const Color &color);
+	virtual void highlightCell(const Cell3DPosition& pos, const Color &color = YELLOW);
 	virtual void unhighlightCell(const Cell3DPosition& pos);
-	virtual void resetCellHighlights(); // Unhighlight all highlighted cells
-	vector<HighlightedCell>::iterator find(const Cell3DPosition &pos);
+	virtual void resetCellHighlights(); // Unhighlight all highlighted cells	
 };
 
 /*! @brief 2-Dimensional Lattice abstract class
