@@ -72,7 +72,7 @@ public:
     };
                
     inline static Time getRoundDuration() {
-        return (2.2 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
+        return (2.3 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
                 + Rotations3D::COM_DELAY);// + (getScheduler()->now() / 1000);
     }
 
@@ -100,9 +100,10 @@ public:
 
     // Free Agent Vars
     short step = 1; // For moving FreeAgents
+    bool tileInsertionAckGiven = false; // for tile insertion coordination at HBranch tips
 
     // Support Agent Vars
-    Cell3DPosition branchTipPos; // For Support role only    
+    Cell3DPosition branchTipPos; // For Support role only        
     
     // Coordinator Vars
     int itCounter = 0; // When t > 5 all supports are in place
@@ -115,6 +116,8 @@ public:
     // std::array<MeshComponent, 12> componentForEntryPoint; //<! for a coordinator, the targetcomponent to which each of the modules that it has received should move to once they are initialized
     // std::array<bool, 6> feedBranch = {0};
     std::array<bool, 6> moduleReadyOnEPL = {0}; //<! keeps track of modules which arrived on Tile Entry Point Locations
+
+
     std::queue<Cell3DPosition> targetQueueForEPL[12] = {
         queue<Cell3DPosition>({
                 Cell3DPosition(-1, -1, 1),
@@ -122,6 +125,8 @@ public:
                 Cell3DPosition(-3, -3, 3),
                 Cell3DPosition(-4, -4, 4),
                 Cell3DPosition(-5, -5, 5),
+                Cell3DPosition(-4, -5, 5),
+                Cell3DPosition(-5, -4, 5),
                 Cell3DPosition(-4, -5, 5)
             }), // RevZ_EPL
         {}, // RevZ_R_EPL
@@ -140,10 +145,7 @@ public:
                 Cell3DPosition(0, -4, 5)
             }), // RZ_EPL
         queue<Cell3DPosition>({ Cell3DPosition(1, -1, 0) }), // RZ_R_EPL
-        queue<Cell3DPosition>({
-                // Cell3DPosition(0, 0, 0),
-                Cell3DPosition(1, 0, 0)
-            }), // Z_R_EPL
+        queue<Cell3DPosition>({ Cell3DPosition(1, 0, 0) }), // Z_R_EPL
         queue<Cell3DPosition>({
                 Cell3DPosition(0, 0, 1),
                 Cell3DPosition(0, 0, 2),
@@ -169,6 +171,14 @@ public:
         {}, // LZ_L_EPL
         {} // RevZ_L_EPL    
     }; 
+
+    /** 
+     * Finds the next target position that a module arriving at EPL epl should move to, 
+     *  and return it
+     * @param epl entry point location to evaluate
+     * @return the next target cell that should be filled by catom at epl
+     */
+    const Cell3DPosition getNextTargetForEPL(MeshComponent epl);
     
     // TargetCSG *target;
     MeshAssemblyBlockCode(Catoms3D::Catoms3DBlock *host);
@@ -189,6 +199,12 @@ y the module
         return (new MeshAssemblyBlockCode((Catoms3DBlock*)host));
     }
 
+    /** 
+     * Add initial sandbox modules to the lattice
+     */
+    void initializeSandbox();
+    static bool sandboxInitialized;
+    
     /** 
      * Transforms a shifted grid position into a mesh absolute position.
      * @note This has to be used due to the mesh seed being offsetted in order to leave space 

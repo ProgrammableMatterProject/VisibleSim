@@ -26,6 +26,7 @@
 using namespace Catoms3D;
 using namespace MeshCoating;
 
+bool MeshAssemblyBlockCode::sandboxInitialized = false;
 uint MeshAssemblyBlockCode::X_MAX;
 uint MeshAssemblyBlockCode::Y_MAX;
 uint MeshAssemblyBlockCode::Z_MAX;
@@ -76,6 +77,8 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         // for (int i = 0; i < 8; i++)
         //     cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
         // cout << " ]" << endl;
+
+        cout << "itCounter: " << itCounter << endl;
     }
     
     // catom->setColor(debugColorIndex++);
@@ -108,6 +111,9 @@ void MeshAssemblyBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
+    if (not sandboxInitialized)
+        initializeSandbox();
+    
     coordinatorPos =
             denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
     
@@ -117,18 +123,18 @@ void MeshAssemblyBlockCode::startup() {
         targetPosition = coordinatorPos;
         
         // Make incoming vertical branch tips appear already in place if at ground level
-        if (coordinatorPos != meshSeedPosition) {
-            for (int i = 0; i < XBranch; i++) {
-                world->addBlock(0, buildNewBlockCode,
-                                coordinatorPos + incidentTipRelativePos[i], PINK);
-                world->addBlock(0, buildNewBlockCode, coordinatorPos +
-                                incidentTipRelativePos[i] + incidentTipRelativePos[i], GREY);
-                world->addBlock(0, buildNewBlockCode,
-                                coordinatorPos + incidentTipRelativePos[i]
-                                + incidentTipRelativePos[i] + incidentTipRelativePos[i],
-                                GREY);
-            }
-        }
+        // if (coordinatorPos != meshSeedPosition) {
+        //     for (int i = 0; i < XBranch; i++) {
+        //         world->addBlock(0, buildNewBlockCode,
+        //                         coordinatorPos + incidentTipRelativePos[i], PINK);
+        //         world->addBlock(0, buildNewBlockCode, coordinatorPos +
+        //                         incidentTipRelativePos[i] + incidentTipRelativePos[i], GREY);
+        //         world->addBlock(0, buildNewBlockCode,
+        //                         coordinatorPos + incidentTipRelativePos[i]
+        //                         + incidentTipRelativePos[i] + incidentTipRelativePos[i],
+        //                         GREY);
+        //     }
+        // }
         
         Cell3DPosition nextPos;
         bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
@@ -243,32 +249,20 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
                     // Coordinate to let the last arrived branch continue the construction
-                    if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
-                        and lattice->isFree(nextPosAlongBranch)
+                    if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))                       
                         and catom->position[2] == meshSeedPosition[2]) {
-                        
-                        if (incidentBranchesToRootAreComplete(nextPosAlongBranch)) {
-                            lattice->unhighlightCell(nextPosAlongBranch);
-                            cout << "Ready to insert tile root at " << nextPosAlongBranch
-                                 << endl;
-#ifdef INTERACTIVE_MODE
-                            awaitKeyPressed();
-#endif
-                            // Update coordinate system to the one of the next tile
-                            coordinatorPos =
-                                denorm(ruleMatcher->
-                                       getNearestTileRootPosition(norm(catom->position)));
-                            
-                            world->addBlock(0, buildNewBlockCode,
-                                            getEntryPointForMeshComponent(R), CYAN);
-                        } else {
-                            lattice->highlightCell(nextPosAlongBranch, YELLOW);
-                            cout << "Some branches are missing around " << nextPosAlongBranch
-                                 << endl;
-#ifdef INTERACTIVE_MODE
-                            awaitKeyPressed();
-#endif
-                        }
+                        lattice->highlightCell(nextPosAlongBranch, YELLOW);
+                        cout << "Some branches are missing around " << nextPosAlongBranch
+                             << endl;
+
+                        // Coordinate through message with other tip it has arrived, 
+                        //  otherwise wait for it to arrive and initiate handshake
+                        sendMessage(new TileInsertionReadyMessage(false),
+                                    (ruleMatcher->getPositionForMeshComponent(X_5)
+                                     + coordinatorPos == catom->position ?
+                                     catom->getInterface(catom->position + Cell3DPosition(1, 0, -1)) :
+                                     catom->getInterface(catom->position + Cell3DPosition(0, 1, -1))),
+                                    MSG_DELAY_MC, 0);
                     }
                 }
             } else {
@@ -323,18 +317,49 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     if (catom->position[2] == meshSeedPosition[2]) {
                         if (itCounter == 0) {
                             handleMeshComponentInsertion(S_RZ);
-                            handleMeshComponentInsertion(S_LZ);        
+                            handleMeshComponentInsertion(S_LZ);
+                            
                         } else if (itCounter == 1) {
-                            handleMeshComponentInsertion(X_1);
-                            catomsReqByBranch[XBranch]--;
-                        
                             handleMeshComponentInsertion(Y_1);
                             catomsReqByBranch[YBranch]--;
-                        } else if (itCounter == 2) {
+
+                        } else if (itCounter == 3) {
+                            handleMeshComponentInsertion(X_1);
+                            catomsReqByBranch[XBranch]--;
+                            
+                        } else if (itCounter == 4) {
                             handleMeshComponentInsertion(S_Z);
                             handleMeshComponentInsertion(S_RevZ);
-                            fedCatomsOnLastRound = true;
-                        } else if (not fedCatomsOnLastRound) {
+                            
+                        } else if (itCounter == 20 and
+                                   ruleMatcher->shouldGrowRevZBranch(norm(catom->position))) {
+                            handleMeshComponentInsertion(Z_R_EPL);
+                        
+                            // At relative time step 42, new root in place on LZ child tile
+                        } else if (itCounter == 44) {
+                            if (ruleMatcher->shouldGrowLZBranch(norm(catom->position)))
+                                handleMeshComponentInsertion(RZ_R_EPL); // S_RZ
+
+                            if (ruleMatcher->shouldGrowRZBranch(norm(catom->position)))
+                                handleMeshComponentInsertion(LZ_R_EPL); // S_LZ
+                            
+                        } else if (itCounter == 30 and
+                                   ruleMatcher->shouldGrowRevZBranch(norm(catom->position))) {
+                            handleMeshComponentInsertion(Z_L_EPL); // Y1
+                        
+                        } else if (itCounter == 32 and
+                                   ruleMatcher->shouldGrowRevZBranch(norm(catom->position))) {
+                            handleMeshComponentInsertion(Z_R_EPL); // X1
+                                                
+                        } else if (itCounter == 50) {
+                            if (ruleMatcher->shouldGrowRZBranch(norm(catom->position)))
+                                handleMeshComponentInsertion(LZ_EPL); // S_Z
+                                
+                            if (ruleMatcher->shouldGrowLZBranch(norm(catom->position)))
+                                handleMeshComponentInsertion(RZ_EPL); // S_RevZ
+                        }
+                            
+                        if (not fedCatomsOnLastRound and itCounter > 5) {
                             // Spawning Rules
                             if (catomsReqByBranch[XBranch] > 0) {
                                 handleMeshComponentInsertion(static_cast<MeshComponent>
@@ -350,52 +375,33 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                 catomsReqByBranch[YBranch]--;
                             }
                             
-                            if (catomsReqByBranch[ZBranch] > 0 and itCounter > 5) {
+                            if (catomsReqByBranch[ZBranch] > 0 and itCounter > 7) {
                                 handleMeshComponentInsertion(static_cast<MeshComponent>
                                                              (Z_1 + B -
                                                               catomsReqByBranch[ZBranch] - 1));
                                 catomsReqByBranch[ZBranch]--;
                             }                        
 
-                            if (catomsReqByBranch[RevZBranch] > 0 and itCounter > 5) {
+                            if (catomsReqByBranch[RevZBranch] > 0 and itCounter > 7) {
                                 handleMeshComponentInsertion(static_cast<MeshComponent>
                                                              (RevZ_1 + B -
                                                               catomsReqByBranch[RevZBranch] - 1));
                                 catomsReqByBranch[RevZBranch]--;
                             }
 
-                            if (catomsReqByBranch[LZBranch] > 0 and itCounter > 11) {
+                            if (catomsReqByBranch[LZBranch] > 0 and itCounter > 13) {
                                 handleMeshComponentInsertion(static_cast<MeshComponent>
                                                              (LZ_1 + B -
                                                               catomsReqByBranch[LZBranch] - 1));
                                 catomsReqByBranch[LZBranch]--;
                             }
 
-                            if (catomsReqByBranch[RZBranch] > 0 and itCounter > 11) {
+                            if (catomsReqByBranch[RZBranch] > 0 and itCounter > 13) {
                                 handleMeshComponentInsertion(static_cast<MeshComponent>
                                                              (RZ_1 + B -
                                                               catomsReqByBranch[RZBranch] - 1));
                                 catomsReqByBranch[RZBranch]--;
                             }
-
-                            if (itCounter == 16
-                                and not ruleMatcher->isOnXBorder(norm(catom->position))
-                                and not ruleMatcher->isOnYBorder(norm(catom->position))) {
-                                handleMeshComponentInsertion(Z_R_EPL);
-                            }
-
-                            // At relative time step 38, new root in place on LZ child tile
-                            if (itCounter == 38) {
-                                if (not ruleMatcher->isOnYBorder(norm(catom->position)) and
-                                    not ruleMatcher->isOnXOppBorder(norm(catom->position)))
-                                    handleMeshComponentInsertion(RZ_R_EPL);
-
-                                if (not ruleMatcher->isOnXBorder(norm(catom->position)) and
-                                    not ruleMatcher->isOnYOppBorder(norm(catom->position)))
-                                    handleMeshComponentInsertion(LZ_R_EPL);
-                            }
-                        
-                            fedCatomsOnLastRound = true; // FIXME
                         } else {
                             fedCatomsOnLastRound = false;
                         }
@@ -404,13 +410,44 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     itCounter++;
                     getScheduler()->schedule(
                         new InterruptionEvent(getScheduler()->now() +
-                                              (getRoundDuration() *
-                                               (1 + (catom->position[0] * 0.005))),
+                                              (getRoundDuration()),
                                               catom, IT_MODE_TILEROOT_ACTIVATION));
+                    // new InterruptionEvent(getScheduler()->now() +
+                    //                       (getRoundDuration() *
+                    //                        (1 + (catom->position[0]
+                    //                              + catom->position[1] * 0.05))),
+                    //                       catom, IT_MODE_TILEROOT_ACTIVATION));
                 } break;
             }            
         }
     }
+}
+
+const Cell3DPosition MeshAssemblyBlockCode::getNextTargetForEPL(MeshComponent epl) {
+    short idx = epl - RevZ_EPL;
+    if (not targetQueueForEPL[idx].empty()) {
+        const Cell3DPosition& tPos = targetQueueForEPL[idx].front();
+        targetQueueForEPL[idx].pop();
+        return tPos;
+    }
+    
+    switch (epl) {
+        // case RevZ_EPL: return getEntryPointPosition(R);
+        // case RevZ_R_EPL: return getEntryPointPosition(R);
+        // case RZ_L_EPL: return getEntryPointPosition(R);
+        case RZ_EPL: return Cell3DPosition(-1, -4, 5);
+        case RZ_R_EPL: return Cell3DPosition(-4, 0, 5);
+        case Z_R_EPL: return Cell3DPosition(-4, -5, 5);
+            // case Z_EPL: return getEntryPointPosition(R);
+        case Z_L_EPL: return Cell3DPosition(-5, -4, 5);
+        case LZ_R_EPL: return Cell3DPosition(0, -4, 5);
+        case LZ_EPL: return Cell3DPosition(-4, -1, 5);
+            // case LZ_L_EPL: return getEntryPointPosition(R);
+            // case RevZ_L_EPL: return getEntryPointPosition(R);
+        default: VS_ASSERT_MSG(false, "getNextTargetForEPL: input is not an EPL");
+    }
+
+    return Cell3DPosition(); // unreachable
 }
 
 void MeshAssemblyBlockCode::updateOpenPositions() {
@@ -466,13 +503,13 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
         // case RevZ_EPL: return getEntryPointPosition(R);
         // case RevZ_R_EPL: return getEntryPointPosition(R);
         // case RZ_L_EPL: return getEntryPointPosition(R);
-        // case RZ_EPL: return getEntryPointPosition(R);
+        case RZ_EPL: return getEntryPointPosition(LZ_EPL);
         case RZ_R_EPL: return getEntryPointPosition(LZ_EPL);
         case Z_R_EPL: return getEntryPointPosition(RevZ_EPL);
         // case Z_EPL: return getEntryPointPosition(R);
-        // case Z_L_EPL: return getEntryPointPosition(R);
+        case Z_L_EPL: return getEntryPointPosition(RevZ_EPL);
         case LZ_R_EPL: return getEntryPointPosition(RZ_EPL);
-        // case LZ_EPL: return getEntryPointPosition(R);
+        case LZ_EPL: return getEntryPointPosition(RZ_EPL);
         // case LZ_L_EPL: return getEntryPointPosition(R);
         // case RevZ_L_EPL: return getEntryPointPosition(R);
         default: throw NotImplementedException("Entry point for EPL mesh component");
@@ -485,6 +522,8 @@ void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     // Introduce new catoms
     world->addBlock(0, buildNewBlockCode,
                     getEntryPointForMeshComponent(mc), ORANGE);       
+
+    fedCatomsOnLastRound = true;
     
     // // Set target position for introduced catom
     // Cell3DPosition ep = getEntryPointForMeshComponent(mc);
@@ -604,4 +643,25 @@ bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
     }
 
     return false;
+}
+
+
+void MeshAssemblyBlockCode::initializeSandbox() {
+    for (const auto& pos : ruleMatcher->getAllGroundTileRootPositionsForMesh()) {
+        const Cell3DPosition& denormPos = denorm(pos);
+        cout << pos << " " << denormPos << endl;
+        
+        for (int i = 0; i < XBranch; i++) {
+            world->addBlock(0, buildNewBlockCode,
+                            denormPos + incidentTipRelativePos[i], PINK);
+            world->addBlock(0, buildNewBlockCode, denormPos +
+                            incidentTipRelativePos[i] + incidentTipRelativePos[i], GREY);
+            world->addBlock(0, buildNewBlockCode,
+                            denormPos + incidentTipRelativePos[i]
+                            + incidentTipRelativePos[i] + incidentTipRelativePos[i],
+                            GREY);
+        }
+    }
+
+    sandboxInitialized = true;
 }

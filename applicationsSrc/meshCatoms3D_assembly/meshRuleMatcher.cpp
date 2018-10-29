@@ -504,3 +504,13 @@ const Color& MeshRuleMatcher::getColorForPosition(const Cell3DPosition& pos) con
 
     return GREY;
 }
+
+const vector<Cell3DPosition> MeshRuleMatcher::getAllGroundTileRootPositionsForMesh() const {
+    vector<Cell3DPosition> tileRoots;
+    
+    for (int x = 0; x < X_MAX; x+=6)
+        for (int y = 0; y < Y_MAX; y+=6)
+            tileRoots.push_back(Cell3DPosition(x,y,0));
+
+    return tileRoots;    
+}

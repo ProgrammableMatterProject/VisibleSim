@@ -34,7 +34,7 @@ enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
                      RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
                      LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
                      RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,
-                     // EPLs
+                     // EPLs == 34 and on
                      RevZ_EPL, RevZ_R_EPL, RZ_L_EPL, RZ_EPL,
                      RZ_R_EPL, Z_R_EPL, Z_EPL,
                      Z_L_EPL, LZ_R_EPL, LZ_EPL,
@@ -166,6 +166,12 @@ public:
      * @return the color assiociated with the AgentRole corresponding with position pos
      */
     const Color& getColorForPosition(const Cell3DPosition& pos) const;
+
+    /** 
+     * @return a list containing all the location of all tile roots in this mesh,
+     *  according to its dimensions
+     */
+    const vector<Cell3DPosition> getAllGroundTileRootPositionsForMesh() const;
 };
 
 }
