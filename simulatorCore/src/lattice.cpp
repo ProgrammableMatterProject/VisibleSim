@@ -73,8 +73,10 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
             throw OutOfLatticeInsertionException(p);
         else if (not isFree(p))
             throw DoubleInsertionException(p);
-        else
+        else {
             grid[index] = bb;
+            nbModules++;
+        }
     } catch (DoubleInsertionException const& e) {
         cerr << e.what();
         VS_ASSERT(false);//FIXME: should be handled by thes user, but catch clauses in main are not catching the exceptions for some reason.
@@ -87,6 +89,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
 
 void Lattice::remove(const Cell3DPosition &p) {
     grid[getIndex(p)] = NULL;
+    nbModules--;
 }
 
 BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) const {

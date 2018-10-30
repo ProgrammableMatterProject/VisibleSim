@@ -83,6 +83,7 @@ public:
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
     BuildingBlock **grid; //!< The grid as a 1-Dimensional array of BuildingBlock pointers
+    unsigned int nbModules = 0; //!< The number of modules currently part of the lattice
 
     /** 
      * @return the coordinates of the start of the grid
