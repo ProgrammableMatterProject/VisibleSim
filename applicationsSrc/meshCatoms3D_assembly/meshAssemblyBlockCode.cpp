@@ -54,6 +54,21 @@ MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
 }
 
 void MeshAssemblyBlockCode::onBlockSelected() {
+    if (catom->blockId == 1) {
+        cout << "MAX: " << X_MAX << ", " << Y_MAX << ", " << Z_MAX << endl;
+        for (int x = 0; x < (int)X_MAX; x++) {
+            for (int y = 0; y < (int)Y_MAX; y++) {
+                for (int z = 0; z < (int)Z_MAX; z++) {
+                    const Cell3DPosition& pos = Cell3DPosition(x,y,z);
+                    BuildingBlock *bb = lattice->getBlock(pos);
+                    if (bb // and ruleMatcher->isInMesh(norm(pos)))
+                        and ruleMatcher->isInPyramid(norm(pos)))
+                        bb->setColor(WHITE);
+                }
+            }
+        }
+    }
+    
     // Debug:
     // (1) Print details of branch growth plan and previous round
     if (role == Coordinator) {
@@ -92,6 +107,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
                     targetPosition, coordinatorPos, step, nextHop);            
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
+    cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     
     // cout << "Possible Rotations: " << endl;
     // const vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> allRotations =
@@ -343,22 +359,55 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             if (ruleMatcher->shouldGrowRZBranch(norm(catom->position)))
                                 handleMeshComponentInsertion(LZ_R_EPL); // S_LZ
                             
-                        } else if (itCounter == 30 and
-                                   ruleMatcher->shouldGrowRevZBranch(norm(catom->position))) {
+                        }
+
+                        if (itCounter == 30 and
+                            ruleMatcher->shouldGrowRevZBranch(norm(catom->position)))
                             handleMeshComponentInsertion(Z_L_EPL); // Y1
                         
-                        } else if (itCounter == 32 and
-                                   ruleMatcher->shouldGrowRevZBranch(norm(catom->position))) {
+                        if (itCounter == 32 and
+                            ruleMatcher->shouldGrowRevZBranch(norm(catom->position)))
                             handleMeshComponentInsertion(Z_R_EPL); // X1
-                                                
-                        } else if (itCounter == 50) {
+                        
+                        if (itCounter == 50) {
                             if (ruleMatcher->shouldGrowRZBranch(norm(catom->position)))
                                 handleMeshComponentInsertion(LZ_EPL); // S_Z
                                 
                             if (ruleMatcher->shouldGrowLZBranch(norm(catom->position)))
                                 handleMeshComponentInsertion(RZ_EPL); // S_RevZ
                         }
+
+                        if ((itCounter == 52 or itCounter == 54
+                             or itCounter == 56 or itCounter == 58)) {
+                            if (ruleMatcher->shouldGrowRZBranch(norm(catom->position)))
+                                handleMeshComponentInsertion(LZ_EPL); // YN
+
+                            if (ruleMatcher->shouldGrowLZBranch(norm(catom->position)))
+                                handleMeshComponentInsertion(RZ_EPL); // XN
+                        }
+
+                        if ((itCounter == 37 or itCounter == 39
+                             or itCounter == 41 or itCounter == 43 or itCounter == 45)
+                            and ruleMatcher->shouldGrowRevZBranch(norm(catom->position)))
+                            handleMeshComponentInsertion(Z_EPL); // ZN
+
+                        if ((itCounter == 76 or itCounter == 78
+                             or itCounter == 80 or itCounter == 82 or itCounter == 84)
+                            and ruleMatcher->shouldGrowZBranch(norm(catom->position))
+                            and not (catom->position[1] == 3))//FIXME:
+                            handleMeshComponentInsertion(RevZ_EPL); // RevZN
+
+                        if (itCounter == 60 or itCounter == 62
+                            or itCounter == 64 or itCounter == 66 or itCounter == 68) {
                             
+                            if (ruleMatcher->shouldGrowRZBranch(norm(catom->position))
+                                and not (catom->position[0] == 3))//FIXME:)
+                                handleMeshComponentInsertion(LZ_EPL); // LZN
+
+                            if (ruleMatcher->shouldGrowLZBranch(norm(catom->position)))
+                                handleMeshComponentInsertion(RZ_EPL); // RZN
+                        }
+                        
                         if (not fedCatomsOnLastRound and itCounter > 5) {
                             // Spawning Rules
                             if (catomsReqByBranch[XBranch] > 0) {
@@ -432,19 +481,21 @@ const Cell3DPosition MeshAssemblyBlockCode::getNextTargetForEPL(MeshComponent ep
     }
     
     switch (epl) {
-        // case RevZ_EPL: return getEntryPointPosition(R);
+        case RevZ_EPL: return Cell3DPosition(-4, -4, 5);
         // case RevZ_R_EPL: return getEntryPointPosition(R);
         // case RZ_L_EPL: return getEntryPointPosition(R);
         case RZ_EPL: return Cell3DPosition(-1, -4, 5);
         case RZ_R_EPL: return Cell3DPosition(-4, 0, 5);
         case Z_R_EPL: return Cell3DPosition(-4, -5, 5);
-            // case Z_EPL: return getEntryPointPosition(R);
+        case Z_EPL: return Cell3DPosition(-1, -1, 5);
         case Z_L_EPL: return Cell3DPosition(-5, -4, 5);
         case LZ_R_EPL: return Cell3DPosition(0, -4, 5);
         case LZ_EPL: return Cell3DPosition(-4, -1, 5);
             // case LZ_L_EPL: return getEntryPointPosition(R);
             // case RevZ_L_EPL: return getEntryPointPosition(R);
-        default: VS_ASSERT_MSG(false, "getNextTargetForEPL: input is not an EPL");
+        default:
+            cerr << "getNextTargetForEPL(" << epl << ")" << endl;
+            VS_ASSERT_MSG(false, "getNextTargetForEPL: input is not an EPL");
     }
 
     return Cell3DPosition(); // unreachable
@@ -500,18 +551,18 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
             return getEntryPointPosition(RZ_EPL);
 
         // case EPLs
-        // case RevZ_EPL: return getEntryPointPosition(R);
-        // case RevZ_R_EPL: return getEntryPointPosition(R);
-        // case RZ_L_EPL: return getEntryPointPosition(R);
+        case RevZ_EPL: return getEntryPointPosition(Z_EPL);
+        case RevZ_R_EPL: return getEntryPointPosition(Z_EPL);
+        case RZ_L_EPL: return getEntryPointPosition(LZ_EPL);
         case RZ_EPL: return getEntryPointPosition(LZ_EPL);
         case RZ_R_EPL: return getEntryPointPosition(LZ_EPL);
         case Z_R_EPL: return getEntryPointPosition(RevZ_EPL);
-        // case Z_EPL: return getEntryPointPosition(R);
+        case Z_EPL: return getEntryPointPosition(RevZ_EPL);
         case Z_L_EPL: return getEntryPointPosition(RevZ_EPL);
         case LZ_R_EPL: return getEntryPointPosition(RZ_EPL);
         case LZ_EPL: return getEntryPointPosition(RZ_EPL);
-        // case LZ_L_EPL: return getEntryPointPosition(R);
-        // case RevZ_L_EPL: return getEntryPointPosition(R);
+        case LZ_L_EPL: return getEntryPointPosition(RZ_EPL);
+        case RevZ_L_EPL: return getEntryPointPosition(Z_EPL);
         default: throw NotImplementedException("Entry point for EPL mesh component");
     }
 

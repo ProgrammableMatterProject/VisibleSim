@@ -130,7 +130,7 @@ public:
                 Cell3DPosition(-4, -5, 5)
             }), // RevZ_EPL
         {}, // RevZ_R_EPL
-        {},  // RZ_R_EPL
+        {},  // RZ_L_EPL
         queue<Cell3DPosition>({
                 Cell3DPosition(-1, -1, 0),
                 Cell3DPosition(2, 0, 0),
@@ -142,19 +142,19 @@ public:
                 Cell3DPosition(0, -3, 3),
                 Cell3DPosition(0, -4, 4),
                 Cell3DPosition(0, -5, 5),
-                Cell3DPosition(0, -4, 5)
-            }), // RZ_EPL
+                Cell3DPosition(0, -4, 5)                
+            }), // RZ_EPL x
         queue<Cell3DPosition>({ Cell3DPosition(1, -1, 0) }), // RZ_R_EPL
-        queue<Cell3DPosition>({ Cell3DPosition(1, 0, 0) }), // Z_R_EPL
+        queue<Cell3DPosition>({ Cell3DPosition(1, 0, 0) }), // Z_R_EPL x 
         queue<Cell3DPosition>({
                 Cell3DPosition(0, 0, 1),
                 Cell3DPosition(0, 0, 2),
                 Cell3DPosition(0, 0, 3),
                 Cell3DPosition(0, 0, 4),
                 Cell3DPosition(0, 0, 5)
-            }), // Z_EPL
-        queue<Cell3DPosition>({ Cell3DPosition(0, 1, 0) }), // Z_L_EPL
-        queue<Cell3DPosition>({ Cell3DPosition(-1, 1, 0) }), // LZ_R_EPL
+            }), // Z_EPL 
+        queue<Cell3DPosition>({ Cell3DPosition(0, 1, 0) }), // Z_L_EPL x
+        queue<Cell3DPosition>({ Cell3DPosition(-1, 1, 0) }), // LZ_R_EPL x
         queue<Cell3DPosition>({
                 Cell3DPosition(1, 1, 0),
                 Cell3DPosition(0, 2, 0),
@@ -166,10 +166,10 @@ public:
                 Cell3DPosition(-3, 0, 3),
                 Cell3DPosition(-4, 0, 4),
                 Cell3DPosition(-5, 0, 5),
-                Cell3DPosition(-4, 0, 5)
-            }), // LZ_EPL
-        {}, // LZ_L_EPL
-        {} // RevZ_L_EPL    
+                Cell3DPosition(-4, 0, 5),
+            }), // LZ_EPL x
+        {}, // LZ_L_EPL x
+        {} // RevZ_L_EPL x   
     }; 
 
     /** 

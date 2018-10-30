@@ -39,7 +39,7 @@ bool MeshRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
     // add -2 for new tile construction using modules below R
     return isInRange(pos[0], 0 - pos[2]/ 2 - 2, X_MAX - pos[2] / 2 + 1)
         && isInRange(pos[1], 0 - pos[2] / 2 - 2, Y_MAX - pos[2] / 2 + 1)
-        && isInRange(pos[2], 0 - 2, Z_MAX - 1);
+        && isInRange(pos[2], 0, Z_MAX - 1);
 }
 
 bool MeshRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
@@ -513,4 +513,10 @@ const vector<Cell3DPosition> MeshRuleMatcher::getAllGroundTileRootPositionsForMe
             tileRoots.push_back(Cell3DPosition(x,y,0));
 
     return tileRoots;    
+}
+
+bool MeshRuleMatcher::isInPyramid(const Cell3DPosition& pos) const {
+    return isInMesh(pos)
+        and isInRange(pos[0], 0, X_MAX - pos[2])
+        and isInRange(pos[1], 0, Y_MAX - pos[2]);
 }

@@ -172,6 +172,24 @@ public:
      *  according to its dimensions
      */
     const vector<Cell3DPosition> getAllGroundTileRootPositionsForMesh() const;
+
+    /** 
+     * @param pos position to evaluate
+     * @return true if pos is part of the mesh pyramid
+     */
+    bool isInPyramid(const Cell3DPosition& pos) const;
+    
+    /** 
+     * Checks whether module at the tip of branch tipB relative to tile root at position pos
+     *  should grow branch growthB according to pyramid and mesh rules.
+     * @param pos position of the source tile root
+     * @attention pos must be a tile root
+     * @param tipB branch whose tip to consider
+     * @param growthB branch that tip TR should consider growing
+     * @return true if TR at tip of branch tipB should grow branch growthB, false otherwise.
+     */
+    bool pyramidTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
+                                              BranchIndex tipB, BranchIndex growthB) const;
 };
 
 }
