@@ -17,6 +17,7 @@
 #include "catoms3DMotionEngine.h"
 #include "trace.h"
 #include "configExporter.h"
+#include "rotation3DEvents.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -118,11 +119,11 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 		GlutPopupMenuWindow *rotateBlockSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(6)->getChild(0);
 		rotateBlockSubMenu->h = nbreMenus*35+10;
 		rotateBlockSubMenu->clearChildren();
-
-		int i=100;
+        int i=100;
 		for(auto &elem:tab) {
+            cout << elem.second << endl;
             rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",
-				elem.first->isOctaFace(),elem.first->getConFromID(),elem.first->getConToID()));
+				elem.first->isOctaFace(),elem.first->getConFromID(),elem.first->getConToID(),&(elem.second)));
             i++;
 		}
 	}
@@ -186,9 +187,14 @@ void Catoms3DWorld::menuChoice(int n) {
 			}
 		break;
     default:
+          cout << "menu=" << n << endl;
 		  if (n>=100) {
 				GlutContext::popupSubMenu->show(false);
 				GlutContext::popupMenu->show(false);
+                
+                Rotations3D* rotation = (Rotations3D *)((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->getPrivateData();
+                cout << *rotation << endl;
+                getScheduler()->schedule(new Rotation3DStartEvent(getScheduler()->now(), bb, *rotation));
 			} else World::menuChoice(n); // For all non-catoms2D-specific cases
 		break;
     }
@@ -578,7 +584,6 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrix &mat) {
 }
 
 void Catoms3DWorld::setSelectedFace(int n) {
-    cout << "code=" <<n << endl;
     numSelectedGlBlock = n/13;
     string name = objBlockForPicking->getObjMtlName(n%13);
 
@@ -598,7 +603,6 @@ void Catoms3DWorld::setSelectedFace(int n) {
 		cerr << "warning: Unrecognized picking face" << endl;
 		numSelectedFace = 13;	// UNDEFINED
 	}
-
 	cerr << name << " => " << numSelectedFace << endl;
 }
 
@@ -606,42 +610,6 @@ void Catoms3DWorld::exportConfiguration() {
 	Catoms3DConfigExporter exporter = Catoms3DConfigExporter(this);
 	exporter.exportConfiguration();
 }
-
-
-/*
-  void Catoms3DWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {
-  presence *gpm=pm.grid;
-  Catoms3DBlock **grb;
-
-  //memset(pm.grid,wall,27*sizeof(presence));
-
-  for (int i=0; i<27; i++) { *gpm++ = wallCell; };
-
-  int ix0 = (pos.x<1)?1-pos.x:0,
-  ix1 = (pos.x>lattice->gridSize[0]-2)?lattice->gridSize[0]-pos.x+1:3,
-  iy0 = (pos.y<1)?1-pos.y:0,
-  iy1 = (pos.y>lattice->gridSize[1]-2)?lattice->gridSize[1]-pos.y+1:3,
-  iz0 = (pos.z<1)?1-pos.z:0,
-  iz1 = (pos.z>lattice->gridSize[2]-2)?lattice->gridSize[2]-pos.z+1:3,
-  ix,iy,iz;
-  for (iz=iz0; iz<iz1; iz++) {
-  for (iy=iy0; iy<iy1; iy++) {
-  gpm = pm.grid+((iz*3+iy)*3+ix0);
-  grb = gridPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1+(iz+pos.z-1)*lattice->gridSize[1])*lattice->gridSize[0]);
-  for (ix=ix0; ix<ix1; ix++) {
-  *gpm++ = (*grb++)?fullCell:emptyCell;
-  }
-  }
-  }
-  }
-
-  void Catoms3DWorld::initTargetGrid() {
-  if (targetGrid) delete [] targetGrid;
-  int sz = lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2];
-  targetGrid = new presence[lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2]];
-  memset(targetGrid,emptyCell,sz*sizeof(presence));
-  }
-*/
 
 void Catoms3DWorld::simulatePolymer() {
 

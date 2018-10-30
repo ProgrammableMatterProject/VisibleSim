@@ -608,12 +608,13 @@ bool GlutButton::passiveMotionFunc(int mx,int my) {
 /* GlutRotationButton */
 /***************************************************************************************/
 
-GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest) :
+GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,void *pd) :
 		GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
 	isBlue = blue;
 	id0 = idSrc;
 	id1 = idDest;
 	isHighlighted = false;
+    privateData = pd;
 }
 
 void GlutRotationButton::glDraw() {
