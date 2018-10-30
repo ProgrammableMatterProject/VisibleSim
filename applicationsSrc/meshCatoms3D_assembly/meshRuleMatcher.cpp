@@ -145,7 +145,7 @@ bool MeshRuleMatcher::isTileSupport(const Cell3DPosition& pos) const {
         and m_mod(pos[2], B) == 0;
 }
 
-BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos) {
+BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos){
     VS_ASSERT_MSG(isInMesh(pos) and not isTileRoot(pos), "attempting to get branch index of tile root position or position outside of mesh");
 
     if (isOnXBranch(pos)) return XBranch;
@@ -158,6 +158,20 @@ BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPositi
     VS_ASSERT(false); // Unreachable
     
     return N_BRANCHES;
+}
+
+bool MeshRuleMatcher::shouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi) const {
+    switch(bi) {
+        case ZBranch: return shouldGrowZBranch(pos);
+        case RevZBranch: return shouldGrowRevZBranch(pos);
+        case RZBranch: return shouldGrowRZBranch(pos);
+        case LZBranch: return shouldGrowLZBranch(pos);
+        case XBranch: return shouldGrowXBranch(pos);
+        case YBranch: return shouldGrowYBranch(pos);
+        default: return false;
+    }
+
+    return false; //unreachable
 }
 
 bool MeshRuleMatcher::
@@ -204,7 +218,7 @@ shouldGrowYBranch(const Cell3DPosition& pos) const {
                                                        pos[2]));
 }
 
-Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(int bi) {
+Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(int bi) const {
     switch(bi) {
         case ZBranch: return Cell3DPosition(0,0,1);
         case RevZBranch: return Cell3DPosition(-1,-1,1);
@@ -516,7 +530,25 @@ const vector<Cell3DPosition> MeshRuleMatcher::getAllGroundTileRootPositionsForMe
 }
 
 bool MeshRuleMatcher::isInPyramid(const Cell3DPosition& pos) const {
-    return isInMesh(pos)
-        and isInRange(pos[0], 0, X_MAX - pos[2])
-        and isInRange(pos[1], 0, Y_MAX - pos[2]);
+    return  isInMesh(pos) and isInRange(pos[0], 0, X_MAX - pos[2] - 2)
+        and isInRange(pos[1], 0, Y_MAX - pos[2] - 2);
+}
+
+const Cell3DPosition
+MeshRuleMatcher::getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
+                                          BranchIndex bi) const {
+    if (not isInMesh(trRef)) return trRef;
+    // cout << "trRef: " << trRef << " - bi: " << bi << " - res: "
+    //      << trRef + 6 * getBranchUnitOffset(bi) << endl;
+    return trRef + 6 * getBranchUnitOffset(bi);
+}
+
+bool MeshRuleMatcher::pyramidTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
+                                                           BranchIndex tipB,
+                                                           BranchIndex growthB) const {
+    if (not isInMesh(pos) or not isTileRoot(pos)) return false;    
+    
+    const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
+    return shouldGrowBranch(tipTRPos, growthB)
+        and isInPyramid(getTileRootAtEndOfBranch(tipTRPos, growthB));
 }
