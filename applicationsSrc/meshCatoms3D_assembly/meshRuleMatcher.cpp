@@ -543,12 +543,17 @@ MeshRuleMatcher::getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
     return trRef + 6 * getBranchUnitOffset(bi);
 }
 
+bool MeshRuleMatcher::pyramidShouldGrowBranch(const Cell3DPosition& pos,
+                                              BranchIndex bi) const {
+    return shouldGrowBranch(pos, bi)
+        and isInPyramid(getTileRootAtEndOfBranch(pos, bi));
+}
+
 bool MeshRuleMatcher::pyramidTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
                                                            BranchIndex tipB,
                                                            BranchIndex growthB) const {
     if (not isInMesh(pos) or not isTileRoot(pos)) return false;    
     
     const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
-    return shouldGrowBranch(tipTRPos, growthB)
-        and isInPyramid(getTileRootAtEndOfBranch(tipTRPos, growthB));
+    return pyramidShouldGrowBranch(tipTRPos, growthB);
 }

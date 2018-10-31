@@ -300,6 +300,12 @@ y the module
      * @return true if a message could be sent, false otherwise
      */
     bool requestTargetCellFromTileRoot();
+
+    /** 
+     * Removes the next element in the target cell queue of the EPL for component comp
+     * @param comp component for which the EPL queue must be popped
+     */
+    void discardNextTargetForComponent(MeshComponent comp);
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

@@ -25,7 +25,7 @@ static const uint MC_ST_B = 69;
 namespace MeshCoating {
 
 enum BranchIndex { ZBranch, RevZBranch, LZBranch,
-                       RZBranch, XBranch, YBranch, N_BRANCHES };
+                   RZBranch, XBranch, YBranch, N_BRANCHES };
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip, Support};
 enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
                      X_1, X_2, X_3, X_4, X_5,
@@ -174,6 +174,10 @@ public:
      */
     const vector<Cell3DPosition> getAllGroundTileRootPositionsForMesh() const;
 
+    /*********************************************************************/
+    /*************************** PYRAMID STUFF ***************************/
+    /*********************************************************************/
+    
     /** 
      * @param pos position to evaluate
      * @return true if pos is part of the mesh pyramid
@@ -190,6 +194,15 @@ public:
      */
     const Cell3DPosition getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
                                                   BranchIndex bi) const;
+
+    /** 
+     * Like shouldGrowBranch, but also takes into account whether branch would be outside
+     *  of the mesh pyramid
+     * @param pos 
+     * @param bi 
+     * @return 
+     */
+    bool pyramidShouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi) const;
     
     /** 
      * Checks whether module at the tip of branch tipB relative to tile root at position pos

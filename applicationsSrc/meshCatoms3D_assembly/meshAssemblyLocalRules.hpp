@@ -58,6 +58,10 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
 
     // Border OppY Cases
     { LRKeyTuple(0x940, Cell3DPosition(0, -2, 2), 3), Cell3DPosition(-1, -1, 1) }, // RZ2 3    
+
+    // Pyramid Corner cases
+    { LRKeyTuple(0x100, Cell3DPosition(1, 1, 0), 3), Cell3DPosition(1, 0, -1) }, // S_Z 3
+    { LRKeyTuple(0x3C0, Cell3DPosition(1, 1, 0), 4), Cell3DPosition(1, 0, 0) }, // S_Z 4    
     
     // Normal Cases
     { LRKeyTuple(0x840, Cell3DPosition(0, 0, 0), 1), Cell3DPosition(-1, 0, 1) }, // R 1
@@ -120,12 +124,12 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x404, Cell3DPosition(-4, -4, 4), 2), Cell3DPosition(0, -1, 1) }, // RevZ4 2
     { LRKeyTuple(0x800, Cell3DPosition(0, -1, 1), 2), Cell3DPosition(-1, 1, 0) }, // RZ1 2
     { LRKeyTuple(0x200, Cell3DPosition(-1, 0, 1), 2), Cell3DPosition(1, -1, 0) }, // LZ1 2
-    { LRKeyTuple(0xC00, Cell3DPosition(5, 0, 0), 4), Cell3DPosition(1, 0, 0) }, // X5 4
-    { LRKeyTuple(0x600, Cell3DPosition(0, 5, 0), 4), Cell3DPosition(0, 1, 0) }, // Y5 4
+    { LRKeyTuple(0xC00, Cell3DPosition(5, 0, 0), 4), Cell3DPosition(1, 1, 0) }, // X5 4
+    { LRKeyTuple(0x600, Cell3DPosition(0, 5, 0), 4), Cell3DPosition(1, 1, 0) }, // Y5 4
     { LRKeyTuple(0xA0, Cell3DPosition(0, 0, 4), 3), Cell3DPosition(-1, -1, 2) }, // Z4 3
     { LRKeyTuple(0xA, Cell3DPosition(-4, -4, 4), 3), Cell3DPosition(-1, -1, 2) }, // RevZ4 3
-    { LRKeyTuple(0x800, Cell3DPosition(5, 0, 0), 5), Cell3DPosition(1, 1, -1) }, // X5 5
-    { LRKeyTuple(0x200, Cell3DPosition(0, 5, 0), 5), Cell3DPosition(1, 1, -1) }, // Y5 5
+    { LRKeyTuple(0x100, Cell3DPosition(5, 0, 0), 5), Cell3DPosition(1, 0, -1) }, // X5 5
+    { LRKeyTuple(0x100, Cell3DPosition(0, 5, 0), 5), Cell3DPosition(0, 1, -1) }, // Y5 5
     { LRKeyTuple(0x110, Cell3DPosition(0, 0, 5), 1), Cell3DPosition(-1, -1, 2) }, // Z5 1
     { LRKeyTuple(0x404, Cell3DPosition(-5, -5, 5), 1), Cell3DPosition(-1, -1, 2) }, // RevZ5 1
     { LRKeyTuple(0x808, Cell3DPosition(0, -2, 2), 1), Cell3DPosition(-1, -1, 2) }, // RZ2 1

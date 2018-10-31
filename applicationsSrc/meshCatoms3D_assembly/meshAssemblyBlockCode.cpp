@@ -97,8 +97,15 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         cout << "itCounter: " << itCounter << endl;
 
         for (int i = 0; i < N_BRANCHES; i++) {
-            cout << "shouldGrowBranch(: " << i << ") " <<
-                ruleMatcher->shouldGrowBranch(norm(catom->position), (BranchIndex)i) << endl;
+            cout << "pyramidShouldGrowBranch(: " << i << ") " <<
+                ruleMatcher->pyramidShouldGrowBranch(norm(catom->position), (BranchIndex)i)
+                 << endl;
+        }
+
+        for (int i = 0; i < N_BRANCHES; i++) {
+            cout << "tileRootAtEndOfBranch(: " << i << ") " <<
+                denorm(ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position), (BranchIndex)i))
+                 << endl;
         }
     }
     
@@ -335,6 +342,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             switch(itev->mode) {
 
                 case IT_MODE_TILEROOT_ACTIVATION: {
+                    static const int trInsertionTime = 18;
+                    
                     // Only introduce catoms if on the lower tile level
                     if (catom->position[2] == meshSeedPosition[2]) {
                         if (itCounter == 0) {
@@ -353,12 +362,12 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             handleMeshComponentInsertion(S_Z);
                             handleMeshComponentInsertion(S_RevZ);
                             
-                        } else if (itCounter == 20 and
+                        } else if (itCounter == trInsertionTime and
                                    ruleMatcher->shouldGrowRevZBranch(norm(catom->position))) {
                             handleMeshComponentInsertion(Z_R_EPL);
                         
                             // At relative time step 42, new root in place on LZ child tile
-                        } else if (itCounter == 44) {
+                        } else if (itCounter == trInsertionTime + 24) {
                             if (ruleMatcher->shouldGrowLZBranch(norm(catom->position)))
                                 handleMeshComponentInsertion(RZ_R_EPL); // S_RZ
 
@@ -367,19 +376,23 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             
                         }
 
-                        if (itCounter == 30 and
-                            ruleMatcher->shouldGrowRevZBranch(norm(catom->position))
-                            and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                                norm(catom->position), RevZBranch, YBranch))
-                            handleMeshComponentInsertion(Z_L_EPL); // Y1
+                        if (itCounter == trInsertionTime + 10) {
+                            if (ruleMatcher->shouldGrowRevZBranch(norm(catom->position))
+                                and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                    norm(catom->position), RevZBranch, YBranch))
+                                handleMeshComponentInsertion(Z_L_EPL); // Y1
+                            else discardNextTargetForComponent(Z_L_EPL);
+                        }
                         
-                        if (itCounter == 32 and
-                            ruleMatcher->shouldGrowRevZBranch(norm(catom->position))
-                            and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                                norm(catom->position), RevZBranch, XBranch))
-                            handleMeshComponentInsertion(Z_R_EPL); // X1
+                        if (itCounter == trInsertionTime + 12) {
+                            if (ruleMatcher->shouldGrowRevZBranch(norm(catom->position))
+                                and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                    norm(catom->position), RevZBranch, XBranch))
+                                handleMeshComponentInsertion(Z_R_EPL); // X1
+                            else discardNextTargetForComponent(Z_R_EPL);
+                        }
                         
-                        if (itCounter == 50) {
+                        if (itCounter == trInsertionTime + 30) {
                             if (ruleMatcher->shouldGrowRZBranch(norm(catom->position)))
                                 handleMeshComponentInsertion(LZ_EPL); // S_Z
                                 
@@ -387,8 +400,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                 handleMeshComponentInsertion(RZ_EPL); // S_RevZ
                         }
 
-                        if ((itCounter == 52 or itCounter == 54
-                             or itCounter == 56 or itCounter == 58)) {
+                        if ((itCounter == trInsertionTime + 32
+                             or itCounter == trInsertionTime + 34
+                             or itCounter == trInsertionTime + 36
+                             or itCounter == trInsertionTime + 38)) {
                             if (ruleMatcher->shouldGrowRZBranch(norm(catom->position))
                                 and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
                                     norm(catom->position), RZBranch, YBranch))
@@ -400,22 +415,31 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                 handleMeshComponentInsertion(RZ_EPL); // XN
                         }
 
-                        if ((itCounter == 37 or itCounter == 39
-                             or itCounter == 41 or itCounter == 43 or itCounter == 45)
+                        if ((itCounter == trInsertionTime + 17
+                             or itCounter == trInsertionTime + 19
+                             or itCounter == trInsertionTime + 21
+                             or itCounter == trInsertionTime + 23
+                             or itCounter == trInsertionTime + 25)
                             and ruleMatcher->shouldGrowRevZBranch(norm(catom->position))
                             and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
                                 norm(catom->position), RevZBranch, ZBranch))
                             handleMeshComponentInsertion(Z_EPL); // ZN
 
-                        if ((itCounter == 76 or itCounter == 78
-                             or itCounter == 80 or itCounter == 82 or itCounter == 84)
+                        if ((itCounter == trInsertionTime + 56
+                             or itCounter == trInsertionTime + 58
+                             or itCounter == trInsertionTime + 60
+                             or itCounter == trInsertionTime + 62
+                             or itCounter == trInsertionTime + 64)
                             and ruleMatcher->shouldGrowZBranch(norm(catom->position))
                             and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
                                 norm(catom->position), ZBranch, RevZBranch))
                             handleMeshComponentInsertion(RevZ_EPL); // RevZN
 
-                        if (itCounter == 60 or itCounter == 62
-                            or itCounter == 64 or itCounter == 66 or itCounter == 68) {
+                        if (itCounter == trInsertionTime + 40
+                            or itCounter == trInsertionTime + 42
+                            or itCounter == trInsertionTime + 44
+                            or itCounter == trInsertionTime + 46
+                            or itCounter == trInsertionTime + 48) {
                             
                             if (ruleMatcher->shouldGrowRZBranch(norm(catom->position))
                                 and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
@@ -490,6 +514,12 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             }            
         }
     }
+}
+
+void MeshAssemblyBlockCode::discardNextTargetForComponent(MeshComponent comp) {   
+    short idx = getEntryPointLocationForCell(getEntryPointForMeshComponent(comp)) - RevZ_EPL;
+    if (not targetQueueForEPL[idx].empty())
+        targetQueueForEPL[idx].pop();
 }
 
 const Cell3DPosition MeshAssemblyBlockCode::getNextTargetForEPL(MeshComponent epl) {
@@ -595,14 +625,6 @@ void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
                     getEntryPointForMeshComponent(mc), ORANGE);       
 
     fedCatomsOnLastRound = true;
-    
-    // // Set target position for introduced catom
-    // Cell3DPosition ep = getEntryPointForMeshComponent(mc);
-    // short idx = getEntryPointLocationForCell(ep) - RevZ_EPL;
-    // // cout << "mc: " << mc << " -- ep: " << ep << " -- idx: " << idx << endl;    
-    // targetForEntryPoint[idx] = catom->position +
-    //     (mc < RevZ_EPL ? ruleMatcher->getPositionForMeshComponent(mc)
-    //      : ruleMatcher->getPositionForChildTileMeshComponent(mc));
 }
 
 bool MeshAssemblyBlockCode::
