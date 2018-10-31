@@ -314,6 +314,19 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                 GlBlock *slct=world->getselectedGlBlock();
                 if (slct) {
                     world->getCamera()->setTarget(slct->getPosition());
+                } else {
+                    Vector3D center;
+                    center.pt[0] = 0.5*world->lattice->gridScale.pt[0]*world->lattice->gridSize.pt[0];
+                    center.pt[1] = 0.5*world->lattice->gridScale.pt[1]*world->lattice->gridSize.pt[1];
+                    center.pt[2] = 0.5*world->lattice->gridScale.pt[2]*world->lattice->gridSize.pt[2];
+                    center.pt[3] = 1.0;
+                    //void setLightParameters(const Vector3D &t,double th,double ph, double d,double angle,double nearplane,double farplane);
+                    /*float l = (center.pt[0] > center.pt[1])?center.pt[0]:center.pt[1];
+                    l = (center.pt[2] > l)?center.pt[2]:l;*/
+                    double l = sqrt(center.pt[0]*center.pt[0]+center.pt[1]*center.pt[1]+center.pt[2]*center.pt[2]);
+                    float d = l/tan(15.0*M_PI/180.0)/2.0;
+                    world->getCamera()->setLightParameters(center,45.0,45.0,d,30.0,d-l,d+l);
+                    world->getCamera()->setTarget(center);
                 }
             }
                 break;

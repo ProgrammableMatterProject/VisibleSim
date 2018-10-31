@@ -196,7 +196,10 @@ void Catoms3DWorld::menuChoice(int n) {
                 
                 Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
                 short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
+                Catoms3DWorld *wrld = getWorld();
+                wrld->disconnectBlock(bb);
                 bb->setPositionAndOrientation(pos,orient);
+                wrld->connectBlock(bb);
 			} else World::menuChoice(n); // For all non-catoms2D-specific cases
 		break;
     }
