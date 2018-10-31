@@ -44,7 +44,7 @@ MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     const Cell3DPosition& ub = lattice->getGridUpperBounds();
     // Round down mesh dimensions to previous multiple of B
     // TODO: Adapt to CSG
-    X_MAX = ub[0] - (B - ub[0] % B); 
+    X_MAX = ub[0] - (B - ub[0] % B);
     Y_MAX = ub[1] - (B - ub[1] % B);
     Z_MAX = ub[2] - (B - ub[2] % B);
     ruleMatcher = new MeshRuleMatcher(X_MAX, Y_MAX, Z_MAX, B);
@@ -55,10 +55,11 @@ MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
 
 void MeshAssemblyBlockCode::onBlockSelected() {
     if (catom->blockId == 1) {
+        cout << "Modules in system: " << lattice->nbModules << endl;
         cout << "MAX: " << X_MAX << ", " << Y_MAX << ", " << Z_MAX << endl;
-        for (int x = 0; x < (int)X_MAX; x++) {
-            for (int y = 0; y < (int)Y_MAX; y++) {
-                for (int z = 0; z < (int)Z_MAX; z++) {
+        for (int x = 0; x < (int)X_MAX + meshSeedPosition[0]; x++) {
+            for (int y = 0; y < (int)Y_MAX + meshSeedPosition[1]; y++) {
+                for (int z = 0; z < (int)Z_MAX + meshSeedPosition[2]; z++) {
                     const Cell3DPosition& pos = Cell3DPosition(x,y,z);
                     BuildingBlock *bb = lattice->getBlock(pos);
                     if (bb // and ruleMatcher->isInMesh(norm(pos)))
@@ -94,6 +95,11 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         // cout << " ]" << endl;
 
         cout << "itCounter: " << itCounter << endl;
+
+        for (int i = 0; i < N_BRANCHES; i++) {
+            cout << "shouldGrowBranch(: " << i << ") " <<
+                ruleMatcher->shouldGrowBranch(norm(catom->position), (BranchIndex)i) << endl;
+        }
     }
     
     // catom->setColor(debugColorIndex++);
@@ -362,11 +368,15 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         }
 
                         if (itCounter == 30 and
-                            ruleMatcher->shouldGrowRevZBranch(norm(catom->position)))
+                            ruleMatcher->shouldGrowRevZBranch(norm(catom->position))
+                            and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                norm(catom->position), RevZBranch, YBranch))
                             handleMeshComponentInsertion(Z_L_EPL); // Y1
                         
                         if (itCounter == 32 and
-                            ruleMatcher->shouldGrowRevZBranch(norm(catom->position)))
+                            ruleMatcher->shouldGrowRevZBranch(norm(catom->position))
+                            and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                norm(catom->position), RevZBranch, XBranch))
                             handleMeshComponentInsertion(Z_R_EPL); // X1
                         
                         if (itCounter == 50) {
@@ -379,32 +389,42 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                         if ((itCounter == 52 or itCounter == 54
                              or itCounter == 56 or itCounter == 58)) {
-                            if (ruleMatcher->shouldGrowRZBranch(norm(catom->position)))
+                            if (ruleMatcher->shouldGrowRZBranch(norm(catom->position))
+                                and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                    norm(catom->position), RZBranch, YBranch))
                                 handleMeshComponentInsertion(LZ_EPL); // YN
 
-                            if (ruleMatcher->shouldGrowLZBranch(norm(catom->position)))
+                            if (ruleMatcher->shouldGrowLZBranch(norm(catom->position))
+                                and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                    norm(catom->position), LZBranch, XBranch))
                                 handleMeshComponentInsertion(RZ_EPL); // XN
                         }
 
                         if ((itCounter == 37 or itCounter == 39
                              or itCounter == 41 or itCounter == 43 or itCounter == 45)
-                            and ruleMatcher->shouldGrowRevZBranch(norm(catom->position)))
+                            and ruleMatcher->shouldGrowRevZBranch(norm(catom->position))
+                            and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                norm(catom->position), RevZBranch, ZBranch))
                             handleMeshComponentInsertion(Z_EPL); // ZN
 
                         if ((itCounter == 76 or itCounter == 78
                              or itCounter == 80 or itCounter == 82 or itCounter == 84)
                             and ruleMatcher->shouldGrowZBranch(norm(catom->position))
-                            and not (catom->position[1] == 3))//FIXME:
+                            and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                norm(catom->position), ZBranch, RevZBranch))
                             handleMeshComponentInsertion(RevZ_EPL); // RevZN
 
                         if (itCounter == 60 or itCounter == 62
                             or itCounter == 64 or itCounter == 66 or itCounter == 68) {
                             
                             if (ruleMatcher->shouldGrowRZBranch(norm(catom->position))
-                                and not (catom->position[0] == 3))//FIXME:)
+                                and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                    norm(catom->position), RZBranch, LZBranch))
                                 handleMeshComponentInsertion(LZ_EPL); // LZN
 
-                            if (ruleMatcher->shouldGrowLZBranch(norm(catom->position)))
+                            if (ruleMatcher->shouldGrowLZBranch(norm(catom->position))
+                                and ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
+                                    norm(catom->position), LZBranch, RZBranch))
                                 handleMeshComponentInsertion(RZ_EPL); // RZN
                         }
                         

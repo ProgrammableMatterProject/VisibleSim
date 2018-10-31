@@ -57,7 +57,8 @@ public:
     bool isTileRoot(const Cell3DPosition& pos) const;
     bool isVerticalBranchTip(const Cell3DPosition& pos) const;
     bool isTileSupport(const Cell3DPosition& pos) const;
-    
+
+    bool shouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi) const;
     bool shouldGrowZBranch(const Cell3DPosition& pos) const;
     bool shouldGrowRevZBranch(const Cell3DPosition& pos) const;
     bool shouldGrowLZBranch(const Cell3DPosition& pos) const;
@@ -65,7 +66,7 @@ public:
     bool shouldGrowXBranch(const Cell3DPosition& pos) const;
     bool shouldGrowYBranch(const Cell3DPosition& pos) const;    
 
-    Cell3DPosition getBranchUnitOffset(int bi);
+    Cell3DPosition getBranchUnitOffset(int bi) const;
     BranchIndex getBranchIndexForNonRootPosition(const Cell3DPosition& pos);
     
     MeshRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _Z_MAX,
@@ -178,6 +179,17 @@ public:
      * @return true if pos is part of the mesh pyramid
      */
     bool isInPyramid(const Cell3DPosition& pos) const;
+
+    /** 
+     * Returns the position of the tile root at the end of branch bi for tile root 
+     *  at posiion trRef
+     * @param trRef position of the tile root relative to which the answer is asked
+     * @param bi branch to evaluate
+     * @return the position of the tile root at the end of branch bi for tile root 
+     *  at posiion trRef
+     */
+    const Cell3DPosition getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
+                                                  BranchIndex bi) const;
     
     /** 
      * Checks whether module at the tip of branch tipB relative to tile root at position pos
