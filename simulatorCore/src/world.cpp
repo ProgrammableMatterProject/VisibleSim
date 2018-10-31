@@ -296,4 +296,21 @@ void World::glDrawBackground() {
     }
 }
 
+void World::getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax) {
+    lock();
+    xmin = ymin = zmin = 10000;
+    xmax = ymax = zmax = 0;
+    float *pos;
+    for (const auto& pair : mapGlBlocks) {
+        pos = (pair.second)->position;
+        if (xmin>pos[0]) xmin=pos[0];
+        if (ymin>pos[1]) ymin=pos[1];
+        if (zmin>pos[2]) zmin=pos[2];
+        if (xmax<pos[0]) xmax=pos[0];
+        if (ymax<pos[1]) ymax=pos[1];
+        if (zmax<pos[2]) zmax=pos[2];
+    }
+    unlock();
+}
+
 } // BaseSimulator namespace

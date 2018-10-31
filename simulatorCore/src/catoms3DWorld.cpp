@@ -193,14 +193,16 @@ void Catoms3DWorld::menuChoice(int n) {
           if (n>=100) {
 				GlutContext::popupSubMenu->show(false);
 				GlutContext::popupMenu->show(false);
-
-                // if (getScheduler()->state == RUNNING) {
-                    // scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(), bb, Rotations3D r));
-                // } else {
-                    Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
-                    short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
-                    bb->setPositionAndOrientation(pos,orient);
-                // }
+				// if (getScheduler()->state == RUNNING) {
+				// scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(), bb, Rotations3D r));
+				// } else {
+                Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
+                short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
+                Catoms3DWorld *wrld = getWorld();
+                wrld->disconnectBlock(bb);
+                bb->setPositionAndOrientation(pos,orient);
+                wrld->connectBlock(bb);
+				//}
 			} else World::menuChoice(n); // For all non-catoms2D-specific cases
 		break;
     }
