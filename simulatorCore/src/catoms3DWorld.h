@@ -184,8 +184,8 @@ public:
     virtual void setSelectedFace(int n);
     virtual void exportConfiguration();
 
-		virtual void createPopupMenu(int ix, int iy);
-		virtual void menuChoice(int n);
+    virtual void createPopupMenu(int ix, int iy);
+    virtual void menuChoice(int n);
 /**
  * \brief load the background textures (internal)
  */
