@@ -149,35 +149,13 @@ void MeshAssemblyBlockCode::startup() {
     // Do stuff
     if (catom->position == getEntryPointForMeshComponent(MeshComponent::R)
         and lattice->isFree(coordinatorPos)) {
-        targetPosition = coordinatorPos;
-        
-        // Make incoming vertical branch tips appear already in place if at ground level
-        // if (coordinatorPos != meshSeedPosition) {
-        //     for (int i = 0; i < XBranch; i++) {
-        //         world->addBlock(0, buildNewBlockCode,
-        //                         coordinatorPos + incidentTipRelativePos[i], PINK);
-        //         world->addBlock(0, buildNewBlockCode, coordinatorPos +
-        //                         incidentTipRelativePos[i] + incidentTipRelativePos[i], GREY);
-        //         world->addBlock(0, buildNewBlockCode,
-        //                         coordinatorPos + incidentTipRelativePos[i]
-        //                         + incidentTipRelativePos[i] + incidentTipRelativePos[i],
-        //                         GREY);
-        //     }
-        // }
-        
-        Cell3DPosition nextPos;
-        bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
-                                       catom->position,
-                                       targetPosition,
-                                       coordinatorPos, step, nextPos);
-
-        if (not matched) {
-            catom->setColor(RED);
-            cout << "#" << catom->blockId << endl;
-            VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
+        if (coordinatorPos == meshSeedPosition) {
+            targetPosition = coordinatorPos;
+            matchRulesAndRotate();
+        } else {
+            role = FreeAgent;
+            return;
         }
-
-        scheduleRotationTo(nextPos);
     } else if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {            
         role = ActiveBeamTip; // nothing to be done, wait for tPos requests
         
@@ -190,8 +168,8 @@ void MeshAssemblyBlockCode::startup() {
     } else if (meshSeedPosition[2] - catom->position[2] > 1) {
         role = PassiveBeam; // nothing to be done here for visual decoration only
     } else {
-        role = FreeAgent;
-        if (not requestTargetCellFromTileRoot())         
+            role = FreeAgent;
+        if (not requestTargetCellFromTileRoot() )
             VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a delegate coordinator in its vicinity.");        
     }
 }
@@ -263,9 +241,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
 
-                if (ruleMatcher->isVerticalBranchTip(norm(catom->position)))
+                if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
                     coordinatorPos =
                         denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
+                    return;
+                }
                 
                 if (ruleMatcher->isTileRoot(norm(catom->position)))
                     initializeTileRoot();
@@ -278,20 +258,25 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
                     // Coordinate to let the last arrived branch continue the construction
-                    if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))                       
-                        and catom->position[2] == meshSeedPosition[2]) {
-                        lattice->highlightCell(nextPosAlongBranch, YELLOW);
-                        cout << "Some branches are missing around " << nextPosAlongBranch
-                             << endl;
+                    if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
+                        and incidentBranchesToRootAreComplete(nextPosAlongBranch)) {                        
+                        lattice->highlightCell(nextPosAlongBranch, BLUE);
+                        cout << "Some branches are missing around "
+                             << nextPosAlongBranch << endl;
 
-                        // Coordinate through message with other tip it has arrived, 
-                        //  otherwise wait for it to arrive and initiate handshake
-                        sendMessage(new TileInsertionReadyMessage(false),
-                                    (ruleMatcher->getPositionForMeshComponent(X_5)
-                                     + coordinatorPos == catom->position ?
-                                     catom->getInterface(catom->position + Cell3DPosition(1, 0, -1)) :
-                                     catom->getInterface(catom->position + Cell3DPosition(0, 1, -1))),
-                                    MSG_DELAY_MC, 0);
+                        // Notify future tile root as position should be filled
+                        P2PNetworkInterface* zBranchTipItf = NULL;
+                        for (const auto& pos : lattice->
+                                 getActiveNeighborCells(catom->position)) {
+                            if (ruleMatcher->isOnZBranch(norm(pos))) {
+                                zBranchTipItf = catom->getInterface(pos);
+                                break;
+                            }
+                        }
+
+                        VS_ASSERT(zBranchTipItf);
+                        sendMessage(new TileInsertionReadyMessage(),
+                                    zBranchTipItf, MSG_DELAY_MC, 0);
                     }
                 }
             } else {
@@ -303,30 +288,30 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // Reset step counter for matching a new ruleset
                     step = 1;
                     
-                    // Check that that new tile root is in place and fill that role if absent
+                    // Check that that new tile root is in place and if absent,
+                    //  wait for above layer XY modules to notify completion of previous tiles
                     if (lattice->isFree(coordinatorPos)) {
-                        targetPosition = coordinatorPos;
+                        if (ruleMatcher->isOnXBorder(norm(coordinatorPos))
+                            and ruleMatcher->isOnYBorder(norm(coordinatorPos)))
+                            targetPosition = coordinatorPos;
+                        else {
+                            catom->setColor(WHITE);
+                            lattice->highlightCell(coordinatorPos, WHITE);
+                            return;
+                        }
                     } else {
                         // Otherwise ask it for a new targetPosition
                         catom->setColor(BLACK);
-                        if (not requestTargetCellFromTileRoot())
+                        if (not requestTargetCellFromTileRoot()) {
+                            catom->setColor(RED);
                             VS_ASSERT_MSG(false, "arriving module cannot be without delegate coordinator in its vicinity.");
+                        }
+                        
                         return;
                     }
                 }
                 
-                Cell3DPosition nextHop;
-                bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
-                                               catom->position,
-                                               targetPosition,
-                                               coordinatorPos, step, nextHop);
-                if (not matched) {
-                    catom->setColor(RED);
-                    cout << "#" << catom->blockId << endl;
-                    VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
-                }
-
-                scheduleRotationTo(nextHop);                
+                matchRulesAndRotate();
             }            
     } break;            
             
@@ -742,7 +727,7 @@ bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
 void MeshAssemblyBlockCode::initializeSandbox() {
     for (const auto& pos : ruleMatcher->getAllGroundTileRootPositionsForMesh()) {
         const Cell3DPosition& denormPos = denorm(pos);
-        cout << pos << " " << denormPos << endl;
+        // cout << pos << " " << denormPos << endl;
         
         for (int i = 0; i < XBranch; i++) {
             world->addBlock(0, buildNewBlockCode,
@@ -754,7 +739,30 @@ void MeshAssemblyBlockCode::initializeSandbox() {
                             + incidentTipRelativePos[i] + incidentTipRelativePos[i],
                             GREY);
         }
+
+        // Add waiting tile root module
+        if (denormPos != meshSeedPosition)
+            world->addBlock(0, buildNewBlockCode,
+                            denormPos + getEntryPointRelativePos(Z_R_EPL), WHITE);
+                    
     }
 
     sandboxInitialized = true;
+}
+
+
+void MeshAssemblyBlockCode::matchRulesAndRotate() {
+    Cell3DPosition nextPos;
+    bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
+                                   catom->position,
+                                   targetPosition,
+                                   coordinatorPos, step, nextPos);
+
+    if (not matched) {
+        catom->setColor(RED);
+        cout << "#" << catom->blockId << endl;
+        VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
+    }
+
+    scheduleRotationTo(nextPos);
 }

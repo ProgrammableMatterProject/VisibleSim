@@ -278,6 +278,9 @@ y the module
     void scheduleRotationTo(const Cell3DPosition& pos);
 
     // TODO:
+    void matchRulesAndRotate();
+
+    // TODO:
     void initializeTileRoot();
     void initializeSupportModule();
 

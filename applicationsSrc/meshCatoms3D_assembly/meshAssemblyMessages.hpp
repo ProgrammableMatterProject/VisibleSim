@@ -45,16 +45,15 @@ public:
     virtual string getName() { return "ProvideTargetCell"; }
 };
 
-class TileInsertionReadyMessage : public HandleableMessage {
-    bool proceed; // if set to true, tells receiving module to insert TR
+class TileInsertionReadyMessage : public HandleableMessage {    
 public:
-    TileInsertionReadyMessage(bool _proceed)
-        : HandleableMessage(), proceed(_proceed){};
+    TileInsertionReadyMessage() : HandleableMessage() {};
     virtual ~TileInsertionReadyMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
     virtual Message* clone() { return new TileInsertionReadyMessage(*this); }
     virtual string getName() { return "TileInsertionReady"; }
 };
+
 
 #endif /* MC3D_MESSAGES_H_ */

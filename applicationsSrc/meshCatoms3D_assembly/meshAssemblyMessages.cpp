@@ -99,52 +99,29 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 
+    Cell3DPosition relNeighborPos;
     if (mabc.role == ActiveBeamTip) {
-        static constexpr Cell3DPosition REL_X_POS = Cell3DPosition(-1, 0, 1);
-        static constexpr Cell3DPosition REL_Y_POS = Cell3DPosition(0, -1, 1);
-            
-        // Forward to opposite horizontal branch tip
-        P2PNetworkInterface* itf = mabc.catom->getInterface(
-            mabc.catom->position + REL_X_POS) == destinationInterface ?
-            mabc.catom->getInterface(mabc.catom->position + REL_Y_POS)
-            : mabc.catom->getInterface(mabc.catom->position + REL_X_POS);
-
-        if (proceed) {
-            if (mabc.tileInsertionAckGiven) return; // too late, block it
-            else mabc.tileInsertionAckGiven = true;
+        if (mabc.ruleMatcher->isOnZBranch(mabc.norm(mabc.catom->position))) {
+            // Forward to incoming LZ tip
+            relNeighborPos = Cell3DPosition(1,0,0);
+        } else if (mabc.ruleMatcher->isOnRZBranch(mabc.norm(mabc.catom->position))) {
+            // forward to incoming RevZ tip
+            relNeighborPos = Cell3DPosition(1,0,0);
+        } else if (mabc.ruleMatcher->isOnLZBranch(mabc.norm(mabc.catom->position))) {
+            // forward to RevZ tip
+            relNeighborPos = Cell3DPosition(0,1,0);
+        } else if (mabc.ruleMatcher->isOnRevZBranch(mabc.norm(mabc.catom->position))) {
+            // forward to future TR module waiting on RevZ_L_EPL
+            relNeighborPos = Cell3DPosition(1,0,0);
         }
-        
-        if (itf and itf->isConnected())
-            mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
-        else if (mabc.ruleMatcher->isOnXBorder(mabc.norm(mabc.coordinatorPos)) or
-                 mabc.ruleMatcher->isOnYBorder(mabc.norm(mabc.coordinatorPos)))
-            // no need to wait
-            mabc.sendMessage(new TileInsertionReadyMessage(true), destinationInterface,
-                             MSG_DELAY_MC, 0);   
-    } else {
-        if (proceed) {
-            BranchIndex bi = 
-                mabc.ruleMatcher->getBranchIndexForNonRootPosition(
-                    mabc.norm(mabc.targetPosition));
-            const Cell3DPosition& nextPosAlongBranch =
-                mabc.catom->position + mabc.ruleMatcher->getBranchUnitOffset(bi);
-                    
-            mabc.lattice->unhighlightCell(nextPosAlongBranch);
-            cout << "Ready to insert tile root at " << nextPosAlongBranch
-                 << endl;
 
-            // Update coordinate system to the one of the next tile
-            mabc.coordinatorPos =
-                mabc.denorm(mabc.ruleMatcher->
-                       getNearestTileRootPosition(mabc.norm(mabc.catom->position)));
-                            
-            mabc.world->addBlock(0, mabc.buildNewBlockCode,
-                                 mabc.getEntryPointForMeshComponent(R), CYAN);
-        } else if (not mabc.tileInsertionAckGiven) {
-            // Tell sender to proceed with TR insertion            
-            mabc.sendMessage(new TileInsertionReadyMessage(true), destinationInterface,
-                             MSG_DELAY_MC, 0);
-            mabc.tileInsertionAckGiven = true;
-        } // otherwise do nothing
+        P2PNetworkInterface* itf = mabc.catom->getInterface(mabc.catom->position
+                                                            + relNeighborPos);
+        mabc.sendMessage(new TileInsertionReadyMessage(), itf,MSG_DELAY_MC, 0);
+    } else {        
+        // Get moving towards tile root position
+        mabc.targetPosition = mabc.coordinatorPos;
+        mabc.lattice->unhighlightCell(mabc.targetPosition);
+        mabc.matchRulesAndRotate();
     }
 }
