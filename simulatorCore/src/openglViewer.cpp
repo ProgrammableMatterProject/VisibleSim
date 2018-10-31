@@ -512,10 +512,13 @@ void GlutContext::calculateFPS(void) {
 }
 
 void GlutContext::showFPS(void) {
-    char fpsStr[50];
-    sprintf(fpsStr, "FPS = %4.2f", fps);
+    char str[20];
+    sprintf(str, "FPS = %4.2f", fps);
     glColor3f(255,255,0);
-    GlutWindow::drawString(50, 50, fpsStr);
+    GlutWindow::drawString(50, 50, str);
+    sprintf(str,"nbre modules = %d",getWorld()->lattice->nbModules);
+    GlutWindow::drawString(50, 35, str);
+    
 }
 
 void GlutContext::drawFunc(void) {

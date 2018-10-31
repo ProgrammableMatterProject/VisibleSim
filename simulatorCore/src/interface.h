@@ -16,6 +16,7 @@
 
 #include "glBlock.h"
 #include "color.h"
+#include "cell3DPosition.h"
 
 #ifndef GLUT
 #define GLUT
@@ -85,14 +86,15 @@ class GlutRotationButton : public GlutWindow {
 	bool isHighlighted;
 	bool isBlue;
 	uint8_t id0,id1;
-    void *privateData;
 public :
-  GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,void *pd);
+    Cell3DPosition finalPosition;
+    short finalOrientation;
+
+    GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation);
   virtual ~GlutRotationButton() {};
 	int mouseFunc(int button,int state,int x,int y);
 	bool passiveMotionFunc(int mx,int my);
 	void glDraw();
-    void *getPrivateData() {return privateData; };
 };
 
 

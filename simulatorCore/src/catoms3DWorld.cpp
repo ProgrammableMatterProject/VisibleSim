@@ -120,19 +120,22 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 		rotateBlockSubMenu->h = nbreMenus*35+10;
 		rotateBlockSubMenu->clearChildren();
         int i=100;
+        Cell3DPosition finalPos;
+        short finalOrient;
 		for(auto &elem:tab) {
-            cout << elem.second << endl;
-            rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",
-				elem.first->isOctaFace(),elem.first->getConFromID(),elem.first->getConToID(),&(elem.second)));
-            i++;
+            elem.second.init(((Catoms3DGlBlock*)bb->ptrGlBlock)->mat);
+            elem.second.getFinalPositionAndOrientation(finalPos,finalOrient);
+            if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
+                rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",
+				elem.first->isOctaFace(),elem.first->getConFromID(),elem.first->getConToID(),finalPos,finalOrient));
+            }
 		}
 	}
 
 	if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 	cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
 				 << " selected" << endl;
-	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock,
-																													(int)numSelectedFace));
+	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
 	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
 	GlutContext::popupMenu->show(true);
 }
@@ -187,14 +190,13 @@ void Catoms3DWorld::menuChoice(int n) {
 			}
 		break;
     default:
-          cout << "menu=" << n << endl;
-		  if (n>=100) {
+          if (n>=100) {
 				GlutContext::popupSubMenu->show(false);
 				GlutContext::popupMenu->show(false);
                 
-                Rotations3D* rotation = (Rotations3D *)((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->getPrivateData();
-                cout << *rotation << endl;
-                getScheduler()->schedule(new Rotation3DStartEvent(getScheduler()->now(), bb, *rotation));
+                Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
+                short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
+                bb->setPositionAndOrientation(pos,orient);
 			} else World::menuChoice(n); // For all non-catoms2D-specific cases
 		break;
     }
