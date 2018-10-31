@@ -312,8 +312,9 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 'z' : {
                 World *world = BaseSimulator::getWorld();
                 GlBlock *slct=world->getselectedGlBlock();
+                Camera *cam = world->getCamera();
                 if (slct) {
-                    world->getCamera()->setTarget(slct->getPosition());
+                    cam->setTarget(slct->getPosition());
                 } else {
                     Vector3D center;
                     center.pt[0] = 0.5*world->lattice->gridScale.pt[0]*world->lattice->gridSize.pt[0];
@@ -324,9 +325,23 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                     /*float l = (center.pt[0] > center.pt[1])?center.pt[0]:center.pt[1];
                     l = (center.pt[2] > l)?center.pt[2]:l;*/
                     double l = sqrt(center.pt[0]*center.pt[0]+center.pt[1]*center.pt[1]+center.pt[2]*center.pt[2]);
-                    float d = l/tan(15.0*M_PI/180.0)/2.0;
-                    world->getCamera()->setLightParameters(center,45.0,45.0,d,30.0,d-l,d+l);
-                    world->getCamera()->setTarget(center);
+                    float d = 0.5*l/tan(15.0*M_PI/180.0);
+                    cam->setLightParameters(center,45.0,45.0,d,30.0,d-l,d+l);
+                    float xmin,ymin,zmin,xmax,ymax,zmax;
+                    world->getBoundingBox(xmin,ymin,zmin,xmax,ymax,zmax);
+                    center.pt[0]=(xmin+xmax)/2.0;
+                    center.pt[1]=(ymin+ymax)/2.0;
+                    center.pt[2]=(zmin+zmax)/2.0;
+                    cam->setTarget(center);
+                    xmax-=xmin;
+                    ymax-=ymin;
+                    zmax-=zmin;
+                    double lmodule = sqrt(xmax*xmax+ymax*ymax+zmax*zmax)/2.0;
+                    double angle = atan(lmodule/d)*2.0;
+                    cout << d << " l=" << l << endl;
+                    cam->setAngle(angle*180.0/M_PI);
+                    cam->setDistance(d);
+                    cam->setNearFar(10.0,d+2*l);
                 }
             }
                 break;
