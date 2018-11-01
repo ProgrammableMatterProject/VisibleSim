@@ -529,6 +529,34 @@ const vector<Cell3DPosition> MeshRuleMatcher::getAllGroundTileRootPositionsForMe
     return tileRoots;    
 }
 
+Cell3DPosition MeshRuleMatcher::getIndexOfBranchTipUnder(BranchIndex bi) const {
+    switch(bi) {
+        case ZBranch: return Cell3DPosition(1, 1, -1);
+        case RevZBranch: return Cell3DPosition(0, 0, -1);
+        case LZBranch: return Cell3DPosition(0, 1, -1);
+        case RZBranch: return Cell3DPosition(1, 0, -1);
+        default:
+            cerr << "getIndexOfBranchTipUnder(" << bi << ") invalid input. " << endl;
+            VS_ASSERT(false);
+    }
+
+    return Cell3DPosition(); // unreachable
+}
+
+BranchIndex MeshRuleMatcher::getAlternateBranchIndex(BranchIndex bi) const {
+    switch(bi) {
+        case ZBranch: return RevZBranch;
+        case RevZBranch: return ZBranch;
+        case LZBranch: return RZBranch;
+        case RZBranch: return LZBranch;
+        default:
+            cerr << "getAlternateBranchIndex(" << bi << ") invalid input. " << endl;
+            VS_ASSERT(false);
+    }
+
+    return N_BRANCHES; // unreachable
+}
+
 bool MeshRuleMatcher::isOnXPyramidBorder(const Cell3DPosition& pos) const {
     return pos[1] == 0 and m_mod(pos[2], B) == 0;
 }
@@ -559,7 +587,7 @@ MeshRuleMatcher::getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
     return trRef + 6 * getBranchUnitOffset(bi);
 }
 
-bool MeshRuleMatcher::pyramidShouldGrowBranch(const Cell3DPosition& pos,
+bool MeshRuleMatcher::shouldGrowPyramidBranch(const Cell3DPosition& pos,
                                               BranchIndex bi) const {
     return shouldGrowBranch(pos, bi)
         and isInPyramid(getTileRootAtEndOfBranch(pos, bi));
@@ -571,5 +599,5 @@ bool MeshRuleMatcher::pyramidTRAtBranchTipShouldGrowBranch(const Cell3DPosition&
     if (not isInMesh(pos) or not isTileRoot(pos)) return false;    
     
     const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
-    return pyramidShouldGrowBranch(tipTRPos, growthB);
+    return shouldGrowPyramidBranch(tipTRPos, growthB);
 }

@@ -92,7 +92,22 @@ void MeshAssemblyBlockCode::onBlockSelected() {
             cout << endl << "\t\t  "
                  <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
         cout << " ]" << endl;
-    
+
+        cout << "branchTime: [ ";
+        for (int i = 0; i < 6; i++)
+            cout << branchTime[i] << ", ";
+        cout << " ]" << endl;
+
+        cout << "feedBranch: [ ";
+        for (int i = 0; i < 6; i++)
+            cout << feedBranch[i] << ", ";
+        cout << " ]" << endl;
+
+        cout << "targetLevel: [ ";
+        for (int i = 0; i < 6; i++)
+            cout << targetLevel[i] << ", ";
+        cout << " ]" << endl;
+        
         // cout << "Target for Entry Points: [ ";
         // for (int i = 0; i < 8; i++)
         //     cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
@@ -100,17 +115,18 @@ void MeshAssemblyBlockCode::onBlockSelected() {
 
         cout << "itCounter: " << itCounter << endl;
 
-        for (int i = 0; i < N_BRANCHES; i++) {
-            cout << "pyramidShouldGrowBranch(: " << i << ") " <<
-                ruleMatcher->pyramidShouldGrowBranch(norm(catom->position), (BranchIndex)i)
-                 << endl;
-        }
+        // for (int i = 0; i < N_BRANCHES; i++) {
+        //     cout << "shouldGrowPyramidBranch(: " << i << ") " <<
+        //         ruleMatcher->shouldGrowPyramidBranch(norm(catom->position), (BranchIndex)i)
+        //          << endl;
+        // }
 
-        for (int i = 0; i < N_BRANCHES; i++) {
-            cout << "tileRootAtEndOfBranch(: " << i << ") " <<
-                denorm(ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position), (BranchIndex)i))
-                 << endl;
-        }
+        // for (int i = 0; i < N_BRANCHES; i++) {
+        //     cout << "tileRootAtEndOfBranch(: " << i << ") " <<
+        //         denorm(ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position), (BranchIndex)i))
+        //          << endl;
+        // }
+
     }
     
     // catom->setColor(debugColorIndex++);
@@ -281,7 +297,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         VS_ASSERT(zBranchTipItf);
                         sendMessage(new TileInsertionReadyMessage(),
                                     zBranchTipItf, MSG_DELAY_MC, 0);
-                    }
+                    } 
                 }
             } else {
                 if (catom->position == targetPosition and isOnEntryPoint(catom->position)) {
@@ -356,7 +372,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         for (short bi = 0; bi < XBranch; bi++) {
                             if (ruleMatcher->shouldGrowBranch(norm(catom->position),
                                                               (BranchIndex)bi))
-                                sendCatomsDownBranchIfRequired((BranchIndex)bi);
+                                sendCatomsUpBranchIfRequired((BranchIndex)bi);
                             branchTime[bi]++;
                         }
                                                                         
@@ -524,8 +540,9 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
 
 void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     // Introduce new catoms
+    cout << getEntryPointForMeshComponent(mc) << endl;
     world->addBlock(0, buildNewBlockCode,
-                    getEntryPointForMeshComponent(mc), ORANGE);       
+                    getEntryPointForMeshComponent(mc), ORANGE);
 
     fedCatomsOnLastRound = true;
 }
@@ -545,8 +562,8 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
 bool MeshAssemblyBlockCode::
 isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& tipp = trp + incidentTipRelativePos[bi];
-    return (not ruleMatcher->isInMesh(ruleMatcher->
-                                      getTileRootPositionForMeshPosition(norm(tipp))))
+    return (not ruleMatcher->isInPyramid(ruleMatcher->
+                                         getTileRootPositionForMeshPosition(norm(tipp))))
         or lattice->cellHasBlock(tipp);
 }
 
@@ -576,18 +593,10 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
         
     // Determine how many branches need to grow from here
     // and initialize growth data structures
-    catomsReqByBranch[ZBranch] = ruleMatcher->
-        shouldGrowZBranch(norm(catom->position)) ? B - 1 : -1;
-    catomsReqByBranch[RevZBranch] = ruleMatcher->
-        shouldGrowRevZBranch(norm(catom->position)) ? B - 1 : -1;
-    catomsReqByBranch[LZBranch] = ruleMatcher->
-        shouldGrowLZBranch(norm(catom->position)) ? B - 1 : -1;       
-    catomsReqByBranch[RZBranch] = ruleMatcher->
-        shouldGrowRZBranch(norm(catom->position)) ? B - 1 : -1;
-    catomsReqByBranch[XBranch] = ruleMatcher->
-        shouldGrowXBranch(norm(catom->position)) ? B - 1 : -1;        
-    catomsReqByBranch[YBranch] = ruleMatcher->
-        shouldGrowYBranch(norm(catom->position)) ? B - 1 : -1;
+    for (short bi = 0; bi < N_BRANCHES; bi++) {
+        catomsReqByBranch[bi] = ruleMatcher->
+            shouldGrowPyramidBranch(norm(catom->position), (BranchIndex)bi) ? B - 1 : -1;
+    }
         
     // Compute the corresponding list of cells to be filled
     updateOpenPositions();
@@ -599,7 +608,9 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
             catom->position - ruleMatcher->getBranchUnitOffset(bi));
 
         if (nItf and nItf->isConnected())
-            sendMessage(new InitiateFeedingMechanismMessage(), nItf, MSG_DELAY_MC, 0);
+            sendMessage(new InitiateFeedingMechanismMessage(getFeedingRequirements(),
+                                                            catom->position[2] / B),
+                        nItf, MSG_DELAY_MC, 0);
     }
 
     
@@ -697,78 +708,81 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
 }
 
 
-void MeshAssemblyBlockCode::sendCatomsDownBranchIfRequired(BranchIndex bi) {
-    if (branchTime[bi] > 100) feedBranch[bi] = false; // FIXME:
-    if (not feedBranch[bi]) return;
+void MeshAssemblyBlockCode::sendCatomsUpBranchIfRequired(BranchIndex bi) {
+    if (not feedBranch[bi]) return;    
 
-    switch(bi) {
+    bool alt = targetLevel[bi] % 2 == 0;
+    BranchIndex bi_0 = not alt ?
+        bi : ruleMatcher->getAlternateBranchIndex(bi);
+    // cout << "targetLevel[" << bi << "]: " << targetLevel[bi] << endl;
+    // cout << "alt: " << alt << endl;
+    // cout << "bi_0: " << bi_0 << endl;
+    
+    switch(bi_0) {
         case ZBranch: // Targets RevZ EPLs #5
             switch (branchTime[bi]) {
                 case 8: case 10: case 12: case 14: case 16:
-                    if (ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                            norm(catom->position), ZBranch, RevZBranch))
-                        handleMeshComponentInsertion(RevZ_EPL); // RevZN
+                    if (feedBranchRequires[bi][RevZBranch])
+                        handleMeshComponentInsertion(alt ? Z_EPL : RevZ_EPL); // RevZN
                     break;
                 case 18:
-                    if (ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                            norm(catom->position), ZBranch, RevZBranch))
-                        handleMeshComponentInsertion(RevZ_EPL); // R
-                    break;                    
+                    if (feedBranchRequires[bi][6])
+                        handleMeshComponentInsertion(alt ? Z_EPL : RevZ_EPL); // R
+                    // Target tile must be done, stop feeding until asked again
+                    feedBranch[bi] = false;
+                    break; 
                 default: return;
             } break;
             
         case RevZBranch: // Targets Z EPLs #8
             switch (branchTime[bi]) {
                 case 1:
-                    if (ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                            norm(catom->position), RevZBranch, YBranch))
-                        handleMeshComponentInsertion(Z_L_EPL); // Y1
+                    if (feedBranchRequires[bi][YBranch])
+                        handleMeshComponentInsertion(alt ? RevZ_EPL : Z_L_EPL); // Y1
                     else discardNextTargetForComponent(Z_L_EPL);
                     break;
                 case 3:
-                    if (ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                            norm(catom->position), RevZBranch, XBranch))
-                        handleMeshComponentInsertion(Z_R_EPL); // X1
+                    if (feedBranchRequires[bi][XBranch])
+                        handleMeshComponentInsertion(alt ? RevZ_EPL : Z_R_EPL); // X1
                     else discardNextTargetForComponent(Z_R_EPL);
                     break;
                 case 8: case 10: case 12: case 14: case 16:
-                    if (ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                            norm(catom->position), RevZBranch, ZBranch))
-                        handleMeshComponentInsertion(Z_EPL); // ZN
+                    if (feedBranchRequires[bi][ZBranch])
+                        handleMeshComponentInsertion(alt ? RevZ_EPL : Z_EPL); // ZN
                     break;
                 default: return;
             } break;
 
         case LZBranch:
             switch (branchTime[bi]) {
-                case 0: handleMeshComponentInsertion(RZ_R_EPL); break; // S_RZ
-                case 4: handleMeshComponentInsertion(RZ_EPL); break; // S_RevZ
+                case 0: handleMeshComponentInsertion(alt ? LZ_EPL : RZ_R_EPL);
+                    break; // S_RZ FIXME:
+                case 4: handleMeshComponentInsertion(alt ? LZ_EPL : RZ_EPL);
+                    break; // S_RevZ FIXME:
                 case 6: case 8: case 10: case 12:
-                    if (ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                            norm(catom->position), LZBranch, XBranch))
-                        handleMeshComponentInsertion(RZ_EPL); // XN
+                    if (feedBranchRequires[bi][XBranch])
+                        handleMeshComponentInsertion(alt ? LZ_EPL : RZ_EPL); // XN
                     break;
                 case 14: case 16: case 18: case 20: case 22:
-                    if (ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                            norm(catom->position), LZBranch, RZBranch))
-                        handleMeshComponentInsertion(RZ_EPL); // RZN
+                    if (feedBranchRequires[bi][RZBranch])
+                        handleMeshComponentInsertion(alt ? LZ_EPL : RZ_EPL); // RZN
                     break;
                 default: return;                                       
             } break;
 
         case RZBranch:
             switch (branchTime[bi]) {
-                case 0: handleMeshComponentInsertion(LZ_R_EPL); break; // S_LZ
-                case 4: handleMeshComponentInsertion(LZ_EPL); break; // S_Z
+                case 0: handleMeshComponentInsertion(alt ? RZ_EPL : LZ_R_EPL);
+                    break; // S_LZ FIXME:
+                case 4: handleMeshComponentInsertion(alt ? RZ_EPL : LZ_EPL);
+                    break; // S_Z FIXME:
                 case 6: case 8: case 10: case 12:
-                    if (ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                            norm(catom->position), RZBranch, YBranch))
-                        handleMeshComponentInsertion(LZ_EPL); // YN
+                    if (feedBranchRequires[bi][YBranch])
+                        handleMeshComponentInsertion(alt ? RZ_EPL : LZ_EPL); // YN
                     break;
                 case 14: case 16: case 18: case 20: case 22:
-                    if (ruleMatcher->pyramidTRAtBranchTipShouldGrowBranch(
-                            norm(catom->position), RZBranch, LZBranch))
-                        handleMeshComponentInsertion(LZ_EPL); // LZN
+                    if (feedBranchRequires[bi][LZBranch])
+                        handleMeshComponentInsertion(alt ? RZ_EPL : LZ_EPL); // LZN
                     break;
                 default: return;
             } break;
@@ -779,4 +793,17 @@ void MeshAssemblyBlockCode::sendCatomsDownBranchIfRequired(BranchIndex bi) {
 
 bool MeshAssemblyBlockCode::isAtGroundLevel() {
     return catom->position[2] == meshSeedPosition[2];
+}
+
+std::array<bool, 7> MeshAssemblyBlockCode::getFeedingRequirements() {
+    std::array<bool, 7> requirements;
+    for (short bi = 0; bi < N_BRANCHES; bi++) {        
+        requirements[bi] = ruleMatcher->shouldGrowPyramidBranch(
+            norm(catom->position), static_cast<BranchIndex>(bi));
+    }
+
+    requirements[6] = not (ruleMatcher->isOnXPyramidBorder(norm(catom->position))
+                           or ruleMatcher->isOnYPyramidBorder(norm(catom->position)));
+    
+    return requirements;
 }

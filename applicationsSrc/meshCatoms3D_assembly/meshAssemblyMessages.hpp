@@ -56,8 +56,12 @@ public:
 };
 
 class InitiateFeedingMechanismMessage : public HandleableMessage {
+    std::array<bool, 7> requirements;
+    unsigned int level;
 public:
-    InitiateFeedingMechanismMessage() : HandleableMessage() {};
+    InitiateFeedingMechanismMessage(const std::array<bool, 7>& _requirements,
+                                    unsigned int _level)
+        : HandleableMessage(), requirements(_requirements), level(_level) {};
     virtual ~InitiateFeedingMechanismMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);

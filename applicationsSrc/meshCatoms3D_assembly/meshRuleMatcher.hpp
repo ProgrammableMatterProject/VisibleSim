@@ -35,10 +35,18 @@ enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
                      LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
                      RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,
                      // EPLs == 34 and on
-                     RevZ_EPL, RevZ_R_EPL, RZ_L_EPL, RZ_EPL,
-                     RZ_R_EPL, Z_R_EPL, Z_EPL,
-                     Z_L_EPL, LZ_R_EPL, LZ_EPL,
-                     LZ_L_EPL, RevZ_L_EPL };
+                     RevZ_EPL, // 35
+                     RevZ_R_EPL, // 36
+                     RZ_L_EPL, // 37
+                     RZ_EPL, // 38
+                     RZ_R_EPL, // 39
+                     Z_R_EPL, // 40
+                     Z_EPL, // 41
+                     Z_L_EPL, // 42
+                     LZ_R_EPL, // 43 
+                     LZ_EPL, // 44
+                     LZ_L_EPL, // 45
+                     RevZ_L_EPL }; // 46
 
 class MeshRuleMatcher {
     const int X_MAX, Y_MAX, Z_MAX, B;
@@ -174,6 +182,18 @@ public:
      */
     const vector<Cell3DPosition> getAllGroundTileRootPositionsForMesh() const;
 
+    Cell3DPosition getIndexOfBranchTipUnder(BranchIndex bi) const;
+
+    /** 
+     * In order to go up one or several tile levels, a catom has to zigzag 
+     *  onto alternating branch pairs, such as {LZ, RZ, LZ, RZ, ...}, this function
+     *  returns the alternate branch for an input branch bi. 
+     *  (e.g. LZ -> RZ in the previous example)
+     * @param bi branch index to evaluate
+     * @return the alternate branch index of bi
+     */
+    BranchIndex getAlternateBranchIndex(BranchIndex bi) const;
+
     /*********************************************************************/
     /*************************** PYRAMID STUFF ***************************/
     /*********************************************************************/
@@ -207,7 +227,7 @@ public:
      * @param bi 
      * @return 
      */
-    bool pyramidShouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi) const;
+    bool shouldGrowPyramidBranch(const Cell3DPosition& pos, BranchIndex bi) const;
     
     /** 
      * Checks whether module at the tip of branch tipB relative to tile root at position pos

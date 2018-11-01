@@ -117,8 +117,13 @@ public:
     // std::array<MeshComponent, 12> componentForEntryPoint; //<! for a coordinator, the targetcomponent to which each of the modules that it has received should move to once they are initialized
     // std::array<bool, 6> feedBranch = {0};
     std::array<bool, 6> moduleReadyOnEPL = {0}; //<! keeps track of modules which arrived on Tile Entry Point Locations
-    std::array<short, N_BRANCHES> branchTime;    
+    std::array<short, N_BRANCHES> branchTime;
     std::array<bool, 6> feedBranch = {0};
+    std::array<int, 6> targetLevel = {0};
+
+    //!< @attention index t[i][7] is for tile root feeding requirement
+    std::array<std::array<bool, 7>, 6> feedBranchRequires = { false, false, false,
+                                                              false, false, false };
     
     std::queue<Cell3DPosition> targetQueueForEPL[12] = {
         queue<Cell3DPosition>({
@@ -313,12 +318,14 @@ y the module
     void discardNextTargetForComponent(MeshComponent comp);
 
     // TODO:
-    void sendCatomsDownBranchIfRequired(BranchIndex bi);
+    void sendCatomsUpBranchIfRequired(BranchIndex bi);
 
     /** 
      * @return true if catom is on the lowest tile layer, false otherwise
      */
     bool isAtGroundLevel();
+
+    std::array<bool, 7> getFeedingRequirements();
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

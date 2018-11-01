@@ -43,10 +43,10 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         Cell3DPosition tPos;
         tPos = mabc.catom->position + mabc.getNextTargetForEPL(epl);        
 
-        cout << "Spawnee Position: " << srcPos 
-             << " -- Target Position: " << tPos
-             << " -- epl Position: " << srcPos - mabc.catom->position 
-             << " -- epl: " << epl << endl;
+        // cout << "Spawnee Position: " << srcPos 
+        //      << " -- Target Position: " << tPos
+        //      << " -- epl Position: " << srcPos - mabc.catom->position 
+        //      << " -- epl: " << epl << endl;
     
         // send to requesting catom
         VS_ASSERT(destinationInterface->isConnected());
@@ -129,7 +129,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
-
+    
     if (mabc.role == ActiveBeamTip or mabc.role == PassiveBeam) {
         BranchIndex bi = 
             mabc.ruleMatcher->getBranchIndexForNonRootPosition(mabc.norm(mabc.catom->position));
@@ -137,14 +137,28 @@ void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
             mabc.catom->position - mabc.ruleMatcher->getBranchUnitOffset(bi);
 
         P2PNetworkInterface* itf = mabc.catom->getInterface(nextPosAlongBranch);
-        mabc.sendMessage(new InitiateFeedingMechanismMessage(), itf, MSG_DELAY_MC, 0);        
+        mabc.sendMessage(new InitiateFeedingMechanismMessage(requirements, level), itf,
+                         MSG_DELAY_MC, 0);        
     } else { // role == coordinator        
         // Determine branch of sender
         BranchIndex bi = 
             mabc.ruleMatcher->getBranchIndexForNonRootPosition(mabc.norm(sourceInterface->hostBlock->position));
-        
-        mabc.feedBranch[bi] = true;
-        mabc.branchTime[bi] = 0;
+
+        if (mabc.isAtGroundLevel()) {
+            mabc.feedBranch[bi] = true;
+            mabc.branchTime[bi] = 0;
+            mabc.feedBranchRequires[bi] = requirements;
+            mabc.targetLevel[bi] = level;
+            cout << "level: " << level << endl;
+        } else {
+            // Forward message down the branch right below the incoming one
+            const Cell3DPosition& tipOfNextBranchDown =
+                mabc.catom->position + mabc.ruleMatcher->getIndexOfBranchTipUnder(bi);
+
+            P2PNetworkInterface* itf = mabc.catom->getInterface(tipOfNextBranchDown);
+            mabc.sendMessage(new InitiateFeedingMechanismMessage(requirements, level), itf,
+                             MSG_DELAY_MC, 0);
+        }
     }
 }
 
