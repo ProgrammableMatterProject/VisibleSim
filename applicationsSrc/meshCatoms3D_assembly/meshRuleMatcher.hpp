@@ -177,6 +177,11 @@ public:
     /*********************************************************************/
     /*************************** PYRAMID STUFF ***************************/
     /*********************************************************************/
+
+    bool isOnXPyramidBorder(const Cell3DPosition& pos) const;
+    bool isOnXOppPyramidBorder(const Cell3DPosition& pos) const;
+    bool isOnYPyramidBorder(const Cell3DPosition& pos) const;
+    bool isOnYOppPyramidBorder(const Cell3DPosition& pos) const;
     
     /** 
      * @param pos position to evaluate

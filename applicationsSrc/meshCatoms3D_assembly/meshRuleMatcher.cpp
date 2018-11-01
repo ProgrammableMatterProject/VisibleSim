@@ -529,6 +529,22 @@ const vector<Cell3DPosition> MeshRuleMatcher::getAllGroundTileRootPositionsForMe
     return tileRoots;    
 }
 
+bool MeshRuleMatcher::isOnXPyramidBorder(const Cell3DPosition& pos) const {
+    return pos[1] == 0 and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnXOppPyramidBorder(const Cell3DPosition& pos) const {
+    return pos[1] == Y_MAX - pos[2] - 2 and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnYPyramidBorder(const Cell3DPosition& pos) const {
+    return pos[0] == 0 and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnYOppPyramidBorder(const Cell3DPosition& pos) const {
+    return pos[0] == X_MAX - pos[2] - 2 and m_mod(pos[2], B) == 0;
+}
+
 bool MeshRuleMatcher::isInPyramid(const Cell3DPosition& pos) const {
     return  isInMesh(pos) and isInRange(pos[0], 0, X_MAX - pos[2] - 2)
         and isInRange(pos[1], 0, Y_MAX - pos[2] - 2);
