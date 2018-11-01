@@ -55,5 +55,15 @@ public:
     virtual string getName() { return "TileInsertionReady"; }
 };
 
+class InitiateFeedingMechanismMessage : public HandleableMessage {
+public:
+    InitiateFeedingMechanismMessage() : HandleableMessage() {};
+    virtual ~InitiateFeedingMechanismMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new InitiateFeedingMechanismMessage(*this); }
+    virtual string getName() { return "InitiateFeedingMechanism"; }
+};
+
 
 #endif /* MC3D_MESSAGES_H_ */

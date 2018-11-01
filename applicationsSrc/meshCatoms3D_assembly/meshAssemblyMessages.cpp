@@ -125,3 +125,26 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         mabc.matchRulesAndRotate();
     }
 }
+
+
+void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
+
+    if (mabc.role == ActiveBeamTip or mabc.role == PassiveBeam) {
+        BranchIndex bi = 
+            mabc.ruleMatcher->getBranchIndexForNonRootPosition(mabc.norm(mabc.catom->position));
+        const Cell3DPosition& nextPosAlongBranch =
+            mabc.catom->position - mabc.ruleMatcher->getBranchUnitOffset(bi);
+
+        P2PNetworkInterface* itf = mabc.catom->getInterface(nextPosAlongBranch);
+        mabc.sendMessage(new InitiateFeedingMechanismMessage(), itf, MSG_DELAY_MC, 0);        
+    } else { // role == coordinator        
+        // Determine branch of sender
+        BranchIndex bi = 
+            mabc.ruleMatcher->getBranchIndexForNonRootPosition(mabc.norm(sourceInterface->hostBlock->position));
+        
+        mabc.feedBranch[bi] = true;
+        mabc.branchTime[bi] = 0;
+    }
+}
+

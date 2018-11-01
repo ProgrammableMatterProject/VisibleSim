@@ -36,6 +36,8 @@
 //                           LZ_LEFT_EPL, RevZ_L_EPL,
 //                           N_EPL };
 
+// enum TRFeedingState { SELF_FEEDING, , };
+
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
     static constexpr std::array<Cell3DPosition, 12> entryPointRelativePos =
@@ -112,12 +114,12 @@ public:
     // std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {0};
     // std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
-    // std::array<bool, 6> feedBranch = {0};
     // std::array<MeshComponent, 12> componentForEntryPoint; //<! for a coordinator, the targetcomponent to which each of the modules that it has received should move to once they are initialized
     // std::array<bool, 6> feedBranch = {0};
     std::array<bool, 6> moduleReadyOnEPL = {0}; //<! keeps track of modules which arrived on Tile Entry Point Locations
-
-
+    std::array<short, N_BRANCHES> branchTime;    
+    std::array<bool, 6> feedBranch = {0};
+    
     std::queue<Cell3DPosition> targetQueueForEPL[12] = {
         queue<Cell3DPosition>({
                 Cell3DPosition(-1, -1, 1),
@@ -309,6 +311,14 @@ y the module
      * @param comp component for which the EPL queue must be popped
      */
     void discardNextTargetForComponent(MeshComponent comp);
+
+    // TODO:
+    void sendCatomsDownBranchIfRequired(BranchIndex bi);
+
+    /** 
+     * @return true if catom is on the lowest tile layer, false otherwise
+     */
+    bool isAtGroundLevel();
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */
