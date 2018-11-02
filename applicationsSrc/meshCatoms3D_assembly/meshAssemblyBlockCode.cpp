@@ -425,10 +425,12 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     }
 
                     itCounter++;
-                    getScheduler()->schedule(
-                        new InterruptionEvent(getScheduler()->now() +
-                                              (getRoundDuration()),
-                                              catom, IT_MODE_TILEROOT_ACTIVATION));
+                    if (itCounter < 65535) { // FIXME:
+                        getScheduler()->schedule(
+                            new InterruptionEvent(getScheduler()->now() +
+                                                  (getRoundDuration()),
+                                                  catom, IT_MODE_TILEROOT_ACTIVATION));
+                    }
                 } break;
             }            
         }
@@ -720,11 +722,11 @@ void MeshAssemblyBlockCode::sendCatomsUpBranchIfRequired(BranchIndex bi) {
     switch(bi_0) {
         case ZBranch: // Targets RevZ EPLs #5
             switch (branchTime[bi]) {
-                case 8: case 10: case 12: case 14: case 16:
+                case 9: case 11: case 13: case 15: case 17:
                     if (feedBranchRequires[bi][RevZBranch])
                         handleMeshComponentInsertion(alt ? Z_EPL : RevZ_EPL); // RevZN
                     break;
-                case 18:
+                case 19:
                     if (feedBranchRequires[bi][6])
                         handleMeshComponentInsertion(alt ? Z_EPL : RevZ_EPL); // R
                     // Target tile must be done, stop feeding until asked again
@@ -745,7 +747,7 @@ void MeshAssemblyBlockCode::sendCatomsUpBranchIfRequired(BranchIndex bi) {
                         handleMeshComponentInsertion(alt ? RevZ_EPL : Z_R_EPL); // X1
                     // else discardNextTargetForComponent(Z_R_EPL);
                     break;
-                case 8: case 10: case 12: case 14: case 16:
+                case 9: case 11: case 13: case 15: case 17:
                     if (feedBranchRequires[bi][ZBranch])
                         handleMeshComponentInsertion(alt ? RevZ_EPL : Z_EPL); // ZN
                     break;
