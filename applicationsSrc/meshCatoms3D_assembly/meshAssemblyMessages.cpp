@@ -144,13 +144,19 @@ void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
         BranchIndex bi = 
             mabc.ruleMatcher->getBranchIndexForNonRootPosition(mabc.norm(sourceInterface->hostBlock->position));
 
+        // If module level is right below target level, discard unneeded targetPositions
+        if (level == (mabc.catom->position[2] / mabc.B) + 1) {
+            if (not requirements[YBranch])
+                mabc.discardNextTargetForComponent(Z_L_EPL);
+        }
+
+        
         if (mabc.isAtGroundLevel()) {
             mabc.feedBranch[bi] = true;
             mabc.branchTime[bi] = 0;
             mabc.feedBranchRequires[bi] = requirements;
             mabc.targetLevel[bi] = level;
-            cout << "level: " << level << endl;
-        } else {
+        } else {            
             // Forward message down the branch right below the incoming one
             const Cell3DPosition& tipOfNextBranchDown =
                 mabc.catom->position + mabc.ruleMatcher->getIndexOfBranchTipUnder(bi);

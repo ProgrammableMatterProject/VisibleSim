@@ -540,7 +540,6 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
 
 void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     // Introduce new catoms
-    cout << getEntryPointForMeshComponent(mc) << endl;
     world->addBlock(0, buildNewBlockCode,
                     getEntryPointForMeshComponent(mc), ORANGE);
 
@@ -739,12 +738,12 @@ void MeshAssemblyBlockCode::sendCatomsUpBranchIfRequired(BranchIndex bi) {
                 case 1:
                     if (feedBranchRequires[bi][YBranch])
                         handleMeshComponentInsertion(alt ? RevZ_EPL : Z_L_EPL); // Y1
-                    else discardNextTargetForComponent(Z_L_EPL);
+                    // else discardNextTargetForComponent(Z_L_EPL);
                     break;
                 case 3:
                     if (feedBranchRequires[bi][XBranch])
                         handleMeshComponentInsertion(alt ? RevZ_EPL : Z_R_EPL); // X1
-                    else discardNextTargetForComponent(Z_R_EPL);
+                    // else discardNextTargetForComponent(Z_R_EPL);
                     break;
                 case 8: case 10: case 12: case 14: case 16:
                     if (feedBranchRequires[bi][ZBranch])
@@ -772,10 +771,10 @@ void MeshAssemblyBlockCode::sendCatomsUpBranchIfRequired(BranchIndex bi) {
 
         case RZBranch:
             switch (branchTime[bi]) {
-                case 0: handleMeshComponentInsertion(alt ? RZ_EPL : LZ_R_EPL);
-                    break; // S_LZ FIXME:
-                case 4: handleMeshComponentInsertion(alt ? RZ_EPL : LZ_EPL);
-                    break; // S_Z FIXME:
+                case 0: handleMeshComponentInsertion(alt ? RZ_EPL : LZ_R_EPL); // S_LZ FIXME:
+                    break; 
+                case 4: handleMeshComponentInsertion(alt ? RZ_EPL : LZ_EPL); // S_Z FIXME:
+                    break; 
                 case 6: case 8: case 10: case 12:
                     if (feedBranchRequires[bi][YBranch])
                         handleMeshComponentInsertion(alt ? RZ_EPL : LZ_EPL); // YN
