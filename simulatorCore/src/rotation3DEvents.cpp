@@ -85,10 +85,10 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
         throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
     }
     
-    OUTPUT << "Building rotation from piv_con " << fromConP << " / " << m->position
-           << " to piv_con " << toCon << "/ " << tPos
-           << " [m_con(" << fromConM << " -> " << toConM << ")]"
-           << " on surface of pivot #" << pivot->blockId << " " << pivot->position <<  endl;
+    // OUTPUT << "Building rotation from piv_con " << fromConP << " / " << m->position
+    //        << " to piv_con " << toCon << "/ " << tPos
+    //        << " [m_con(" << fromConM << " -> " << toConM << ")]"
+    //        << " on surface of pivot #" << pivot->blockId << " " << pivot->position <<  endl;
     
     // VS_ASSERT_MSG(fromConM >= 0 and toConM >= 0,
     //               "attempting rotation to or from an unreachable position");

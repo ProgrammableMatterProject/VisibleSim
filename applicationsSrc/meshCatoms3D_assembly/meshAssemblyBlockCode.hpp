@@ -62,7 +62,8 @@ public:
     static const uint B = 6;
     static uint X_MAX, Y_MAX, Z_MAX; // const
     static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(3,3,3);    
-
+    static int nbCatomsInPlace;
+    
     static constexpr std::array<Cell3DPosition, 6> incidentTipRelativePos =
     {
         Cell3DPosition(0,0,-1), // ZBranch
@@ -99,7 +100,7 @@ public:
     AgentRole role;
     Cell3DPosition coordinatorPos;
     Cell3DPosition targetPosition;
-
+    
     // Free Agent Vars
     short step = 1; // For moving FreeAgents
     bool tileInsertionAckGiven = false; // for tile insertion coordination at HBranch tips

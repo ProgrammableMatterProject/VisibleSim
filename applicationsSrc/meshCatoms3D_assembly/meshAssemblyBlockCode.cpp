@@ -26,6 +26,7 @@
 using namespace Catoms3D;
 using namespace MeshCoating;
 
+int MeshAssemblyBlockCode::nbCatomsInPlace = 0;
 bool MeshAssemblyBlockCode::sandboxInitialized = false;
 uint MeshAssemblyBlockCode::X_MAX;
 uint MeshAssemblyBlockCode::Y_MAX;
@@ -260,6 +261,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             if (catom->position == targetPosition and not isOnEntryPoint(catom->position)) {
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
+
+                // STAT EXPORT
+                OUTPUT << "nbCatomsInPlace:\t" << round(scheduler->now() / ((Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier) + Rotations3D::COM_DELAY))
+                       << "\t" << ++nbCatomsInPlace << endl;
 
                 if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
                     coordinatorPos =

@@ -301,11 +301,11 @@ bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d,
 
     vector <Catoms3DMotionRulesLink*>::const_iterator ci=conn->tabLinks.begin();
     while (ci!=conn->tabLinks.end()) {
-        OUTPUT << from << " -> " << (*ci)->getConToID() << ", ";
+        // OUTPUT << from << " -> " << (*ci)->getConToID() << ", ";
         if ((*ci)->isValid(c3d)) {
             vec.push_back(*ci);
             notEmpty=true;
-            OUTPUT << endl;
+            // OUTPUT << endl;
         }
         ci++;
     }
@@ -491,7 +491,7 @@ bool Catoms3DMotionRulesLink::isValid(const Catoms3DBlock *c3d) {
     while (ci!=tabBlockingIDs.end() && c3d->getInterface(*ci)->connectedInterface==NULL) {
         ci++;
     }
-    if (ci!=tabBlockingIDs.end()) OUTPUT << "blocking: "<< *ci << endl;
+    // if (ci!=tabBlockingIDs.end()) OUTPUT << "blocking: "<< *ci << endl;
     return (ci==tabBlockingIDs.end());
 }
 
