@@ -122,8 +122,8 @@ public:
      * @param dest destination interface. 
      * @param t0 time to wait before sending
      * @param dt potential delay in sending time */
-    int sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
-                    Time t0,Time dt);
+    virtual int sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
+                            Time t0,Time dt);
 
     /**
      * @brief Send message to interface dest at time t0 + [0,1]dt

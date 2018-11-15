@@ -21,21 +21,25 @@
 #include "meshAssemblyMessages.hpp"
 #include "meshAssemblyLocalRules.hpp"
 
+
 void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);    
-
+    // cout << "[t-" << getScheduler()->now() << "] received request target cell" << endl;
+    
     if (mabc.role == ActiveBeamTip) {
         // Forward message to coordinator
         P2PNetworkInterface* coordItf =
             mabc.catom->getInterface(mabc.coordinatorPos);
         VS_ASSERT_MSG(coordItf, "cannot find coordinator among neighbor interfaces");
-        mabc.sendMessage(this->clone(), coordItf, MSG_DELAY_MC, 0);        
+        mabc.sendMessage(this->clone(), coordItf, MSG_DELAY_MC, 0);
+        mabc.log_send_message();
     } else if (mabc.role == Support) {
         // Forward message to ActiveBeamTip for forwarding to root
         P2PNetworkInterface* btItf =
             mabc.catom->getInterface(mabc.branchTipPos);
         VS_ASSERT_MSG(btItf, "cannot find branch tip among neighbor interfaces");
         mabc.sendMessage(this->clone(), btItf, MSG_DELAY_MC, 0);
+        mabc.log_send_message();
     } else if (mabc.role == Coordinator) {
         short idx = mabc.getEntryPointLocationForCell(srcPos); VS_ASSERT(idx != -1);
         MeshComponent epl = static_cast<MeshComponent>(idx);
@@ -52,6 +56,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         VS_ASSERT(destinationInterface->isConnected());
         mabc.sendMessage(new ProvideTargetCellMessage(tPos, srcPos),
                          destinationInterface, MSG_DELAY_MC, 0);
+        mabc.log_send_message();
     } else {
         mabc.catom->setColor(BLACK);
         VS_ASSERT_MSG(false, "Non coordinator or active beam module should not have received a RequestTargetCellMessage");
@@ -71,6 +76,7 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                                     mabc.norm(mabc.catom->position))));  
         VS_ASSERT_MSG(itf, "cannot find neither dest or support among neighbor interfaces");
         mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
+        mabc.log_send_message();
     } else {
         mabc.targetPosition = tPos;
         // cout << "Target position for #" << mabc.catom->blockId << " is " << tPos << endl;
@@ -118,6 +124,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         P2PNetworkInterface* itf = mabc.catom->getInterface(mabc.catom->position
                                                             + relNeighborPos);
         mabc.sendMessage(new TileInsertionReadyMessage(), itf,MSG_DELAY_MC, 0);
+        mabc.log_send_message();
     } else {        
         // Get moving towards tile root position
         mabc.targetPosition = mabc.coordinatorPos;
@@ -138,7 +145,8 @@ void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
 
         P2PNetworkInterface* itf = mabc.catom->getInterface(nextPosAlongBranch);
         mabc.sendMessage(new InitiateFeedingMechanismMessage(requirements, level), itf,
-                         MSG_DELAY_MC, 0);        
+                         MSG_DELAY_MC, 0);
+        mabc.log_send_message();
     } else { // role == coordinator        
         // Determine branch of sender
         BranchIndex bi = 
@@ -164,6 +172,7 @@ void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
             P2PNetworkInterface* itf = mabc.catom->getInterface(tipOfNextBranchDown);
             mabc.sendMessage(new InitiateFeedingMechanismMessage(requirements, level), itf,
                              MSG_DELAY_MC, 0);
+            mabc.log_send_message();
         }
     }
 }

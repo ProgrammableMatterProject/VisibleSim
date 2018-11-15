@@ -601,3 +601,15 @@ bool MeshRuleMatcher::pyramidTRAtBranchTipShouldGrowBranch(const Cell3DPosition&
     const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
     return shouldGrowPyramidBranch(tipTRPos, growthB);
 }
+
+string MeshRuleMatcher::roleToString(AgentRole ar) {
+    switch(ar) {
+        case FreeAgent: return "FreeAgent";
+        case Coordinator: return "Coordinator";
+        case PassiveBeam: return "Beam";
+        case ActiveBeamTip: return "Relay";
+        case Support: return "Relay";
+    }
+
+    return "";
+}

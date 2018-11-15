@@ -63,6 +63,10 @@ public:
     static uint X_MAX, Y_MAX, Z_MAX; // const
     static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(3,3,3);    
     static int nbCatomsInPlace;
+    static int nbMessages;
+    static Time t0;
+    pair<int, string> maxBitrate;    
+    pair<Time, int> rate = { 0, 0 };
     
     static constexpr std::array<Cell3DPosition, 6> incidentTipRelativePos =
     {
@@ -75,8 +79,8 @@ public:
     };
                
     inline static Time getRoundDuration() {
-        return (2.3 * Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
-                + Rotations3D::COM_DELAY);// + (getScheduler()->now() / 1000);
+        return (Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
+                + Rotations3D::COM_DELAY) + 20128;// + (getScheduler()->now() / 1000);
     }
 
     inline const Cell3DPosition& getEntryPointRelativePos(MeshComponent mc) const {
@@ -101,6 +105,8 @@ public:
     Cell3DPosition coordinatorPos;
     Cell3DPosition targetPosition;
     
+    Time startTime;
+
     // Free Agent Vars
     short step = 1; // For moving FreeAgents
     bool tileInsertionAckGiven = false; // for tile insertion coordination at HBranch tips
@@ -327,6 +333,25 @@ y the module
     bool isAtGroundLevel();
 
     std::array<bool, 7> getFeedingRequirements();
+
+    /**
+     * @copydoc BlockCode::sendMessage
+     * @note This is only used for logging sent messages, it calls 
+     *  BlockCode::sendMessage immediatly after 
+     */
+    virtual int sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
+                            Time t0,Time dt);
+
+    /**
+     * @copydoc BlockCode::sendMessage
+     * @note This is only used for logging sent messages, it calls 
+     *  BlockCode::sendMessage immediatly after 
+     */
+    virtual int sendMessage(Message *msg,P2PNetworkInterface *dest,
+                            Time t0,Time dt);
+
+    void log_send_message() const;
+    void updateMsgRate();   
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

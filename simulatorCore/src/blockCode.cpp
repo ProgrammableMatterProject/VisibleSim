@@ -46,8 +46,8 @@ int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,Time t0,Time dt
 int BlockCode::sendMessage(HandleableMessage*msg,
                            P2PNetworkInterface *dest, Time t0, Time dt) {
     // PTHY: t1: Risque que deux messages envoyés sequentiellement au même t0 ne soient pas envoyés dans l'ordre ??? 
-    Time t1 = scheduler->now() + t0
-      + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
+    Time t1 = scheduler->now() + t0;
+        // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
     console << " sends " << msg->getName() << " to "
             << dest->getConnectedBlockId() << " at " << t1 << "\n";
@@ -65,13 +65,13 @@ int BlockCode::sendMessage(HandleableMessage*msg,
 int BlockCode::sendMessage(const char*msgString, Message*msg,
                            P2PNetworkInterface *dest, Time t0, Time dt) {
     // PTHY: t1: Risque que deux messages envoyés sequentiellement au même t0 ne soient pas envoyés dans l'ordre ??? 
-    Time t1 = scheduler->now() + t0
-      + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
-
+    Time t1 = scheduler->now() + t0;
+        // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
+    
 	if (msgString)
 		console << " sends " << msgString << " to "
                 << dest->getConnectedBlockId() << " at " << t1 << "\n";
-
+ 
 #ifdef DEBUG_MESSAGES
     OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
 		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;

@@ -22,9 +22,9 @@ namespace Catoms3D {
 class Rotations3D {    
 public :
     static float rotationDelayMultiplier;
-    static const int ANIMATION_DELAY = 400000;
-    static const int COM_DELAY = 2000;
-    static const int nbRotationSteps = 20;
+    static const int ANIMATION_DELAY;
+    static const int COM_DELAY;
+    static const int nbRotationSteps; //<! @attention MUST BE AN EVEN NUMBER!!!
     
 /**
    \brief Create a couple of rotations

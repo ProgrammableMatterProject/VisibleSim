@@ -81,6 +81,8 @@ public:
                                 const uint _B) :
         X_MAX(_X_MAX), Y_MAX(_Y_MAX), Z_MAX(_Z_MAX), B(_B) {};
     virtual ~MeshRuleMatcher() {};
+
+    static string roleToString(AgentRole ar);
     
     bool isInGrid(const Cell3DPosition& pos) const;
     bool isInMesh(const Cell3DPosition& pos) const;

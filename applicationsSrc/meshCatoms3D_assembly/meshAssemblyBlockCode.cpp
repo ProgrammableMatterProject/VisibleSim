@@ -26,7 +26,9 @@
 using namespace Catoms3D;
 using namespace MeshCoating;
 
+Time MeshAssemblyBlockCode::t0 = 0;
 int MeshAssemblyBlockCode::nbCatomsInPlace = 0;
+int MeshAssemblyBlockCode::nbMessages = 0;
 bool MeshAssemblyBlockCode::sandboxInitialized = false;
 uint MeshAssemblyBlockCode::X_MAX;
 uint MeshAssemblyBlockCode::Y_MAX;
@@ -51,7 +53,14 @@ MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     ruleMatcher = new MeshRuleMatcher(X_MAX, Y_MAX, Z_MAX, B);
 }
 
+
 MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
+    if (ruleMatcher->isInMesh(norm(catom->position))) {
+        OUTPUT << "bitrate:\t" << catom->blockId << "\t"
+               << maxBitrate.first << "\t"
+               << (maxBitrate.second.empty() ?
+            ruleMatcher->roleToString(role) : maxBitrate.second) << endl;
+    }
 }
 
 void MeshAssemblyBlockCode::onBlockSelected() {
@@ -160,6 +169,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
 void MeshAssemblyBlockCode::startup() {
     stringstream info;
     info << "Starting ";
+    startTime = scheduler->now();
 
     if (not sandboxInitialized)
         initializeSandbox();
@@ -263,8 +273,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
 
                 // STAT EXPORT
-                OUTPUT << "nbCatomsInPlace:\t" << round(scheduler->now() / ((Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier) + Rotations3D::COM_DELAY))
-                       << "\t" << ++nbCatomsInPlace << endl;
+                OUTPUT << "nbCatomsInPlace:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << ++nbCatomsInPlace << endl;
 
                 if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
                     coordinatorPos =
@@ -302,6 +311,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         VS_ASSERT(zBranchTipItf);
                         sendMessage(new TileInsertionReadyMessage(),
                                     zBranchTipItf, MSG_DELAY_MC, 0);
+                        log_send_message();
                     } 
                 }
             } else {
@@ -358,11 +368,13 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             handleMeshComponentInsertion(S_RZ);
                             handleMeshComponentInsertion(S_LZ);
                             
-                        } else if (itCounter == 1) {
+                        } else if (itCounter == 1 and ruleMatcher->
+                                   shouldGrowBranch(norm(catom->position), YBranch)) {
                             handleMeshComponentInsertion(Y_1);
                             catomsReqByBranch[YBranch]--;
 
-                        } else if (itCounter == 3) {
+                        } else if (itCounter == 3 and ruleMatcher->
+                                   shouldGrowBranch(norm(catom->position), XBranch)) {
                             handleMeshComponentInsertion(X_1);
                             catomsReqByBranch[XBranch]--;
                             
@@ -547,6 +559,7 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
 
 void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     // Introduce new catoms
+    // cout << "[t-" << scheduler->now() << "] catom introduced" << endl;
     world->addBlock(0, buildNewBlockCode,
                     getEntryPointForMeshComponent(mc), ORANGE);
 
@@ -575,6 +588,8 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
 
 void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos) {
     try {
+        OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
+        // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
         scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
                                                      catom, pos,
                                                      RotationLinkType::OctaFace, false));
@@ -596,7 +611,10 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     // Switch role
     role = Coordinator;
     coordinatorPos = catom->position;
-        
+
+    if (norm(catom->position) == Cell3DPosition(0,0,0)) t0 = scheduler->now();
+    OUTPUT << "root: " << (int)(round((scheduler->now() - t0) / getRoundDuration())) << "\t" << norm(catom->position) << endl;   
+    
     // Determine how many branches need to grow from here
     // and initialize growth data structures
     for (short bi = 0; bi < N_BRANCHES; bi++) {
@@ -613,10 +631,12 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
         P2PNetworkInterface* nItf = catom->getInterface(
             catom->position - ruleMatcher->getBranchUnitOffset(bi));
 
-        if (nItf and nItf->isConnected())
+        if (nItf and nItf->isConnected()) {
             sendMessage(new InitiateFeedingMechanismMessage(getFeedingRequirements(),
                                                             catom->position[2] / B),
                         nItf, MSG_DELAY_MC, 0);
+            log_send_message();
+        }
     }
 
     
@@ -660,8 +680,10 @@ bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
             // Module is delegate coordinator
             P2PNetworkInterface* nItf = catom->getInterface(nPos);
             VS_ASSERT(nItf);
+            // cout << "[t-" << getScheduler()->now() << "] requesting target cell" << endl;
             sendMessage(new RequestTargetCellMessage(catom->position), nItf,
                         MSG_DELAY_MC, 0);
+            log_send_message();
             return true;
         }
     }
@@ -694,6 +716,7 @@ void MeshAssemblyBlockCode::initializeSandbox() {
     }
 
     sandboxInitialized = true;
+    // cout << "round duration: " << getRoundDuration() << endl;
 }
 
 
@@ -812,4 +835,38 @@ std::array<bool, 7> MeshAssemblyBlockCode::getFeedingRequirements() {
                            or ruleMatcher->isOnYPyramidBorder(norm(catom->position)));
     
     return requirements;
+}
+
+void MeshAssemblyBlockCode::updateMsgRate() {
+    Time t = (int)(round((scheduler->now() - t0) / getRoundDuration()));
+            
+    if (rate.first != t) {
+        rate.first = t;
+        rate.second = 1;
+    } else {
+        rate.second++;
+    }
+
+    if (rate.second > maxBitrate.first) {
+        maxBitrate.first = rate.second;
+        maxBitrate.second = ruleMatcher->roleToString(role);
+    }
+}
+
+int MeshAssemblyBlockCode::sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
+                                       Time t0,Time dt) {
+    OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl   ;
+    updateMsgRate();
+    return BlockCode::sendMessage(msg, dest, t0, dt);
+}
+
+int MeshAssemblyBlockCode::sendMessage(Message *msg,P2PNetworkInterface *dest,
+                                       Time t0,Time dt) {
+    OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl;    
+    updateMsgRate();    
+    return BlockCode::sendMessage(msg, dest, t0, dt);
+}
+
+void MeshAssemblyBlockCode::log_send_message() const {
+    OUTPUT << "lfmsg: " << round((scheduler->now() - startTime) / getRoundDuration()) << "\t" << MeshRuleMatcher::roleToString(role) << endl;
 }

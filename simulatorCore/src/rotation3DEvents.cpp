@@ -14,9 +14,9 @@
 using namespace BaseSimulator::utils;
 using namespace Catoms3D;
 
-const int Rotations3D::ANIMATION_DELAY;
-const int Rotations3D::COM_DELAY;
-const int Rotations3D::nbRotationSteps;
+const int Rotations3D::ANIMATION_DELAY = 400000;
+const int Rotations3D::COM_DELAY = 0;//2000;
+const int Rotations3D::nbRotationSteps = 20;
 float Rotations3D::rotationDelayMultiplier = 1.0f;
 
 std::ostream& Catoms3D::operator<<(std::ostream &stream, Rotations3D const& rots) {
@@ -119,13 +119,14 @@ Rotation3DStartEvent::~Rotation3DStartEvent() {
 void Rotation3DStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
+    // cout << "[t-" << scheduler->now() << "] rotation starts" << endl;
     Catoms3DBlock *catom = (Catoms3DBlock *)concernedBlock;
     Catoms3DWorld::getWorld()->disconnectBlock(catom);
 
 //    catom->setColor(DARKGREY);
     rot.init(((Catoms3DGlBlock*)catom->ptrGlBlock)->mat);
     scheduler->schedule(
-        new Rotation3DStepEvent(scheduler->now()+(Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / Rotations3D::nbRotationSteps)),
+        new Rotation3DStepEvent(scheduler->now() + (Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / (2*Rotations3D::nbRotationSteps))),
                                 catom, rot));
 }
 
@@ -158,6 +159,7 @@ void Rotation3DStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
     Scheduler *scheduler = getScheduler();
+    // cout << "[t-" << scheduler->now() << "] rotation step" << endl;
 
     Matrix mat;
     bool rotationEnd=rot.nextStep(mat);
@@ -165,12 +167,10 @@ void Rotation3DStepEvent::consume() {
     Catoms3DWorld::getWorld()->updateGlData(catom,mat);
     if (rotationEnd) {
         scheduler->schedule(
-            new Rotation3DStopEvent(scheduler->now() +
-                                    Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / Rotations3D::nbRotationSteps),
-                                    catom, rot));
+            new Rotation3DStopEvent(scheduler->now(), catom, rot));
     } else {
         scheduler->schedule(new Rotation3DStepEvent(scheduler->now() +
-                                                    Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / Rotations3D::nbRotationSteps),
+                                                    Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / (2*Rotations3D::nbRotationSteps)),
                                                     catom, rot));
     }
 }
@@ -202,6 +202,7 @@ Rotation3DStopEvent::~Rotation3DStopEvent() {
 void Rotation3DStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
+    // cout << "[t-" << getScheduler()->now() << "] rotation stop" << endl;
 
     Cell3DPosition position;
     short orientation;
@@ -218,8 +219,7 @@ void Rotation3DStopEvent::consume() {
     wrld->connectBlock(catom);
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(
-        new Rotation3DEndEvent(scheduler->now() +
-                               Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / Rotations3D::nbRotationSteps), catom));
+        new Rotation3DEndEvent(scheduler->now(), catom));
 }
 
 const string Rotation3DStopEvent::getEventName() {
@@ -248,6 +248,7 @@ Rotation3DEndEvent::~Rotation3DEndEvent() {
 void Rotation3DEndEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
+    // cout << "[t-" << getScheduler()->now() << "] rotation ended" << endl;
     // Bizarre !
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DEndEvent(date+Rotations3D::COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
