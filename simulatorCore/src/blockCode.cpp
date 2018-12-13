@@ -62,10 +62,11 @@ int BlockCode::sendMessage(HandleableMessage*msg,
                            P2PNetworkInterface *dest, Time t0, Time dt) {
     // PTHY: t1: Risque que deux messages envoyés sequentiellement au même t0 ne soient pas envoyés dans l'ordre ??? 
     Time t1 = scheduler->now() + t0;
-        // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
+    // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
-    if (not dest->connectedInterface)
+    if (not dest->connectedInterface) {
         throw InterfaceNotConnectedException(this, dest);
+    }
     
     console << " sends " << msg->getName() << " to "
             << dest->getConnectedBlockId() << " at " << t1 << "\n";
@@ -86,8 +87,9 @@ int BlockCode::sendMessage(const char*msgString, Message*msg,
     Time t1 = scheduler->now() + t0;
         // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
-    if (not dest->connectedInterface)
+    if (not dest->connectedInterface) {
         throw InterfaceNotConnectedException(this, dest);
+    }
     
 	if (msgString)
 		console << " sends " << msgString << " to "
