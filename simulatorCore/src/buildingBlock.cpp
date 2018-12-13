@@ -86,6 +86,14 @@ BuildingBlock::~BuildingBlock() {
 		delete p2p;
 }
 
+short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
+    for (unsigned short int i = 0; i < P2PNetworkInterfaces.size(); i++) {
+        if (itf == P2PNetworkInterfaces[i]) return i;
+    }
+
+    return -1;
+}  
+
 bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {
     P2PNetworkInterface *ni1, *ni2;
     ni1 = NULL;

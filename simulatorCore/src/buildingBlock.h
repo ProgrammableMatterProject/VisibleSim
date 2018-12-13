@@ -100,6 +100,12 @@ public:
 	 * @return A pointer to the P2PNeighborInterface at index i of interface vector
 	 */
     P2PNetworkInterface *getInterface(int i) const { return P2PNetworkInterfaces[i]; }
+    /**
+	 * @brief Find the id of a block's interface
+	 * @param itf : interface for which to determine id
+	 * @return the id of the interface, or -1 if it could not be found
+	 */
+    short getInterfaceId(const P2PNetworkInterface* itf) const;    
 	/**
 	 * @brief Getter for a specific P2PNetworkInterface, identified by its direction
 	 * For all blocks that cannot rotate, the direction will always be equal to the index in the P2PNetworkInterfaces array.
