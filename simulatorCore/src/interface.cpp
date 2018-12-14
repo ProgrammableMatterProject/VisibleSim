@@ -238,10 +238,10 @@ void GlutSlidingMainWindow::glDraw() {
 		if (selectedGlBlock) {
             GLfloat posy = h-40;
             int ss = 0; // index of slice start
-            uint str_length; 
+            unsigned int str_length; 
 			sprintf(str,"Selected Block : %s",selectedGlBlock->getInfo().c_str());
             str_length = strlen(str);
-            for (uint i = 0; i < str_length + 1; i++) { // draw lines one at a time
+            for (unsigned int i = 0; i < str_length + 1; i++) { // draw lines one at a time
                 if (str[i] == '\n' || str[i] == '\0') {
                     str[i] = '\0';
                     posy = drawString(42.0,posy,str + ss,TextMode::TEXTMODE_TITLE);
