@@ -124,6 +124,7 @@ void Rotation3DStartEvent::consume() {
     Scheduler *scheduler = getScheduler();
     // cout << "[t-" << scheduler->now() << "] rotation starts" << endl;
     Catoms3DBlock *catom = (Catoms3DBlock *)concernedBlock;
+    catom->setState(BuildingBlock::State::MOVING);
 
     scheduler->schedule(
         new PivotActuationStartEvent(scheduler->now(), const_cast<Catoms3DBlock*>(rot.pivot),
@@ -166,6 +167,8 @@ Rotation3DStepEvent::~Rotation3DStepEvent() {
 void Rotation3DStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
+    catom->setState(BuildingBlock::State::ALIVE);
+        
     Scheduler *scheduler = getScheduler();
     // cout << "[t-" << scheduler->now() << "] rotation step" << endl;
 
