@@ -28,6 +28,7 @@ brew install boost --with-mpi --without-single
 brew install freeglut
 brew install glew
 brew install sbcl
+brew install muparser
 
 brew install ffmpeg # for video export
 ```
