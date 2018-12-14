@@ -20,16 +20,17 @@ namespace BaseSimulator {
 Target *BlockCode::target = NULL;
 
 BlockCode::InterfaceNotConnectedException::
-InterfaceNotConnectedException(BlockCode* bc, const P2PNetworkInterface* itf) {
+InterfaceNotConnectedException(BlockCode* bc, const Message* msg,
+                               const P2PNetworkInterface* itf) {
     stringstream ss;
     int itfId = bc->hostBlock->getInterfaceId(itf);
     Cell3DPosition nPos;
     bool err = not bc->hostBlock->getNeighborPos(itfId, nPos);
-    ss <<  "Trying to send message through unconnected interface: " 
+    ss <<  "Trying to send " << msg->getMessageName() << " through unconnected interface: " 
        << " { sender = #" << bc->hostBlock->blockId
        << " at " << bc->hostBlock->position
        << ", itfId = " << itfId
-       << ", nPos = " << (string)(err ? "#ERROR" : bc->hostBlock->position.config_print())
+       << ", nPos = " << (string)(err ? "#ERROR" : bc->hostBlock->position.to_string())
        << " }" << endl;
     m_msg = ss.str();
 }
@@ -65,7 +66,7 @@ int BlockCode::sendMessage(HandleableMessage*msg,
     // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
     if (not dest->connectedInterface) {
-        throw InterfaceNotConnectedException(this, dest);
+        throw InterfaceNotConnectedException(this, msg, dest);
     }
     
     console << " sends " << msg->getName() << " to "
@@ -88,13 +89,16 @@ int BlockCode::sendMessage(const char*msgString, Message*msg,
         // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
     if (not dest->connectedInterface) {
-        throw InterfaceNotConnectedException(this, dest);
+        throw InterfaceNotConnectedException(this, msg, dest);
     }
     
 	if (msgString)
 		console << " sends " << msgString << " to "
                 << dest->getConnectedBlockId() << " at " << t1 << "\n";
- 
+    else if (msg->isMessageHandleable())
+        console << " sends " << msg->getMessageName() << " to "
+                << dest->getConnectedBlockId() << " at " << t1 << "\n";        
+        
 #ifdef DEBUG_MESSAGES
     OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
 		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;

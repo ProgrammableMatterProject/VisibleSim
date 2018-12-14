@@ -38,7 +38,8 @@ class BlockCode {
 public:
     class InterfaceNotConnectedException : public VisibleSimException {
     public:
-        InterfaceNotConnectedException(BlockCode* bc, const P2PNetworkInterface* itf);
+        InterfaceNotConnectedException(BlockCode* bc, const Message *msg,
+                                       const P2PNetworkInterface* itf);
     };
     
 private:

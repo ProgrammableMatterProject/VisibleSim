@@ -28,16 +28,6 @@
 
 #define IT_MODE_TILEROOT_ACTIVATION 1 
 
-// #define INTERACTIVE_MODE
-
-// enum EntryPointLocation { RevZ_EPL, RevZ_R_EPL, RZ_L_EPL, RZ_EPL,
-//                           RZ_R_EPL, Z_R_EPL, Z_EPL,
-//                           Z_L_EPL, LZ_R_EPL, LZ_EPL,
-//                           LZ_LEFT_EPL, RevZ_L_EPL,
-//                           N_EPL };
-
-// enum TRFeedingState { SELF_FEEDING, , };
-
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
     static constexpr std::array<Cell3DPosition, 12> entryPointRelativePos =
@@ -118,74 +108,20 @@ public:
     int itCounter = 0; // When t > 5 all supports are in place
     bool fedCatomsOnLastRound = false;
     std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
-    // std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
+    std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {0};
     // std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
     // std::array<MeshComponent, 12> componentForEntryPoint; //<! for a coordinator, the targetcomponent to which each of the modules that it has received should move to once they are initialized
     // std::array<bool, 6> feedBranch = {0};
     std::array<bool, 6> moduleReadyOnEPL = {0}; //<! keeps track of modules which arrived on Tile Entry Point Locations
-    std::array<short, N_BRANCHES> branchTime;
+    // std::array<short, N_BRANCHES> branchTime;
     std::array<bool, 6> feedBranch = {0};
-    std::array<int, 6> targetLevel = {0};
+    // std::array<int, 6> targetLevel = {0};
 
     //!< @attention index t[i][7] is for tile root feeding requirement
-    std::array<std::array<bool, 7>, 6> feedBranchRequires = { false, false, false,
-                                                              false, false, false };
+    // std::array<std::array<bool, 7>, 6> feedBranchRequires = { false, false, false,
+    //                                                           false, false, false };
     
-    std::queue<Cell3DPosition> targetQueueForEPL[12] = {
-        queue<Cell3DPosition>({
-                Cell3DPosition(-1, -1, 1),
-                Cell3DPosition(-2, -2, 2),
-                Cell3DPosition(-3, -3, 3),
-                Cell3DPosition(-4, -4, 4),
-                Cell3DPosition(-5, -5, 5),
-                Cell3DPosition(-4, -5, 5),
-                Cell3DPosition(-5, -4, 5),
-                Cell3DPosition(-4, -5, 5)
-            }), // RevZ_EPL
-        {}, // RevZ_R_EPL
-        {},  // RZ_L_EPL
-        queue<Cell3DPosition>({
-                Cell3DPosition(-1, -1, 0),
-                Cell3DPosition(2, 0, 0),
-                Cell3DPosition(3, 0, 0),
-                Cell3DPosition(4, 0, 0),
-                Cell3DPosition(5, 0, 0),
-                Cell3DPosition(0, -1, 1),
-                Cell3DPosition(0, -2, 2),
-                Cell3DPosition(0, -3, 3),
-                Cell3DPosition(0, -4, 4),
-                Cell3DPosition(0, -5, 5),
-                Cell3DPosition(0, -4, 5)                
-            }), // RZ_EPL x
-        queue<Cell3DPosition>({ Cell3DPosition(1, -1, 0) }), // RZ_R_EPL
-        queue<Cell3DPosition>({ Cell3DPosition(1, 0, 0) }), // Z_R_EPL x 
-        queue<Cell3DPosition>({
-                Cell3DPosition(0, 0, 1),
-                Cell3DPosition(0, 0, 2),
-                Cell3DPosition(0, 0, 3),
-                Cell3DPosition(0, 0, 4),
-                Cell3DPosition(0, 0, 5)
-            }), // Z_EPL 
-        queue<Cell3DPosition>({ Cell3DPosition(0, 1, 0) }), // Z_L_EPL x
-        queue<Cell3DPosition>({ Cell3DPosition(-1, 1, 0) }), // LZ_R_EPL x
-        queue<Cell3DPosition>({
-                Cell3DPosition(1, 1, 0),
-                Cell3DPosition(0, 2, 0),
-                Cell3DPosition(0, 3, 0),
-                Cell3DPosition(0, 4, 0),
-                Cell3DPosition(0, 5, 0),
-                Cell3DPosition(-1, 0, 1),
-                Cell3DPosition(-2, 0, 2),
-                Cell3DPosition(-3, 0, 3),
-                Cell3DPosition(-4, 0, 4),
-                Cell3DPosition(-5, 0, 5),
-                Cell3DPosition(-4, 0, 5),
-            }), // LZ_EPL x
-        {}, // LZ_L_EPL x
-        {} // RevZ_L_EPL x   
-    }; 
-
     /** 
      * Finds the next target position that a module arriving at EPL epl should move to, 
      *  and return it
@@ -325,7 +261,7 @@ y the module
     void discardNextTargetForComponent(MeshComponent comp);
 
     // TODO:
-    void sendCatomsUpBranchIfRequired(BranchIndex bi);
+    void feedBranches();
 
     /** 
      * @return true if catom is on the lowest tile layer, false otherwise
@@ -351,7 +287,48 @@ y the module
                             Time t0,Time dt);
 
     void log_send_message() const;
-    void updateMsgRate();   
+    void updateMsgRate();
+
+    /** 
+     * @return true if module at entry point location epl is immediately required for the construction, or false if it should wait 
+     */
+    bool moduleAtEPLIsRequiredAtOnce(MeshComponent epl);
+
+    /** 
+     * Checks for every module awaiting at an EPL, if that module is required for the next construction steps,and if so sends it a PROVIDE_TARGET_CELL message to resume the flow. 
+     */
+    void awakenPausedModules();
+    std::array<bool, 12> moduleAwaitingOnEPL = {0};
+
+    std::queue<MeshComponent> targetQueueForEPL[12] = {
+        queue<MeshComponent>({
+                RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
+                Z_R_EPL, Z_L_EPL, Z_R_EPL
+            }), // RevZ_EPL
+        {}, // RevZ_R_EPL
+        {},  // RZ_L_EPL
+        queue<MeshComponent>({
+                S_RevZ,
+                X_2, X_3, X_4, X_5,
+                RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,
+                LZ_R_EPL
+            }), // RZ__EPL x
+        queue<MeshComponent>({ S_RZ }), // RZ__R_EPL
+        queue<MeshComponent>({ X_1 }), // Z__R_EPL x 
+        queue<MeshComponent>({
+                Z_1, Z_2, Z_3, Z_4, Z_5
+            }), // Z__EPL 
+        queue<MeshComponent>({ Y_1 }), // Z__L_EPL x
+        queue<MeshComponent>({ S_RZ }), // LZ__R_EPL x
+        queue<MeshComponent>({
+                S_Z,
+                Y_2, Y_3, Y_4, Y_5,
+                LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
+                RZ_R_EPL
+            }), // LZ__EPL x
+        {}, // LZ__L_EPL x
+        {} // RevZ__L_EPL x   
+    };
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

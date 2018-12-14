@@ -103,20 +103,20 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                  <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
         cout << " ]" << endl;
 
-        cout << "branchTime: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << branchTime[i] << ", ";
-        cout << " ]" << endl;
+        // cout << "branchTime: [ ";
+        // for (int i = 0; i < 6; i++)
+        //     cout << branchTime[i] << ", ";
+        // cout << " ]" << endl;
 
         cout << "feedBranch: [ ";
         for (int i = 0; i < 6; i++)
             cout << feedBranch[i] << ", ";
         cout << " ]" << endl;
 
-        cout << "targetLevel: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << targetLevel[i] << ", ";
-        cout << " ]" << endl;
+        // cout << "targetLevel: [ ";
+        // for (int i = 0; i < 6; i++)
+        //     cout << targetLevel[i] << ", ";
+        // cout << " ]" << endl;
         
         // cout << "Target for Entry Points: [ ";
         // for (int i = 0; i < 8; i++)
@@ -170,7 +170,7 @@ void MeshAssemblyBlockCode::startup() {
     stringstream info;
     info << "Starting ";
     startTime = scheduler->now();
-
+    
     if (not sandboxInitialized)
         initializeSandbox();
     
@@ -386,13 +386,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             handleMeshComponentInsertion(Z_R_EPL);
                         }
 
-                        for (short bi = 0; bi < XBranch; bi++) {
-                            if (ruleMatcher->shouldGrowBranch(norm(catom->position),
-                                                              (BranchIndex)bi))
-                                sendCatomsUpBranchIfRequired((BranchIndex)bi);
-                            branchTime[bi]++;
-                        }
-                                                                        
+                        feedBranches();
+                        
                         if (not fedCatomsOnLastRound and itCounter > 5) {
                             // Spawning Rules
                             if (catomsReqByBranch[XBranch] > 0) {
@@ -463,24 +458,25 @@ void MeshAssemblyBlockCode::discardNextTargetForComponent(MeshComponent comp) {
 const Cell3DPosition MeshAssemblyBlockCode::getNextTargetForEPL(MeshComponent epl) {
     short idx = epl - RevZ_EPL;
     if (not targetQueueForEPL[idx].empty()) {
-        const Cell3DPosition& tPos = targetQueueForEPL[idx].front();
+        const Cell3DPosition& tPos = coordinatorPos +
+            ruleMatcher->getComponentPosition(targetQueueForEPL[idx].front());
         targetQueueForEPL[idx].pop();
         return tPos;
     }
     
     switch (epl) {
-        case RevZ_EPL: return Cell3DPosition(-4, -4, 5);
-        // case RevZ_R_EPL: return getEntryPointPosition(R);
-        // case RZ_L_EPL: return getEntryPointPosition(R);
-        case RZ_EPL: return Cell3DPosition(-1, -4, 5);
-        case RZ_R_EPL: return Cell3DPosition(-4, 0, 5);
-        case Z_R_EPL: return Cell3DPosition(-4, -5, 5);
-        case Z_EPL: return Cell3DPosition(-1, -1, 5);
-        case Z_L_EPL: return Cell3DPosition(-5, -4, 5);
-        case LZ_R_EPL: return Cell3DPosition(0, -4, 5);
-        case LZ_EPL: return Cell3DPosition(-4, -1, 5);
-            // case LZ_L_EPL: return getEntryPointPosition(R);
-            // case RevZ_L_EPL: return getEntryPointPosition(R);
+        case RevZ_EPL: return ruleMatcher->getComponentPosition(Z_EPL);
+        case RevZ_R_EPL: return ruleMatcher->getComponentPosition(RevZ_R_EPL);
+        case RZ_L_EPL: return ruleMatcher->getComponentPosition(RZ_L_EPL);
+        case RZ_EPL: return ruleMatcher->getComponentPosition(LZ_EPL);
+        case RZ_R_EPL: return ruleMatcher->getComponentPosition(RZ_R_EPL);
+        case Z_R_EPL: return ruleMatcher->getComponentPosition(Z_R_EPL);
+        case Z_EPL: return ruleMatcher->getComponentPosition(RevZ_EPL);
+        case Z_L_EPL: return ruleMatcher->getComponentPosition(Z_L_EPL);
+        case LZ_R_EPL: return ruleMatcher->getComponentPosition(RZ_EPL);
+        case LZ_EPL: return ruleMatcher->getComponentPosition(RZ_EPL);
+        case LZ_L_EPL: return ruleMatcher->getComponentPosition(LZ_R_EPL);
+        case RevZ_L_EPL: return ruleMatcher->getComponentPosition(RevZ_L_EPL);
         default:
             cerr << "getNextTargetForEPL(" << epl << ")" << endl;
             VS_ASSERT_MSG(false, "getNextTargetForEPL: input is not an EPL");
@@ -631,14 +627,7 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
         P2PNetworkInterface* nItf = catom->getInterface(
             catom->position - ruleMatcher->getBranchUnitOffset(bi));
 
-        if (nItf and nItf->isConnected()) {
-            sendMessage(new InitiateFeedingMechanismMessage(getFeedingRequirements(),
-                                                            catom->position[2] / B),
-                        nItf, MSG_DELAY_MC, 0);
-            log_send_message();
-        }
     }
-
     
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
@@ -737,86 +726,14 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
 }
 
 
-void MeshAssemblyBlockCode::sendCatomsUpBranchIfRequired(BranchIndex bi) {
-    if (not feedBranch[bi]) return;    
-
-    bool alt = targetLevel[bi] % 2 == 0;
-    BranchIndex bi_0 = not alt ?
-        bi : ruleMatcher->getAlternateBranchIndex(bi);
-    // cout << "targetLevel[" << bi << "]: " << targetLevel[bi] << endl;
-    // cout << "alt: " << alt << endl;
-    // cout << "bi_0: " << bi_0 << endl;
-    
-    switch(bi_0) {
-        case ZBranch: // Targets RevZ EPLs #5
-            switch (branchTime[bi]) {
-                case 9: case 11: case 13: case 15: case 17:
-                    if (feedBranchRequires[bi][RevZBranch])
-                        handleMeshComponentInsertion(alt ? Z_EPL : RevZ_EPL); // RevZN
-                    break;
-                case 19:
-                    if (feedBranchRequires[bi][6])
-                        handleMeshComponentInsertion(alt ? Z_EPL : RevZ_EPL); // R
-                    // Target tile must be done, stop feeding until asked again
-                    feedBranch[bi] = false;
-                    break; 
-                default: return;
-            } break;
-            
-        case RevZBranch: // Targets Z EPLs #8
-            switch (branchTime[bi]) {
-                case 1:
-                    if (feedBranchRequires[bi][YBranch])
-                        handleMeshComponentInsertion(alt ? RevZ_EPL : Z_L_EPL); // Y1
-                    // else discardNextTargetForComponent(Z_L_EPL);
-                    break;
-                case 3:
-                    if (feedBranchRequires[bi][XBranch])
-                        handleMeshComponentInsertion(alt ? RevZ_EPL : Z_R_EPL); // X1
-                    // else discardNextTargetForComponent(Z_R_EPL);
-                    break;
-                case 9: case 11: case 13: case 15: case 17:
-                    if (feedBranchRequires[bi][ZBranch])
-                        handleMeshComponentInsertion(alt ? RevZ_EPL : Z_EPL); // ZN
-                    break;
-                default: return;
-            } break;
-
-        case LZBranch:
-            switch (branchTime[bi]) {
-                case 0: handleMeshComponentInsertion(alt ? LZ_EPL : RZ_R_EPL);
-                    break; // S_RZ FIXME:
-                case 4: handleMeshComponentInsertion(alt ? LZ_EPL : RZ_EPL);
-                    break; // S_RevZ FIXME:
-                case 6: case 8: case 10: case 12:
-                    if (feedBranchRequires[bi][XBranch])
-                        handleMeshComponentInsertion(alt ? LZ_EPL : RZ_EPL); // XN
-                    break;
-                case 14: case 16: case 18: case 20: case 22:
-                    if (feedBranchRequires[bi][RZBranch])
-                        handleMeshComponentInsertion(alt ? LZ_EPL : RZ_EPL); // RZN
-                    break;
-                default: return;                                       
-            } break;
-
-        case RZBranch:
-            switch (branchTime[bi]) {
-                case 0: handleMeshComponentInsertion(alt ? RZ_EPL : LZ_R_EPL); // S_LZ FIXME:
-                    break; 
-                case 4: handleMeshComponentInsertion(alt ? RZ_EPL : LZ_EPL); // S_Z FIXME:
-                    break; 
-                case 6: case 8: case 10: case 12:
-                    if (feedBranchRequires[bi][YBranch])
-                        handleMeshComponentInsertion(alt ? RZ_EPL : LZ_EPL); // YN
-                    break;
-                case 14: case 16: case 18: case 20: case 22:
-                    if (feedBranchRequires[bi][LZBranch])
-                        handleMeshComponentInsertion(alt ? RZ_EPL : LZ_EPL); // LZN
-                    break;
-                default: return;
-            } break;
-            
-        default: return;
+void MeshAssemblyBlockCode::feedBranches() {
+    for (int bi = 0; bi < N_BRANCHES; bi++) {
+        if (not fedCatomOnLastRound[bi]
+            and (ruleMatcher->shouldGrowBranch(norm(catom->position), (BranchIndex)bi)
+                 or feedBranch[bi])) {
+            handleMeshComponentInsertion(
+                ruleMatcher->getTargetEPLComponentForBranch((BranchIndex)bi));
+        }        
     }
 }
 
@@ -855,15 +772,15 @@ void MeshAssemblyBlockCode::updateMsgRate() {
 
 int MeshAssemblyBlockCode::sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
                                        Time t0,Time dt) {
-    OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl   ;
-    updateMsgRate();
+    // OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl   ;
+    // updateMsgRate();
     return BlockCode::sendMessage(msg, dest, t0, dt);
 }
 
 int MeshAssemblyBlockCode::sendMessage(Message *msg,P2PNetworkInterface *dest,
                                        Time t0,Time dt) {
-    OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl;    
-    updateMsgRate();    
+    // OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl;    
+    // updateMsgRate();    
     return BlockCode::sendMessage(msg, dest, t0, dt);
 }
 

@@ -138,9 +138,11 @@ Catoms3DBlock* Catoms3DMotionEngine::findMotionPivot(const Catoms3DBlock* m,
                                                      RotationLinkType faceReq) {
     const auto &allLinkPairs = findPivotLinkPairsForTargetCell(m, tPos, faceReq);
 
-    for (const auto& pair : allLinkPairs)
+    for (const auto& pair : allLinkPairs) {
+        cout << "{ " << *pair.first << ", " << *pair.second << " }" << endl;
         if (pair.second->getMRLT() == faceReq or faceReq == RotationLinkType::Any)
             return pair.first;
+    }
     
     return NULL;
 }

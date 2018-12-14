@@ -70,7 +70,7 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
     // Determine anchor connectors of module _pivot_ and m are connected to each other_
     short fromConM = m->getConnectorId(pivot->position);
     short fromConP = pivot->getConnectorId(m->position);
-
+    
     // Deduce which connector of m will latch to pivot con toCon
     short toConM = Catoms3DMotionEngine::getMirrorConnectorOnModule(pivot, m, fromConP,
                                                                     fromConM, toCon);
@@ -106,6 +106,9 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
     if (link == NULL)
         throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
     else rot = link->getRotations(m, pivot);
+
+    rot.conFromP = fromConP;
+    rot.conToP = toCon;
 }
 
 Rotation3DStartEvent::Rotation3DStartEvent(Rotation3DStartEvent *ev) : BlockEvent(ev) {
@@ -121,6 +124,11 @@ void Rotation3DStartEvent::consume() {
     Scheduler *scheduler = getScheduler();
     // cout << "[t-" << scheduler->now() << "] rotation starts" << endl;
     Catoms3DBlock *catom = (Catoms3DBlock *)concernedBlock;
+
+    scheduler->schedule(
+        new PivotActuationStartEvent(scheduler->now(), const_cast<Catoms3DBlock*>(rot.pivot),
+                                     rot.mobile, rot.conFromP, rot.conToP));
+    
     Catoms3DWorld::getWorld()->disconnectBlock(catom);
 
 //    catom->setColor(DARKGREY);
@@ -220,6 +228,10 @@ void Rotation3DStopEvent::consume() {
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(
         new Rotation3DEndEvent(scheduler->now(), catom));
+
+    scheduler->schedule(
+        new PivotActuationEndEvent(scheduler->now(), const_cast<Catoms3DBlock*>(rot.pivot),
+                                   rot.mobile, rot.conFromP, rot.conToP));
 }
 
 const string Rotation3DStopEvent::getEventName() {
@@ -265,9 +277,14 @@ const string Rotation3DEndEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotations3D::Rotations3D(const Catoms3DBlock *mobile, const Catoms3DBlock *fixe, double rprim,
+Rotations3D::Rotations3D(const Catoms3DBlock *module, const Catoms3DBlock *fixe, double rprim,
                          const Vector3D &ax1, double ang1,
-                         const Vector3D &ax2, double ang2) : angle1(ang1),angle2(ang2) {
+                         const Vector3D &ax2, double ang2,
+                         short from, short to):
+    mobile(module), pivot(fixe),
+    conFromP(from), conToP(to),
+    angle1(ang1), angle2(ang2) {
+
     static const double c_2 = 1.0/(3+sqrt(2));
     Matrix MA = ((Catoms3DGlBlock*)mobile->getGlBlock())->mat;
     Matrix MB = ((Catoms3DGlBlock*)fixe->getGlBlock())->mat;

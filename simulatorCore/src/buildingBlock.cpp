@@ -194,7 +194,7 @@ void BuildingBlock::scheduleLocalEvent(EventPtr pev) {
 
 void BuildingBlock::processLocalEvent() {
     EventPtr pev;
-
+    
     if (localEventsList.size() == 0) {
 		cerr << "*** ERROR *** The local event list should not be empty !!" << endl;
 		getScheduler()->trace("*** ERROR *** The local event list should not be empty !!");
@@ -202,7 +202,15 @@ void BuildingBlock::processLocalEvent() {
     }
     pev = localEventsList.front();
     localEventsList.pop_front();
-    blockCode->processLocalEvent(pev);
+
+    try {
+        blockCode->processLocalEvent(pev);
+    } catch(VisibleSimException const& e) {
+        cerr << "exception raised! (see below)" << endl;
+        cerr << e.what() << endl;
+        awaitKeyPressed();
+        throw;
+    }
 
     if (pev->eventType == EVENT_NI_RECEIVE ) {
       utils::StatsIndividual::decIncommingMessageQueueSize(stats);

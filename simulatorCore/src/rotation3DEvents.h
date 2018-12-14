@@ -24,7 +24,11 @@ public :
     static float rotationDelayMultiplier;
     static const int ANIMATION_DELAY;
     static const int COM_DELAY;
-    static const int nbRotationSteps; //<! @attention MUST BE AN EVEN NUMBER!!!
+    static const int nbRotationSteps; //<! @attention MUST BE AN EVEN NUMBER!!!    
+
+    const Catoms3DBlock *mobile = NULL;
+    const Catoms3DBlock *pivot = NULL;
+    short conFromP, conToP;
     
 /**
    \brief Create a couple of rotations
@@ -36,7 +40,7 @@ public :
 */
     Rotations3D(const Catoms3DBlock *mobile, const Catoms3DBlock *fixe, double rprim,
                 const Vector3D &ax1, double ang1,
-                const Vector3D &ax2, double ang2);
+                const Vector3D &ax2, double ang2, short from = -1, short to = -1);
     Rotations3D() {};
 
     void init(const Matrix& m) {

@@ -45,13 +45,8 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         MeshComponent epl = static_cast<MeshComponent>(idx);
 
         Cell3DPosition tPos;
-        tPos = mabc.catom->position + mabc.getNextTargetForEPL(epl);        
-
-        // cout << "Spawnee Position: " << srcPos 
-        //      << " -- Target Position: " << tPos
-        //      << " -- epl Position: " << srcPos - mabc.catom->position 
-        //      << " -- epl: " << epl << endl;
-    
+        tPos = mabc.catom->position + mabc.getNextTargetForEPL(epl);                
+        
         // send to requesting catom
         VS_ASSERT(destinationInterface->isConnected());
         mabc.sendMessage(new ProvideTargetCellMessage(tPos, srcPos),
@@ -102,78 +97,90 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     }    
 }
 
-void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
-    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
-
-    Cell3DPosition relNeighborPos;
-    if (mabc.role == ActiveBeamTip) {
-        if (mabc.ruleMatcher->isOnZBranch(mabc.norm(mabc.catom->position))) {
-            // Forward to incoming LZ tip
-            relNeighborPos = Cell3DPosition(1,0,0);
-        } else if (mabc.ruleMatcher->isOnRZBranch(mabc.norm(mabc.catom->position))) {
-            // forward to incoming RevZ tip
-            relNeighborPos = Cell3DPosition(1,0,0);
-        } else if (mabc.ruleMatcher->isOnLZBranch(mabc.norm(mabc.catom->position))) {
-            // forward to RevZ tip
-            relNeighborPos = Cell3DPosition(0,1,0);
-        } else if (mabc.ruleMatcher->isOnRevZBranch(mabc.norm(mabc.catom->position))) {
-            // forward to future TR module waiting on RevZ_L_EPL
-            relNeighborPos = Cell3DPosition(1,0,0);
-        }
-
-        P2PNetworkInterface* itf = mabc.catom->getInterface(mabc.catom->position
-                                                            + relNeighborPos);
-        mabc.sendMessage(new TileInsertionReadyMessage(), itf,MSG_DELAY_MC, 0);
-        mabc.log_send_message();
-    } else {        
-        // Get moving towards tile root position
-        mabc.targetPosition = mabc.coordinatorPos;
-        mabc.lattice->unhighlightCell(mabc.targetPosition);
-        mabc.matchRulesAndRotate();
-    }
-}
-
-
-void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
+void ProbeMotionValidityMessage::
+forwardToFAOrReturnClearForMotion(BaseSimulator::BlockCode *bc) const {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
     
-    if (mabc.role == ActiveBeamTip or mabc.role == PassiveBeam) {
-        BranchIndex bi = 
-            mabc.ruleMatcher->getBranchIndexForNonRootPosition(mabc.norm(mabc.catom->position));
-        const Cell3DPosition& nextPosAlongBranch =
-            mabc.catom->position - mabc.ruleMatcher->getBranchUnitOffset(bi);
-
-        P2PNetworkInterface* itf = mabc.catom->getInterface(nextPosAlongBranch);
-        mabc.sendMessage(new InitiateFeedingMechanismMessage(requirements, level), itf,
-                         MSG_DELAY_MC, 0);
-        mabc.log_send_message();
-    } else { // role == coordinator        
-        // Determine branch of sender
-        BranchIndex bi = 
-            mabc.ruleMatcher->getBranchIndexForNonRootPosition(mabc.norm(sourceInterface->hostBlock->position));
-
-        // If module level is right below target level, discard unneeded targetPositions
-        if (level == (mabc.catom->position[2] / mabc.B) + 1) {
-            if (not requirements[YBranch])
-                mabc.discardNextTargetForComponent(Z_L_EPL);
-        }
-
-        
-        if (mabc.isAtGroundLevel()) {
-            mabc.feedBranch[bi] = true;
-            mabc.branchTime[bi] = 0;
-            mabc.feedBranchRequires[bi] = requirements;
-            mabc.targetLevel[bi] = level;
-        } else {            
-            // Forward message down the branch right below the incoming one
-            const Cell3DPosition& tipOfNextBranchDown =
-                mabc.catom->position + mabc.ruleMatcher->getIndexOfBranchTipUnder(bi);
-
-            P2PNetworkInterface* itf = mabc.catom->getInterface(tipOfNextBranchDown);
-            mabc.sendMessage(new InitiateFeedingMechanismMessage(requirements, level), itf,
-                             MSG_DELAY_MC, 0);
-            mabc.log_send_message();
-        }
-    }
+    //// check for potential modules to forward to
+    // vector<Cell3DPosition> nCells = mabc.lattice->
+    //     getActiveNeighborCells(mabc.catom->position);
+    // for (const Cell3DPosition& nCell : nCells) {
+    //     if (not mabc.ruleMatcher->isInMesh(nCell)) { // Module must be FA
+    //         //// if FA module docked on pivot, forward message
+    //         P2PNetworkInterface* FAItf =
+    //             mabc.catom->getInterface(mabc.catom->position);
+    //         // mabc.sendmessage(FAItf,...)
+    //         return;
+    //     }
+    // }
+    //// else: no precedence, return ClearForMotion
+    // mabc.sendMessage(sourceInterface,...)
 }
 
+void ProbeMotionValidityMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
+
+    // The goal here is to reach the moving module preceding the sender if it exists.
+    // 1. If it indeed exists, there is nothing to do but wait for it to send a message
+    //    to sender when it initiates a new motion
+    // 2. If it does not exist, then the sender is clear for motion, and thus it should
+    //    be notified that it is the case by modules further down its path
+    
+    // // TODO:
+    // if (mabc.lattice->cellsAreAdjacent(mabc.catom->position, sender)) {
+    //     // Two modules moving with always one gap between them cannot both be neighbors of the same pivot, hence here the course of action is to forward the message further down the path
+    //     // The next module can either be:
+    //     // a. branch module  (regular case, if current module is branch or support)
+    //     // b. support module (if current module is vertical branch tip)
+    //     // c. tile root      (if current module is horizontal branch tip,
+    //     //                    in which case the sender is clear for motion)
+
+    //     P2PNetworkInterface* nextItf;
+    //     if (mabc.ruleMatcher->isZBranchModule(mabc.norm(mabc.catom->position))
+
+    //     VS_ASSERT_MSG(nextItf, "cannot find next module along path");
+    //     mabc.sendMessage(this->clone(), nextItf, MSG_DELAY_MC, 0);        
+    // } else {
+        
+    // }
+    
+    // // if pivot and is tip,
+    // if (mabc.ruleMatcher->isZBranchModule(mabc.norm(mabc.catom->position))) {
+
+    //     if (mabc.ruleMatcher->isVerticalBranchTip(mabc.norm(mabc.catom->position))) {
+    //         //// forward to support
+    //     } else {
+    //         // else pivot and is connected to sender,
+    //         if (mabc.lattice->cellsAreAdjacent(mabc.catom->position, sender)) {
+    //             //// send to next pivot along branch
+    //         } else {
+    //             forwardToFAOrReturnClearForMotion(mabc);
+    //         }
+    //     }
+    
+    // // else module is Support
+    // } else if (mabc.ruleMatcher->isTileSupport(mabc.norm(mabc.catom->position))) {
+    //     // else pivot and is connected to sender,
+    //     if (mabc.lattice->cellsAreAdjacent(mabc.catom->position, sender)) {
+    //         //// send to next pivot along branch
+    //     } else {
+    //         forwardToFAOrReturnClearForMotion(mabc);
+    //     }
+    // } else if (mabc.role == FreeAgent) { // this is the target module
+    //     //// wait until motion is scheduled to respond ClearForMotion        
+    // }
+}
+
+void ClearForMotionMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
+
+    // TODO:
+    // if support,
+    //// forward to branch tip
+    // else if pivot and not connected to receiver
+    //// forward to next module in branch
+    // else if pivot and connected to receiver
+    //// forward to receiver
+    // else if receiver
+    //// check motion rules and perform next move
+}

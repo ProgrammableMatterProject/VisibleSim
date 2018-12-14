@@ -48,7 +48,7 @@ typedef BlockCode *(*BlockCodeBuilder)(BuildingBlock*);
 class BuildingBlock {
 public:
 	//!< State of a BuildingBlock. The block is considered alive if its state is >= 2
-	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3};
+	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3, MOVING = 4, ACTUATING = 5 };
 private:
 	/**
 	 * \brief state of the block, with atomic access

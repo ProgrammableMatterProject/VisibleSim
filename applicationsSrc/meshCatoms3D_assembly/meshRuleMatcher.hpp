@@ -12,6 +12,8 @@
 #ifndef MESH_RULE_MATCHER_HPP_
 #define MESH_RULE_MATCHER_HPP_
 
+#include <array>
+
 #include "network.h"
 #include "cell3DPosition.h"
 #include "catoms3DBlockCode.h"
@@ -65,6 +67,8 @@ public:
     bool isTileRoot(const Cell3DPosition& pos) const;
     bool isVerticalBranchTip(const Cell3DPosition& pos) const;
     bool isTileSupport(const Cell3DPosition& pos) const;
+    bool isBranchModule(const Cell3DPosition& pos) const;
+    bool isZBranchModule(const Cell3DPosition& pos) const;
 
     bool shouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi) const;
     bool shouldGrowZBranch(const Cell3DPosition& pos) const;
@@ -242,6 +246,12 @@ public:
      */
     bool pyramidTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
                                               BranchIndex tipB, BranchIndex growthB) const;
+    
+    static std::array<Cell3DPosition, 47> componentPosition;
+    static std::array<int, 47> componentInsertionTime;
+    static Cell3DPosition getComponentPosition(MeshComponent comp);
+
+    static MeshComponent getTargetEPLComponentForBranch(BranchIndex bi);
 };
 
 }

@@ -25,6 +25,7 @@ public:
     void set(short x,short y,short z);
     double dist_euclid(const Cell3DPosition& p) const;
     double l2_norm() const;
+    string to_string() const;
     string config_print() const;
 
     Cell3DPosition& addX(short x);

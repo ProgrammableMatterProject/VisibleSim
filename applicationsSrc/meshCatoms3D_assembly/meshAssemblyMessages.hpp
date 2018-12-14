@@ -28,8 +28,8 @@ public:
     virtual ~RequestTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new RequestTargetCellMessage(*this); }
-    virtual string getName() { return "RequestTargetCell"; }
+    virtual Message* clone() const { return new RequestTargetCellMessage(*this); }
+    virtual string getName() const { return "RequestTargetCell"; }
 };
 
 class ProvideTargetCellMessage : public HandleableMessage {
@@ -41,8 +41,20 @@ public:
     virtual ~ProvideTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new ProvideTargetCellMessage(*this); }
-    virtual string getName() { return "ProvideTargetCell"; }
+    virtual Message* clone() const { return new ProvideTargetCellMessage(*this); }
+    virtual string getName() const { return "ProvideTargetCell"; }
+};
+
+class TileNotReadyMessage : public HandleableMessage {
+    const Cell3DPosition dstPos;
+public:
+    TileNotReadyMessage(const Cell3DPosition& _dstPos)
+        : HandleableMessage(), dstPos(_dstPos) {};
+    virtual ~TileNotReadyMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() const { return new TileNotReadyMessage(*this); }
+    virtual string getName() const { return "TileNotReady"; }
 };
 
 class TileInsertionReadyMessage : public HandleableMessage {    
@@ -51,23 +63,44 @@ public:
     virtual ~TileInsertionReadyMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new TileInsertionReadyMessage(*this); }
-    virtual string getName() { return "TileInsertionReady"; }
+    virtual Message* clone() const { return new TileInsertionReadyMessage(*this); }
+    virtual string getName() const { return "TileInsertionReady"; }
 };
 
-class InitiateFeedingMechanismMessage : public HandleableMessage {
-    std::array<bool, 7> requirements;
-    unsigned int level;
+/////////////////////////////////////////////////////////////////
+///////////////////// MOTION COORDINATION ///////////////////////
+/////////////////////////////////////////////////////////////////
+
+class ProbeMotionValidityMessage : public HandleableMessage {
+    const Cell3DPosition sender;
 public:
-    InitiateFeedingMechanismMessage(const std::array<bool, 7>& _requirements,
-                                    unsigned int _level)
-        : HandleableMessage(), requirements(_requirements), level(_level) {};
-    virtual ~InitiateFeedingMechanismMessage() {};
+    ProbeMotionValidityMessage(const Cell3DPosition& _sender)
+        : HandleableMessage(), sender(_sender) {};
+    virtual ~ProbeMotionValidityMessage() {};
+
+    void forwardToFAOrReturnClearForMotion(BaseSimulator::BlockCode *bc) const;
+    
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() const { return new ProbeMotionValidityMessage(*this); }
+    virtual string getName() const {
+        return string("ProbeMotionValidityMessage(" + sender.config_print() + ")");
+    }
+};
+
+class ClearForMotionMessage : public HandleableMessage {
+    const Cell3DPosition sender; 
+    const Cell3DPosition receiver; 
+public:
+    ClearForMotionMessage(const Cell3DPosition& _sender, const Cell3DPosition& _receiver)
+        : HandleableMessage(), sender(_sender) {};
+    virtual ~ClearForMotionMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new InitiateFeedingMechanismMessage(*this); }
-    virtual string getName() { return "InitiateFeedingMechanism"; }
+    virtual Message* clone() const { return new ClearForMotionMessage(*this); }
+    virtual string getName() const {
+        return string("ClearForMotionMessage(" + sender.config_print() + ','
+                      + receiver.config_print() + ")");
+    }
 };
-
 
 #endif /* MC3D_MESSAGES_H_ */

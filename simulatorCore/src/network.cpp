@@ -48,11 +48,11 @@ uint64_t Message::getNbMessages() {
 	return(nbMessages);
 }
 
-string Message::getMessageName() {
+string Message::getMessageName() const {
 	return("generic message");
 }
 
-Message* Message::clone() {
+Message* Message::clone() const {
     Message* ptr = new Message(*this);
     ptr->sourceInterface = sourceInterface;
     ptr->destinationInterface = destinationInterface;
