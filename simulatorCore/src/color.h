@@ -15,6 +15,7 @@ public :
     GLfloat rgba[4];
     Color();
     Color(float r,float g,float b,float a=1.0);
+    Color(const Color& c):rgba{ c.rgba[0], c.rgba[1], c.rgba[2], c.rgba[3] } {};
 
     void set(float r,float g,float b,float a=1.0);
 //    Color(unsigned char r,unsigned char g,unsigned char b,unsigned char a=255) { color[0]=r/255.0; color[1]=g/255.0; color[2]=b/255.0; color[3]=a/255.0; };
@@ -22,7 +23,7 @@ public :
     inline const GLfloat operator[](const int i) const { return rgba[i]; };
     inline bool operator==(const Color &c) const { return (rgba[0] == c.rgba[0] && rgba[1] == c.rgba[1] && rgba[2] == c.rgba[2] && rgba[3] == c.rgba[3]); };
     inline bool operator!=(const Color &c) const { return !(*this==c); };
-    friend ostream& operator<<(ostream& f,const Color &c);        
+    friend ostream& operator<<(ostream& f,const Color &c);
 };
 
 const Color WHITE(1.0f,1.0f,1.0f);

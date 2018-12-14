@@ -91,7 +91,7 @@ public: // exceptions
             m_msg = ss.str();
         }
     };
-    
+
 protected:
 
     /**
@@ -268,7 +268,7 @@ public:
      * @param pos position of the target cell
      */
     Cell3DPosition CSGToGridPosition(const Vector3D &pos) const;
-    
+
     /**
      * @brief The object is in the border of the target
      * @param pos position of the target cell

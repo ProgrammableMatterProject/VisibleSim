@@ -57,17 +57,17 @@ public :
 
     // inline Catoms3DLinkDirection getDirection() { return Catoms3DLinkDirection(axis1, axis2); };
 
-    /** 
+    /**
      * @param mobile Catom about to move
      * @param pivot Fixed catom that will be used as a pivot
      * @return Rotation object corresponding to this specific connector link on surface of pivot
      */
     Rotations3D getRotations(Catoms3DBlock* mobile, Catoms3DBlock* pivot) const;
-    
+
     /**
        \brief Returns an array containing the ids of the two connectors forming the link such that [fromCon, ToCon]
     **/
-    std::array<short, 2> getConnectors() const;
+    // std::array<short, 2> getConnectors() const;
 
     /** \brief Indicates whether the link concerns the connector whose ID is passed as argument
         \param conId The ID of the connector
@@ -144,13 +144,13 @@ public:
      */
     const vector<Catoms3DMotionRulesLink*>& getMotionRulesLinksForConnector(short con);
 
-    /** 
+    /**
      * @param anchorCon latching connector to another catom
      * @param conTo connector whose direction to determine relative to anchorCon
      * @return ConnectorDirection corresponding to conTo relative to anchorCon or -1 if an input is invalid or anchorCon and conTo are not neighbor connectors
      */
     short getConnectorDirection(short anchorCon, short conTo);
-        
+
     /**
      * @brief Transforms the input connector direction and returns the result
      * @param d input connector direction
