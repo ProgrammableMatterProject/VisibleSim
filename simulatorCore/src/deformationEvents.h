@@ -23,11 +23,10 @@ public :
     \brief Create a couple of rotations
     \param p : fixed pivot catom
     \param ax1 : rotation axe for the first rotation
-    \param ang1 : rotation angle for the first rotation
     \param ax2 : rotation axe for the second rotation
-    \param ang2 : rotation angle for the second rotation
+    \param id : geometrical model id (\todo)
 */
-    Deformation (DatomsBlock *mobile,DatomsBlock *fixe,const Vector3D &ax1,const Vector3D &ax2,uint8_t id);
+    Deformation (const DatomsBlock *mobile,const  DatomsBlock *fixe,const Vector3D &ax1,const Vector3D &ax2,uint8_t id);
     Deformation () {};
 
     void init(const Matrix& m) {

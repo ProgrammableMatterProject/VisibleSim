@@ -26,7 +26,7 @@ private:
     DatomsBlock *module;
     bool isLocked;
     Motions *currentMotion;
-	FCCLattice2 *lattice;
+	SkewFCCLattice *lattice;
 public :
 	DatomsRotateCode(DatomsBlock *host):DatomsBlockCode(host) { module = host; };
 	~DatomsRotateCode() {};

@@ -1,6 +1,6 @@
 /*!
- * \file okteenWorld.cpp
- * \brief okteen world
+ * \file OkteenWorld.cpp
+ * \brief Okteen world
  * \date 05/03/2015
  * \author Benoît Piranda
  */
@@ -35,9 +35,9 @@ OkteenWorld::OkteenWorld(const Cell3DPosition &gridSize, const Vector3D &gridSca
     OUTPUT << "\033[1;31mOkteenWorld constructor\033[0m" << endl;
 
     if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/okteenTextures","okteenModule.obj");
-		objConnector = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/okteenTextures","okteenConnector.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/okteenTextures","okteenModule.obj");
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/OkteenTextures","OkteenModule.obj");
+		objConnector = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/OkteenTextures","OkteenConnector.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/OkteenTextures","OkteenModule.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
 	}
 
@@ -45,7 +45,9 @@ OkteenWorld::OkteenWorld(const Cell3DPosition &gridSize, const Vector3D &gridSca
 }
 
 OkteenWorld::~OkteenWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
     OUTPUT << "OkteenWorld destructor" << endl;
+#endif
     /*	block linked are deleted by world::~world() */
 }
 
@@ -67,8 +69,7 @@ void OkteenWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), module));
 
     OkteenGlBlock *glBlock = new OkteenGlBlock(blockId);
-    tabGlBlocks.push_back(glBlock);
-
+    mapGlBlocks.insert(make_pair(blockId, glBlock));
     module->setGlBlock(glBlock);
     module->setColor(col);
     module->setPosition(pos);
@@ -98,9 +99,11 @@ void OkteenWorld::linkBlock(const Cell3DPosition& pos) {
 		if (neighborBlock) {
 			module->getInterface(SCLattice::Direction(i))->connect(neighborBlock->getInterface(SCLattice::Direction(lattice->getOppositeDirection(i))));
 
-			OUTPUT << "connection #" << module->blockId << ":" << lattice->getDirectionString(i) <<
+#ifdef DEBUG_NEIGHBORHOOD
+            OUTPUT << "connection #" << module->blockId << ":" << lattice->getDirectionString(i) <<
 				" to #" << neighborBlock->blockId << ":"
 				   << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
+#endif
 
 			updateGlData(module,i,1.0);
 		} else {
@@ -118,14 +121,10 @@ void OkteenWorld::glDraw() {
     glDisable(GL_TEXTURE_2D);
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 // draw modules
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    OkteenGlBlock *ptr;
     lock();
-    while (ic!=tabGlBlocks.end()) {
-        ptr = (OkteenGlBlock*)(*ic);
-		ptr->glDraw(objBlock);
-		ptr->glDrawConnectors(objConnector);
-		ic++;
+    for (const auto& pair : mapGlBlocks) {
+        ((OkteenGlBlock*)pair.second)->glDraw(objBlock);
+        ((OkteenGlBlock*)pair.second)->glDrawConnectors(objConnector);
     }
     unlock();
     glPopMatrix();
@@ -229,14 +228,12 @@ void OkteenWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
    	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    int n=1;
     lock();
-    while (ic!=tabGlBlocks.end()) {
-		((OkteenGlBlock*)(*ic))->glDrawIdConnectors(objConnector,n);
-		((OkteenGlBlock*)(*ic))->glDrawId(objBlock,n);
-		ic++;
-    }
+    for (const auto& pair : mapGlBlocks) {
+        // FIXME: Check that this is working properly after glBlock hash map container change
+        ((OkteenGlBlock*)pair.second)->glDrawIdConnectors(objConnector, pair.first);
+        ((OkteenGlBlock*)pair.second)->glDrawId(objBlock, pair.first);        
+    } 
     unlock();
     glPopMatrix();
 }
@@ -245,15 +242,14 @@ void OkteenWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1,m;
     lock();
     // 6 objects per module
-    while (ic!=tabGlBlocks.end()) {
+    for (const auto& pair : mapGlBlocks) {
+        // FIXME: Check that this is working properly after glBlock hash map container change
         m=0;
-        ((OkteenGlBlock*)(*ic))->glDrawId(objBlockForPicking,m); // structure
-		((OkteenGlBlock*)(*ic))->glDrawIdByMaterial(objConnector,n); // connectors
-		ic++;
+        ((OkteenGlBlock*)pair.second)->glDrawId(objBlockForPicking,m); // structure
+        ((OkteenGlBlock*)pair.second)->glDrawIdByMaterial(objConnector,n); // connectors
     }
     unlock();
     glPopMatrix();

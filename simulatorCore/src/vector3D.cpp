@@ -20,6 +20,13 @@ ostream& operator<<(ostream& f,const Vector3D&p)
   return f;
 }
 
+const Vector3D Vector3D::dot(const Vector3D p) const{
+    return Vector3D(pt[0] * p.pt[0],
+                    pt[1] * p.pt[1],
+                    pt[2] * p.pt[2],
+                    1.0);
+}
+
 const Vector3D operator *(double v,const Vector3D p)
 { Vector3D r;
   r.pt[0] = p.pt[0]*v;

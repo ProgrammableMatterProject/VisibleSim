@@ -19,6 +19,22 @@ namespace BaseSimulator {
 
 Target *BlockCode::target = NULL;
 
+BlockCode::InterfaceNotConnectedException::
+InterfaceNotConnectedException(BlockCode* bc, const Message* msg,
+                               const P2PNetworkInterface* itf) {
+    stringstream ss;
+    int itfId = bc->hostBlock->getInterfaceId(itf);
+    Cell3DPosition nPos;
+    bool err = not bc->hostBlock->getNeighborPos(itfId, nPos);
+    ss <<  "Trying to send " << msg->getMessageName() << " through unconnected interface: " 
+       << " { sender = #" << bc->hostBlock->blockId
+       << " at " << bc->hostBlock->position
+       << ", itfId = " << itfId
+       << ", nPos = " << (string)(err ? "#ERROR" : bc->hostBlock->position.to_string())
+       << " }" << endl;
+    m_msg = ss.str();
+}
+
 BlockCode::BlockCode(BuildingBlock *host) : hostBlock(host) {
 	scheduler = getScheduler();
 	lattice = getWorld()->lattice;
@@ -39,24 +55,60 @@ void BlockCode::addMessageEventFunc(int type,eventFunc func) {
     eventFuncMap.insert(pair<int,eventFunc>(type,func));
 }
 
-int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,int t0,int dt) {
+int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,Time t0,Time dt) {
 	return sendMessage(NULL, msg, dest, t0, dt);
 }
 
-int BlockCode::sendMessage(const char*msgString,Message*msg,P2PNetworkInterface *dest,int t0,int dt) {
-  int t1 = scheduler->now() + t0 + (int)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
+int BlockCode::sendMessage(HandleableMessage*msg,
+                           P2PNetworkInterface *dest, Time t0, Time dt) {
+    // PTHY: t1: Risque que deux messages envoyés sequentiellement au même t0 ne soient pas envoyés dans l'ordre ??? 
+    Time t1 = scheduler->now() + t0;
+    // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
-	if (msgString)
-		console << "sends " << msgString << " to " << dest->getConnectedBlockId() << " at " << t1 << "\n";
-
-	OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
+    if (not dest->connectedInterface) {
+        throw InterfaceNotConnectedException(this, msg, dest);
+    }
+    
+    console << " sends " << msg->getName() << " to "
+            << dest->getConnectedBlockId() << " at " << t1 << "\n";
+#ifdef DEBUG_MESSAGES
+    OUTPUT << "#" << hostBlock->blockId << " " << hostBlock->position
+           << " sends " << msg->type << " to "
 		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
+#endif
+    assert(dest->getConnectedBlockId() > 0);
 
     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
     return 0;
 }
 
-int BlockCode::sendMessageToAllNeighbors(Message*msg,int t0,int dt,int nexcept,...) {
+int BlockCode::sendMessage(const char*msgString, Message*msg,
+                           P2PNetworkInterface *dest, Time t0, Time dt) {
+    // PTHY: t1: Risque que deux messages envoyés sequentiellement au même t0 ne soient pas envoyés dans l'ordre ??? 
+    Time t1 = scheduler->now() + t0;
+        // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
+
+    if (not dest->connectedInterface) {
+        throw InterfaceNotConnectedException(this, msg, dest);
+    }
+    
+	if (msgString)
+		console << " sends " << msgString << " to "
+                << dest->getConnectedBlockId() << " at " << t1 << "\n";
+    else if (msg->isMessageHandleable())
+        console << " sends " << msg->getMessageName() << " to "
+                << dest->getConnectedBlockId() << " at " << t1 << "\n";        
+        
+#ifdef DEBUG_MESSAGES
+    OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
+		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
+#endif
+
+    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
+    return 0;
+}
+
+int BlockCode::sendMessageToAllNeighbors(Message*msg,Time t0,Time dt,int nexcept,...) {
 	va_list args;
 	va_start(args,nexcept);
 	int ret = sendMessageToAllNeighbors(NULL, msg, t0, dt, nexcept, args);
@@ -65,7 +117,8 @@ int BlockCode::sendMessageToAllNeighbors(Message*msg,int t0,int dt,int nexcept,.
 	return ret;
 }
 
-int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt,int nexcept,...) {
+int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
+                                         Time t0,Time dt,int nexcept,...) {
 	va_list args;
 	va_start(args,nexcept);
 	int ret = sendMessageToAllNeighbors(msgString, msg, t0, dt, nexcept, args);
@@ -74,7 +127,8 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t
 	return ret;
 }
 
-int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg, int t0, int dt, int nexcept, va_list args) {
+int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
+                                         Time t0, Time dt, int nexcept, va_list args) {
     P2PNetworkInterface *tabExceptions[hostBlock->getNbInterfaces()];
     for (int i=0; i<nexcept; i++) {
         tabExceptions[i] = va_arg(args,P2PNetworkInterface*);
@@ -89,6 +143,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg, int 
             while (j<nexcept && p2p!=tabExceptions[j]) j++;
             if (j==nexcept) {
 				sendMessage(msgString, msg->clone(), p2p, t0, dt);
+                Message::incrementMessageCounts();
                 n++;
             }
         }
@@ -115,11 +170,13 @@ void BlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
         case EVENT_ADD_NEIGHBOR: {
-            OUTPUT << "ADD_NEIGHBOR" << endl;
-            startup();
+            // @PTHY 08/11/2017: Startup needs not be called every time a neighbor is added
+            //  This would mean that a catom is disconnected from its power source everytime its
+            //   neighborhood is updated.
+            // startup();
         } break;
         case EVENT_TAP: {
-			int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
+            int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
             onTap(face);
         } break;
     }

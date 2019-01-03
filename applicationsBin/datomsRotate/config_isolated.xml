@@ -4,8 +4,8 @@
 	<spotlight target="25,25,0" directionSpherical="-35,40,150" angle="20"/>
 
 	<blockList color="128,128,128" blockSize="10,10,10">
-		<block position="0,1,1" orientation="7" color="255,255,64"/>
-		<block position="1,1,1" orientation="6" color="255,255,64"/>
+		<block position="0,1,1" orientation="0" color="255,255,64"/>
+		<block position="1,1,1" orientation="0" color="255,255,64"/>
 	</blockList>
 
 	<!--<skeleton>

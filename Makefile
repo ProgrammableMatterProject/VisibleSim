@@ -13,8 +13,8 @@ OS = $(shell uname -s)
 VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen -lsimDatoms
 
 #for debug version
-#TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
-TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL 
+TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
+# TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 
 # ADDITIONAL CCFLAGS
 # ================
@@ -25,11 +25,18 @@ TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 # 				       # if this flag is not set, the boost libraries will not be included,
 # 				       # since they are the only source files using them.
 
-# You can add those constant definitions to get a more verbose output
-# -DDEBUG_EVENTS          :  trace creation and destruction of all events
-# -DDEBUG_CONSUME_EVENTS  : trace the consomption of all events
-# -DDEBUG_MESSAGES        :  trace creation and destruction of all messages inside the simulator
-# -DDEBUG_VM_MESSAGES     : trace the messages sent to the multicores VM
+# You can add any of the following debug flags to get a more verbose output
+# TEMP_CCFLAGS += -DDEBUG_EVENTS #          : trace creation and destruction of all events
+# TEMP_CCFLAGS += -DDEBUG_CONSUME_EVENTS #  : trace the consomption of all events
+TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of messages
+# TEMP_CCFLAGS += -DDEBUG_VM_MESSAGES #     : trace the messages sent to the multicores VM
+# TEMP_CCFLAGS += -DDEBUG_OBJECT_LIFECYCLE #: trace objects construction and destruction
+# TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates
+# TEMP_CCFLAGS += -DDEBUG_NEIGHBORHOOD #: trace robot neighborhood updates and interface linking
+# TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
+# TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
+TEMP_CCFLAGS += -DshowStatsFPS
+#TEMP_CCFLAGS += -DUseC3DSkewFCC #: if activated, Catoms3D will use a FCC Lattice with skew coordinates
 
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"

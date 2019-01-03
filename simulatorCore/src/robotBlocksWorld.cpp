@@ -38,7 +38,9 @@ RobotBlocksWorld::RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 }
 
 RobotBlocksWorld::~RobotBlocksWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "RobotBlocksWorld destructor" << endl;
+#endif
 	/*	block linked are deleted by world::~world() */
 }
 
@@ -60,7 +62,7 @@ void RobotBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DP
 	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), robotBlock));
 
 	RobotBlocksGlBlock *glBlock = new RobotBlocksGlBlock(blockId);
-	tabGlBlocks.push_back(glBlock);
+	mapGlBlocks.insert(make_pair(blockId, glBlock));
 	robotBlock->setGlBlock(glBlock);
 	robotBlock->setPosition(pos);
 	robotBlock->setColor(col);
@@ -79,18 +81,21 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 	RobotBlocksBlock *ptrBlock = (RobotBlocksBlock*)lattice->getBlock(pos);
 	vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
 	Cell3DPosition nPos;
-	SCLattice *scl = (SCLattice*)(lattice);
 
 	// Check neighbors for each interface
 	for (int i = 0; i < 6; i++) {
 		nPos = pos + nRelCells[i];
-		ptrNeighbor = (RobotBlocksBlock*)scl->getBlock(nPos);
-		cerr << "ptrNeighbor:" << ((ptrNeighbor==NULL)?0:ptrNeighbor->blockId) << endl; 
+		ptrNeighbor = (RobotBlocksBlock*)lattice->getBlock(nPos);
 		if (ptrNeighbor) {
-			P2PNetworkInterface *p2p = (ptrBlock)->getInterface(SCLattice::Direction(i));
-			P2PNetworkInterface *p2pNeighbor = (ptrBlock)->getInterface(SCLattice::Direction(scl->getOppositeDirection(i)));
-			p2p->connect(p2pNeighbor);
-			
+			(ptrBlock)->getInterface(SCLattice::Direction(i))->
+				connect(ptrNeighbor->getInterface(SCLattice::Direction(
+													  lattice->getOppositeDirection(i))));
+
+#ifdef DEBUG_NEIGHBORHOOD
+            OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << lattice->getDirectionString(i) <<
+				" to #" << ptrNeighbor->blockId << ":"
+				   << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
+#endif
 		} else {
 			(ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
 		}
@@ -104,12 +109,10 @@ void RobotBlocksWorld::glDraw() {
 		glPushMatrix();
 		glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 		glDisable(GL_TEXTURE_2D);
-		vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 		lock();
-		while (ic!=tabGlBlocks.end()) {
-			((RobotBlocksGlBlock*)(*ic))->glDraw(objBlock);
-			ic++;
-		}
+        for (const auto& pair : mapGlBlocks) {
+            ((RobotBlocksGlBlock*)pair.second)->glDraw(objBlock);
+        }
 		unlock();
 
 		glPopMatrix();
@@ -197,13 +200,10 @@ void RobotBlocksWorld::glDrawId() {
 	glPushMatrix();
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-	int n=1;
 	lock();
-	while (ic!=tabGlBlocks.end()) {
-		((RobotBlocksGlBlock*)(*ic))->glDrawId(objBlock,n);
-		ic++;
-	}
+    for (const auto& pair : mapGlBlocks) {
+        ((RobotBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
+    }        
 	unlock();
 	glPopMatrix();
 }
@@ -213,18 +213,100 @@ void RobotBlocksWorld::glDrawIdByMaterial() {
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 
 	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 	int n=1;
 	lock();
-	while (ic!=tabGlBlocks.end()) {
-		((RobotBlocksGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
-		ic++;
-	}
+    for (const auto& pair : mapGlBlocks) {
+        ((RobotBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
+    }
 	unlock();
 	glPopMatrix();
+
+    glDrawBackground();
 }
 
+void RobotBlocksWorld::glDrawSpecificBg() {
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+		gray[]={0.2f,0.2f,0.2f,1.0f};
 
+    glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+    glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+    glPushMatrix();
+    enableTexture(true);
+    glBindTexture(GL_TEXTURE_2D,idTextureWall);
+    glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+             lattice->gridSize[1]*lattice->gridScale[1],
+             lattice->gridSize[2]*lattice->gridScale[2]);
+    glBegin(GL_QUADS);
+    // bottom
+    glNormal3f(0,0,1.0f);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0],0);
+    glVertex3f(1.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+    glVertex3f(1.0,1.0,0.0f);
+    glTexCoord2f(0,lattice->gridSize[1]);
+    glVertex3f(0.0,1.0,0.0f);
+    // top
+    glNormal3f(0,0,-1.0f);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,1.0f);
+    glTexCoord2f(0,lattice->gridSize[1]);
+    glVertex3f(0.0,1.0,1.0f);
+    glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+    glVertex3f(1.0,1.0,1.0f);
+    glTexCoord2f(lattice->gridSize[0],0);
+    glVertex3f(1.0f,0.0f,1.0f);
+    // left
+    glNormal3f(1.0,0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[1],0);
+    glVertex3f(0.0f,1.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
+    glVertex3f(0.0,1.0,1.0f);
+    glTexCoord2f(0,lattice->gridSize[2]);
+    glVertex3f(0.0,0.0,1.0f);
+    // right
+    glNormal3f(-1.0,0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(1.0f,0.0f,0.0f);
+    glTexCoord2f(0,lattice->gridSize[2]);
+    glVertex3f(1.0,0.0,1.0f);
+    glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
+    glVertex3f(1.0,1.0,1.0f);
+    glTexCoord2f(lattice->gridSize[1],0);
+    glVertex3f(1.0f,1.0f,0.0f);
+    // back
+    glNormal3f(0,-1.0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,1.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0],0);
+    glVertex3f(1.0f,1.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
+    glVertex3f(1.0f,1.0,1.0f);
+    glTexCoord2f(0,lattice->gridSize[2]);
+    glVertex3f(0.0,1.0,1.0f);
+    // front
+    glNormal3f(0,1.0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(0,lattice->gridSize[2]);
+    glVertex3f(0.0,0.0,1.0f);
+    glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
+    glVertex3f(1.0f,0.0,1.0f);
+    glTexCoord2f(lattice->gridSize[0],0);
+    glVertex3f(1.0f,0.0f,0.0f);
+    glEnd();
+    glPopMatrix();
+    // draw the axes
+    glPushMatrix();
+    glScalef(0.2f,0.2f,0.2f);
+    objRepere->glDraw();
+    glPopMatrix();
+}
 void RobotBlocksWorld::loadTextures(const string &str) {
 	string path = str+"/texture_plane.tga";
 	int lx,ly;

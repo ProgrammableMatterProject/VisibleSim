@@ -178,7 +178,7 @@ const string DeformationEndEvent::getEventName() {
 //
 //===========================================================================================================
 
-Deformation::Deformation(DatomsBlock *mobile,DatomsBlock *fixe,const Vector3D &ax1,const Vector3D &ax2,uint8_t id) {
+Deformation::Deformation(const DatomsBlock *mobile,const DatomsBlock *fixe,const Vector3D &ax1,const Vector3D &ax2,uint8_t id) {
 	static const double cmax_2 = 1.0/(3*sqrt(2)-1);
     Matrix MA = ((DatomsGlBlock*)mobile->getGlBlock())->mat;
     Matrix MB = ((DatomsGlBlock*)fixe->getGlBlock())->mat;

@@ -23,9 +23,13 @@ namespace BaseSimulator {
 
 Scheduler *Scheduler::scheduler=NULL;
 std::mutex Scheduler::delMutex;
+std::mutex Scheduler::pause_mtx;
+std::condition_variable Scheduler::pause_cv;
 
 Scheduler::Scheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "Scheduler constructor" << endl;
+#endif
 
 	if (sizeof(Time) != 8) {
 		ERRPUT << "\033[1;31m" << "ERROR : Scheduler requires 8bytes integer that are not available on this computer" << "\033[0m" << endl;
@@ -43,7 +47,9 @@ Scheduler::Scheduler() {
 }
 
 Scheduler::~Scheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "Scheduler destructor" << endl;
+#endif
 	removeKeywords();
 	if (schedulerThread)
 		delete schedulerThread;
@@ -192,6 +198,33 @@ bool Scheduler::debug(const string &command,bID &id,string &result) {
 	return true;
 }
 
+int Scheduler::getNbEventsById(int id) {
+	lock();
+	multimap<Time,EventPtr>::iterator im = eventsMap.begin();
+    int count = 0;
+	while (im!=eventsMap.end()) {
+        if (im->second->eventType == id)
+            count++;
+		im++;
+	}
+	unlock();
+    return count;
+}
+
+bool Scheduler::hasEvent(int id, unsigned long blockId) {
+	lock();
+	multimap<Time,EventPtr>::iterator im = eventsMap.begin();
+	while (im!=eventsMap.end()) {
+        if (im->second->eventType == id && im->second->getConcernedBlock()->blockId == blockId) {
+            unlock();
+            return true;
+        }
+		im++;
+	}
+	unlock();
+    return false;
+}
+
 void Scheduler::printStats() {
   cout << StatsCollector::getInstance();
   if (StatsIndividual::enable) {
@@ -199,5 +232,16 @@ void Scheduler::printStats() {
   }
 }
 
+void Scheduler::toggle_pause() {
+    if (state > Scheduler::ENDED) {
+        std::unique_lock<std::mutex> lck(pause_mtx);
+        if (state == Scheduler::PAUSED) {
+            state = Scheduler::RUNNING;
+            pause_cv.notify_one();
+        } else {
+            state = Scheduler::PAUSED;
+        }
+    }
+}
 
 } // BaseSimulator namespace

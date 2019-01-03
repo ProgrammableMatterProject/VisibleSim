@@ -20,6 +20,7 @@
 #include "random.h"
 
 using namespace std;
+using namespace BaseSimulator;
 
 class Event;
 
@@ -313,6 +314,64 @@ public:
 	const virtual string getEventName();
 };
 
+//===========================================================================================================
+//
+//          InterruptionEvent  (class)
+//
+//===========================================================================================================
 
+/** InterruptionEvent is meant to be used as an interruption triggered by one module
+ * it is meant to model this behavior to enable module actions such as periodically 
+ * checking some sensor information or updating its state based on local information **/
+class InterruptionEvent : public BlockEvent {
+public:
+    uint64_t mode; //!< A used-defined identifier for non general-purpose interruptions
+    
+	InterruptionEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t mode);
+	InterruptionEvent(InterruptionEvent *ev);
+	~InterruptionEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+//===========================================================================================================
+//
+//          PivotActuationStartEvent  (class)
+//
+//===========================================================================================================
+
+class PivotActuationStartEvent : public BlockEvent {
+public:
+    const BaseSimulator::BuildingBlock *mobile;
+	short fromConP;
+    short toConP;
+
+	PivotActuationStartEvent(Time t, BuildingBlock *conBlock, const BuildingBlock *mobile,
+                             short from, short to);
+	PivotActuationStartEvent(PivotActuationStartEvent *ev);
+	~PivotActuationStartEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+//===========================================================================================================
+//
+//          PivotActuationEndEvent  (class)
+//
+//===========================================================================================================
+
+class PivotActuationEndEvent : public BlockEvent {
+public:
+    const BaseSimulator::BuildingBlock *mobile;
+	short fromConP;
+    short toConP;
+    
+	PivotActuationEndEvent(Time t, BuildingBlock *conBlock, const BuildingBlock *mobile,
+                           short from, short to);
+	PivotActuationEndEvent(PivotActuationEndEvent *ev);
+	~PivotActuationEndEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
 
 #endif /* EVENTS_H_ */

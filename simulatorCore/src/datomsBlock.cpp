@@ -108,7 +108,7 @@ short DatomsBlock::getOrientationFromMatrix(const Matrix &mat) {
     return current;
 }
 
-int DatomsBlock::getDirection(P2PNetworkInterface *given_interface) {
+int DatomsBlock::getDirection(P2PNetworkInterface *given_interface) const {
     if( !given_interface) {
         return -1;
     }
@@ -118,7 +118,7 @@ int DatomsBlock::getDirection(P2PNetworkInterface *given_interface) {
     return -1;
 }
 
-short DatomsBlock::getAbsoluteDirection(short connector) {
+short DatomsBlock::getAbsoluteDirection(short connector) const {
     Cell3DPosition conPos; // cell adjacent to connector
     bool posIsValid = getNeighborPos(connector, conPos);
 
@@ -127,8 +127,7 @@ short DatomsBlock::getAbsoluteDirection(short connector) {
     return lattice->getDirection(position, conPos);
 }
 
-short DatomsBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos,
-                                                      short nDirection) const {
+short DatomsBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos, short nDirection) const {
     // cout << "pAND: " << "nPos: " << nPos << "/" << nDirection << endl
     //      << "\tPosition: " << position << endl;
     
@@ -166,7 +165,7 @@ bool DatomsBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const {
     return wrl->lattice->isInGrid(pos);
 }
 
-P2PNetworkInterface *DatomsBlock::getInterface(const Cell3DPosition& pos) {
+P2PNetworkInterface *DatomsBlock::getInterface(const Cell3DPosition& pos) const {
     short conId = getConnectorId(pos);
 
     return conId >= 0 ? P2PNetworkInterfaces[conId] : NULL;
@@ -211,6 +210,9 @@ DatomsBlock* DatomsBlock::getNeighborOnCell(const Cell3DPosition &pos) const {
     return static_cast<DatomsBlock*>(lattice->getBlock(pos));
 }
 
+bool DatomsBlock::areOrientationsInverted(short otherOriCode) const {
+    return ((orientationCode / 12) + (otherOriCode / 12)) == 1;
+}
 
 void DatomsBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 #ifdef DEBUG_NEIGHBORHOOD

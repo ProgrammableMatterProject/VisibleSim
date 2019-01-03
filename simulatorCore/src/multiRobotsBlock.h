@@ -25,10 +25,12 @@ public:
 	MultiRobotsBlock(int bId, BlockCodeBuilder bcb);
 	~MultiRobotsBlock();
 
-	inline virtual MultiRobotsGlBlock* getGlBlock() { return (MultiRobotsGlBlock *)ptrGlBlock; };
+	inline virtual MultiRobotsGlBlock* getGlBlock() const {
+        return (MultiRobotsGlBlock *)ptrGlBlock;
+    };
 
-	P2PNetworkInterface *getInterfaceDestId(int id);
-	int getDirection(P2PNetworkInterface*);
+	P2PNetworkInterface *getInterfaceDestId(int id) const;
+	int getDirection(P2PNetworkInterface*) const;
 
 	void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	void removeNeighbor(P2PNetworkInterface *ni) {};

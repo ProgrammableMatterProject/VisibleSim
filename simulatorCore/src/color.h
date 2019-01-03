@@ -20,6 +20,8 @@ public :
 //    Color(unsigned char r,unsigned char g,unsigned char b,unsigned char a=255) { color[0]=r/255.0; color[1]=g/255.0; color[2]=b/255.0; color[3]=a/255.0; };
     inline void glColor() { glColor4fv(rgba); };
     inline const GLfloat operator[](const int i) const { return rgba[i]; };
+    inline bool operator==(const Color &c) const { return (rgba[0] == c.rgba[0] && rgba[1] == c.rgba[1] && rgba[2] == c.rgba[2] && rgba[3] == c.rgba[3]); };
+    inline bool operator!=(const Color &c) const { return !(*this==c); };
     friend ostream& operator<<(ostream& f,const Color &c);        
 };
 
@@ -39,6 +41,7 @@ const Color LIGHTGREY(0.75,0.75,0.75);
 const Color DARKGREY(0.25,0.25,0.25);
 const Color ORANGE(1.0,0.64706,0.0);
 const Color DARKORANGE(1.0,0.549,0.0);
+const Color BLACK(0.0,0.0,0.0);
 
 static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},
                                          {0.0,1.0,0.0,1.0},{0.0,0.0,1.0,1.0},

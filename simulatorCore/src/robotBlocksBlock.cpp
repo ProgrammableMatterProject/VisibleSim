@@ -19,7 +19,9 @@ namespace RobotBlocks {
 
 RobotBlocksBlock::RobotBlocksBlock(int bId, BlockCodeBuilder bcb)
 	: BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "RobotBlocksBlock constructor" << endl;
+#endif
 }
 
 RobotBlocksBlock::~RobotBlocksBlock() {
@@ -45,22 +47,26 @@ void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetw
 }
 
 void RobotBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void RobotBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
 
-int RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
+int RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) const {
     if( !given_interface) {
 		return SCLattice::Direction(0);
     }
@@ -70,7 +76,7 @@ int RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
     return SCLattice::Direction(0);
 }
 
-P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) {
+P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) const {
     if (pos[0]==-1) return P2PNetworkInterfaces[SCLattice::Left];
     else if (pos[0]==1) return P2PNetworkInterfaces[SCLattice::Right];
     else if (pos[1]==-1) return P2PNetworkInterfaces[SCLattice::Front];

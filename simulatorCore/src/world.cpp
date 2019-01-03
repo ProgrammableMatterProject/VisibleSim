@@ -17,10 +17,12 @@ namespace BaseSimulator {
 
 World *World::world=NULL;
 map<bID, BuildingBlock*>World::buildingBlocksMap;
-vector <GlBlock*>World::tabGlBlocks;
+unordered_map <bID, GlBlock*>World::mapGlBlocks;
 
 World::World(int argc, char *argv[]) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "World constructor" << endl;
+#endif
 	selectedGlBlock = NULL;
 	numSelectedFace=0;
 	numSelectedGlBlock=0;
@@ -49,12 +51,10 @@ World::~World() {
 	}
 
 	// free glBlocks
-	std::vector<GlBlock*>::const_iterator cit=tabGlBlocks.begin();
-	while (cit!=tabGlBlocks.end()) {
-		delete *cit;
-		cit++;
-	}
-
+    for (const auto& pair : mapGlBlocks) {
+        delete (GlBlock*)pair.second;
+    }
+    
 	// /* free Scenario Events */
 	// vector<ScenarioEvent*>::const_iterator it=tabEvents.begin();
 	// while (it!=tabEvents.end()) {
@@ -70,7 +70,9 @@ World::~World() {
     delete objBlockForPicking;
     delete objRepere;
 
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "World destructor" << endl;
+#endif
 }
 
 
@@ -82,6 +84,15 @@ BuildingBlock* World::getBlockById(int bId) {
 	} else {
 		return(it->second);
 	}
+}
+
+BuildingBlock* World::getBlockByPosition(const Cell3DPosition &pos) {
+	map<bID, BuildingBlock*>::iterator it;
+    for (it = buildingBlocksMap.begin(); it != buildingBlocksMap.end(); it++) {
+        if (it->second->position == pos)
+            return it->second;
+    }
+    return(NULL);
 }
 
 void World::updateGlData(BuildingBlock *bb) {
@@ -104,19 +115,22 @@ void World::updateGlData(BuildingBlock*blc, Vector3D &p) {
 }
 
 void World::linkBlocks() {
-	Cell3DPosition p;
+    //TODO: Might not be necessary anymore, since a module is now linked to its neighbors when added to the lattice
+    const Cell3DPosition& lb = lattice->getGridLowerBounds();
+    const Cell3DPosition& ub = lattice->getGridUpperBounds();
+    Cell3DPosition p;
 
-	for (p.pt[2] = 0; p[2] < lattice->gridSize[2]; p.pt[2]++) { // z
-		for (p.pt[1] = 0; p[1] < lattice->gridSize[1]; p.pt[1]++) { // y
-			for(p.pt[0] = 0; p[0] < lattice->gridSize[0]; p.pt[0]++) { // x
-				if (lattice->cellHasBlock(p)) {
-					OUTPUT << "cell:" << p << endl;
-					 cerr << "l.cellHasBlock(" << p << "/" << lattice->getIndex(p) << ")  = true ; id: "
-						 << lattice->getBlock(p)->blockId << endl;
+	for (p.pt[2] = lb.pt[2]; p[2] < ub.pt[2]; p.pt[2]++) { // z
+        for (p.pt[1] = lb.pt[1]; p[1] < ub.pt[1]; p.pt[1]++) { // y
+            for (p.pt[0] = lb.pt[0]; p[0] < ub.pt[0]; p.pt[0]++) { // x
+                if (lattice->cellHasBlock(p)) {
+					// cerr << "l.cellHasBlock(" << p << "/"
+                    //   << lattice->getIndex(p) << ")  = true ; id: "
+					//	 << lattice->getBlock(p)->blockId << endl;
+
 					linkBlock(p);
-					cerr << "end linkBlock" << endl;
 				}
-			}
+            }
 		}
 	}
 }
@@ -155,7 +169,7 @@ void World::disconnectBlock(BuildingBlock *block) {
             block->removeNeighbor(fromBlock);
             fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
 
-	    // Disconnect the interfaces
+            // Disconnect the interfaces
             fromBlock->connectedInterface = NULL;
             toBlock->connectedInterface = NULL;
         }
@@ -170,7 +184,8 @@ void World::disconnectBlock(BuildingBlock *block) {
 void World::deleteBlock(BuildingBlock *bb) {
     if (bb->getState() >= BuildingBlock::ALIVE ) {
         // cut links between bb and others and remove it from the grid
-		disconnectBlock(bb);
+        disconnectBlock(bb);
+        bb->setState(BuildingBlock::REMOVED);
     }
 
     if (selectedGlBlock == bb->ptrGlBlock) {
@@ -179,14 +194,7 @@ void World::deleteBlock(BuildingBlock *bb) {
     }
 
     // remove the associated glBlock
-    std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
-    if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-    else {
-        while (cit!=tabGlBlocks.end() && (*cit)!=bb->ptrGlBlock) {
-            cit++;
-        }
-        if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-    }
+    mapGlBlocks.erase(bb->blockId);
 
     delete bb->ptrGlBlock;
 }
@@ -199,16 +207,10 @@ void World::stopSimulation() {
 }
 
 bool World::canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace) {
-	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-	Cell3DPosition pos = bb->position;
-	vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(pos);
-	// if (numSelectedFace < lattice->getMaxNumNeighbors())
-	// 	cerr << "numSelectedFace: " << numSelectedFace << " f"
-	// 		 << pos << "+" << nCells[numSelectedFace]
-	// 		 << " = " << lattice->isFree(pos + nCells[numSelectedFace]) << endl;
-
-	return numSelectedFace < lattice->getMaxNumNeighbors() ?
-		lattice->isFree(pos + nCells[numSelectedFace]) : false;
+	BuildingBlock *bb = getBlockById(mapGlBlocks[numSelectedGlBlock]->blockId);
+	Cell3DPosition nPos;
+	bool isInGrid = bb->getNeighborPos(numSelectedFace,nPos);
+	return isInGrid && lattice->isFree(nPos);
 }
 
 void World::menuChoice(int n) {
@@ -217,15 +219,17 @@ void World::menuChoice(int n) {
 	switch (n) {
 	case 1 : {
 		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
-		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
-
-		addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
-		linkBlock(nPos);
-		linkNeighbors(nPos);
+		Cell3DPosition nPos;
+		if (bb->getNeighborPos(numSelectedFace,nPos)) {
+			addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
+			linkBlock(nPos);
+			linkNeighbors(nPos);
+		} else {
+			cerr << "Position out of the grid" << endl;
+		}
 	} break;
 	case 2 : {
-		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
+		OUTPUT << "DEL num block : " << mapGlBlocks[numSelectedGlBlock]->blockId << endl;
 		deleteBlock(bb);
 	} break;
 	case 3 : {
@@ -250,15 +254,16 @@ void World::tapBlock(Time date, bID bId, int face) {
 }
 
 void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
-	GlBlock *glBlock = new GlBlock(-1);
+    bID blockId = incrementBlockId();
+    
+	GlBlock *glBlock = new GlBlock(blockId);
     Vector3D position(lattice->gridScale[0]*pos[0],
 					  lattice->gridScale[1]*pos[1],
 					  lattice->gridScale[2]*pos[2]);
 	glBlock->setPosition(position);
 	glBlock->setColor(col);
-	tabGlBlocks.push_back(glBlock);
+    mapGlBlocks.insert(make_pair(blockId, glBlock));
 }
-
 
 void World::createPopupMenu(int ix, int iy) {
 	if (!GlutContext::popupMenu) {
@@ -275,9 +280,37 @@ cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(num
          << " selected" << endl;
 	// cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
 
-	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
+	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock,
+                                                          (int)numSelectedFace));
 	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
 	GlutContext::popupMenu->show(true);
+}
+
+void World::glDrawBackground() {
+    if (background) {
+        glClearColor(0.3f, 0.3f, 0.8f, 1.0f);
+        glDrawSpecificBg();
+    }
+    else {
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+}
+
+void World::getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax) {
+    lock();
+    xmin = ymin = zmin = 10000;
+    xmax = ymax = zmax = 0;
+    float *pos;
+    for (const auto& pair : mapGlBlocks) {
+        pos = (pair.second)->position;
+        if (xmin>pos[0]) xmin=pos[0];
+        if (ymin>pos[1]) ymin=pos[1];
+        if (zmin>pos[2]) zmin=pos[2];
+        if (xmax<pos[0]) xmax=pos[0];
+        if (ymax<pos[1]) ymax=pos[1];
+        if (zmax<pos[2]) zmax=pos[2];
+    }
+    unlock();
 }
 
 } // BaseSimulator namespace

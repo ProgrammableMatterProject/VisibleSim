@@ -25,6 +25,8 @@ public :
 	//void setAngles(float t,float p,float f);
 
 	void glDraw(ObjLoader::ObjLoader *ptrObj);
+	void glDrawId(ObjLoader::ObjLoader *ptrObj,int n);
+	void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n);
 };
 }
 #endif /* CATOMS3DGLBLOCK_H_ */

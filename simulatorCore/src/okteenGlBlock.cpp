@@ -79,7 +79,7 @@ void OkteenGlBlock::glDrawConnectors(ObjLoader::ObjLoader *ptrObj) {
 	glPopMatrix();
 }
 
-void OkteenGlBlock::glDrawIdConnectors(ObjLoader::ObjLoader *ptrObj,int &n) {
+void OkteenGlBlock::glDrawIdConnectors(ObjLoader::ObjLoader *ptrObj,int n) {
     int m=n;
     const float ampl = 1.47/255.0;
 	glPushMatrix();
@@ -129,7 +129,7 @@ void OkteenGlBlock::glDrawIdConnectors(ObjLoader::ObjLoader *ptrObj,int &n) {
 	glPopMatrix();
 }
 
-void OkteenGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
+void OkteenGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int n) {
 	glPushMatrix();
 	mat.glMultMatrix();
     ptrObj->glDrawId(n);

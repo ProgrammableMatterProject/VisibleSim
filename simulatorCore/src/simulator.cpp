@@ -17,6 +17,7 @@
 #include "cppScheduler.h"
 #include "openglViewer.h"
 #include "utils.h"
+#include "rotation3DEvents.h"
 
 #ifdef ENABLE_MELDPROCESS
 #include "meldProcessVM.h"
@@ -36,7 +37,9 @@ Simulator::Type	Simulator::type = CPP; // CPP code by default
 bool Simulator::regrTesting = false; // No regression testing by default
 
 Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
+#endif
 
 	// Ensure that only one instance of simulator is running at once
 	if (simulator == NULL) {
@@ -59,14 +62,18 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 	if (cmdLine.isSimulationSeedSet()) {
 	  seed = cmdLine.getSimulationSeed();
 	}
-
-	cout << "Seed: " << seed  << endl;
-
-	if (seed == -1) {
-	  generator = uintRNG(std::random_device{}());
+	int rseed = 0;
+	if (seed < 0) {
+	  random_device rd;
+	  mt19937 gen(rd());
+	  uniform_int_distribution<> dis(1,INT_MAX); // [1,intmax]
+	  rseed = dis(gen);
+	  generator = uintRNG((ruint)rseed);
 	} else {
-	  generator = uintRNG((uint32_t)seed);
+	  rseed = seed;
+	  generator = uintRNG((ruint)rseed);
 	}
+	cerr << "Seed: " << rseed << endl;
 
 	if (!isLoaded) {
 		cerr << "error: Could not load configuration file :" << confFileName << endl;
@@ -74,8 +81,10 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 	} else {
 		xmlWorldNode = xmlDoc->FirstChild("world");
 		if (xmlWorldNode) {
-			OUTPUT << "\033[1;34m  " << confFileName << " successfully loaded "
+#ifdef DEBUG_CONF_PARSING
+            OUTPUT << "\033[1;34m  " << confFileName << " successfully loaded "
 				   << "\033[0m" << endl;
+#endif
 		} else {
 			ERRPUT << "\033[1;31m" << "error: Could not find root 'world' element in configuration file"
 				   << "\033[0m" << endl;
@@ -85,7 +94,9 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 }
 
 Simulator::~Simulator() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "\033[1;34m"  << "Simulator destructor" << "\033[0m" << endl;
+#endif
 	delete xmlDoc;
 
 #ifdef ENABLE_MELDPROCESS
@@ -172,6 +183,7 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 	parseBlockList();
 	parseObstacles();
 	parseTarget();
+    parseCustomizations();
 }
 
 Simulator::IDScheme Simulator::determineIDScheme() {
@@ -422,9 +434,13 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 			lx = atoi(str.substr(0,pos1).c_str());
 			ly = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
 			lz = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
-			OUTPUT << "grid size : " << lx << " x " << ly << " x " << lz << endl;
+#ifdef DEBUG_CONF_PARSING
+            OUTPUT << "grid size : " << lx << " x " << ly << " x " << lz << endl;
+#endif
 		} else {
-			OUTPUT << "WARNING No grid size in XML file" << endl;
+#ifdef DEBUG_CONF_PARSING
+            OUTPUT << "warning: No grid size in XML file" << endl;
+#endif
 		}
 
 		attr = worldElement->Attribute("windowSize");
@@ -468,7 +484,9 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 				blockSize[0] = atof(str.substr(0,pos1).c_str());
 				blockSize[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 				blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-				OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
+#endif
 			}
 		} else {
 			cerr << "error: No blockList element in XML configuration file" << endl;
@@ -600,7 +618,9 @@ void Simulator::parseBlockList() {
 			defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
 			defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
 			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
-			OUTPUT << "new default color :" << defaultColor << endl;
+#ifdef DEBUG_CONF_PARSING
+            OUTPUT << "new default color :" << defaultColor << endl;
+#endif
 		}
 
 #if 1
@@ -621,7 +641,9 @@ void Simulator::parseBlockList() {
 				color.set(atof(str.substr(0,pos1).c_str())/255.0,
 						  atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
 						  atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
-				OUTPUT << "new color :" << defaultColor << endl;
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "new color :" << defaultColor << endl;
+#endif                
 			}
 			attr = element->Attribute("position");
 			if (attr) {
@@ -644,7 +666,9 @@ void Simulator::parseBlockList() {
 				if (str.compare("true")==0 || str.compare("1")==0) {
 					master=true;
 				}
-				OUTPUT << "master : " << master << endl;
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "master : " << master << endl;
+#endif
 			}
 
 			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;
@@ -672,7 +696,9 @@ void Simulator::parseBlockList() {
 				color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
 				color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
 				color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
-				OUTPUT << "line color :" << color << endl;
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "line color :" << color << endl;
+#endif
 			}
 			attr = element->Attribute("line");
 			if (attr) {
@@ -742,7 +768,9 @@ void Simulator::parseObstacles() {
 				color.set(atof(str.substr(0,pos1).c_str())/255.0,
 						  atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
 						  atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
-				OUTPUT << "color :" << color << endl;
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "color :" << color << endl;
+#endif
 			}
 			attr = element->Attribute("position");
 			if (attr) {
@@ -752,13 +780,33 @@ void Simulator::parseObstacles() {
 				position.pt[0] = atoi(str.substr(0,pos1).c_str());
 				position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
 				position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
-				OUTPUT << "position : " << position << endl;
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "position : " << position << endl;
+#endif
 			}
 
 			world->addObstacle(position, color);
 			nodeObstacle = nodeObstacle->NextSibling("obstacle");
 		} // end while (nodeObstacle)
 	}
+}
+
+void Simulator::parseCustomizations() {
+	TiXmlNode *customizationNode = xmlWorldNode->FirstChild("customization");
+	if (customizationNode) {
+		TiXmlNode *rotationDelayNode = customizationNode->FirstChild("rotationDelay");
+
+        if (rotationDelayNode) {
+            TiXmlElement* element = rotationDelayNode->ToElement();
+            const char *attr= element->Attribute("multiplier");
+
+			if (attr != NULL) {
+                Rotations3D::rotationDelayMultiplier = atof(attr);
+			} else {
+                cout << "wut" << endl;
+            }
+        }
+    }
 }
 
 void Simulator::startSimulation(void) {

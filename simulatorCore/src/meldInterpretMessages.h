@@ -30,22 +30,24 @@ namespace MeldInterpret{
 
 class AddTupleMessage : public Message{
 public:
-      tuple_t tuple;
-      unsigned int messageSize;
+    tuple_t tuple;
+    unsigned int messageSize;
 
-      AddTupleMessage(tuple_t tpl, unsigned int s);
-      unsigned int size();
-      string getMessageName();
+    AddTupleMessage(tuple_t tpl, unsigned int s);
+    unsigned int size();
+    string getMessageName();
+    Message* clone() { return new AddTupleMessage(*this); }
 };
 
 class RemoveTupleMessage : public Message{
 public:
-      tuple_t tuple;
-      unsigned int messageSize;
+    tuple_t tuple;
+    unsigned int messageSize;
 
-      RemoveTupleMessage(tuple_t tpl, unsigned int s);
-      unsigned int size();
-      string getMessageName();
+    RemoveTupleMessage(tuple_t tpl, unsigned int s);
+    unsigned int size();
+    string getMessageName();
+    Message* clone() { return new RemoveTupleMessage(*this); }
 };
 
 }

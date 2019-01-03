@@ -41,7 +41,9 @@ MultiRobotsWorld::MultiRobotsWorld(const Cell3DPosition &gridSize, const Vector3
 }
 
 MultiRobotsWorld::~MultiRobotsWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE   
 	OUTPUT << "MultiRobotsWorld destructor" << endl;
+#endif
 }
 
 void MultiRobotsWorld::deleteWorld() {
@@ -62,7 +64,7 @@ void MultiRobotsWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), mrb));
 
 	MultiRobotsGlBlock *glBlock = new MultiRobotsGlBlock(blockId);
-	tabGlBlocks.push_back(glBlock);
+    mapGlBlocks.insert(make_pair(blockId, glBlock));
 	mrb->setGlBlock(glBlock);
 	mrb->setPosition(pos);
 	mrb->setColor(col);
@@ -84,107 +86,102 @@ void MultiRobotsWorld::glDraw() {
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 		gray[]={0.2f,0.2f,0.2f,1.0};
 
-		glPushMatrix();
-		glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-		// glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
-		glDisable(GL_TEXTURE_2D);
-		vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-		lock();
-		while (ic!=tabGlBlocks.end()) {
-			((MultiRobotsGlBlock*)(*ic))->glDraw(objBlock);
-			ic++;
-		}
-		unlock();
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+    // glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
+    glDisable(GL_TEXTURE_2D);
+    lock();
+    for (const auto& pair : mapGlBlocks) {
+        ((MultiRobotsGlBlock*)pair.second)->glDraw(objBlock);
+    }        
+    unlock();
 
-		glPopMatrix();
-		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-		glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-		glPushMatrix();
-		enableTexture(true);
-		glBindTexture(GL_TEXTURE_2D,idTextureWall);
-		glScalef(lattice->gridSize[0]*lattice->gridScale[0],
-				 lattice->gridSize[1]*lattice->gridScale[1],
-				 lattice->gridSize[2]*lattice->gridScale[2]);
-		glBegin(GL_QUADS);
-		// bottom
-		glNormal3f(0,0,1.0f);
-		glTexCoord2f(0,0);
-		glVertex3f(0.0f,0.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[0]/4.0f,0);
-		glVertex3f(1.0f,0.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[1]/4.0f);
-		glVertex3f(1.0,1.0,0.0f);
-		glTexCoord2f(0,lattice->gridSize[1]/4.0f);
-		glVertex3f(0.0,1.0,0.0f);
-		// top
-		glNormal3f(0,0,-1.0f);
-		glTexCoord2f(0,0);
-		glVertex3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0,lattice->gridSize[1]/4.0f);
-		glVertex3f(0.0,1.0,1.0f);
-		glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[1]/4.0f);
-		glVertex3f(1.0,1.0,1.0f);
-		glTexCoord2f(lattice->gridSize[0]/4.0f,0);
-		glVertex3f(1.0f,0.0f,1.0f);
-		// left
-		glNormal3f(1.0,0,0);
-		glTexCoord2f(0,0);
-		glVertex3f(0.0f,0.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[1]/4.0f,0);
-		glVertex3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[1]/4.0f,lattice->gridSize[2]/4.0f);
-		glVertex3f(0.0,1.0,1.0f);
-		glTexCoord2f(0,lattice->gridSize[2]/4.0f);
-		glVertex3f(0.0,0.0,1.0f);
-		// right
-		glNormal3f(-1.0,0,0);
-		glTexCoord2f(0,0);
-		glVertex3f(1.0f,0.0f,0.0f);
-		glTexCoord2f(0,lattice->gridSize[2]/4.0f);
-		glVertex3f(1.0,0.0,1.0f);
-		glTexCoord2f(lattice->gridSize[1]/4.0f,lattice->gridSize[2]/4.0f);
-		glVertex3f(1.0,1.0,1.0f);
-		glTexCoord2f(lattice->gridSize[1]/4.0f,0);
-		glVertex3f(1.0f,1.0f,0.0f);
-		// back
-		glNormal3f(0,-1.0,0);
-		glTexCoord2f(0,0);
-		glVertex3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[0]/4.0f,0);
-		glVertex3f(1.0f,1.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[2]/4.0f);
-		glVertex3f(1.0f,1.0,1.0f);
-		glTexCoord2f(0,lattice->gridSize[2]/4.0f);
-		glVertex3f(0.0,1.0,1.0f);
-		// front
-		glNormal3f(0,1.0,0);
-		glTexCoord2f(0,0);
-		glVertex3f(0.0f,0.0f,0.0f);
-		glTexCoord2f(0,lattice->gridSize[2]/4.0f);
-		glVertex3f(0.0,0.0,1.0f);
-		glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[2]/4.0f);
-		glVertex3f(1.0f,0.0,1.0f);
-		glTexCoord2f(lattice->gridSize[0]/4.0f,0);
-		glVertex3f(1.0f,0.0f,0.0f);
-		glEnd();
-		glPopMatrix();
-		// draw the axes
-		objRepere->glDraw();
+    glPopMatrix();
+    glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+    glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+    glPushMatrix();
+    enableTexture(true);
+    glBindTexture(GL_TEXTURE_2D,idTextureWall);
+    glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+             lattice->gridSize[1]*lattice->gridScale[1],
+             lattice->gridSize[2]*lattice->gridScale[2]);
+    glBegin(GL_QUADS);
+    // bottom
+    glNormal3f(0,0,1.0f);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,0);
+    glVertex3f(1.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[1]/4.0f);
+    glVertex3f(1.0,1.0,0.0f);
+    glTexCoord2f(0,lattice->gridSize[1]/4.0f);
+    glVertex3f(0.0,1.0,0.0f);
+    // top
+    glNormal3f(0,0,-1.0f);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,1.0f);
+    glTexCoord2f(0,lattice->gridSize[1]/4.0f);
+    glVertex3f(0.0,1.0,1.0f);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[1]/4.0f);
+    glVertex3f(1.0,1.0,1.0f);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,0);
+    glVertex3f(1.0f,0.0f,1.0f);
+    // left
+    glNormal3f(1.0,0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[1]/4.0f,0);
+    glVertex3f(0.0f,1.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[1]/4.0f,lattice->gridSize[2]/4.0f);
+    glVertex3f(0.0,1.0,1.0f);
+    glTexCoord2f(0,lattice->gridSize[2]/4.0f);
+    glVertex3f(0.0,0.0,1.0f);
+    // right
+    glNormal3f(-1.0,0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(1.0f,0.0f,0.0f);
+    glTexCoord2f(0,lattice->gridSize[2]/4.0f);
+    glVertex3f(1.0,0.0,1.0f);
+    glTexCoord2f(lattice->gridSize[1]/4.0f,lattice->gridSize[2]/4.0f);
+    glVertex3f(1.0,1.0,1.0f);
+    glTexCoord2f(lattice->gridSize[1]/4.0f,0);
+    glVertex3f(1.0f,1.0f,0.0f);
+    // back
+    glNormal3f(0,-1.0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,1.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,0);
+    glVertex3f(1.0f,1.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[2]/4.0f);
+    glVertex3f(1.0f,1.0,1.0f);
+    glTexCoord2f(0,lattice->gridSize[2]/4.0f);
+    glVertex3f(0.0,1.0,1.0f);
+    // front
+    glNormal3f(0,1.0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(0,lattice->gridSize[2]/4.0f);
+    glVertex3f(0.0,0.0,1.0f);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[2]/4.0f);
+    glVertex3f(1.0f,0.0,1.0f);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,0);
+    glVertex3f(1.0f,0.0f,0.0f);
+    glEnd();
+    glPopMatrix();
+    // draw the axes
+    objRepere->glDraw();
 }
 
 void MultiRobotsWorld::glDrawId() {
 	glPushMatrix();
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
 	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-	int n=1;
 	lock();
-	while (ic!=tabGlBlocks.end()) {
-		((MultiRobotsGlBlock*)(*ic))->glDrawId(objBlock,n);
-		ic++;
-	}
+    for (const auto& pair : mapGlBlocks) {
+        ((MultiRobotsGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
+    }    
 	unlock();
 	glPopMatrix();
 }

@@ -3,37 +3,18 @@
 
 #include <iostream>
 #include <vector>
-#include <ctime>
 
 #include "simulator.h"
 #include "catoms3DBlock.h"
-#include "catoms2DBlock.h"
 #include "datomsBlock.h"
+#include "catoms2DBlock.h"
+#include "utils.h"
 
 namespace BaseSimulator {
 
 /************************************************************
  *   XML Utilities
  ************************************************************/    
-
-/** 
- * @brief Generates a configuration file name from the current time
- * @return a string with format config_hh_mm_ss.xml
- */
-static string generateConfigFilename() {
-    std::ostringstream out;
-
-    if (Simulator::regrTesting)
-        out << ".confCheck" << ".xml";
-    else {
-        time_t now = time(0);
-        tm *ltm = localtime(&now);
-    
-        out << "config_" << ltm->tm_hour << "_" << ltm->tm_min << "_" << ltm->tm_sec << ".xml";
-    }
-    
-    return out.str();
-};
 
 /** 
  * @brief Formats two variable for XML attribute export
@@ -86,7 +67,8 @@ string toXmlAttribute(Vector3D &pos) {
 ConfigExporter::ConfigExporter(World *_world) {
     world = _world;
     config = new TiXmlDocument();
-    configName = generateConfigFilename();
+    configName = Simulator::regrTesting ?
+        ".confCheck.xml" : generateTimestampedFilename("config", "xml");
     config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
 }
 
@@ -117,7 +99,10 @@ void ConfigExporter::exportCameraAndLightSource() {
         cam->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
                                                                ds.pt[1],
                                                                ds.pt[2]));
-        cam->SetAttribute("angle", camera->getAngle());        
+        cam->SetAttribute("angle", to_string(camera->getAngle()));
+        cam->SetAttribute("near", to_string(camera->getNearPlane()));          
+        cam->SetAttribute("far", to_string(camera->getFarPlane()));
+        
         worldElt->LinkEndChild(cam);
                                   
         // Export LightSource
@@ -132,7 +117,7 @@ void ConfigExporter::exportCameraAndLightSource() {
         spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
                                                                      ds.pt[1],
                                                                      ds.pt[2]));
-        spotlight->SetAttribute("angle", ls->getAngle());        
+        spotlight->SetAttribute("angle", to_string(ls->getAngle()));        
         worldElt->LinkEndChild(spotlight);
     }
 }
@@ -155,7 +140,8 @@ void ConfigExporter::exportBlockList() {
     blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
 
     for(auto const& idBBPair : blocks) {
-        if (idBBPair.second->getState() != BuildingBlock::REMOVED)
+        if (idBBPair.second->getState() != BuildingBlock::REMOVED
+            and (idBBPair.second->ptrGlBlock and idBBPair.second->ptrGlBlock->isVisible()))
             exportBlock(idBBPair.second);
     }
         
@@ -181,16 +167,15 @@ void ConfigExporter::exportBlock(BuildingBlock *bb) {
 }
 
 void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("rotation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
+    bbElt->SetAttribute("orientation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
 }
 
 void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("angle", static_cast<Catoms2D::Catoms2DBlock *>(bb)->angle);
+    bbElt->SetAttribute("angle", static_cast<Catoms2D::Catoms2DBlock *>(bb)->angle);    
 }
 
 void DatomsConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("rotation", static_cast<Datoms::DatomsBlock *>(bb)->orientationCode);
+    bbElt->SetAttribute("orientation", static_cast<Datoms::DatomsBlock *>(bb)->orientationCode);
 }
-
 
 }

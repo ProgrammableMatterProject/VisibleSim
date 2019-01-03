@@ -143,7 +143,10 @@ void TranslationStopEvent::consume() {
     World *wrld = getWorld();
     bb->setPosition(Cell3DPosition(finalPosition.pt[0], finalPosition.pt[1], finalPosition.pt[2]));
     wrld->updateGlData(bb);
+
+#ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);
+#endif
 
     OUTPUT << "connect Block " << bb->blockId << "\n";
     wrld->connectBlock(bb);

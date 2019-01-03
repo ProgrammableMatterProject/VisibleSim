@@ -15,17 +15,6 @@
 #include "events.h"
 
 namespace BaseSimulator {
-
-     /* enum MovementDirection { */
-     /*      NORTH, // a move to the cell reachable by a rotation in the north direction (absolute orientation) */
-     /*      SOUTH, */
-     /*      EAST, */
-     /*      WEST, */
-     /*      NORTH_EAST, */
-     /*      NORTH_WEST, */
-     /*      SOUTH_EAST, */
-     /*      SOUTH_WEST */
-     /* }; */
      
 //===========================================================================================================
 //
@@ -34,11 +23,8 @@ namespace BaseSimulator {
 //===========================================================================================================
 
      class TeleportationStartEvent : public BlockEvent {
-          /* MovementDirection movementDirection; */
-          /* BuildingBlock *pivot; */
           Cell3DPosition finalPosition;
      public:
-          /* TeleportationStartEvent(Time, BuildingBlock*, BuildingBlock*, MovementDirection); */
           TeleportationStartEvent(Time, BuildingBlock*, const Cell3DPosition &fpos);
           TeleportationStartEvent(TeleportationStartEvent *ev);
           ~TeleportationStartEvent();

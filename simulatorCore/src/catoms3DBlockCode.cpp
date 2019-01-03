@@ -8,17 +8,23 @@
 #include <iostream>
 #include "catoms3DBlockCode.h"
 #include "trace.h"
+#include "catoms3DWorld.h"
 
 using namespace std;
 
 namespace Catoms3D {
 
 Catoms3DBlockCode::Catoms3DBlockCode(Catoms3DBlock *host):BlockCode(host) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "Catoms3DBlockCode constructor" << endl;
+#endif
+    // motionRules = Catoms3DWorld::getWorld()->getMotionRules();
 }
 
 Catoms3DBlockCode::~Catoms3DBlockCode() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "Catoms3DBlockCode destructor" << endl;
+#endif
 }
 
 void Catoms3DBlockCode::addDebugAttributes(Scheduler *scheduler) {
@@ -44,7 +50,9 @@ void Catoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
         case EVENT_ADD_NEIGHBOR: {
+#ifdef DEBUG_NEIGHBORHOOD
             OUTPUT << "ADD_NEIGHBOR" << endl;
+#endif
             //startup();
         } break;
         case EVENT_TAP: {

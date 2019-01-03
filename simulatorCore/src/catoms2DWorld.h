@@ -70,6 +70,8 @@ public:
     virtual void glDrawId();
     /** @copydoc World::glDrawIdByMaterial() */
     virtual void glDrawIdByMaterial();
+    /** @copydoc World::glDrawSpecificBg() */
+    virtual void glDrawSpecificBg();
     /** @copydoc World::createPopupMenu(int ix,int iy) */
     virtual void createPopupMenu(int ix,int iy);
     /** @copydoc World::setSelectedFace(int n) */

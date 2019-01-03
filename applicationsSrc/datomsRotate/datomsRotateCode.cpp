@@ -19,7 +19,7 @@ void DatomsRotateCode::startup() {
         module->setColor(target->getTargetColor(module->position));
     }
 
-    lattice = (FCCLattice2*)(Datoms::getWorld()->lattice);
+    lattice = (SkewFCCLattice*)(Datoms::getWorld()->lattice);
 	
 	if (first) {
 		lattice->initTabDistances();
