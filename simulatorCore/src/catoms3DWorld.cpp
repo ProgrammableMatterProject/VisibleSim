@@ -224,7 +224,7 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     std::mt19937 rng;
     rng.seed(std::random_device()());
     std::uniform_int_distribution<std::mt19937::result_type> u500(0,500);
-    // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + u500(rng), catom));
+  // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + u500(rng), catom));
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
 
     Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);

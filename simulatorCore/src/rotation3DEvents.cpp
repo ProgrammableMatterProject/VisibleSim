@@ -14,6 +14,10 @@
 using namespace BaseSimulator::utils;
 using namespace Catoms3D;
 
+mt19937 Rotations3D::rng = mt19937(std::random_device()());
+uniform_int_distribution<std::mt19937::result_type>
+Rotations3D::randomAnimationDelay = uniform_int_distribution<std::mt19937::result_type>
+(-(ANIMATION_DELAY / 10),ANIMATION_DELAY / 10);
 const int Rotations3D::ANIMATION_DELAY = 400000;
 const int Rotations3D::COM_DELAY = 0;//2000;
 const int Rotations3D::nbRotationSteps = 20;
@@ -135,7 +139,7 @@ void Rotation3DStartEvent::consume() {
 //    catom->setColor(DARKGREY);
     rot.init(((Catoms3DGlBlock*)catom->ptrGlBlock)->mat);
     scheduler->schedule(
-        new Rotation3DStepEvent(scheduler->now() + (Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / (2*Rotations3D::nbRotationSteps))),
+        new Rotation3DStepEvent(scheduler->now()+Rotations3D::getNextRotationEventDelay(),
                                 catom, rot));
 }
 
@@ -180,10 +184,10 @@ void Rotation3DStepEvent::consume() {
         scheduler->schedule(
             new Rotation3DStopEvent(scheduler->now(), catom, rot));
     } else {
-        scheduler->schedule(new Rotation3DStepEvent(scheduler->now() +
-                                                    Rotations3D::rotationDelayMultiplier*(Rotations3D::ANIMATION_DELAY / (2*Rotations3D::nbRotationSteps)),
-                                                    catom, rot));
-    }
+        scheduler->schedule(new Rotation3DStepEvent(
+                                scheduler->now()+Rotations3D::getNextRotationEventDelay(),
+                                catom, rot));
+}
 }
 
 const string Rotation3DStepEvent::getEventName() {

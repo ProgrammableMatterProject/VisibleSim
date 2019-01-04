@@ -15,20 +15,32 @@
 #include "catoms3DBlock.h"
 #include "events.h"
 
+#include <random>
+
 using namespace Catoms3D;
 
 namespace Catoms3D {
 
 class Rotations3D {    
-public :
+    static std::mt19937 rng;
+    static uniform_int_distribution<mt19937::result_type> randomAnimationDelay;
+public:
     static float rotationDelayMultiplier;
     static const int ANIMATION_DELAY;
     static const int COM_DELAY;
-    static const int nbRotationSteps; //<! @attention MUST BE AN EVEN NUMBER!!!    
+    static const int nbRotationSteps; //<! @attention MUST BE AN EVEN NUMBER!!!
 
     const Catoms3DBlock *mobile = NULL;
     const Catoms3DBlock *pivot = NULL;
     short conFromP, conToP;
+
+    static Time getNextRotationEventDelay() {
+        int rad =  (int)randomAnimationDelay(rng);
+        cout << rad << endl;
+        
+        return rotationDelayMultiplier *
+            ((ANIMATION_DELAY + rad) / (2 * nbRotationSteps));
+    }
     
 /**
    \brief Create a couple of rotations
