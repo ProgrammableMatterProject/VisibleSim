@@ -59,31 +59,11 @@ MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
         OUTPUT << "bitrate:\t" << catom->blockId << "\t"
                << maxBitrate.first << "\t"
                << (maxBitrate.second.empty() ?
-            ruleMatcher->roleToString(role) : maxBitrate.second) << endl;
+                   ruleMatcher->roleToString(role) : maxBitrate.second) << endl;
     }
 }
 
-void MeshAssemblyBlockCode::onBlockSelected() {
-    // if (catom->blockId == 1) {
-    //     cout << "Modules in system: " << lattice->nbModules << endl;
-    //     cout << "MAX: " << X_MAX << ", " << Y_MAX << ", " << Z_MAX << endl;
-    //     for (int x = 0; x < (int)X_MAX + meshSeedPosition[0]; x++) {
-    //         for (int y = 0; y < (int)Y_MAX + meshSeedPosition[1]; y++) {
-    //             for (int z = 0; z < (int)Z_MAX + meshSeedPosition[2]; z++) {
-    //                 const Cell3DPosition& pos = Cell3DPosition(x,y,z);
-    //                 BuildingBlock *bb = lattice->getBlock(pos);
-    //                 if (bb // and ruleMatcher->isInMesh(norm(pos)))
-    //                     and ruleMatcher->isInPyramid(norm(pos))
-    //                     and (ruleMatcher->isOnXPyramidBorder(norm(pos))
-    //                          or ruleMatcher->isOnXOppPyramidBorder(norm(pos))
-    //                          or ruleMatcher->isOnYPyramidBorder(norm(pos))
-    //                          or ruleMatcher->isOnYOppPyramidBorder(norm(pos))))
-    //                     bb->setColor(WHITE);
-    //             }
-    //         }
-    //     }
-    // }
-    
+void MeshAssemblyBlockCode::onBlockSelected() {    
     // Debug:
     // (1) Print details of branch growth plan and previous round
     if (role == Coordinator) {
@@ -92,54 +72,20 @@ void MeshAssemblyBlockCode::onBlockSelected() {
             cout << catomsReqByBranch[i] << ", ";
         cout << " ]" << endl;
 
-        // cout << "Last Round: [ ";
-        // for (int i = 0; i < 6; i++)
-        //     cout << fedCatomOnLastRound[i] << ", ";
-        // cout << " ]" << endl;
-
         cout << "Open Positions: [ ";
         for (int i = 0; i < 6; i++)
             cout << endl << "\t\t  "
                  <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
         cout << " ]" << endl;
 
-        // cout << "branchTime: [ ";
-        // for (int i = 0; i < 6; i++)
-        //     cout << branchTime[i] << ", ";
-        // cout << " ]" << endl;
-
         cout << "feedBranch: [ ";
         for (int i = 0; i < 6; i++)
             cout << feedBranch[i] << ", ";
         cout << " ]" << endl;
 
-        // cout << "targetLevel: [ ";
-        // for (int i = 0; i < 6; i++)
-        //     cout << targetLevel[i] << ", ";
-        // cout << " ]" << endl;
-        
-        // cout << "Target for Entry Points: [ ";
-        // for (int i = 0; i < 8; i++)
-        //     cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
-        // cout << " ]" << endl;
-
         cout << "itCounter: " << itCounter << endl;
 
-        // for (int i = 0; i < N_BRANCHES; i++) {
-        //     cout << "shouldGrowPyramidBranch(: " << i << ") " <<
-        //         ruleMatcher->shouldGrowPyramidBranch(norm(catom->position), (BranchIndex)i)
-        //          << endl;
-        // }
-
-        // for (int i = 0; i < N_BRANCHES; i++) {
-        //     cout << "tileRootAtEndOfBranch(: " << i << ") " <<
-        //         denorm(ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position), (BranchIndex)i))
-        //          << endl;
-        // }
-
     }
-    
-    // catom->setColor(debugColorIndex++);
 
     cout << "branch: " << branch << endl;
     cout << "coordinatorPos: " << coordinatorPos << endl;
@@ -151,19 +97,6 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                     targetPosition, coordinatorPos, step, nextHop);            
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
-    
-    // cout << "Possible Rotations: " << endl;
-    // const vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> allRotations =
-    //     Catoms3DMotionEngine::getAllRotationsForModule(catom);
-
-    // for (const auto& rotation : allRotations) {
-    //         cout << *rotation.first << " --> " << rotation.second << endl;
-    // }
-
-    // cout << "isOnEntryPoint: " << isOnEntryPoint(catom->position) << endl;
-    // cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
-    // cout << "isOnOppXBorder: " << ruleMatcher->isOnXOppBorder(norm(catom->position)) << endl;
-    // cout << "isOnOppYBorder: " << ruleMatcher->isOnYOppBorder(norm(catom->position)) << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -175,31 +108,39 @@ void MeshAssemblyBlockCode::startup() {
         initializeSandbox();
     
     coordinatorPos =
-            denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
+        denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
     
     // Do stuff
     if (catom->position == getEntryPointForMeshComponent(MeshComponent::R)
+        and coordinatorPos[2] == meshSeedPosition[2]
         and lattice->isFree(coordinatorPos)) {
+        // Catom is one of the future ground tile roots waiting on RZ_EPL
+        
         if (coordinatorPos == meshSeedPosition) {
             targetPosition = coordinatorPos;
-            matchRulesAndRotate();
+            // matchRulesAndRotate(); // the seed starts the algorithm
+            matchRulesAndProbeGreenLight(); // the seed starts the algorithm
         } else {
-            role = FreeAgent;
+            role = FreeAgent; // others are waiting for horizontal branches leading to their tile to be completed
             return;
         }
-    } else if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {            
+        
+    } else if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
+        // Catom is one of the sandbox catoms here for decoration but also for actuating
+        //  for incoming modules
         role = ActiveBeamTip; // nothing to be done, wait for tPos requests
         
         // Add z = B to ensure that level -1 catoms are handled properly
         short bi = ruleMatcher->determineBranchForPosition(
             norm(catom->position[2] < meshSeedPosition[2] ?
-                 catom->position + Cell3DPosition(0,0,B) : catom->position));
+                 catom->position + Cell3DPosition(0,0,B) : catom->position));        
         VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
         branch = static_cast<BranchIndex>(bi);
     } else if (meshSeedPosition[2] - catom->position[2] > 1) {
         role = PassiveBeam; // nothing to be done here for visual decoration only
     } else {
-            role = FreeAgent;
+        // Catom is active module summoned from the sandbox and that will be used for scaffolding
+        role = FreeAgent;
         if (not requestTargetCellFromTileRoot() )
             VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a delegate coordinator in its vicinity.");        
     }
@@ -264,14 +205,74 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
 
+        case EVENT_ADD_NEIGHBOR: {
+            if (role != FreeAgent
+                and awaitingModulePos != Cell3DPosition(-1, -1, -1)
+                and not rotating) {
+                uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
+                const Cell3DPosition& pos = catom->getNeighborBlock(face)->position;
+            
+                if (not ruleMatcher->isInMesh(norm(pos))) {
+                    // Neighbor is module moving on the line
+                    greenLightIsOn = false;
+                    catom->setColor(RED);
+                } else {
+                    // Module has taken position and is now pivot
+                    setGreenLightAndResumeFlow();
+                }
+            }
+            
+            break;
+        }
+
+        case EVENT_REMOVE_NEIGHBOR: {
+            if (not rotating) {
+                uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<RemoveNeighborEvent>(pev))->face);
+
+                Cell3DPosition pos;
+                if (catom->getNeighborPos(face, pos)
+                    and (role == FreeAgent
+                         and (catom->getState() == BuildingBlock::State::ALIVE
+                              // Motion is not blocking for a module coming in
+                              or (catom->getState() == BuildingBlock::State::ACTUATING
+                                  and ruleMatcher->isInMesh(norm(actuationTargetPos)))) ) ) {
+                    setGreenLightAndResumeFlow();
+                }
+            }
+            
+            break;
+        }
+        case EVENT_PIVOT_ACTUATION_START: {
+            std::shared_ptr<PivotActuationStartEvent> pase = std::static_pointer_cast
+                <PivotActuationStartEvent>(pev);
+            
+            if (greenLightIsOn) greenLightIsOn = false;
+
+            catom->getNeighborPos(pase->toConP, actuationTargetPos);
+            
+            console << " started actuating for module #" << pase->mobile->blockId << "\n";
+        } break;
+                
+        case EVENT_PIVOT_ACTUATION_END: {
+            std::shared_ptr<PivotActuationEndEvent> paee = std::static_pointer_cast
+                <PivotActuationEndEvent>(pev);
+
+            console << " finished actuating for module #" << paee->mobile->blockId << "\n";
+        } break;
+            
         case EVENT_ROTATION3D_END:
             console << "Rotation to " << catom->position << " over" << "\n";
+
+            rotating = false;                       
         case EVENT_TELEPORTATION_END: {
             step++;
             if (catom->position == targetPosition and not isOnEntryPoint(catom->position)) {
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
 
+                greenLightIsOn = true;
+                moduleAwaitingGo = false;
+                
                 // STAT EXPORT
                 OUTPUT << "nbCatomsInPlace:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << ++nbCatomsInPlace << endl;
 
@@ -309,9 +310,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         }
 
                         VS_ASSERT(zBranchTipItf);
-                        sendMessage(new TileInsertionReadyMessage(),
-                                    zBranchTipItf, MSG_DELAY_MC, 0);
-                        log_send_message();
+                        // FIXME
+                        // sendMessage(new TileInsertionReadyMessage(),
+                        //             zBranchTipItf, MSG_DELAY_MC, 0);
+                        // log_send_message();
                     } 
                 }
             } else {
@@ -346,12 +348,13 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     }
                 }
                 
-                matchRulesAndRotate();
+                // matchRulesAndRotate();
+                matchRulesAndProbeGreenLight();
             }            
-    } break;            
+        } break;            
             
-    case EVENT_TAP: {
-    } break;
+        case EVENT_TAP: {
+        } break;
 
         case EVENT_INTERRUPTION: {            
             std::shared_ptr<InterruptionEvent> itev =
@@ -534,7 +537,7 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForMeshComponent(MeshCo
         case RZ_1: case RZ_2: case RZ_3: case RZ_4: case RZ_5:
             return getEntryPointPosition(RZ_EPL);
 
-        // case EPLs
+            // case EPLs
         case RevZ_EPL: return getEntryPointPosition(Z_EPL);
         case RevZ_R_EPL: return getEntryPointPosition(Z_EPL);
         case RZ_L_EPL: return getEntryPointPosition(LZ_EPL);
@@ -623,11 +626,11 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
 
     // Tell neighbor tiles that it is ready to receive catoms
     if (not isAtGroundLevel())
-    for (short bi = 0; bi < XBranch; bi++) {
-        P2PNetworkInterface* nItf = catom->getInterface(
-            catom->position - ruleMatcher->getBranchUnitOffset(bi));
+        for (short bi = 0; bi < XBranch; bi++) {
+            P2PNetworkInterface* nItf = catom->getInterface(
+                catom->position - ruleMatcher->getBranchUnitOffset(bi));
 
-    }
+        }
     
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
@@ -725,7 +728,6 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
     scheduleRotationTo(nextPos);
 }
 
-
 void MeshAssemblyBlockCode::feedBranches() {
     for (int bi = 0; bi < N_BRANCHES; bi++) {
         if (not fedCatomOnLastRound[bi]
@@ -753,6 +755,68 @@ std::array<bool, 7> MeshAssemblyBlockCode::getFeedingRequirements() {
     
     return requirements;
 }
+
+/************************************************************************
+ ************************* MOTION COORDINATION **************************
+ ***********************************************************************/
+
+void MeshAssemblyBlockCode::setGreenLightAndResumeFlow() {
+    greenLightIsOn = true;
+    catom->setColor(GREEN);
+
+    if (moduleAwaitingGo) {
+        bool nextToModule = isAdjacentToPosition(awaitingModulePos);
+        P2PNetworkInterface* itf = nextToModule ?
+            catom->getInterface(awaitingModulePos) :
+            catom->getInterface(catom->position
+                                + Cell3DPosition(-1, 0, 0));
+                    
+        sendMessage(new GreenLightIsOnMessage(catom->position, awaitingModulePos),
+                    itf, MSG_DELAY_MC, 0);
+        moduleAwaitingGo = false;
+    }
+}
+
+bool MeshAssemblyBlockCode::isAdjacentToPosition(const Cell3DPosition& pos) const {
+    return lattice->cellsAreAdjacent(catom->position, pos);
+}
+
+Catoms3DBlock* MeshAssemblyBlockCode::
+findTargetLightAmongNeighbors(const Cell3DPosition& targetPos) const {
+    for (const auto& cell : lattice->getActiveNeighborCells(catom->position)) {
+        if (lattice->cellsAreAdjacent(cell, targetPos)
+            and ruleMatcher->isInMesh(norm(cell))
+            and Cell3DPosition::compare_ZYX(catom->position, cell)) // TOCHECK
+            return static_cast<Catoms3DBlock*>(lattice->getBlock(cell));
+    }
+    
+    return NULL;
+}
+
+void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
+    Cell3DPosition nextPos;
+    bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
+                                   catom->position,
+                                   targetPosition,
+                                   coordinatorPos, step, nextPos);
+
+    if (not matched) {
+        catom->setColor(RED);
+        cout << "#" << catom->blockId<< endl;
+        VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
+    }
+
+    stepTargetPos = nextPos;
+    Catoms3DBlock *pivot = Catoms3DMotionEngine::findMotionPivot(catom, stepTargetPos);
+    VS_ASSERT(pivot);
+    
+    sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos),
+                catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
+}
+
+/************************************************************************
+ ******************************** STATS *********************************
+ ***********************************************************************/
 
 void MeshAssemblyBlockCode::updateMsgRate() {
     Time t = (int)(round((scheduler->now() - t0) / getRoundDuration()));

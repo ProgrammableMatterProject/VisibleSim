@@ -71,35 +71,45 @@ public:
 ///////////////////// MOTION COORDINATION ///////////////////////
 /////////////////////////////////////////////////////////////////
 
-class ProbeMotionValidityMessage : public HandleableMessage {
-    const Cell3DPosition sender;
+/**
+ * This message should be routed through the line until it reaches the dstPos, which as a pivot
+ *  module must check whether its light is on and either give a go, or wait until its status 
+ *  clears and send a go at that time.
+ */
+class ProbePivotLightStateMessage : public HandleableMessage {
+    const Cell3DPosition srcPos;
+    const Cell3DPosition targetPos;
 public:
-    ProbeMotionValidityMessage(const Cell3DPosition& _sender)
-        : HandleableMessage(), sender(_sender) {};
-    virtual ~ProbeMotionValidityMessage() {};
+    ProbePivotLightStateMessage(const Cell3DPosition& _srcPos,
+                                const Cell3DPosition& _targetPos)
+        : HandleableMessage(), srcPos(_srcPos), targetPos(_targetPos) {};
+    virtual ~ProbePivotLightStateMessage() {};
 
-    void forwardToFAOrReturnClearForMotion(BaseSimulator::BlockCode *bc) const;
-    
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new ProbeMotionValidityMessage(*this); }
-    virtual string getName() const {
-        return string("ProbeMotionValidityMessage(" + sender.config_print() + ")");
+    virtual Message* clone() const { return new ProbePivotLightStateMessage(*this); }
+    virtual string getName() const { return "ProbePivotLightState{" + srcPos.to_string()
+            + ", " + targetPos.to_string() + "}";
     }
 };
 
-class ClearForMotionMessage : public HandleableMessage {
-    const Cell3DPosition sender; 
-    const Cell3DPosition receiver; 
+
+/**
+ * This message is routed back from the pivot module to the module awaiting motion
+ *  in order to notify it that it can be safely performed.
+ */
+class GreenLightIsOnMessage : public HandleableMessage {
+    const Cell3DPosition srcPos;
+    const Cell3DPosition dstPos;
 public:
-    ClearForMotionMessage(const Cell3DPosition& _sender, const Cell3DPosition& _receiver)
-        : HandleableMessage(), sender(_sender) {};
-    virtual ~ClearForMotionMessage() {};
+    GreenLightIsOnMessage(const Cell3DPosition& _srcPos,
+                          const Cell3DPosition& _dstPos)
+        : HandleableMessage(), srcPos(_srcPos), dstPos(_dstPos) {};
+    virtual ~GreenLightIsOnMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new ClearForMotionMessage(*this); }
-    virtual string getName() const {
-        return string("ClearForMotionMessage(" + sender.config_print() + ','
-                      + receiver.config_print() + ")");
+    virtual Message* clone() const { return new GreenLightIsOnMessage(*this); }
+    virtual string getName() const { return "GreenLightIsOn{" + srcPos.to_string()
+            + ", " + dstPos.to_string() + "}";
     }
 };
 

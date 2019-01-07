@@ -90,6 +90,22 @@ public:
     Catoms3D::Catoms3DBlock *catom;
     MeshCoating::MeshRuleMatcher *ruleMatcher;
 
+    /** MOTION COORDINATION **/
+    bool greenLightIsOn = true;
+    bool moduleAwaitingGo = false;
+    Cell3DPosition awaitingModulePos = Cell3DPosition(-1, -1, -1);
+    Cell3DPosition actuationTargetPos;
+    Cell3DPosition stepTargetPos;
+    
+    bool rotating = false;
+
+    bool isAdjacentToPosition(const Cell3DPosition& pos) const;
+    // NOTE: what if there is more than 1?
+    Catoms3DBlock* findTargetLightAmongNeighbors(const Cell3DPosition& targetPos) const;
+    void setGreenLightAndResumeFlow();
+    /**                     **/
+
+    
     BranchIndex branch;
     AgentRole role;
     Cell3DPosition coordinatorPos;
@@ -229,6 +245,7 @@ y the module
 
     // TODO:
     void matchRulesAndRotate();
+    void matchRulesAndProbeGreenLight();
 
     // TODO:
     void initializeTileRoot();

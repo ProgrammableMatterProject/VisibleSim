@@ -97,90 +97,74 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     }    
 }
 
-void ProbeMotionValidityMessage::
-forwardToFAOrReturnClearForMotion(BaseSimulator::BlockCode *bc) const {
-    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
+void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);    
     
-    //// check for potential modules to forward to
-    // vector<Cell3DPosition> nCells = mabc.lattice->
-    //     getActiveNeighborCells(mabc.catom->position);
-    // for (const Cell3DPosition& nCell : nCells) {
-    //     if (not mabc.ruleMatcher->isInMesh(nCell)) { // Module must be FA
-    //         //// if FA module docked on pivot, forward message
-    //         P2PNetworkInterface* FAItf =
-    //             mabc.catom->getInterface(mabc.catom->position);
-    //         // mabc.sendmessage(FAItf,...)
-    //         return;
-    //     }
-    // }
-    //// else: no precedence, return ClearForMotion
-    // mabc.sendMessage(sourceInterface,...)
-}
+    if (mabc.role != FreeAgent) { // module is pivot
+        bool nextToSender = mabc.isAdjacentToPosition(srcPos);
+        bool nextToTarget = mabc.isAdjacentToPosition(targetPos);
+        Catoms3DBlock* targetLightNeighbor = mabc.findTargetLightAmongNeighbors(targetPos);
 
-void ProbeMotionValidityMessage::handle(BaseSimulator::BlockCode* bc) {
-    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
-
-    // The goal here is to reach the moving module preceding the sender if it exists.
-    // 1. If it indeed exists, there is nothing to do but wait for it to send a message
-    //    to sender when it initiates a new motion
-    // 2. If it does not exist, then the sender is clear for motion, and thus it should
-    //    be notified that it is the case by modules further down its path
-    
-    // // TODO:
-    // if (mabc.lattice->cellsAreAdjacent(mabc.catom->position, sender)) {
-    //     // Two modules moving with always one gap between them cannot both be neighbors of the same pivot, hence here the course of action is to forward the message further down the path
-    //     // The next module can either be:
-    //     // a. branch module  (regular case, if current module is branch or support)
-    //     // b. support module (if current module is vertical branch tip)
-    //     // c. tile root      (if current module is horizontal branch tip,
-    //     //                    in which case the sender is clear for motion)
-
-    //     P2PNetworkInterface* nextItf;
-    //     if (mabc.ruleMatcher->isZBranchModule(mabc.norm(mabc.catom->position))
-
-    //     VS_ASSERT_MSG(nextItf, "cannot find next module along path");
-    //     mabc.sendMessage(this->clone(), nextItf, MSG_DELAY_MC, 0);        
-    // } else {
+        cout << *mabc.catom << " received " << getName() << endl;
+        cout << "\tnextToSender: " << nextToSender << endl;
+        cout << "\tnextToTarget: " << nextToTarget << endl;
+        cout << "\ttargetLightNeighbor: " << (targetLightNeighbor ?
+                                              targetLightNeighbor->position.to_string()
+                                              : "NULL") << endl;
         
-    // }
-    
-    // // if pivot and is tip,
-    // if (mabc.ruleMatcher->isZBranchModule(mabc.norm(mabc.catom->position))) {
-
-    //     if (mabc.ruleMatcher->isVerticalBranchTip(mabc.norm(mabc.catom->position))) {
-    //         //// forward to support
-    //     } else {
-    //         // else pivot and is connected to sender,
-    //         if (mabc.lattice->cellsAreAdjacent(mabc.catom->position, sender)) {
-    //             //// send to next pivot along branch
-    //         } else {
-    //             forwardToFAOrReturnClearForMotion(mabc);
-    //         }
-    //     }
-    
-    // // else module is Support
-    // } else if (mabc.ruleMatcher->isTileSupport(mabc.norm(mabc.catom->position))) {
-    //     // else pivot and is connected to sender,
-    //     if (mabc.lattice->cellsAreAdjacent(mabc.catom->position, sender)) {
-    //         //// send to next pivot along branch
-    //     } else {
-    //         forwardToFAOrReturnClearForMotion(mabc);
-    //     }
-    // } else if (mabc.role == FreeAgent) { // this is the target module
-    //     //// wait until motion is scheduled to respond ClearForMotion        
-    // }
+        if (targetLightNeighbor
+            and targetLightNeighbor->position != srcPos) { // neighbor is target light
+            mabc.sendMessage(this->clone(),
+                             mabc.catom->getInterface(targetLightNeighbor->position),
+                             MSG_DELAY_MC, 0);
+        } else if (not targetLightNeighbor and nextToTarget) { // module is target light
+            if (mabc.greenLightIsOn or nextToSender) {
+                Cell3DPosition nextHopPos;
+                nextHopPos = nextToSender ? srcPos
+                    : srcPos; // TODO
+                
+                P2PNetworkInterface* itf =  mabc.catom->getInterface(nextHopPos);
+                VS_ASSERT(itf);
+                
+                mabc.sendMessage(new GreenLightIsOnMessage(mabc.catom->position, srcPos),
+                                 itf, MSG_DELAY_MC, 0);
+            } else {
+                // Catom will be notified when light turns green
+                // NOTE: Should we rather notify just when needed, or send a message anyway
+                //  to the previous pivot?
+                mabc.moduleAwaitingGo = true;
+                mabc.awaitingModulePos = srcPos;
+                mabc.catom->setColor(ORANGE);
+            }
+        } else { // not neighborNextToTarget and not nextToSender
+            mabc.catom->setColor(BLACK);
+            VS_ASSERT_MSG(false, "error: not neighborNextToTarget and not nextToSender");
+        }
+    } else { // module is in motion (thus should not receive such message)
+        mabc.catom->setColor(BLACK);
+        VS_ASSERT(false);
+    }
 }
 
-void ClearForMotionMessage::handle(BaseSimulator::BlockCode* bc) {
+void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 
-    // TODO:
-    // if support,
-    //// forward to branch tip
-    // else if pivot and not connected to receiver
-    //// forward to next module in branch
-    // else if pivot and connected to receiver
-    //// forward to receiver
-    // else if receiver
-    //// check motion rules and perform next move
+    if (mabc.role != FreeAgent) { // module is pivot
+        bool nextToDest = mabc.isAdjacentToPosition(dstPos);
+        
+        P2PNetworkInterface* itf = nextToDest ?
+            mabc.catom->getInterface(dstPos) :
+            mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(-1, 0, 0));
+
+        mabc.greenLightIsOn = false;
+        mabc.catom->setColor(RED);
+        mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
+    } else { // module is target
+        VS_ASSERT(mabc.catom->position == dstPos);
+
+        // Perform pending motion
+        mabc.rotating = true;
+        mabc.scheduler->schedule(
+            new Rotation3DStartEvent(getScheduler()->now(), mabc.catom, mabc.stepTargetPos));
+    }
 }

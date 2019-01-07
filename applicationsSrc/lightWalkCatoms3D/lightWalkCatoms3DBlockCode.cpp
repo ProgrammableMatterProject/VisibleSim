@@ -176,7 +176,7 @@ void LightWalkCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                      Cell3DPosition(1, 0, -1) : Cell3DPosition(1, 0, 0));
 
                 cout << targetPos << " " << hasReachedLineTail() << endl;
-                
+
                 Catoms3DBlock *pivot = Catoms3DMotionEngine::findMotionPivot(catom, targetPos);
                 VS_ASSERT(pivot);
                 

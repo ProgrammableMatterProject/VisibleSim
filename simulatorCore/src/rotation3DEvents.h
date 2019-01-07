@@ -36,7 +36,7 @@ public:
 
     static Time getNextRotationEventDelay() {
         int rad =  (int)randomAnimationDelay(rng);
-        cout << rad << endl;
+        // cout << rad << endl;
         
         return rotationDelayMultiplier *
             ((ANIMATION_DELAY + rad) / (2 * nbRotationSteps));
