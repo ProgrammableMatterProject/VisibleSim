@@ -769,3 +769,23 @@ string MeshRuleMatcher::roleToString(AgentRole ar) {
 
     return "";
 }
+
+BranchIndex MeshRuleMatcher::getBranchForEPL(MeshComponent epl) {
+    switch(epl) {
+        case RevZ_EPL: return RevZBranch;
+        case RevZ_R_EPL: return RevZBranch;
+        case RZ_L_EPL: return RZBranch;
+        case RZ_EPL: return RZBranch;
+        case RZ_R_EPL: return RZBranch;
+        case Z_R_EPL: return ZBranch;
+        case Z_EPL: return ZBranch;
+        case Z_L_EPL: return ZBranch;
+        case LZ_R_EPL: return LZBranch;
+        case LZ_EPL: return LZBranch;
+        case LZ_L_EPL: return LZBranch;
+        case RevZ_L_EPL: return RevZBranch;
+        default: VS_ASSERT_MSG(false, "getBranchForEPL: input epl is not an EPL");
+    }
+
+    return N_BRANCHES;
+}

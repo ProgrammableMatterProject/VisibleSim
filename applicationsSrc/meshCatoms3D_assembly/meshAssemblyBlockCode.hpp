@@ -112,7 +112,7 @@ public:
     Cell3DPosition targetPosition;
     
     Time startTime;
-
+    
     // Free Agent Vars
     short step = 1; // For moving FreeAgents
     bool tileInsertionAckGiven = false; // for tile insertion coordination at HBranch tips
@@ -121,22 +121,10 @@ public:
     Cell3DPosition branchTipPos; // For Support role only        
     
     // Coordinator Vars
-    int itCounter = 0; // When t > 5 all supports are in place
-    bool fedCatomsOnLastRound = false;
+    std::array<int, 4> catomsSpawnedToVBranch = { 0, 0, 0, 0 }; // Number of catoms fed to each vertical branch
     std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
-    std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
-    std::array<Cell3DPosition*, 6> openPositions = {0};
-    // std::array<Cell3DPosition, 12> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
-    // std::array<MeshComponent, 12> componentForEntryPoint; //<! for a coordinator, the targetcomponent to which each of the modules that it has received should move to once they are initialized
-    // std::array<bool, 6> feedBranch = {0};
     std::array<bool, 6> moduleReadyOnEPL = {0}; //<! keeps track of modules which arrived on Tile Entry Point Locations
-    // std::array<short, N_BRANCHES> branchTime;
-    std::array<bool, 6> feedBranch = {0};
-    // std::array<int, 6> targetLevel = {0};
 
-    //!< @attention index t[i][7] is for tile root feeding requirement
-    // std::array<std::array<bool, 7>, 6> feedBranchRequires = { false, false, false,
-    //                                                           false, false, false };
     
     /** 
      * Finds the next target position that a module arriving at EPL epl should move to, 
@@ -218,6 +206,9 @@ y the module
      */
     void handleMeshComponentInsertion(MeshComponent mc);
 
+    void handleModuleInsertionToBranch(BranchIndex bid);
+    const Cell3DPosition getEntryPointForModuleOnBranch(BranchIndex bid);
+    
     /** 
      * Finds an entry point index for a catom required to fill component mc
      * @param mc mesh component type of the catom

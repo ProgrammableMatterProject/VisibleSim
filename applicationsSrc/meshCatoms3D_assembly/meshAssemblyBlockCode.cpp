@@ -71,20 +71,6 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         for (int i = 0; i < 6; i++)
             cout << catomsReqByBranch[i] << ", ";
         cout << " ]" << endl;
-
-        cout << "Open Positions: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << endl << "\t\t  "
-                 <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
-        cout << " ]" << endl;
-
-        cout << "feedBranch: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << feedBranch[i] << ", ";
-        cout << " ]" << endl;
-
-        cout << "itCounter: " << itCounter << endl;
-
     }
 
     cout << "branch: " << branch << endl;
@@ -115,15 +101,16 @@ void MeshAssemblyBlockCode::startup() {
         and coordinatorPos[2] == meshSeedPosition[2]
         and lattice->isFree(coordinatorPos)) {
         // Catom is one of the future ground tile roots waiting on RZ_EPL
-        
+        role = FreeAgent;
+
         if (coordinatorPos == meshSeedPosition) {
             targetPosition = coordinatorPos;
             // matchRulesAndRotate(); // the seed starts the algorithm
             matchRulesAndProbeGreenLight(); // the seed starts the algorithm
-        } else {
-            role = FreeAgent; // others are waiting for horizontal branches leading to their tile to be completed
-            return;
         }
+
+        // others are waiting for horizontal branches leading to their tile to be completed
+        return;
         
     } else if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
         // Catom is one of the sandbox catoms here for decoration but also for actuating
@@ -363,84 +350,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             switch(itev->mode) {
 
                 case IT_MODE_TILEROOT_ACTIVATION: {
-                    // static const int trInsertionTime = 18;
-                    
                     // Only introduce catoms if on the lower tile level
                     if (catom->position[2] == meshSeedPosition[2]) {
-                        if (itCounter == 0) {
-                            handleMeshComponentInsertion(S_RZ);
-                            handleMeshComponentInsertion(S_LZ);
-                            
-                        } else if (itCounter == 1 and ruleMatcher->
-                                   shouldGrowBranch(norm(catom->position), YBranch)) {
-                            handleMeshComponentInsertion(Y_1);
-                            catomsReqByBranch[YBranch]--;
-
-                        } else if (itCounter == 3 and ruleMatcher->
-                                   shouldGrowBranch(norm(catom->position), XBranch)) {
-                            handleMeshComponentInsertion(X_1);
-                            catomsReqByBranch[XBranch]--;
-                            
-                        } else if (itCounter == 4) {
-                            handleMeshComponentInsertion(S_Z);
-                            handleMeshComponentInsertion(S_RevZ);
-                        } else if (itCounter == 18 and
-                                   ruleMatcher->shouldGrowRevZBranch(norm(catom->position))) {
-                            handleMeshComponentInsertion(Z_R_EPL);
-                        }
-
                         feedBranches();
-                        
-                        if (not fedCatomsOnLastRound and itCounter > 5) {
-                            // Spawning Rules
-                            if (catomsReqByBranch[XBranch] > 0) {
-                                handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                             (X_1 + B -
-                                                              catomsReqByBranch[XBranch] - 1));
-                                catomsReqByBranch[XBranch]--;
-                            }
 
-                            if (catomsReqByBranch[YBranch] > 0) {                            
-                                handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                             (Y_1 + B -
-                                                              catomsReqByBranch[YBranch] - 1));
-                                catomsReqByBranch[YBranch]--;
-                            }
-                            
-                            if (catomsReqByBranch[ZBranch] > 0 and itCounter > 7) {
-                                handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                             (Z_1 + B -
-                                                              catomsReqByBranch[ZBranch] - 1));
-                                catomsReqByBranch[ZBranch]--;
-                            }                        
-
-                            if (catomsReqByBranch[RevZBranch] > 0 and itCounter > 7) {
-                                handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                             (RevZ_1 + B -
-                                                              catomsReqByBranch[RevZBranch] - 1));
-                                catomsReqByBranch[RevZBranch]--;
-                            }
-
-                            if (catomsReqByBranch[LZBranch] > 0 and itCounter > 13) {
-                                handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                             (LZ_1 + B -
-                                                              catomsReqByBranch[LZBranch] - 1));
-                                catomsReqByBranch[LZBranch]--;
-                            }
-
-                            if (catomsReqByBranch[RZBranch] > 0 and itCounter > 13) {
-                                handleMeshComponentInsertion(static_cast<MeshComponent>
-                                                             (RZ_1 + B -
-                                                              catomsReqByBranch[RZBranch] - 1));
-                                catomsReqByBranch[RZBranch]--;
-                            }
-                        } else {
-                            fedCatomsOnLastRound = false;
-                        }
-                    }
-
-                    itCounter++;
-                    if (itCounter < 65535) { // FIXME:
                         getScheduler()->schedule(
                             new InterruptionEvent(getScheduler()->now() +
                                                   (getRoundDuration()),
@@ -486,22 +399,6 @@ const Cell3DPosition MeshAssemblyBlockCode::getNextTargetForEPL(MeshComponent ep
     }
 
     return Cell3DPosition(); // unreachable
-}
-
-void MeshAssemblyBlockCode::updateOpenPositions() {
-    for (int i = 0; i < N_BRANCHES; i++) {        
-        // [1..B], the number of already placed catoms + 1.
-        // B means that branch is finished or should not be grown
-        int multiplier = B - catomsReqByBranch[i];
-        
-        if (catomsReqByBranch[i] > 0 and openPositions[i]) {
-            *openPositions[i] = Cell3DPosition(catom->position + multiplier * ruleMatcher->
-                                               getBranchUnitOffset((BranchIndex)i));
-        } else if (catomsReqByBranch[i] > 0 and not openPositions[i]) {
-            openPositions[i] = new Cell3DPosition(catom->position + multiplier * ruleMatcher->
-                                                  getBranchUnitOffset((BranchIndex)i));
-        } else openPositions[i] = NULL;
-    }
 }
 
 short MeshAssemblyBlockCode::getEntryPointLocationForCell(const Cell3DPosition& pos) {
@@ -561,8 +458,33 @@ void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
     // cout << "[t-" << scheduler->now() << "] catom introduced" << endl;
     world->addBlock(0, buildNewBlockCode,
                     getEntryPointForMeshComponent(mc), ORANGE);
+}
 
-    fedCatomsOnLastRound = true;
+void MeshAssemblyBlockCode::handleModuleInsertionToBranch(BranchIndex bid) {
+    // Introduce new catoms
+    // cout << "[t-" << scheduler->now() << "] catom introduced" << endl;
+    world->addBlock(0, buildNewBlockCode,
+                    getEntryPointForModuleOnBranch(bid), ORANGE);
+    catomsSpawnedToVBranch[bid]++;
+}
+
+const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForModuleOnBranch(BranchIndex bid) {
+    // switch(bid) {
+    //     case RevZBranch: return LZ_EPL;
+    //     case ZBranch:
+    //         if (catomsSpawnedToVBranch[ZBranch] == 0) return Z_L_EPL;
+    //         else if (catomsSpawnedToVBranch[ZBranch] == 1) return Z_R_EPL;
+    //         else return Z_EPL;
+    //     case LZBranch:
+    //         if (catomsSpawnedToVBranch[LZBranch] == 0) return LZ_R_EPL;
+    //         else return LZ_EPL;
+    //     case RZBranch:
+    //         if (catomsSpawnedToVBranch[RZBranch] == 0) return RZ_R_EPL;
+    //         else return RZ_EPL;
+    //     default: throw NotImplementedException("getEntryPointForModuleOnBranch: invalid bid");
+    // }
+
+    return Cell3DPosition(); // unreachable
 }
 
 bool MeshAssemblyBlockCode::
@@ -611,7 +533,9 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     role = Coordinator;
     coordinatorPos = catom->position;
 
-    if (norm(catom->position) == Cell3DPosition(0,0,0)) t0 = scheduler->now();
+    cout << "initializeTileRoot: " << endl;
+    
+    if (norm(catom->position) == Cell3DPosition(0,0,0)) t0 = scheduler->now();    
     OUTPUT << "root: " << (int)(round((scheduler->now() - t0) / getRoundDuration())) << "\t" << norm(catom->position) << endl;   
     
     // Determine how many branches need to grow from here
@@ -621,16 +545,17 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
             shouldGrowPyramidBranch(norm(catom->position), (BranchIndex)bi) ? B - 1 : -1;
     }
         
-    // Compute the corresponding list of cells to be filled
-    updateOpenPositions();
+    // TODO: Resume Catom flows on all eligible branches by turning the tip lights green
+    // This means that upon receiving a probeLightRequest, branch tips and/or supports must
+    //  first ask the TR (perhaps the reply can simply be a ProvideTargetCell in that case.
+    // If the TR is not present, the catoms turn RED until incoming horizontal branches notify
+    //  it of their completion (with an exception for front-left corners).
+    // if (not isAtGroundLevel())
+        // for (short bi = 0; bi < XBranch; bi++) {
+        //     P2PNetworkInterface* nItf = catom->getInterface(
+        //         catom->position - ruleMatcher->getBranchUnitOffset(bi));
 
-    // Tell neighbor tiles that it is ready to receive catoms
-    if (not isAtGroundLevel())
-        for (short bi = 0; bi < XBranch; bi++) {
-            P2PNetworkInterface* nItf = catom->getInterface(
-                catom->position - ruleMatcher->getBranchUnitOffset(bi));
-
-        }
+        // }
     
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
@@ -729,12 +654,14 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
 }
 
 void MeshAssemblyBlockCode::feedBranches() {
-    for (int bi = 0; bi < N_BRANCHES; bi++) {
-        if (not fedCatomOnLastRound[bi]
-            and (ruleMatcher->shouldGrowBranch(norm(catom->position), (BranchIndex)bi)
-                 or feedBranch[bi])) {
-            handleMeshComponentInsertion(
-                ruleMatcher->getTargetEPLComponentForBranch((BranchIndex)bi));
+    bool branchFed[4] = {0}; 
+    for (int bi = 0; bi < XBranch; bi++) {
+        if (ruleMatcher->shouldGrowBranch(norm(catom->position), (BranchIndex)bi)) {
+            MeshComponent tEPL = ruleMatcher->getTargetEPLComponentForBranch((BranchIndex)bi);
+            if (not branchFed[MeshRuleMatcher::getBranchForEPL(tEPL)]) {
+                branchFed[MeshRuleMatcher::getBranchForEPL(tEPL)] = true;
+                handleMeshComponentInsertion(tEPL);
+            }
         }        
     }
 }

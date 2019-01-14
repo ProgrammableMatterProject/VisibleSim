@@ -252,6 +252,7 @@ public:
     static Cell3DPosition getComponentPosition(MeshComponent comp);
 
     static MeshComponent getTargetEPLComponentForBranch(BranchIndex bi);
+    static BranchIndex getBranchForEPL(MeshComponent epl);
 };
 
 }
