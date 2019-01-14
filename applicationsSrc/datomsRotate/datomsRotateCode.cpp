@@ -1,7 +1,7 @@
 #include <queue>
 #include <climits>
 #include "datomsRotateCode.h"
-
+#include "datomsMotionEngine.h"
 bool first=true;
 
 
@@ -15,18 +15,46 @@ void DatomsRotateCode::startup() {
 	addMessageEventFunc(UNLOCK_MSG,_myUnlockFunc);
 
     assert(target!=NULL);
-    if (target->isInTarget(module->position)) {
-        module->setColor(target->getTargetColor(module->position));
-    }
-
     lattice = (SkewFCCLattice*)(Datoms::getWorld()->lattice);
 	
 	if (first) {
 		lattice->initTabDistances();
 		first=false;
 	}
-	initDistances();
-	tryToMove();
+	//initDistances();
+	
+
+	// on compte le nombre d'emplacements différents accessibles
+	vector<Cell3DPosition> tabCells;
+	Cell3DPosition p;
+	vector<std::pair<const DatomsMotionRulesLink*, Deformation>> tab = DatomsMotionEngine::getAllDeformationsForModule(module);
+	module->setColor(tab.size());
+	short o;
+	for (auto t:tab) {
+		t.second.init(((DatomsGlBlock*)module->ptrGlBlock)->mat);
+		t.second.getFinalPositionAndOrientation(p,o);
+		
+		auto e = find(tabCells.begin(),tabCells.end(),p);
+		
+		if (e==tabCells.end()) {
+			console << "add:" << p << "\n";
+			tabCells.push_back(p);
+		} else {
+			console << "submit:" << t.first->getConFromID() << "->" << t.first->getConToID() << " pos="<< p << "\n";
+		}
+	}
+	module->setColor(tabCells.size());
+	console << "n=" << tabCells.size() << "\n";
+	/*if (target->isInTarget(module->position)) {
+        //module->setColor(target->getTargetColor(module->position));
+		
+		//module->setColor(tab.size());
+		
+    } else {
+		module->setColor(1);
+	}
+*/
+	//tryToMove();
 }
 
 void DatomsRotateCode::initDistances() {

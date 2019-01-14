@@ -42,7 +42,7 @@ DatomsWorld::DatomsWorld(const Cell3DPosition &gridSize, const Vector3D &gridSca
 		objBlockForPicking =
 			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures",
 									 "datoms_picking.obj");
-		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures","repereDatom.obj");
+		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D_Zinc.obj");
 	}
 
     lattice = new SkewFCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);

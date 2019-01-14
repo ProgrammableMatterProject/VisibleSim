@@ -145,29 +145,29 @@ const int *findTab4(int id1,int id2) {
 void DatomsMotionRules::addLinks4(int id1, int id2, int id3, int id4, const Vector3D &left,const Vector3D &lup,const Vector3D &rup,uint8_t modelId) {
     int tabBC1[4],tabBC2[4],tabBC3[4],tabBC4[4];
 
-	tabBC1[0]=id2;	tabBC1[1]=id3; 	tabBC1[2]=id4; tabBC1[3] = (id1+6)%12;
-	tabBC2[0]=id1;	tabBC2[1]=id3; 	tabBC2[2]=id4; tabBC2[3] = (id2+6)%12;
-	tabBC3[0]=id2;	tabBC3[1]=id1; 	tabBC3[2]=id4; tabBC3[3] = (id3+6)%12;
-	tabBC4[0]=id2;	tabBC4[1]=id3; 	tabBC4[2]=id1; tabBC4[3] = (id4+6)%12;
+	tabBC1[0]=id2;	tabBC1[1]=id3; 	tabBC1[2]=id4; //tabBC1[3] = (id1+6)%12;
+	tabBC2[0]=id1;	tabBC2[1]=id3; 	tabBC2[2]=id4; //tabBC2[3] = (id2+6)%12;
+	tabBC3[0]=id2;	tabBC3[1]=id1; 	tabBC3[2]=id4; //tabBC3[3] = (id3+6)%12;
+	tabBC4[0]=id2;	tabBC4[1]=id3; 	tabBC4[2]=id1; //tabBC4[3] = (id4+6)%12;
 
 /* 1->2 & 2->1*/
-    addLink(OctaFace,id1,id2,-left,rup,4,tabBC1,modelId);
-    addLink(OctaFace,id2,id1,left,lup,4,tabBC2,modelId);
+    addLink(OctaFace,id1,id2,-left,rup,3,tabBC1,modelId);
+    addLink(OctaFace,id2,id1,left,lup,3,tabBC2,modelId);
 /* 1->3 & 3->1*/
-    addLink(OctaFace,id1,id3,-left,-left,4,tabBC1,modelId);
-    addLink(OctaFace,id3,id1,-left,-left,4,tabBC3,modelId);
+    addLink(OctaFace,id1,id3,-left,-left,3,tabBC1,modelId);
+    addLink(OctaFace,id3,id1,-left,-left,3,tabBC3,modelId);
 /* 1->4 & 4->1*/
-    addLink(OctaFace,id1,id4,-left,-rup,4,tabBC1,modelId);
-    addLink(OctaFace,id4,id1,left,-lup,4,tabBC4,modelId);
+    addLink(OctaFace,id1,id4,-left,-rup,3,tabBC1,modelId);
+    addLink(OctaFace,id4,id1,left,-lup,3,tabBC4,modelId);
 /* 2->3 & 3->2*/
-    addLink(OctaFace,id2,id3,left,-lup,4,tabBC2,modelId);
-    addLink(OctaFace,id3,id2,-left,-rup,4,tabBC3,modelId);
+    addLink(OctaFace,id2,id3,left,-lup,3,tabBC2,modelId);
+    addLink(OctaFace,id3,id2,-left,-rup,3,tabBC3,modelId);
 /* 2->4 & 4->2*/
-    addLink(OctaFace,id2,id4,left,left,4,tabBC2,modelId);
-    addLink(OctaFace,id4,id2,left,left,4,tabBC4,modelId);
+    addLink(OctaFace,id2,id4,left,left,3,tabBC2,modelId);
+    addLink(OctaFace,id4,id2,left,left,3,tabBC4,modelId);
 /* 3->4 & 4->3*/
-    addLink(OctaFace,id3,id4,-left,rup,4,tabBC3,modelId);
-    addLink(OctaFace,id4,id3,left,lup,4,tabBC4,modelId);
+    addLink(OctaFace,id3,id4,-left,rup,3,tabBC3,modelId);
+    addLink(OctaFace,id4,id3,left,lup,3,tabBC4,modelId);
 }
 
 
@@ -182,14 +182,14 @@ void DatomsMotionRules::addLink(DeformationLinkType  mrlt,int id1, int id2,const
 
     DatomsMotionRulesLink *lnk = new DatomsMotionRulesLink(mrlt,tabConnectors[id1],tabConnectors[id2],ax1,ax2,modelId);
     tabConnectors[id1]->addLink(lnk);
-    //OUTPUT << id1 << " -> " << id2 << endl;
+//    OUTPUT << id1 << " -> " << id2 << endl;
     for (int i=0; i<n; i++) {
         if (tabBC[i]!=id2) {
             lnk->addBlockingConnector(tabBC[i]);
-            //OUTPUT << tabBC[i] << " ";
+//            OUTPUT << tabBC[i] << " ";
         }
     }
-    //OUTPUT << endl;
+//    OUTPUT << endl;
 }
 
 bool DatomsMotionRules::getValidMotionList(const DatomsBlock* c3d,int from,vector<DatomsMotionRulesLink*>&vec) {
@@ -198,11 +198,12 @@ bool DatomsMotionRules::getValidMotionList(const DatomsBlock* c3d,int from,vecto
 
 	vector <DatomsMotionRulesLink*>::const_iterator ci=conn->tabLinks.begin();
     while (ci!=conn->tabLinks.end()) {
-        OUTPUT << from << " -> " << (*ci)->getConToID() << ", " << endl;
+        OUTPUT << from << " -> " << (*ci)->getConToID() ;
         if ((*ci)->isValid(c3d)) {
             vec.push_back(*ci);
             notEmpty=true;
-        }
+			OUTPUT << "(valid)" << endl;
+        } 
         ci++;
     }
     return notEmpty;

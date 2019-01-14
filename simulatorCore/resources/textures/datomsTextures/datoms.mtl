@@ -8,12 +8,12 @@ newmtl rouge
 	Tr 0.0000
 	Tf 1.0000 1.0000 1.0000
 	illum 2
-	Ka 1.0000 0.0000 0.0000
-	Kd 1.0000 0.0000 0.0000
+	Ka 0.5000 0.5000 0.5000
+	Kd 1.0000 1.0000 1.0000
 	Ks 0.6660 0.6660 0.6660
 	Ke 0.0000 0.0000 0.0000
-	map_Ka textureDatom.tga
-	map_Kd textureDatom.tga
+	map_Ka textureDatomGrey.tga
+	map_Kd textureDatomGrey.tga
 
 newmtl lighted
 	Ns 18.0000

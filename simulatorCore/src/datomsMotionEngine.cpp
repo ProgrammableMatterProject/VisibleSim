@@ -34,13 +34,12 @@ DatomsMotionEngine::findPivotConnectorLink(const DatomsBlock *pivot,
     getMotionRules()->getValidSurfaceLinksOnDatom(pivot, motionRulesLinks);
     
     for (DatomsMotionRulesLink* link : motionRulesLinks) {
-        if (link->getConFromID() == conFrom and link->getConToID() == conTo) {
+		if (link->getConFromID() == conFrom and link->getConToID() == conTo) {
             // TODO:
             // const Cell3DPosition& fPos = link->getFinalPosition(pivot);
             // if (static_cast<FCCLattice*>(getWorld()->lattice)->
             //     isPositionBlocked(fPos, pivot->position)) return NULL;
             // END TODO
-            
             switch (ft) {
                 case Any: return link;
                 case HexaFace: if (link->isOctaFace() == HexaFace) return link; break;
@@ -87,9 +86,13 @@ DatomsMotionEngine::findPivotLinkPairsForTargetCell(const DatomsBlock* m,
         vector<Cell3DPosition> mActiveCells = lattice->getActiveNeighborCells(m->position);
         vector<Cell3DPosition> tPosActiveCells = lattice->getActiveNeighborCells(tPos);
 
-        const vector<Cell3DPosition>& adjacentCells =
-            utils::intersection(mActiveCells, tPosActiveCells);
+        const vector<Cell3DPosition>& adjacentCells = utils::intersection(mActiveCells, tPosActiveCells);
 
+		OUTPUT << "adjacent cells --------------" << adjacentCells.size() << endl;			
+		for (const Cell3DPosition& p : adjacentCells) {
+			OUTPUT << p << endl;
+		}
+			
         // Check for a pivot with a direct connector path between the two cells
         DatomsBlock* pivot = NULL;
         for (const Cell3DPosition& pPos : adjacentCells) {
@@ -99,7 +102,7 @@ DatomsMotionEngine::findPivotLinkPairsForTargetCell(const DatomsBlock* m,
             short conFrom = pivot->getConnectorId(m->position);
             short conTo = pivot->getConnectorId(tPos);
 
-            if (faceReq == DeformationLinkType ::HexaFace or faceReq == DeformationLinkType ::Any) {
+            if (faceReq == DeformationLinkType::HexaFace or faceReq == DeformationLinkType ::Any) {
                 const DatomsMotionRulesLink *link = findPivotConnectorLink(pivot, conFrom,
                                                                              conTo, HexaFace);
 
@@ -113,7 +116,7 @@ DatomsMotionEngine::findPivotLinkPairsForTargetCell(const DatomsBlock* m,
                     allLinkPairs.push_back(std::make_pair(pivot, matchingModuleLink));
             }
 
-            if (faceReq == DeformationLinkType ::OctaFace or faceReq == DeformationLinkType ::Any) {
+            if (faceReq == DeformationLinkType::OctaFace or faceReq == DeformationLinkType ::Any) {
                 const DatomsMotionRulesLink *link = findPivotConnectorLink(pivot, conFrom,
                                                                              conTo, OctaFace);
 
@@ -155,7 +158,7 @@ DatomsMotionEngine::getAllDeformationsForModule(const DatomsBlock* m) {
         for (const Cell3DPosition& nPos : World::getWorld()->lattice->
                  getFreeNeighborCells(m->position)) {
             const vector<std::pair<DatomsBlock*, const DatomsMotionRulesLink*>>
-                pivotLinkPairs = findPivotLinkPairsForTargetCell(m, nPos);
+                pivotLinkPairs = findPivotLinkPairsForTargetCell(m, nPos,OctaFace);
             
             for (const auto& pair : pivotLinkPairs) {
                 if (pair.first and pair.second) {

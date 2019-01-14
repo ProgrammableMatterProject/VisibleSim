@@ -8,8 +8,11 @@
 		<block position="1,1,1" orientation="0" color="255,255,64"/>
 	</blockList>
 
-	<!--<skeleton>
-        <skeleton_line posA="25,25,0" posB="25,25,21" blobbiness="-0.1" radius="15"/>
-        <skeleton_point pos="25,25,21" blobbiness="-0.1" radius="20"/>
-	</skeleton> -->
+	<targetList>
+		<target format="grid">
+			<cell position="0,1,1" color="64,255,64"/>
+			<cell position="1,1,1" color="64,255,64"/>
+		</target>
+	</targetList>
+
 </world>
