@@ -55,6 +55,8 @@ public:
     static int nbCatomsInPlace;
     static int nbMessages;
     static Time t0;
+
+    // For stats export
     pair<int, string> maxBitrate;    
     pair<Time, int> rate = { 0, 0 };
     
@@ -206,7 +208,7 @@ y the module
      */
     void handleMeshComponentInsertion(MeshComponent mc);
 
-    void handleModuleInsertionToBranch(BranchIndex bid);
+    bool handleModuleInsertionToBranch(BranchIndex bid);
     const Cell3DPosition getEntryPointForModuleOnBranch(BranchIndex bid);
     
     /** 
@@ -231,14 +233,11 @@ y the module
      */
     bool isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi);
 
-    // TODO:
     void scheduleRotationTo(const Cell3DPosition& pos);
 
-    // TODO:
     void matchRulesAndRotate();
     void matchRulesAndProbeGreenLight();
 
-    // TODO:
     void initializeTileRoot();
     void initializeSupportModule();
 
@@ -275,9 +274,6 @@ y the module
      * @return true if catom is on the lowest tile layer, false otherwise
      */
     bool isAtGroundLevel();
-
-    std::array<bool, 7> getFeedingRequirements();
-
     /**
      * @copydoc BlockCode::sendMessage
      * @note This is only used for logging sent messages, it calls 

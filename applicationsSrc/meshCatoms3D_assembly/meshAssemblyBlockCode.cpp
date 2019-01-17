@@ -128,8 +128,9 @@ void MeshAssemblyBlockCode::startup() {
     } else {
         // Catom is active module summoned from the sandbox and that will be used for scaffolding
         role = FreeAgent;
-        if (not requestTargetCellFromTileRoot() )
-            VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a delegate coordinator in its vicinity.");        
+        requestTargetCellFromTileRoot();
+        // if (not requestTargetCellFromTileRoot() )
+        // VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a delegate coordinator in its vicinity.");        
     }
 }
 
@@ -460,29 +461,34 @@ void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
                     getEntryPointForMeshComponent(mc), ORANGE);
 }
 
-void MeshAssemblyBlockCode::handleModuleInsertionToBranch(BranchIndex bid) {
+bool MeshAssemblyBlockCode::handleModuleInsertionToBranch(BranchIndex bid) {
     // Introduce new catoms
     // cout << "[t-" << scheduler->now() << "] catom introduced" << endl;
-    world->addBlock(0, buildNewBlockCode,
-                    getEntryPointForModuleOnBranch(bid), ORANGE);
-    catomsSpawnedToVBranch[bid]++;
+    const Cell3DPosition& entryPoint = getEntryPointForModuleOnBranch(bid);
+    if (lattice->isFree(entryPoint)) {
+        world->addBlock(0, buildNewBlockCode, entryPoint, ORANGE);
+        catomsSpawnedToVBranch[bid]++;
+        return true;
+    }
+
+    return false;
 }
 
 const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForModuleOnBranch(BranchIndex bid) {
-    // switch(bid) {
-    //     case RevZBranch: return LZ_EPL;
-    //     case ZBranch:
-    //         if (catomsSpawnedToVBranch[ZBranch] == 0) return Z_L_EPL;
-    //         else if (catomsSpawnedToVBranch[ZBranch] == 1) return Z_R_EPL;
-    //         else return Z_EPL;
-    //     case LZBranch:
-    //         if (catomsSpawnedToVBranch[LZBranch] == 0) return LZ_R_EPL;
-    //         else return LZ_EPL;
-    //     case RZBranch:
-    //         if (catomsSpawnedToVBranch[RZBranch] == 0) return RZ_R_EPL;
-    //         else return RZ_EPL;
-    //     default: throw NotImplementedException("getEntryPointForModuleOnBranch: invalid bid");
-    // }
+    switch(bid) {
+        case RevZBranch: return getEntryPointPosition(LZ_EPL);
+        case ZBranch:
+            if (catomsSpawnedToVBranch[ZBranch] == 0) return getEntryPointPosition(Z_L_EPL);
+            else if (catomsSpawnedToVBranch[ZBranch] == 1)return getEntryPointPosition(Z_R_EPL);
+            else return getEntryPointPosition(Z_EPL);
+        case LZBranch:
+            if (catomsSpawnedToVBranch[LZBranch] == 0) return getEntryPointPosition(LZ_R_EPL);
+            else return getEntryPointPosition(LZ_EPL);
+        case RZBranch:
+            if (catomsSpawnedToVBranch[RZBranch] == 0) return getEntryPointPosition(RZ_R_EPL);
+            else return getEntryPointPosition(RZ_EPL);
+        default: throw NotImplementedException("getEntryPointForModuleOnBranch: invalid bid");
+    }
 
     return Cell3DPosition(); // unreachable
 }
@@ -602,12 +608,11 @@ bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
                         MSG_DELAY_MC, 0);
             log_send_message();
             return true;
-        }
+        } // else Support module not yet in place, wait for it to come online and notify us
     }
 
     return false;
 }
-
 
 void MeshAssemblyBlockCode::initializeSandbox() {
     for (const auto& pos : ruleMatcher->getAllGroundTileRootPositionsForMesh()) {
@@ -625,10 +630,14 @@ void MeshAssemblyBlockCode::initializeSandbox() {
                             GREY);
         }
 
-        // Add waiting tile root module
-        if (denormPos != meshSeedPosition)
-            world->addBlock(0, buildNewBlockCode,
-                            denormPos + getEntryPointRelativePos(Z_R_EPL), WHITE);
+        // Add waiting tile EPL modules
+        for (int i = 0; i < XBranch; i++) {
+                MeshComponent epl =ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)i);
+                if (denormPos != meshSeedPosition or i != ZBranch) {
+                    world->addBlock(0, buildNewBlockCode,
+                                    denormPos + getEntryPointRelativePos(epl), YELLOW);
+                }
+        }       
                     
     }
 
@@ -654,33 +663,13 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
 }
 
 void MeshAssemblyBlockCode::feedBranches() {
-    bool branchFed[4] = {0}; 
     for (int bi = 0; bi < XBranch; bi++) {
-        if (ruleMatcher->shouldGrowBranch(norm(catom->position), (BranchIndex)bi)) {
-            MeshComponent tEPL = ruleMatcher->getTargetEPLComponentForBranch((BranchIndex)bi);
-            if (not branchFed[MeshRuleMatcher::getBranchForEPL(tEPL)]) {
-                branchFed[MeshRuleMatcher::getBranchForEPL(tEPL)] = true;
-                handleMeshComponentInsertion(tEPL);
-            }
-        }        
+        handleModuleInsertionToBranch(static_cast<BranchIndex>(bi));
     }
 }
 
 bool MeshAssemblyBlockCode::isAtGroundLevel() {
     return catom->position[2] == meshSeedPosition[2];
-}
-
-std::array<bool, 7> MeshAssemblyBlockCode::getFeedingRequirements() {
-    std::array<bool, 7> requirements;
-    for (short bi = 0; bi < N_BRANCHES; bi++) {        
-        requirements[bi] = ruleMatcher->shouldGrowPyramidBranch(
-            norm(catom->position), static_cast<BranchIndex>(bi));
-    }
-
-    requirements[6] = not (ruleMatcher->isOnXPyramidBorder(norm(catom->position))
-                           or ruleMatcher->isOnYPyramidBorder(norm(catom->position)));
-    
-    return requirements;
 }
 
 /************************************************************************

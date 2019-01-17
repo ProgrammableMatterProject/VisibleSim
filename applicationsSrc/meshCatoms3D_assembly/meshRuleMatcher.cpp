@@ -87,6 +87,21 @@ Cell3DPosition MeshRuleMatcher::getComponentPosition(MeshComponent comp) {
     return comp < 47 ? componentPosition[comp] : Cell3DPosition();
 }
 
+MeshComponent MeshRuleMatcher::getDefaultEPLComponentForBranch(BranchIndex bi) {
+    switch(bi) {
+        case ZBranch: return Z_EPL;
+        case RevZBranch: return RevZ_EPL;
+        case RZBranch: return RZ_EPL;
+        case LZBranch: return LZ_EPL;
+        default: break;
+    }
+
+    cerr << "getDefaultEPLComponentForBranch: invalid input: " << bi << endl;
+    VS_ASSERT(false);
+
+    return R; // unreachable
+}
+
 MeshComponent MeshRuleMatcher::getTargetEPLComponentForBranch(BranchIndex bi) {
     switch(bi) {
         case ZBranch: return RevZ_EPL;
