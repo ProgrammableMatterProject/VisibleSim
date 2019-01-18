@@ -30,16 +30,32 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         // Forward message to coordinator
         P2PNetworkInterface* coordItf =
             mabc.catom->getInterface(mabc.coordinatorPos);
-        VS_ASSERT_MSG(coordItf, "cannot find coordinator among neighbor interfaces");
-        mabc.sendMessage(this->clone(), coordItf, MSG_DELAY_MC, 0);
-        mabc.log_send_message();
+        if (coordItf and coordItf->isConnected())
+            mabc.sendMessage(this->clone(), coordItf, MSG_DELAY_MC, 0);
+        else return;
     } else if (mabc.role == Support) {
         // Forward message to ActiveBeamTip for forwarding to root
         P2PNetworkInterface* btItf =
             mabc.catom->getInterface(mabc.branchTipPos);
         VS_ASSERT_MSG(btItf, "cannot find branch tip among neighbor interfaces");
         mabc.sendMessage(this->clone(), btItf, MSG_DELAY_MC, 0);
-        mabc.log_send_message();
+    } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)) {
+        // Forward up the current branch to vbranch tip
+        // cout << "catom : " << mabc.catom->position << endl;
+        // cout << "norm : " << mabc.norm(mabc.catom->position) << endl;
+        Cell3DPosition pos = mabc.catom->position +
+            mabc.ruleMatcher->getBranchUnitOffset(
+                mabc.ruleMatcher->getBranchIndexForNonRootPosition(
+                    mabc.norm(mabc.catom->position)
+                    + (mabc.norm(mabc.catom->position)[2] < 0 ?
+                       Cell3DPosition(0,0,mabc.B) : Cell3DPosition(0,0,0)))); // 00B cuz z<0
+
+        // cout << "tip : " << pos << endl;
+        
+        P2PNetworkInterface* btipItf = mabc.catom->getInterface(pos);
+        
+        VS_ASSERT_MSG(btipItf, "cannot find branch tip among neighbor interfaces");
+        mabc.sendMessage(this->clone(), btipItf, MSG_DELAY_MC, 0);
     } else if (mabc.role == Coordinator) {
         short idx = mabc.getEntryPointLocationForCell(srcPos); VS_ASSERT(idx != -1);
         MeshComponent epl = static_cast<MeshComponent>(idx);
@@ -51,11 +67,12 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         VS_ASSERT(destinationInterface->isConnected());
         mabc.sendMessage(new ProvideTargetCellMessage(tPos, srcPos),
                          destinationInterface, MSG_DELAY_MC, 0);
-        mabc.log_send_message();
     } else {
         mabc.catom->setColor(BLACK);
         VS_ASSERT_MSG(false, "Non coordinator or active beam module should not have received a RequestTargetCellMessage");
     }
+
+    mabc.log_send_message();
 }
 
 void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
@@ -95,6 +112,10 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             mabc.scheduleRotationTo(nextHop);
         }
     }    
+}
+
+void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);        
 }
 
 void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {

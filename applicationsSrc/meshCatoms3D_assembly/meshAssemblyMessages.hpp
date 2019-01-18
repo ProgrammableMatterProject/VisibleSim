@@ -45,6 +45,17 @@ public:
     virtual string getName() const { return "ProvideTargetCell"; }
 };
 
+class CoordinatorReadyMessage : public HandleableMessage {
+public:
+    CoordinatorReadyMessage()
+        : HandleableMessage() {};
+    virtual ~CoordinatorReadyMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() const { return new CoordinatorReadyMessage(*this); }
+    virtual string getName() const { return "CoordinatorReady"; }
+};
+
 class TileNotReadyMessage : public HandleableMessage {
     const Cell3DPosition dstPos;
 public:

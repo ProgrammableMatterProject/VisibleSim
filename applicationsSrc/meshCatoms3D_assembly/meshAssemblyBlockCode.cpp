@@ -600,6 +600,7 @@ bool MeshAssemblyBlockCode::isOnEntryPoint(const Cell3DPosition& pos) const {
 bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
         if (ruleMatcher->isVerticalBranchTip(norm(nPos))
+            or ruleMatcher->isNFromVerticalBranchTip(norm(nPos), 1)
             or ruleMatcher->isTileSupport(norm(nPos))) {
             // Module is delegate coordinator
             P2PNetworkInterface* nItf = catom->getInterface(nPos);

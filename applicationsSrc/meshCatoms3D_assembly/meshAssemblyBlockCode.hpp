@@ -92,6 +92,9 @@ public:
     Catoms3D::Catoms3DBlock *catom;
     MeshCoating::MeshRuleMatcher *ruleMatcher;
 
+    /** CONTINUOUS FEEDING **/
+    bool moduleWaitingOnBranch[4] = {0};
+    
     /** MOTION COORDINATION **/
     bool greenLightIsOn = true;
     bool moduleAwaitingGo = false;

@@ -295,8 +295,12 @@ bool MeshRuleMatcher::isOnPartialBorderMesh(const Cell3DPosition& pos) const {
 }
 
 bool MeshRuleMatcher::isVerticalBranchTip(const Cell3DPosition& pos) const {
+    return isNFromVerticalBranchTip(pos, 0);
+}
+
+bool MeshRuleMatcher::isNFromVerticalBranchTip(const Cell3DPosition& pos, int N) const {
     return (isOnZBranch(pos) or isOnRevZBranch(pos)
-            or isOnLZBranch(pos) or isOnRZBranch(pos)) and m_mod(pos[2], B) == (B - 1);
+            or isOnLZBranch(pos) or isOnRZBranch(pos)) and m_mod(pos[2], B) == (B - N - 1);
 }
 
 bool MeshRuleMatcher::isBranchModule(const Cell3DPosition& pos) const {
@@ -317,14 +321,22 @@ bool MeshRuleMatcher::isTileSupport(const Cell3DPosition& pos) const {
 }
 
 BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos){
-    VS_ASSERT_MSG(isInMesh(pos) and not isTileRoot(pos), "attempting to get branch index of tile root position or position outside of mesh");
+    Cell3DPosition fixPos;
+    fixPos.pt[0] = (pos[0] >= X_MAX ? pos[0] - B : pos[0]);
+    fixPos.pt[1] = (pos[1] >= Y_MAX ? pos[1] - B : pos[1]);
+    fixPos.pt[2] = (pos[2] >= Z_MAX ? pos[2] - B : pos[2]);
+    
+    cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
+    cout << fixPos << endl;
+    cout << pos << endl;
+    VS_ASSERT_MSG(isInMesh(fixPos) and not isTileRoot(fixPos), "attempting to get branch index of tile root fixPosition or fixPosition outside of mesh");
 
-    if (isOnXBranch(pos)) return XBranch;
-    if (isOnYBranch(pos)) return YBranch;
-    if (isOnZBranch(pos)) return ZBranch;
-    if (isOnRevZBranch(pos)) return RevZBranch;
-    if (isOnLZBranch(pos)) return LZBranch;
-    if (isOnRZBranch(pos)) return RZBranch;
+    if (isOnXBranch(fixPos)) return XBranch;
+    if (isOnYBranch(fixPos)) return YBranch;
+    if (isOnZBranch(fixPos)) return ZBranch;
+    if (isOnRevZBranch(fixPos)) return RevZBranch;
+    if (isOnLZBranch(fixPos)) return LZBranch;
+    if (isOnRZBranch(fixPos)) return RZBranch;
 
     VS_ASSERT(false); // Unreachable
     
