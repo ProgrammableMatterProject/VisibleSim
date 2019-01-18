@@ -57,12 +57,17 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         VS_ASSERT_MSG(btipItf, "cannot find branch tip among neighbor interfaces");
         mabc.sendMessage(this->clone(), btipItf, MSG_DELAY_MC, 0);
     } else if (mabc.role == Coordinator) {
-        awaitKeyPressed();            
         short idx = mabc.getEntryPointLocationForCell(srcPos); VS_ASSERT(idx != -1);
         MeshComponent epl = static_cast<MeshComponent>(idx);
 
+        if (not mabc.constructionQueue.empty()) {
+            MeshComponent nextComponent = mabc.constructionQueue.front();
+            
+        } // TODO: else redirect to EPL
+        
+        
         Cell3DPosition tPos;
-        tPos = mabc.catom->position + mabc.getNextTargetForEPL(epl);                
+        // tPos = mabc.catom->position + mabc.getNextTargetForEPL(epl);                
         
         // send to requesting catom
         VS_ASSERT(destinationInterface->isConnected());
@@ -79,7 +84,9 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 
-    if (mabc.role == ActiveBeamTip or mabc.role == Support) {
+    if (mabc.role == ActiveBeamTip
+        or mabc.role == Support
+        or mabc.role == PassiveBeam) {
         // cout << mabc.catom->blockId << "    " <<
         //     mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(mabc.norm(mabc.catom->position))) << endl;
         // Forward message to mobile module or support depending on case

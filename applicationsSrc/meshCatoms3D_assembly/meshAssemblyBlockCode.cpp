@@ -372,41 +372,41 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
     }
 }
 
-void MeshAssemblyBlockCode::discardNextTargetForComponent(MeshComponent comp) {
-    short idx = getEntryPointLocationForCell(getEntryPointForMeshComponent(comp)) - RevZ_EPL;
-    if (not targetQueueForEPL[idx].empty())
-        targetQueueForEPL[idx].pop();
-}
+// void MeshAssemblyBlockCode::discardNextTargetForComponent(MeshComponent comp) {
+//     short idx = getEntryPointLocationForCell(getEntryPointForMeshComponent(comp)) - RevZ_EPL;
+//     if (not targetQueueForEPL[idx].empty())
+//         targetQueueForEPL[idx].pop();
+// }
 
-const Cell3DPosition MeshAssemblyBlockCode::getNextTargetForEPL(MeshComponent epl) {
-    short idx = epl - RevZ_EPL;
-    if (not targetQueueForEPL[idx].empty()) {
-        const Cell3DPosition& tPos = coordinatorPos +
-            ruleMatcher->getComponentPosition(targetQueueForEPL[idx].front());
-        targetQueueForEPL[idx].pop();
-        return tPos;
-    }
+// const Cell3DPosition MeshAssemblyBlockCode::getNextTargetForEPL(MeshComponent epl) {
+//     short idx = epl - RevZ_EPL;
+//     if (not targetQueueForEPL[idx].empty()) {
+//         const Cell3DPosition& tPos = coordinatorPos +
+//             ruleMatcher->getComponentPosition(targetQueueForEPL[idx].front());
+//         targetQueueForEPL[idx].pop();
+//         return tPos;
+//     }
 
-    switch (epl) {
-        case RevZ_EPL: return ruleMatcher->getComponentPosition(Z_EPL);
-        case RevZ_R_EPL: return ruleMatcher->getComponentPosition(RevZ_R_EPL);
-        case RZ_L_EPL: return ruleMatcher->getComponentPosition(RZ_L_EPL);
-        case RZ_EPL: return ruleMatcher->getComponentPosition(LZ_EPL);
-        case RZ_R_EPL: return ruleMatcher->getComponentPosition(RZ_R_EPL);
-        case Z_R_EPL: return ruleMatcher->getComponentPosition(Z_R_EPL);
-        case Z_EPL: return ruleMatcher->getComponentPosition(RevZ_EPL);
-        case Z_L_EPL: return ruleMatcher->getComponentPosition(Z_L_EPL);
-        case LZ_R_EPL: return ruleMatcher->getComponentPosition(RZ_EPL);
-        case LZ_EPL: return ruleMatcher->getComponentPosition(RZ_EPL);
-        case LZ_L_EPL: return ruleMatcher->getComponentPosition(LZ_R_EPL);
-        case RevZ_L_EPL: return ruleMatcher->getComponentPosition(RevZ_L_EPL);
-        default:
-            cerr << "getNextTargetForEPL(" << epl << ")" << endl;
-            VS_ASSERT_MSG(false, "getNextTargetForEPL: input is not an EPL");
-    }
+//     switch (epl) {
+//         case RevZ_EPL: return ruleMatcher->getComponentPosition(Z_EPL);
+//         case RevZ_R_EPL: return ruleMatcher->getComponentPosition(RevZ_R_EPL);
+//         case RZ_L_EPL: return ruleMatcher->getComponentPosition(RZ_L_EPL);
+//         case RZ_EPL: return ruleMatcher->getComponentPosition(LZ_EPL);
+//         case RZ_R_EPL: return ruleMatcher->getComponentPosition(RZ_R_EPL);
+//         case Z_R_EPL: return ruleMatcher->getComponentPosition(Z_R_EPL);
+//         case Z_EPL: return ruleMatcher->getComponentPosition(RevZ_EPL);
+//         case Z_L_EPL: return ruleMatcher->getComponentPosition(Z_L_EPL);
+//         case LZ_R_EPL: return ruleMatcher->getComponentPosition(RZ_EPL);
+//         case LZ_EPL: return ruleMatcher->getComponentPosition(RZ_EPL);
+//         case LZ_L_EPL: return ruleMatcher->getComponentPosition(LZ_R_EPL);
+//         case RevZ_L_EPL: return ruleMatcher->getComponentPosition(RevZ_L_EPL);
+//         default:
+//             cerr << "getNextTargetForEPL(" << epl << ")" << endl;
+//             VS_ASSERT_MSG(false, "getNextTargetForEPL: input is not an EPL");
+//     }
 
-    return Cell3DPosition(); // unreachable
-}
+//     return Cell3DPosition(); // unreachable
+// }
 
 short MeshAssemblyBlockCode::getEntryPointLocationForCell(const Cell3DPosition& pos) {
     for (int i = 0; i < 12; i++)

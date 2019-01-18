@@ -554,7 +554,7 @@ getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const {
 }
 
 short MeshRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) const {
-    cout << "norm: " << pos << endl;
+    cout << "norm: " <<pos << endl;
     
     if (isInMesh(pos) and not isTileRoot(pos)) {
         if (isOnZBranch(pos)) return ZBranch;
