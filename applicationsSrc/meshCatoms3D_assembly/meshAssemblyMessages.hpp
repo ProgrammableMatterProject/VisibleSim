@@ -45,6 +45,10 @@ public:
     virtual string getName() const { return "ProvideTargetCell"; }
 };
 
+/**
+ * Sent by a coordinator that has just arrived in order to ask waiting module to
+ *  resend their RequestTargetCell
+ */
 class CoordinatorReadyMessage : public HandleableMessage {
 public:
     CoordinatorReadyMessage()

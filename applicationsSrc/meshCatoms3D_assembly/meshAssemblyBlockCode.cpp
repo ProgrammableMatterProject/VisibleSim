@@ -125,6 +125,12 @@ void MeshAssemblyBlockCode::startup() {
         branch = static_cast<BranchIndex>(bi);
     } else if (meshSeedPosition[2] - catom->position[2] > 1) {
         role = PassiveBeam; // nothing to be done here for visual decoration only
+
+        // Add z = B to ensure that level -1 catoms are handled properly
+        short bi = ruleMatcher->getBranchIndexForNonRootPosition(norm(catom->position)
+                                                                 + Cell3DPosition(0, 0, B));
+        VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
+        branch = static_cast<BranchIndex>(bi);
     } else {
         // Catom is active module summoned from the sandbox and that will be used for scaffolding
         role = FreeAgent;
@@ -477,15 +483,15 @@ bool MeshAssemblyBlockCode::handleModuleInsertionToBranch(BranchIndex bid) {
 const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForModuleOnBranch(BranchIndex bid) {
     MeshComponent epl;
     switch(bid) {
-        case RevZBranch: epl = RevZ_EPL; break;
-        case ZBranch: epl = Z_EPL; break;
+        case RevZBranch: epl = Z_EPL; break;
+        case ZBranch: epl = RevZ_EPL; break;
             // if (catomsSpawnedToVBranch[ZBranch] == 0) return getEntryPointPosition(Z_L_EPL);
             // else if (catomsSpawnedToVBranch[ZBranch] == 1)return getEntryPointPosition(Z_R_EPL);
             // else return getEntryPointPosition(Z_EPL);
-        case LZBranch: epl = LZ_EPL; break;
+        case LZBranch: epl = RZ_EPL; break;
             // if (catomsSpawnedToVBranch[LZBranch] == 0) return getEntryPointPosition(LZ_R_EPL);
             // else return getEntryPointPosition(LZ_EPL);
-        case RZBranch: epl = RZ_EPL; break;
+        case RZBranch: epl = LZ_EPL; break;
             // if (catomsSpawnedToVBranch[RZBranch] == 0) return getEntryPointPosition(RZ_R_EPL                                                                                 );
             // else return getEntryPointPosition(RZ_EPL);
         default: throw NotImplementedException("getEntryPointForModuleOnBranch: invalid bid");
@@ -552,18 +558,16 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
             shouldGrowPyramidBranch(norm(catom->position), (BranchIndex)bi) ? B - 1 : -1;
     }
 
-    // TODO: Resume Catom flows on all eligible branches by turning the tip lights green
-    // This means that upon receiving a probeLightRequest, branch tips and/or supports must
-    //  first ask the TR (perhaps the reply can simply be a ProvideTargetCell in that case.
-    // If the TR is not present, the catoms turn RED until incoming horizontal branches notify
-    //  it of their completion (with an exception for front-left corners).
-    // if (not isAtGroundLevel())
-        // for (short bi = 0; bi < XBranch; bi++) {
-        //     P2PNetworkInterface* nItf = catom->getInterface(
-        //         catom->position - ruleMatcher->getBranchUnitOffset(bi));
-
-        // }
-
+    // Inspect each incoming vertical branch to see where catoms are ready to take part in
+    //  the construction of the tile
+    for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
+        if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {            
+            P2PNetworkInterface* nItf = catom->getInterface(nPos);
+            VS_ASSERT(nItf and nItf->isConnected());
+            sendMessage(new CoordinatorReadyMessage(), nItf, MSG_DELAY_MC, 0);
+        }
+    }
+    
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
         new InterruptionEvent(getScheduler()->now(),
@@ -574,10 +578,14 @@ void MeshAssemblyBlockCode::initializeSupportModule() {
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
         if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {
             branchTipPos = nPos;
+            short bi = ruleMatcher->determineBranchForPosition(
+                norm(nPos[2] < meshSeedPosition[2] ?
+                     nPos + Cell3DPosition(0,0,B) : catom->position));
+            branch = static_cast<BranchIndex>(bi);
             return;
         }
-    }
-
+    }    
+    
     VS_ASSERT_MSG(false, "cannot find branch tip among neighbor modules");
 }
 

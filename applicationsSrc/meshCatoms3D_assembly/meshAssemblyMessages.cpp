@@ -57,6 +57,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         VS_ASSERT_MSG(btipItf, "cannot find branch tip among neighbor interfaces");
         mabc.sendMessage(this->clone(), btipItf, MSG_DELAY_MC, 0);
     } else if (mabc.role == Coordinator) {
+        awaitKeyPressed();            
         short idx = mabc.getEntryPointLocationForCell(srcPos); VS_ASSERT(idx != -1);
         MeshComponent epl = static_cast<MeshComponent>(idx);
 
@@ -116,6 +117,50 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);        
+    Cell3DPosition dstPos = mabc.getEntryPointForModuleOnBranch(mabc.branch);
+    cout << "branch: " <<mabc.branch << endl;
+    cout << "catom: " << mabc.catom->position << endl;
+    cout << "dstPos: " << dstPos << endl;
+    cout << "role: " << mabc.role << endl;
+    
+    if (mabc.role == ActiveBeamTip or mabc.role == Support) {
+        P2PNetworkInterface* itf =
+            mabc.catom->getInterface(dstPos) ?: mabc.catom->getInterface(
+                mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(
+                                    mabc.norm(mabc.catom->position))));  
+
+        VS_ASSERT(itf);
+        if (not itf->isConnected()) {
+            cout << "here" << endl;
+            
+            // Beam Tip and no Support nor waiting module, forward to next branch module
+            Cell3DPosition pos = mabc.catom->position -
+                mabc.ruleMatcher->getBranchUnitOffset(
+                    mabc.ruleMatcher->getBranchIndexForNonRootPosition(
+                        mabc.norm(mabc.catom->position)
+                        + (mabc.norm(mabc.catom->position)[2] < 0 ?
+                           Cell3DPosition(0,0,mabc.B) : Cell3DPosition(0,0,0)))); // 00B cuz z<0
+
+            itf = mabc.catom->getInterface(pos);
+            VS_ASSERT_MSG(itf, "Cannot find tip2 among neighbor interface");
+        }
+
+        mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
+        mabc.log_send_message();
+    } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)) {
+        // Forward to waiting module
+        
+        P2PNetworkInterface* itf = mabc.catom->getInterface(dstPos);
+        VS_ASSERT_MSG(itf, "cannot find dest among neighbor interfaces");
+        mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
+        mabc.log_send_message();
+    } else {
+        // Module is free agent waiting for something to do
+        VS_ASSERT(mabc.role == FreeAgent);
+
+        // Resend RequestTargetCell
+        VS_ASSERT(mabc.requestTargetCellFromTileRoot());
+    }
 }
 
 void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
