@@ -32,7 +32,7 @@ int CsgCatoms3DBlockCode::side_size = 0;
 
 CsgCatoms3DBlockCode::CsgCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "CsgCatoms3DBlockCode constructor" << endl;
-    scheduler = getScheduler();
+	scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
 }
 
@@ -50,28 +50,19 @@ void CsgCatoms3DBlockCode::generateBitmap(int side_size) {
 }
 
 void CsgCatoms3DBlockCode::startup() {
-	stringstream info;
-	info << "Starting  ";
-	scheduler->trace(info.str(),hostBlock->blockId);
+	console << "Starting\n";
 
-    hasPosition = false;
-	//if (catom->blockId==1) {
-
-        //stoyUtils.readFile("data/mug-high.stoy");
-        //meshUtils.readFile("data/mug-highresolution.obj");
-        //bitmapUtils.readFile("data/mug.bmp");
-        //myPosition = Catoms3DWorld::getWorld()->lattice->gridToWorldPosition(catom->position);
-
-        if (BlockCode::target->isInTarget(catom->position)) {
-            catom->setColor(BlockCode::target->getTargetColor(catom->position));
-        }
-        else {
-            catom->setVisible(false);
-        }
-
-        //hasPosition = true;
-        //sendCSGMessage();
-	//}
+	hasPosition = false;
+	if (target==NULL) {
+		cerr << "No target in configuration file" << endl;
+	}
+	if (BlockCode::target->isInTarget(catom->position)) {
+		//catom->setColor(RED);
+		catom->setColor(BlockCode::target->getTargetColor(catom->position));
+	}
+	else {
+		catom->setVisible(false);
+	}
 }
 
 

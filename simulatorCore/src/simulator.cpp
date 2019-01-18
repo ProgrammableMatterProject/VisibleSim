@@ -183,7 +183,7 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 	parseBlockList();
 	parseObstacles();
 	parseTarget();
-    parseCustomizations();
+	parseCustomizations();
 }
 
 Simulator::IDScheme Simulator::determineIDScheme() {

@@ -35,6 +35,7 @@ TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of 
 # TEMP_CCFLAGS += -DDEBUG_NEIGHBORHOOD #: trace robot neighborhood updates and interface linking
 # TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
+TEMP_CCFLAGS += -DDEBUG_CSG #: trace CSG parsing
 TEMP_CCFLAGS += -DshowStatsFPS
 #TEMP_CCFLAGS += -DUseC3DSkewFCC #: if activated, Catoms3D will use a FCC Lattice with skew coordinates
 
