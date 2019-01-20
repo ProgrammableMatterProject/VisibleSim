@@ -266,146 +266,147 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 // fonction associée aux interruptions clavier
 // - c : caractère saisi
 // - x,y : coordonnée du curseur dans la fenètre
-void GlutContext::keyboardFunc(unsigned char c, int x, int y)
-{
-    //  static int modeScheduler;
-    Camera* camera=getWorld()->getCamera();
-    // si une interface a le focus
-    if (debugWindow->keyFunc(c)) {
+void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
+	//  static int modeScheduler;
+	Camera* camera=getWorld()->getCamera();
+	// si une interface a le focus
+	if (debugWindow->keyFunc(c)) {
 
-    } else {
-        switch(c) {
-            case 27 : case 'q' : case 'Q' : // quit
-                glutLeaveMainLoop();
-                break;
-            case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
-            case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
-            case '+' : camera->mouseZoom(0.5); break;
-            case '-' : camera->mouseZoom(-0.5); break;
-            case 'T' : case 't' :
-                if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
-                    mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
-                    popup->setTextSize(TextSize::TEXTSIZE_LARGE);
-                } else {
-                    mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD);
-                    popup->setTextSize(TextSize::TEXTSIZE_STANDARD);
-                }
-                break;
-                //  case 'l' : showLinks = !showLinks; break;
-            case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
-                //          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
-                //case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
-            case 'd' : getScheduler()->stop(getScheduler()->now()); break;
-            case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
-                //case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
-            case 'z' : {
-                World *world = BaseSimulator::getWorld();
-                GlBlock *slct=world->getselectedGlBlock();
-                if (slct) {
-                    world->getCamera()->setTarget(slct->getPosition());
-                }
-            }
-                break;
-            case 'w' : case 'W' :
-                fullScreenMode = !fullScreenMode;
-                if (fullScreenMode) {
-                    glutFullScreen();
-                } else {
-                    glutReshapeWindow(initialScreenWidth,initialScreenHeight);
-                    glutPositionWindow(0,0);
-                }
-                break;
-            case 'h' :
-                if (!helpWindow) {
-                    BaseSimulator::getWorld()->createHelpWindow();
-                }
-                helpWindow->showHide();
-                break;
-            case 'i' : case 'I' :
-                mainWindow->openClose();
-                break;
-            case 'S' : {
-                if (not saveScreenMode) {
-                    // Will start animation capture,
-                    //  make sure animation directory exists 
-                    int err; extern int errno;
-                    struct stat sb;
-                    animationDirName = generateTimestampedDirName("animation");
-                    static const char* animationDirNameC = animationDirName.c_str();
-
-                    err = stat(animationDirNameC, &sb);
-                    if (err and errno == ENOENT) {
-                        // Create directory
-                        err = mkdir(animationDirNameC, S_IRWXU);
-                        if (err != 0) {
-                            cerr << "An error occured when creating the directory for animation export" << endl;
-                            break;
-                        }
-                    }
-                    // else: directory exists, all good
-                    cerr << "Recording animation frames in directory: "
-                         << animationDirName << endl;
-                } else {
-                    cerr << "Recording of " << animationDirName.c_str()
-                         << " has ended, attempting conversion" << endl;
-                    // Add a script for converting into a video, asynchronously
+	} else {
+		switch(c) {
+			case 27 : case 'q' : case 'Q' : // quit
+				glutLeaveMainLoop();
+			break;
+			case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
+			case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
+			case '+' : camera->mouseZoom(0.5); break;
+			case '-' : camera->mouseZoom(-0.5); break;
+			case 'T' : case 't' :
+				if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
+					mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
+					popup->setTextSize(TextSize::TEXTSIZE_LARGE);
+				} else {
+					mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD);
+					popup->setTextSize(TextSize::TEXTSIZE_STANDARD);
+				}
+				break;
+			//  case 'l' : showLinks = !showLinks; break;
+			case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
+//          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
+//          case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
+			case 'd' : getScheduler()->stop(getScheduler()->now()); break;
+			case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
+				//case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
+			case 'z' : {
+				World *world = BaseSimulator::getWorld();
+				GlBlock *slct=world->getselectedGlBlock();
+				if (slct) {
+					world->getCamera()->setTarget(slct->getPosition());
+				}
+			}
+			break;
+			case 'w' : case 'W' :
+				fullScreenMode = !fullScreenMode;
+				if (fullScreenMode) {
+					glutFullScreen();
+				} else {
+					glutReshapeWindow(initialScreenWidth,initialScreenHeight);
+					glutPositionWindow(0,0);
+				}
+			break;
+			case 'h' :
+				if (!helpWindow) {
+					BaseSimulator::getWorld()->createHelpWindow();
+				}
+				helpWindow->showHide();
+			break;
+			case 'i' : case 'I' :
+				mainWindow->openClose();
+			break;
+			case 'S' : {
+				if (not saveScreenMode) {
+					// Will start animation capture,
+					//  make sure animation directory exists 
+					int err; extern int errno;
+					struct stat sb;
+					animationDirName = generateTimestampedDirName("animation");
+					static const char* animationDirNameC = animationDirName.c_str();
+					err = stat(animationDirNameC, &sb);
+					if (err and errno == ENOENT) {
+							// Create directory
+							err = mkdir(animationDirNameC, S_IRWXU);
+							if (err != 0) {
+									cerr << "An error occured when creating the directory for animation export" << endl;
+									break;
+							}
+					}
+					// else: directory exists, all good
+					cerr << "Recording animation frames in directory: "
+						<< animationDirName << endl;
+				} else {
+					cerr << "Recording of " << animationDirName.c_str()
+						<< " has ended, attempting conversion" << endl;
+						// Add a script for converting into a video, asynchronously
 #ifndef WIN32
-                    std::async([](const std::string& animDir){
-                                   const string& vidName = generateTimestampedFilename("video", "mkv");
-                                   int r = system(
-                                       string("ffmpeg -pattern_type glob -framerate 30 -i \""
-                                              + animationDirName + "/*.ppm\" " + vidName
-                                              + ">/dev/null 2>/dev/null").c_str());
-                                   
-                                   if (r == 0) {
-                                       system(string("rm -rf " + animationDirName).c_str());
-                                       cerr << "Animation video exported to "
-                                            << vidName << endl;
-                                   } else {
-                                       cerr << animationDirName.c_str()
-                                            << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
-                                   }
-                               }, animationDirName);
+					std::async([](const std::string& animDir){
+						const string& vidName = generateTimestampedFilename("video", "mkv");
+						int r = system(
+							string("ffmpeg -pattern_type glob -framerate 30 -i \""
+							+ animationDirName + "/*.ppm\" " + vidName
+							+ ">/dev/null 2>/dev/null").c_str());
+						if (r == 0) {
+							system(string("rm -rf " + animationDirName).c_str());
+							cerr << "Animation video exported to "
+								<< vidName << endl;
+						} else {
+							cerr << animationDirName.c_str() 
+							  << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
+						}
+					}, animationDirName);
 #endif
-                }
-                
-                saveScreenMode=!saveScreenMode;
-            } break;
-            case 's' : {
-                const string& ssName = generateTimestampedFilename("capture", "ppm");
-                string ssNameJpg = ssName;
-                ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
-                saveScreen(ssName.c_str());
+				}
+				saveScreenMode=!saveScreenMode;
+			} break;
+			case 's' : {
+				const string& ssName = generateTimestampedFilename("capture", "ppm");
+				string ssNameJpg = ssName;
+				ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
+				saveScreen(ssName.c_str());
 #ifndef WIN32
-                std::async([ssNameJpg, ssName](){
-                               system(string("convert " + ssName + " " + ssNameJpg
-                                             + " >/dev/null 2>/dev/null").c_str());
-                           });
+				std::async([ssNameJpg, ssName](){
+					system(string("convert " + ssName + " " + ssNameJpg
+						+ " >/dev/null 2>/dev/null").c_str());
+				});
 #endif
-                cout << "Screenshot saved to files: " << ssName
-                     << " and " << ssNameJpg << endl;
-            } break;
+				cout << "Screenshot saved to files: " << ssName
+						<< " and " << ssNameJpg << endl;
+			} break;
 
-            case 'B' : {
-                World *world = BaseSimulator::getWorld();
-                world->toggleBackground();
-            } break;
-            case 32: { // SPACE
-                Scheduler *scheduler = getScheduler();
-                scheduler->toggle_pause();
-                if (scheduler->state == Scheduler::State::PAUSED)
-                    cout << "[t-" << scheduler->now()
-                         << "] Simulation Paused. Press <space> again to resume..." << endl;
-                else
-                    cout << "[t-" << scheduler->now()
-                         << "] Simulation Resumed." << endl;
-            } break;
-            case 'p' :
-                BaseSimulator::getWorld()->simulatePolymer();
-                break;
-        }
-    }
-    glutPostRedisplay();
+			case 'B' : {
+				World *world = BaseSimulator::getWorld();
+				world->toggleBackground();
+			} break;
+			case 32: { // SPACE
+				Scheduler *scheduler = getScheduler();
+				scheduler->toggle_pause();
+				if (scheduler->state == Scheduler::State::PAUSED) {
+					cout << "[t-" << scheduler->now()
+						<< "] Simulation Paused. Press <space> again to resume..." << endl;
+				} else {
+					cout << "[t-" << scheduler->now()
+						<< "] Simulation Resumed." << endl;
+				}
+			} break;
+			case 'p' :
+				BaseSimulator::getWorld()->simulatePolymer();
+			break;
+			case '!': 
+				BaseSimulator::getWorld()->exportSTLModel("model.stl");
+			break;
+		}
+			
+	}
+	glutPostRedisplay();
 }
 
 /////////////////////////////////////run/////////////////////////////////////////

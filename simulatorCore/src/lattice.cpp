@@ -111,7 +111,6 @@ bool Lattice::cellHasBlock(const Cell3DPosition &p) const {
 bool Lattice::isInGrid(const Cell3DPosition &p) const {
     const Cell3DPosition& lb = getGridLowerBounds();
     const Cell3DPosition& ub = getGridUpperBounds();
-    
     return isInRange(p[0], lb.pt[0], ub.pt[0])
         && isInRange(p[1], lb.pt[1], ub.pt[1])
         && isInRange(p[2], lb.pt[2], ub.pt[2]);

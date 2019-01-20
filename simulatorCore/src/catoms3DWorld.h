@@ -169,26 +169,31 @@ public:
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
      */
-    virtual void linkBlock(const Cell3DPosition &pos);
+	virtual void linkBlock(const Cell3DPosition &pos);
 
-    virtual void glDraw();
-    virtual void glDrawId();
-    virtual void glDrawIdByMaterial();
-    virtual void glDrawSpecificBg();
-    void updateGlData(BuildingBlock *bb);
-    void updateGlData(Catoms3DBlock*blc,const Color &color);
-    void updateGlData(Catoms3DBlock*blc, bool visible);
-    void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
-    void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
-    void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
-    virtual void setSelectedFace(int n);
-    virtual void exportConfiguration();
+	virtual void glDraw();
+	virtual void glDrawId();
+	virtual void glDrawIdByMaterial();
+	virtual void glDrawSpecificBg();
+	void updateGlData(BuildingBlock *bb);
+	void updateGlData(Catoms3DBlock*blc,const Color &color);
+	void updateGlData(Catoms3DBlock*blc, bool visible);
+	void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
+	void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
+	void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
+	virtual void setSelectedFace(int n);
+	virtual void exportConfiguration();
 
+	/**
+	 * \brief Export a 3D model in STL format to print the whole configuration
+	 * \param title : title of the STL file
+	 * \result Returns true if the faces was well written
+	 */
+	virtual bool exportSTLModel(string title);
 /**
  * \brief load the background textures (internal)
  */
     void loadTextures(const string &str);
-
 	void simulatePolymer();
 };
 

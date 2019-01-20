@@ -127,8 +127,8 @@ class ObjData
   std::vector <FaceTri*> tabFaces;
   vertexPosNrmTx *tabVertices;
   GLuint *tabIndices;
-  GLuint nbreIndices;
-  GLuint vboId,indexVboId;
+  GLuint nbreIndices; 
+	GLuint vboId,indexVboId;
 
   char nom[128],nomOriginal[64];
   Mtl *objMtl;
@@ -140,6 +140,7 @@ class ObjData
   void glDraw(void);
   void glDrawId(void);
   void createVertexArray();
+	void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -159,6 +160,7 @@ public:
 	void glDrawId(int &i);
 	void setLightedColor(GLfloat *color);
 	inline string getObjMtlName(int pos) { return tabObj[pos]->objMtl->name; };
+	void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const;
 };
 
 }

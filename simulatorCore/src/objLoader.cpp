@@ -378,9 +378,15 @@ void ObjLoader::createVertexArrays() {
 	}
 }
 
+void ObjLoader::saveSTLfacets(ofstream &fout,const Vector3D &v, int ind0,int ind1) const {
+	for (const ObjData *obj:tabObj) {
+		obj->saveSTLfacets(fout,v,ind0,ind1);
+	}
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
-// class objData
+// class ObjData
 ObjData::ObjData(const char *str) {
 	objMtl=NULL;
 	nbreIndices=0;
@@ -454,6 +460,41 @@ void ObjData::glDrawId(void) {
 //	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 //	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void ObjData::saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const {
+	vertexPosNrmTx* pv;
+	Vector3D p0,p1,p2,normal,v1,v2;
+	GLuint *ptrInd = tabIndices+ind0*3;
+	int i=(ind1==-1)?(nbreIndices/3-ind0):(ind1-ind0);
+	while(i--) {
+		pv =  tabVertices + *ptrInd++;
+		p0.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
+		pv =  tabVertices + *ptrInd++;
+		v1.set(pv->x,pv->y,pv->z,1.0);
+		p1.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
+		pv =  tabVertices + *ptrInd++;
+		p2.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
+		
+		v1 = p1-p0;
+		v2 = p2-p0;
+		if (v1.norme2()!=0 && v2.norme2()!=0) {
+			normal = v1^v2;
+			normal.normer_interne();
+			char buf[25];
+			snprintf(buf,25,"%5.3f %5.3f %5.3f", normal[0], normal[1], normal[2]);
+			file << "          facet normal " << buf << endl;
+			file << "            outer loop" << endl;
+			snprintf(buf,25,"%5.3f %5.3f %5.3f", p0[0], p0[1], p0[2]);
+			file << "              vertex " << buf << endl;
+			snprintf(buf,25,"%5.3f %5.3f %5.3f", p1[0], p1[1], p1[2]);
+			file << "              vertex " << buf << endl;
+			snprintf(buf,25,"%5.3f %5.3f %5.3f", p2[0], p2[1], p2[2]);
+			file << "              vertex " << buf << endl;
+			file << "            endloop" << endl;
+			file << "          endfacet" << endl;
+		}
+	}
 }
 
 void ObjData::addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3) {

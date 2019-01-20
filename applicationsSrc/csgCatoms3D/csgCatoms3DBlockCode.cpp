@@ -61,7 +61,7 @@ void CsgCatoms3DBlockCode::startup() {
 		catom->setColor(BlockCode::target->getTargetColor(catom->position));
 	}
 	else {
-		catom->setVisible(false);
+		BaseSimulator::getWorld()->deleteBlock(catom);
 	}
 }
 
