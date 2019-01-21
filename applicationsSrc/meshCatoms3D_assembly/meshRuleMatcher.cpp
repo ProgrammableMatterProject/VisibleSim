@@ -622,7 +622,7 @@ AgentRole MeshRuleMatcher::getRoleForPosition(const Cell3DPosition& pos) const {
     }
 }
 
-const Cell3DPosition MeshRuleMatcher::getPositionForMeshComponent(MeshComponent mc) const {
+const Cell3DPosition MeshRuleMatcher::getPositionForMeshComponent(MeshComponent mc) {
     switch(mc) {
         case R: return Cell3DPosition(0,0,0);
         case S_Z: return Cell3DPosition(1,1,0);
@@ -714,7 +714,7 @@ const vector<Cell3DPosition> MeshRuleMatcher::getAllGroundTileRootPositionsForMe
     return tileRoots;    
 }
 
-Cell3DPosition MeshRuleMatcher::getIndexOfBranchTipUnder(BranchIndex bi) const {
+Cell3DPosition MeshRuleMatcher::getPositionOfBranchTipUnder(BranchIndex bi) {
     switch(bi) {
         case ZBranch: return Cell3DPosition(1, 1, -1);
         case RevZBranch: return Cell3DPosition(0, 0, -1);

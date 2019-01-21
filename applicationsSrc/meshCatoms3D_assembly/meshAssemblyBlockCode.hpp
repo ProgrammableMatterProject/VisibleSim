@@ -84,6 +84,11 @@ public:
     inline const Cell3DPosition getTileRelativePosition() const {
         return catom->position - coordinatorPos;
     }
+
+    inline BranchIndex getBranchIndex(const Cell3DPosition& pos) const {
+        return ruleMatcher->getBranchIndexForNonRootPosition(
+            norm(pos) + (norm(pos)[2] < 0 ? Cell3DPosition(0,0,B) : Cell3DPosition(0,0,0)));
+    }
     
     int debugColorIndex = 0;
     
@@ -94,7 +99,7 @@ public:
     MeshCoating::MeshRuleMatcher *ruleMatcher;
 
     /** CONTINUOUS FEEDING **/
-    bool moduleWaitingOnBranch[4] = {0};
+    bool moduleWaitingOnBranch[4] = { false, false, false, false};
     
     /** MOTION COORDINATION **/
     bool greenLightIsOn = true;

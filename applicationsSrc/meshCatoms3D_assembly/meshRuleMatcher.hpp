@@ -166,7 +166,7 @@ public:
      * @param component component to evaluate
      * @return position of module with evaluated role 
      */
-    const Cell3DPosition getPositionForMeshComponent(MeshComponent component) const;
+    static const Cell3DPosition getPositionForMeshComponent(MeshComponent component);
 
     /** 
      * Return the expected position of a catom representing a certain mesh component,
@@ -189,7 +189,7 @@ public:
      */
     const vector<Cell3DPosition> getAllGroundTileRootPositionsForMesh() const;
 
-    Cell3DPosition getIndexOfBranchTipUnder(BranchIndex bi) const;
+    static Cell3DPosition getPositionOfBranchTipUnder(BranchIndex bi);
 
     /** 
      * In order to go up one or several tile levels, a catom has to zigzag 

@@ -45,10 +45,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         // cout << "norm : " << mabc.norm(mabc.catom->position) << endl;
         Cell3DPosition pos = mabc.catom->position +
             mabc.ruleMatcher->getBranchUnitOffset(
-                mabc.ruleMatcher->getBranchIndexForNonRootPosition(
-                    mabc.norm(mabc.catom->position)
-                    + (mabc.norm(mabc.catom->position)[2] < 0 ?
-                       Cell3DPosition(0,0,mabc.B) : Cell3DPosition(0,0,0)))); // 00B cuz z<0
+                mabc.getBranchIndex(mabc.catom->position)); // 00B cuz z<0
 
         // cout << "tip : " << pos << endl;
         
@@ -59,28 +56,72 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     } else if (mabc.role == Coordinator) {
         short idx = mabc.getEntryPointLocationForCell(srcPos); VS_ASSERT(idx != -1);
         MeshComponent epl = static_cast<MeshComponent>(idx);
-
+        BranchIndex bi = MeshRuleMatcher::getBranchForEPL(epl); VS_ASSERT(bi < 4);
+        Cell3DPosition tPos;
+        
         if (not mabc.constructionQueue.empty()) {
             pair<MeshComponent, MeshComponent> nextComponent = mabc.constructionQueue.front();
 
             // If on the righ EPL, module is eligible for building next component
             if (epl == nextComponent.second) {
                 // Return correct target, then check status of each waiting module
-                // TODO:
+                tPos = mabc.catom->position
+                    + MeshRuleMatcher::getPositionForMeshComponent(nextComponent.first);
             } else { // Not the right EPL, note that a module is waiting there
-                // TODO:
+                // TODO: See why messages are sometimes sent twice.
+                // What happens if a message has been sent while the coordinator is getting into place and sends a RQ target cell again. How to prevent double sends?
+                cout << *mabc.catom << " bi: " << bi << endl;
+                VS_ASSERT(not mabc.moduleWaitingOnBranch[bi]);
+                mabc.moduleWaitingOnBranch[bi] = true;
+                return;
             }
         } else {
-            // TODO: else redirect to EPL corresponding to that branch
-        }       
-        
-        Cell3DPosition tPos;
-        // tPos = mabc.catom->position + mabc.getNextTargetForEPL(epl);                
-        
-        // send to requesting catom
+            // Else redirect to EPL corresponding to that branch
+            tPos = mabc.catom->position +
+                MeshRuleMatcher::getPositionForMeshComponent(
+                    MeshRuleMatcher::getTargetEPLComponentForBranch(bi));
+        }
+
+        // Send to requesting catom
         VS_ASSERT(destinationInterface->isConnected());
         mabc.sendMessage(new ProvideTargetCellMessage(tPos, srcPos),
                          destinationInterface, MSG_DELAY_MC, 0);
+
+        // UPDATE WAITING CATOMS
+        // Loop while new provide_target_cell messages are being sent
+        bool moduleAwoken;
+        do {
+            moduleAwoken = false;
+            for (int i = 0; i < 4; i++) {
+                BranchIndex biw = static_cast<BranchIndex>(i);
+                if (mabc.moduleWaitingOnBranch[biw]) {
+                    pair<MeshComponent, MeshComponent> ncp = mabc.constructionQueue.front();
+                    MeshComponent epl = MeshRuleMatcher::getDefaultEPLComponentForBranch(biw);
+                    if (epl == ncp.second) {
+                        tPos = mabc.catom->position +
+                            MeshRuleMatcher::getPositionForMeshComponent(ncp.first);
+
+                        // Determine position of waiting module
+                        Cell3DPosition wPos = mabc.catom->position +
+                            MeshRuleMatcher::getPositionForMeshComponent(epl);
+                    
+                        // Determine branch tip pos and itf of waiting module branch
+                        Cell3DPosition tipPos = mabc.catom->position +
+                            MeshRuleMatcher::getPositionOfBranchTipUnder(biw);
+                        P2PNetworkInterface* tipItf = mabc.catom->getInterface(tipPos);
+                    
+                        // Send 
+                        VS_ASSERT(tipItf and tipItf->isConnected());
+                        mabc.sendMessage(new ProvideTargetCellMessage(tPos, wPos),
+                                         destinationInterface, MSG_DELAY_MC, 0);
+
+                        // Update looping condition and waiting state
+                        mabc.moduleWaitingOnBranch[biw] = false;
+                        moduleAwoken = true;
+                    }
+                }
+            }
+        } while (moduleAwoken);
     } else {
         mabc.catom->setColor(BLACK);
         VS_ASSERT_MSG(false, "Non coordinator or active beam module should not have received a RequestTargetCellMessage");
@@ -109,10 +150,7 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         else if (mabc.role == ActiveBeamTip) { // send down branch
             Cell3DPosition pos = mabc.catom->position -
                 mabc.ruleMatcher->getBranchUnitOffset(
-                    mabc.ruleMatcher->getBranchIndexForNonRootPosition(
-                        mabc.norm(mabc.catom->position)
-                        + (mabc.norm(mabc.catom->position)[2] < 0 ?
-                           Cell3DPosition(0,0,mabc.B) : Cell3DPosition(0,0,0))));
+                    mabc.getBranchIndex(mabc.catom->position));
             itf = mabc.catom->getInterface(pos);
         }
               
@@ -160,15 +198,10 @@ void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
 
         VS_ASSERT(itf);
         if (not itf->isConnected()) {
-            cout << "here" << endl;
-            
             // Beam Tip and no Support nor waiting module, forward to next branch module
             Cell3DPosition pos = mabc.catom->position -
                 mabc.ruleMatcher->getBranchUnitOffset(
-                    mabc.ruleMatcher->getBranchIndexForNonRootPosition(
-                        mabc.norm(mabc.catom->position)
-                        + (mabc.norm(mabc.catom->position)[2] < 0 ?
-                           Cell3DPosition(0,0,mabc.B) : Cell3DPosition(0,0,0)))); // 00B cuz z<0
+                    mabc.getBranchIndex(mabc.catom->position));
 
             itf = mabc.catom->getInterface(pos);
             VS_ASSERT_MSG(itf, "Cannot find tip2 among neighbor interface");
