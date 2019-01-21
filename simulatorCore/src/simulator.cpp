@@ -299,6 +299,44 @@ bID Simulator::countNumberOfModules() {
 			}
 		}
 	}
+	// Count modules from blockBox elements
+	for(TiXmlNode *child = xmlBlockListNode->FirstChild("blockBox"); child; child = child->NextSibling("blockBox")) {
+		Vector3D boxOrigin(0,0,0);
+		attr = element->Attribute("boxOrigin");
+		if (attr) {
+			string str(attr);
+			int pos1 = str.find_first_of(','),
+			pos2 = str.find_last_of(',');
+			boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
+			boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+			boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+		}
+		Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
+										world->lattice->gridSize[1]*world->lattice->gridScale[1],
+										world->lattice->gridSize[2]*world->lattice->gridScale[2]);
+		attr = element->Attribute("boxSize");
+		if (attr) {
+			string str(attr);
+			int pos1 = str.find_first_of(','),
+			pos2 = str.find_last_of(',');
+			boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
+			boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+			boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+		}
+		Vector3D pos;
+		Cell3DPosition position;
+		for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
+			for (short iy=0; iy<world->lattice->gridSize[1]; iy++) {
+				for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
+					position.set(ix,iy,iz);
+					pos = world->lattice->gridToWorldPosition(position);
+					if (pos.isInBox(boxOrigin,boxDest)) {
+						moduleCount++;
+					}
+				}
+			}
+		}
+	}
 
 	return moduleCount;
 }
@@ -623,7 +661,6 @@ void Simulator::parseBlockList() {
 #endif
 		}
 
-#if 1
 		/* Reading a catoms */
 		TiXmlNode *block = xmlBlockListNode->FirstChild("block");
 		Cell3DPosition position;
@@ -723,9 +760,79 @@ void Simulator::parseBlockList() {
 				}
 			}
 			block = block->NextSibling("blocksLine");
-		} // end while (nodeBlock)*/
-#endif
-	} else { // end if(nodeBlock)
+		} // end while (blocksLine)
+		
+		block = xmlBlockListNode->FirstChild("blockBox");
+		while (block) {
+			if (ids == MANUAL) {
+				cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
+				throw ParsingException();
+			}
+			
+			element = block->ToElement();
+			color=defaultColor;
+			attr = element->Attribute("color");
+			if (attr) {
+				string str(attr);
+				int pos1 = str.find_first_of(','),
+				pos2 = str.find_last_of(',');
+				color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
+				color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
+				color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+				#ifdef DEBUG_CONF_PARSING
+				OUTPUT << "box color :" << color << endl;
+				#endif
+			}
+			
+			Vector3D boxOrigin(0,0,0);
+			attr = element->Attribute("boxOrigin");
+			if (attr) {
+				string str(attr);
+				int pos1 = str.find_first_of(','),
+				pos2 = str.find_last_of(',');
+				boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
+				boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+				boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				#ifdef DEBUG_CONF_PARSING
+				OUTPUT << "new boxOrigine:" << boxOrigin << endl;
+				#endif
+			}
+			
+			Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
+											 world->lattice->gridSize[1]*world->lattice->gridScale[1],
+											 world->lattice->gridSize[2]*world->lattice->gridScale[2]);
+			attr = element->Attribute("boxSize");
+			if (attr) {
+				string str(attr);
+				int pos1 = str.find_first_of(','),
+				pos2 = str.find_last_of(',');
+				boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
+				boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+				boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				#ifdef DEBUG_CONF_PARSING
+				OUTPUT << "new boxDest:" << boxDest << endl;
+				#endif
+			}
+			
+			assert(world->lattice!=NULL);
+			
+			Vector3D pos;
+			for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
+				for (short iy=0; iy<world->lattice->gridSize[1]; iy++) {
+					for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
+						position.set(ix,iy,iz);
+						pos = world->lattice->gridToWorldPosition(position);
+						if (pos.isInBox(boxOrigin,boxDest)) {
+							loadBlock(element, IDPool[indexBlock++], bcb, position, color, false);
+						}
+					}
+				}
+			}
+			
+			block = block->NextSibling("blockBox");
+		} // end while (blockBox)*/
+	} else { // end if
+		
 		cerr << "warning: no Block List in configuration file" << endl;
 	}
 }
