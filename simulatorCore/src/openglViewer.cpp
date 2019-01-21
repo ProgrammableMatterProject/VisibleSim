@@ -20,6 +20,7 @@
 #include "trace.h"
 #include "rotation3DEvents.h"
 #include "utils.h"
+#include "catoms3DWorld.h"
 
 #ifdef ENABLE_MELDPROCESS
 #include "meldProcessDebugger.h"
@@ -49,6 +50,7 @@ GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
 GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
 GlutPopupWindow *GlutContext::popup=NULL;
 GlutPopupMenuWindow *GlutContext::popupMenu=NULL;
+GlutPopupMenuWindow *GlutContext::popupSubMenu=NULL;
 GlutHelpWindow *GlutContext::helpWindow=NULL;
 int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
@@ -128,7 +130,7 @@ void *GlutContext::lanceScheduler(void *param) {
 void GlutContext::reshapeFunc(int w,int h) {
     screenWidth=w;
     screenHeight=h;
-    Camera* camera=getWorld()->getCamera();
+    Camera* camera=World::getWorld()->getCamera();
     camera->setW_H(double(w)/double(h));
     // size of the OpenGL drawing area
     glViewport(0,0,w,h);
@@ -153,7 +155,7 @@ void GlutContext::motionFunc(int x,int y) {
     if (mainWindow->mouseFunc(-1,GLUT_DOWN,x,screenHeight - y)>0) return;
     if (debugWindow->mouseFunc(-1,GLUT_DOWN,x,screenHeight - y)>0) return;
     if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
-        Camera* camera=getWorld()->getCamera();
+        Camera* camera=World::getWorld()->getCamera();
         camera->mouseMove(x,y);
         glutPostRedisplay();
     }
@@ -172,7 +174,11 @@ void GlutContext::passiveMotionFunc(int x,int y) {
         glutPostRedisplay();
         return;
     }
-    if (mainWindow->passiveMotionFunc(x,screenHeight - y)) {
+		if (popupMenu && popupSubMenu && popupSubMenu->passiveMotionFunc(x,screenHeight - y)) {
+				glutPostRedisplay();
+				return;
+		}
+		if (mainWindow->passiveMotionFunc(x,screenHeight - y)) {
         glutPostRedisplay();
         return;
     }
@@ -199,18 +205,25 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
         glutPostRedisplay();
         return;
     }
-    if (popupMenu) {
+    if (popupMenu && popupMenu->isVisible) {
         int n=popupMenu->mouseFunc(button,state,x,screenHeight - y);
         if (n) {
             popupMenu->show(false);
-            getWorld()->menuChoice(n);
+            World::getWorld()->menuChoice(n);
+        }
+    }
+		if (popupSubMenu && popupSubMenu->isVisible) {
+        int n=popupSubMenu->mouseFunc(button,state,x,screenHeight - y);
+        if (n) {
+            popupSubMenu->show(false);
+            World::getWorld()->menuChoice(n);
         }
     }
     if (helpWindow) helpWindow->mouseFunc(button,state,x,screenHeight - y);
 
     keyboardModifier = glutGetModifiers();
     if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
-        Camera* camera=getWorld()->getCamera();
+        Camera* camera=World::getWorld()->getCamera();
         switch (button) {
             case GLUT_LEFT_BUTTON:
                 if (state==GLUT_DOWN) {
@@ -244,16 +257,15 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             if (slct) slct->toggleHighlight();
             // set n-1 block selected block (no selected block if n=0
             if (n) {
-                GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n-1);
+                GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n);
                 glB->toggleHighlight();
                 glB->fireSelectedTrigger();
             } else BaseSimulator::getWorld()->setselectedGlBlock(-1);
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
                 int n=selectFaceFunc(x,y);
-                cout << "selected " << n << endl;
                 if (n>0) {
-                    BaseSimulator::getWorld()->setSelectedFace(n-1);
+                    BaseSimulator::getWorld()->setSelectedFace(n);
                     BaseSimulator::getWorld()->createPopupMenu(x,y);
                 }
             }
@@ -268,7 +280,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 // - x,y : coordonnée du curseur dans la fenètre
 void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
 	//  static int modeScheduler;
-	Camera* camera=getWorld()->getCamera();
+	Camera* camera=World::getWorld()->getCamera();
 	// si une interface a le focus
 	if (debugWindow->keyFunc(c)) {
 
@@ -398,7 +410,8 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
 				}
 			} break;
 			case 'p' :
-				BaseSimulator::getWorld()->simulatePolymer();
+                // FIXME: Fix this, it should not be part of the simulatorCore
+                BaseSimulator::getWorld()->simulatePolymer();
 			break;
 			case '!': 
 				BaseSimulator::getWorld()->exportSTLModel("model.stl");
@@ -463,7 +476,7 @@ void GlutContext::idleFunc(void) {
         char title[32];
         strncpy(title, animationDirName.c_str(), sizeof(title));
         strncat(title, "/save%04d.ppm", sizeof(title));
-                
+
         sprintf(title,title,num++);
         saveScreen(title);
     }
@@ -472,7 +485,7 @@ void GlutContext::idleFunc(void) {
         if (tm-lastMotionTime>100) {
             int n=selectFunc(lastMousePos[0],lastMousePos[1]);
             if (n) {
-                GlBlock *slct=BaseSimulator::getWorld()->getBlockByNum(n-1);
+                GlBlock *slct=BaseSimulator::getWorld()->getBlockByNum(n);
                 popup->setCenterPosition(lastMousePos[0],screenHeight - lastMousePos[1]);
                 popup->setInfo(slct->getPopupInfo());
                 popup->show(true);
@@ -502,14 +515,18 @@ void GlutContext::calculateFPS(void) {
 }
 
 void GlutContext::showFPS(void) {
-    char fpsStr[50];
-    sprintf(fpsStr, "FPS = %4.2f", fps);
+    char str[20];
+    //sprintf(str, "FPS = %4.2f", fps);
+    int ts = round(getScheduler()->now() / ((Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier + Rotations3D::COM_DELAY) + 20128));
+    sprintf(str,"Time Step = %d",ts);
     glColor3f(255,255,0);
-    GlutWindow::drawString(50, 50, fpsStr);
+    GlutWindow::drawString(50, 50, str,GLUT_BITMAP_TIMES_ROMAN_24);
+    sprintf(str,"Nbre modules = %d",BaseSimulator::getWorld()->lattice->nbModules);
+    GlutWindow::drawString(50, 25, str,GLUT_BITMAP_TIMES_ROMAN_24);    
 }
 
 void GlutContext::drawFunc(void) {
-    World *wrl = getWorld();
+    World *wrl = BaseSimulator::getWorld();
     Camera*camera=wrl->getCamera();
 
     shadowedRenderingStep1(camera);
@@ -538,7 +555,10 @@ void GlutContext::drawFunc(void) {
     mainWindow->glDraw();
     debugWindow->glDraw();
     popup->glDraw();
-    if (popupMenu) popupMenu->glDraw();
+		if (popupMenu && popupMenu->isVisible) {
+			popupMenu->glDraw();
+			if (popupSubMenu && popupSubMenu->isVisible) popupSubMenu->glDraw();
+		}
     if (helpWindow) helpWindow->glDraw();
 #ifdef showStatsFPS
     showFPS();
@@ -553,7 +573,7 @@ int GlutContext::selectFunc(int x,int y) {
     GLuint selectBuf[512];
     GLint hits;
     GLint viewport[4];
-    Camera* camera=getWorld()->getCamera();
+    Camera* camera=BaseSimulator::getWorld()->getCamera();
 
     glGetIntegerv(GL_VIEWPORT,viewport); // récupération de la position et de la taille de la fenêtre
 
@@ -584,7 +604,7 @@ int GlutContext::selectFaceFunc(int x,int y) {
     GLuint selectBuf[512];
     GLint hits;
     GLint viewport[4];
-    Camera* camera=getWorld()->getCamera();
+    Camera* camera=BaseSimulator::getWorld()->getCamera();
 
     glGetIntegerv(GL_VIEWPORT,viewport); // récupération de la position et de la taille de la fenêtre
 

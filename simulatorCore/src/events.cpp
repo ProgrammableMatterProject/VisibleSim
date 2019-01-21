@@ -505,3 +505,81 @@ void InterruptionEvent::consumeBlockEvent() {
 const string InterruptionEvent::getEventName() {
 	return("Interruption Event");
 }
+
+//===========================================================================================================
+//
+//          PivotActuationStartEvent  (class)
+//
+//===========================================================================================================
+
+PivotActuationStartEvent::PivotActuationStartEvent(Time t,
+                                                   BuildingBlock *conBlock,
+                                                   const BuildingBlock *m,
+                                                   short from,
+                                                   short to): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+	eventType = EVENT_PIVOT_ACTUATION_START;
+	fromConP = from;
+    toConP = to;
+    mobile = m;
+}
+
+PivotActuationStartEvent::PivotActuationStartEvent(PivotActuationStartEvent *ev) : BlockEvent(ev) {
+	EVENT_CONSTRUCTOR_INFO();
+	fromConP = ev->fromConP;
+    toConP = ev->toConP;
+	mobile = ev->mobile;
+}
+
+PivotActuationStartEvent::~PivotActuationStartEvent() {
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void PivotActuationStartEvent::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	concernedBlock->scheduleLocalEvent(EventPtr(new PivotActuationStartEvent(this)));
+    concernedBlock->setState(BuildingBlock::State::ACTUATING);
+}
+
+const string PivotActuationStartEvent::getEventName() {
+	return("PivotActuationStart Event");
+}
+
+//===========================================================================================================
+//
+//          PivotActuationEndEvent  (class)
+//
+//===========================================================================================================
+
+PivotActuationEndEvent::PivotActuationEndEvent(Time t,
+                                               BuildingBlock *conBlock,
+                                               const BuildingBlock *m,
+                                               short from,
+                                               short to): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_PIVOT_ACTUATION_END;
+	fromConP = from;
+    toConP = to;
+    mobile = m;
+}
+
+PivotActuationEndEvent::PivotActuationEndEvent(PivotActuationEndEvent *ev) : BlockEvent(ev) {
+	EVENT_CONSTRUCTOR_INFO();
+    fromConP = ev->fromConP;
+    toConP = ev->toConP;
+    mobile = ev->mobile;
+}
+
+PivotActuationEndEvent::~PivotActuationEndEvent() {
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void PivotActuationEndEvent::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	concernedBlock->scheduleLocalEvent(EventPtr(new PivotActuationEndEvent(this)));
+    concernedBlock->setState(BuildingBlock::State::ALIVE);
+}
+
+const string PivotActuationEndEvent::getEventName() {
+	return("PivotActuationEnd Event");
+}

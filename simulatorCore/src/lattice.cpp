@@ -50,7 +50,7 @@ unsigned int Lattice::getIndex(const Cell3DPosition &p) const {
 
     static const unsigned int GRID_MAX_INDEX = gridSize[2] * gridSize[1] * gridSize[0];
     assert(index < GRID_MAX_INDEX);
-        
+
 #ifdef LATTICE_LOG
     // cerr << "index: " << index << "(/total = " << gridSize[0]*gridSize[1]*gridSize[2] << ")" << endl;
 #endif
@@ -60,26 +60,28 @@ unsigned int Lattice::getIndex(const Cell3DPosition &p) const {
 Cell3DPosition Lattice::getGridLowerBounds() const {
     return Cell3DPosition(0,0,0);
 }
-   
+
 Cell3DPosition Lattice::getGridUpperBounds() const {
     return gridSize - Cell3DPosition(1,1,1);
 }
 
 
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
-    try {        
+    try {
         int index = getIndex(p);
         if (not isInGrid(p))
             throw OutOfLatticeInsertionException(p);
-        else if (not isFree(p))  
+        else if (not isFree(p))
             throw DoubleInsertionException(p);
-        else 
-            grid[index] = bb;      
+        else {
+            grid[index] = bb;
+            nbModules++;
+        }
     } catch (DoubleInsertionException const& e) {
         cerr << e.what();
         VS_ASSERT(false);//FIXME: should be handled by thes user, but catch clauses in main are not catching the exceptions for some reason.
     }
-    
+
 #ifdef LATTICE_LOG
     cerr << "l.insert(" << bb->blockId << ") on " << p << " = i:" << getIndex(p) << endl;
 #endif
@@ -87,6 +89,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
 
 void Lattice::remove(const Cell3DPosition &p) {
     grid[getIndex(p)] = NULL;
+    nbModules--;
 }
 
 BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) const {
@@ -111,6 +114,7 @@ bool Lattice::cellHasBlock(const Cell3DPosition &p) const {
 bool Lattice::isInGrid(const Cell3DPosition &p) const {
     const Cell3DPosition& lb = getGridLowerBounds();
     const Cell3DPosition& ub = getGridUpperBounds();
+
     return isInRange(p[0], lb.pt[0], ub.pt[0])
         && isInRange(p[1], lb.pt[1], ub.pt[1])
         && isInRange(p[2], lb.pt[2], ub.pt[2]);
@@ -158,7 +162,7 @@ vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
 
     for (const Cell3DPosition &p : relativeNCells) { // Check if each neighbor cell is in grid
         Cell3DPosition v = pos + p;
-        if (isInGrid(v)) { 
+        if (isInGrid(v)) {
             neighborhood.push_back(v);         // Add its position to the result
         }
     }
@@ -188,34 +192,16 @@ string Lattice::getDirectionString(short d) {
         directionName[d] : "undefined";
 }
 
-vector<HighlightedCell>::iterator Lattice::find(const Cell3DPosition& val) {
-	vector<HighlightedCell>::iterator first = tabHighlightedCells.begin();
-	while (first!=tabHighlightedCells.end()) {
-		if ((*first).pos==val) return first;
-		++first;
-	}
-	return tabHighlightedCells.end();
-}
-
 void Lattice::highlightCell(const Cell3DPosition& pos, const Color &color) {
-	vector<HighlightedCell>::iterator existing = find(pos);
-	if (existing!=tabHighlightedCells.end()) {
-		(*existing).color=color;
-	} else {
-		HighlightedCell hc(pos,color);
-		tabHighlightedCells.push_back(hc);
-	}
+    mapHighlightedCells.insert(make_pair(pos, color));
 }
 
 void Lattice::unhighlightCell(const Cell3DPosition& pos) {
-	vector<HighlightedCell>::iterator existing = find(pos);
-	if (existing!=tabHighlightedCells.end()) {
-		tabHighlightedCells.erase(existing);
-	}
+    mapHighlightedCells.erase(pos);
 }
 
 void Lattice::resetCellHighlights() {
-	tabHighlightedCells.clear();
+	mapHighlightedCells.clear();
 }
 
 /********************* Lattice2D *********************/
@@ -568,17 +554,17 @@ static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 			}
 		}
 	}
-    if (!tabHighlightedCells.empty()) {
-		vector<HighlightedCell>::const_iterator it = tabHighlightedCells.begin();
+
+    if (!mapHighlightedCells.empty()) {
 		Vector3D v;
 		int i=72;
 		const uint8_t *ptr;
 		Color c;
-		while (it!=tabHighlightedCells.end()) {
+		for (const auto& pair : mapHighlightedCells) {
 			glPushMatrix();
-			v = gridToWorldPosition((*it).pos);
+			v = gridToWorldPosition(pair.first);
 			glTranslatef(v.pt[0],v.pt[1],v.pt[2]);
-			c.set((*it).color.rgba[0],(*it).color.rgba[1],(*it).color.rgba[2],0.5f);
+			c.set(pair.second.rgba[0],pair.second.rgba[1],pair.second.rgba[2],0.5f);
 			glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c.rgba);
 			glBegin(GL_QUADS);
 			ptr = quads;
@@ -600,7 +586,6 @@ static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 			}
 			glEnd();
 			glPopMatrix();
-			++it;
 		}
 	}
 }
@@ -775,7 +760,7 @@ bool SkewFCCLattice::isInGrid(const Cell3DPosition &p) const {
     // else
     //     return isInRange(p[0], 0 - p[2]/ 2, gridSize[0] - ceil(p[2] / 2) - 1)
     //         && isInRange(p[1], 0 - p[2] / 2, gridSize[1] - ceil(p[2] / 2) - 1)
-    //         && isInRange(p[2], 0, gridSize[2] - 1);            
+    //         && isInRange(p[2], 0, gridSize[2] - 1);
 }
 
 Cell3DPosition SkewFCCLattice::getGridLowerBounds() const {
@@ -826,8 +811,8 @@ Cell3DPosition SkewFCCLattice::worldToGridPosition(const Vector3D &pos) {
     // Vector3D check = gridToWorldPosition(res);
     // OUTPUT << "\tcheck" << res << " -> " << check << endl;
     // assert(check == pos);
-    
-    
+
+
     return res;
 }
 

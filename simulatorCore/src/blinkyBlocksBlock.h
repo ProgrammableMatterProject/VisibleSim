@@ -25,10 +25,12 @@ public:
 	BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb);
 	~BlinkyBlocksBlock();
 
-	inline virtual BlinkyBlocksGlBlock* getGlBlock() { return (BlinkyBlocksGlBlock *)ptrGlBlock; };
+	inline virtual BlinkyBlocksGlBlock* getGlBlock() const {
+        return (BlinkyBlocksGlBlock *)ptrGlBlock;
+    };
 
-	P2PNetworkInterface *getInterfaceDestId(int id);
-	int getDirection(P2PNetworkInterface*);
+	P2PNetworkInterface *getInterfaceDestId(int id) const;
+	int getDirection(P2PNetworkInterface*) const;
 
 	/* schedule the appropriate event for this action */
 	/* void tap(Time date); Now a generic event in buildingBlock.cpp */

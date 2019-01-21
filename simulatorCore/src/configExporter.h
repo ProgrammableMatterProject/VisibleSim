@@ -207,6 +207,26 @@ public:
     virtual ~OkteenConfigExporter() { };
 };
 
+/**
+ * @brief Datoms Configuration Exporter
+ */
+class DatomsConfigExporter : public ConfigExporter {
+public:
+    /**
+     * @brief Datoms Configuration Exporter constructor
+     */
+    DatomsConfigExporter (World *_world) : ConfigExporter(_world) {};
+    /**
+     * @brief Datoms Configuration Exporter destructor
+     */
+    virtual ~DatomsConfigExporter () { };
+
+    /**
+     * @copydoc ConfigExporter::exportAdditionalAttribute
+     *  Exports the rotation attribute of a Datoms3DBlock
+     */
+    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb);
+};
 
 } // BASESIMULATOR_NAMESPACE
 

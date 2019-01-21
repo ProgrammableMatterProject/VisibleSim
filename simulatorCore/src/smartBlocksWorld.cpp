@@ -57,7 +57,7 @@ void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), smartBlock));
 
     SmartBlocksGlBlock *glBlock = new SmartBlocksGlBlock(blockId);
-    tabGlBlocks.push_back(glBlock);
+    mapGlBlocks.insert(make_pair(blockId, glBlock));
     smartBlock->setGlBlock(glBlock);
     smartBlock->setPosition(pos);
     smartBlock->setColor(col);
@@ -99,11 +99,9 @@ void SmartBlocksWorld::glDraw() {
         /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
           -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
         glDisable(GL_TEXTURE_2D);
-        vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
         lock();
-        while (ic!=tabGlBlocks.end()) {
-            ((SmartBlocksGlBlock*)(*ic))->glDraw(objBlock);
-            ic++;
+        for (const auto& pair : mapGlBlocks) {
+            ((SmartBlocksGlBlock*)pair.second)->glDraw(objBlock);
         }
         unlock();
 
@@ -119,12 +117,10 @@ void SmartBlocksWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
 
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
     lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((SmartBlocksGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking, n);
-        ic++;
+    for (const auto& pair : mapGlBlocks) {
+        ((SmartBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
     glPopMatrix();
@@ -133,14 +129,10 @@ void SmartBlocksWorld::glDrawIdByMaterial() {
 void SmartBlocksWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    int n=1;
     lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((SmartBlocksGlBlock*)(*ic))->glDrawId(objBlock,n);
-        ic++;
-    }
+    for (const auto& pair : mapGlBlocks) {
+        ((SmartBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
+    }    
     unlock();
     glPopMatrix();
 }

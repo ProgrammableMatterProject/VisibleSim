@@ -46,6 +46,13 @@ ostream& operator<<(ostream& f,const Cell3DPosition&p) {
     return f;
 }
 
+string Cell3DPosition::to_string() const {
+    std::ostringstream oss;
+    oss << "(" << config_print() << ")";
+
+    return oss.str();
+}
+
 string Cell3DPosition::config_print() const {
     std::ostringstream oss;
     oss << pt[0] << "," << pt[1] << "," << pt[2];

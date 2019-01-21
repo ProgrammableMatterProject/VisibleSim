@@ -6,6 +6,7 @@
 
 #include "simulator.h"
 #include "catoms3DBlock.h"
+#include "datomsBlock.h"
 #include "catoms2DBlock.h"
 #include "utils.h"
 
@@ -166,11 +167,15 @@ void ConfigExporter::exportBlock(BuildingBlock *bb) {
 }
 
 void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("rotation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
+    bbElt->SetAttribute("orientation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
 }
 
 void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
     bbElt->SetAttribute("angle", static_cast<Catoms2D::Catoms2DBlock *>(bb)->angle);    
+}
+
+void DatomsConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
+    bbElt->SetAttribute("orientation", static_cast<Datoms::DatomsBlock *>(bb)->orientationCode);
 }
 
 }

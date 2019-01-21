@@ -53,17 +53,17 @@ public:
     virtual ~Message();
 
     static uint64_t getNbMessages();
-    virtual string getMessageName();
+    virtual string getMessageName() const;
     static void incrementMessageCounts() { nextId++; nbMessages++; }
 
 
-    virtual unsigned int size() { return(4); }
+    virtual unsigned int size() const { return(4); }
     /**
      * @brief Clones the message. This is necessary when broadcasting
      * @attention Needs to overloaded in subclasses to avoid slicing (https://en.wikipedia.org/wiki/Object_slicing) when broadcasting subclasses of Message
      * @example virtual Message* clone() { return new MyMessageType(*this); }*/
-    virtual Message* clone();
-    virtual bool isMessageHandleable() { return false; };
+    virtual Message* clone() const;
+    virtual bool isMessageHandleable() const { return false; };
 };
 
 class HandleableMessage:public Message {
@@ -72,9 +72,10 @@ public:
     virtual ~HandleableMessage();
 
     virtual void handle(BaseSimulator::BlockCode*) = 0;
-    virtual bool isMessageHandleable() { return true; };
-    virtual string getName() = 0;
-    virtual Message* clone() = 0;
+    virtual bool isMessageHandleable() const { return true; };
+    virtual string getMessageName() const { return getName(); }; // TODO: factorize getName() with this
+    virtual string getName() const = 0;
+    virtual Message* clone() const = 0;
 };
 
 template <class T>
