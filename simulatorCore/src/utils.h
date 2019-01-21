@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <iomanip>
 
 #include "tDefs.h"
 
@@ -101,6 +102,14 @@ void erase_if( ContainerT& items, const PredicateT& predicate ) {
         else ++it;
     }
 };
+
+template< typename T >
+std::string int_to_hex_str( T i, int width)
+{
+  std::stringstream stream;
+  stream << "0x" << std::setfill('0') << std::setw(width) << std::hex << i;
+  return stream.str();
+}
 
 } // namespace utils
 

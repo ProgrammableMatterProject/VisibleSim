@@ -8,6 +8,7 @@
 #include "interface.h"
 #include "trace.h"
 #include "scheduler.h"
+#include "catoms3DMotionRules.h"
 
 #define __STDC_FORMAT_MACROS
 #include <cinttypes>
@@ -42,28 +43,32 @@ GlutWindow::GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,
 }
 
 GlutWindow::~GlutWindow() {
-	vector <GlutWindow*>::const_iterator cw = children.begin();
-	while (cw!=children.end())
-	{	delete (*cw);
-		cw++;
-	}
-	children.clear();
+	clearChildren();
 }
 
 void GlutWindow::addChild(GlutWindow *child) {
 	children.push_back(child);
 }
 
+void GlutWindow::clearChildren() {
+	vector <GlutWindow*>::const_iterator cw = children.begin();
+	while (cw!=children.end()) {
+		delete (*cw);
+		cw++;
+	}
+	children.clear();
+}
+
 void GlutWindow::glDraw() {
 	vector <GlutWindow*>::const_iterator cw = children.begin();
 	while (cw!=children.end()) {
-        if ((*cw)->isVisible) {
-            glPushMatrix();
-            glTranslatef(x,y,0);
-            (*cw)->glDraw();
-            glPopMatrix();
-        }
-        cw++;
+		if ((*cw)->isVisible) {
+			  glPushMatrix();
+        glTranslatef(x,y,0);
+        (*cw)->glDraw();
+        glPopMatrix();
+    }
+    cw++;
 	}
 }
 
@@ -181,8 +186,8 @@ GlutWindow(NULL,1,px,py,pw,ph,titreTexture) {
 	slider = new GlutSlider(this,ID_SW_SLD,pw+SLIDING_WINDOW_STANDARD_WIDTH-20,5,ph-60,
 							"../../simulatorCore/resources/textures/UITextures/slider.tga",(ph-60)/13);
 	selectedGlBlock=NULL;
-	slider->setVisible(false);
-	buttonSize->setVisible(false);
+	slider->isVisible=false;
+	buttonSize->isVisible=false;
 }
 
 GlutSlidingMainWindow::~GlutSlidingMainWindow() {
@@ -246,8 +251,8 @@ void GlutSlidingMainWindow::glDraw() {
                     str[i] = '\0';
                     posy = drawString(42.0,posy,str + ss,TextMode::TEXTMODE_TITLE);
                     ss = i + 1;
-                } 
-            }                                                      
+                }
+            }
 			multimap<Time,BlockDebugData*>::iterator it = traces.begin();
 			//GLfloat posy = h-65;
 			stringstream line;
@@ -350,8 +355,8 @@ void GlutSlidingMainWindow::reshapeFunc(int mx,int my,int mw,int mh) {
 
 void GlutSlidingMainWindow::updateSliderWindow() {
     slider->setGeometry(w-20,5,11,h-60);
-    slider->setVisible(openningLevel>0);
-    buttonSize->setVisible(openningLevel>0);
+    slider->isVisible=(openningLevel>0);
+    buttonSize->isVisible=(openningLevel>0);
     buttonSize->setGeometry(w-40,h-40,32,32);
     slider->update();
 }
@@ -550,39 +555,37 @@ GlutButton::GlutButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,
 	isHighlighted=false;
 }
 
+void GlutButton::addSubMenu(GlutWindow *child) {
+	addChild(child);
+  child->isVisible = false;
+}
+
+
 void GlutButton::glDraw()
 {	GLfloat tx=0,ty=0.5;
 
     bindTexture();
     if (isActive) {
     	if (isDown) {
-    		tx=0.0;
-    		ty=0.0;
+    		tx=0.0; ty=0.0;
     	} else if (isHighlighted){
-    		tx=0.5;
-    		ty=0.0;
+    		tx=0.5; ty=0.0;
     	} else {
-    		tx=0.5;
-    		ty=0.5;
+    		tx=0.5;	ty=0.5;
     	}
-
-    } else {
-    	tx=0.0;
-    	ty=0.5;
     }
     glPushMatrix();
-	glTranslatef(x,y,0.0f);
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0,0);
-	glTexCoord2f(tx+0.5f,ty);
-	glVertex2i(w,0);
-	glTexCoord2f(tx+0.5f,ty+0.5f);
-	glVertex2i(w,h);
-	glTexCoord2f(tx,ty+0.5f);
+		glTranslatef(x,y,0.0f);
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0,0);
+		glTexCoord2f(tx+0.5f,ty);
+		glVertex2i(w,0);
+		glTexCoord2f(tx+0.5f,ty+0.5f);
+		glVertex2i(w,h);
+		glTexCoord2f(tx,ty+0.5f);
   	glVertex2i(0,h);
   	glEnd();
-
   	glPopMatrix();
 }
 
@@ -600,6 +603,93 @@ bool GlutButton::passiveMotionFunc(int mx,int my) {
 	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
 	return isHighlighted;
 }
+
+/***************************************************************************************/
+/* GlutRotationButton */
+/***************************************************************************************/
+
+GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation) : GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
+	isBlue = blue;
+	id0 = idSrc;
+	id1 = idDest;
+	isHighlighted = false;
+    finalPosition=pos;
+    finalOrientation=orientation;
+}
+
+void GlutRotationButton::glDraw() {
+	  GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
+					  ty=0.0;
+
+	// draw background
+    bindTexture();
+		glPushMatrix();
+		glTranslatef(x,y,0.0f);
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0,0);
+		glTexCoord2f(tx+0.25f,ty);
+		glVertex2i(w,0);
+		glTexCoord2f(tx+0.25f,ty+0.5f);
+		glVertex2i(w,h);
+		glTexCoord2f(tx,ty+0.5f);
+  	glVertex2i(0,h);
+  	glEnd();
+// draw X->Y
+		glDisable(GL_DEPTH_TEST);
+		// first id
+		tx = id0*0.0625f;
+		ty=0.5;
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0.125*w,0);
+		glTexCoord2f(tx+0.0625f,ty);
+		glVertex2i(0.375*w,0);
+		glTexCoord2f(tx+0.0625f,ty+0.5f);
+		glVertex2i(0.375*w,h);
+		glTexCoord2f(tx,ty+0.5f);
+  	glVertex2i(0.125*w,h);
+  	glEnd();
+		// arrow
+    tx = 12*0.0625f;
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0.375*w,0);
+		glTexCoord2f(tx+0.0625f,ty);
+		glVertex2i(0.625*w,0);
+		glTexCoord2f(tx+0.0625f,ty+0.5f);
+		glVertex2i(0.625*w,h);
+		glTexCoord2f(tx,ty+0.5f);
+  	glVertex2i(0.375*w,h);
+  	glEnd();
+		// second id
+		tx = id1*0.0625f;
+		glBegin(GL_QUADS);
+		glTexCoord2f(tx,ty);
+		glVertex2i(0.625*w,0);
+		glTexCoord2f(tx+0.0625f,ty);
+		glVertex2i(0.875*w,0);
+		glTexCoord2f(tx+0.0625f,ty+0.5f);
+		glVertex2i(0.875*w,h);
+		glTexCoord2f(tx,ty+0.5f);
+  	glVertex2i(0.625*w,h);
+  	glEnd();
+
+  	glPopMatrix();
+		glEnable(GL_DEPTH_TEST);
+
+}
+
+int GlutRotationButton::mouseFunc(int button,int state,int mx,int my) {
+	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+	return (isHighlighted && state==GLUT_UP)? id:0;
+}
+
+bool GlutRotationButton::passiveMotionFunc(int mx,int my) {
+	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+	return isHighlighted;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 // loadTextures
@@ -759,16 +849,31 @@ GlutPopupMenuWindow::GlutPopupMenuWindow(GlutWindow *parent,GLint px,GLint py,GL
 	isVisible=false;
 }
 
-void GlutPopupMenuWindow::addButton(int i,const char *titre) {
+void GlutPopupMenuWindow::addButton(int i,const char *titre,GlutPopupMenuWindow *subMenuWindow) {
 	int py=0;
 	std::vector <GlutWindow*>::const_iterator cb=children.begin();
 	while (cb!=children.end()) {
-		py+=(*cb)->h+5;
+		if ((*cb)->isVisible) py+=(*cb)->h+5;
 		cb++;
 	}
 	GlutButton *button = new GlutButton(this,i,0,0,0,0,titre);
 	button->setGeometry(10,h-5-button->h/2-py,button->w/2,button->h/2);
+	if (subMenuWindow) {
+		button->addSubMenu(subMenuWindow);
+	}
 }
+
+void GlutPopupMenuWindow::addButton(GlutWindow *button) {
+	int py=0;
+	std::vector <GlutWindow*>::const_iterator cb=children.begin();
+	while (cb!=children.end()) {
+		if ((*cb)->isVisible) py+=(*cb)->h+5;
+		cb++;
+	}
+	addChild(button);
+	button->setGeometry(10,h-5-button->h/2-py,button->w/4,button->h/2);
+}
+
 
 void GlutPopupMenuWindow::glDraw() {
 	if (isVisible) {
@@ -803,6 +908,18 @@ void GlutPopupMenuWindow::activate(unsigned int id,bool value) {
 		((GlutButton*)(*cb))->activate(value);
 	}
 }
+
+GlutWindow *GlutPopupMenuWindow::getButton(unsigned int id) {
+	std::vector <GlutWindow*>::const_iterator cb=children.begin();
+	while (cb!=children.end() && (*cb)->id!=id) {
+		cb++;
+	}
+	if (cb!=children.end()) {
+		return (*cb);
+	}
+	return NULL;
+}
+
 
 /***************************************************************************************/
 /* GlutHelpWindow */

@@ -18,7 +18,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 SRCS =  meshCatoms3D_mvmt.cpp \
 	meshCatoms3DBlockCode.cpp \
 	messages.cpp \
-	catoms3DMotionEngine.cpp \
+	meshCatoms3D_mvmtMotionEngine.cpp \
 	../meltSortGrow/pathHop.cpp \
 	meshSpanningTree.cpp #
 # OUT is the output binary, where APPDIR is its enclosing directory

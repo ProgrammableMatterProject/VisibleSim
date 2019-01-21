@@ -35,6 +35,13 @@ typedef std::function<void (BlockCode*,std::shared_ptr<Message>,P2PNetworkInterf
  * @brief A distributed user program, will be executed by each module 
  */ 
 class BlockCode {
+public:
+    class InterfaceNotConnectedException : public VisibleSimException {
+    public:
+        InterfaceNotConnectedException(BlockCode* bc, const Message *msg,
+                                       const P2PNetworkInterface* itf);
+    };
+    
 private:
     int sendMessageToAllNeighbors(const char*msgString, Message*msg,Time t0,Time dt, int nexcept, va_list args);
 public:
@@ -122,8 +129,8 @@ public:
      * @param dest destination interface. 
      * @param t0 time to wait before sending
      * @param dt potential delay in sending time */
-    int sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
-                    Time t0,Time dt);
+    virtual int sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
+                            Time t0,Time dt);
 
     /**
      * @brief Send message to interface dest at time t0 + [0,1]dt

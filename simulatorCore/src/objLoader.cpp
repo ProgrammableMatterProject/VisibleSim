@@ -299,32 +299,23 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 }
 
 void ObjLoader::glDraw(void) {
-	vector <ObjData*>::const_iterator ci = tabObj.begin();
-
-	while (ci!=tabObj.end()) {
-		(*ci)->glDraw();
-		ci++;
-	}
+	for (const auto& obj:tabObj) {
+        obj->glDraw();
+    }
 }
 
-void ObjLoader::glDrawId(int &n) {
-	vector <ObjData*>::const_iterator ci = tabObj.begin();
-
-	glLoadName(n++);
-	while (ci!=tabObj.end()) {
-		(*ci)->glDrawId();
-		ci++;
-	}
+void ObjLoader::glDrawId(int n) {
+	glLoadName(n);
+	for (const auto &obj:tabObj) {
+        obj->glDrawId();
+    }
 }
 
 void ObjLoader::glDrawIdByMaterial(int &n) {
-	vector <ObjData*>::const_iterator ci = tabObj.begin();
-
-	while (ci!=tabObj.end()) {
-		glLoadName(n++);
-		(*ci)->glDrawId();
-		ci++;
-	}
+	for (const auto &obj:tabObj) {
+        glLoadName(n++);
+		obj->glDrawId();
+    }
 }
 
 void ObjLoader::setLightedColor(GLfloat *color) {

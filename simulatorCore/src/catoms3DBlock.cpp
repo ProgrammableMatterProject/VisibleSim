@@ -11,11 +11,9 @@
 #include "catoms3DWorld.h"
 #include "catoms3DSimulator.h"
 #include "trace.h"
+#include "catoms3DMotionEngine.h"
 
 using namespace std;
-
-//! \namespace Catoms3D
-namespace Catoms3D {
 
 Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
@@ -109,7 +107,7 @@ short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
     return current;
 }
 
-int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
+int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) const {
     if( !given_interface) {
         return -1;
     }
@@ -119,7 +117,7 @@ int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
     return -1;
 }
 
-short Catoms3DBlock::getAbsoluteDirection(short connector) {
+short Catoms3DBlock::getAbsoluteDirection(short connector) const {
     Cell3DPosition conPos; // cell adjacent to connector
     bool posIsValid = getNeighborPos(connector, conPos);
 
@@ -128,7 +126,7 @@ short Catoms3DBlock::getAbsoluteDirection(short connector) {
     return lattice->getDirection(position, conPos);
 }
 
-short Catoms3DBlock::getAbsoluteDirection(const Cell3DPosition& pos) {
+short Catoms3DBlock::getAbsoluteDirection(const Cell3DPosition& pos) const {
     return getAbsoluteDirection(getConnectorId(pos));
 }
 
@@ -150,8 +148,8 @@ short Catoms3DBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos
 }
 
 
-std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
-    stream << bb.blockId << "\tcolor: " << bb.color;
+std::ostream& Catoms3D::operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
+    stream << "#" << bb.blockId;
     return stream;
 }
 
@@ -171,7 +169,7 @@ bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const 
     return wrl->lattice->isInGrid(pos);
 }
 
-P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
+P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) const {
     short conId = getConnectorId(pos);
 
     return conId >= 0 ? P2PNetworkInterfaces[conId] : NULL;
@@ -253,4 +251,20 @@ Catoms3DBlock *Catoms3DBlock::getNeighborBlock(short conId) const {
     return NULL;
 }
 
+bool Catoms3DBlock::canRotateToPosition(const Cell3DPosition &pos,
+                                        RotationLinkType faceReq) const {
+    return Catoms3DMotionEngine::findMotionPivot(this, pos, faceReq) != NULL;
+}
+
+std::bitset<12> Catoms3DBlock::getLocalNeighborhoodState() const {
+    bitset<12> bitset = {0};
+    const vector<Cell3DPosition> localNeighborhood =
+        Catoms3DWorld::getWorld()->lattice->getNeighborhood(position);
+        
+    for (const Cell3DPosition& nPos : localNeighborhood) {
+        P2PNetworkInterface *itf = getInterface(nPos);
+        bitset.set(getAbsoluteDirection(nPos), itf->isConnected());
+    }
+
+    return bitset;
 }

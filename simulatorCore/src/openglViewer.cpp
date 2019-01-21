@@ -49,6 +49,7 @@ GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
 GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
 GlutPopupWindow *GlutContext::popup=NULL;
 GlutPopupMenuWindow *GlutContext::popupMenu=NULL;
+GlutPopupMenuWindow *GlutContext::popupSubMenu=NULL;
 GlutHelpWindow *GlutContext::helpWindow=NULL;
 int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
@@ -172,7 +173,11 @@ void GlutContext::passiveMotionFunc(int x,int y) {
         glutPostRedisplay();
         return;
     }
-    if (mainWindow->passiveMotionFunc(x,screenHeight - y)) {
+		if (popupMenu && popupSubMenu && popupSubMenu->passiveMotionFunc(x,screenHeight - y)) {
+				glutPostRedisplay();
+				return;
+		}
+		if (mainWindow->passiveMotionFunc(x,screenHeight - y)) {
         glutPostRedisplay();
         return;
     }
@@ -199,10 +204,17 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
         glutPostRedisplay();
         return;
     }
-    if (popupMenu) {
+    if (popupMenu && popupMenu->isVisible) {
         int n=popupMenu->mouseFunc(button,state,x,screenHeight - y);
         if (n) {
             popupMenu->show(false);
+            getWorld()->menuChoice(n);
+        }
+    }
+		if (popupSubMenu && popupSubMenu->isVisible) {
+        int n=popupSubMenu->mouseFunc(button,state,x,screenHeight - y);
+        if (n) {
+            popupSubMenu->show(false);
             getWorld()->menuChoice(n);
         }
     }
@@ -244,16 +256,15 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             if (slct) slct->toggleHighlight();
             // set n-1 block selected block (no selected block if n=0
             if (n) {
-                GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n-1);
+                GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n);
                 glB->toggleHighlight();
                 glB->fireSelectedTrigger();
             } else BaseSimulator::getWorld()->setselectedGlBlock(-1);
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
                 int n=selectFaceFunc(x,y);
-                cout << "selected face #" << n << endl;
                 if (n>0) {
-                    BaseSimulator::getWorld()->setSelectedFace(n-1);
+                    BaseSimulator::getWorld()->setSelectedFace(n);
                     BaseSimulator::getWorld()->createPopupMenu(x,y);
                 }
             }
@@ -472,7 +483,7 @@ void GlutContext::idleFunc(void) {
         if (tm-lastMotionTime>100) {
             int n=selectFunc(lastMousePos[0],lastMousePos[1]);
             if (n) {
-                GlBlock *slct=BaseSimulator::getWorld()->getBlockByNum(n-1);
+                GlBlock *slct=BaseSimulator::getWorld()->getBlockByNum(n);
                 popup->setCenterPosition(lastMousePos[0],screenHeight - lastMousePos[1]);
                 popup->setInfo(slct->getPopupInfo());
                 popup->show(true);
@@ -502,10 +513,13 @@ void GlutContext::calculateFPS(void) {
 }
 
 void GlutContext::showFPS(void) {
-    char fpsStr[50];
-    sprintf(fpsStr, "FPS = %4.2f", fps);
+    char str[20];
+    sprintf(str, "FPS = %4.2f", fps);
     glColor3f(255,255,0);
-    GlutWindow::drawString(50, 50, fpsStr);
+    GlutWindow::drawString(50, 50, str);
+    sprintf(str,"nbre modules = %d",getWorld()->lattice->nbModules);
+    GlutWindow::drawString(50, 35, str);
+    
 }
 
 void GlutContext::drawFunc(void) {
@@ -538,7 +552,10 @@ void GlutContext::drawFunc(void) {
     mainWindow->glDraw();
     debugWindow->glDraw();
     popup->glDraw();
-    if (popupMenu) popupMenu->glDraw();
+		if (popupMenu && popupMenu->isVisible) {
+			popupMenu->glDraw();
+			if (popupSubMenu && popupSubMenu->isVisible) popupSubMenu->glDraw();
+		}
     if (helpWindow) helpWindow->glDraw();
 #ifdef showStatsFPS
     showFPS();

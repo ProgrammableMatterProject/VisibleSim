@@ -39,13 +39,16 @@ public:
 	OkteenBlock(int bId, BlockCodeBuilder bcb);
 	~OkteenBlock();
 
-	inline virtual OkteenGlBlock* getGlBlock() { return static_cast<OkteenGlBlock*>(ptrGlBlock); };
+	inline virtual OkteenGlBlock* getGlBlock() const {
+        return static_cast<OkteenGlBlock*>(ptrGlBlock);
+    };
+    
 	inline void setGlBlock(OkteenGlBlock*ptr) { ptrGlBlock=ptr;};
 /**
    \brief Get the interface from the neighbor position in the grid
    \param pos: position of the cell (if in the grid)
    \return return interface if it exists one connected, NULL otherwise */
-    inline P2PNetworkInterface *getInterface(SCLattice::Direction d) { return P2PNetworkInterfaces[d]; }
+    inline P2PNetworkInterface *getInterface(SCLattice::Direction d) const { return P2PNetworkInterfaces[d]; }
 /**
    \brief Get the interface from the interface id
    \param id: interface number
@@ -61,7 +64,7 @@ public:
    \brief Get the direction id for the corresponding interface
    \param p2p: pointer to the interface
    \return return value [0..5] of the direction according SCLattice::Direction. */
-	int getDirection(P2PNetworkInterface*p2p);
+	int getDirection(P2PNetworkInterface*p2p) const;
 /**
    \brief Set the length of connector
    \param connectorId: id of connector (0..5)

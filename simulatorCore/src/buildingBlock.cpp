@@ -86,6 +86,14 @@ BuildingBlock::~BuildingBlock() {
 		delete p2p;
 }
 
+short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
+    for (unsigned short int i = 0; i < P2PNetworkInterfaces.size(); i++) {
+        if (itf == P2PNetworkInterfaces[i]) return i;
+    }
+
+    return -1;
+}  
+
 bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {
     P2PNetworkInterface *ni1, *ni2;
     ni1 = NULL;
@@ -129,7 +137,7 @@ bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(int destBlockId) {
     return false;
 }
 
-P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlock *destBlock) {
+P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlock *destBlock) const {
     for(P2PNetworkInterface *p2p : P2PNetworkInterfaces) {
 		if (p2p->connectedInterface) {
 			if (p2p->connectedInterface->hostBlock == destBlock) {
@@ -140,7 +148,7 @@ P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlo
     return NULL;
 }
 
-P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destBlockId) {
+P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destBlockId) const {
     for(P2PNetworkInterface *p2p : P2PNetworkInterfaces) {
 		if (p2p->connectedInterface) {
 			if (p2p->connectedInterface->hostBlock->blockId == destBlockId) {
@@ -151,10 +159,10 @@ P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destB
     return NULL;
 }
 
-unsigned short BuildingBlock::getNbNeighbors() {
+unsigned short BuildingBlock::getNbNeighbors() const {
   unsigned short n = 0;
   P2PNetworkInterface *p;
-  vector<P2PNetworkInterface*>::iterator it;
+  vector<P2PNetworkInterface*>::const_iterator it;
   for (it = P2PNetworkInterfaces.begin(); it != P2PNetworkInterfaces.end(); ++it) {
     p = *it;
     if (p->isConnected()) {
@@ -186,7 +194,7 @@ void BuildingBlock::scheduleLocalEvent(EventPtr pev) {
 
 void BuildingBlock::processLocalEvent() {
     EventPtr pev;
-
+    
     if (localEventsList.size() == 0) {
 		cerr << "*** ERROR *** The local event list should not be empty !!" << endl;
 		getScheduler()->trace("*** ERROR *** The local event list should not be empty !!");
@@ -194,7 +202,15 @@ void BuildingBlock::processLocalEvent() {
     }
     pev = localEventsList.front();
     localEventsList.pop_front();
-    blockCode->processLocalEvent(pev);
+
+    try {
+        blockCode->processLocalEvent(pev);
+    } catch(VisibleSimException const& e) {
+        cerr << "exception raised! (see below)" << endl;
+        cerr << e.what() << endl;
+        awaitKeyPressed();
+        throw;
+    }
 
     if (pev->eventType == EVENT_NI_RECEIVE ) {
       utils::StatsIndividual::decIncommingMessageQueueSize(stats);
@@ -242,7 +258,7 @@ void BuildingBlock::setClock(Clock *c) {
   clock = c;
 }
 
-Time BuildingBlock::getLocalTime(Time simTime) {
+Time BuildingBlock::getLocalTime(Time simTime) const {
   if (clock == NULL) {
     cerr << "device has no internal clock" << endl;
     return 0;
@@ -250,7 +266,7 @@ Time BuildingBlock::getLocalTime(Time simTime) {
   return clock->getTime(simTime);
 }
 
-Time BuildingBlock::getLocalTime() {
+Time BuildingBlock::getLocalTime() const {
     if (clock == NULL) {
       cerr << "device has no internal clock" << endl;
       return 0;
@@ -258,7 +274,7 @@ Time BuildingBlock::getLocalTime() {
     return clock->getTime();
 }
 
-Time BuildingBlock::getSimulationTime(Time localTime) {
+Time BuildingBlock::getSimulationTime(Time localTime) const {
     if (clock == NULL) {
       cerr << "device has no internal clock" << endl;
       return localTime;
@@ -270,13 +286,13 @@ Time BuildingBlock::getSimulationTime(Time localTime) {
  *            MeldInterpreter Functions
  *************************************************/
 
-unsigned short BuildingBlock::getNeighborIDForFace(int faceNum) {
+unsigned short BuildingBlock::getNeighborIDForFace(int faceNum) const {
     short nodeID = P2PNetworkInterfaces[faceNum]->getConnectedBlockId();
 
 	return nodeID > 0  ? (unsigned short)nodeID : 0;
 }
 
-int BuildingBlock::getFaceForNeighborID(int nId) {
+int BuildingBlock::getFaceForNeighborID(int nId) const {
 	for (unsigned int face = 0; face < P2PNetworkInterfaces.size(); face++) {
 		if (nId == getNeighborIDForFace(face))
 			return face;

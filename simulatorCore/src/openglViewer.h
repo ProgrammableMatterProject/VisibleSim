@@ -34,6 +34,7 @@ public :
     static GlutSlidingDebugWindow *debugWindow;
     static GlutPopupWindow *popup;
     static GlutPopupMenuWindow *popupMenu;
+    static GlutPopupMenuWindow *popupSubMenu;
     static GlutHelpWindow *helpWindow;
     static int screenWidth, screenHeight;
     static int initialScreenWidth, initialScreenHeight;

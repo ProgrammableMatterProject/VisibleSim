@@ -166,7 +166,7 @@ void ConfigExporter::exportBlock(BuildingBlock *bb) {
 }
 
 void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("rotation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
+    bbElt->SetAttribute("orientation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
 }
 
 void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {

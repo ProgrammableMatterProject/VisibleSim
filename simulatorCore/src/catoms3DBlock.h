@@ -9,6 +9,7 @@
 #define CATOMS3DBLOCK_H_
 
 #include <stdexcept>
+#include <bitset>
 
 #include "buildingBlock.h"
 #include "catoms3DBlockCode.h"
@@ -63,7 +64,10 @@ public:
     Catoms3DBlock(int bId, BlockCodeBuilder bcb);
     ~Catoms3DBlock();
 
-    inline virtual Catoms3DGlBlock* getGlBlock() { return static_cast<Catoms3DGlBlock*>(ptrGlBlock); };
+    inline virtual Catoms3DGlBlock* getGlBlock() const {
+        return static_cast<Catoms3DGlBlock*>(ptrGlBlock);
+    };
+    
     inline void setGlBlock(Catoms3DGlBlock*ptr) { ptrGlBlock=ptr;};
     /**
        @brief Show/Hide a catom in the interface
@@ -73,7 +77,7 @@ public:
        @brief Get the interface from the neighbor position in the grid
        @param pos: position of the cell (if in the grid)
        @return return interface if it exists one connected, NULL otherwise */
-    P2PNetworkInterface* getInterface(const Cell3DPosition &pos);
+    P2PNetworkInterface* getInterface(const Cell3DPosition &pos) const;
     /**
        @brief Get the interface from the interface id
        @param id: interface number
@@ -117,15 +121,15 @@ public:
     /** 
      * @attention SHOULD BE getConnector(p2p...)!
      */
-    int getDirection(P2PNetworkInterface*);
+    int getDirection(P2PNetworkInterface*) const;
     
     /** 
      * @brief For a given connector, returns the direction corresponding to this connector 
      *  relative to a catom whose 0 connector is aligned with the x-axis
      * @param connector the connector for which the absolute direction wants to be known
      * @return a short int in {0..11}, the direction of the connector, or -1 if connector is invalid or adjacent to a cell outside the lattice */
-    short getAbsoluteDirection(short connector);    
-    short getAbsoluteDirection(const Cell3DPosition& pos);
+    short getAbsoluteDirection(short connector) const;    
+    short getAbsoluteDirection(const Cell3DPosition& pos) const;
     
     /**
      * @brief Sets the grid position of the catom, and updates its position matrix
@@ -163,6 +167,29 @@ public:
      * @return a pointer to the neighbor on cell pos or NULL if pos is not adjacent to the module or out of lattice
      */
     Catoms3DBlock* getNeighborOnCell(const Cell3DPosition &pos) const;
+
+    /** 
+     * Indicates whether the module is can reach position pos in a single rotation,
+     *  given its current local neighborhood
+     * @param pos target position
+     * @param faceReq face requirement, if indicated the function will return true only if the 
+     *  motion is possible using the type of face passed as argument. Any by default.
+     * @attention this does not guarantee an absence of collision, as might occur if 
+     *  a blocking modules exists in the 2nd-order neighborhood of the current block
+     * @return true if motion is possible, false otherwise
+     */
+    bool canRotateToPosition(const Cell3DPosition &pos,
+                             RotationLinkType faceReq = RotationLinkType::Any) const;
+
+    /** 
+     * Queries each of the module interface to determine the state of the local neighborhood.
+     *  i.e., for each connector, if one module is connected or not
+     * @return a 12-bit bitset where the n-th bit is set to true if interface in direction n 
+     *  is connected to another module, 0 otherwise
+     * @attention a P2PNetworkInterface at DIRECTION d = m corresponds to the interface that 
+     *  is located at the same location as interface #m when block is at orientation 0
+     */
+    std::bitset<12> getLocalNeighborhoodState() const;
     
     // MeldInterpreter
     /**

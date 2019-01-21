@@ -36,7 +36,7 @@ Catoms2DBlock::~Catoms2DBlock() {
 }
 
 // PTHY: TODO: Can be genericized in BuildingBlocks
-int Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
+int Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) const {
     if (!p2p) {
       return HLattice::Direction(0);
     }
@@ -50,14 +50,14 @@ int Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
 }
   
 // PTHY: TODO: Take rotation into account
-Cell3DPosition Catoms2DBlock::getPosition(HLattice::Direction d) {   
+Cell3DPosition Catoms2DBlock::getPosition(HLattice::Direction d) const {   
     World *wrl = getWorld();
     vector<Cell3DPosition> nCells = wrl->lattice->getRelativeConnectivity(position);
     return position + nCells[d];
 }
 
 // PTHY: TODO: Can be genericized in BuildingBlocks
-Cell3DPosition Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) {
+Cell3DPosition Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) const{
     return getPosition((HLattice::Direction)getDirection(p2p));
 }
 
@@ -66,7 +66,7 @@ std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb) {
     return stream;
 }
 
-P2PNetworkInterface *Catoms2DBlock::getInterface(HLattice::Direction d) {
+P2PNetworkInterface *Catoms2DBlock::getInterface(HLattice::Direction d) const {
     int alpha = angle;
     int beta = d*60;
     int t = beta-alpha;
@@ -78,11 +78,11 @@ P2PNetworkInterface *Catoms2DBlock::getInterface(HLattice::Direction d) {
     }
 }
 
-bool Catoms2DBlock::hasANeighbor(HLattice::Direction n, bool groundIsNeighbor) {
+bool Catoms2DBlock::hasANeighbor(HLattice::Direction n, bool groundIsNeighbor) const {
     return hasANeighbor(getInterface(n),groundIsNeighbor);
 }
 
-bool Catoms2DBlock::hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor) {
+bool Catoms2DBlock::hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor) const {
     Cell3DPosition p = getPosition(p2p);
     if(p2p->connectedInterface) {
 		return true;
@@ -92,7 +92,7 @@ bool Catoms2DBlock::hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor
     return false;
 }
 
-int Catoms2DBlock::nbNeighbors(bool groundIsNeighbor) {
+int Catoms2DBlock::nbNeighbors(bool groundIsNeighbor) const {
     int cnt = 0;
     for (int i = 0; i < HLattice::MAX_NB_NEIGHBORS; i++) {
 		if (hasANeighbor((HLattice::Direction)i, groundIsNeighbor)) {
@@ -102,7 +102,7 @@ int Catoms2DBlock::nbNeighbors(bool groundIsNeighbor) {
     return cnt;
 }
 
-int Catoms2DBlock::nbConsecutiveNeighbors(bool groundIsNeighbor) {
+int Catoms2DBlock::nbConsecutiveNeighbors(bool groundIsNeighbor) const {
     int empty = -1;
     int m = 0;
     int cnt = 0;
@@ -130,7 +130,7 @@ int Catoms2DBlock::nbConsecutiveNeighbors(bool groundIsNeighbor) {
     return m;
 }
 
-int Catoms2DBlock::nbConsecutiveEmptyFaces(bool groundIsNeighbor) {
+int Catoms2DBlock::nbConsecutiveEmptyFaces(bool groundIsNeighbor) const {
     int notEmpty = -1;
     int m = 0;
     int cnt = 0;
@@ -159,13 +159,15 @@ int Catoms2DBlock::nbConsecutiveEmptyFaces(bool groundIsNeighbor) {
 }
 
 
-bool Catoms2DBlock::isBlocked() {
+bool Catoms2DBlock::isBlocked() const {
     int n = nbNeighbors(true);
     int nc = nbConsecutiveNeighbors(true);
     return (!((n == nc) && (nc <= 3)));
 }
 
-P2PNetworkInterface* Catoms2DBlock::getNextInterface(RelativeDirection::Direction dir, P2PNetworkInterface *p2p, bool connected) {
+P2PNetworkInterface* Catoms2DBlock::getNextInterface(RelativeDirection::Direction dir,
+                                                     P2PNetworkInterface *p2p,
+                                                     bool connected) const {
     P2PNetworkInterface *next = NULL;
     int d = getDirection(p2p);
 
@@ -190,7 +192,7 @@ P2PNetworkInterface* Catoms2DBlock::getNextInterface(RelativeDirection::Directio
 
 
 
-int Catoms2DBlock::getCCWMovePivotId() {
+int Catoms2DBlock::getCCWMovePivotId() const {
     for (int j = 0; j < 6; j++) {
 		P2PNetworkInterface *p2pPivot = getInterface((HLattice::Direction)j);
 		
@@ -228,7 +230,7 @@ int Catoms2DBlock::getCCWMovePivotId() {
     return -1;
 }
 
-int Catoms2DBlock::getCWMovePivotId() {
+int Catoms2DBlock::getCWMovePivotId() const {
     for (int j = 5; j >= 0; j--) {
 		P2PNetworkInterface *p2pPivot = getInterface((HLattice::Direction)j);
 
@@ -266,7 +268,7 @@ int Catoms2DBlock::getCWMovePivotId() {
 
 
 // Motion
-bool Catoms2DBlock::canMove(Rotation2DMove &m) {
+bool Catoms2DBlock::canMove(Rotation2DMove &m) const {
     // physical moving condition
     // pivot is a neighbor (physically connected)
     // move CW around i connector: i+1, i+2 and i+3 should be free

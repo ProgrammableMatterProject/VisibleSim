@@ -32,12 +32,15 @@ public:
     RobotBlocksBlock(int bId, BlockCodeBuilder bcb);
     ~RobotBlocksBlock();
 
-    inline RobotBlocksGlBlock* getGlBlock() { return (RobotBlocksGlBlock*)ptrGlBlock; };
+    inline RobotBlocksGlBlock* getGlBlock() const { return (RobotBlocksGlBlock*)ptrGlBlock; };
     inline void setGlBlock(RobotBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
     void setPrevNext(int,int);
     void setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next);
-    P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos);
-    inline P2PNetworkInterface *getInterface(SCLattice::Direction d) { return P2PNetworkInterfaces[d]; }
+    P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) const;
+    inline P2PNetworkInterface *getInterface(SCLattice::Direction d) const {
+        return P2PNetworkInterfaces[d];
+    }
+    
 	/**
 	 * @copydoc BuildingBlock::addNeighbor
 	 */
@@ -46,7 +49,7 @@ public:
 	 * @copydoc BuildingBlock::removeNeighbor
 	 */
 	virtual void removeNeighbor(P2PNetworkInterface *ni);
-    int getDirection(P2PNetworkInterface*);
+    int getDirection(P2PNetworkInterface*) const;
 };
 
 std::ostream& operator<<(std::ostream &stream, RobotBlocksBlock const& bb);

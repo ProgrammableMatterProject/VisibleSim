@@ -1,6 +1,7 @@
 #include "catoms3DMotionRules.h"
 #include "rotation3DEvents.h"
 #include "catoms3DWorld.h"
+#include "catoms3DMotionEngine.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -300,11 +301,11 @@ bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d,
 
     vector <Catoms3DMotionRulesLink*>::const_iterator ci=conn->tabLinks.begin();
     while (ci!=conn->tabLinks.end()) {
-        OUTPUT << from << " -> " << (*ci)->getConToID() << ", ";
+        // OUTPUT << from << " -> " << (*ci)->getConToID() << ", ";
         if ((*ci)->isValid(c3d)) {
             vec.push_back(*ci);
             notEmpty=true;
-            OUTPUT << endl;
+            // OUTPUT << endl;
         }
         ci++;
     }
@@ -431,6 +432,33 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
     return notEmpty;
 }
 
+const Catoms3DMotionRulesLink* Catoms3DMotionRules::
+getMobileModuleLinkMatchingPivotLink(const Catoms3DMotionRulesLink* pivLink,
+                                     const Catoms3DBlock* m, const Catoms3DBlock* pivot) {
+    if (pivLink and m and pivot) {
+        short conFrom = m->getConnectorId(pivot->position);
+        short conTo =
+            Catoms3DMotionEngine::getMirrorConnectorOnModule(pivot, m,
+                                                             pivLink->getConFromID(),
+                                                             conFrom, pivLink->getConToID());
+        
+        // cout << "Conconv: #" << pivot->blockId << " l: " << *pivLink <<endl;
+        // cout << pivLink->getConFromID() << " === " << conFrom << endl;
+        // cout << pivLink->getConToID() << " === " << conTo << endl; 
+        
+        vector<Catoms3DMotionRulesLink*> motionRulesLinksFrom;
+        getValidMotionList(m, conFrom, motionRulesLinksFrom);
+        
+        for (const Catoms3DMotionRulesLink* link : motionRulesLinksFrom) {
+            if (link->getConToID() == conTo
+                and link->getMRLT() == pivLink->getMRLT())
+                return link;
+        }
+    }
+
+    return NULL;
+}
+
 void Catoms3DMotionRulesConnector::addLink(Catoms3DMotionRulesLink *lnk) {
     tabLinks.push_back(lnk);
 }
@@ -463,7 +491,7 @@ bool Catoms3DMotionRulesLink::isValid(const Catoms3DBlock *c3d) {
     while (ci!=tabBlockingIDs.end() && c3d->getInterface(*ci)->connectedInterface==NULL) {
         ci++;
     }
-    if (ci!=tabBlockingIDs.end()) OUTPUT << "blocking: "<< *ci << endl;
+    // if (ci!=tabBlockingIDs.end()) OUTPUT << "blocking: "<< *ci << endl;
     return (ci==tabBlockingIDs.end());
 }
 
@@ -488,8 +516,8 @@ void Catoms3DMotionRulesLink::sendRotationEvent(Catoms3DBlock*mobile,
     getScheduler()->schedule(new Rotation3DStartEvent(t,mobile, getRotations(mobile, pivot)));
 }
 
-Rotations3D Catoms3DMotionRulesLink::getRotations(Catoms3DBlock* mobile,
-                                                  Catoms3DBlock* pivot) const {
+Rotations3D Catoms3DMotionRulesLink::getRotations(const Catoms3DBlock* mobile,
+                                                  const Catoms3DBlock* pivot) const {
     return Rotations3D(mobile,pivot,radius,axis1,angle,axis2,angle);
 }
 
@@ -510,8 +538,15 @@ vector<Cell3DPosition> Catoms3DMotionRulesLink::getBlockingCellsList(const Catom
     return tabPos;
 }
 
-std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mrl) {
+std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mrl) {    
     stream << mrl.getConFromID() << " -> " << mrl.getConToID();
+
+    switch (mrl.getMRLT()) {
+        case HexaFace: stream << " (HEXA)"; break;
+        case OctaFace: stream << " (OCTA)"; break;
+        default: stream << "(ERR)"; break;
+    }
+    
     return stream;
 }
 

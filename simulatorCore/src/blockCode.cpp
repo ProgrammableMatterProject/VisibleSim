@@ -19,6 +19,22 @@ namespace BaseSimulator {
 
 Target *BlockCode::target = NULL;
 
+BlockCode::InterfaceNotConnectedException::
+InterfaceNotConnectedException(BlockCode* bc, const Message* msg,
+                               const P2PNetworkInterface* itf) {
+    stringstream ss;
+    int itfId = bc->hostBlock->getInterfaceId(itf);
+    Cell3DPosition nPos;
+    bool err = not bc->hostBlock->getNeighborPos(itfId, nPos);
+    ss <<  "Trying to send " << msg->getMessageName() << " through unconnected interface: " 
+       << " { sender = #" << bc->hostBlock->blockId
+       << " at " << bc->hostBlock->position
+       << ", itfId = " << itfId
+       << ", nPos = " << (string)(err ? "#ERROR" : bc->hostBlock->position.to_string())
+       << " }" << endl;
+    m_msg = ss.str();
+}
+
 BlockCode::BlockCode(BuildingBlock *host) : hostBlock(host) {
 	scheduler = getScheduler();
 	lattice = getWorld()->lattice;
@@ -46,9 +62,13 @@ int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,Time t0,Time dt
 int BlockCode::sendMessage(HandleableMessage*msg,
                            P2PNetworkInterface *dest, Time t0, Time dt) {
     // PTHY: t1: Risque que deux messages envoyés sequentiellement au même t0 ne soient pas envoyés dans l'ordre ??? 
-    Time t1 = scheduler->now() + t0
-      + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
+    Time t1 = scheduler->now() + t0;
+    // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
+    if (not dest->connectedInterface) {
+        throw InterfaceNotConnectedException(this, msg, dest);
+    }
+    
     console << " sends " << msg->getName() << " to "
             << dest->getConnectedBlockId() << " at " << t1 << "\n";
 #ifdef DEBUG_MESSAGES
@@ -65,13 +85,20 @@ int BlockCode::sendMessage(HandleableMessage*msg,
 int BlockCode::sendMessage(const char*msgString, Message*msg,
                            P2PNetworkInterface *dest, Time t0, Time dt) {
     // PTHY: t1: Risque que deux messages envoyés sequentiellement au même t0 ne soient pas envoyés dans l'ordre ??? 
-    Time t1 = scheduler->now() + t0
-      + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
+    Time t1 = scheduler->now() + t0;
+        // + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
+    if (not dest->connectedInterface) {
+        throw InterfaceNotConnectedException(this, msg, dest);
+    }
+    
 	if (msgString)
 		console << " sends " << msgString << " to "
                 << dest->getConnectedBlockId() << " at " << t1 << "\n";
-
+    else if (msg->isMessageHandleable())
+        console << " sends " << msg->getMessageName() << " to "
+                << dest->getConnectedBlockId() << " at " << t1 << "\n";        
+        
 #ifdef DEBUG_MESSAGES
     OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
 		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;

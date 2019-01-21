@@ -92,7 +92,7 @@ short OkteenBlock::getOrientationFromMatrix(const Matrix &mat) {
     return current;
 }
 */
-int OkteenBlock::getDirection(P2PNetworkInterface *given_interface) {
+int OkteenBlock::getDirection(P2PNetworkInterface *given_interface) const {
     if( !given_interface) {
         return -1;
     }

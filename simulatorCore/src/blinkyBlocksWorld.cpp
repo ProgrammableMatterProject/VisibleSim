@@ -62,7 +62,7 @@ void BlinkyBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), blinkyBlock));
 
 	BlinkyBlocksGlBlock *glBlock = new BlinkyBlocksGlBlock(blockId);
-	tabGlBlocks.push_back(glBlock);
+    mapGlBlocks.insert(make_pair(blockId, glBlock));
 	blinkyBlock->setGlBlock(glBlock);
 	blinkyBlock->setPosition(pos);
 	blinkyBlock->setColor(col);
@@ -106,13 +106,11 @@ void BlinkyBlocksWorld::glDraw() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
     // glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
-    glDisable(GL_TEXTURE_2D);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((BlinkyBlocksGlBlock*)(*ic))->glDraw(objBlock);
-        ic++;
-    }
+    glDisable(GL_TEXTURE_2D);    
+    lock();    
+    for (const auto& pair : mapGlBlocks) {
+        ((BlinkyBlocksGlBlock*)pair.second)->glDraw(objBlock);
+    }    
     unlock();
     
     glDrawBackground();
@@ -122,14 +120,11 @@ void BlinkyBlocksWorld::glDrawId() {
 	glPushMatrix();
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
 	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-	int n=1;
 	lock();
-	while (ic!=tabGlBlocks.end()) {
-		((BlinkyBlocksGlBlock*)(*ic))->glDrawId(objBlock,n);
-		ic++;
-	}
-	unlock();
+    for (const auto& pair : mapGlBlocks) {
+        ((BlinkyBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
+    }
+    unlock();
 	glPopMatrix();
 }
 
@@ -138,13 +133,11 @@ void BlinkyBlocksWorld::glDrawIdByMaterial() {
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
 
 	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 	int n=1;
 	lock();
-	while (ic!=tabGlBlocks.end()) {
-		((BlinkyBlocksGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
-		ic++;
-	}
+    for (const auto& pair : mapGlBlocks) {
+        ((BlinkyBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
+    }
 	unlock();
 	glPopMatrix();
 }

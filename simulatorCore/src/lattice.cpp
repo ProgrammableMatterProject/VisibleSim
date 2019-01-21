@@ -73,8 +73,10 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
             throw OutOfLatticeInsertionException(p);
         else if (not isFree(p))
             throw DoubleInsertionException(p);
-        else
+        else {
             grid[index] = bb;
+            nbModules++;
+        }
     } catch (DoubleInsertionException const& e) {
         cerr << e.what();
         VS_ASSERT(false);//FIXME: should be handled by thes user, but catch clauses in main are not catching the exceptions for some reason.
@@ -87,6 +89,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
 
 void Lattice::remove(const Cell3DPosition &p) {
     grid[getIndex(p)] = NULL;
+    nbModules--;
 }
 
 BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) const {
@@ -189,34 +192,16 @@ string Lattice::getDirectionString(short d) {
         directionName[d] : "undefined";
 }
 
-vector<HighlightedCell>::iterator Lattice::find(const Cell3DPosition& val) {
-	vector<HighlightedCell>::iterator first = tabHighlightedCells.begin();
-	while (first!=tabHighlightedCells.end()) {
-		if ((*first).pos==val) return first;
-		++first;
-	}
-	return tabHighlightedCells.end();
-}
-
 void Lattice::highlightCell(const Cell3DPosition& pos, const Color &color) {
-	vector<HighlightedCell>::iterator existing = find(pos);
-	if (existing!=tabHighlightedCells.end()) {
-		(*existing).color=color;
-	} else {
-		HighlightedCell hc(pos,color);
-		tabHighlightedCells.push_back(hc);
-	}
+    mapHighlightedCells.insert(make_pair(pos, color));
 }
 
 void Lattice::unhighlightCell(const Cell3DPosition& pos) {
-	vector<HighlightedCell>::iterator existing = find(pos);
-	if (existing!=tabHighlightedCells.end()) {
-		tabHighlightedCells.erase(existing);
-	}
+    mapHighlightedCells.erase(pos);
 }
 
 void Lattice::resetCellHighlights() {
-	tabHighlightedCells.clear();
+	mapHighlightedCells.clear();
 }
 
 /********************* Lattice2D *********************/
@@ -569,17 +554,17 @@ static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 			}
 		}
 	}
-    if (!tabHighlightedCells.empty()) {
-		vector<HighlightedCell>::const_iterator it = tabHighlightedCells.begin();
+
+    if (!mapHighlightedCells.empty()) {
 		Vector3D v;
 		int i=72;
 		const uint8_t *ptr;
 		Color c;
-		while (it!=tabHighlightedCells.end()) {
+		for (const auto& pair : mapHighlightedCells) {
 			glPushMatrix();
-			v = gridToWorldPosition((*it).pos);
+			v = gridToWorldPosition(pair.first);
 			glTranslatef(v.pt[0],v.pt[1],v.pt[2]);
-			c.set((*it).color.rgba[0],(*it).color.rgba[1],(*it).color.rgba[2],0.5f);
+			c.set(pair.second.rgba[0],pair.second.rgba[1],pair.second.rgba[2],0.5f);
 			glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c.rgba);
 			glBegin(GL_QUADS);
 			ptr = quads;
@@ -601,7 +586,6 @@ static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 			}
 			glEnd();
 			glPopMatrix();
-			++it;
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace BaseSimulator {
 
 World *World::world=NULL;
 map<bID, BuildingBlock*>World::buildingBlocksMap;
-vector <GlBlock*>World::tabGlBlocks;
+unordered_map <bID, GlBlock*>World::mapGlBlocks;
 
 World::World(int argc, char *argv[]) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
@@ -51,12 +51,10 @@ World::~World() {
 	}
 
 	// free glBlocks
-	std::vector<GlBlock*>::const_iterator cit=tabGlBlocks.begin();
-	while (cit!=tabGlBlocks.end()) {
-		delete *cit;
-		cit++;
-	}
-
+    for (const auto& pair : mapGlBlocks) {
+        delete (GlBlock*)pair.second;
+    }
+    
 	// /* free Scenario Events */
 	// vector<ScenarioEvent*>::const_iterator it=tabEvents.begin();
 	// while (it!=tabEvents.end()) {
@@ -196,15 +194,7 @@ void World::deleteBlock(BuildingBlock *bb) {
     }
 
     // remove the associated glBlock
-    // FIXME: Block removal corrupts tabGlBlocks that is accessed through the OpenGL interaction menu menu by blockId == index
-    std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
-    if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-    else {
-        while (cit!=tabGlBlocks.end() && (*cit)!=bb->ptrGlBlock) {
-            cit++;
-        }
-        if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-    }
+    mapGlBlocks.erase(bb->blockId);
 
     delete bb->ptrGlBlock;
 }
@@ -217,17 +207,10 @@ void World::stopSimulation() {
 }
 
 bool World::canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace) {
-	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-	const Cell3DPosition &pos = bb->position;
-    cout << pos << endl;
-	const vector<Cell3DPosition> &nCells = lattice->getRelativeConnectivity(pos);
-	// if (numSelectedFace < lattice->getMaxNumNeighbors())
-	// 	cerr << "numSelectedFace: " << numSelectedFace << " f"
-	// 		 << pos << "+" << nCells[numSelectedFace]
-	// 		 << " = " << lattice->isFree(pos + nCells[numSelectedFace]) << endl;
-
-	return numSelectedFace < lattice->getMaxNumNeighbors() ?
-		lattice->isFree(pos + nCells[numSelectedFace]) : false;
+	BuildingBlock *bb = getBlockById(mapGlBlocks[numSelectedGlBlock]->blockId);
+	Cell3DPosition nPos;
+	bool isInGrid = bb->getNeighborPos(numSelectedFace,nPos);
+	return isInGrid && lattice->isFree(nPos);
 }
 
 void World::menuChoice(int n) {
@@ -246,7 +229,7 @@ void World::menuChoice(int n) {
 		}
 	} break;
 	case 2 : {
-		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
+		OUTPUT << "DEL num block : " << mapGlBlocks[numSelectedGlBlock]->blockId << endl;
 		deleteBlock(bb);
 	} break;
 	case 3 : {
@@ -271,14 +254,15 @@ void World::tapBlock(Time date, bID bId, int face) {
 }
 
 void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
-    // FIXME: Block with -1 id corrupts tabGlBlocks that is accessed through the OpenGL interaction menu by blockId == index
-	GlBlock *glBlock = new GlBlock(-1);
+    bID blockId = incrementBlockId();
+    
+	GlBlock *glBlock = new GlBlock(blockId);
     Vector3D position(lattice->gridScale[0]*pos[0],
 					  lattice->gridScale[1]*pos[1],
 					  lattice->gridScale[2]*pos[2]);
 	glBlock->setPosition(position);
 	glBlock->setColor(col);
-	tabGlBlocks.push_back(glBlock);
+    mapGlBlocks.insert(make_pair(blockId, glBlock));
 }
 
 void World::createPopupMenu(int ix, int iy) {
@@ -310,6 +294,23 @@ void World::glDrawBackground() {
     else {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
+}
+
+void World::getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax) {
+    lock();
+    xmin = ymin = zmin = 10000;
+    xmax = ymax = zmax = 0;
+    float *pos;
+    for (const auto& pair : mapGlBlocks) {
+        pos = (pair.second)->position;
+        if (xmin>pos[0]) xmin=pos[0];
+        if (ymin>pos[1]) ymin=pos[1];
+        if (zmin>pos[2]) zmin=pos[2];
+        if (xmax<pos[0]) xmax=pos[0];
+        if (ymax<pos[1]) ymax=pos[1];
+        if (zmax<pos[2]) zmax=pos[2];
+    }
+    unlock();
 }
 
 } // BaseSimulator namespace

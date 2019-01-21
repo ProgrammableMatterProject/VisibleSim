@@ -16,6 +16,7 @@
 
 #include "glBlock.h"
 #include "color.h"
+#include "cell3DPosition.h"
 
 #ifndef GLUT
 #define GLUT
@@ -35,18 +36,19 @@ class GlutWindow {
 protected :
 	vector<GlutWindow*> children;
 	GLuint idTexture;
-    void addChild(GlutWindow *child);
+  void addChild(GlutWindow *child);
 	void bindTexture();
-    TextSize currentTextSize=TextSize::TEXTSIZE_STANDARD;
-    bool isVisible;
-  public :
+  TextSize currentTextSize=TextSize::TEXTSIZE_STANDARD;
+public :
 	GLuint id;
 	GLint x,y,w,h;
+	bool isVisible;
 
 	GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutWindow();
+	virtual void clearChildren();
 	inline void setGeometry(GLint px,GLint py,GLint pw,GLint ph) { x=px; y=py; w=pw; h=ph; };
-
+	inline GlutWindow *getChild(int n) { return children[n]; };
 	virtual void glDraw();
 	virtual int mouseFunc(int button,int state,int mx,int my);
 	virtual bool passiveMotionFunc(int mx,int my);
@@ -58,17 +60,21 @@ protected :
 	GLfloat drawString(GLfloat x,GLfloat y,const char *str, TextMode mode);
 	virtual void setTextSize(TextSize ts);
 	TextSize getTextSize() { return currentTextSize; }
-	void setVisible(bool v) { isVisible=v; }
+
+	void show(bool v) { isVisible=v;};
+	void showHide() { isVisible=!isVisible;};
+	inline bool isShown() { return isVisible; };
 };
+
 
 class GlutButton : public GlutWindow {
 	bool isActive;
 	bool isDown;
 	bool isHighlighted;
 public :
-	GlutButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool pia=true);
-	virtual ~GlutButton() {};
-
+  GlutButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool pia=true);
+  virtual ~GlutButton() {};
+	void addSubMenu(GlutWindow *child);
 	inline void activate(bool v) { isActive=v; };
 	inline bool isActivated() { return isActive; };
 	int mouseFunc(int button,int state,int x,int y);
@@ -76,6 +82,23 @@ public :
 	void glDraw();
 };
 
+class GlutRotationButton : public GlutWindow {
+	bool isHighlighted;
+	bool isBlue;
+	uint8_t id0,id1;
+public :
+    Cell3DPosition finalPosition;
+    short finalOrientation;
+
+    GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation);
+  virtual ~GlutRotationButton() {};
+	int mouseFunc(int button,int state,int x,int y);
+	bool passiveMotionFunc(int mx,int my);
+	void glDraw();
+};
+
+
+//
 class BlockDebugData {
 public :
     bID blockId;
@@ -163,27 +186,24 @@ public :
 
 class GlutPopupWindow : public GlutWindow {
 	string info;
-	bool isVisible;
 public :
 	GlutPopupWindow(GlutWindow *parent,GLint px,GLint py,GLint pw,GLint ph);
 	virtual ~GlutPopupWindow() {};
 
-	void show(bool v) { isVisible=v;};
-	inline bool isShown() { return isVisible; };
 	void setCenterPosition(int ix,int iy) { x=ix-w/2; y=iy; };
 	void setInfo(const string &str) { info=str; };
 	void glDraw();
 };
 
 class GlutPopupMenuWindow : public GlutWindow {
-	bool isVisible;
 public :
 	GlutPopupMenuWindow(GlutWindow *parent,GLint px,GLint py,GLint pw,GLint ph);
 	virtual ~GlutPopupMenuWindow() {};
 
-	void show(bool v) { isVisible=v;};
 	void setCenterPosition(int ix,int iy) { x=ix-w/2; y=iy; };
-	void addButton(int id,const char *titre);
+	void addButton(GlutWindow *button);
+	void addButton(int id,const char *titre,GlutPopupMenuWindow *subMenu=NULL);
+	GlutWindow *getButton(unsigned int id);
 	int mouseFunc(int button,int state,int x,int y);
 	void glDraw();
 	void activate(unsigned int n,bool value);
@@ -191,14 +211,11 @@ public :
 };
 
 class GlutHelpWindow : public GlutWindow {
-	bool isVisible;
 	unsigned char* text;
 public :
 	GlutHelpWindow(GlutWindow *parent,GLint px,GLint py,GLint pw,GLint ph,const char *textFile);
 	virtual ~GlutHelpWindow();
 
-	void show(bool v) { isVisible=v;};
-	void showHide() { isVisible=!isVisible;};
 	int mouseFunc(int button,int state,int x,int y);
 	void glDraw();
 };
