@@ -139,7 +139,7 @@ protected:
   {{5.856,12.3208,4.862,1},{5.856,13.868,0.034,1},{4.198,6.132,0,1},{4.198,7.6792,1.356,1},{4.198,9.2264,2.135,1},{4.198,10.7736,2.134,1},{4.198,12.3208,1.354,1},{4.198,13.868,0,1}},
   };
 */
-	GLUnurbsObj *theNurb;
+    GLUnurbsObj *theNurb;
 
     virtual ~Catoms3DWorld();
 public:
@@ -165,10 +165,10 @@ public:
 
     inline Catoms3DMotionRules *getMotionRules() { return motionRules; };
 
-/**
- * \brief Connects block on grid cell pos to its neighbor
- * \param pos : Position of the block to connect
- */
+    /**
+     * \brief Connects block on grid cell pos to its neighbor
+     * \param pos : Position of the block to connect
+     */
     virtual void linkBlock(const Cell3DPosition &pos);
 
     virtual void glDraw();
@@ -184,15 +184,14 @@ public:
     virtual void setSelectedFace(int n);
     virtual void exportConfiguration();
 
+    virtual void createPopupMenu(int ix, int iy);
+    virtual void menuChoice(int n);
 /**
  * \brief Export a 3D model in STL format to print the whole configuration
  * \param title : title of the STL file
  * \result Returns true if the faces was well written
  */
     virtual bool exportSTLModel(string title);
-
-    virtual void createPopupMenu(int ix, int iy);
-    virtual void menuChoice(int n);
 
 /**
  * \brief load the background textures (internal)

@@ -337,6 +337,7 @@ public:
      * @brief Toggle world background
      */
 	void toggleBackground() { background = !background; }
+
 	/**
 	 * \brief Export a 3D model in STL format to print the whole configuration
 	 * \param title : title of the STL file

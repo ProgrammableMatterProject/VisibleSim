@@ -91,9 +91,8 @@ public: // exceptions
             m_msg = ss.str();
         }
     };
-
+    
 protected:
-
     /**
      * @brief prints target to an ouput string
      * @param where ostream on which to print the object

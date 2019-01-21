@@ -58,6 +58,8 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	vector <Point3> tabNormal;
 	vector <Point2> tabTexture;
 	char txt[256];
+	GLuint currentObjectNumber=0;
+	
 #ifdef WIN32
 	sprintf_s(txt,256,"%s\\%s",rep,titre);
 #else
@@ -153,8 +155,10 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 
     	if (g_trouve) {
     		objCourant = new ObjData(nom);
+
+			objCourant->objectNumber=++currentObjectNumber;
 #ifdef DEBUG_GRAPHICS
-    		OUTPUT << "new object :" << nom << endl;
+			OUTPUT << "new object :" << nom << " num= " << objCourant->objectNumber << endl;
 #endif
     		tabObj.push_back(objCourant);
     		objCourant->objMtl = NULL;
@@ -247,6 +251,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     									sprintf(nom2,"%s_%s",nom,ptrMtl->name);
 #endif
     									objCourant = new ObjData(objCourant->nomOriginal);
+										objCourant->objectNumber=currentObjectNumber;
     									tabObj.push_back(objCourant);
     									objCourant->objMtl = ptrMtl;
 #ifdef WIN32
@@ -255,7 +260,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     									sprintf(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->name);
 #endif
 #ifdef DEBUG_GRAPHICS
-					  					OUTPUT << "nouvel objet :" << objCourant->nom << endl;
+					  					OUTPUT << "nouvel objet :" << objCourant->nom << "num=" << objCourant->objectNumber<< endl;
 #endif
     								}
     							}
@@ -302,6 +307,12 @@ void ObjLoader::glDraw(void) {
 	for (const auto& obj:tabObj) {
         obj->glDraw();
     }
+}
+
+void ObjLoader::glDraw(GLuint n) {
+	for (const auto& obj:tabObj) {
+		if (obj->objectNumber==n) obj->glDraw();
+	}
 }
 
 void ObjLoader::glDrawId(int n) {

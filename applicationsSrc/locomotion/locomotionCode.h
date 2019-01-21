@@ -45,7 +45,7 @@ public :
 	void ProcConfirmPath(P2PNetworkInterface *sender);
 	void ProcConfirmStreamline(P2PNetworkInterface *sender);
 
-	void sendMessageToPath(const string &str, int msgType,vector<bID> &path,bool firstExcepted=false);
+	void sendMessageToPath(const string &str, int msgType,vector<bID> &path,bID exception);
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {

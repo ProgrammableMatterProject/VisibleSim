@@ -58,7 +58,7 @@ public :
 
     // inline Catoms3DLinkDirection getDirection() { return Catoms3DLinkDirection(axis1, axis2); };
 
-    /**
+    /** 
      * @param mobile Catom about to move
      * @param pivot Fixed catom that will be used as a pivot
      * @return Rotation object corresponding to this specific connector link on surface of pivot
@@ -145,7 +145,7 @@ public:
      */
     const vector<Catoms3DMotionRulesLink*>& getMotionRulesLinksForConnector(short con);
 
-    /**
+    /** 
      * @param anchorCon latching connector to another catom
      * @param conTo connector whose direction to determine relative to anchorCon
      * @return ConnectorDirection corresponding to conTo relative to anchorCon or -1 if an input is invalid or anchorCon and conTo are not neighbor connectors

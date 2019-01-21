@@ -30,86 +30,81 @@ using namespace std;
 namespace ObjLoader {
 /////////////////////////////////////////////////////////////////////////////
 // Point2
-class Point2
-{ 
+class Point2 { 
 public :
-  float v[2];
-  
-  Point2() {};
-  Point2(double x,double y) { this->v[0]=(float)x; this->v[1]=(float)y; };
-  int scan(const char *str) 
+	float v[2];
+	
+	Point2() {};
+	Point2(double x,double y) { this->v[0]=(float)x; this->v[1]=(float)y; };
+	int scan(const char *str) 
 #ifdef WIN32
-  { return sscanf_s(str,"%f %f",&v[0],&v[1]); };
+	{ return sscanf_s(str,"%f %f",&v[0],&v[1]); };
 #else
-  { return sscanf(str,"%f %f",&v[0],&v[1]); };
+	{ return sscanf(str,"%f %f",&v[0],&v[1]); };
 #endif
 };
 
-class Point3
-{ 
+class Point3 { 
 public :
-  float v[3];
-  
-  Point3() {};
-  Point3(double x,double y,double z) { this->v[0]=(float)x; this->v[1]=(float)y; this->v[2]=(float)z; };
-  int scan(const char *str) 
+	float v[3];
+	
+	Point3() {};
+	Point3(double x,double y,double z) { this->v[0]=(float)x; this->v[1]=(float)y; this->v[2]=(float)z; };
+	int scan(const char *str) 
 #ifdef WIN32
-  { return sscanf_s(str,"%f %f %f",&v[0],&v[1],&v[2]); };
+	{ return sscanf_s(str,"%f %f %f",&v[0],&v[1],&v[2]); };
 #else
-  { return sscanf(str,"%f %f %f",&v[0],&v[1],&v[2]); };
+	{ return sscanf(str,"%f %f %f",&v[0],&v[1],&v[2]); };
 #endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // sommet : vertex data
-class Sommet
-{ 
+class Sommet { 
 public :
-  GLfloat v[3],t[2],n[3];
-  
-  Sommet() { v[0]=0; v[1]=0; v[2]=0; t[0]=0; t[1]=0; n[0]=0; n[1]=0; n[2]=0; };
-  void set(GLfloat *tabV,GLfloat *tabN,GLfloat *tabT);
-  bool operator==(const Sommet &s);
+	GLfloat v[3],t[2],n[3];
+	
+	Sommet() { v[0]=0; v[1]=0; v[2]=0; t[0]=0; t[1]=0; n[0]=0; n[1]=0; n[2]=0; };
+	void set(GLfloat *tabV,GLfloat *tabN,GLfloat *tabT);
+	bool operator==(const Sommet &s);
 };
 
 class FaceTri {
 public :
-  GLuint ind[3];
+	GLuint ind[3];
 
-  FaceTri(GLuint a,GLuint b,GLuint c) {
-	  ind[0]=a;
-	  ind[1]=b;
-	  ind[2]=c;
-  };
+	FaceTri(GLuint a,GLuint b,GLuint c) {
+		ind[0]=a;
+		ind[1]=b;
+		ind[2]=c;
+	};
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // mtl : material data
-class Mtl
-{ 
+class Mtl { 
 public :
-  int id; 
-  char *name;
-  GLfloat Ka[4],Kd[4],Ks[4],Ke[4],Ns;
-  char *mapKd;
-  GLuint glTexId;
-  Mtl();
-  ~Mtl();
-  void glBind();
+	int id; 
+	char *name;
+	GLfloat Ka[4],Kd[4],Ks[4],Ke[4],Ns;
+	char *mapKd;
+	GLuint glTexId;
+	Mtl();
+	~Mtl();
+	void glBind();
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // mtlLib : list of materials
-class MtlLib
-{ 
+class MtlLib { 
 public :
-  vector <Mtl*> tabMtl;
+	vector <Mtl*> tabMtl;
 
-  MtlLib(const char *rep,const char *titre);
-  MtlLib() {};
-  Mtl *getMtlByName(const char *nom);
-  Mtl *getMtlById(int);
-  Mtl *getDefaultMtl();
+	MtlLib(const char *rep,const char *titre);
+	MtlLib() {};
+	Mtl *getMtlByName(const char *nom);
+	Mtl *getMtlById(int);
+	Mtl *getDefaultMtl();
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -121,26 +116,26 @@ struct vertexPosNrmTx {
 };
 
 #define BUFFER_OFFSET(i) ((char *)NULL+i)
-class ObjData
-{ public :
-  std::vector <Sommet*> tabVertex;
-  std::vector <FaceTri*> tabFaces;
-  vertexPosNrmTx *tabVertices;
-  GLuint *tabIndices;
-  GLuint nbreIndices; 
+class ObjData { 
+public :
+	std::vector <Sommet*> tabVertex;
+	std::vector <FaceTri*> tabFaces;
+	vertexPosNrmTx *tabVertices;
+	GLuint *tabIndices;
+	GLuint nbreIndices;
 	GLuint vboId,indexVboId;
-
-  char nom[128],nomOriginal[64];
-  Mtl *objMtl;
-  
-  ObjData(const char*);
-  ~ObjData();
-  void addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3);
-  GLuint addVertex(const Sommet &s);
-  void glDraw(void);
-  void glDrawId(void);
-  void createVertexArray();
-	void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const;
+	GLuint objectNumber;
+	char nom[128],nomOriginal[64];
+	Mtl *objMtl;
+	
+	ObjData(const char*);
+	~ObjData();
+	void addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3);
+	GLuint addVertex(const Sommet &s);
+	void glDraw(void);
+	void glDrawId(void);
+	void createVertexArray();
+    void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -156,6 +151,7 @@ public:
 	~ObjLoader(void);
 	void createVertexArrays();
 	void glDraw(void);
+	void glDraw(GLuint n);
 	void glDrawIdByMaterial(int &i);
 	void glDrawId(int i);
 	void setLightedColor(GLfloat *color);

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="5,5,6" windowSize="1280,720" >
+	<camera target="25,20,10" directionSpherical="0,30,100" angle="30" near="1.0" far="300.0"/>
+	<spotlight target="25,25,0" directionSpherical="-35,40,150" angle="20"/>
+
+	<blockList color="128,128,128" blockSize="10,10,10">
+		<block position="0,1,1" orientation="0" color="255,255,64"/>
+		<block position="1,1,1" orientation="0" color="255,255,64"/>
+	</blockList>
+
+	<targetList>
+		<target format="grid">
+			<cell position="0,1,1" color="64,255,64"/>
+			<cell position="1,1,1" color="64,255,64"/>
+		</target>
+	</targetList>
+
+</world>

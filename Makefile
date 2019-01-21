@@ -10,7 +10,7 @@
 OS = $(shell uname -s)
 
 # VisibleSim local libraries
-VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen
+VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen -lsimDatoms
 
 #for debug version
 TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
@@ -37,7 +37,6 @@ TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of 
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
 TEMP_CCFLAGS += -DDEBUG_CSG #: trace CSG parsing
 TEMP_CCFLAGS += -DshowStatsFPS
-#TEMP_CCFLAGS += -DUseC3DSkewFCC #: if activated, Catoms3D will use a FCC Lattice with skew coordinates
 
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"

@@ -16,7 +16,6 @@
 #include "events.h"
 
 #include <random>
-
 using namespace Catoms3D;
 
 namespace Catoms3D {
@@ -34,8 +33,14 @@ public:
     const Catoms3DBlock *pivot = NULL;
     short conFromP, conToP;
 
-    static Time getNextRotationEventDelay() {
-        int rad =  (int)randomAnimationDelay(rng);
+#define RANDOM_ROTATION_TIME 0
+    static Time getNextRotationEventDelay() {        
+        int rad;
+#if RANDOM_ROTATION_TIME == 1        
+        rad = (int)randomAnimationDelay(rng);
+#else
+        rad = 0;
+#endif
         // cout << rad << endl;
         
         return rotationDelayMultiplier *
