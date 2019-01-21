@@ -50,7 +50,7 @@ unsigned int Lattice::getIndex(const Cell3DPosition &p) const {
 
     static const unsigned int GRID_MAX_INDEX = gridSize[2] * gridSize[1] * gridSize[0];
     assert(index < GRID_MAX_INDEX);
-        
+
 #ifdef LATTICE_LOG
     // cerr << "index: " << index << "(/total = " << gridSize[0]*gridSize[1]*gridSize[2] << ")" << endl;
 #endif
@@ -60,26 +60,26 @@ unsigned int Lattice::getIndex(const Cell3DPosition &p) const {
 Cell3DPosition Lattice::getGridLowerBounds() const {
     return Cell3DPosition(0,0,0);
 }
-   
+
 Cell3DPosition Lattice::getGridUpperBounds() const {
     return gridSize - Cell3DPosition(1,1,1);
 }
 
 
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
-    try {        
+    try {
         int index = getIndex(p);
         if (not isInGrid(p))
             throw OutOfLatticeInsertionException(p);
-        else if (not isFree(p))  
+        else if (not isFree(p))
             throw DoubleInsertionException(p);
-        else 
-            grid[index] = bb;      
+        else
+            grid[index] = bb;
     } catch (DoubleInsertionException const& e) {
         cerr << e.what();
         VS_ASSERT(false);//FIXME: should be handled by thes user, but catch clauses in main are not catching the exceptions for some reason.
     }
-    
+
 #ifdef LATTICE_LOG
     cerr << "l.insert(" << bb->blockId << ") on " << p << " = i:" << getIndex(p) << endl;
 #endif
@@ -111,6 +111,7 @@ bool Lattice::cellHasBlock(const Cell3DPosition &p) const {
 bool Lattice::isInGrid(const Cell3DPosition &p) const {
     const Cell3DPosition& lb = getGridLowerBounds();
     const Cell3DPosition& ub = getGridUpperBounds();
+
     return isInRange(p[0], lb.pt[0], ub.pt[0])
         && isInRange(p[1], lb.pt[1], ub.pt[1])
         && isInRange(p[2], lb.pt[2], ub.pt[2]);
@@ -158,7 +159,7 @@ vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
 
     for (const Cell3DPosition &p : relativeNCells) { // Check if each neighbor cell is in grid
         Cell3DPosition v = pos + p;
-        if (isInGrid(v)) { 
+        if (isInGrid(v)) {
             neighborhood.push_back(v);         // Add its position to the result
         }
     }
@@ -775,7 +776,7 @@ bool SkewFCCLattice::isInGrid(const Cell3DPosition &p) const {
     // else
     //     return isInRange(p[0], 0 - p[2]/ 2, gridSize[0] - ceil(p[2] / 2) - 1)
     //         && isInRange(p[1], 0 - p[2] / 2, gridSize[1] - ceil(p[2] / 2) - 1)
-    //         && isInRange(p[2], 0, gridSize[2] - 1);            
+    //         && isInRange(p[2], 0, gridSize[2] - 1);
 }
 
 Cell3DPosition SkewFCCLattice::getGridLowerBounds() const {
@@ -826,8 +827,8 @@ Cell3DPosition SkewFCCLattice::worldToGridPosition(const Vector3D &pos) {
     // Vector3D check = gridToWorldPosition(res);
     // OUTPUT << "\tcheck" << res << " -> " << check << endl;
     // assert(check == pos);
-    
-    
+
+
     return res;
 }
 

@@ -203,6 +203,12 @@ public:
 	 */
 	virtual int getDirection(P2PNetworkInterface *p2p) = 0;
 	/**
+	 * @brief Returns if the neighbor is in the grid
+	 * @param connectorId : id of the face in the direction of the neighbors
+	 * @param pos : position of the neighbor in the grid
+	 */
+	virtual bool getNeighborPos(short connectorId,Cell3DPosition &pos) const;
+	/**
 	 * @brief Atomic getter for the block's state
 	 * No guarantee that state value will remain the same, it just avoids
 	 * date race condition.
@@ -250,7 +256,7 @@ public:
 	 * @return global time corresponding to the local time in parameter
 	 */
 	Time getSimulationTime(Time localTime);
-	
+
 	/*************************************************
 	 *            MeldInterpreter Functions
 	 *************************************************/

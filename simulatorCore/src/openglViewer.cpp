@@ -251,7 +251,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
                 int n=selectFaceFunc(x,y);
-                cout << "selected " << n << endl;
+                cout << "selected face #" << n << endl;
                 if (n>0) {
                     BaseSimulator::getWorld()->setSelectedFace(n-1);
                     BaseSimulator::getWorld()->createPopupMenu(x,y);
@@ -463,7 +463,7 @@ void GlutContext::idleFunc(void) {
         char title[32];
         strncpy(title, animationDirName.c_str(), sizeof(title));
         strncat(title, "/save%04d.ppm", sizeof(title));
-                
+
         sprintf(title,title,num++);
         saveScreen(title);
     }
