@@ -90,11 +90,25 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         // cout << mabc.catom->blockId << "    " <<
         //     mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(mabc.norm(mabc.catom->position))) << endl;
         // Forward message to mobile module or support depending on case
-        P2PNetworkInterface* itf =
-            mabc.catom->getInterface(dstPos) ?: mabc.catom->getInterface(
-                mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(
-                                    mabc.norm(mabc.catom->position))));  
-        VS_ASSERT_MSG(itf, "cannot find neither dest or support among neighbor interfaces");
+        P2PNetworkInterface* itf = NULL;
+
+        P2PNetworkInterface* dstItf = mabc.catom->getInterface(dstPos);
+        Cell3DPosition supportPos = mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(mabc.norm(mabc.catom->position)));
+        P2PNetworkInterface* supportItf = mabc.catom->getInterface(supportPos);
+        
+        if (dstItf and dstItf->isConnected()) itf = dstItf;
+        else if (supportItf and supportItf->isConnected()) itf = supportItf;
+        else if (mabc.role == ActiveBeamTip) { // send down branch
+            Cell3DPosition pos = mabc.catom->position -
+                mabc.ruleMatcher->getBranchUnitOffset(
+                    mabc.ruleMatcher->getBranchIndexForNonRootPosition(
+                        mabc.norm(mabc.catom->position)
+                        + (mabc.norm(mabc.catom->position)[2] < 0 ?
+                           Cell3DPosition(0,0,mabc.B) : Cell3DPosition(0,0,0))));
+            itf = mabc.catom->getInterface(pos);
+        }
+              
+        VS_ASSERT_MSG(itf, "cannot find neither dest, support, or 2-branch module among neighbor interfaces");
         mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
         mabc.log_send_message();
     } else {

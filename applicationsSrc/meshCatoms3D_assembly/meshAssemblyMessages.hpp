@@ -29,7 +29,7 @@ public:
 
     virtual void handle(BaseSimulator::BlockCode*);
     virtual Message* clone() const { return new RequestTargetCellMessage(*this); }
-    virtual string getName() const { return "RequestTargetCell"; }
+    virtual string getName() const { return "RequestTargetCell{" + srcPos.to_string() + "}"; }
 };
 
 class ProvideTargetCellMessage : public HandleableMessage {
@@ -42,7 +42,8 @@ public:
 
     virtual void handle(BaseSimulator::BlockCode*);
     virtual Message* clone() const { return new ProvideTargetCellMessage(*this); }
-    virtual string getName() const { return "ProvideTargetCell"; }
+    virtual string getName() const { return "ProvideTargetCell{" + tPos.to_string()
+            + ", " + dstPos.to_string() + "}"; }
 };
 
 /**
