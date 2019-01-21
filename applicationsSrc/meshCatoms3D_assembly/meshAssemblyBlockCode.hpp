@@ -327,7 +327,7 @@ y the module
     //             Z_1, Z_2, Z_3, Z_4, Z_5
     //         }), // Z__EPL 
     //     queue<MeshComponent>({ Y_1 }), // Z__L_EPL x
-    //     queue<MeshComponent>({ S_RZ }), // LZ__R_EPL x
+    //     queue<MeshComponent>({ S_LZ }), // LZ__R_EPL x
     //     queue<MeshComponent>({
     //             S_Z,
     //             Y_2, Y_3, Y_4, Y_5,
@@ -340,8 +340,7 @@ y the module
     
     std::unordered_set<MeshComponent> targetUnordered_SetForEPL4[12] = {
         unordered_set<MeshComponent>({
-                RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
-                Z_R_EPL, Z_L_EPL, Z_R_EPL
+                RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5
             }), // RevZ_EPL
         {}, // RevZ_R_EPL
         {},  // RZ_L_EPL
@@ -361,31 +360,36 @@ y the module
         unordered_set<MeshComponent>({
                 S_RZ, S_Z,
                 Y_2, Y_3, Y_4, Y_5,
-                LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
-                RZ_R_EPL
+                LZ_1, LZ_2, LZ_3, LZ_4, LZ_5
             }), // LZ_EPL x
         {}, // LZ_L_EPL x
         {} // RevZ_L_EPL x   
     };
-    
-    std::queue<MeshComponent> constructionQueue = std::queue<MeshComponent>({
-            S_RZ, S_LZ, // 0
-            Y_1, // 1
-            X_1, // 3
-            S_Z, S_RevZ, // 4
-            X_2, Y_2, // 5
-            X_3, Y_3, // 7
-            Z_1, RevZ_1, // 8
-            X_4, Y_4, // 9
-            Z_2, RevZ_2, // 10
-            X_5, Y_5, // 11
-            Z_3, RevZ_3, // 12
-            LZ_1, RZ_1, Z_4, RevZ_4, // 14
-            LZ_2, RZ_2, Z_5, RevZ_5, // 16
-            LZ_3, RZ_3, Z_R_EPL,  // 18
-            LZ_4, RZ_4,  // 20
-            LZ_5, RZ_5,  // 22
-        });
+
+    /**
+     * Queue of position to be filled my incoming modules, as an ordered list of 
+     *  pair<TileElement, SourceEPL>, which means that TileElement will be built
+     *  from a module coming through SourceEPL.
+     */
+    std::queue<std::pair<MeshComponent, MeshComponent>> constructionQueue =
+        std::queue<pair<MeshComponent, MeshComponent>>({
+                { S_RZ, RZ_EPL}, { S_LZ, LZ_EPL }, // 0
+                { Y_1, Z_EPL }, // 1
+                { X_1, Z_EPL }, // 3
+                { S_Z, LZ_EPL }, { S_RevZ, RZ_EPL }, // 4
+                { X_2, RZ_EPL }, { Y_2, LZ_EPL }, // 5
+                { X_3, RZ_EPL }, { Y_3, LZ_EPL }, // 7
+                { Z_1, Z_EPL }, { RevZ_1, RevZ_EPL }, // 8
+                { X_4, RZ_EPL }, { Y_4, LZ_EPL }, // 9
+                { Z_2, Z_EPL }, { RevZ_2, RevZ_EPL }, // 10
+                { X_5, RZ_EPL }, { Y_5, LZ_EPL }, // 11
+                { Z_3, Z_EPL }, { RevZ_3, RevZ_EPL }, // 12
+                { LZ_1, LZ_EPL }, { RZ_1, RZ_EPL }, { Z_4, Z_EPL }, { RevZ_4, RevZ_EPL }, // 14
+                { LZ_2, LZ_EPL }, { RZ_2, RZ_EPL }, { Z_5, Z_EPL }, { RevZ_5, RevZ_EPL }, // 16
+                { LZ_3, LZ_EPL }, { RZ_3, RZ_EPL },  // 18
+                { LZ_4, LZ_EPL }, { RZ_4, RZ_EPL },  // 20
+                { LZ_5, LZ_EPL }, { RZ_5, RZ_EPL },  // 22
+            });
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

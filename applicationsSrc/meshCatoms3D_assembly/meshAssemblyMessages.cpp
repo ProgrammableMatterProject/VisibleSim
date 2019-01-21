@@ -61,10 +61,18 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         MeshComponent epl = static_cast<MeshComponent>(idx);
 
         if (not mabc.constructionQueue.empty()) {
-            MeshComponent nextComponent = mabc.constructionQueue.front();
-            
-        } // TODO: else redirect to EPL
-        
+            pair<MeshComponent, MeshComponent> nextComponent = mabc.constructionQueue.front();
+
+            // If on the righ EPL, module is eligible for building next component
+            if (epl == nextComponent.second) {
+                // Return correct target, then check status of each waiting module
+                // TODO:
+            } else { // Not the right EPL, note that a module is waiting there
+                // TODO:
+            }
+        } else {
+            // TODO: else redirect to EPL corresponding to that branch
+        }       
         
         Cell3DPosition tPos;
         // tPos = mabc.catom->position + mabc.getNextTargetForEPL(epl);                
