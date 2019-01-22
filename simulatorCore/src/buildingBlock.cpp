@@ -293,7 +293,7 @@ unsigned short BuildingBlock::getNeighborIDForFace(int faceNum) const {
 }
 
 int BuildingBlock::getFaceForNeighborID(int nId) const {
-	for (uint face = 0; face < P2PNetworkInterfaces.size(); face++) {
+	for (unsigned int face = 0; face < P2PNetworkInterfaces.size(); face++) {
 		if (nId == getNeighborIDForFace(face))
 			return face;
 	}

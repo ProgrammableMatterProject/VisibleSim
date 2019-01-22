@@ -240,7 +240,7 @@ protected:
 	 *
 	 */
 	virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-						   const Cell3DPosition &pos, const Color &color, bool master) {};
+						   const Cell3DPosition &pos, const Color &color, bool master)=0;
    
 	Simulator(int argc, char *argv[], BlockCodeBuilder bcb);
 	virtual ~Simulator();

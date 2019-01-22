@@ -57,7 +57,6 @@ void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId,
 
 	// Any additional configuration file parsing exclusive to this type of block should be performed
 	//  here, using the blockElt TiXmlElement.
-
 	// set the orientation
 	int orientation = 0;
 	const char *attr = blockElt->Attribute("orientation");
@@ -67,7 +66,6 @@ void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId,
         OUTPUT << "orientation : " << orientation << endl;
 #endif
 	}
-
 	// Finally, add block to the world
 	((Catoms3DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
 }

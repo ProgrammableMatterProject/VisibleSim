@@ -213,7 +213,7 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
                                                         targetEntry.second));
     }
 
-    tCells = absMap;
+    tCells = map<const Cell3DPosition, const Color>(absMap);
 
     computeGeodesics(); // Will populate each cell's distance to the origin in hops
 
@@ -356,8 +356,7 @@ Vector3D TargetCSG::gridToCSGPosition(const Cell3DPosition &pos) const {
     res.pt[2] += bb.P0[2];
 #endif
     // cout << "gridToWorldPosition" << pos << " -> " << res << endl;
-        
-    return res;       
+    return res;
 }
 
 Cell3DPosition TargetCSG::CSGToGridPosition(const Vector3D &pos) const {
@@ -374,7 +373,6 @@ Cell3DPosition TargetCSG::CSGToGridPosition(const Vector3D &pos) const {
 #endif
     
     Cell3DPosition res = getWorld()->lattice->unscaledWorldToGridPosition(unboundPos);
-        
     return res;
 }
 

@@ -337,6 +337,14 @@ public:
      * @brief Toggle world background
      */
 	void toggleBackground() { background = !background; }
+
+	/**
+	 * \brief Export a 3D model in STL format to print the whole configuration
+	 * \param title : title of the STL file
+	 * \result Returns true if the faces was well written
+	 */
+	virtual bool exportSTLModel(string title) { return false; };
+	
 	/**
      * @brief Simulate Polymer surface
      */

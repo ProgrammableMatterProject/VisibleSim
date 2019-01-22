@@ -115,6 +115,12 @@ class Vector3D
     \return true if one of the components is zero, false otherwise
 */
     inline bool hasZero() const { return pt[0] == 0 || pt[1] == 0 || pt[2] == 0; };
+		
+		inline bool isInBox(const Vector3D &A, const Vector3D &B) {
+			return (pt[0]>=A.pt[0] && pt[0]<=B.pt[0] && 
+							pt[1]>=A.pt[1] && pt[1]<=B.pt[1] && 
+							pt[2]>=A.pt[2] && pt[2]<=B.pt[2]);
+		}
 };
 
 const Vector3D operator *(double,const Vector3D);

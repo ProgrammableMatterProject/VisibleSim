@@ -48,11 +48,11 @@ Catoms3DMotionRules::getMirrorConnectorDirection(ConnectorDirection d,
 }
 
 short Catoms3DMotionRules::getConnectorDirection(short anchorCon, short conTo) {
-    if (anchorCon < 12 and anchorCon >= 0 and conTo < 12 and conTo >= 0) {    
+    if (anchorCon < 12 and anchorCon >= 0 and conTo < 12 and conTo >= 0) {
         for (short conDir = 0; conDir < NUM_CONDIRS; conDir++)
             if (neighborConnector[anchorCon][conDir] == conTo) return conDir;
     }
-    
+
     return -1;
 }
 
@@ -116,16 +116,16 @@ Catoms3DMotionRules::~Catoms3DMotionRules() {
 }
 
 bool Catoms3DMotionRulesLink::concernsConnector(short conId) const {
-    return getConnectors()[0] == conId || getConnectors()[1] == conId;
+    return conFrom->ID == conId || conTo->ID == conId;
 }
 
 bool Catoms3DMotionRulesLink::concernsConnectors(short conId1, short conId2) const {
     return concernsConnector(conId1) && concernsConnector(conId2);
 }
 
-std::array<short, 2> Catoms3DMotionRulesLink::getConnectors() const {
-    return {(short)conFrom->ID, (short)conTo->ID};
-}
+// std::array<short, 2> Catoms3DMotionRulesLink::getConnectors() const {
+//     return {(short)conFrom->ID, (short)conTo->ID};
+// }
 
 string Catoms3DMotionRulesLink::getID() const {
     string c="X->X";
@@ -538,9 +538,8 @@ vector<Cell3DPosition> Catoms3DMotionRulesLink::getBlockingCellsList(const Catom
     return tabPos;
 }
 
-std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mrl) {
-    std::array<short, 2> connectors = mrl.getConnectors();
-    stream << connectors[0] << " -> " << connectors[1];
+std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mrl) {    
+    stream << mrl.getConFromID() << " -> " << mrl.getConToID();
 
     switch (mrl.getMRLT()) {
         case HexaFace: stream << " (HEXA)"; break;

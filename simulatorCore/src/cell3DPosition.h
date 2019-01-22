@@ -21,7 +21,8 @@ public:
     Cell3DPosition();
     constexpr Cell3DPosition(short x,short y,short z) : pt{x,y,z} { }
     Cell3DPosition(const Vector3D& v);
-    
+    Cell3DPosition(const Cell3DPosition& c):pt{ c.pt[0], c.pt[1], c.pt[2] } {};
+
     void set(short x,short y,short z);
     double dist_euclid(const Cell3DPosition& p) const;
     double l2_norm() const;
@@ -47,7 +48,7 @@ public:
     operator Vector3D() const { return Vector3D(pt[0], pt[1], pt[2], 1.0); };
 
     friend ostream& operator<<(ostream& f,const Cell3DPosition&p);
-    friend const Cell3DPosition operator +(const Cell3DPosition&,const Cell3DPosition&);    
+    friend const Cell3DPosition operator +(const Cell3DPosition&,const Cell3DPosition&);
     friend const Cell3DPosition operator -(const Cell3DPosition&,const Cell3DPosition&);
     friend const Cell3DPosition operator *(const Cell3DPosition&,const Cell3DPosition&);
     friend const Cell3DPosition operator *(int,const Cell3DPosition&);

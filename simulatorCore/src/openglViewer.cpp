@@ -20,6 +20,7 @@
 #include "trace.h"
 #include "rotation3DEvents.h"
 #include "utils.h"
+#include "catoms3DWorld.h"
 
 #ifdef ENABLE_MELDPROCESS
 #include "meldProcessDebugger.h"
@@ -129,7 +130,7 @@ void *GlutContext::lanceScheduler(void *param) {
 void GlutContext::reshapeFunc(int w,int h) {
     screenWidth=w;
     screenHeight=h;
-    Camera* camera=getWorld()->getCamera();
+    Camera* camera=World::getWorld()->getCamera();
     camera->setW_H(double(w)/double(h));
     // size of the OpenGL drawing area
     glViewport(0,0,w,h);
@@ -154,7 +155,7 @@ void GlutContext::motionFunc(int x,int y) {
     if (mainWindow->mouseFunc(-1,GLUT_DOWN,x,screenHeight - y)>0) return;
     if (debugWindow->mouseFunc(-1,GLUT_DOWN,x,screenHeight - y)>0) return;
     if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
-        Camera* camera=getWorld()->getCamera();
+        Camera* camera=World::getWorld()->getCamera();
         camera->mouseMove(x,y);
         glutPostRedisplay();
     }
@@ -208,21 +209,21 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
         int n=popupMenu->mouseFunc(button,state,x,screenHeight - y);
         if (n) {
             popupMenu->show(false);
-            getWorld()->menuChoice(n);
+            World::getWorld()->menuChoice(n);
         }
     }
 		if (popupSubMenu && popupSubMenu->isVisible) {
         int n=popupSubMenu->mouseFunc(button,state,x,screenHeight - y);
         if (n) {
             popupSubMenu->show(false);
-            getWorld()->menuChoice(n);
+            World::getWorld()->menuChoice(n);
         }
     }
     if (helpWindow) helpWindow->mouseFunc(button,state,x,screenHeight - y);
 
     keyboardModifier = glutGetModifiers();
     if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
-        Camera* camera=getWorld()->getCamera();
+        Camera* camera=World::getWorld()->getCamera();
         switch (button) {
             case GLUT_LEFT_BUTTON:
                 if (state==GLUT_DOWN) {
@@ -277,174 +278,148 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 // fonction associée aux interruptions clavier
 // - c : caractère saisi
 // - x,y : coordonnée du curseur dans la fenètre
-void GlutContext::keyboardFunc(unsigned char c, int x, int y)
-{
-    //  static int modeScheduler;
-    Camera* camera=getWorld()->getCamera();
-    // si une interface a le focus
-    if (debugWindow->keyFunc(c)) {
+void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
+	//  static int modeScheduler;
+	Camera* camera=World::getWorld()->getCamera();
+	// si une interface a le focus
+	if (debugWindow->keyFunc(c)) {
 
-    } else {
-        switch(c) {
-            case 27 : case 'q' : case 'Q' : // quit
-                glutLeaveMainLoop();
-                break;
-            case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
-            case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
-            case '+' : camera->mouseZoom(0.5); break;
-            case '-' : camera->mouseZoom(-0.5); break;
-            case 'T' : case 't' :
-                if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
-                    mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
-                    popup->setTextSize(TextSize::TEXTSIZE_LARGE);
-                } else {
-                    mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD);
-                    popup->setTextSize(TextSize::TEXTSIZE_STANDARD);
-                }
-                break;
-                //  case 'l' : showLinks = !showLinks; break;
-            case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
-                //          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
-                //case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
-            case 'd' : getScheduler()->stop(getScheduler()->now()); break;
-            case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
-                //case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
-            case 'z' : {
-                World *world = BaseSimulator::getWorld();
-                GlBlock *slct=world->getselectedGlBlock();
-                Camera *cam = world->getCamera();
-                if (slct) {
-                    cam->setTarget(slct->getPosition());
-                } else {
-                    Vector3D center;
-                    center.pt[0] = 0.5*world->lattice->gridScale.pt[0]*world->lattice->gridSize.pt[0];
-                    center.pt[1] = 0.5*world->lattice->gridScale.pt[1]*world->lattice->gridSize.pt[1];
-                    center.pt[2] = 0.5*world->lattice->gridScale.pt[2]*world->lattice->gridSize.pt[2];
-                    center.pt[3] = 1.0;
-                    //void setLightParameters(const Vector3D &t,double th,double ph, double d,double angle,double nearplane,double farplane);
-                    /*float l = (center.pt[0] > center.pt[1])?center.pt[0]:center.pt[1];
-                    l = (center.pt[2] > l)?center.pt[2]:l;*/
-                    double l = sqrt(center.pt[0]*center.pt[0]+center.pt[1]*center.pt[1]+center.pt[2]*center.pt[2]);
-                    float d = 0.5*l/tan(15.0*M_PI/180.0);
-                    cam->setLightParameters(center,45.0,45.0,d,30.0,d-l,d+l);
-                    float xmin,ymin,zmin,xmax,ymax,zmax;
-                    world->getBoundingBox(xmin,ymin,zmin,xmax,ymax,zmax);
-                    center.pt[0]=(xmin+xmax)/2.0;
-                    center.pt[1]=(ymin+ymax)/2.0;
-                    center.pt[2]=(zmin+zmax)/2.0;
-                    cam->setTarget(center);
-                    xmax-=xmin;
-                    ymax-=ymin;
-                    zmax-=zmin;
-                    double lmodule = sqrt(xmax*xmax+ymax*ymax+zmax*zmax)/2.0;
-                    double angle = atan(lmodule/d)*2.0;
-                    cout << d << " l=" << l << endl;
-                    cam->setAngle(angle*180.0/M_PI);
-                    cam->setDistance(d);
-                    cam->setNearFar(10.0,d+2*l);
-                }
-            }
-                break;
-            case 'w' : case 'W' :
-                fullScreenMode = !fullScreenMode;
-                if (fullScreenMode) {
-                    glutFullScreen();
-                } else {
-                    glutReshapeWindow(initialScreenWidth,initialScreenHeight);
-                    glutPositionWindow(0,0);
-                }
-                break;
-            case 'h' :
-                if (!helpWindow) {
-                    BaseSimulator::getWorld()->createHelpWindow();
-                }
-                helpWindow->showHide();
-                break;
-            case 'i' : case 'I' :
-                mainWindow->openClose();
-                break;
-            case 'S' : {
-                if (not saveScreenMode) {
-                    // Will start animation capture,
-                    //  make sure animation directory exists
-                    int err; extern int errno;
-                    struct stat sb;
-                    animationDirName = generateTimestampedDirName("animation");
-                    static const char* animationDirNameC = animationDirName.c_str();
-
-                    err = stat(animationDirNameC, &sb);
-                    if (err and errno == ENOENT) {
-                        // Create directory
-                        err = mkdir(animationDirNameC, S_IRWXU);
-                        if (err != 0) {
-                            cerr << "An error occured when creating the directory for animation export" << endl;
-                            break;
-                        }
-                    }
-                    // else: directory exists, all good
-                    cerr << "Recording animation frames in directory: "
-                         << animationDirName << endl;
-                } else {
-                    cerr << "Recording of " << animationDirName.c_str()
-                         << " has ended, attempting conversion" << endl;
-                    // Add a script for converting into a video, asynchronously
+	} else {
+		switch(c) {
+			case 27 : case 'q' : case 'Q' : // quit
+				glutLeaveMainLoop();
+			break;
+			case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
+			case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
+			case '+' : camera->mouseZoom(0.5); break;
+			case '-' : camera->mouseZoom(-0.5); break;
+			case 'T' : case 't' :
+				if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
+					mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
+					popup->setTextSize(TextSize::TEXTSIZE_LARGE);
+				} else {
+					mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD);
+					popup->setTextSize(TextSize::TEXTSIZE_STANDARD);
+				}
+				break;
+			//  case 'l' : showLinks = !showLinks; break;
+			case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
+//          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
+//          case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
+			case 'd' : getScheduler()->stop(getScheduler()->now()); break;
+			case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
+				//case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
+			case 'z' : {
+				World *world = BaseSimulator::getWorld();
+				GlBlock *slct=world->getselectedGlBlock();
+				if (slct) {
+					world->getCamera()->setTarget(slct->getPosition());
+				}
+			}
+			break;
+			case 'w' : case 'W' :
+				fullScreenMode = !fullScreenMode;
+				if (fullScreenMode) {
+					glutFullScreen();
+				} else {
+					glutReshapeWindow(initialScreenWidth,initialScreenHeight);
+					glutPositionWindow(0,0);
+				}
+			break;
+			case 'h' :
+				if (!helpWindow) {
+					BaseSimulator::getWorld()->createHelpWindow();
+				}
+				helpWindow->showHide();
+			break;
+			case 'i' : case 'I' :
+				mainWindow->openClose();
+			break;
+			case 'S' : {
+				if (not saveScreenMode) {
+					// Will start animation capture,
+					//  make sure animation directory exists 
+					int err; extern int errno;
+					struct stat sb;
+					animationDirName = generateTimestampedDirName("animation");
+					static const char* animationDirNameC = animationDirName.c_str();
+					err = stat(animationDirNameC, &sb);
+					if (err and errno == ENOENT) {
+							// Create directory
+							err = mkdir(animationDirNameC, S_IRWXU);
+							if (err != 0) {
+									cerr << "An error occured when creating the directory for animation export" << endl;
+									break;
+							}
+					}
+					// else: directory exists, all good
+					cerr << "Recording animation frames in directory: "
+						<< animationDirName << endl;
+				} else {
+					cerr << "Recording of " << animationDirName.c_str()
+						<< " has ended, attempting conversion" << endl;
+						// Add a script for converting into a video, asynchronously
 #ifndef WIN32
-                    std::async([](const std::string& animDir){
-                                   const string& vidName = generateTimestampedFilename("video", "mkv");
-                                   int r = system(
-                                       string("ffmpeg -pattern_type glob -framerate 30 -i \""
-                                              + animationDirName + "/*.ppm\" " + vidName
-                                              + ">/dev/null 2>/dev/null").c_str());
-
-                                   if (r == 0) {
-                                       system(string("rm -rf " + animationDirName).c_str());
-                                       cerr << "Animation video exported to "
-                                            << vidName << endl;
-                                   } else {
-                                       cerr << animationDirName.c_str()
-                                            << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
-                                   }
-                               }, animationDirName);
+					std::async([](const std::string& animDir){
+						const string& vidName = generateTimestampedFilename("video", "mkv");
+						int r = system(
+							string("ffmpeg -pattern_type glob -framerate 30 -i \""
+							+ animationDirName + "/*.ppm\" " + vidName
+							+ ">/dev/null 2>/dev/null").c_str());
+						if (r == 0) {
+							system(string("rm -rf " + animationDirName).c_str());
+							cerr << "Animation video exported to "
+								<< vidName << endl;
+						} else {
+							cerr << animationDirName.c_str() 
+							  << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
+						}
+					}, animationDirName);
 #endif
-                }
-
-                saveScreenMode=!saveScreenMode;
-            } break;
-            case 's' : {
-                const string& ssName = generateTimestampedFilename("capture", "ppm");
-                string ssNameJpg = ssName;
-                ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
-                saveScreen(ssName.c_str());
+				}
+				saveScreenMode=!saveScreenMode;
+			} break;
+			case 's' : {
+				const string& ssName = generateTimestampedFilename("capture", "ppm");
+				string ssNameJpg = ssName;
+				ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
+				saveScreen(ssName.c_str());
 #ifndef WIN32
-                std::async([ssNameJpg, ssName](){
-                               system(string("convert " + ssName + " " + ssNameJpg
-                                             + " >/dev/null 2>/dev/null").c_str());
-                           });
+				std::async([ssNameJpg, ssName](){
+					system(string("convert " + ssName + " " + ssNameJpg
+						+ " >/dev/null 2>/dev/null").c_str());
+				});
 #endif
-                cout << "Screenshot saved to files: " << ssName
-                     << " and " << ssNameJpg << endl;
-            } break;
+				cout << "Screenshot saved to files: " << ssName
+						<< " and " << ssNameJpg << endl;
+			} break;
 
-            case 'B' : {
-                World *world = BaseSimulator::getWorld();
-                world->toggleBackground();
-            } break;
-            case 32: { // SPACE
-                Scheduler *scheduler = getScheduler();
-                scheduler->toggle_pause();
-                if (scheduler->state == Scheduler::State::PAUSED)
-                    cout << "[t-" << scheduler->now()
-                         << "] Simulation Paused. Press <space> again to resume..." << endl;
-                else
-                    cout << "[t-" << scheduler->now()
-                         << "] Simulation Resumed." << endl;
-            } break;
-            case 'p' :
+			case 'B' : {
+				World *world = BaseSimulator::getWorld();
+				world->toggleBackground();
+			} break;
+			case 32: { // SPACE
+				Scheduler *scheduler = getScheduler();
+				scheduler->toggle_pause();
+				if (scheduler->state == Scheduler::State::PAUSED) {
+					cout << "[t-" << scheduler->now()
+						<< "] Simulation Paused. Press <space> again to resume..." << endl;
+				} else {
+					cout << "[t-" << scheduler->now()
+						<< "] Simulation Resumed." << endl;
+				}
+			} break;
+			case 'p' :
+                // FIXME: Fix this, it should not be part of the simulatorCore
                 BaseSimulator::getWorld()->simulatePolymer();
-                break;
-        }
-    }
-    glutPostRedisplay();
+			break;
+			case '!': 
+				BaseSimulator::getWorld()->exportSTLModel("model.stl");
+			break;
+		}
+			
+	}
+	glutPostRedisplay();
 }
 
 /////////////////////////////////////run/////////////////////////////////////////
@@ -541,16 +516,17 @@ void GlutContext::calculateFPS(void) {
 
 void GlutContext::showFPS(void) {
     char str[20];
-    sprintf(str, "FPS = %4.2f", fps);
+    //sprintf(str, "FPS = %4.2f", fps);
+    int ts = round(getScheduler()->now() / ((Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier + Rotations3D::COM_DELAY) + 20128));
+    sprintf(str,"Time Step = %d",ts);
     glColor3f(255,255,0);
-    GlutWindow::drawString(50, 50, str);
-    sprintf(str,"nbre modules = %d",getWorld()->lattice->nbModules);
-    GlutWindow::drawString(50, 35, str);
-    
+    GlutWindow::drawString(50, 50, str,GLUT_BITMAP_TIMES_ROMAN_24);
+    sprintf(str,"Nbre modules = %d",BaseSimulator::getWorld()->lattice->nbModules);
+    GlutWindow::drawString(50, 25, str,GLUT_BITMAP_TIMES_ROMAN_24);    
 }
 
 void GlutContext::drawFunc(void) {
-    World *wrl = getWorld();
+    World *wrl = BaseSimulator::getWorld();
     Camera*camera=wrl->getCamera();
 
     shadowedRenderingStep1(camera);
@@ -597,7 +573,7 @@ int GlutContext::selectFunc(int x,int y) {
     GLuint selectBuf[512];
     GLint hits;
     GLint viewport[4];
-    Camera* camera=getWorld()->getCamera();
+    Camera* camera=BaseSimulator::getWorld()->getCamera();
 
     glGetIntegerv(GL_VIEWPORT,viewport); // récupération de la position et de la taille de la fenêtre
 
@@ -628,7 +604,7 @@ int GlutContext::selectFaceFunc(int x,int y) {
     GLuint selectBuf[512];
     GLint hits;
     GLint viewport[4];
-    Camera* camera=getWorld()->getCamera();
+    Camera* camera=BaseSimulator::getWorld()->getCamera();
 
     glGetIntegerv(GL_VIEWPORT,viewport); // récupération de la position et de la taille de la fenêtre
 

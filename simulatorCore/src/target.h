@@ -93,7 +93,6 @@ public: // exceptions
     };
     
 protected:
-
     /**
      * @brief prints target to an ouput string
      * @param where ostream on which to print the object
@@ -268,7 +267,7 @@ public:
      * @param pos position of the target cell
      */
     Cell3DPosition CSGToGridPosition(const Vector3D &pos) const;
-    
+
     /**
      * @brief The object is in the border of the target
      * @param pos position of the target cell

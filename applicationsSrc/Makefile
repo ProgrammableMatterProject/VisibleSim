@@ -2,7 +2,6 @@
 # GENERIC BlockCodes
 SUBDIRS = #C3DRotate #simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB
 #SUBDIRS = simpleCatoms3D simpleColorSB simpleColorC2D simpleMotion
-#SUBDIRS = locomotion
 # simpleColorOkteen simpleMotionOkteen simpleCatoms3D
 
 # MELD BlockCodes
@@ -15,7 +14,7 @@ SUBDIRS = #C3DRotate #simpleColorC2D simpleColorRB simpleColorSB distanceRB simp
 # SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB
 SUBDIRS += #meshCatoms3D_mvmt #meshCatoms3D #csgCatoms3D meltSortGrow targetColoration simpleMotionOkteen reconfCatoms3D
 # SUBDIRS = reconfCatoms3D reconfCatoms3DMultilayer
-SUBDIRS += meshCatoms3D_assembly lightWalkCatoms3D #catoms3DRotations
+SUBDIRS += csgCatoms3D
 
 .PHONY: subdirs $(SUBDIRS) test
 

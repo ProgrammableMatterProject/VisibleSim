@@ -58,6 +58,8 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	vector <Point3> tabNormal;
 	vector <Point2> tabTexture;
 	char txt[256];
+	GLuint currentObjectNumber=0;
+	
 #ifdef WIN32
 	sprintf_s(txt,256,"%s\\%s",rep,titre);
 #else
@@ -153,8 +155,10 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 
     	if (g_trouve) {
     		objCourant = new ObjData(nom);
+
+			objCourant->objectNumber=++currentObjectNumber;
 #ifdef DEBUG_GRAPHICS
-    		OUTPUT << "new object :" << nom << endl;
+			OUTPUT << "new object :" << nom << " num= " << objCourant->objectNumber << endl;
 #endif
     		tabObj.push_back(objCourant);
     		objCourant->objMtl = NULL;
@@ -247,6 +251,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     									sprintf(nom2,"%s_%s",nom,ptrMtl->name);
 #endif
     									objCourant = new ObjData(objCourant->nomOriginal);
+										objCourant->objectNumber=currentObjectNumber;
     									tabObj.push_back(objCourant);
     									objCourant->objMtl = ptrMtl;
 #ifdef WIN32
@@ -255,7 +260,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     									sprintf(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->name);
 #endif
 #ifdef DEBUG_GRAPHICS
-					  					OUTPUT << "nouvel objet :" << objCourant->nom << endl;
+					  					OUTPUT << "nouvel objet :" << objCourant->nom << "num=" << objCourant->objectNumber<< endl;
 #endif
     								}
     							}
@@ -302,6 +307,12 @@ void ObjLoader::glDraw(void) {
 	for (const auto& obj:tabObj) {
         obj->glDraw();
     }
+}
+
+void ObjLoader::glDraw(GLuint n) {
+	for (const auto& obj:tabObj) {
+		if (obj->objectNumber==n) obj->glDraw();
+	}
 }
 
 void ObjLoader::glDrawId(int n) {
@@ -369,9 +380,15 @@ void ObjLoader::createVertexArrays() {
 	}
 }
 
+void ObjLoader::saveSTLfacets(ofstream &fout,const Vector3D &v, int ind0,int ind1) const {
+	for (const ObjData *obj:tabObj) {
+		obj->saveSTLfacets(fout,v,ind0,ind1);
+	}
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
-// class objData
+// class ObjData
 ObjData::ObjData(const char *str) {
 	objMtl=NULL;
 	nbreIndices=0;
@@ -445,6 +462,41 @@ void ObjData::glDrawId(void) {
 //	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 //	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void ObjData::saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const {
+	vertexPosNrmTx* pv;
+	Vector3D p0,p1,p2,normal,v1,v2;
+	GLuint *ptrInd = tabIndices+ind0*3;
+	int i=(ind1==-1)?(nbreIndices/3-ind0):(ind1-ind0);
+	while(i--) {
+		pv =  tabVertices + *ptrInd++;
+		p0.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
+		pv =  tabVertices + *ptrInd++;
+		v1.set(pv->x,pv->y,pv->z,1.0);
+		p1.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
+		pv =  tabVertices + *ptrInd++;
+		p2.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
+		
+		v1 = p1-p0;
+		v2 = p2-p0;
+		if (v1.norme2()!=0 && v2.norme2()!=0) {
+			normal = v1^v2;
+			normal.normer_interne();
+			char buf[25];
+			snprintf(buf,25,"%5.3f %5.3f %5.3f", normal[0], normal[1], normal[2]);
+			file << "          facet normal " << buf << endl;
+			file << "            outer loop" << endl;
+			snprintf(buf,25,"%5.3f %5.3f %5.3f", p0[0], p0[1], p0[2]);
+			file << "              vertex " << buf << endl;
+			snprintf(buf,25,"%5.3f %5.3f %5.3f", p1[0], p1[1], p1[2]);
+			file << "              vertex " << buf << endl;
+			snprintf(buf,25,"%5.3f %5.3f %5.3f", p2[0], p2[1], p2[2]);
+			file << "              vertex " << buf << endl;
+			file << "            endloop" << endl;
+			file << "          endfacet" << endl;
+		}
+	}
 }
 
 void ObjData::addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3) {

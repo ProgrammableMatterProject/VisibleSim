@@ -204,7 +204,7 @@ void Rotation3DStepEvent::consume() {
         scheduler->schedule(new Rotation3DStepEvent(
                                 scheduler->now()+Rotations3D::getNextRotationEventDelay(),
                                 catom, rot));
-}
+    }
 }
 
 const string Rotation3DStepEvent::getEventName() {
