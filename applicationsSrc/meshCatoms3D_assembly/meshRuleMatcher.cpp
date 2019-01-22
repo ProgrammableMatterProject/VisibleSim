@@ -326,9 +326,9 @@ BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPositi
     fixPos.pt[1] = (pos[1] >= Y_MAX ? pos[1] - B : pos[1]);
     fixPos.pt[2] = (pos[2] >= Z_MAX ? pos[2] - B : pos[2]);
     
-    cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
-    cout << fixPos << endl;
-    cout << pos << endl;
+    // cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
+    // cout << fixPos << endl;
+    // cout << pos << endl;
     VS_ASSERT_MSG(isInMesh(fixPos) and not isTileRoot(fixPos), "attempting to get branch index of tile root fixPosition or fixPosition outside of mesh");
 
     if (isOnXBranch(fixPos)) return XBranch;
@@ -554,7 +554,7 @@ getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const {
 }
 
 short MeshRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) const {
-    cout << "norm: " <<pos << endl;
+    // cout << "norm: " <<pos << endl;
     
     if (isInMesh(pos) and not isTileRoot(pos)) {
         if (isOnZBranch(pos)) return ZBranch;

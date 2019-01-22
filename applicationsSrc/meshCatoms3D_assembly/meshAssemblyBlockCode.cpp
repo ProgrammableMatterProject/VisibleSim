@@ -97,7 +97,9 @@ void MeshAssemblyBlockCode::startup() {
         denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
 
     // Do stuff
-    if (catom->position == getEntryPointForMeshComponent(MeshComponent::R)
+    if (catom->position == (getEntryPointForMeshComponent(MeshComponent::R)
+                            // CONTINUOUS FEEDING
+                            + Cell3DPosition(0, 1, 0))
         and coordinatorPos[2] == meshSeedPosition[2]
         and lattice->isFree(coordinatorPos)) {
         // Catom is one of the future ground tile roots waiting on RZ_EPL

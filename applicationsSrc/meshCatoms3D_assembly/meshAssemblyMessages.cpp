@@ -195,10 +195,10 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);        
     Cell3DPosition dstPos = mabc.getEntryPointForModuleOnBranch(mabc.branch);
-    cout << "branch: " <<mabc.branch << endl;
-    cout << "catom: " << mabc.catom->position << endl;
-    cout << "dstPos: " << dstPos << endl;
-    cout << "role: " << mabc.role << endl;
+    // cout << "branch: " <<mabc.branch << endl;
+    // cout << "catom: " << mabc.catom->position << endl;
+    // cout << "dstPos: " << dstPos << endl;
+    // cout << "role: " << mabc.role << endl;
     
     if (mabc.role == ActiveBeamTip or mabc.role == Support) {
         P2PNetworkInterface* itf =
