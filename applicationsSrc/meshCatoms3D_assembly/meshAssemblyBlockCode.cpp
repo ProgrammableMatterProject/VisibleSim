@@ -244,18 +244,18 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
             catom->getNeighborPos(pase->toConP, actuationTargetPos);
 
-            console << " started actuating for module #" << pase->mobile->blockId << "\n";
+            // console << " started actuating for module #" << pase->mobile->blockId << "\n";
         } break;
 
         case EVENT_PIVOT_ACTUATION_END: {
-            std::shared_ptr<PivotActuationEndEvent> paee = std::static_pointer_cast
-                <PivotActuationEndEvent>(pev);
+            // std::shared_ptr<PivotActuationEndEvent> paee = std::static_pointer_cast
+            //     <PivotActuationEndEvent>(pev);
 
-            console << " finished actuating for module #" << paee->mobile->blockId << "\n";
+            // console << " finished actuating for module #" << paee->mobile->blockId << "\n";
         } break;
 
         case EVENT_ROTATION3D_END:
-            console << "Rotation to " << catom->position << " over" << "\n";
+            // console << "Rotation to " << catom->position << " over" << "\n";
 
             rotating = false;
         case EVENT_TELEPORTATION_END: {
@@ -614,7 +614,7 @@ bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
             P2PNetworkInterface* nItf = catom->getInterface(nPos);
             VS_ASSERT(nItf);
             // cout << "[t-" << getScheduler()->now() << "] requesting target cell" << endl;
-            sendMessage(new RequestTargetCellMessage(catom->position), nItf,
+            sendMessage(new RequestTargetCellMessage(catom->position, catom->blockId), nItf,
                         MSG_DELAY_MC, 0);
             log_send_message();
             return true;

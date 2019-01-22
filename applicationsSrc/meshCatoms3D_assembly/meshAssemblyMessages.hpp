@@ -22,14 +22,16 @@ using namespace MeshCoating;
 
 class RequestTargetCellMessage : public HandleableMessage {
     const Cell3DPosition srcPos;
+    bID srcId;
 public:
-    RequestTargetCellMessage(const Cell3DPosition& _srcPos)
-        : HandleableMessage(), srcPos(_srcPos) {};
+    RequestTargetCellMessage(const Cell3DPosition& _srcPos, bID _srcId)
+        : HandleableMessage(), srcPos(_srcPos), srcId(_srcId) {};
     virtual ~RequestTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
     virtual Message* clone() const { return new RequestTargetCellMessage(*this); }
-    virtual string getName() const { return "RequestTargetCell{" + srcPos.to_string() + "}"; }
+    virtual string getName() const { return "RequestTargetCell{" + srcPos.to_string()
+            + ", " + to_string(srcId) + "}"; }
 };
 
 class ProvideTargetCellMessage : public HandleableMessage {

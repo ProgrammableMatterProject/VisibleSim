@@ -25,14 +25,15 @@
 void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);    
     // cout << "[t-" << getScheduler()->now() << "] received request target cell" << endl;
-    
+
     if (mabc.role == ActiveBeamTip) {
         // Forward message to coordinator
         P2PNetworkInterface* coordItf =
             mabc.catom->getInterface(mabc.coordinatorPos);
-        if (coordItf and coordItf->isConnected())
+        if (coordItf and coordItf->isConnected()) {
             mabc.sendMessage(this->clone(), coordItf, MSG_DELAY_MC, 0);
-        else return;
+            mabc.sentRequestToCoordinator = true;
+        } else return; // Wait for TR to get into place and send COORDINATOR_READY
     } else if (mabc.role == Support) {
         // Forward message to ActiveBeamTip for forwarding to root
         P2PNetworkInterface* btItf =
@@ -54,6 +55,10 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         VS_ASSERT_MSG(btipItf, "cannot find branch tip among neighbor interfaces");
         mabc.sendMessage(this->clone(), btipItf, MSG_DELAY_MC, 0);
     } else if (mabc.role == Coordinator) {
+        // Prevent processing double sends of request
+        if (mabc.processedRQId.find(srcId) != mabc.processedRQId.end()) return;
+        else mabc.processedRQId.insert(srcId);
+        
         short idx = mabc.getEntryPointLocationForCell(srcPos); VS_ASSERT(idx != -1);
         MeshComponent epl = static_cast<MeshComponent>(idx);
         BranchIndex bi = MeshRuleMatcher::getBranchForEPL(epl); VS_ASSERT(bi < 4);
@@ -68,10 +73,15 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                 tPos = mabc.catom->position
                     + MeshRuleMatcher::getPositionForMeshComponent(nextComponent.first);
             } else { // Not the right EPL, note that a module is waiting there
-                // TODO: See why messages are sometimes sent twice.
-                // What happens if a message has been sent while the coordinator is getting into place and sends a RQ target cell again. How to prevent double sends?
-                cout << *mabc.catom << " bi: " << bi << endl;
-                VS_ASSERT(not mabc.moduleWaitingOnBranch[bi]);
+                // Messages or sometimes sent twice due to concurrency issues in
+                //  communications. A RQ could be getting forwarded while the TR
+                //  gets in place, which would cause it to send COORDINATOR_READY
+                //  before receiving RQ_TARGET_CELL. Causing a double send of
+                //  RQ_TARGET_CELL by the requesting module. It could just
+                //  stay that way for now and label RQ messages with the module
+                //  id so as to avoid processing the message twice, I cannot see
+                //  a better solution for now.
+                // VS_ASSERT(not mabc.moduleWaitingOnBranch[bi]);
                 mabc.moduleWaitingOnBranch[bi] = true;
                 return;
             }
@@ -207,8 +217,10 @@ void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             VS_ASSERT_MSG(itf, "Cannot find tip2 among neighbor interface");
         }
 
-        mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
-        mabc.log_send_message();
+        if (mabc.role != ActiveBeamTip or not mabc.sentRequestToCoordinator) {
+            mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
+            mabc.log_send_message();
+        }
     } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)) {
         // Forward to waiting module
         

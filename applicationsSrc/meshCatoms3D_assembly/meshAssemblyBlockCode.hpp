@@ -100,6 +100,26 @@ public:
 
     /** CONTINUOUS FEEDING **/
     bool moduleWaitingOnBranch[4] = { false, false, false, false};
+
+    /**
+     * This is used only by branch tips. This is used to prevent double sending 
+     *  REQUEST_TARGET_CELL for a single module, as can happen if the coordinator
+     *  gets into place while the RTC message is being sent, forcing the requesting module
+     *  to respond to the COORDINATOR_READY message even though it has already received its 
+     *  request. This variable prevents the tip from forwarding back the CR
+     *  if the tip has already sent the request to the coordinator.
+     */
+    bool sentRequestToCoordinator = false;
+
+    /**
+     * Actually the previous is not sufficient to prevent double sends.
+     * This does not seem possible without acknowledgements. Which are too heavy.
+     * Therefore simply prevent coordinator from responding to double requests using:
+     */
+    std::unordered_set<bID> processedRQId;
+
+
+    /** END CF **/
     
     /** MOTION COORDINATION **/
     bool greenLightIsOn = true;
