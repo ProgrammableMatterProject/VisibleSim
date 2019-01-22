@@ -94,7 +94,6 @@ std::vector<T> intersection(std::vector<T> &v1, std::vector<T> &v2) {
     return v3;
 }
 
-
 template< typename ContainerT, typename PredicateT >
 void erase_if( ContainerT& items, const PredicateT& predicate ) {
     for( auto it = items.begin(); it != items.end(); ) {

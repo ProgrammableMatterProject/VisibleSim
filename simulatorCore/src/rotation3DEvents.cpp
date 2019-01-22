@@ -130,6 +130,23 @@ void Rotation3DStartEvent::consume() {
     Catoms3DBlock *catom = (Catoms3DBlock *)concernedBlock;
     catom->setState(BuildingBlock::State::MOVING);
 
+    Cell3DPosition position;
+    short orientation;
+    rot.getFinalPositionAndOrientation(position,orientation);
+
+    // Trace module rotation
+    stringstream info;
+    info.str("");
+    info << " starts rotating on pivot #" << rot.pivot->blockId << " ("
+         << rot.conFromP << " -> " << rot.conToP << ")";
+    scheduler->trace(info.str(),catom->blockId,LIGHTBLUE);
+
+    // Trace pivot actuation
+    info.str("");
+    info << " starts actuating for module #" << catom->blockId << " ("
+         << rot.conFromP << " -> " << rot.conToP << ")";
+    scheduler->trace(info.str(),rot.pivot->blockId,YELLOW);
+    
     scheduler->schedule(
         new PivotActuationStartEvent(scheduler->now(), const_cast<Catoms3DBlock*>(rot.pivot),
                                      rot.mobile, rot.conFromP, rot.conToP));
@@ -219,23 +236,28 @@ void Rotation3DStopEvent::consume() {
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
     // cout << "[t-" << getScheduler()->now() << "] rotation stop" << endl;
 
+    Catoms3DWorld *wrld=Catoms3DWorld::getWorld();
+    Scheduler *scheduler = getScheduler();
+    stringstream info; info.str("");
     Cell3DPosition position;
     short orientation;
-/* Transformer les coordonnées GL en coordonnées grille*/
+
+    /* Transformer les coordonnées GL en coordonnées grille*/
     rot.getFinalPositionAndOrientation(position,orientation);
-
-    Catoms3DWorld *wrld=Catoms3DWorld::getWorld();
-
     catom->setPositionAndOrientation(position,orientation);
-    stringstream info;
-    info.str("");
-    info << "connect Block " << catom->blockId;
-    getScheduler()->trace(info.str(),catom->blockId,LIGHTBLUE);
     wrld->connectBlock(catom);
-    Scheduler *scheduler = getScheduler();
+
+    info << " finished rotating to " << position << " on pivot #" << rot.pivot->blockId << " ("
+         << rot.conFromP << " -> " << rot.conToP << ")";
+    scheduler->trace(info.str(),catom->blockId,LIGHTBLUE);
+   
     scheduler->schedule(
         new Rotation3DEndEvent(scheduler->now(), catom));
 
+    info.str("");
+    info << " finished actuating for module #" << catom->blockId << " ("
+         << rot.conFromP << " -> " << rot.conToP << ")";
+    scheduler->trace(info.str(),rot.pivot->blockId,YELLOW);
     scheduler->schedule(
         new PivotActuationEndEvent(scheduler->now(), const_cast<Catoms3DBlock*>(rot.pivot),
                                    rot.mobile, rot.conFromP, rot.conToP));
