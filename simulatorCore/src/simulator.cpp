@@ -299,11 +299,15 @@ bID Simulator::countNumberOfModules() {
 			}
 		}
 	}
+	
+	cout << "count" << endl;
 	// Count modules from blockBox elements
 	for(TiXmlNode *child = xmlBlockListNode->FirstChild("blockBox"); child; child = child->NextSibling("blockBox")) {
 		Vector3D boxOrigin(0,0,0);
+		element = child->ToElement();
 		attr = element->Attribute("boxOrigin");
 		if (attr) {
+			cout << "origin" << endl;
 			string str(attr);
 			int pos1 = str.find_first_of(','),
 			pos2 = str.find_last_of(',');
@@ -316,6 +320,7 @@ bID Simulator::countNumberOfModules() {
 										world->lattice->gridSize[2]*world->lattice->gridScale[2]);
 		attr = element->Attribute("boxSize");
 		if (attr) {
+			cout << "dest" << endl;
 			string str(attr);
 			int pos1 = str.find_first_of(','),
 			pos2 = str.find_last_of(',');
@@ -337,7 +342,8 @@ bID Simulator::countNumberOfModules() {
 			}
 		}
 	}
-
+	cout << "count=" << moduleCount << endl;
+	
 	return moduleCount;
 }
 
