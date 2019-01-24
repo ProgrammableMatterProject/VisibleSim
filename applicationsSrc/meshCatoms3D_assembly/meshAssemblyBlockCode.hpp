@@ -27,7 +27,8 @@
 
 #include "meshAssemblyLocalRules.hpp"
 
-#define IT_MODE_TILEROOT_ACTIVATION 1 
+#define IT_MODE_TILEROOT_ACTIVATION 1
+#define IT_MODE_REEVALUATE_LOCAL_RULES 2
 
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
@@ -118,7 +119,12 @@ public:
      */
     std::unordered_set<bID> processedRQId;
 
-
+    /**
+     * ONLY FOR GROUND TR. This is to ensure that spawned module only 
+     * arrive once light is green on pivot module, as would happen on a real sandbox
+     */
+    MeshAssemblyBlockCode* EPLPivotBC[4] = { NULL, NULL, NULL, NULL };
+    
     /** END CF **/
     
     /** MOTION COORDINATION **/

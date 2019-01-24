@@ -72,6 +72,9 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                 // Return correct target, then check status of each waiting module
                 tPos = mabc.catom->position
                     + MeshRuleMatcher::getPositionForMeshComponent(nextComponent.first);
+
+                // Update queue
+                mabc.constructionQueue.pop();
             } else { // Not the right EPL, note that a module is waiting there
                 // Messages or sometimes sent twice due to concurrency issues in
                 //  communications. A RQ could be getting forwarded while the TR
@@ -123,11 +126,12 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                         // Send 
                         VS_ASSERT(tipItf and tipItf->isConnected());
                         mabc.sendMessage(new ProvideTargetCellMessage(tPos, wPos),
-                                         destinationInterface, MSG_DELAY_MC, 0);
+                                         tipItf, MSG_DELAY_MC, 0);
 
                         // Update looping condition and waiting state
                         mabc.moduleWaitingOnBranch[biw] = false;
                         moduleAwoken = true;
+                        mabc.constructionQueue.pop();
                     }
                 }
             }
@@ -182,7 +186,7 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                                            mabc.targetPosition,
                                            mabc.coordinatorPos, mabc.step, nextHop);
             if (not matched) {
-                mabc.catom->setColor(RED);
+                mabc.catom->setColor(MAGENTA);
                 cout << "#" << mabc.catom->blockId << endl;
                 VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
             }

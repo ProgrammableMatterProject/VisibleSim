@@ -227,7 +227,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                 Cell3DPosition pos;
                 if (catom->getNeighborPos(face, pos)
-                    and (role == FreeAgent
+                    and (role != FreeAgent
                          and (catom->getState() == BuildingBlock::State::ALIVE
                               // Motion is not blocking for a module coming in
                               or (catom->getState() == BuildingBlock::State::ACTUATING
@@ -242,7 +242,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             std::shared_ptr<PivotActuationStartEvent> pase = std::static_pointer_cast
                 <PivotActuationStartEvent>(pev);
 
-            if (greenLightIsOn) greenLightIsOn = false;
+            if (greenLightIsOn) {
+                greenLightIsOn = false;
+                catom->setColor(RED);
+            }
 
             catom->getNeighborPos(pase->toConP, actuationTargetPos);
 
@@ -267,6 +270,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
 
                 greenLightIsOn = true;
+                catom->setColor(GREEN);
                 moduleAwaitingGo = false;
 
                 // STAT EXPORT
@@ -336,7 +340,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         // Otherwise ask it for a new targetPosition
                         catom->setColor(BLACK);
                         if (not requestTargetCellFromTileRoot()) {
-                            catom->setColor(RED);
+                            catom->setColor(BLACK);
                             VS_ASSERT_MSG(false, "arriving module cannot be without delegate coordinator in its vicinity.");
                         }
 
@@ -369,6 +373,18 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                                   catom, IT_MODE_TILEROOT_ACTIVATION));
                     }
                 } break;
+
+                // case IT_MODE_REEVALUATE_LOCAL_RULES: {
+                //     // Only introduce catoms if on the lower tile level
+                //     if (catom->position[2] == meshSeedPosition[2]) {
+                //         feedBranches();
+
+                //         getScheduler()->schedule(
+                //             new InterruptionEvent(getScheduler()->now() +
+                //                                   (getRoundDuration()),
+                //                                   catom, IT_MODE_TILEROOT_ACTIVATION));
+                //     }
+                // } break;
             }
         }
     }
@@ -535,7 +551,7 @@ void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos) {
     } catch (const NoAvailableRotationPivotException& e_piv) {
         cerr << e_piv.what();
         cerr << "target position: " << pos << endl;
-        catom->setColor(RED);
+        catom->setColor(MAGENTA);
         VS_ASSERT(false);
     } catch (std::exception const& e) {
         cerr << "exception: " << e.what() << endl;
@@ -569,7 +585,14 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
             sendMessage(new CoordinatorReadyMessage(), nItf, MSG_DELAY_MC, 0);
         }
     }
-    
+
+    // Populate EPLPivots to be used by ground modules
+    EPLPivotBC[0] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(2, 2, -2))->blockCode); // ZBranch
+    EPLPivotBC[1] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 0, -2))->blockCode); // RevZBranch
+    EPLPivotBC[2] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(2, 0, -2))->blockCode); // RZBranch
+    EPLPivotBC[3] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 2, -2))->blockCode); // RevZBranch 
+    for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]);
+
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
         new InterruptionEvent(getScheduler()->now(),
@@ -666,7 +689,7 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
                                    coordinatorPos, step, nextPos);
 
     if (not matched) {
-        catom->setColor(RED);
+        catom->setColor(MAGENTA);
         cout << "#" << catom->blockId << endl;
         VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
     }
@@ -676,7 +699,9 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
 
 void MeshAssemblyBlockCode::feedBranches() {
     for (int bi = 0; bi < XBranch; bi++) {
-        handleModuleInsertionToBranch(static_cast<BranchIndex>(bi));
+        // Only insert if green light on EPL pivot 
+        if (EPLPivotBC[bi]->greenLightIsOn)
+            handleModuleInsertionToBranch(static_cast<BranchIndex>(bi));
     }
 }
 
@@ -729,7 +754,7 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
                                    coordinatorPos, step, nextPos);
 
     if (not matched) {
-        catom->setColor(RED);
+        catom->setColor(MAGENTA);
         cout << "#" << catom->blockId<< endl;
         VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
     }
