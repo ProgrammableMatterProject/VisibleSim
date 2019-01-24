@@ -237,6 +237,11 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x100, Cell3DPosition(0, 0, 0), 1), Cell3DPosition(0, -1, 0) }, // R 1
     { LRKeyTuple(0x840, Cell3DPosition(0, 0, 0), 2), Cell3DPosition(-1, 0, 1) }, // R 2
     { LRKeyTuple(0x100, Cell3DPosition(0, 0, 0), 3), Cell3DPosition(-1, -1, 0) }, // R 3
+
+    { LRKeyTuple(0x800, Cell3DPosition(1, -1, 0), 1), Cell3DPosition(0,1, 0) }, // S_RZ 1
+    { LRKeyTuple(0x140, Cell3DPosition(1, -1, 0), 2), Cell3DPosition(-1, -1, 1) }, // S_RZ 2
+    { LRKeyTuple(0x200, Cell3DPosition(-1, 1, 0), 1), Cell3DPosition(1, 0, 0) }, // S_LZ 1
+    { LRKeyTuple(0x180, Cell3DPosition(-1, 1, 0), 2), Cell3DPosition(-1, -1, 1) }, // S_LZ 2
     
     { LRKeyTuple(0x840, Cell3DPosition(1, 0, 0), 1), Cell3DPosition(-1, -1, 1) }, // X1 1
     { LRKeyTuple(0x280, Cell3DPosition(0, 1, 0), 1), Cell3DPosition(-1, -1, 1) }, // Y1 1
