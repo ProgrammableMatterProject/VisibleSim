@@ -216,6 +216,17 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // Module has taken position and is now pivot
                     setGreenLightAndResumeFlow();
                 }
+            } else if (role == FreeAgent and matchingLocalRule) {
+                Cell3DPosition nextHop;
+                bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
+                                               catom->position,
+                                               targetPosition,
+                                               coordinatorPos, step, nextHop);
+                if (matched) {
+                    matchingLocalRule = false;
+                    scheduleRotationTo(nextHop);
+                }
+
             }
 
             break;
@@ -374,17 +385,6 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     }
                 } break;
 
-                // case IT_MODE_REEVALUATE_LOCAL_RULES: {
-                //     // Only introduce catoms if on the lower tile level
-                //     if (catom->position[2] == meshSeedPosition[2]) {
-                //         feedBranches();
-
-                //         getScheduler()->schedule(
-                //             new InterruptionEvent(getScheduler()->now() +
-                //                                   (getRoundDuration()),
-                //                                   catom, IT_MODE_TILEROOT_ACTIVATION));
-                //     }
-                // } break;
             }
         }
     }
@@ -579,7 +579,7 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     // Inspect each incoming vertical branch to see where catoms are ready to take part in
     //  the construction of the tile
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
-        if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {            
+        if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {
             P2PNetworkInterface* nItf = catom->getInterface(nPos);
             VS_ASSERT(nItf and nItf->isConnected());
             sendMessage(new CoordinatorReadyMessage(), nItf, MSG_DELAY_MC, 0);
@@ -590,7 +590,7 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     EPLPivotBC[0] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(2, 2, -2))->blockCode); // ZBranch
     EPLPivotBC[1] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 0, -2))->blockCode); // RevZBranch
     EPLPivotBC[2] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(2, 0, -2))->blockCode); // RZBranch
-    EPLPivotBC[3] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 2, -2))->blockCode); // RevZBranch 
+    EPLPivotBC[3] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 2, -2))->blockCode); // RevZBranch
     for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]);
 
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
@@ -609,8 +609,8 @@ void MeshAssemblyBlockCode::initializeSupportModule() {
             branch = static_cast<BranchIndex>(bi);
             return;
         }
-    }    
-    
+    }
+
     VS_ASSERT_MSG(false, "cannot find branch tip among neighbor modules");
 }
 
@@ -699,7 +699,7 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
 
 void MeshAssemblyBlockCode::feedBranches() {
     for (int bi = 0; bi < XBranch; bi++) {
-        // Only insert if green light on EPL pivot 
+        // Only insert if green light on EPL pivot
         if (EPLPivotBC[bi]->greenLightIsOn)
             handleModuleInsertionToBranch(static_cast<BranchIndex>(bi));
     }
