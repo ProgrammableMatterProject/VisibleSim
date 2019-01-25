@@ -74,7 +74,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                     + MeshRuleMatcher::getPositionForMeshComponent(nextComponent.first);
 
                 // Update queue
-                mabc.constructionQueue.pop();
+                mabc.constructionQueue.pop_front();
             } else { // Not the right EPL, note that a module is waiting there
                 // Messages or sometimes sent twice due to concurrency issues in
                 //  communications. A RQ could be getting forwarded while the TR
@@ -131,7 +131,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                         // Update looping condition and waiting state
                         mabc.moduleWaitingOnBranch[biw] = false;
                         moduleAwoken = true;
-                        mabc.constructionQueue.pop();
+                        mabc.constructionQueue.pop_front();
                     }
                 }
             }
@@ -180,18 +180,7 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             mabc.catom->setColor(mabc.ruleMatcher->getColorForPosition(
                                      mabc.norm(mabc.catom->position)));
         } else {
-            Cell3DPosition nextHop;
-            bool matched = matchLocalRules(mabc.catom->getLocalNeighborhoodState(),
-                                           mabc.catom->position,
-                                           mabc.targetPosition,
-                                           mabc.coordinatorPos, mabc.step, nextHop);
-            if (matched) {
-                mabc.scheduleRotationTo(nextHop);
-            } else {
-                // Try matching rules again once neighborhood updates
-                mabc.catom->setColor(GOLD);
-                mabc.matchingLocalRule = true;
-            }
+            mabc.matchRulesAndProbeGreenLight();
         }
     }
 }
@@ -227,11 +216,13 @@ void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         }
     } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)) {
         // Forward to waiting module
-
         P2PNetworkInterface* itf = mabc.catom->getInterface(dstPos);
         VS_ASSERT_MSG(itf, "cannot find dest among neighbor interfaces");
-        mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
-        mabc.log_send_message();
+        
+        if (itf->isConnected()) {
+            mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
+            mabc.log_send_message();
+        }
     } else {
         // Module is free agent waiting for something to do
         VS_ASSERT(mabc.role == FreeAgent);
@@ -308,7 +299,10 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
 
         // Perform pending motion
         mabc.rotating = true;
-        mabc.scheduler->schedule(
-            new Rotation3DStartEvent(getScheduler()->now(), mabc.catom, mabc.stepTargetPos));
+        mabc.scheduleRotationTo(mabc.stepTargetPos);
     }
+}
+
+void FinalTargetReachedMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 }

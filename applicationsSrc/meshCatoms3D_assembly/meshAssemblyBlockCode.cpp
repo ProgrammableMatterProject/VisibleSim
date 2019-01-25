@@ -71,18 +71,30 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         for (int i = 0; i < 6; i++)
             cout << catomsReqByBranch[i] << ", ";
         cout << " ]" << endl;
+
+        cout << "Construction Queue: [ " << endl;
+        cout << "|   Component   |   EPL  |" << endl << endl;
+        for (const auto& pair : constructionQueue) {
+            cout << "\t{ " << ruleMatcher->component_to_string(pair.first) << ", "
+                 << ruleMatcher->component_to_string(pair.second) << " }" << endl;
+        }
+        cout << "]" << endl;
     }
 
     cout << "branch: " << branch << endl;
     cout << "coordinatorPos: " << coordinatorPos << endl;
     cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
-    cout << "role: " << role << endl;
-    cout << "localNeighborhood: " << catom->getLocalNeighborhoodState() << endl;
+    cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
+    cout << "localNeighborhood: " << catom->getLocalNeighborhoodState() << endl;    
     Cell3DPosition nextHop;
     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
                     targetPosition, coordinatorPos, step, nextHop);
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
+    cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
+    cout << "targetPos: " << targetPosition << endl;
+    cout << "matchingLocalRule: " << matchingLocalRule << endl;
+    cout << "greenLightIsOn: " << greenLightIsOn << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -106,8 +118,7 @@ void MeshAssemblyBlockCode::startup() {
         role = FreeAgent;
 
         if (coordinatorPos == meshSeedPosition) {
-            targetPosition = coordinatorPos;
-            // matchRulesAndRotate(); // the seed starts the algorithm
+            targetPosition = coordinatorPos;            
             matchRulesAndProbeGreenLight(); // the seed starts the algorithm
         }
 
@@ -202,31 +213,22 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
         } break;
 
         case EVENT_ADD_NEIGHBOR: {
-            if (role != FreeAgent
-                and awaitingModulePos != Cell3DPosition(-1, -1, -1)
-                and not rotating) {
-                uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
-                const Cell3DPosition& pos = catom->getNeighborBlock(face)->position;
+            if (role != FreeAgent) {                
+                if (not rotating) {
+                    uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
+                    const Cell3DPosition& pos = catom->getNeighborBlock(face)->position;
 
-                if (not ruleMatcher->isInMesh(norm(pos))) {
-                    // Neighbor is module moving on the line
-                    greenLightIsOn = false;
-                    catom->setColor(RED);
-                } else {
-                    // Module has taken position and is now pivot
-                    setGreenLightAndResumeFlow();
-                }
+                    if (not ruleMatcher->isInMeshOrSandbox(norm(pos))) {
+                        // Neighbor is module in terminal position 
+                        greenLightIsOn = false;
+                        catom->setColor(RED);                            
+                    } else {
+                        // Module has taken position and is now pivot
+                        setGreenLightAndResumeFlow();
+                    }
+                } 
             } else if (role == FreeAgent and matchingLocalRule) {
-                Cell3DPosition nextHop;
-                bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
-                                               catom->position,
-                                               targetPosition,
-                                               coordinatorPos, step, nextHop);
-                if (matched) {
-                    matchingLocalRule = false;
-                    scheduleRotationTo(nextHop);
-                }
-
+                matchRulesAndProbeGreenLight();
             }
 
             break;
@@ -234,19 +236,23 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
         case EVENT_REMOVE_NEIGHBOR: {
             if (not rotating) {
-                uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<RemoveNeighborEvent>(pev))->face);
+                if (role != FreeAgent) {
+                    uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<RemoveNeighborEvent>(pev))->face);
 
-                Cell3DPosition pos;
-                if (catom->getNeighborPos(face, pos)
-                    and (role != FreeAgent
-                         and (catom->getState() == BuildingBlock::State::ALIVE
-                              // Motion is not blocking for a module coming in
-                              or (catom->getState() == BuildingBlock::State::ACTUATING
-                                  and ruleMatcher->isInMesh(norm(actuationTargetPos)))) ) ) {
-                    setGreenLightAndResumeFlow();
+                    Cell3DPosition pos;
+                    if (catom->getNeighborPos(face, pos)
+                        and (role != FreeAgent
+                             and (catom->getState() == BuildingBlock::State::ALIVE
+                                  // Motion is not blocking for a module coming in
+                                  or (catom->getState() == BuildingBlock::State::ACTUATING
+                                      and ruleMatcher->isInMesh(norm(actuationTargetPos)))) ) ) {
+                        setGreenLightAndResumeFlow();
+                    }
+                } else {
+                    matchRulesAndProbeGreenLight();
                 }
             }
-
+            
             break;
         }
         case EVENT_PIVOT_ACTUATION_START: {
@@ -254,6 +260,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 <PivotActuationStartEvent>(pev);
 
             if (greenLightIsOn) {
+                // cout << *catom << endl;
+                // VS_ASSERT(false); // FIXME: should never happen, light should be red already
                 greenLightIsOn = false;
                 catom->setColor(RED);
             }
@@ -359,7 +367,6 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     }
                 }
 
-                // matchRulesAndRotate();
                 matchRulesAndProbeGreenLight();
             }
         } break;
@@ -493,6 +500,8 @@ bool MeshAssemblyBlockCode::handleModuleInsertionToBranch(BranchIndex bid) {
         world->addBlock(0, buildNewBlockCode, entryPoint, ORANGE);
         catomsSpawnedToVBranch[bid]++;
         return true;
+    } else {
+        VS_ASSERT(false);
     }
 
     return false;
@@ -587,12 +596,12 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     }
 
     // Populate EPLPivots to be used by ground modules
-    EPLPivotBC[0] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(2, 2, -2))->blockCode); // ZBranch
-    EPLPivotBC[1] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 0, -2))->blockCode); // RevZBranch
+    EPLPivotBC[0] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 0, -2))->blockCode); // RevZBranch
+    EPLPivotBC[1] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(2, 2, -2))->blockCode); // ZBranch
     EPLPivotBC[2] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(2, 0, -2))->blockCode); // RZBranch
-    EPLPivotBC[3] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 2, -2))->blockCode); // RevZBranch
+    EPLPivotBC[3] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 2, -2))->blockCode); // LZBranch
     for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]);
-
+    
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
         new InterruptionEvent(getScheduler()->now(),
@@ -688,17 +697,18 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
                                    targetPosition,
                                    coordinatorPos, step, nextPos);
 
-    if (not matched) {
-        catom->setColor(MAGENTA);
-        cout << "#" << catom->blockId << endl;
-        VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
+    if (matched) {
+        scheduleRotationTo(nextPos);
+    } else {
+        // Try matching rules again once neighborhood updates
+        catom->setColor(GOLD);
+        matchingLocalRule = true;
     }
-
-    scheduleRotationTo(nextPos);
 }
 
 void MeshAssemblyBlockCode::feedBranches() {
     for (int bi = 0; bi < XBranch; bi++) {
+
         // Only insert if green light on EPL pivot
         if (EPLPivotBC[bi]->greenLightIsOn)
             handleModuleInsertionToBranch(static_cast<BranchIndex>(bi));
@@ -753,18 +763,19 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
                                    targetPosition,
                                    coordinatorPos, step, nextPos);
 
-    if (not matched) {
-        catom->setColor(MAGENTA);
-        cout << "#" << catom->blockId<< endl;
-        VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
-    }
+    if (matched) {
+        stepTargetPos = nextPos;
+        Catoms3DBlock *pivot = Catoms3DMotionEngine::findMotionPivot(catom, stepTargetPos);
+        VS_ASSERT(pivot);
 
-    stepTargetPos = nextPos;
-    Catoms3DBlock *pivot = Catoms3DMotionEngine::findMotionPivot(catom, stepTargetPos);
-    VS_ASSERT(pivot);
-
-    sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos),
-                catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
+        matchingLocalRule = false;
+        sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos),
+                    catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
+    } else {
+        // Try matching rules again once neighborhood updates
+        catom->setColor(GOLD);
+        matchingLocalRule = true;
+    }    
 }
 
 /************************************************************************

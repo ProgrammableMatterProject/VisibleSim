@@ -83,6 +83,60 @@ std::array<Cell3DPosition, 47> MeshRuleMatcher::componentPosition = {
     Cell3DPosition(-1, 0, 5), // RevZ_L_EPL
 };
 
+string MeshRuleMatcher::component_to_string(MeshComponent comp) {
+    switch(comp) {
+        case R: return "R";
+        case S_Z: return "S_Z";
+        case S_RevZ: return "S_RevZ";
+        case S_LZ: return "S_LZ";
+        case S_RZ: return "S_RZ";
+        case X_1: return "X_1";
+        case X_2: return "X_2";
+        case X_3: return "X_3";
+        case X_4: return "X_4";
+        case X_5: return "X_5";
+        case Y_1: return "Y_1";
+        case Y_2: return "Y_2";
+        case Y_3: return "Y_3";
+        case Y_4: return "Y_4";
+        case Y_5: return "Y_5";
+        case Z_1: return "Z_1";
+        case Z_2: return "Z_2";
+        case Z_3: return "Z_3";
+        case Z_4: return "Z_4";
+        case Z_5: return "Z_5";
+        case RevZ_1: return "RevZ_1";
+        case RevZ_2: return "RevZ_2";
+        case RevZ_3: return "RevZ_3";
+        case RevZ_4: return "RevZ_4";
+        case RevZ_5: return "RevZ_5";
+        case LZ_1: return "LZ_1";
+        case LZ_2: return "LZ_2";
+        case LZ_3: return "LZ_3";
+        case LZ_4: return "LZ_4";
+        case LZ_5: return "LZ_5";
+        case RZ_1: return "RZ_1";
+        case RZ_2: return "RZ_2";
+        case RZ_3: return "RZ_3";
+        case RZ_4: return "RZ_4";
+        case RZ_5: return "RZ_5";
+        case RevZ_EPL: return "RevZ_EPL";
+        case RevZ_R_EPL: return "RevZ_R_EPL";
+        case RZ_L_EPL: return "RZ_L_EPL";
+        case RZ_EPL: return "RZ_EPL";
+        case RZ_R_EPL: return "RZ_R_EPL";
+        case Z_R_EPL: return "Z_R_EPL";
+        case Z_EPL: return "Z_EPL";
+        case Z_L_EPL: return "Z_L_EPL";
+        case LZ_R_EPL: return "LZ_R_EPL";
+        case LZ_EPL: return "LZ_EPL";
+        case LZ_L_EPL: return "LZ_L_EPL";
+        case RevZ_L_EPL: return "RevZ_L_EPL";
+    }
+
+    return ""; // UNREACHABLE
+}
+
 Cell3DPosition MeshRuleMatcher::getComponentPosition(MeshComponent comp) {
     return comp < 47 ? componentPosition[comp] : Cell3DPosition();
 }
@@ -209,6 +263,15 @@ bool MeshRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
                                or isTileSupport(pos)));
 }
 
+bool MeshRuleMatcher::isInMeshOrSandbox(const Cell3DPosition& pos) const {
+    Cell3DPosition meshPos = pos + Cell3DPosition(0,0,B);
+    Cell3DPosition fixPos;
+    fixPos.pt[0] = (meshPos[0] >= X_MAX ? meshPos[0] - B : meshPos[0]);
+    fixPos.pt[1] = (meshPos[1] >= Y_MAX ? meshPos[1] - B : meshPos[1]);
+    fixPos.pt[2] = (meshPos[2] >= Z_MAX ? meshPos[2] - B : meshPos[2]);
+    
+    return isInMesh(pos) or isInMesh(fixPos);
+}
 bool MeshRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0;
 }

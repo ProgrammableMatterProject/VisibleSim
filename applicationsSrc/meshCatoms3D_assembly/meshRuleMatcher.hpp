@@ -88,9 +88,11 @@ public:
     virtual ~MeshRuleMatcher() {};
 
     static string roleToString(AgentRole ar);
+    static string component_to_string(MeshComponent comp);
     
     bool isInGrid(const Cell3DPosition& pos) const;
     bool isInMesh(const Cell3DPosition& pos) const;
+    bool isInMeshOrSandbox(const Cell3DPosition& pos) const;
     bool isOnPartialBorderMesh(const Cell3DPosition& pos) const;
 
 

@@ -131,4 +131,21 @@ public:
     }
 };
 
+
+/**
+ * This message is sent to a RED light pivot when a module it actuated has
+ *  reached its final rotation in the scaffold, instructing it to turn back green.
+ */
+class FinalTargetReachedMessage : public HandleableMessage {
+    const Cell3DPosition finalPos;
+public:
+    FinalTargetReachedMessage(const Cell3DPosition& _finalPos)
+        : HandleableMessage(), finalPos(_finalPos) {};
+    virtual ~FinalTargetReachedMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() const { return new FinalTargetReachedMessage(*this); }
+    virtual string getName() const { return "FinalTargetReached{" + finalPos.to_string() +"}";
+    }
+};
 #endif /* MC3D_MESSAGES_H_ */
