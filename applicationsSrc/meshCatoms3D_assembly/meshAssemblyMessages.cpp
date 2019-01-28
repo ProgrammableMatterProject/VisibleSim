@@ -250,9 +250,11 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
 
         if (targetLightNeighbor
             and targetLightNeighbor->position != srcPos) { // neighbor is target light
-            mabc.sendMessage(this->clone(),
-                             mabc.catom->getInterface(targetLightNeighbor->position),
-                             MSG_DELAY_MC, 0);
+            P2PNetworkInterface* tlitf = mabc.catom->getInterface(
+                targetLightNeighbor->position);
+
+            VS_ASSERT(tlitf and tlitf->isConnected());
+            mabc.sendMessage(this->clone(), tlitf, MSG_DELAY_MC, 0);
         } else if (not targetLightNeighbor and nextToTarget) { // module is target light
             if (mabc.greenLightIsOn
                 // FIXME: When a catom spawns on an EPL, and when
@@ -265,7 +267,7 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
                 
                 P2PNetworkInterface* itf = nextToSender ?
                     mabc.catom->getInterface(srcPos) : destinationInterface;
-                VS_ASSERT(itf);
+                VS_ASSERT(itf and itf->isConnected());
 
                 mabc.sendMessage(new GreenLightIsOnMessage(mabc.catom->position, srcPos),
                                  itf, MSG_DELAY_MC, 0);
@@ -295,7 +297,9 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
 
         P2PNetworkInterface* itf = nextToDest ?
             mabc.catom->getInterface(dstPos) :
-            mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(-1, 0, 0));
+            mabc.catom->getInterface(mabc.catom->position -
+                                     mabc.ruleMatcher->getBranchUnitOffset(
+                                         mabc.getBranchIndex(mabc.catom->position)));
 
         VS_ASSERT(itf and itf->isConnected());
         

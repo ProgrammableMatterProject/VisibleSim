@@ -235,8 +235,6 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 if (not rotating) {
                     uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
                     const Cell3DPosition& pos = catom->getNeighborBlock(face)->position;
-                    cout << pos << endl;
-                    cout << ruleMatcher->isInMeshOrSandbox(norm(pos)) << endl;
 
                     if (not ruleMatcher->isInMeshOrSandbox(norm(pos))) {
                         // Neighbor is module in terminal position 
@@ -758,19 +756,23 @@ bool MeshAssemblyBlockCode::isAtGroundLevel() {
  ***********************************************************************/
 
 void MeshAssemblyBlockCode::setGreenLightAndResumeFlow() {
-    if (catom->blockId == 5)
-        cout << "LOL" << endl;
-    
     greenLightIsOn = true;
     catom->setColor(GREEN);
 
     if (moduleAwaitingGo) {
         bool nextToModule = isAdjacentToPosition(awaitingModulePos);
+
+        Cell3DPosition pos;
+        if (not nextToModule)
+            pos = catom->position - ruleMatcher->getBranchUnitOffset(
+                getBranchIndex(catom->position));
+        
         P2PNetworkInterface* itf = nextToModule ?
             catom->getInterface(awaitingModulePos) :
-            catom->getInterface(catom->position
-                                + Cell3DPosition(-1, 0, 0));
+            // Move the message up the branch 
+            catom->getInterface(pos);
 
+        VS_ASSERT(itf and itf->isConnected());
         sendMessage(new GreenLightIsOnMessage(catom->position, awaitingModulePos),
                     itf, MSG_DELAY_MC, 0);
         moduleAwaitingGo = false;
@@ -807,16 +809,13 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
         Catoms3DBlock *pivot = customFindMotionPivot(catom, stepTargetPos);
         VS_ASSERT(pivot);
 
-        if (matchingLocalRule) {
-            cout << *catom << " is DONE local rule matching" << endl;
-            matchingLocalRule = false;        
-        }
+        matchingLocalRule = false;        
         
         sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos),
                     catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
     } else {
         // Try matching rules again once neighborhood updates
-        catom->setColor(GOLD);
+        catom->setColor(BLUE);
         matchingLocalRule = true;
     }    
 }
