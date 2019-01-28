@@ -55,6 +55,7 @@ enum RotationLinkType { HexaFace, OctaFace, Any, None }; //!< Kind of face to be
 class Catoms3DBlock : public BaseSimulator::BuildingBlock {
 public :
     short orientationCode; //!< number of the connector that is along the x axis.
+    const Catoms3DBlock *pivot; //!< if currently rotating, pivot a pointer to its motion pivot
 public:
     /**
        @brief Constructor

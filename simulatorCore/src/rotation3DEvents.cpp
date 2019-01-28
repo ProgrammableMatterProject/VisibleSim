@@ -134,6 +134,8 @@ void Rotation3DStartEvent::consume() {
     short orientation;
     rot.getFinalPositionAndOrientation(position,orientation);
 
+    catom->pivot = rot.pivot;
+    
     // Trace module rotation
     stringstream info;
     info.str("");
@@ -153,6 +155,8 @@ void Rotation3DStartEvent::consume() {
     
     Catoms3DWorld::getWorld()->disconnectBlock(catom);
 
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DStartEvent(date+Rotations3D::COM_DELAY, catom, rot)));
+    
 //    catom->setColor(DARKGREY);
     rot.init(((Catoms3DGlBlock*)catom->ptrGlBlock)->mat);
     scheduler->schedule(
@@ -242,6 +246,9 @@ void Rotation3DStopEvent::consume() {
     Cell3DPosition position;
     short orientation;
 
+    // Reset pivot
+    catom->pivot = NULL;
+    
     /* Transformer les coordonnées GL en coordonnées grille*/
     rot.getFinalPositionAndOrientation(position,orientation);
     catom->setPositionAndOrientation(position,orientation);
