@@ -28,6 +28,7 @@
 #include "meshAssemblyLocalRules.hpp"
 
 #define IT_MODE_TILEROOT_ACTIVATION 1
+#define IT_MODE_ALGORITHM_START 2
 
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
@@ -133,7 +134,34 @@ public:
      *  any local neighborhood update.
      */
     bool matchingLocalRule = false;
+    
+    /**
+     * Indicates whether the module using this pivot as support is on its final rotation
+     *  (if true), or whether it will take additional rotations afterwards.
+     * If true, the pivot can turn green directly once it is done actuating, even though
+     * the moving module will still be docked to it. //FIXME: Not useful if finaltargetreachedmessage is being used
+     */
+    bool finalPositionForActuatedModule = false;
 
+    /**
+     * Position of the pivot module that is helping this module move.
+     * It can be useful to keep track off as the moved module can wish to send a message
+     *  to its pivot after motion, as is the case for telling a pivot to turn green because
+     *  even though it is still docked, its final position as been reached.
+     */
+    Cell3DPosition pivotPosition;
+
+    /**
+     * Custom version of findMotionPivot for the scaffolding that only considers
+     *  final modules part of the scaffold as pivot 
+     */
+    static Catoms3DBlock*
+    customFindMotionPivot(const Catoms3DBlock* m,
+                          const Cell3DPosition& tPos,
+                          RotationLinkType faceReq = RotationLinkType::Any);
+    
+    bool initialized = false; //!< Indicates whether this module has called startup() yet
+    
     std::unordered_set<MeshComponent> targetComponentsForEPL[12] = {
         unordered_set<MeshComponent>({
                 RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5
@@ -200,7 +228,8 @@ public:
 
     bool isAdjacentToPosition(const Cell3DPosition& pos) const;
     // NOTE: what if there is more than 1?
-    Catoms3DBlock* findTargetLightAmongNeighbors(const Cell3DPosition& targetPos) const;
+    Catoms3DBlock* findTargetLightAmongNeighbors(const Cell3DPosition& targetPos,
+                                                 const Cell3DPosition& srcPos) const;
     void setGreenLightAndResumeFlow();
     /**                     **/
 
@@ -267,6 +296,12 @@ y the module
      */
     static const Cell3DPosition norm(const Cell3DPosition& pos);
 
+    /**
+     * norm variant to be used with sandbox modules as their are not considered inside the
+     *  mesh by the MeshRuleMatcher module
+     */
+    static const Cell3DPosition sbnorm(const Cell3DPosition& pos);
+    
     /**
      * Inverse function of norm
      * @note This has to be used due to the mesh seed being offsetted in order to leave space

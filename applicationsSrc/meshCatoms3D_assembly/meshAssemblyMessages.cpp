@@ -238,8 +238,9 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
     if (mabc.role != FreeAgent) { // module is pivot
         bool nextToSender = mabc.isAdjacentToPosition(srcPos);
         bool nextToTarget = mabc.isAdjacentToPosition(targetPos);
-        Catoms3DBlock* targetLightNeighbor = mabc.findTargetLightAmongNeighbors(targetPos);
-
+        Catoms3DBlock* targetLightNeighbor =
+            mabc.findTargetLightAmongNeighbors(targetPos, srcPos);
+        
         cout << *mabc.catom << " received " << getName() << endl;
         cout << "\tnextToSender: " << nextToSender << endl;
         cout << "\tnextToTarget: " << nextToTarget << endl;
@@ -253,12 +254,17 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
                              mabc.catom->getInterface(targetLightNeighbor->position),
                              MSG_DELAY_MC, 0);
         } else if (not targetLightNeighbor and nextToTarget) { // module is target light
-            if (mabc.greenLightIsOn or nextToSender) {
-                Cell3DPosition nextHopPos;
-                nextHopPos = nextToSender ? srcPos
-                    : srcPos; // TODO
-
-                P2PNetworkInterface* itf =  mabc.catom->getInterface(nextHopPos);
+            if (mabc.greenLightIsOn
+                // FIXME: When a catom spawns on an EPL, and when
+                //  the support already has a module attached to it,
+                //  the support might still give the go because they are neighbor.
+                //  Perhaps once the support is in place we should consider checking
+                //   that the nearby support is green too
+                or (nextToSender
+                    and mabc.catom->getState() != BuildingBlock::State::ACTUATING)) {
+                
+                P2PNetworkInterface* itf = nextToSender ?
+                    mabc.catom->getInterface(srcPos) : destinationInterface;
                 VS_ASSERT(itf);
 
                 mabc.sendMessage(new GreenLightIsOnMessage(mabc.catom->position, srcPos),
@@ -269,14 +275,14 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
                 //  to the previous pivot?
                 mabc.moduleAwaitingGo = true;
                 mabc.awaitingModulePos = srcPos;
-                mabc.catom->setColor(ORANGE);
+                mabc.catom->setColor(DARKORANGE);
             }
         } else { // not neighborNextToTarget and not nextToSender
             mabc.catom->setColor(BLACK);
             VS_ASSERT_MSG(false, "error: not neighborNextToTarget and not nextToSender");
         }
     } else { // module is in motion (thus should not receive such message)
-        mabc.catom->setColor(BLACK);
+        mabc.catom->setColor(DARKGREY);
         VS_ASSERT(false);
     }
 }
@@ -291,6 +297,8 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
             mabc.catom->getInterface(dstPos) :
             mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(-1, 0, 0));
 
+        VS_ASSERT(itf and itf->isConnected());
+        
         mabc.greenLightIsOn = false;
         mabc.catom->setColor(RED);
         mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
@@ -305,4 +313,9 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void FinalTargetReachedMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
+
+    VS_ASSERT(mabc.lattice->cellsAreAdjacent(mabc.catom->position, finalPos));
+    if (not mabc.greenLightIsOn) {
+        mabc.setGreenLightAndResumeFlow();
+    }
 }

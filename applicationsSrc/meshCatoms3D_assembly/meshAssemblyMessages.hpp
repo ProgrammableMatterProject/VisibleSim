@@ -96,17 +96,28 @@ public:
  */
 class ProbePivotLightStateMessage : public HandleableMessage {
     const Cell3DPosition srcPos;
-    const Cell3DPosition targetPos;
+    const Cell3DPosition targetPos; // Next position the module is seeking to reach
+
+    /**
+     * Final position that the module is trying to get to.
+     *  If targetPos == finalPos, then the future pivot knows that it can turn green
+     *   when the probing module finishes it motion, even though it remains connected.
+     */
+    // const Cell3DPosition finalPos; 
 public:
     ProbePivotLightStateMessage(const Cell3DPosition& _srcPos,
                                 const Cell3DPosition& _targetPos)
+                                // const Cell3DPosition& _finalPos)
         : HandleableMessage(), srcPos(_srcPos), targetPos(_targetPos) {};
+          // finalPos(_finalPos) {};
     virtual ~ProbePivotLightStateMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
     virtual Message* clone() const { return new ProbePivotLightStateMessage(*this); }
     virtual string getName() const { return "ProbePivotLightState{" + srcPos.to_string()
-            + ", " + targetPos.to_string() + "}";
+            + ", " + targetPos.to_string()
+            // + ", " + finalPos.to_string()
+            + "}";
     }
 };
 
