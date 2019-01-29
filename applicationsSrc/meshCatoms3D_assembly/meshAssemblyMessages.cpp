@@ -232,6 +232,45 @@ void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     }
 }
 
+void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
+
+    Cell3DPosition relNeighborPos;
+    if (mabc.role == ActiveBeamTip) {
+        if (mabc.ruleMatcher->isOnZBranch(mabc.norm(mabc.catom->position))) {
+            // Forward to incoming LZ tip
+            relNeighborPos = Cell3DPosition(1,0,0);
+        } else if (mabc.ruleMatcher->isOnRZBranch(mabc.norm(mabc.catom->position))) {
+            // forward to incoming RevZ tip
+            relNeighborPos = Cell3DPosition(1,0,0);
+        } else if (mabc.ruleMatcher->isOnLZBranch(mabc.norm(mabc.catom->position))) {
+            // forward to RevZ tip
+            relNeighborPos = Cell3DPosition(0,1,0);
+        } else if (mabc.ruleMatcher->isOnRevZBranch(mabc.norm(mabc.catom->position))) {
+            // forward to RevZ EPL Pivot
+            relNeighborPos = Cell3DPosition(1,1,-1);
+        } 
+
+        P2PNetworkInterface* itf = mabc.catom->getInterface(mabc.catom->position
+                                                            + relNeighborPos);
+        VS_ASSERT(itf and itf->isConnected());
+        mabc.sendMessage(new TileInsertionReadyMessage(), itf,MSG_DELAY_MC, 0);
+        mabc.log_send_message();
+    } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)){
+        // Forward to module waiting on EPL
+        P2PNetworkInterface* EPLItf = mabc.catom->getInterface(mabc.catom->position
+                                                               + Cell3DPosition(0,0,1));
+        VS_ASSERT(EPLItf and EPLItf->isConnected());
+        mabc.sendMessage(new TileInsertionReadyMessage(), EPLItf,MSG_DELAY_MC, 0);        
+    } else {
+        // Get moving towards tile root position
+        mabc.targetPosition = mabc.coordinatorPos;
+        mabc.lattice->unhighlightCell(mabc.targetPosition);
+        mabc.matchRulesAndRotate();
+    }
+}
+
+
 void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 
@@ -294,13 +333,28 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
 
     if (mabc.role != FreeAgent) { // module is pivot
         bool nextToDest = mabc.isAdjacentToPosition(dstPos);
-
-        P2PNetworkInterface* itf = nextToDest ?
-            mabc.catom->getInterface(dstPos) :
-            mabc.catom->getInterface(mabc.catom->position -
-                                     mabc.ruleMatcher->getBranchUnitOffset(
-                                         mabc.getBranchIndex(mabc.catom->position)));
-
+        P2PNetworkInterface* itf;
+            
+        Cell3DPosition nnCell = Cell3DPosition(0,0,0);
+        if (not nextToDest) {
+            for (const auto &nCell:mabc.lattice->getActiveNeighborCells(mabc.catom->position)){
+                if (mabc.lattice->cellsAreAdjacent(nCell, dstPos)) {
+                    nnCell = nCell; 
+                    continue;
+                }
+            }                    
+        }
+        
+        if (nextToDest) 
+            itf = mabc.catom->getInterface(dstPos);
+        else if (nnCell != Cell3DPosition(0,0,0)) {
+            itf = mabc.catom->getInterface(nnCell);
+        } else {
+            itf = mabc.catom->getInterface(mabc.catom->position -
+                                           mabc.ruleMatcher->getBranchUnitOffset(
+                                               mabc.getBranchIndex(mabc.catom->position)));
+        }       
+        
         VS_ASSERT(itf and itf->isConnected());
         
         mabc.greenLightIsOn = false;
@@ -311,7 +365,10 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
 
         // Perform pending motion
         mabc.rotating = true;
-        mabc.scheduleRotationTo(mabc.stepTargetPos);
+        // Sender should be pivot to be used for next motion
+        Catoms3DBlock* pivot = static_cast<Catoms3DBlock*>(sourceInterface->hostBlock);
+        VS_ASSERT(pivot and pivot != mabc.catom);
+        mabc.scheduleRotationTo(mabc.stepTargetPos, pivot);
     }
 }
 

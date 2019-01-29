@@ -274,6 +274,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             std::shared_ptr<PivotActuationStartEvent> pase = std::static_pointer_cast
                 <PivotActuationStartEvent>(pev);
 
+            // A free agent module should never be used as pivot (for now)
+            VS_ASSERT(role != FreeAgent);
+            
             if (greenLightIsOn) {
                 // cout << *catom << endl;
                 // VS_ASSERT(false); // FIXME: should never happen, light should be red already
@@ -311,7 +314,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                 // Inform pivot that motion sequence is over and that it can turn green
                 P2PNetworkInterface* pivotItf = catom->getInterface(pivotPosition);
-                VS_ASSERT(pivotItf);
+                cout << *catom << " pp " << pivotPosition << endl;
+                VS_ASSERT(pivotItf and pivotItf->isConnected());
                 sendMessage(new FinalTargetReachedMessage(catom->position),
                             pivotItf, MSG_DELAY_MC, 0);
 
@@ -352,10 +356,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         }
 
                         VS_ASSERT(zBranchTipItf);
-                        // FIXME
-                        // sendMessage(new TileInsertionReadyMessage(),
-                        //             zBranchTipItf, MSG_DELAY_MC, 0);
-                        // log_send_message();
+                        sendMessage(new TileInsertionReadyMessage(),
+                                    zBranchTipItf, MSG_DELAY_MC, 0);
+                        log_send_message();
                     }
                 }
             } else {
@@ -573,12 +576,15 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
         or lattice->cellHasBlock(tipp);
 }
 
-void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos) {
+void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
+                                               Catoms3DBlock* pivot = NULL) {
     try {
+        if (not pivot) pivot = customFindMotionPivot(catom, pos);
+        
         OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
         // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
         scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
-                                                     catom, pos,
+                                                     catom, pivot, pos,
                                                      RotationLinkType::OctaFace, false));
 #ifdef INTERACTIVE_MODE
         awaitKeyPressed();
@@ -808,7 +814,7 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
         stepTargetPos = nextPos;
         Catoms3DBlock *pivot = customFindMotionPivot(catom, stepTargetPos);
         VS_ASSERT(pivot);
-
+       
         matchingLocalRule = false;        
         
         sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos),
@@ -822,7 +828,7 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
 
 Catoms3DBlock* MeshAssemblyBlockCode::customFindMotionPivot(const Catoms3DBlock* m,
                                                             const Cell3DPosition& tPos,
-                                                            RotationLinkType faceReq) {
+                                                            RotationLinkType faceReq) {    
     const auto &allLinkPairs =
         Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(m, tPos, faceReq);
 

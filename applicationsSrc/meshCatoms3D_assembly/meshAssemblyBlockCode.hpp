@@ -365,7 +365,7 @@ y the module
      */
     bool isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi);
 
-    void scheduleRotationTo(const Cell3DPosition& pos);
+    void scheduleRotationTo(const Cell3DPosition& pos, Catoms3DBlock* pivot);
 
     void matchRulesAndRotate();
     void matchRulesAndProbeGreenLight();
