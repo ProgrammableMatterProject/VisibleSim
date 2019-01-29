@@ -43,7 +43,8 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *block,const Ro
 Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot,
                                            const Cell3DPosition& tPos,
                                            RotationLinkType faceReq, bool exclusivelyReq)
-    : Rotation3DStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1, faceReq)
+    : Rotation3DStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1,
+                           faceReq, exclusivelyReq)
 {}
 
 Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m,
@@ -106,6 +107,10 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
     // Get valid links on surface of m
     const Catoms3DMotionRulesLink* link =
         Catoms3DMotionEngine::findConnectorLink(m, fromConM, toConM, faceReq);
+
+    if (not link and not exclusively) {
+        link = Catoms3DMotionEngine::findConnectorLink(m,fromConM,toConM,RotationLinkType::Any);
+    }
 
     if (link == NULL)
         throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
