@@ -92,7 +92,13 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
-    cout << "targetPos: " << targetPosition << endl;
+    cout << "targetPosition: " << targetPosition;
+    if (targetPosition != Cell3DPosition(0,0,0) 
+        and ruleMatcher->isInMesh(norm(targetPosition)))
+        cout << "[" << MeshRuleMatcher::component_to_string(
+            MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos)) << "]";
+    cout << endl;
+    
     cout << "matchingLocalRule: " << matchingLocalRule << endl;
     cout << "greenLightIsOn: " << greenLightIsOn << endl;
     cout << "pivotPosition: " << pivotPosition << endl;
@@ -314,7 +320,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                 // Inform pivot that motion sequence is over and that it can turn green
                 P2PNetworkInterface* pivotItf = catom->getInterface(pivotPosition);
-                cout << *catom << " pp " << pivotPosition << endl;
+
                 VS_ASSERT(pivotItf and pivotItf->isConnected());
                 sendMessage(new FinalTargetReachedMessage(catom->position),
                             pivotItf, MSG_DELAY_MC, 0);
@@ -436,24 +442,24 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 //     short idx = epl - RevZ_EPL;
 //     if (not targetQueueForEPL[idx].empty()) {
 //         const Cell3DPosition& tPos = coordinatorPos +
-//             ruleMatcher->getComponentPosition(targetQueueForEPL[idx].front());
+//             ruleMatcher->getPositionForComponent(targetQueueForEPL[idx].front());
 //         targetQueueForEPL[idx].pop();
 //         return tPos;
 //     }
 
 //     switch (epl) {
-//         case RevZ_EPL: return ruleMatcher->getComponentPosition(Z_EPL);
-//         case RevZ_R_EPL: return ruleMatcher->getComponentPosition(RevZ_R_EPL);
-//         case RZ_L_EPL: return ruleMatcher->getComponentPosition(RZ_L_EPL);
-//         case RZ_EPL: return ruleMatcher->getComponentPosition(LZ_EPL);
-//         case RZ_R_EPL: return ruleMatcher->getComponentPosition(RZ_R_EPL);
-//         case Z_R_EPL: return ruleMatcher->getComponentPosition(Z_R_EPL);
-//         case Z_EPL: return ruleMatcher->getComponentPosition(RevZ_EPL);
-//         case Z_L_EPL: return ruleMatcher->getComponentPosition(Z_L_EPL);
-//         case LZ_R_EPL: return ruleMatcher->getComponentPosition(RZ_EPL);
-//         case LZ_EPL: return ruleMatcher->getComponentPosition(RZ_EPL);
-//         case LZ_L_EPL: return ruleMatcher->getComponentPosition(LZ_R_EPL);
-//         case RevZ_L_EPL: return ruleMatcher->getComponentPosition(RevZ_L_EPL);
+//         case RevZ_EPL: return ruleMatcher->getPositionForComponent(Z_EPL);
+//         case RevZ_R_EPL: return ruleMatcher->getPositionForComponent(RevZ_R_EPL);
+//         case RZ_L_EPL: return ruleMatcher->getPositionForComponent(RZ_L_EPL);
+//         case RZ_EPL: return ruleMatcher->getPositionForComponent(LZ_EPL);
+//         case RZ_R_EPL: return ruleMatcher->getPositionForComponent(RZ_R_EPL);
+//         case Z_R_EPL: return ruleMatcher->getPositionForComponent(Z_R_EPL);
+//         case Z_EPL: return ruleMatcher->getPositionForComponent(RevZ_EPL);
+//         case Z_L_EPL: return ruleMatcher->getPositionForComponent(Z_L_EPL);
+//         case LZ_R_EPL: return ruleMatcher->getPositionForComponent(RZ_EPL);
+//         case LZ_EPL: return ruleMatcher->getPositionForComponent(RZ_EPL);
+//         case LZ_L_EPL: return ruleMatcher->getPositionForComponent(LZ_R_EPL);
+//         case RevZ_L_EPL: return ruleMatcher->getPositionForComponent(RevZ_L_EPL);
 //         default:
 //             cerr << "getNextTargetForEPL(" << epl << ")" << endl;
 //             VS_ASSERT_MSG(false, "getNextTargetForEPL: input is not an EPL");
@@ -615,6 +621,9 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
             shouldGrowPyramidBranch(norm(catom->position), (BranchIndex)bi) ? B - 1 : -1;
     }
 
+    // Initialize construction queue from here
+    buildConstructionQueue();
+    
     // Inspect each incoming vertical branch to see where catoms are ready to take part in
     //  the construction of the tile
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
@@ -637,6 +646,43 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     getScheduler()->schedule(
         new InterruptionEvent(getScheduler()->now(),
                               catom, IT_MODE_TILEROOT_ACTIVATION));
+}
+
+void MeshAssemblyBlockCode::buildConstructionQueue() {
+    constructionQueue.push_back({ S_RZ, RZ_EPL});  // 0
+    constructionQueue.push_back({ S_LZ, LZ_EPL }); // 0
+    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_1, Z_EPL }); // 1
+    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_1, Z_EPL }); // 3    
+    constructionQueue.push_back({ S_Z, LZ_EPL }); // 4
+    constructionQueue.push_back({ S_RevZ, RZ_EPL }); // 4
+    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_2, LZ_EPL }); // 5
+    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_2, RZ_EPL }); // 5
+    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_3, LZ_EPL }); // 7
+    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_3, RZ_EPL }); // 7
+    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_1, Z_EPL }); // 8
+    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_1, RevZ_EPL }); // 8
+    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_4, LZ_EPL }); // 9
+    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_4, RZ_EPL }); // 9
+    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_2, Z_EPL }); // 10
+    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_2, RevZ_EPL }); // 10
+    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_5, LZ_EPL }); // 11
+    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_5, RZ_EPL }); // 11
+    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_3, Z_EPL }); // 12
+    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_3, RevZ_EPL }); // 12
+    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_4, Z_EPL }); // 14
+    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_4, RevZ_EPL }); // 14
+    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_1, LZ_EPL }); // 14
+    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_1, RZ_EPL }); // 14  
+    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_5, Z_EPL }); // 16
+    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_5, RevZ_EPL }); // 16
+    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_2, LZ_EPL }); // 16
+    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_2, RZ_EPL }); // 16
+    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_3, LZ_EPL }); // 18
+    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_3, RZ_EPL }); // 18
+    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_4, LZ_EPL }); // 20
+    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_4, RZ_EPL }); // 20
+    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_5, LZ_EPL }); // 22
+    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_5, RZ_EPL }); // 22
 }
 
 void MeshAssemblyBlockCode::initializeSupportModule() {

@@ -252,7 +252,8 @@ public:
     
     static std::array<Cell3DPosition, 47> componentPosition;
     static std::array<int, 47> componentInsertionTime;
-    static Cell3DPosition getComponentPosition(MeshComponent comp);
+    static Cell3DPosition getPositionForComponent(MeshComponent comp);
+    static MeshComponent getComponentForPosition(const Cell3DPosition& pos);
 
     static MeshComponent getDefaultEPLComponentForBranch(BranchIndex bi);
     static MeshComponent getTargetEPLComponentForBranch(BranchIndex bi);

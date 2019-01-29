@@ -24,8 +24,8 @@ std::array<Cell3DPosition, 47> MeshRuleMatcher::componentPosition = {
 
     Cell3DPosition(1, 1, 0), // S_Z
     Cell3DPosition(-1, -1, 0), // S_RevZ
+    Cell3DPosition(-1, 1, 0), // S_LZ
     Cell3DPosition(1, -1, 0), // S_RZ
-    Cell3DPosition(-1, 1, 0), // S_RZ
 
     Cell3DPosition(1, 0, 0), // X1
     Cell3DPosition(2, 0, 0), // X2
@@ -137,10 +137,21 @@ string MeshRuleMatcher::component_to_string(MeshComponent comp) {
     return ""; // UNREACHABLE
 }
 
-Cell3DPosition MeshRuleMatcher::getComponentPosition(MeshComponent comp) {
+Cell3DPosition MeshRuleMatcher::getPositionForComponent(MeshComponent comp) {
     return comp < 47 ? componentPosition[comp] : Cell3DPosition();
 }
 
+MeshComponent MeshRuleMatcher::getComponentForPosition(const Cell3DPosition& pos) {
+    for (int i = 0; i <= RevZ_EPL; i++)
+        if (componentPosition[i] == pos) return static_cast<MeshComponent>(i);
+    
+    cerr << "error: getComponentForPosition(" << pos 
+         << "): input cell is not a mesh component." 
+         << endl;
+    VS_ASSERT(false);
+        
+    return R; // UNREACHABLE
+}
 MeshComponent MeshRuleMatcher::getDefaultEPLComponentForBranch(BranchIndex bi) {
     switch(bi) {
         case ZBranch: return Z_EPL;

@@ -194,27 +194,14 @@ public:
      * Queue of position to be filled my incoming modules, as an ordered list of
      *  pair<TileElement, SourceEPL>, which means that TileElement will be built
      *  from a module coming through SourceEPL.
+     * The queue is populated dynamically by MeshAssemblyBlockCode::buildConstructionQueue
      */
-    std::deque<std::pair<MeshComponent, MeshComponent>> constructionQueue =
-        std::deque<pair<MeshComponent, MeshComponent>>({
-                { S_RZ, RZ_EPL}, { S_LZ, LZ_EPL }, // 0
-                { Y_1, Z_EPL }, // 1
-                { X_1, Z_EPL }, // 3
-                { S_Z, LZ_EPL }, { S_RevZ, RZ_EPL }, // 4
-                { X_2, RZ_EPL }, { Y_2, LZ_EPL }, // 5
-                { X_3, RZ_EPL }, { Y_3, LZ_EPL }, // 7
-                { Z_1, Z_EPL }, { RevZ_1, RevZ_EPL }, // 8
-                { X_4, RZ_EPL }, { Y_4, LZ_EPL }, // 9
-                { Z_2, Z_EPL }, { RevZ_2, RevZ_EPL }, // 10
-                { X_5, RZ_EPL }, { Y_5, LZ_EPL }, // 11
-                { Z_3, Z_EPL }, { RevZ_3, RevZ_EPL }, // 12
-                { LZ_1, LZ_EPL }, { RZ_1, RZ_EPL }, { Z_4, Z_EPL }, { RevZ_4, RevZ_EPL }, // 14
-                { LZ_2, LZ_EPL }, { RZ_2, RZ_EPL }, { Z_5, Z_EPL }, { RevZ_5, RevZ_EPL }, // 16
-                { LZ_3, LZ_EPL }, { RZ_3, RZ_EPL },  // 18
-                { LZ_4, LZ_EPL }, { RZ_4, RZ_EPL },  // 20
-                { LZ_5, LZ_EPL }, { RZ_5, RZ_EPL },  // 22
-            });
+    std::deque<std::pair<MeshComponent, MeshComponent>> constructionQueue;    
     
+    /** 
+     * Dynamically builds the construction queue based on the position of the tile.
+     */
+    void buildConstructionQueue();
     /** END CF **/
 
     /** MOTION COORDINATION **/
