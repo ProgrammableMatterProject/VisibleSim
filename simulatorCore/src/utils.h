@@ -39,9 +39,15 @@ void awaitKeyPressed();
  * @return always true
  */
 bool assert_handler(bool cond, const char *file,
-                           const int line, const char* func,
-                           const char *msg = NULL);
+                    const int line, const char* func,
+                    const char *msg = NULL);
 
+/** 
+ * For a given triggered assert, displays the stack trace of the current thread
+ * @return always true
+ */
+bool assert_stack_print();
+    
 /** 
  * Custom assertion macro used for debugging, it shows a message
  *  on stderr, before pausing the simulation until a key is pressed
