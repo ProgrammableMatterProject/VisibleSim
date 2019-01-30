@@ -41,20 +41,20 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
 
     Scheduler* scheduler = getScheduler();
     BuildingBlock* contextModule = scheduler->getContextModule();
-    BlockCode* contextBlockCode = scheduler->getContextBlockCode();
-    std::cerr << "Context Module: ";
+    BlockCode* contextBlockCode = scheduler->getContextBlockCode();    
+    std::cerr << "In fonction " << func
+              << " at " << file << ":" << line << std::endl;
+    if (msg) std::cerr << "Reason: " << msg << endl;
+    
+    std::cerr << endl << "Context Module: ";
     if (contextModule) 
         cerr << "#" << contextModule->blockId << " at " << contextModule->position;
     else 
         cerr << "NULL";
     cerr << std::endl;
-    
-    std::cerr << "In fonction " << func
-              << " at " << file << ":" << line << std::endl;
-    if (msg) std::cerr << "Reason: " << msg << endl;
 
     if (contextBlockCode) {
-        std::cerr << endl << "--- BlockCode::onAssertTriggered() ---" << endl;
+        std::cerr << "--- BlockCode::onAssertTriggered() ---" << endl;
         contextBlockCode->onAssertTriggered();
         std::cerr << "---------------- END -----------------" << endl;
     }

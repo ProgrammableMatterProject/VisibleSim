@@ -29,6 +29,7 @@
 
 #define IT_MODE_TILEROOT_ACTIVATION 1
 #define IT_MODE_ALGORITHM_START 2
+#define IT_MODE_FINDING_PIVOT 3 // FIXME: TODO:
 
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
@@ -202,6 +203,22 @@ public:
      * Dynamically builds the construction queue based on the position of the tile.
      */
     void buildConstructionQueue();
+    
+    /**
+     * Indicates whether an EPL pivot module has received a TileInsertionReady message
+     *  before a module had arrived on its EPL neighbor cell. In that case, delay
+     *  forwarding the TileInsertionReady message until a module arrives on its EPL site.
+     */
+    bool tileInsertionPending = false;
+    
+    /**
+     * Used to wait when a pivot cannot be found atm, which likely exposes an issue
+     *  with the coordination mechanism.
+     * FIXME:TODO:
+     */
+    bool notFindingPivot = false;   
+    int notFindingPivotCount = 0;
+    
     /** END CF **/
 
     /** MOTION COORDINATION **/

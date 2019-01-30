@@ -94,6 +94,9 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             }
         } else {
             // Else redirect to EPL corresponding to that branch
+            // ONLY IF BRANCH HAD TO BE GROWN!
+            if (mabc.catomsReqByBranch[bi] == -1) return;
+            
             tPos = mabc.catom->position + MeshRuleMatcher::getTargetEPLPositionForBranch(bi);
         }
 
@@ -182,13 +185,7 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         mabc.targetPosition = tPos;
         // cout << "Target position for #" << mabc.catom->blockId << " is " << tPos << endl;
 
-        if (tPos == mabc.catom->position) {
-            mabc.role = mabc.ruleMatcher->getRoleForPosition(mabc.norm(mabc.catom->position));
-            mabc.catom->setColor(mabc.ruleMatcher->getColorForPosition(
-                                     mabc.norm(mabc.catom->position)));
-        } else {
-            mabc.matchRulesAndProbeGreenLight();
-        }
+        mabc.matchRulesAndProbeGreenLight();
     }
 }
 
@@ -276,8 +273,12 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         // Forward to module waiting on EPL
         P2PNetworkInterface* EPLItf = mabc.catom->getInterface(mabc.catom->position
                                                                + Cell3DPosition(0,0,1));
-        VS_ASSERT(EPLItf and EPLItf->isConnected());
-        mabc.sendMessage(new TileInsertionReadyMessage(), EPLItf,MSG_DELAY_MC, 0);        
+        VS_ASSERT(EPLItf);
+        
+        if (EPLItf->isConnected())
+            mabc.sendMessage(new TileInsertionReadyMessage(), EPLItf,MSG_DELAY_MC, 0);        
+        else // No module on EPL, wait until a module arrive and notify it  
+            mabc.tileInsertionPending = true;
     } else {
         // Get moving towards tile root position
         mabc.targetPosition = mabc.coordinatorPos;
