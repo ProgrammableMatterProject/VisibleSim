@@ -32,11 +32,11 @@ int utils::m_mod(int l, int mod) {
 
 bool utils::assert_handler(bool cond, const char *file, const int line,
                            const char *func, const char* msg) {
-    if (msg) std::cerr << msg << endl;
     
     cerr << endl << "!!!!!!!!!!!!!!!! VISIBLESIM ASSERT TRIGGERED !!!!!!!!!!!!!" << endl;
     std::cerr << "In fonction " << func
               << " at " << file << ":" << line << std::endl;
+    if (msg) std::cerr << "Reason: " << msg << endl;
     cerr << endl;
     assert_stack_print();
     cerr << endl;
@@ -50,7 +50,7 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
 
 bool utils::assert_stack_print() {
     cerr << "--------- StackTrace ---------" << endl;
-    cerr << Backtrace();
+    cerr << Backtrace(3);
     cerr << "--------- END ---------" << endl;
     
     return true;
@@ -156,7 +156,7 @@ std::string Backtrace(int skip)
             if (info.dli_sname[0] == '_')
                 demangled = abi::__cxa_demangle(info.dli_sname, NULL, 0, &status);
             snprintf(buf, sizeof(buf), "%-3d %*p %s + %zd\n",
-                     i, int(2 + sizeof(void*) * 2), callstack[i],
+                     i - (skip-1), int(2 + sizeof(void*) * 2), callstack[i],
                      status == 0 ? demangled :
                      info.dli_sname == 0 ? symbols[i] : info.dli_sname,
                      (char *)callstack[i] - (char *)info.dli_saddr);
