@@ -19,6 +19,8 @@
 #include <string>
 #include <cstdlib>
 
+#include "scheduler.h"
+
 using namespace BaseSimulator;
 using namespace utils;
 using namespace std;
@@ -33,16 +35,36 @@ int utils::m_mod(int l, int mod) {
 bool utils::assert_handler(bool cond, const char *file, const int line,
                            const char *func, const char* msg) {
     
-    cerr << endl << "!!!!!!!!!!!!!!!! VISIBLESIM ASSERT TRIGGERED !!!!!!!!!!!!!" << endl;
+    cerr << endl 
+         << "!!!!!!!!!!!!!!!! VISIBLESIM ASSERT TRIGGERED (VS_ASSERT) !!!!!!!!!!!!!" 
+         << endl;
+
+    Scheduler* scheduler = getScheduler();
+    BuildingBlock* contextModule = scheduler->getContextModule();
+    BlockCode* contextBlockCode = scheduler->getContextBlockCode();
+    std::cerr << "Context Module: ";
+    if (contextModule) 
+        cerr << "#" << contextModule->blockId << " at " << contextModule->position;
+    else 
+        cerr << "NULL";
+    cerr << std::endl;
+    
     std::cerr << "In fonction " << func
               << " at " << file << ":" << line << std::endl;
     if (msg) std::cerr << "Reason: " << msg << endl;
+
+    if (contextBlockCode) {
+        std::cerr << endl << "--- BlockCode::onAssertTriggered() ---" << endl;
+        contextBlockCode->onAssertTriggered();
+        std::cerr << "---------------- END -----------------" << endl;
+    }
+    
     cerr << endl;
     assert_stack_print();
     cerr << endl;
     
-    awaitKeyPressed();
-
+    std::cout << "Press any key to terminate..." << std::endl; std::cin.ignore();
+    
     exit(1);
     
     return true;
