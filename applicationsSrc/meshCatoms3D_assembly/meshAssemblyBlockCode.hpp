@@ -208,6 +208,7 @@ public:
     bool greenLightIsOn = true;
     bool moduleAwaitingGo = false;
     Cell3DPosition awaitingModulePos = Cell3DPosition(-1, -1, -1);
+    P2PNetworkInterface *awaitingModuleProbeItf = NULL;
     Cell3DPosition actuationTargetPos;
     Cell3DPosition stepTargetPos;
 
@@ -263,6 +264,7 @@ y the module
     void startup();
     void processLocalEvent(EventPtr pev);
     void onBlockSelected();
+    void onAssertTriggered();
 
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
         return (new MeshAssemblyBlockCode((Catoms3DBlock*)host));

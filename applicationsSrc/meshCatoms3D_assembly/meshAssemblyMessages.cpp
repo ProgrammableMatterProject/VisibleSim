@@ -64,7 +64,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         BranchIndex bi = MeshRuleMatcher::getBranchForEPL(epl); VS_ASSERT(bi < 4);
         Cell3DPosition tPos;
 
-        if (not mabc.constructionQueue.empty()) {
+        if (not mabc.constructionQueue.empty() and mabc.catomsReqByBranch[bi] != 0) {
             pair<MeshComponent, MeshComponent> nextComponent = mabc.constructionQueue.front();
 
             // If on the righ EPL, module is eligible for building next component
@@ -73,6 +73,10 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                 tPos = mabc.catom->position
                     + MeshRuleMatcher::getPositionForMeshComponent(nextComponent.first);
 
+                // Update construction plan if nextComponent is branch component
+                int ncBi =MeshRuleMatcher::getBranchIndexForMeshComponent(nextComponent.first);
+                if (ncBi != -1) mabc.catomsReqByBranch[ncBi]--;
+                
                 // Update queue
                 mabc.constructionQueue.pop_front();
             } else { // Not the right EPL, note that a module is waiting there
@@ -90,9 +94,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             }
         } else {
             // Else redirect to EPL corresponding to that branch
-            tPos = mabc.catom->position +
-                MeshRuleMatcher::getPositionForMeshComponent(
-                    MeshRuleMatcher::getTargetEPLComponentForBranch(bi));
+            tPos = mabc.catom->position + MeshRuleMatcher::getTargetEPLPositionForBranch(bi);
         }
 
         // Send to requesting catom
@@ -123,6 +125,11 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                             MeshRuleMatcher::getPositionOfBranchTipUnder(biw);
                         P2PNetworkInterface* tipItf = mabc.catom->getInterface(tipPos);
 
+                        // Update construction plan if nextComponent is branch component
+                        int ncBi = MeshRuleMatcher::
+                            getBranchIndexForMeshComponent(ncp.first);
+                        if (ncBi != -1) mabc.catomsReqByBranch[ncBi]--;
+                        
                         // Send
                         VS_ASSERT(tipItf and tipItf->isConnected());
                         mabc.sendMessage(new ProvideTargetCellMessage(tPos, wPos),
@@ -187,10 +194,19 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
-    Cell3DPosition dstPos = mabc.getEntryPointForModuleOnBranch(mabc.branch);
+    Cell3DPosition dstPos = mabc.getEntryPointForModuleOnBranch(mabc.branch)
+        + (mabc.denorm(mabc.ruleMatcher->getNearestTileRootPosition(mabc.catom->position))[2] 
+           == 
+           mabc.meshSeedPosition[2] ? 
+           Cell3DPosition(0,0,0) :
+           // If module not part of sandbox, use next tile cooridnates as reference
+           //  instead of own tile. This change is necessary due to 
+           //  getEntryPointForModuleOnBranch using own tile as reference.
+           mabc.B * mabc.ruleMatcher->getBranchUnitOffset(mabc.branch));
     // cout << "branch: " <<mabc.branch << endl;
     // cout << "catom: " << mabc.catom->position << endl;
     // cout << "dstPos: " << dstPos << endl;
+    // cout << "_dstPos: " << _dstPos << endl;
     // cout << "role: " << mabc.role << endl;
 
     if (mabc.role == ActiveBeamTip or mabc.role == Support) {
@@ -214,7 +230,7 @@ void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
             mabc.log_send_message();
         }
-    } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)) {
+    } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)){
         // Forward to waiting module
         P2PNetworkInterface* itf = mabc.catom->getInterface(dstPos);
         VS_ASSERT_MSG(itf, "cannot find dest among neighbor interfaces");
@@ -316,6 +332,7 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
                 //  to the previous pivot?
                 mabc.moduleAwaitingGo = true;
                 mabc.awaitingModulePos = srcPos;
+                mabc.awaitingModuleProbeItf = destinationInterface;
                 mabc.catom->setColor(DARKORANGE);
             }
         } else { // not neighborNextToTarget and not nextToSender
@@ -350,6 +367,7 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
         else if (nnCell != Cell3DPosition(0,0,0)) {
             itf = mabc.catom->getInterface(nnCell);
         } else {
+            cout << mabc.catom->position << endl;
             itf = mabc.catom->getInterface(mabc.catom->position -
                                            mabc.ruleMatcher->getBranchUnitOffset(
                                                mabc.getBranchIndex(mabc.catom->position)));

@@ -53,7 +53,6 @@ MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     ruleMatcher = new MeshRuleMatcher(X_MAX, Y_MAX, Z_MAX, B);
 }
 
-
 MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
     if (ruleMatcher->isInMesh(norm(catom->position))) {
         OUTPUT << "bitrate:\t" << catom->blockId << "\t"
@@ -63,15 +62,20 @@ MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
     }
 }
 
+void MeshAssemblyBlockCode::onAssertTriggered() {
+    onBlockSelected();
+}
+
 void MeshAssemblyBlockCode::onBlockSelected() {
     // Debug:
     // (1) Print details of branch growth plan and previous round
+    cout << endl << "--- PRINT MODULE " << *catom << "---" << endl;
     if (role == Coordinator) {
         cout << "Growth Plan: [ ";
         for (int i = 0; i < 6; i++)
             cout << catomsReqByBranch[i] << ", ";
         cout << " ]" << endl;
-
+        
         cout << "Construction Queue: [ " << endl;
         cout << "|   Component   |   EPL  |" << endl << endl;
         for (const auto& pair : constructionQueue) {
@@ -94,14 +98,16 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
     cout << "targetPosition: " << targetPosition;
     if (targetPosition != Cell3DPosition(0,0,0) 
-        and ruleMatcher->isInMesh(norm(targetPosition)))
+        and ruleMatcher->isInMesh(norm(targetPosition))
+        and MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
         cout << "[" << MeshRuleMatcher::component_to_string(
-            MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos)) << "]";
+            static_cast<MeshComponent>(MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
     cout << endl;
     
     cout << "matchingLocalRule: " << matchingLocalRule << endl;
     cout << "greenLightIsOn: " << greenLightIsOn << endl;
     cout << "pivotPosition: " << pivotPosition << endl;
+    cout << "--- END " << *catom << "---" << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -341,6 +347,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 else {
                     BranchIndex bi =
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
+                    branch = bi;
                     const Cell3DPosition& nextPosAlongBranch =
                         catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
@@ -389,7 +396,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         }
                     } else {
                         // Otherwise ask it for a new targetPosition
-                        catom->setColor(BLACK);
+                        // catom->setColor(BLACK);
                         if (not requestTargetCellFromTileRoot()) {
                             catom->setColor(BLACK);
                             VS_ASSERT_MSG(false, "arriving module cannot be without delegate coordinator in its vicinity.");
@@ -813,21 +820,17 @@ void MeshAssemblyBlockCode::setGreenLightAndResumeFlow() {
 
     if (moduleAwaitingGo) {
         bool nextToModule = isAdjacentToPosition(awaitingModulePos);
-
-        Cell3DPosition pos;
-        if (not nextToModule)
-            pos = catom->position - ruleMatcher->getBranchUnitOffset(
-                getBranchIndex(catom->position));
         
         P2PNetworkInterface* itf = nextToModule ?
             catom->getInterface(awaitingModulePos) :
             // Move the message up the branch 
-            catom->getInterface(pos);
+            awaitingModuleProbeItf;               
 
         VS_ASSERT(itf and itf->isConnected());
         sendMessage(new GreenLightIsOnMessage(catom->position, awaitingModulePos),
                     itf, MSG_DELAY_MC, 0);
         moduleAwaitingGo = false;
+        awaitingModuleProbeItf = NULL;
     }
 }
 

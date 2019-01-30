@@ -141,16 +141,11 @@ Cell3DPosition MeshRuleMatcher::getPositionForComponent(MeshComponent comp) {
     return comp < 47 ? componentPosition[comp] : Cell3DPosition();
 }
 
-MeshComponent MeshRuleMatcher::getComponentForPosition(const Cell3DPosition& pos) {
+int MeshRuleMatcher::getComponentForPosition(const Cell3DPosition& pos) {
     for (int i = 0; i <= RevZ_EPL; i++)
-        if (componentPosition[i] == pos) return static_cast<MeshComponent>(i);
-    
-    cerr << "error: getComponentForPosition(" << pos 
-         << "): input cell is not a mesh component." 
-         << endl;
-    VS_ASSERT(false);
+        if (componentPosition[i] == pos) return i;
         
-    return R; // UNREACHABLE
+    return -1;
 }
 MeshComponent MeshRuleMatcher::getDefaultEPLComponentForBranch(BranchIndex bi) {
     switch(bi) {
@@ -741,6 +736,30 @@ const Cell3DPosition MeshRuleMatcher::getPositionForMeshComponent(MeshComponent 
     return Cell3DPosition(); // unreachable
 }
 
+int MeshRuleMatcher::getBranchIndexForMeshComponent(MeshComponent mc) {
+    switch(mc) {
+        case X_1: case X_2: case X_3: case X_4: case X_5:
+            return XBranch;
+            
+        case Y_1: case Y_2: case Y_3: case Y_4: case Y_5:
+            return YBranch;
+
+        case Z_1: case Z_2: case Z_3: case Z_4: case Z_5:
+            return ZBranch;
+
+        case RevZ_1: case RevZ_2: case RevZ_3: case RevZ_4: case RevZ_5:
+            return RevZBranch;
+
+        case LZ_1: case LZ_2: case LZ_3: case LZ_4: case LZ_5:
+            return LZBranch;
+
+        case RZ_1: case RZ_2: case RZ_3: case RZ_4: case RZ_5:
+            return RZBranch;            
+        default: break;
+    }
+
+    return -1;
+}
 const Cell3DPosition
 MeshRuleMatcher::getPositionForChildTileMeshComponent(MeshComponent mc) const {
     switch(mc) {            
@@ -891,4 +910,18 @@ BranchIndex MeshRuleMatcher::getBranchForEPL(MeshComponent epl) {
     }
 
     return N_BRANCHES;
+}
+
+const Cell3DPosition MeshRuleMatcher::getTargetEPLPositionForBranch(BranchIndex bi) {
+    switch (bi) {
+        case RevZBranch: return Cell3DPosition(-4, -4, 5);
+        case RZBranch: return Cell3DPosition(-1, -4, 5);
+        case ZBranch: return Cell3DPosition(-1, -1, 5);
+        case LZBranch: return Cell3DPosition(-4, -1, 5);
+        default:
+            cerr << "getTargetEPLPositionForBranch(" << bi << ")" << endl;
+            VS_ASSERT_MSG(false, "getTargetEPLPositionForBranch: input is not a valid branch");
+    }
+
+    return Cell3DPosition(); // unreachable
 }
