@@ -47,11 +47,11 @@ DatomsMotionRules::getMirrorConnectorDirection(ConnectorDirection d,
 }
 
 short DatomsMotionRules::getConnectorDirection(short anchorCon, short conTo) {
-    if (anchorCon < 12 and anchorCon >= 0 and conTo < 12 and conTo >= 0) {    
+    if (anchorCon < 12 and anchorCon >= 0 and conTo < 12 and conTo >= 0) {
         for (short conDir = 0; conDir < NUM_CONDIRS; conDir++)
             if (neighborConnector[anchorCon][conDir] == conTo) return conDir;
     }
-    
+
     return -1;
 }
 
@@ -104,15 +104,11 @@ DatomsMotionRules::~DatomsMotionRules() {
 }
 
 bool DatomsMotionRulesLink::concernsConnector(short conId) const {
-    return getConnectors()[0] == conId || getConnectors()[1] == conId;
+    return getConFromID() == conId || getConToID() == conId;
 }
 
 bool DatomsMotionRulesLink::concernsConnectors(short conId1, short conId2) const {
     return concernsConnector(conId1) && concernsConnector(conId2);
-}
-
-std::array<short, 2> DatomsMotionRulesLink::getConnectors() const {
-    return {(short)conFrom->ID, (short)conTo->ID};
 }
 
 string DatomsMotionRulesLink::getID() {
@@ -145,10 +141,10 @@ const int *findTab4(int id1,int id2) {
 void DatomsMotionRules::addLinks4(int id1, int id2, int id3, int id4, const Vector3D &left,const Vector3D &lup,const Vector3D &rup,uint8_t modelId) {
     int tabBC1[4],tabBC2[4],tabBC3[4],tabBC4[4];
 
-	tabBC1[0]=id2;	tabBC1[1]=id3; 	tabBC1[2]=id4; //tabBC1[3] = (id1+6)%12;
-	tabBC2[0]=id1;	tabBC2[1]=id3; 	tabBC2[2]=id4; //tabBC2[3] = (id2+6)%12;
-	tabBC3[0]=id2;	tabBC3[1]=id1; 	tabBC3[2]=id4; //tabBC3[3] = (id3+6)%12;
-	tabBC4[0]=id2;	tabBC4[1]=id3; 	tabBC4[2]=id1; //tabBC4[3] = (id4+6)%12;
+    tabBC1[0]=id2;	tabBC1[1]=id3;  tabBC1[2]=id4; //tabBC1[3] = (id1+6)%12;
+    tabBC2[0]=id1;	tabBC2[1]=id3;  tabBC2[2]=id4; //tabBC2[3] = (id2+6)%12;
+    tabBC3[0]=id2;	tabBC3[1]=id1;  tabBC3[2]=id4; //tabBC3[3] = (id3+6)%12;
+    tabBC4[0]=id2;	tabBC4[1]=id3;  tabBC4[2]=id1; //tabBC4[3] = (id4+6)%12;
 
 /* 1->2 & 2->1*/
     addLink(OctaFace,id1,id2,-left,rup,3,tabBC1,modelId);
@@ -196,14 +192,14 @@ bool DatomsMotionRules::getValidMotionList(const DatomsBlock* c3d,int from,vecto
     DatomsMotionRulesConnector *conn = tabConnectors[from];
     bool notEmpty=false;
 
-	vector <DatomsMotionRulesLink*>::const_iterator ci=conn->tabLinks.begin();
+    vector <DatomsMotionRulesLink*>::const_iterator ci=conn->tabLinks.begin();
     while (ci!=conn->tabLinks.end()) {
         OUTPUT << from << " -> " << (*ci)->getConToID() ;
         if ((*ci)->isValid(c3d)) {
             vec.push_back(*ci);
             notEmpty=true;
-			OUTPUT << "(valid)" << endl;
-        } 
+            OUTPUT << "(valid)" << endl;
+        }
         ci++;
     }
     return notEmpty;
@@ -250,7 +246,7 @@ bool DatomsMotionRules::getValidSurfaceLinksOnDatom(const DatomsBlock* pivot,
                     }
                     i++;
                 }
-			}*/
+            }*/
 
             if (isOk) {
                 links.push_back(link);
@@ -264,9 +260,9 @@ bool DatomsMotionRules::getValidSurfaceLinksOnDatom(const DatomsBlock* pivot,
 
 
 bool DatomsMotionRules::getValidMotionListFromPivot(const DatomsBlock* pivot,int from,
-													vector<DatomsMotionRulesLink*>&vec,
-													const SkewFCCLattice *lattice,
-													const Target *target) {
+                                                    vector<DatomsMotionRulesLink*>&vec,
+                                                    const SkewFCCLattice *lattice,
+                                                    const Target *target) {
     DatomsMotionRulesConnector *conn = tabConnectors[from];
     bool notEmpty=false;
     bool isOk;
@@ -304,7 +300,7 @@ bool DatomsMotionRules::getValidMotionListFromPivot(const DatomsBlock* pivot,int
                 }
                 i++;
             }
-        } 
+        }
         if (isOk) {
             vec.push_back(*ci);
             //OUTPUT << "ADD " << from << " -> " << to << endl;
@@ -322,14 +318,14 @@ getMobileModuleLinkMatchingPivotLink(const DatomsMotionRulesLink* pivLink,
         short conFrom = m->getConnectorId(pivot->position);
         short conTo =
             DatomsMotionEngine::getMirrorConnectorOnModule(pivot, m,                                                      pivLink->getConFromID(),conFrom, pivLink->getConToID());
-        
+
         // cout << "Conconv: #" << pivot->blockId << " l: " << *pivLink <<endl;
         // cout << pivLink->getConFromID() << " === " << conFrom << endl;
-        // cout << pivLink->getConToID() << " === " << conTo << endl; 
-        
+        // cout << pivLink->getConToID() << " === " << conTo << endl;
+
         vector<DatomsMotionRulesLink*> motionRulesLinksFrom;
         getValidMotionList(m, conFrom, motionRulesLinksFrom);
-        
+
         for (const DatomsMotionRulesLink* link : motionRulesLinksFrom) {
             if (link->getConToID() == conTo
                 and link->getMRLT() == pivLink->getMRLT())
@@ -415,15 +411,14 @@ vector<Cell3DPosition> DatomsMotionRulesLink::getBlockingCellsList(const DatomsB
 }
 
 std::ostream& operator<<(std::ostream &stream, DatomsMotionRulesLink const& mrl) {
-    std::array<short, 2> connectors = mrl.getConnectors();
-    stream << connectors[0] << " -> " << connectors[1];
+    stream << mrl.getConFromID() << " -> " << mrl.getConToID();
 
     switch (mrl.getMRLT()) {
         case HexaFace: stream << " (HEXA)"; break;
         case OctaFace: stream << " (OCTA)"; break;
         default: stream << "(ERR)"; break;
     }
-    
+
     return stream;
 }
 
