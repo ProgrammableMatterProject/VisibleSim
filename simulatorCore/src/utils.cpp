@@ -13,7 +13,6 @@
 
 #include <fstream>
 #include <ctime>
-#include <sstream>
 
 using namespace BaseSimulator;
 using namespace utils;
