@@ -297,12 +297,12 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
         Catoms3DBlock* targetLightNeighbor =
             mabc.findTargetLightAmongNeighbors(targetPos, srcPos);
 
-        cout << *mabc.catom << " received " << getName() << endl;
-        cout << "\tnextToSender: " << nextToSender << endl;
-        cout << "\tnextToTarget: " << nextToTarget << endl;
-        cout << "\ttargetLightNeighbor: " << (targetLightNeighbor ?
-                                              targetLightNeighbor->position.to_string()
-                                              : "NULL") << endl;
+        // cout << *mabc.catom << " received " << getName() << endl;
+        // cout << "\tnextToSender: " << nextToSender << endl;
+        // cout << "\tnextToTarget: " << nextToTarget << endl;
+        // cout << "\ttargetLightNeighbor: " << (targetLightNeighbor ?
+        //                                       targetLightNeighbor->position.to_string()
+        //                                       : "NULL") << endl;
 
         if (targetLightNeighbor
             and targetLightNeighbor->position != srcPos) { // neighbor is target light
@@ -368,7 +368,6 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
         else if (nnCell != Cell3DPosition(0,0,0)) {
             itf = mabc.catom->getInterface(nnCell);
         } else {
-            cout << mabc.catom->position << endl;
             itf = mabc.catom->getInterface(mabc.catom->position -
                                            mabc.ruleMatcher->getBranchUnitOffset(
                                                mabc.getBranchIndex(mabc.catom->position)));

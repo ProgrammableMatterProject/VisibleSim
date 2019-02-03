@@ -386,6 +386,23 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 sendMessage(new FinalTargetReachedMessage(catom->position),
                             pivotItf, MSG_DELAY_MC, 0);
 
+                // Check algorithm termination
+                // Pyramid construction ends with the arrival of the S_RevZ top level module
+                if (// catom is top level module
+                    catom->position[2] == (short int)(
+                        (ruleMatcher->getPyramidDimension() - 1) * B + meshSeedPosition[2])
+                    and // catom is S_RZ
+                    ruleMatcher->getComponentForPosition(
+                        catom->position - coordinatorPos) == S_RevZ) {
+                    int ts = round(getScheduler()->now()
+                                   / ((Rotations3D::ANIMATION_DELAY *
+                                       Rotations3D::rotationDelayMultiplier +
+                                       Rotations3D::COM_DELAY) + 20128));
+                    cerr << ruleMatcher->getPyramidDimension()
+                         << "-PYRAMID CONSTRUCTION OVER AT TimeStep = "
+                         << ts << " with " << lattice->nbModules << " modules" << endl;
+                }
+
                 // STAT EXPORT
                 OUTPUT << "nbCatomsInPlace:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << ++nbCatomsInPlace << endl;
 
@@ -498,42 +515,6 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
         }
     }
 }
-
-// void MeshAssemblyBlockCode::discardNextTargetForComponent(MeshComponent comp) {
-//     short idx = getEntryPointLocationForCell(getEntryPointForMeshComponent(comp)) - RevZ_EPL;
-//     if (not targetQueueForEPL[idx].empty())
-//         targetQueueForEPL[idx].pop();
-// }
-
-// const Cell3DPosition MeshAssemblyBlockCode::getNextTargetForEPL(MeshComponent epl) {
-//     short idx = epl - RevZ_EPL;
-//     if (not targetQueueForEPL[idx].empty()) {
-//         const Cell3DPosition& tPos = coordinatorPos +
-//             ruleMatcher->getPositionForComponent(targetQueueForEPL[idx].front());
-//         targetQueueForEPL[idx].pop();
-//         return tPos;
-//     }
-
-//     switch (epl) {
-//         case RevZ_EPL: return ruleMatcher->getPositionForComponent(Z_EPL);
-//         case RevZ_R_EPL: return ruleMatcher->getPositionForComponent(RevZ_R_EPL);
-//         case RZ_L_EPL: return ruleMatcher->getPositionForComponent(RZ_L_EPL);
-//         case RZ_EPL: return ruleMatcher->getPositionForComponent(LZ_EPL);
-//         case RZ_R_EPL: return ruleMatcher->getPositionForComponent(RZ_R_EPL);
-//         case Z_R_EPL: return ruleMatcher->getPositionForComponent(Z_R_EPL);
-//         case Z_EPL: return ruleMatcher->getPositionForComponent(RevZ_EPL);
-//         case Z_L_EPL: return ruleMatcher->getPositionForComponent(Z_L_EPL);
-//         case LZ_R_EPL: return ruleMatcher->getPositionForComponent(RZ_EPL);
-//         case LZ_EPL: return ruleMatcher->getPositionForComponent(RZ_EPL);
-//         case LZ_L_EPL: return ruleMatcher->getPositionForComponent(LZ_R_EPL);
-//         case RevZ_L_EPL: return ruleMatcher->getPositionForComponent(RevZ_L_EPL);
-//         default:
-//             cerr << "getNextTargetForEPL(" << epl << ")" << endl;
-//             VS_ASSERT_MSG(false, "getNextTargetForEPL: input is not an EPL");
-//     }
-
-//     return Cell3DPosition(); // unreachable
-// }
 
 short MeshAssemblyBlockCode::getEntryPointLocationForCell(const Cell3DPosition& pos) {
     for (int i = 0; i < 12; i++)
