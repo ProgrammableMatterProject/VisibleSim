@@ -934,3 +934,7 @@ const Cell3DPosition MeshRuleMatcher::getTargetEPLPositionForBranch(BranchIndex 
 
     return Cell3DPosition(); // unreachable
 }
+
+int MeshRuleMatcher::getPyramidDimension() const {
+    return (Z_MAX / B) + 1;
+}

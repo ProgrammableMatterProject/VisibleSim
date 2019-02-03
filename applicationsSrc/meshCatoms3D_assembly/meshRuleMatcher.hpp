@@ -53,6 +53,15 @@ enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
 class MeshRuleMatcher {
     const int X_MAX, Y_MAX, Z_MAX, B;
 
+    /**
+     * Contains the position of each MeshComponent, indexed by their id
+     */
+    static std::array<Cell3DPosition, 47> componentPosition;
+
+    /**
+     * Contains the insertion time of each meshComponent, indexed by their id
+     */
+    static std::array<int, 47> componentInsertionTime;
 public:
     bool isOnXBranch(const Cell3DPosition& pos) const;
     bool isOnXBorder(const Cell3DPosition& pos) const;
@@ -205,6 +214,61 @@ public:
      */
     BranchIndex getAlternateBranchIndex(BranchIndex bi) const;
 
+    /**
+     * For a given mesh component, return its position relative to its tile root
+     * @param comp component to evaluate
+     * @return the position of component comp in the scaffold
+     */
+    static Cell3DPosition getPositionForComponent(MeshComponent comp);
+
+    /**
+     * For a given position relative to a tile root, returns the corresponding component
+     * @param pos relative tile position to evaluate
+     * @return the mesh component to which pos corresponds, or -1 if pos not a component
+     */
+    static int getComponentForPosition(const Cell3DPosition& pos);
+
+    /**
+     * Returns the MeshComponent corresponding to the central or default EPL
+     *  component for the input branch
+     * @param bi input branch id to evaluate, must be a valid BranchIndex value
+     * @return default EPL component for branch bi
+     */
+    static MeshComponent getDefaultEPLComponentForBranch(BranchIndex bi);
+
+    /**
+     * For a given input branch, return the branch EPL that modules should normally
+     *  be forwarded to (Alternate branch EPL of branch of above bi)
+     * @param bi input branch id to evaluate, must be a valid BranchIndex value
+     * @return target EPL component for a wandering module on branch bi
+     */
+    static MeshComponent getTargetEPLComponentForBranch(BranchIndex bi);
+
+    /**
+     * For a given EPL component, return the branch index on which this EPL is located
+     * @param epl any EPL component, must be a valide MeshComponent EPL value
+     * @return the branch index on which epl is located
+     */
+    static BranchIndex getBranchForEPL(MeshComponent epl);
+
+    /**
+     * For a given branch, returns the position of the default EPL that wandering modules
+     *  normally move to from that branch
+     * @see MeshRuleMatcher::getDefaultEPLComponentForBranch
+     * @param bi input branch id to evaluate, must be a valid BranchIndex value
+     * @return position of the default EPL target for branch bi
+     */
+    static const Cell3DPosition getTargetEPLPositionForBranch(BranchIndex bi);
+
+    /**
+     * Returns the branch index of a non EPL mesh component
+     * @param mc input non EPL mesh component
+     * @return branch index of component mc, or -1 if undefined
+     * @attention for EPL components, use @see MeshRuleMatcher::getBranchForEPL
+     */
+    static int getBranchIndexForMeshComponent(MeshComponent mc);
+
+
     /*********************************************************************/
     /*************************** PYRAMID STUFF ***************************/
     /*********************************************************************/
@@ -252,17 +316,12 @@ public:
     bool pyramidTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
                                               BranchIndex tipB, BranchIndex growthB) const;
 
-    static std::array<Cell3DPosition, 47> componentPosition;
-    static std::array<int, 47> componentInsertionTime;
-    static Cell3DPosition getPositionForComponent(MeshComponent comp);
-    static int getComponentForPosition(const Cell3DPosition& pos);
-
-    static MeshComponent getDefaultEPLComponentForBranch(BranchIndex bi);
-    static MeshComponent getTargetEPLComponentForBranch(BranchIndex bi);
-    static BranchIndex getBranchForEPL(MeshComponent epl);
-    static const Cell3DPosition getTargetEPLPositionForBranch(BranchIndex bi);
-    static int
-    getBranchIndexForMeshComponent(MeshComponent mc);
+    /**
+     * For a the current mesh pyramid instance, returns the dimension of the
+     *  h-pyramid formed by the scaffold
+     * @return dimension of the h-pyramid, or -1 if undefined
+     */
+    int getPyramidDimension() const;
 };
 
 }
