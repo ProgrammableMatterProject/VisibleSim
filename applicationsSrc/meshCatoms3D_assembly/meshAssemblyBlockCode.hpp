@@ -123,7 +123,7 @@ public:
     /**
      * ONLY FOR GROUND TR. This is to ensure that spawned module only
      * arrive once light is green on pivot module, as would happen on a real sandbox
-     * @attention indexing is done based on the id of the incident branch to which the 
+     * @attention indexing is done based on the id of the incident branch to which the
      *  EPL belongs. Therefore the index of the EPLPivot under ZBranch is 1 (RevZBranch)
      */
     MeshAssemblyBlockCode* EPLPivotBC[4] = { NULL, NULL, NULL, NULL };
@@ -135,7 +135,7 @@ public:
      *  any local neighborhood update.
      */
     bool matchingLocalRule = false;
-    
+
     /**
      * Indicates whether the module using this pivot as support is on its final rotation
      *  (if true), or whether it will take additional rotations afterwards.
@@ -154,15 +154,15 @@ public:
 
     /**
      * Custom version of findMotionPivot for the scaffolding that only considers
-     *  final modules part of the scaffold as pivot 
+     *  final modules part of the scaffold as pivot
      */
     static Catoms3DBlock*
     customFindMotionPivot(const Catoms3DBlock* m,
                           const Cell3DPosition& tPos,
                           RotationLinkType faceReq = RotationLinkType::Any);
-    
+
     bool initialized = false; //!< Indicates whether this module has called startup() yet
-    
+
     std::unordered_set<MeshComponent> targetComponentsForEPL[12] = {
         unordered_set<MeshComponent>({
                 RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5
@@ -197,28 +197,42 @@ public:
      *  from a module coming through SourceEPL.
      * The queue is populated dynamically by MeshAssemblyBlockCode::buildConstructionQueue
      */
-    std::deque<std::pair<MeshComponent, MeshComponent>> constructionQueue;    
-    
-    /** 
+    std::deque<std::pair<MeshComponent, MeshComponent>> constructionQueue;
+
+    /**
      * Dynamically builds the construction queue based on the position of the tile.
      */
     void buildConstructionQueue();
-    
+
     /**
      * Indicates whether an EPL pivot module has received a TileInsertionReady message
      *  before a module had arrived on its EPL neighbor cell. In that case, delay
      *  forwarding the TileInsertionReady message until a module arrives on its EPL site.
      */
     bool tileInsertionPending = false;
-    
+
     /**
      * Used to wait when a pivot cannot be found atm, which likely exposes an issue
      *  with the coordination mechanism.
      * FIXME:TODO:
      */
-    bool notFindingPivot = false;   
+    bool notFindingPivot = false;
     int notFindingPivotCount = 0;
-    
+
+    /**
+     * For a module that just got into final position, keeps track of the number
+     *  of ADD_NEIGHBOR_EVENT to process before the module can behave normally.
+     * This is to avoid state inconsistencies at the moment of arrival (errors due to
+     *  adding a neighbor on a RED pivot for example)
+     */
+    int addNeighborToProcess = 0;
+
+#define SET_GREEN_LIGHT(x) setGreenLight(x, __LINE__)
+    /**
+     * Changes the light state of a pivot and take the appriopriate action
+     */
+    void setGreenLight(bool onoff, int _line_);
+
     /** END CF **/
 
     /** MOTION COORDINATION **/
@@ -307,7 +321,7 @@ y the module
      *  mesh by the MeshRuleMatcher module
      */
     static const Cell3DPosition sbnorm(const Cell3DPosition& pos);
-    
+
     /**
      * Inverse function of norm
      * @note This has to be used due to the mesh seed being offsetted in order to leave space
@@ -346,8 +360,8 @@ y the module
      */
     void handleMeshComponentInsertion(MeshComponent mc);
 
-    bool handleModuleInsertionToBranch(BranchIndex bid);
-    const Cell3DPosition getEntryPointForModuleOnBranch(BranchIndex bid);
+    bool handleModuleInsertionToIncidentBranch(BranchIndex bid);
+    const Cell3DPosition getEntryPointForModuleOnIncidentBranch(BranchIndex bid);
 
     /**
      * Finds an entry point index for a catom required to fill component mc
@@ -405,8 +419,11 @@ y the module
      */
     void discardNextTargetForComponent(MeshComponent comp);
 
-    // TODO:
-    void feedBranches();
+    /**
+     * Check each EPL on the incident branches to decide whether or not to introduce
+     *  a new module on that branch's EPL. EPLPivot must light be green, and EPL empty.
+     */
+    void feedIncidentBranches();
 
     /**
      * @return true if catom is on the lowest tile layer, false otherwise

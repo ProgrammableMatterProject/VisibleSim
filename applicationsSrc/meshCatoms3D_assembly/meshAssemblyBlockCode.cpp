@@ -76,7 +76,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         for (int i = 0; i < 6; i++)
             cout << catomsReqByBranch[i] << ", ";
         cout << " ]" << endl;
-        
+
         cout << "Construction Queue: [ " << endl;
         cout << "|   Component   |   EPL  |" << endl << endl;
         for (const auto& pair : constructionQueue) {
@@ -90,7 +90,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << "coordinatorPos: " << coordinatorPos << endl;
     cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
     cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
-    cout << "localNeighborhood: " << catom->getLocalNeighborhoodState() << endl;    
+    cout << "localNeighborhood: " << catom->getLocalNeighborhoodState() << endl;
     Cell3DPosition nextHop;
     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
                     targetPosition, coordinatorPos, step, nextHop);
@@ -98,13 +98,13 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
     cout << "targetPosition: " << targetPosition;
-    if (targetPosition != Cell3DPosition(0,0,0) 
+    if (targetPosition != Cell3DPosition(0,0,0)
         and ruleMatcher->isInMesh(norm(targetPosition))
         and MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
         cout << "[" << MeshRuleMatcher::component_to_string(
             static_cast<MeshComponent>(MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
     cout << endl;
-    
+
     cout << "matchingLocalRule: " << matchingLocalRule << endl;
     cout << "greenLightIsOn: " << greenLightIsOn << endl;
     cout << "pivotPosition: " << pivotPosition << endl;
@@ -114,7 +114,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
 void MeshAssemblyBlockCode::startup() {
     stringstream info;
     info << "Starting ";
-    initialized = true;    
+    initialized = true;
     startTime = scheduler->now();
 
     if (not sandboxInitialized)
@@ -122,6 +122,18 @@ void MeshAssemblyBlockCode::startup() {
 
     coordinatorPos =
         denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
+
+    // Need to initialize target light for sandbox modules at algorithm start
+    if (ruleMatcher->isInSandbox(norm(catom->position))) {
+        // EPLPivots will appear with a module on its EPL
+        if (ruleMatcher->isEPLPivotModule(norm(catom->position))) {
+            SET_GREEN_LIGHT(false);
+        } else {
+        // All other modules should be green (set by default)
+            SET_GREEN_LIGHT(true);
+        }
+
+    }
 
     // Do stuff
     if (catom->position == (getEntryPointForMeshComponent(MeshComponent::R)
@@ -185,7 +197,7 @@ MeshAssemblyBlockCode::sbnorm(const Cell3DPosition& pos) {
     fixPos.pt[0] = (meshPos[0] >= (int)X_MAX ? meshPos[0] - B : meshPos[0]);
     fixPos.pt[1] = (meshPos[1] >= (int)Y_MAX ? meshPos[1] - B : meshPos[1]);
     fixPos.pt[2] = (meshPos[2] >= (int)Z_MAX ? meshPos[2] - B : meshPos[2]);
-    
+
     return fixPos;
 }
 
@@ -243,24 +255,37 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
 
-        case EVENT_ADD_NEIGHBOR: {            
-            if (role != FreeAgent) {                
-                if (not rotating) {
-                    uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
-                    const Cell3DPosition& pos = catom->getNeighborBlock(face)->position;
+        case EVENT_ADD_NEIGHBOR: {
+            uint64_t face = Catoms3DWorld::getWorld()->lattice->
+                getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))
+                                     ->face);
+            const Cell3DPosition& pos = catom->getNeighborBlock(face)->position;
 
+            getScheduler()->trace(" ADD_NEIGHBOR ", catom->blockId, MAGENTA);
+
+            if (role != FreeAgent) {
+                // MAYBE: CANNOT GUARANTEE THAT
+                // // FIXME: Bugs in the motion coordination protocol
+                // VS_ASSERT(greenLightIsOn
+                //           // New neighbor is catom that has just been actuated by this m
+                //           or actuationTargetPos == pos
+                //           // During sandbox init
+                //           or ruleMatcher->isEPLPivotModule(norm(catom->position))
+                //           // Module just got into position
+                //           or addNeighborToProcess > 0);
+
+                if (addNeighborToProcess > 0) addNeighborToProcess--;
+
+                if (not rotating) {
                     if (not ruleMatcher->isInMeshOrSandbox(norm(pos))) {
-                        // Neighbor is module in terminal position 
-                        greenLightIsOn = false;
-                        catom->setColor(RED);
-                    } else {
-                        // Module has taken position and is now pivot
-                        setGreenLightAndResumeFlow();
+                        // Neighbor is not a module in terminal position
+                        SET_GREEN_LIGHT(false);
                     }
-                    
-                    // In case tile insertion ready but there was no module on EPL at the time
-                    //  check that new module is on EPL, send it a TileInsertionReadyMessage
-                    if (tileInsertionPending 
+
+                    // In case tile insertion ready but there was no module on EPL at the
+                    //  time echeck that new module is on EPL,
+                    //  send it a TileInsertionReadyMessage
+                    if (tileInsertionPending
                         and pos == (catom->position + Cell3DPosition(0,0,1))) {
                         P2PNetworkInterface* itf = catom->getInterface(pos);
                         VS_ASSERT(itf and itf->isConnected());
@@ -268,9 +293,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         tileInsertionPending = false;
                     }
                 }
-                                
-            } else if (role == FreeAgent and matchingLocalRule) {
-                matchRulesAndProbeGreenLight();
+
+            } else if (role == FreeAgent) {
+                if (matchingLocalRule) {
+                    matchRulesAndProbeGreenLight();
+                }
             }
             break;
         }
@@ -283,14 +310,14 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     Cell3DPosition pos;
                     if (catom->getNeighborPos(face, pos)
                         // catom not actuating
-                        and (catom->getState() == BuildingBlock::State::ALIVE)) { 
-                        setGreenLightAndResumeFlow();
+                        and (catom->getState() == BuildingBlock::State::ALIVE)) {
+                        SET_GREEN_LIGHT(true);
                     }
                 } else if (matchingLocalRule) {
                     matchRulesAndProbeGreenLight();
                 }
             }
-            
+
             break;
         }
         case EVENT_PIVOT_ACTUATION_START: {
@@ -299,12 +326,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
             // A free agent module should never be used as pivot (for now)
             VS_ASSERT(role != FreeAgent);
-            
+
             if (greenLightIsOn) {
                 // cout << *catom << endl;
                 // VS_ASSERT(false); // FIXME: should never happen, light should be red already
-                greenLightIsOn = false;
-                catom->setColor(RED);
+                SET_GREEN_LIGHT(false);
             }
 
             catom->getNeighborPos(pase->toConP, actuationTargetPos);
@@ -324,6 +350,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             pivotPosition = catom->pivot->position;
             break;
         case EVENT_ROTATION3D_END: {
+            getScheduler()->trace(" ROTATION3D_END ", catom->blockId, MAGENTA);
             // console << "Rotation to " << catom->position << " over" << "\n";
             rotating = false;
             step++;
@@ -331,9 +358,26 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
 
-                greenLightIsOn = true;
-                catom->setColor(GREEN);
+                const auto& nCells = lattice->getActiveNeighborCells(catom->position);
+
+                // Reset neighbors to process count
+                VS_ASSERT(addNeighborToProcess == 0);
+                addNeighborToProcess = nCells.size();
+
+                bool shouldTurnRed = false;
+                for (const Cell3DPosition& nCell : nCells) {
+                    // Check whether or not neighbor is in mesh or sandbox
+                    //  if not, module must be a freeagent that was waiting
+                    //  for this catom to get into place.
+                    if (not ruleMatcher->isInMeshOrSandbox(norm(nCell))) {
+                        // In that case catom should turn red immediatly
+                        shouldTurnRed = true;
+                        break;
+                    }
+                }
+
                 moduleAwaitingGo = false;
+                SET_GREEN_LIGHT(not shouldTurnRed);
 
                 // Inform pivot that motion sequence is over and that it can turn green
                 P2PNetworkInterface* pivotItf = catom->getInterface(pivotPosition);
@@ -365,7 +409,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // Coordinate to let the last arrived branch continue the construction
                     if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
                         and incidentBranchesToRootAreComplete(nextPosAlongBranch)) {
-                        lattice->highlightCell(nextPosAlongBranch, BLUE);
+                        // lattice->highlightCell(nextPosAlongBranch, BLUE);
                         cout << "Some branches are missing around "
                              << nextPosAlongBranch << endl;
 
@@ -401,8 +445,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             and ruleMatcher->isOnYPyramidBorder(norm(coordinatorPos)))
                             targetPosition = coordinatorPos;
                         else {
-                            catom->setColor(WHITE);
-                            lattice->highlightCell(coordinatorPos, WHITE);
+                            // catom->setColor(WHITE);
+                            // lattice->highlightCell(coordinatorPos, WHITE);
                             return;
                         }
                     } else {
@@ -433,7 +477,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 case IT_MODE_TILEROOT_ACTIVATION: {
                     // Only introduce catoms if on the lower tile level
                     if (catom->position[2] == meshSeedPosition[2]) {
-                        feedBranches();
+                        feedIncidentBranches();
 
                         getScheduler()->schedule(
                             new InterruptionEvent(getScheduler()->now() +
@@ -445,7 +489,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 case IT_MODE_ALGORITHM_START:
                     matchRulesAndProbeGreenLight(); // the seed starts the algorithm
                     break;
-                    
+
                 case IT_MODE_FINDING_PIVOT:
                     // VS_ASSERT(++notFindingPivotCount < 10);
                     matchRulesAndProbeGreenLight(); // the seed starts the algorithm
@@ -550,22 +594,26 @@ void MeshAssemblyBlockCode::handleMeshComponentInsertion(MeshComponent mc) {
                     getEntryPointForMeshComponent(mc), YELLOW);
 }
 
-bool MeshAssemblyBlockCode::handleModuleInsertionToBranch(BranchIndex bid) {
+bool MeshAssemblyBlockCode::handleModuleInsertionToIncidentBranch(BranchIndex bid) {
     // Introduce new catoms
     // cout << "[t-" << scheduler->now() << "] catom introduced" << endl;
-    const Cell3DPosition& entryPoint = getEntryPointForModuleOnBranch(bid);
+    const Cell3DPosition& entryPoint = getEntryPointForModuleOnIncidentBranch(bid);
     if (lattice->isFree(entryPoint)) {
         world->addBlock(0, buildNewBlockCode, entryPoint, YELLOW);
         catomsSpawnedToVBranch[bid]++;
         return true;
     } else {
+        cout << entryPoint << endl;
+        cout << lattice->isFree(entryPoint) << endl;
+        cerr << "bid: " << bid << endl;
         VS_ASSERT(false);
     }
 
     return false;
 }
 
-const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForModuleOnBranch(BranchIndex bid) {
+const Cell3DPosition
+MeshAssemblyBlockCode::getEntryPointForModuleOnIncidentBranch(BranchIndex bid) {
     MeshComponent epl;
     switch(bid) {
         case RevZBranch: epl = Z_EPL; break;
@@ -579,7 +627,7 @@ const Cell3DPosition MeshAssemblyBlockCode::getEntryPointForModuleOnBranch(Branc
         case RZBranch: epl = LZ_EPL; break;
             // if (catomsSpawnedToVBranch[RZBranch] == 0) return getEntryPointPosition(RZ_R_EPL                                                                                 );
             // else return getEntryPointPosition(RZ_EPL);
-        default: throw NotImplementedException("getEntryPointForModuleOnBranch: invalid bid");
+        default: throw NotImplementedException("getEntryPointForModuleOnIncidentBranch: invalid bid");
     }
 
     return getEntryPointPosition(epl);
@@ -609,12 +657,12 @@ void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
                                                Catoms3DBlock* pivot = NULL) {
     try {
         if (not pivot) pivot = customFindMotionPivot(catom, pos);
-        
+
         OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
         // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
         scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
                                                      catom, pivot, pos,
-                                                     RotationLinkType::OctaFace, false));
+                                                     RotationLinkType::HexaFace, false));
 #ifdef INTERACTIVE_MODE
         awaitKeyPressed();
 #endif
@@ -646,7 +694,7 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
 
     // Initialize construction queue from here
     buildConstructionQueue();
-    
+
     // Inspect each incoming vertical branch to see where catoms are ready to take part in
     //  the construction of the tile
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
@@ -664,7 +712,7 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     EPLPivotBC[3] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 2, -2))->blockCode); // LZBranch
     for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]);
 
-    
+
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
         new InterruptionEvent(getScheduler()->now(),
@@ -675,7 +723,7 @@ void MeshAssemblyBlockCode::buildConstructionQueue() {
     constructionQueue.push_back({ S_RZ, RZ_EPL});  // 0
     constructionQueue.push_back({ S_LZ, LZ_EPL }); // 0
     if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_1, Z_EPL }); // 1
-    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_1, Z_EPL }); // 3    
+    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_1, Z_EPL }); // 3
     constructionQueue.push_back({ S_Z, LZ_EPL }); // 4
     constructionQueue.push_back({ S_RevZ, RZ_EPL }); // 4
     if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_2, LZ_EPL }); // 5
@@ -695,7 +743,7 @@ void MeshAssemblyBlockCode::buildConstructionQueue() {
     if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_4, Z_EPL }); // 14
     if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_4, RevZ_EPL }); // 14
     if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_1, LZ_EPL }); // 14
-    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_1, RZ_EPL }); // 14  
+    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_1, RZ_EPL }); // 14
     if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_5, Z_EPL }); // 16
     if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_5, RevZ_EPL }); // 16
     if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_2, LZ_EPL }); // 16
@@ -807,18 +855,18 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
     }
 }
 
-void MeshAssemblyBlockCode::feedBranches() {
+void MeshAssemblyBlockCode::feedIncidentBranches() {
     for (int bi = 0; bi < XBranch; bi++) {
-        const Cell3DPosition& supportPos = catom->position + 
-            ruleMatcher->getSupportPositionForPosition(sbnorm(EPLPivotBC[bi]->catom->position));
+        const Cell3DPosition& supportPos = catom->position + ruleMatcher->
+            getSupportPositionForPosition(sbnorm(EPLPivotBC[bi]->catom->position));
         Catoms3DBlock* support = static_cast<Catoms3DBlock*>(lattice->getBlock(supportPos));
-        
+
         // Only insert if green light on EPL pivot
         if (EPLPivotBC[bi]->greenLightIsOn
             // and if support is ready to receive modules as well
             and (not support
                  or static_cast<MeshAssemblyBlockCode*>(support->blockCode)->greenLightIsOn))
-            handleModuleInsertionToBranch(static_cast<BranchIndex>(bi));
+            handleModuleInsertionToIncidentBranch(static_cast<BranchIndex>(bi));
     }
 }
 
@@ -829,26 +877,6 @@ bool MeshAssemblyBlockCode::isAtGroundLevel() {
 /************************************************************************
  ************************* MOTION COORDINATION **************************
  ***********************************************************************/
-
-void MeshAssemblyBlockCode::setGreenLightAndResumeFlow() {
-    greenLightIsOn = true;
-    catom->setColor(GREEN);
-
-    if (moduleAwaitingGo) {
-        bool nextToModule = isAdjacentToPosition(awaitingModulePos);
-        
-        P2PNetworkInterface* itf = nextToModule ?
-            catom->getInterface(awaitingModulePos) :
-            // Move the message up the branch 
-            awaitingModuleProbeItf;               
-
-        VS_ASSERT(itf and itf->isConnected());
-        sendMessage(new GreenLightIsOnMessage(catom->position, awaitingModulePos),
-                    itf, MSG_DELAY_MC, 0);
-        moduleAwaitingGo = false;
-        awaitingModuleProbeItf = NULL;
-    }
-}
 
 bool MeshAssemblyBlockCode::isAdjacentToPosition(const Cell3DPosition& pos) const {
     return lattice->cellsAreAdjacent(catom->position, pos);
@@ -878,7 +906,7 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
     if (matched) {
         stepTargetPos = nextPos;
         Catoms3DBlock *pivot = customFindMotionPivot(catom, stepTargetPos);
-    
+
         // VS_ASSERT(pivot); // FIXME: TODO:
         if (not pivot) {
             notFindingPivot = true;
@@ -889,25 +917,25 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
             stringstream info;
             info.str("");
             info << " reattempt finding pivot for " << targetPosition;
-            scheduler->trace(info.str(),catom->blockId,PINK);            
+            scheduler->trace(info.str(),catom->blockId,PINK);
             return;
         }
 
         notFindingPivot = false; // FIXME: TODO:
-        matchingLocalRule = false;        
-        
+        matchingLocalRule = false;
+
         sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos),
                     catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
     } else {
         // Try matching rules again once neighborhood updates
         catom->setColor(BLUE);
         matchingLocalRule = true;
-    }    
+    }
 }
 
 Catoms3DBlock* MeshAssemblyBlockCode::customFindMotionPivot(const Catoms3DBlock* m,
                                                             const Cell3DPosition& tPos,
-                                                            RotationLinkType faceReq) {    
+                                                            RotationLinkType faceReq) {
     const auto &allLinkPairs =
         Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(m, tPos, faceReq);
 
@@ -916,13 +944,47 @@ Catoms3DBlock* MeshAssemblyBlockCode::customFindMotionPivot(const Catoms3DBlock*
         //  Make sure that pivot is not a FreeAgent (i.e., is part of scaffold)
         if (static_cast<MeshAssemblyBlockCode*>(pair.first->blockCode)->role == FreeAgent)
             continue;
-            
+
         // cout << "{ " << *pair.first << ", " << *pair.second << " }" << endl;
         if (pair.second->getMRLT() == faceReq or faceReq == RotationLinkType::Any)
             return pair.first;
     }
-    
+
     return NULL;
+}
+
+void MeshAssemblyBlockCode::setGreenLight(bool onoff, int _line_) {
+    stringstream info;
+    info << " light turned ";
+
+    if (onoff) {
+        info << "green: ";
+        greenLightIsOn = true;
+        catom->setColor(GREEN);
+
+        // Resume flow if needed
+        if (moduleAwaitingGo) {
+            bool nextToModule = isAdjacentToPosition(awaitingModulePos);
+
+            P2PNetworkInterface* itf = nextToModule ?
+                catom->getInterface(awaitingModulePos) :
+                // Move the message up the branch
+                awaitingModuleProbeItf;
+
+            VS_ASSERT(itf and itf->isConnected());
+            sendMessage(new GreenLightIsOnMessage(catom->position, awaitingModulePos),
+                        itf, MSG_DELAY_MC, 0);
+            moduleAwaitingGo = false;
+            awaitingModuleProbeItf = NULL;
+        }
+    } else {
+        info << "red: ";
+        greenLightIsOn = false;
+        catom->setColor(RED);
+    }
+
+    info << _line_;
+    getScheduler()->trace(info.str(),catom->blockId, onoff ? GREEN : RED);
 }
 
 /************************************************************************

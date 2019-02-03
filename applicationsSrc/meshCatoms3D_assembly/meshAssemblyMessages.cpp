@@ -76,7 +76,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                 // Update construction plan if nextComponent is branch component
                 int ncBi =MeshRuleMatcher::getBranchIndexForMeshComponent(nextComponent.first);
                 if (ncBi != -1) mabc.catomsReqByBranch[ncBi]--;
-                
+
                 // Update queue
                 mabc.constructionQueue.pop_front();
             } else { // Not the right EPL, note that a module is waiting there
@@ -96,7 +96,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             // Else redirect to EPL corresponding to that branch
             // ONLY IF BRANCH HAD TO BE GROWN!
             if (mabc.catomsReqByBranch[bi] == -1) return;
-            
+
             tPos = mabc.catom->position + MeshRuleMatcher::getTargetEPLPositionForBranch(bi);
         }
 
@@ -132,7 +132,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                         int ncBi = MeshRuleMatcher::
                             getBranchIndexForMeshComponent(ncp.first);
                         if (ncBi != -1) mabc.catomsReqByBranch[ncBi]--;
-                        
+
                         // Send
                         VS_ASSERT(tipItf and tipItf->isConnected());
                         mabc.sendMessage(new ProvideTargetCellMessage(tPos, wPos),
@@ -191,14 +191,14 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
-    Cell3DPosition dstPos = mabc.getEntryPointForModuleOnBranch(mabc.branch)
-        + (mabc.denorm(mabc.ruleMatcher->getNearestTileRootPosition(mabc.catom->position))[2] 
-           == 
-           mabc.meshSeedPosition[2] ? 
+    Cell3DPosition dstPos = mabc.getEntryPointForModuleOnIncidentBranch(mabc.branch)
+        + (mabc.denorm(mabc.ruleMatcher->getNearestTileRootPosition(mabc.catom->position))[2]
+           ==
+           mabc.meshSeedPosition[2] ?
            Cell3DPosition(0,0,0) :
            // If module not part of sandbox, use next tile cooridnates as reference
-           //  instead of own tile. This change is necessary due to 
-           //  getEntryPointForModuleOnBranch using own tile as reference.
+           //  instead of own tile. This change is necessary due to
+           //  getEntryPointForModuleOnIncidentBranch using own tile as reference.
            mabc.B * mabc.ruleMatcher->getBranchUnitOffset(mabc.branch));
     // cout << "branch: " <<mabc.branch << endl;
     // cout << "catom: " << mabc.catom->position << endl;
@@ -231,7 +231,7 @@ void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         // Forward to waiting module
         P2PNetworkInterface* itf = mabc.catom->getInterface(dstPos);
         VS_ASSERT_MSG(itf, "cannot find dest among neighbor interfaces");
-        
+
         if (itf->isConnected()) {
             mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
             mabc.log_send_message();
@@ -262,7 +262,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         } else if (mabc.ruleMatcher->isOnRevZBranch(mabc.norm(mabc.catom->position))) {
             // forward to RevZ EPL Pivot
             relNeighborPos = Cell3DPosition(1,1,-1);
-        } 
+        }
 
         P2PNetworkInterface* itf = mabc.catom->getInterface(mabc.catom->position
                                                             + relNeighborPos);
@@ -274,15 +274,15 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         P2PNetworkInterface* EPLItf = mabc.catom->getInterface(mabc.catom->position
                                                                + Cell3DPosition(0,0,1));
         VS_ASSERT(EPLItf);
-        
+
         if (EPLItf->isConnected())
-            mabc.sendMessage(new TileInsertionReadyMessage(), EPLItf,MSG_DELAY_MC, 0);        
-        else // No module on EPL, wait until a module arrive and notify it  
+            mabc.sendMessage(new TileInsertionReadyMessage(), EPLItf,MSG_DELAY_MC, 0);
+        else // No module on EPL, wait until a module arrive and notify it
             mabc.tileInsertionPending = true;
     } else {
         // Get moving towards tile root position
         mabc.targetPosition = mabc.coordinatorPos;
-        mabc.lattice->unhighlightCell(mabc.targetPosition);
+        // mabc.lattice->unhighlightCell(mabc.targetPosition);
         mabc.matchRulesAndRotate();
     }
 }
@@ -296,7 +296,7 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
         bool nextToTarget = mabc.isAdjacentToPosition(targetPos);
         Catoms3DBlock* targetLightNeighbor =
             mabc.findTargetLightAmongNeighbors(targetPos, srcPos);
-        
+
         cout << *mabc.catom << " received " << getName() << endl;
         cout << "\tnextToSender: " << nextToSender << endl;
         cout << "\tnextToTarget: " << nextToTarget << endl;
@@ -320,7 +320,7 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
                 //   that the nearby support is green too
                 or (nextToSender
                     and mabc.catom->getState() != BuildingBlock::State::ACTUATING)) {
-                
+
                 P2PNetworkInterface* itf = nextToSender ?
                     mabc.catom->getInterface(srcPos) : destinationInterface;
                 VS_ASSERT(itf and itf->isConnected());
@@ -352,18 +352,18 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
     if (mabc.role != FreeAgent) { // module is pivot
         bool nextToDest = mabc.isAdjacentToPosition(dstPos);
         P2PNetworkInterface* itf;
-            
+
         Cell3DPosition nnCell = Cell3DPosition(0,0,0);
         if (not nextToDest) {
             for (const auto &nCell:mabc.lattice->getActiveNeighborCells(mabc.catom->position)){
                 if (mabc.lattice->cellsAreAdjacent(nCell, dstPos)) {
-                    nnCell = nCell; 
+                    nnCell = nCell;
                     continue;
                 }
-            }                    
+            }
         }
-        
-        if (nextToDest) 
+
+        if (nextToDest)
             itf = mabc.catom->getInterface(dstPos);
         else if (nnCell != Cell3DPosition(0,0,0)) {
             itf = mabc.catom->getInterface(nnCell);
@@ -372,12 +372,11 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
             itf = mabc.catom->getInterface(mabc.catom->position -
                                            mabc.ruleMatcher->getBranchUnitOffset(
                                                mabc.getBranchIndex(mabc.catom->position)));
-        }       
-        
+        }
+
         VS_ASSERT(itf and itf->isConnected());
-        
-        mabc.greenLightIsOn = false;
-        mabc.catom->setColor(RED);
+
+        mabc.SET_GREEN_LIGHT(false);
         mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
     } else { // module is target
         VS_ASSERT(mabc.catom->position == dstPos);
@@ -396,6 +395,6 @@ void FinalTargetReachedMessage::handle(BaseSimulator::BlockCode* bc) {
 
     VS_ASSERT(mabc.lattice->cellsAreAdjacent(mabc.catom->position, finalPos));
     if (not mabc.greenLightIsOn) {
-        mabc.setGreenLightAndResumeFlow();
+        mabc.SET_GREEN_LIGHT(true);
     }
 }
