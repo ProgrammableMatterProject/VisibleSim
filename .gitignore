@@ -70,6 +70,7 @@ applicationsBin/*/*.xml
 
 # Screenshot and video exports
 applicationsBin/*/*.ppm
+applicationsBin/*/*.jpg
 applicationsBin/*/*.jpeg
 applicationsBin/*/*.mkv
 applicationsBin/*/*.mpeg
@@ -79,4 +80,3 @@ applicationsBin/*/Screenshots/
 # User-generated files
 applicationsBin/*/*.m
 TAGS
-
