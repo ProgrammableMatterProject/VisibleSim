@@ -128,7 +128,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     } else {        
         // Get moving towards tile root position
         mabc.targetPosition = mabc.coordinatorPos;
-        mabc.lattice->unhighlightCell(mabc.targetPosition);
+        // mabc.lattice->unhighlightCell(mabc.targetPosition);
         mabc.matchRulesAndRotate();
     }
 }

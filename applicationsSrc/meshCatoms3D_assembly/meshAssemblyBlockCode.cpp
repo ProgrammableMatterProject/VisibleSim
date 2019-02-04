@@ -294,7 +294,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // Coordinate to let the last arrived branch continue the construction
                     if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
                         and incidentBranchesToRootAreComplete(nextPosAlongBranch)) {
-                        lattice->highlightCell(nextPosAlongBranch, BLUE);
+                        // lattice->highlightCell(nextPosAlongBranch, BLUE);
                         cout << "Some branches are missing around "
                              << nextPosAlongBranch << endl;
 
@@ -330,13 +330,13 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             and ruleMatcher->isOnYPyramidBorder(norm(coordinatorPos)))
                             targetPosition = coordinatorPos;
                         else {
-                            catom->setColor(WHITE);
-                            lattice->highlightCell(coordinatorPos, WHITE);
+                            // catom->setColor(WHITE);
+                            // lattice->highlightCell(coordinatorPos, WHITE);
                             return;
                         }
                     } else {
                         // Otherwise ask it for a new targetPosition
-                        catom->setColor(BLACK);
+                        // catom->setColor(BLACK);
                         if (not requestTargetCellFromTileRoot()) {
                             catom->setColor(RED);
                             VS_ASSERT_MSG(false, "arriving module cannot be without delegate coordinator in its vicinity.");
@@ -711,7 +711,7 @@ void MeshAssemblyBlockCode::initializeSandbox() {
         // Add waiting tile root module
         if (denormPos != meshSeedPosition)
             world->addBlock(0, buildNewBlockCode,
-                            denormPos + getEntryPointRelativePos(Z_R_EPL), WHITE);
+                            denormPos + getEntryPointRelativePos(Z_R_EPL), ORANGE);
                     
     }
 
