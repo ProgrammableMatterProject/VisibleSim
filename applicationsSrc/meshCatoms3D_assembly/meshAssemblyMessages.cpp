@@ -191,7 +191,10 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
-    Cell3DPosition dstPos = mabc.getEntryPointForModuleOnIncidentBranch(mabc.branch)
+    Cell3DPosition dstPos = Cell3DPosition();
+    
+    if (mabc.role != FreeAgent) {
+        dstPos = mabc.getEntryPointForModuleOnIncidentBranch(mabc.branch)
         + (mabc.denorm(mabc.ruleMatcher->getNearestTileRootPosition(mabc.catom->position))[2]
            ==
            mabc.meshSeedPosition[2] ?
@@ -200,6 +203,7 @@ void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
            //  instead of own tile. This change is necessary due to
            //  getEntryPointForModuleOnIncidentBranch using own tile as reference.
            mabc.B * mabc.ruleMatcher->getBranchUnitOffset(mabc.branch));
+    }
     // cout << "branch: " <<mabc.branch << endl;
     // cout << "catom: " << mabc.catom->position << endl;
     // cout << "dstPos: " << dstPos << endl;
