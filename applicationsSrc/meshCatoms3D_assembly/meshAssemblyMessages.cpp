@@ -317,10 +317,13 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
             // In that case, the EPL pivot is giving the greenlight whereas it should be the 
             //  support giving it. 
             if (mabc.ruleMatcher->isEPLPivotModule(mabc.norm(mabc.catom->position))
+                // If coordinator is in place
+                and not mabc.lattice->isFree(mabc.coordinatorPos)
                 // Only if targetPos is actual EPL
                 and mabc.ruleMatcher->getPositionForComponent(mabc.ruleMatcher->getTargetEPLComponentForBranch(mabc.branch)) == (targetPos - mabc.coordinatorPos)
-                // Check if pivot is present
-                and not mabc.lattice->isFree(mabc.catom->position + Cell3DPosition(-1,-1,2))) {
+                // Check if pivot is present and not a FA module in motion
+                and (not mabc.lattice->isFree(mabc.catom->position + Cell3DPosition(-1,-1,2))
+                     and static_cast<MeshAssemblyBlockCode*>(mabc.lattice->getBlock(mabc.catom->position + Cell3DPosition(-1,-1,2))->blockCode)->role != FreeAgent)) {
                 // If thats the case, forward to branch tip, that will then forward to pivot 
                 P2PNetworkInterface* tipItf = mabc.catom->getInterface
                     (mabc.catom->position+mabc.ruleMatcher->getBranchUnitOffset(mabc.branch));
@@ -328,6 +331,20 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
 
                 mabc.sendMessage(this->clone(), tipItf, MSG_DELAY_MC, 0);
                 return;
+            }
+
+            bool targetPosIsR = finalComponent == MeshComponent::R;
+            if (targetPosIsR) {
+                // Pivots can only grant a claim for the R position once
+                //  except if module is directly connected (this is the grant module)
+                if (mabc.RModuleRequestedMotion and not nextToSender) { // ignore request
+                    stringstream info;
+                    info << " denied probe from: " << srcPos;
+                    // cerr <<  info.str() << endl;
+                    mabc.scheduler->trace(info.str(), mabc.catom->blockId, BLUE);
+
+                    return;
+                } else mabc.RModuleRequestedMotion = true;
             }
             
             if (mabc.greenLightIsOn
@@ -341,10 +358,10 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
 
                 P2PNetworkInterface* itf = nextToSender ?
                     mabc.catom->getInterface(srcPos) : destinationInterface;
-                VS_ASSERT(itf and itf->isConnected());
-
+                VS_ASSERT(itf and itf->isConnected());                
+                
                 mabc.sendMessage(new GreenLightIsOnMessage(mabc.catom->position, srcPos),
-                                 itf, MSG_DELAY_MC, 0);
+                                 itf, MSG_DELAY_MC, 0);                
             } else {
                 // Catom will be notified when light turns green
                 // NOTE: Should we rather notify just when needed, or send a message anyway

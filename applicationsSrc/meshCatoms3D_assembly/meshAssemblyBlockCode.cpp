@@ -109,6 +109,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << "matchingLocalRule: " << matchingLocalRule << endl;
     cout << "greenLightIsOn: " << greenLightIsOn << endl;
     cout << "pivotPosition: " << pivotPosition << endl;
+    cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
     cout << "--- END " << *catom << "---" << endl;
 }
 
@@ -443,8 +444,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
                         and incidentBranchesToRootAreComplete(nextPosAlongBranch)) {
                         // lattice->highlightCell(nextPosAlongBranch, BLUE);
-                        cout << "Some branches are missing around "
-                             << nextPosAlongBranch << endl;
+                        // cout << "Some branches are missing around "
+                        //      << nextPosAlongBranch << endl;
 
                         // Notify future tile root as position should be filled
                         P2PNetworkInterface* zBranchTipItf = NULL;
@@ -473,11 +474,14 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                     // Check that that new tile root is in place and if absent,
                     //  wait for above layer XY modules to notify completion of previous tiles
-                    if (lattice->isFree(coordinatorPos)) {
+                    if (lattice->isFree(coordinatorPos)) { //FIXME: NON-LOCAL!
                         if (ruleMatcher->isOnXPyramidBorder(norm(coordinatorPos))
-                            and ruleMatcher->isOnYPyramidBorder(norm(coordinatorPos)))
+                            and ruleMatcher->isOnYPyramidBorder(norm(coordinatorPos))) {
                             targetPosition = coordinatorPos;
-                        else {
+                            stringstream info;
+                            info << " claims coordinator position at " << targetPosition;
+                            scheduler->trace(info.str(), catom->blockId, GREY);
+                        } else {
                             // catom->setColor(WHITE);
                             // lattice->highlightCell(coordinatorPos, WHITE);
                             return;
@@ -790,7 +794,7 @@ bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
         if (ruleMatcher->isVerticalBranchTip(norm(nPos))
             or ruleMatcher->isNFromVerticalBranchTip(norm(nPos), 1)
-            or ruleMatcher->isTileSupport(norm(nPos))) {
+            or (ruleMatcher->isTileSupport(norm(nPos)) and static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(nPos)->blockCode)->role != FreeAgent)) {
             // Module is delegate coordinator
             P2PNetworkInterface* nItf = catom->getInterface(nPos);
             VS_ASSERT(nItf);
@@ -915,7 +919,6 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
                                       (getRoundDuration()),
                                       catom, IT_MODE_FINDING_PIVOT));
             stringstream info;
-            info.str("");
             info << " reattempt finding pivot for " << targetPosition;
             scheduler->trace(info.str(),catom->blockId,PINK);
             return;
@@ -924,8 +927,12 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
         notFindingPivot = false; // FIXME: TODO:
         matchingLocalRule = false;
 
-        sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos),
-                    catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
+        int finalComponent = ruleMatcher->getComponentForPosition(targetPosition - 
+                                                                  coordinatorPos);
+        VS_ASSERT(finalComponent != -1);
+        sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos, 
+                                                    static_cast<MeshComponent>(finalComponent))
+                    , catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
     } else {
         // Try matching rules again once neighborhood updates
         catom->setColor(BLUE);

@@ -142,11 +142,12 @@ Cell3DPosition MeshRuleMatcher::getPositionForComponent(MeshComponent comp) {
 }
 
 int MeshRuleMatcher::getComponentForPosition(const Cell3DPosition& pos) {
-    for (int i = 0; i <= RevZ_EPL; i++)
+    for (int i = 0; i <= RevZ_L_EPL; i++)
         if (componentPosition[i] == pos) return i;
 
     return -1;
 }
+
 MeshComponent MeshRuleMatcher::getDefaultEPLComponentForBranch(BranchIndex bi) {
     switch(bi) {
         case ZBranch: return Z_EPL;

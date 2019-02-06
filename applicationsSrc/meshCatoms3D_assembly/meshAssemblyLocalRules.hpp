@@ -420,10 +420,10 @@ inline static bool matchLocalRules(const std::bitset<12>& localNeighborhood,
         nextPos =  match->second + pos;
         // cout << match->second << endl;
     } else {
-        cout << "{ " << localNeighborhood << "("
-             << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
-             << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
-        cout << "NO MATCH" << endl;
+    //     cerr << "{ " << localNeighborhood << "("
+    //          << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
+    //          << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
+    //     cerr << "NO MATCH" << endl;
     }
 
     return match != localMotionRules.end();
