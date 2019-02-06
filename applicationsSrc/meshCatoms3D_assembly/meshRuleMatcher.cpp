@@ -942,10 +942,10 @@ BranchIndex MeshRuleMatcher::getBranchForEPL(MeshComponent epl) {
 
 const Cell3DPosition MeshRuleMatcher::getTargetEPLPositionForBranch(BranchIndex bi) {
     switch (bi) {
-        case RevZBranch: return Cell3DPosition(-4, -4, 5);
-        case RZBranch: return Cell3DPosition(-1, -4, 5);
-        case ZBranch: return Cell3DPosition(-1, -1, 5);
-        case LZBranch: return Cell3DPosition(-4, -1, 5);
+        case RevZBranch: return Cell3DPosition(-(B2 - 2), -(B2 - 2), (B2 - 1));
+        case RZBranch: return Cell3DPosition(-1, -(B2 - 2), (B2 - 1));
+        case ZBranch: return Cell3DPosition(-1, -1, (B2 - 1));
+        case LZBranch: return Cell3DPosition(-(B2 - 2), -1, (B2 - 1));
         default:
             cerr << "getTargetEPLPositionForBranch(" << bi << ")" << endl;
             VS_ASSERT_MSG(false, "getTargetEPLPositionForBranch: input is not a valid branch");
