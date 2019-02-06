@@ -87,7 +87,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         cout << "]" << endl;
     }
 
-    cout << "branch: " << branch << endl;
+    cout << "branch: " << ruleMatcher->branch_to_string(branch) << endl;
     cout << "coordinatorPos: " << coordinatorPos << endl;
     cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
     cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
@@ -411,6 +411,15 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
                     coordinatorPos =
                         denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
+
+                    BranchIndex bi =
+                        ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
+                    branch = bi;
+
+                    stringstream info;                   
+                    info << " assigned to branch " << ruleMatcher->branch_to_string(bi);
+                    scheduler->trace(info.str(),catom->blockId, CYAN);
+                        
                     return;
                 }
 
@@ -422,6 +431,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     BranchIndex bi =
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
                     branch = bi;
+                    
+                    stringstream info;                   
+                    info << " assigned to branch " << ruleMatcher->branch_to_string(bi);
+                    scheduler->trace(info.str(),catom->blockId, CYAN);
+                        
                     const Cell3DPosition& nextPosAlongBranch =
                         catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
@@ -508,7 +522,6 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                 case IT_MODE_ALGORITHM_START:
                     matchRulesAndProbeGreenLight(); // the seed starts the algorithm
-                    cerr << "here" << endl;
                     break;
 
                 case IT_MODE_FINDING_PIVOT:

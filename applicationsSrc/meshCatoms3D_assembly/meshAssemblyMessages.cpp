@@ -216,14 +216,14 @@ void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         if (not itf->isConnected()) {
             // Beam Tip and no Support nor waiting module, forward to next branch module
             Cell3DPosition pos = mabc.catom->position -
-                mabc.ruleMatcher->getBranchUnitOffset(
-                    mabc.getBranchIndex(mabc.catom->position));
+                mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
 
             itf = mabc.catom->getInterface(pos);
             VS_ASSERT_MSG(itf, "Cannot find tip2 among neighbor interface");
         }
 
         if (mabc.role != ActiveBeamTip or not mabc.sentRequestToCoordinator) {
+            VS_ASSERT(itf and itf->isConnected());
             mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
             mabc.log_send_message();
         }

@@ -99,6 +99,7 @@ public:
 
     static string roleToString(AgentRole ar);
     static string component_to_string(MeshComponent comp);
+    static string branch_to_string(BranchIndex bi);
 
     bool isInGrid(const Cell3DPosition& pos) const;
     bool isInMesh(const Cell3DPosition& pos) const;

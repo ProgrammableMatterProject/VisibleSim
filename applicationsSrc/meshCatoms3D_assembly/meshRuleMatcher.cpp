@@ -487,7 +487,9 @@ Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(int bi) const {
         case LZBranch: return Cell3DPosition(-1,0,1);
         case XBranch: return Cell3DPosition(1,0,0);
         case YBranch: return Cell3DPosition(0,1,0);
-        default: VS_ASSERT_MSG(false, "invalid branch index");
+        default: 
+            cerr << "bi: " << bi << endl;
+            VS_ASSERT_MSG(false, "invalid branch index");
     }
 
     return Cell3DPosition(0,0,0); // Unreachable
@@ -896,6 +898,20 @@ string MeshRuleMatcher::roleToString(AgentRole ar) {
         case PassiveBeam: return "Beam";
         case ActiveBeamTip: return "Relay";
         case Support: return "Relay";
+    }
+
+    return "";
+}
+
+string MeshRuleMatcher::branch_to_string(BranchIndex bi) {
+    switch(bi) {
+        case RevZBranch: return "RevZBranch";
+        case ZBranch: return "ZBranch";
+        case RZBranch: return "RZBranch";
+        case LZBranch: return "LZBranch";
+        case XBranch: return "XBranch";
+        case YBranch: return "YBranch";
+        default: return "";
     }
 
     return "";
