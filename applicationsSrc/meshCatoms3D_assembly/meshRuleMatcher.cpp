@@ -10,6 +10,8 @@
 
 #include "meshRuleMatcher.hpp"
 
+#include "meshAssemblyLocalRules.hpp" // for B2
+
 #include "network.h"
 #include "utils.h"
 #include "catoms3DWorld.h"
@@ -65,22 +67,22 @@ std::array<Cell3DPosition, 47> MeshRuleMatcher::componentPosition = {
 
     // NEXT POSITIONS ARE __IN NEIGHBOR TILES__ BUT RELATIVE TO CURRENT TILE
 
-    Cell3DPosition(-1, -1, 5), // RevZ_EPL
-    Cell3DPosition(0, -1, 5), // RevZ_R_EPL
+    Cell3DPosition(-1, -1, B2 - 1), // RevZ_EPL
+    Cell3DPosition(0, -1, B2 - 1), // RevZ_R_EPL
 
-    Cell3DPosition(-5, -1, 5), // RZ_L_EPL
-    Cell3DPosition(-4, -1, 5), // RZ_EPL
-    Cell3DPosition(-4, 0, 5), // RZ_R_EPL
+    Cell3DPosition(-(B2 - 1), -1, (B2 - 1)), // RZ_L_EPL
+    Cell3DPosition(-(B2 - 2), -1, (B2 - 1)), // RZ_EPL
+    Cell3DPosition(-(B2 - 2), 0, (B2 - 1)), // RZ_R_EPL
 
-    Cell3DPosition(-4, -5, 5), // Z_R_EPL
-    Cell3DPosition(-4, -4, 5), // Z_EPL
-    Cell3DPosition(-5, -4, 5), // Z_L_EPL
+    Cell3DPosition(-(B2 - 2), -(B2 - 1), (B2 - 1)), // Z_R_EPL
+    Cell3DPosition(-(B2 - 2), -(B2 - 2), (B2 - 1)), // Z_EPL
+    Cell3DPosition(-(B2 - 1), -(B2 - 2), (B2 - 1)), // Z_L_EPL
 
-    Cell3DPosition(0, -4, 5), // LZ_R_EPL
-    Cell3DPosition(-1, -4, 5), // LZ_EPL
-    Cell3DPosition(-1, -5, 5), // LZ_L_EPL
+    Cell3DPosition(0, -(B2 - 2), (B2 - 1)), // LZ_R_EPL
+    Cell3DPosition(-1, -(B2 - 2), (B2 - 1)), // LZ_EPL
+    Cell3DPosition(-1, -(B2 - 1), (B2 - 1)), // LZ_L_EPL
 
-    Cell3DPosition(-1, 0, 5), // RevZ_L_EPL
+    Cell3DPosition(-1, 0, B2 - 1), // RevZ_L_EPL
 };
 
 string MeshRuleMatcher::component_to_string(MeshComponent comp) {
@@ -812,8 +814,8 @@ const Color& MeshRuleMatcher::getColorForPosition(const Cell3DPosition& pos) con
 const vector<Cell3DPosition> MeshRuleMatcher::getAllGroundTileRootPositionsForMesh() const {
     vector<Cell3DPosition> tileRoots;
 
-    for (int x = 0; x < X_MAX; x+=6)
-        for (int y = 0; y < Y_MAX; y+=6)
+    for (int x = 0; x < X_MAX; x+=B)
+        for (int y = 0; y < Y_MAX; y+=B)
             tileRoots.push_back(Cell3DPosition(x,y,0));
 
     return tileRoots;
@@ -873,8 +875,8 @@ MeshRuleMatcher::getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
                                           BranchIndex bi) const {
     if (not isInMesh(trRef)) return trRef;
     // cout << "trRef: " << trRef << " - bi: " << bi << " - res: "
-    //      << trRef + 6 * getBranchUnitOffset(bi) << endl;
-    return trRef + 6 * getBranchUnitOffset(bi);
+    //      << trRef + B * getBranchUnitOffset(bi) << endl;
+    return trRef + B * getBranchUnitOffset(bi);
 }
 
 bool MeshRuleMatcher::shouldGrowPyramidBranch(const Cell3DPosition& pos,
