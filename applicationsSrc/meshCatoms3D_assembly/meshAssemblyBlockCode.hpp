@@ -227,6 +227,12 @@ public:
      */
     int addNeighborToProcess = 0;
 
+    /** 
+     * Use to limit interruption events after top level S_RevZ arrived
+     *  so that the simulation ends nicely for stat export
+     */
+    static bool constructionOver;
+    
 #define SET_GREEN_LIGHT(x) setGreenLight(x, __LINE__)
     /**
      * Changes the light state of a pivot and take the appriopriate action

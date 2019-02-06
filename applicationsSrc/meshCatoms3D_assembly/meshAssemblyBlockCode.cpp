@@ -2,7 +2,7 @@
  * @file   meshAssemblyBlockCode.cpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Mon Oct  1 10:42:29 2018
- *
+ *]
  * @brief
  *
  *
@@ -33,6 +33,7 @@ bool MeshAssemblyBlockCode::sandboxInitialized = false;
 uint MeshAssemblyBlockCode::X_MAX;
 uint MeshAssemblyBlockCode::Y_MAX;
 uint MeshAssemblyBlockCode::Z_MAX;
+bool MeshAssemblyBlockCode::constructionOver = false;
 constexpr std::array<Cell3DPosition, 6> MeshAssemblyBlockCode::incidentTipRelativePos;
 constexpr std::array<Cell3DPosition, 12> MeshAssemblyBlockCode::entryPointRelativePos;
 constexpr Cell3DPosition MeshAssemblyBlockCode::meshSeedPosition;
@@ -64,7 +65,7 @@ MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
 
 void MeshAssemblyBlockCode::onAssertTriggered() {
     onBlockSelected();
-    catom->setColor(PINK);
+    catom->setColor(BLACK);
 }
 
 void MeshAssemblyBlockCode::onBlockSelected() {
@@ -401,6 +402,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     cerr << ruleMatcher->getPyramidDimension()
                          << "-PYRAMID CONSTRUCTION OVER AT TimeStep = "
                          << ts << " with " << lattice->nbModules << " modules" << endl;
+                    constructionOver = true;
                 }
 
                 // STAT EXPORT
@@ -495,21 +497,24 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // Only introduce catoms if on the lower tile level
                     if (catom->position[2] == meshSeedPosition[2]) {
                         feedIncidentBranches();
-
-                        getScheduler()->schedule(
-                            new InterruptionEvent(getScheduler()->now() +
-                                                  (getRoundDuration()),
-                                                  catom, IT_MODE_TILEROOT_ACTIVATION));
+                        
+                        if (not constructionOver)
+                            getScheduler()->schedule(
+                                new InterruptionEvent(getScheduler()->now() +
+                                                      (getRoundDuration()),
+                                                      catom, IT_MODE_TILEROOT_ACTIVATION));   
                     }
                 } break;
 
                 case IT_MODE_ALGORITHM_START:
                     matchRulesAndProbeGreenLight(); // the seed starts the algorithm
+                    cerr << "here" << endl;
                     break;
 
                 case IT_MODE_FINDING_PIVOT:
                     // VS_ASSERT(++notFindingPivotCount < 10);
                     matchRulesAndProbeGreenLight(); // the seed starts the algorithm
+                    catom->setColor(MAGENTA);
                     break;
             }
         }
@@ -887,6 +892,7 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
     if (matched) {
         stepTargetPos = nextPos;
         Catoms3DBlock *pivot = customFindMotionPivot(catom, stepTargetPos);
+        catom->setColor(YELLOW);
 
         // VS_ASSERT(pivot); // FIXME: TODO:
         if (not pivot) {

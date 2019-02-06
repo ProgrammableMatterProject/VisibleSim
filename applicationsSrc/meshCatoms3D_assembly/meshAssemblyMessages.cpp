@@ -312,6 +312,24 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
             VS_ASSERT(tlitf and tlitf->isConnected());
             mabc.sendMessage(this->clone(), tlitf, MSG_DELAY_MC, 0);
         } else if (not targetLightNeighbor and nextToTarget) { // module is target light
+            // There is a special case where these rules don't work, that's when 
+            //  a catom wants to get into a central EPL position when the support is present
+            // In that case, the EPL pivot is giving the greenlight whereas it should be the 
+            //  support giving it. 
+            if (mabc.ruleMatcher->isEPLPivotModule(mabc.norm(mabc.catom->position))
+                // Only if targetPos is actual EPL
+                and mabc.ruleMatcher->getPositionForComponent(mabc.ruleMatcher->getTargetEPLComponentForBranch(mabc.branch)) == (targetPos - mabc.coordinatorPos)
+                // Check if pivot is present
+                and not mabc.lattice->isFree(mabc.catom->position + Cell3DPosition(-1,-1,2))) {
+                // If thats the case, forward to branch tip, that will then forward to pivot 
+                P2PNetworkInterface* tipItf = mabc.catom->getInterface
+                    (mabc.catom->position+mabc.ruleMatcher->getBranchUnitOffset(mabc.branch));
+                VS_ASSERT(tipItf and tipItf->isConnected());
+
+                mabc.sendMessage(this->clone(), tipItf, MSG_DELAY_MC, 0);
+                return;
+            }
+            
             if (mabc.greenLightIsOn
                 // FIXME: When a catom spawns on an EPL, and when
                 //  the support already has a module attached to it,
