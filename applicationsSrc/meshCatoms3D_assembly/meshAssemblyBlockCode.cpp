@@ -56,10 +56,10 @@ MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
 
 MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
     if (ruleMatcher->isInMesh(norm(catom->position))) {
-        OUTPUT << "bitrate:\t" << catom->blockId << "\t"
-               << maxBitrate.first << "\t"
-               << (maxBitrate.second.empty() ?
-                   ruleMatcher->roleToString(role) : maxBitrate.second) << endl;
+        // OUTPUT << "bitrate:\t" << catom->blockId << "\t"
+        //        << maxBitrate.first << "\t"
+        //        << (maxBitrate.second.empty() ?
+        //            ruleMatcher->roleToString(role) : maxBitrate.second) << endl;
     }
 }
 
@@ -350,8 +350,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
         case EVENT_ROTATION3D_START:
             VS_ASSERT(catom->pivot);
             pivotPosition = catom->pivot->position;
+            randomRotationTimeStart = scheduler->now();
             break;
         case EVENT_ROTATION3D_END: {
+            OUTPUT << "rrt: " << scheduler->now() - randomRotationTimeStart << endl;
             getScheduler()->trace(" ROTATION3D_END ", catom->blockId, MAGENTA);
             // console << "Rotation to " << catom->position << " over" << "\n";
             rotating = false;
@@ -417,10 +419,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
                     branch = bi;
 
-                    stringstream info;                   
+                    stringstream info;
                     info << " assigned to branch " << ruleMatcher->branch_to_string(bi);
                     scheduler->trace(info.str(),catom->blockId, CYAN);
-                        
+
                     return;
                 }
 
@@ -432,11 +434,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     BranchIndex bi =
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
                     branch = bi;
-                    
-                    stringstream info;                   
+
+                    stringstream info;
                     info << " assigned to branch " << ruleMatcher->branch_to_string(bi);
                     scheduler->trace(info.str(),catom->blockId, CYAN);
-                        
+
                     const Cell3DPosition& nextPosAlongBranch =
                         catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
@@ -515,12 +517,12 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // Only introduce catoms if on the lower tile level
                     if (catom->position[2] == meshSeedPosition[2]) {
                         feedIncidentBranches();
-                        
+
                         if (not constructionOver)
                             getScheduler()->schedule(
                                 new InterruptionEvent(getScheduler()->now() +
                                                       (getRoundDuration()),
-                                                      catom, IT_MODE_TILEROOT_ACTIVATION));   
+                                                      catom, IT_MODE_TILEROOT_ACTIVATION));
                     }
                 } break;
 
@@ -927,10 +929,10 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
         notFindingPivot = false; // FIXME: TODO:
         matchingLocalRule = false;
 
-        int finalComponent = ruleMatcher->getComponentForPosition(targetPosition - 
+        int finalComponent = ruleMatcher->getComponentForPosition(targetPosition -
                                                                   coordinatorPos);
         VS_ASSERT(finalComponent != -1);
-        sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos, 
+        sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos,
                                                     static_cast<MeshComponent>(finalComponent))
                     , catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
     } else {

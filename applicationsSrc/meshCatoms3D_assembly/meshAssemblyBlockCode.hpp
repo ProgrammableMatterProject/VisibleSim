@@ -227,25 +227,27 @@ public:
      */
     int addNeighborToProcess = 0;
 
-    /** 
+    /**
      * Use to limit interruption events after top level S_RevZ arrived
      *  so that the simulation ends nicely for stat export
      */
     static bool constructionOver;
 
-    /** 
+    /**
      * Used to ensure that only one module on the RevZBranch train can claim the R position.
      *  This is stored in RevZ pivots from Z_EPL to the R position. It is set to true
      *  when a pivot responds to a ProbePivotLight for the R position, and all further
      *  requests for a motion to R will be ignored
      */
     bool RModuleRequestedMotion = false;
-    
+
 #define SET_GREEN_LIGHT(x) setGreenLight(x, __LINE__)
     /**
      * Changes the light state of a pivot and take the appriopriate action
      */
     void setGreenLight(bool onoff, int _line_);
+
+    Time randomRotationTimeStart = 0;
 
     /** END CF **/
 
