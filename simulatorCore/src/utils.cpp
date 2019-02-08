@@ -20,6 +20,7 @@
 #include <cstdlib>
 
 #include "scheduler.h"
+#include "world.h"
 
 using namespace BaseSimulator;
 using namespace utils;
@@ -47,9 +48,10 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
     if (msg) std::cerr << "Reason: " << msg << endl;
     
     std::cerr << endl << "Context Module: ";
-    if (contextModule) 
+    if (contextModule) {
         cerr << "#" << contextModule->blockId << " at " << contextModule->position;
-    else 
+        getWorld()->getCamera()->setTarget(contextModule->ptrGlBlock->getPosition());
+    } else 
         cerr << "NULL";
     cerr << std::endl;
 
