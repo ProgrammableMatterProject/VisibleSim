@@ -76,7 +76,7 @@ public:
     bool isTileRoot(const Cell3DPosition& pos) const;
     bool isVerticalBranchTip(const Cell3DPosition& pos) const;
     bool isNFromVerticalBranchTip(const Cell3DPosition& pos, int N) const;
-    bool isTileSupport(const Cell3DPosition& pos) const;
+    bool isSupportModule(const Cell3DPosition& pos) const;
     bool isBranchModule(const Cell3DPosition& pos) const;
     bool isZBranchModule(const Cell3DPosition& pos) const;
     bool isEPLPivotModule(const Cell3DPosition& pos) const;

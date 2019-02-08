@@ -337,6 +337,27 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
                 return;
             }
 
+            // Another special case where these rules don't work is when 
+            //  a catom wants to climb from an EPL to the position at (-1,-1,2) over that 
+            //  through a shortcut
+            if (mabc.ruleMatcher->isSupportModule(mabc.norm(mabc.catom->position))
+                // If coordinator is in place
+                and not mabc.lattice->isFree(mabc.coordinatorPos)
+                // Module above Support is in place too
+                and not mabc.lattice->isFree(mabc.catom->position + Cell3DPosition(-1,-1,2))
+                // And if targetPos is that position at (-1,-1,2) above Support
+                and (targetPos - srcPos) == Cell3DPosition(-1,-1,2)) {
+                // If thats the case, forward to ?Z_1, that will then forward to 
+                //  light module at ?Z_2
+                P2PNetworkInterface* tipItf = mabc.catom->getInterface
+                    (mabc.catom->position + 
+                     mabc.ruleMatcher->getBranchUnitOffset(mabc.branch));
+                VS_ASSERT(tipItf and tipItf->isConnected());
+
+                mabc.sendMessage(this->clone(), tipItf, MSG_DELAY_MC, 0);
+                return;
+            }
+            
             bool targetPosIsR = finalComponent == MeshComponent::R;
             if (targetPosIsR) {
                 // Pivots can only grant a claim for the R position once
@@ -402,9 +423,10 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
             }
         }
 
-        if (nextToDest)
+        if (nextToDest) {
+            mabc.SET_GREEN_LIGHT(false);
             itf = mabc.catom->getInterface(dstPos);
-        else if (nnCell != Cell3DPosition(0,0,0)) {
+        } else if (nnCell != Cell3DPosition(0,0,0)) {
             itf = mabc.catom->getInterface(nnCell);
         } else {
             itf = mabc.catom->getInterface(mabc.catom->position -
@@ -414,7 +436,6 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
 
         VS_ASSERT(itf and itf->isConnected());
 
-        mabc.SET_GREEN_LIGHT(false);
         mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
     } else { // module is target
         VS_ASSERT(mabc.catom->position == dstPos);

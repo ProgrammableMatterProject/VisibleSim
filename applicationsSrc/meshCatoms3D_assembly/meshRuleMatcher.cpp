@@ -269,7 +269,7 @@ bool MeshRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
     return isInGrid(pos) and ((isOnXBranch(pos) or isOnYBranch(pos) or isOnZBranch(pos)
                                or isOnRevZBranch(pos) or isOnRZBranch(pos)
                                or isOnLZBranch(pos)
-                               or isTileSupport(pos)));
+                               or isSupportModule(pos)));
 }
 
 bool MeshRuleMatcher::isInMeshOrSandbox(const Cell3DPosition& pos) const {
@@ -395,7 +395,7 @@ bool MeshRuleMatcher::isZBranchModule(const Cell3DPosition& pos) const {
             or isOnLZBranch(pos) or isOnRZBranch(pos));
 }
 
-bool MeshRuleMatcher::isTileSupport(const Cell3DPosition& pos) const {
+bool MeshRuleMatcher::isSupportModule(const Cell3DPosition& pos) const {
     return (m_mod(pos[0], B) == 1 or m_mod(pos[0], B) == B - 1)
         and (m_mod(pos[1], B) == 1 or m_mod(pos[1], B) == B - 1)
         and m_mod(pos[2], B) == 0;
@@ -700,7 +700,7 @@ AgentRole MeshRuleMatcher::getRoleForPosition(const Cell3DPosition& pos) const {
     else {
         if (isTileRoot(pos)) return AgentRole::Coordinator;
         else if (isVerticalBranchTip(pos)) return AgentRole::ActiveBeamTip;
-        else if (isTileSupport(pos)) return AgentRole::Support;
+        else if (isSupportModule(pos)) return AgentRole::Support;
         else return AgentRole::PassiveBeam;
     }
 }

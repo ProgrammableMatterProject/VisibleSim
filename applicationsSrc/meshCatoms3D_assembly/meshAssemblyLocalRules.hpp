@@ -215,6 +215,7 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x808, Cell3DPosition(-1, -(B2 - 2), (B2 - 1)), 1), Cell3DPosition(-1, -1, 2) }, // LZ_EPL1
     { LRKeyTuple(0x808, Cell3DPosition(-1, -(B2 - 2), (B2 - 1)), 2), Cell3DPosition(0, 0, 1) }, // LZ_EPL2
     { LRKeyTuple(0x050, Cell3DPosition(-1, -(B2 - 2), (B2 - 1)), 3), Cell3DPosition(-1, -1, 2) }, // LZ_EPL3
+    { LRKeyTuple(0x150, Cell3DPosition(-1, -(B2 - 2), (B2 - 1)), 3), Cell3DPosition(-1, -1, 2) }, // LZ_EPL3
     { LRKeyTuple(0x180, Cell3DPosition(-1, -(B2 - 2), (B2 - 1)), (B2 - 2)), Cell3DPosition(-1, -1, 1) }, // LZ_EPL4
     { LRKeyTuple(0x220, Cell3DPosition(-(B2 - 2), -1, (B2 - 1)), 1), Cell3DPosition(-1, -1, 2) }, // RZ_EPL1
     { LRKeyTuple(0x220, Cell3DPosition(-(B2 - 2), -1, (B2 - 1)), 2), Cell3DPosition(-1, -1, 1) }, // RZ_EPL2
@@ -254,10 +255,10 @@ inline static bool matchLocalRules(const std::bitset<12>& localNeighborhood,
         nextPos =  match->second + pos;
         // cout << match->second << endl;
     } else {
-    //     cerr << "{ " << localNeighborhood << "("
-    //          << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
-    //          << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
-    //     cerr << "NO MATCH" << endl;
+        // cerr << "{ " << localNeighborhood << "("
+        //      << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
+        //      << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
+        // cerr << "NO MATCH" << endl;
     }
 
     return match != localMotionRules.end();

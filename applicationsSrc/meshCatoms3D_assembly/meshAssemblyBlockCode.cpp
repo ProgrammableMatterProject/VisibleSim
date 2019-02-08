@@ -353,7 +353,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             randomRotationTimeStart = scheduler->now();
             break;
         case EVENT_ROTATION3D_END: {
-            OUTPUT << "rrt: " << scheduler->now() - randomRotationTimeStart << endl;
+            // OUTPUT << "rrt: " << scheduler->now() - randomRotationTimeStart << endl;
             getScheduler()->trace(" ROTATION3D_END ", catom->blockId, MAGENTA);
             // console << "Rotation to " << catom->position << " over" << "\n";
             rotating = false;
@@ -428,9 +428,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                 if (ruleMatcher->isTileRoot(norm(catom->position)))
                     initializeTileRoot();
-                else if (ruleMatcher->isTileSupport(norm(catom->position)))
+                else if (ruleMatcher->isSupportModule(norm(catom->position))) {
                     initializeSupportModule();
-                else {
+                } else {
                     BranchIndex bi =
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
                     branch = bi;
@@ -765,9 +765,7 @@ void MeshAssemblyBlockCode::initializeSupportModule() {
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
         if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {
             branchTipPos = nPos;
-            short bi = ruleMatcher->determineBranchForPosition(
-                norm(nPos[2] < meshSeedPosition[2] ?
-                     nPos + Cell3DPosition(0,0,B) : catom->position));
+            short bi = ruleMatcher->determineBranchForPosition(sbnorm(nPos));
             branch = static_cast<BranchIndex>(bi);
             return;
         }
@@ -796,7 +794,7 @@ bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
         if (ruleMatcher->isVerticalBranchTip(norm(nPos))
             or ruleMatcher->isNFromVerticalBranchTip(norm(nPos), 1)
-            or (ruleMatcher->isTileSupport(norm(nPos)) and static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(nPos)->blockCode)->role != FreeAgent)) {
+            or (ruleMatcher->isSupportModule(norm(nPos)) and static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(nPos)->blockCode)->role != FreeAgent)) {
             // Module is delegate coordinator
             P2PNetworkInterface* nItf = catom->getInterface(nPos);
             VS_ASSERT(nItf);

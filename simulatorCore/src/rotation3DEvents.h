@@ -33,7 +33,7 @@ public:
     const Catoms3DBlock *pivot = NULL;
     short conFromP, conToP;
 
-#define RANDOM_ROTATION_TIME 1
+#define RANDOM_ROTATION_TIME 0
     static Time getNextRotationEventDelay() {
         int rad;
 #if RANDOM_ROTATION_TIME == 1
