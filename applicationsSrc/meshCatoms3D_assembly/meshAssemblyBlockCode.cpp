@@ -91,7 +91,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << "coordinatorPos: " << coordinatorPos << endl;
     cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
     cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
-    cout << "localNeighborhood: " << catom->getLocalNeighborhoodState() << endl;
+    cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
     Cell3DPosition nextHop;
     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
                     targetPosition, coordinatorPos, step, nextHop);
@@ -839,11 +839,24 @@ void MeshAssemblyBlockCode::initializeSandbox() {
     sandboxInitialized = true;
     // cout << "round duration: " << getRoundDuration() << endl;
 }
+ 
+std::bitset<12> MeshAssemblyBlockCode::getMeshLocalNeighborhoodState() {
+    bitset<12> bitset = {0};
+    const vector<Cell3DPosition> localNeighborhood =
+        Catoms3DWorld::getWorld()->lattice->getNeighborhood(catom->position);
+        
+    for (const Cell3DPosition& nPos : localNeighborhood) {
+        P2PNetworkInterface *itf = catom->getInterface(nPos);
+        bitset.set(catom->getAbsoluteDirection(nPos), 
+                   itf->isConnected() and ruleMatcher->isInMeshOrSandbox(norm(nPos)));
+    }
 
+    return bitset;
+}
 
 void MeshAssemblyBlockCode::matchRulesAndRotate() {
     Cell3DPosition nextPos;
-    bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
+    bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,
                                    targetPosition,
                                    coordinatorPos, step, nextPos);
@@ -901,7 +914,7 @@ findTargetLightAmongNeighbors(const Cell3DPosition& targetPos,
 
 void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
     Cell3DPosition nextPos;
-    bool matched = matchLocalRules(catom->getLocalNeighborhoodState(),
+    bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,
                                    targetPosition,
                                    coordinatorPos, step, nextPos);
