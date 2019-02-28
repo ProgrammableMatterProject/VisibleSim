@@ -397,7 +397,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                                               + ">/dev/null 2>/dev/null").c_str());
 
                                    if (r == 0) {
-                                       system(string("rm -rf " + animationDirName).c_str());
+                                       // system(string("rm -rf " + animationDirName).c_str());
                                        cerr << "Animation video exported to "
                                             << vidName << endl;
                                    } else {
@@ -541,12 +541,17 @@ void GlutContext::calculateFPS(void) {
 
 void GlutContext::showFPS(void) {
     char str[20];
-    sprintf(str, "FPS = %4.2f", fps);
+    //sprintf(str, "FPS = %4.2f", fps);
+    Time ts = ((int)round((getScheduler()->now() - 1630192) / 400000)) < 0 ? 0 : round((getScheduler()->now() - 1630192) / 400000);
+    sprintf(str,"Timestep = %lu",ts);
     glColor3f(255,255,0);
-    GlutWindow::drawString(50, 50, str);
-    sprintf(str,"nbre modules = %d",getWorld()->lattice->nbModules);
-    GlutWindow::drawString(50, 35, str);
-    
+    GlutWindow::drawString(50, 50, str,GLUT_BITMAP_TIMES_ROMAN_24);
+    static int lastNbModules = 0;
+    static int nbModules = 0;
+    nbModules = BaseSimulator::getWorld()->lattice->nbModules;
+    sprintf(str,"Nb modules = %d", nbModules > lastNbModules ? nbModules : lastNbModules);
+    lastNbModules = nbModules > lastNbModules ? nbModules : lastNbModules;
+    GlutWindow::drawString(50, 25, str,GLUT_BITMAP_TIMES_ROMAN_24);    
 }
 
 void GlutContext::drawFunc(void) {
