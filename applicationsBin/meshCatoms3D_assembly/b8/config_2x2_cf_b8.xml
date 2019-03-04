@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="46, 46, 46">
+<world gridSize="20, 20, 20">
   <camera target="50,50,10" directionSpherical="-20,30,100"
           angle="45" near="0.1" far="2000.0" />
 
-  <blockList color="128,128,128" blocksize="10,10,10">
-    <block position="5,4,2" color="0,255,255" orientation="11" />
+  <blockList color="128,128,128" blocksize="1,1,1">
+    <block position="5,5,2" color="0,255,255" orientation="11" />
     <!-- <block position="3,3,2" color="255,192,203" orientation="8" /> -->
     <!-- <block position="3,3,1" color="127.5,127.5,127.5" orientation="5" /> -->
     <!-- <block position="3,3,0" color="127.5,127.5,127.5" orientation="9" /> -->
