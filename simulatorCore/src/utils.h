@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <sstream>
 
 #include "tDefs.h"
 
