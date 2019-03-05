@@ -18,6 +18,9 @@
 #include "openglViewer.h"
 #include "utils.h"
 #include "rotation3DEvents.h"
+#include "targetEncoding/CSG/csg.h"
+#include "targetEncoding/CSG/csgParser.h"
+#include "targetEncoding/CSG/csgUtils.h"
 
 #ifdef ENABLE_MELDPROCESS
 #include "meldProcessVM.h"
@@ -730,6 +733,7 @@ void Simulator::parseBlockList() {
 			block = block->NextSibling("block");
 		} // end while (block)
 
+        // Reading blocks lines
 		block = xmlBlockListNode->FirstChild("blocksLine");
 		int line = 0, plane = 0;
 		while (block) {
@@ -778,7 +782,8 @@ void Simulator::parseBlockList() {
 			}
 			block = block->NextSibling("blocksLine");
 		} // end while (blocksLine)
-		
+
+        // Reading block boxes
 		block = xmlBlockListNode->FirstChild("blockBox");
 		while (block) {
 			if (ids == MANUAL) {
@@ -849,6 +854,49 @@ void Simulator::parseBlockList() {
 			
 			block = block->NextSibling("blockBox");
 		} // end while (blockBox)*/
+        
+        // Reading CSG Object
+		block = xmlBlockListNode->FirstChild("csg");
+        TiXmlElement *element = block->ToElement();
+        string str = element->Attribute("content");
+        
+        BoundingBox bb;
+        bool boundingBox = true;
+        element->QueryBoolAttribute("boundingBox", &boundingBox);
+
+        char* csgBin = CSGParser::parseCsg(str);
+        CsgUtils csgUtils;
+        CSGNode *csgRoot = csgUtils.readCSGBuffer(csgBin);
+        csgRoot->toString();
+
+        if (boundingBox) csgRoot->boundingBox(bb);    
+        
+        Vector3D csgPos;
+        for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
+            for (short iy=0; iy<world->lattice->gridSize[1]; iy++) {
+                for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
+                    position.set(ix,iy,iz);
+                    csgPos = world->lattice->gridToUnscaledWorldPosition(position);
+                    
+#ifdef OFFSET_BOUNDINGBOX
+                    csgPos.pt[0] += bb.P0[0] - 1.0;
+                    csgPos.pt[1] += bb.P0[1] - 1.0;
+                    csgPos.pt[2] += bb.P0[2] - 1.0;
+#else
+                    csgPos.pt[0] += bb.P0[0];
+                    csgPos.pt[1] += bb.P0[1];
+                    csgPos.pt[2] += bb.P0[2];
+#endif
+                    
+                    if (csgRoot->isInside(csgPos, color)) {
+                        loadBlock(element,ids == ORDERED?indexBlock++:IDPool[indexBlock++],
+                                  bcb, position, color, false);
+                    }
+                }
+            }
+        }
+        
+        block = block->NextSibling("csg"); //!< @note not sure that this should be allowed...
 	} else { // end if
 		
 		cerr << "warning: no Block List in configuration file" << endl;
