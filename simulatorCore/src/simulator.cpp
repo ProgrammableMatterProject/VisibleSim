@@ -60,18 +60,18 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 
 
 	if (cmdLine.isSimulationSeedSet()) {
-	  seed = cmdLine.getSimulationSeed();
+        seed = cmdLine.getSimulationSeed();
 	}
 	int rseed = 0;
 	if (seed < 0) {
-	  random_device rd;
-	  mt19937 gen(rd());
-	  uniform_int_distribution<> dis(1,INT_MAX); // [1,intmax]
-	  rseed = dis(gen);
-	  generator = uintRNG((ruint)rseed);
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> dis(1,INT_MAX); // [1,intmax]
+        rseed = dis(gen);
+        generator = uintRNG((ruint)rseed);
 	} else {
-	  rseed = seed;
-	  generator = uintRNG((ruint)rseed);
+        rseed = seed;
+        generator = uintRNG((ruint)rseed);
 	}
 	cerr << "Seed: " << rseed << endl;
 
@@ -122,22 +122,22 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 
 	// Create a scheduler of the same type as target BlockCode
 	switch(getType()) {
-	case MELDINTERPRET:
-		MeldInterpret::MeldInterpretScheduler::createScheduler();
-		break;
-	case MELDPROCESS:
+        case MELDINTERPRET:
+            MeldInterpret::MeldInterpretScheduler::createScheduler();
+            break;
+        case MELDPROCESS:
 #ifdef MELDPROCESSVM
-		MeldProcess::MeldProcessScheduler::createScheduler();
+            MeldProcess::MeldProcessScheduler::createScheduler();
 #else
-		cerr << "error: MeldProcess not compiled in this version. "
-			 << "Please enable MELDPROCESS in simulatorCore/src/Makefile to enable it, and try again"
-			 << endl;
-		exit(EXIT_FAILURE);
+            cerr << "error: MeldProcess not compiled in this version. "
+                 << "Please enable MELDPROCESS in simulatorCore/src/Makefile to enable it, and try again"
+                 << endl;
+            exit(EXIT_FAILURE);
 #endif
-		break;
-	case CPP:
-		CPPScheduler::createScheduler();
-		break;
+            break;
+        case CPP:
+            CPPScheduler::createScheduler();
+            break;
 	}
 
 	scheduler = getScheduler();
@@ -283,9 +283,9 @@ bID Simulator::countNumberOfModules() {
 	bID moduleCount = 0;
 
 	// Count modules from block elements
-	for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block"))
+    for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block"))
 		moduleCount++;
-
+     
 	// Count modules from blocksLine elements
 	for(TiXmlNode *child = xmlBlockListNode->FirstChild("blocksLine"); child; child = child->NextSibling("blocksLine")) {
 		element = child->ToElement();
@@ -300,30 +300,30 @@ bID Simulator::countNumberOfModules() {
 		}
 	}
 	
-	cout << "count" << endl;
+	// cout << "count" << endl;
 	// Count modules from blockBox elements
 	for(TiXmlNode *child = xmlBlockListNode->FirstChild("blockBox"); child; child = child->NextSibling("blockBox")) {
 		Vector3D boxOrigin(0,0,0);
 		element = child->ToElement();
 		attr = element->Attribute("boxOrigin");
 		if (attr) {
-			cout << "origin" << endl;
+			// cout << "origin" << endl;
 			string str(attr);
 			int pos1 = str.find_first_of(','),
-			pos2 = str.find_last_of(',');
+                pos2 = str.find_last_of(',');
 			boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
 			boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 			boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
 		}
 		Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
-										world->lattice->gridSize[1]*world->lattice->gridScale[1],
-										world->lattice->gridSize[2]*world->lattice->gridScale[2]);
+                         world->lattice->gridSize[1]*world->lattice->gridScale[1],
+                         world->lattice->gridSize[2]*world->lattice->gridScale[2]);
 		attr = element->Attribute("boxSize");
 		if (attr) {
-			cout << "dest" << endl;
+			// cout << "dest" << endl;
 			string str(attr);
 			int pos1 = str.find_first_of(','),
-			pos2 = str.find_last_of(',');
+                pos2 = str.find_last_of(',');
 			boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
 			boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 			boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
@@ -342,67 +342,77 @@ bID Simulator::countNumberOfModules() {
 			}
 		}
 	}
-	cout << "count=" << moduleCount << endl;
+	// cout << "count=" << moduleCount << endl;
 	
 	return moduleCount;
 }
 
 void Simulator::initializeIDPool() {
-	// Simulator.xmlBlockListNode has to be initialized at this point!
+	// Simulator.xmlBlockListNode has to be initialized at this point!    
 
+    // Determine what assignment model to use, and initialize IDPool according to it
+	ids = determineIDScheme();
+
+    // DO NOT initialize IDPool if ORDERED, 
+    //  it is unecessary and requires additional computation
+    //  (Additional reading of the configuration file)
+    if (ids == ORDERED) return;
+    
 	// Count number of modules in configuration file
 	bID numModules = countNumberOfModules();
 
 	cerr << "There are " << numModules << " modules in the configuration" << endl;
 
-	// Determine what assignment model to use, and initialize IDPool according to it
-	ids = determineIDScheme();
 	switch (ids) {
-	case ORDERED:
-		// Fill IDPool with ID {1..N}
-		IDPool = vector<bID>(numModules);
-		std::iota(begin(IDPool), end(IDPool), 1);
-		break;
-	case MANUAL: {
-		bID id;
-		TiXmlElement *element;
-		const char *attr;
-		unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
-		for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block")) {
-			element = child->ToElement();
-		    attr = element->Attribute("id");
+        case ORDERED:
+            // Fill IDPool with ID {1..N}
+            // IDPool = vector<bID>(numModules);
+            // std::iota(begin(IDPool), end(IDPool), 1);
+        
+            // DO NOT initialize IDPool if ORDERED, 
+            //  it is unecessary and requires additional computation
+            //  (Additional reading of the configuration file)
+            break;
+        case MANUAL: {
+            bID id;
+            TiXmlElement *element;
+            const char *attr;
+            unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
+            for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block")) {
+                element = child->ToElement();
+                attr = element->Attribute("id");
 
-			if (attr) {
-				try {
-					string str(attr);
-					id =  stoull(str); // id in range [0, 2^64 - 1]
-				} catch (const std::invalid_argument& e) {
-					cerr << "error: invalid id attribute value in configuration file" << endl;
-					throw ParsingException();
-				} catch (const std::out_of_range& e) {
-					cerr << "error: out of range id attribute value in configuration file" << endl;
-					throw ParsingException();
-				}
-			} else {
-				cerr << "error: missing id attribute for block node in configuration file while in MANUAL mode" << endl;
-				throw ParsingException();
-			}
+                if (attr) {
+                    try {
+                        string str(attr);
+                        id =  stoull(str); // id in range [0, 2^64 - 1]
+                    } catch (const std::invalid_argument& e) {
+                        cerr << "error: invalid id attribute value in configuration file" << endl;
+                        throw ParsingException();
+                    } catch (const std::out_of_range& e) {
+                        cerr << "error: out of range id attribute value in configuration file" << endl;
+                        throw ParsingException();
+                    }
+                } else {
+                    cerr << "error: missing id attribute for block node in configuration file while in MANUAL mode" << endl;
+                    throw ParsingException();
+                }
 
-			// Ensure unicity of the ID, by inserting id to the set and checking that insertion took place
-			//  (insertion does not take place if there is a duplicate, and false is returned)
-			if (dupCheck.insert(id).second)
-				IDPool.push_back(id);
-			else {
-				cerr << "error: duplicate id attribute " << id << " for block node in configuration file while in MANUAL mode"
-					 << endl;
-				throw ParsingException();
-			}
-		}
+                // Ensure unicity of the ID, by inserting id to the set and checking that insertion took place
+                //  (insertion does not take place if there is a duplicate, and false is returned)
+                if (dupCheck.insert(id).second)
+                    IDPool.push_back(id);
+                else {
+                    cerr << "error: duplicate id attribute " << id << " for block node in configuration file while in MANUAL mode"
+                         << endl;
+                    throw ParsingException();
+                }
+            }
 
-	} break;
-	case RANDOM:
-	    generateRandomIDs(numModules, parseRandomIdSeed(), parseRandomStep());
-		break;
+        } break;
+        case RANDOM:
+            generateRandomIDs(numModules, parseRandomIdSeed(), parseRandomStep());
+            break;
 	} // switch
 
 	// cerr << "{";
@@ -715,7 +725,7 @@ void Simulator::parseBlockList() {
 			}
 
 			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;
-			loadBlock(element, IDPool[indexBlock++], bcb, position, color, master);
+			loadBlock(element, ids == ORDERED ? indexBlock++:IDPool[indexBlock++], bcb, position, color, master);
 
 			block = block->NextSibling("block");
 		} // end while (block)
@@ -761,7 +771,8 @@ void Simulator::parseBlockList() {
 				for(int i=0; i<n; i++) {
 					if (str[i]=='1') {
 						position.pt[0]=i;
-						loadBlock(element, IDPool[indexBlock++], bcb, position, color, false);
+						loadBlock(element, ids == ORDERED ? indexBlock++:IDPool[indexBlock++],
+                                  bcb, position, color, false);
 					}
 				}
 			}
@@ -781,13 +792,13 @@ void Simulator::parseBlockList() {
 			if (attr) {
 				string str(attr);
 				int pos1 = str.find_first_of(','),
-				pos2 = str.find_last_of(',');
+                    pos2 = str.find_last_of(',');
 				color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
 				color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
 				color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
-				#ifdef DEBUG_CONF_PARSING
+#ifdef DEBUG_CONF_PARSING
 				OUTPUT << "box color :" << color << endl;
-				#endif
+#endif
 			}
 			
 			Vector3D boxOrigin(0,0,0);
@@ -795,29 +806,29 @@ void Simulator::parseBlockList() {
 			if (attr) {
 				string str(attr);
 				int pos1 = str.find_first_of(','),
-				pos2 = str.find_last_of(',');
+                    pos2 = str.find_last_of(',');
 				boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
 				boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 				boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-				#ifdef DEBUG_CONF_PARSING
+#ifdef DEBUG_CONF_PARSING
 				OUTPUT << "new boxOrigine:" << boxOrigin << endl;
-				#endif
+#endif
 			}
 			
 			Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
-											 world->lattice->gridSize[1]*world->lattice->gridScale[1],
-											 world->lattice->gridSize[2]*world->lattice->gridScale[2]);
+                             world->lattice->gridSize[1]*world->lattice->gridScale[1],
+                             world->lattice->gridSize[2]*world->lattice->gridScale[2]);
 			attr = element->Attribute("boxSize");
 			if (attr) {
 				string str(attr);
 				int pos1 = str.find_first_of(','),
-				pos2 = str.find_last_of(',');
+                    pos2 = str.find_last_of(',');
 				boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
 				boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 				boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-				#ifdef DEBUG_CONF_PARSING
+#ifdef DEBUG_CONF_PARSING
 				OUTPUT << "new boxDest:" << boxDest << endl;
-				#endif
+#endif
 			}
 			
 			assert(world->lattice!=NULL);
@@ -829,7 +840,8 @@ void Simulator::parseBlockList() {
 						position.set(ix,iy,iz);
 						pos = world->lattice->gridToWorldPosition(position);
 						if (pos.isInBox(boxOrigin,boxDest)) {
-							loadBlock(element, IDPool[indexBlock++], bcb, position, color, false);
+							loadBlock(element,ids == ORDERED?indexBlock++:IDPool[indexBlock++],
+                                      bcb, position, color, false);
 						}
 					}
 				}
@@ -852,7 +864,7 @@ void Simulator::parseTarget() {
 }
 
 void Simulator::parseObstacles() {
-// loading the obstacles
+    // loading the obstacles
 	TiXmlNode *nodeObstacle = xmlWorldNode->FirstChild("obstacleList");
 	if (nodeObstacle) {
 		Color defaultColor = DARKGREY;
@@ -938,7 +950,7 @@ void Simulator::startSimulation(void) {
 }
 
 ruint Simulator::getRandomUint() {
-  return generator();
+    return generator();
 }
 
 } // Simulator namespace
