@@ -55,6 +55,7 @@ enum RotationLinkType { HexaFace, OctaFace, Any, None }; //!< Kind of face to be
 class Catoms3DBlock : public BaseSimulator::BuildingBlock {
 public :
     short orientationCode; //!< number of the connector that is along the x axis.
+    int distanceToBorder; // for printing optimisation
 public:
     /**
        @brief Constructor
