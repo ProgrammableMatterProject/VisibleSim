@@ -21,7 +21,7 @@ public:
     Cell3DPosition();
     constexpr Cell3DPosition(short x,short y,short z) : pt{x,y,z} { }
     Cell3DPosition(const Vector3D& v);
-    Cell3DPosition(const Cell3DPosition& c):pt{ c.pt[0], c.pt[1], c.pt[2] } {};
+    constexpr Cell3DPosition(const Cell3DPosition& c):pt{ c.pt[0], c.pt[1], c.pt[2] } {};
 
     void set(short x,short y,short z);
     double dist_euclid(const Cell3DPosition& p) const;

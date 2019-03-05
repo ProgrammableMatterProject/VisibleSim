@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="60, 60, 60">
+  <camera target="50,50,10" directionSpherical="-20,30,100"
+          angle="45" near="0.1" far="2000.0" />
+
+  <blockList color="128,128,128" blocksize="1,1,1">
+    <block position="5,5,2" color="0,255,255" orientation="11" />
+    <!-- <block position="3,3,2" color="255,192,203" orientation="8" /> -->
+    <!-- <block position="3,3,1" color="127.5,127.5,127.5" orientation="5" /> -->
+    <!-- <block position="3,3,0" color="127.5,127.5,127.5" orientation="9" /> -->
+    <!-- <block position="4,4,2" color="255,192,203" orientation="1" /> -->
+    <!-- <block position="5,5,1" color="127.5,127.5,127.5" orientation="0" /> -->
+    <!-- <block position="6,6,0" color="127.5,127.5,127.5" orientation="4" /> -->
+    <!-- <block position="4,3,2" color="255,192,203" orientation="7" /> -->
+    <!-- <block position="5,3,1" color="127.5,127.5,127.5" orientation="4" /> -->
+    <!-- <block position="6,3,0" color="127.5,127.5,127.5" orientation="3" /> -->
+    <!-- <block position="3,4,2" color="255,192,203" orientation="2" /> -->
+    <!-- <block position="3,5,1" color="127.5,127.5,127.5" orientation="9" /> -->
+    <!-- <block position="3,6,0" color="127.5,127.5,127.5" orientation="10" /> -->
+  </blockList>
+
+</world>

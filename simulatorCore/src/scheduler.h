@@ -80,6 +80,11 @@ protected:
 	virtual ~Scheduler();
 
 	Time debugDate; //!< Current date of debugger (incomplete feature)
+    
+    /**
+     * Pointer to the module for which the scheduler is currently handling an event
+     */
+    BuildingBlock* contextModule = NULL;
 public:
 	//!< Defines possible states of the scheduler
 	enum State {
@@ -100,6 +105,14 @@ public:
 		return(scheduler);
 	}
 
+    BuildingBlock* getContextModule() const {
+        return contextModule;
+    }
+
+    BlockCode* getContextBlockCode() const {
+        return contextModule ? contextModule->blockCode : NULL;
+    }
+    
 	//!< @brief Global function for triggering scheduler deletion (Takes a bit of synchronisation, see Scheduler::terminate)
 	static void deleteScheduler() {
 		// Ensure Scheduler has not been deleted yet

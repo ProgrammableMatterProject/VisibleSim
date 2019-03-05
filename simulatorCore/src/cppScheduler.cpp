@@ -85,7 +85,9 @@ void *CPPScheduler::startPaused(/*void *param*/) {
                         first=eventsMap.begin();
                         pev = (*first).second;
                         currentDate = pev->date;
+                        contextModule = pev->getConcernedBlock();
                         pev->consume();
+                        contextModule = NULL;
                         StatsCollector::getInstance().incEventsCount();
                         eventsMap.erase(first);
                         eventsMapSize--;
@@ -124,7 +126,9 @@ void *CPPScheduler::startPaused(/*void *param*/) {
                             pev = (*first).second;
                             currentDate = pev->date;
                             //lock();
+                            contextModule = pev->getConcernedBlock();
                             pev->consume();
+                            contextModule = NULL;
                             StatsCollector::getInstance().incEventsCount();
                             //unlock();
                             eventsMap.erase(first);
