@@ -53,6 +53,28 @@ void CsgCatoms3DBlockCode::startup() {
 	console << "Starting\n";
 
 	hasPosition = false;
+	/*if (catom->blockId==1) {
+		//stoyUtils.readFile("data/mug-high.stoy");
+		meshUtils.readFile("data/CNRS_80ans_avec_support.obj");
+		//meshUtils.readFile("data/support1_0.obj");
+		meshUtils.w.normalize_points(75);
+		//bitmapUtils.readFile("data/mug.bmp");
+	}*/
+	//myPosition = Catoms3DWorld::getWorld()->lattice->gridToWorldPosition(catom->position);
+	/*if (meshUtils.isInside(catom->position)) {
+		catom->setColor(WHITE);
+	}
+	else {
+		//catom->setVisible(false);
+		BaseSimulator::getWorld()->deleteBlock(catom);
+	}*/
+	if (catom->position[2]<4 || catom->position[1]<6 || catom->position[1]>23) {
+		BaseSimulator::getWorld()->deleteBlock(catom);
+	} else if (catom->position[2]<6 && (catom->position[0]<6 || catom->position[0]>63)){
+		BaseSimulator::getWorld()->deleteBlock(catom);
+	}
+	
+	/*
 	if (target==NULL) {
 		cerr << "No target in configuration file" << endl;
 	}
@@ -63,6 +85,7 @@ void CsgCatoms3DBlockCode::startup() {
 	else {
 		BaseSimulator::getWorld()->deleteBlock(catom);
 	}
+	*/
 }
 
 

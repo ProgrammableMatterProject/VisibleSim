@@ -55,6 +55,7 @@ enum RotationLinkType { HexaFace, OctaFace, Any, None }; //!< Kind of face to be
 class Catoms3DBlock : public BaseSimulator::BuildingBlock {
 public :
     short orientationCode; //!< number of the connector that is along the x axis.
+    int distanceToBorder; // for printing optimisation
     const Catoms3DBlock *pivot; //!< if currently rotating, pivot a pointer to its motion pivot
 public:
     /**
@@ -68,7 +69,7 @@ public:
     inline virtual Catoms3DGlBlock* getGlBlock() const {
         return static_cast<Catoms3DGlBlock*>(ptrGlBlock);
     };
-    
+
     inline void setGlBlock(Catoms3DGlBlock*ptr) { ptrGlBlock=ptr;};
     /**
        @brief Show/Hide a catom in the interface
@@ -91,25 +92,25 @@ public:
        @return return true if the cell is in the grid, false otherwise. */
     bool getNeighborPos(short connectorId,Cell3DPosition &pos) const;
 
-    /** 
+    /**
      * Gets a pointer to direct neighbor on connector conId
      * @param connectorId connector identifier
      * @return a pointer to neighbor on connector conId of catom, or NULL if there is none
      */
     Catoms3DBlock *getNeighborBlock(short conId) const;
 
-    /** 
+    /**
      * Gets a pointer to neighbor (direct neighborhood or distant) at cell nPos
      * @param nPos neighbor cell
      * @attention this function does not check whether nPos is in the local neighborhood of the catom. This is a feature since a neighbor in the second- or nth-neighborhood of the catom could be asked. Prefer getNeighborBlock(short conId) for local neighborhood.
      * @return a pointer to neighbor at ABSOLUTE position nPos
      */
     Catoms3DBlock *getNeighborBlock(const Cell3DPosition& nPos) const;
-    
-    /** 
+
+    /**
      * @brief Given a neighbor at position nPos and a lattice absolute direction (connector Id if neighbor had con0 aligned with x-axis) from that position, deduce what connector of the current module is adjacent to cell on direction nDirection of nPos.
-     * @param nPos 
-     * @param nDirection 
+     * @param nPos
+     * @param nDirection
      * @return connector of the current module is adjacent to cell on direction nDirection of nPos, or -1 if that cell and the current module are not adjacent */
     short projectAbsoluteNeighborDirection(const Cell3DPosition& nPos, short nDirection) const;
 
@@ -119,26 +120,26 @@ public:
        @return returns the id of the connector next to this pos or -1 if invalid. */
     short getConnectorId(const Cell3DPosition& pos) const;
 
-    /** 
+    /**
      * @attention SHOULD BE getConnector(p2p...)!
      */
     int getDirection(P2PNetworkInterface*) const;
-    
-    /** 
-     * @brief For a given connector, returns the direction corresponding to this connector 
+
+    /**
+     * @brief For a given connector, returns the direction corresponding to this connector
      *  relative to a catom whose 0 connector is aligned with the x-axis
      * @param connector the connector for which the absolute direction wants to be known
      * @return a short int in {0..11}, the direction of the connector, or -1 if connector is invalid or adjacent to a cell outside the lattice */
-    short getAbsoluteDirection(short connector) const;    
+    short getAbsoluteDirection(short connector) const;
     short getAbsoluteDirection(const Cell3DPosition& pos) const;
-    
+
     /**
      * @brief Sets the grid position of the catom, and updates its position matrix
      *
      * @param p :  the grid position (x,y,z) of the block as a Cell3DPosition
      */
     void setPosition(const Cell3DPosition &p);
-          
+
     /**
        @brief Get the orientation code from the transformation matrix of the catom
        @param mat: homogeneous transformation matrix
@@ -156,42 +157,42 @@ public:
        @param code: orientation code (number of the connector aligned with x axis)*/
     void setPositionAndOrientation(const Cell3DPosition &pos,short code);
 
-    /** 
+    /**
      * @param otherOriCode Some other catom's orientation code
      * @return true if both catoms' orientation are inverted relative to each other
      */
     bool areOrientationsInverted(short otherOriCode) const;
-    
-    /** 
+
+    /**
      * @brief If position in argument is adjacent to current module, returns a pointer to the neighbor in that cell
      * @param pos position of the neighbor to retrieve
      * @return a pointer to the neighbor on cell pos or NULL if pos is not adjacent to the module or out of lattice
      */
     Catoms3DBlock* getNeighborOnCell(const Cell3DPosition &pos) const;
 
-    /** 
+    /**
      * Indicates whether the module is can reach position pos in a single rotation,
      *  given its current local neighborhood
      * @param pos target position
-     * @param faceReq face requirement, if indicated the function will return true only if the 
+     * @param faceReq face requirement, if indicated the function will return true only if the
      *  motion is possible using the type of face passed as argument. Any by default.
-     * @attention this does not guarantee an absence of collision, as might occur if 
+     * @attention this does not guarantee an absence of collision, as might occur if
      *  a blocking modules exists in the 2nd-order neighborhood of the current block
      * @return true if motion is possible, false otherwise
      */
     bool canRotateToPosition(const Cell3DPosition &pos,
                              RotationLinkType faceReq = RotationLinkType::Any) const;
 
-    /** 
+    /**
      * Queries each of the module interface to determine the state of the local neighborhood.
      *  i.e., for each connector, if one module is connected or not
-     * @return a 12-bit bitset where the n-th bit is set to true if interface in direction n 
+     * @return a 12-bit bitset where the n-th bit is set to true if interface in direction n
      *  is connected to another module, 0 otherwise
-     * @attention a P2PNetworkInterface at DIRECTION d = m corresponds to the interface that 
+     * @attention a P2PNetworkInterface at DIRECTION d = m corresponds to the interface that
      *  is located at the same location as interface #m when block is at orientation 0
      */
     std::bitset<12> getLocalNeighborhoodState() const;
-    
+
     // MeldInterpreter
     /**
      * @copydoc BuildingBlock::addNeighbor

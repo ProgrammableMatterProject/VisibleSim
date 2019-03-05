@@ -680,9 +680,48 @@ bool Catoms3DWorld::exportSTLModel(string title) {
 	cout << "Writing STL output file..." << endl;
 	ObjLoader::ObjLoader stl("../../simulatorCore/resources/textures/catoms3DTextures","catoms3D_STL.obj");
 	Matrix mt;
-	lock();
 	Vector3D pos;
 	Cell3DPosition cell,neighborCell;
+	
+	// détermine la distance de chaque module au bord
+	/*int n=0;
+	vector <Catoms3DBlock*> tabBorders;
+	cout << "step #1: " << endl;;
+	for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
+		Catoms3DBlock *bb = (Catoms3DBlock *)pair.second;
+		if (bb->getNbNeighbors()<12) {
+			bb->setColor(RED);
+			bb->distanceToBorder=1;
+			tabBorders.push_back(bb);
+			n++;
+		} else {
+			bb->setColor(WHITE);
+			bb->distanceToBorder=0;
+		}
+	}
+	cout << "#1borders =" << n << endl;
+	cout << "step #2: " << endl;
+	n=0;
+	P2PNetworkInterface *p2p;
+	Catoms3DBlock *bbConnected;
+	for (const Catoms3DBlock* bb : tabBorders) {
+		
+		for (int i=0; i<12; i++) {
+			p2p = bb->getInterface(i);			
+			if (p2p && p2p->connectedInterface) {
+				bbConnected = (Catoms3DBlock *)p2p->connectedInterface->hostBlock;
+				if (bbConnected->distanceToBorder==0) {
+					bbConnected->distanceToBorder=2;
+					bbConnected->setColor(GREEN);
+					n++;
+				}
+			}
+		}
+	}
+	cout << "#2borders =" << n << endl;
+	*/
+	
+	lock();
 	for (const std::pair<bID, GlBlock*>& pair : mapGlBlocks) {
         GlBlock *glblock = pair.second;
 		file << "solid catom#" << glblock->blockId << endl;
