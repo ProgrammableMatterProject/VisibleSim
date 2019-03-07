@@ -525,13 +525,14 @@ void GlutContext::calculateFPS(void) {
 
 void GlutContext::showFPS(void) {
     char str[20];
-    //sprintf(str, "FPS = %4.2f", fps);
-    int ts = round(getScheduler()->now() / ((Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier + Rotations3D::COM_DELAY) + 20128));
-    sprintf(str,"Time Step = %d",ts);
+    sprintf(str, "FPS: %4.2f", fps);
     glColor3f(255,255,0);
-    GlutWindow::drawString(50, 50, str,GLUT_BITMAP_TIMES_ROMAN_24);
-    sprintf(str,"Nbre modules = %d",BaseSimulator::getWorld()->lattice->nbModules);
-    GlutWindow::drawString(50, 25, str,GLUT_BITMAP_TIMES_ROMAN_24);    
+    GlutWindow::drawString(50, 75, str,GLUT_BITMAP_HELVETICA_18);
+    int ts = round(getScheduler()->now() / (400000)); //FIXME: PTHY
+    sprintf(str,"Timestep: %d",ts);
+    GlutWindow::drawString(50, 50, str,GLUT_BITMAP_HELVETICA_18);
+    sprintf(str,"Nb modules: %d",BaseSimulator::getWorld()->lattice->nbModules);
+    GlutWindow::drawString(50, 25, str,GLUT_BITMAP_HELVETICA_18);    
 }
 
 void GlutContext::drawFunc(void) {
