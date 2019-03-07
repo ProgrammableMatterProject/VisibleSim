@@ -728,7 +728,8 @@ void Simulator::parseBlockList() {
 			}
 
 			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;
-			loadBlock(element, ids == ORDERED ? indexBlock++:IDPool[indexBlock++], bcb, position, color, master);
+			loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++], 
+                      bcb, position, color, master);
 
 			block = block->NextSibling("block");
 		} // end while (block)
@@ -775,7 +776,7 @@ void Simulator::parseBlockList() {
 				for(int i=0; i<n; i++) {
 					if (str[i]=='1') {
 						position.pt[0]=i;
-						loadBlock(element, ids == ORDERED ? indexBlock++:IDPool[indexBlock++],
+						loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++],
                                   bcb, position, color, false);
 					}
 				}
@@ -850,7 +851,8 @@ void Simulator::parseBlockList() {
                                 cout << "isInBox: " << pos.isInBox(boxOrigin,boxDest) << endl;
                             }
 
-							loadBlock(element,ids == ORDERED?indexBlock++:IDPool[indexBlock++],
+							loadBlock(element,
+                                      ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
                                       bcb, position, color, false);
 						}
 					}
@@ -895,7 +897,8 @@ void Simulator::parseBlockList() {
 #endif
                     
                         if (csgRoot->isInside(csgPos, color)) {
-                            loadBlock(element,ids == ORDERED?indexBlock++:IDPool[indexBlock++],
+                            loadBlock(element,
+                                      ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
                                       bcb, position, color, false);
                         }
                     }
