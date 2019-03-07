@@ -844,7 +844,12 @@ void Simulator::parseBlockList() {
 					for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
 						position.set(ix,iy,iz);
 						pos = world->lattice->gridToWorldPosition(position);
+                                                
 						if (pos.isInBox(boxOrigin,boxDest)) {
+                            if (position == Cell3DPosition(1,0,0)) {
+                                cout << "isInBox: " << pos.isInBox(boxOrigin,boxDest) << endl;
+                            }
+
 							loadBlock(element,ids == ORDERED?indexBlock++:IDPool[indexBlock++],
                                       bcb, position, color, false);
 						}

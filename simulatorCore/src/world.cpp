@@ -194,7 +194,9 @@ void World::deleteBlock(BuildingBlock *bb) {
     }
 
     // remove the associated glBlock
+    lock();
     mapGlBlocks.erase(bb->blockId);
+    unlock();
 
     delete bb->ptrGlBlock;
 }
@@ -262,7 +264,10 @@ void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
 					  lattice->gridScale[2]*pos[2]);
 	glBlock->setPosition(position);
 	glBlock->setColor(col);
+    
+    lock();
     mapGlBlocks.insert(make_pair(blockId, glBlock));
+    unlock();
 }
 
 void World::createPopupMenu(int ix, int iy) {

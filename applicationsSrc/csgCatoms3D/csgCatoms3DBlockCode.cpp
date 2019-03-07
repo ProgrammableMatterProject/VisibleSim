@@ -31,13 +31,13 @@ bool CsgCatoms3DBlockCode::bitmap[27000] = {0};
 int CsgCatoms3DBlockCode::side_size = 0;
 
 CsgCatoms3DBlockCode::CsgCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
-	// cout << "CsgCatoms3DBlockCode constructor" << endl;
+	cout << "CsgCatoms3DBlockCode constructor" << endl;
 	scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
 }
 
 CsgCatoms3DBlockCode::~CsgCatoms3DBlockCode() {
-	// cout << "CsgCatoms3DBlockCode destructor" << endl;
+	cout << "CsgCatoms3DBlockCode destructor" << endl;
 }
 
 void CsgCatoms3DBlockCode::generateBitmap(int side_size) {
@@ -53,28 +53,6 @@ void CsgCatoms3DBlockCode::startup() {
 	console << "Starting\n";
 
 	hasPosition = false;
-	/*if (catom->blockId==1) {
-		//stoyUtils.readFile("data/mug-high.stoy");
-		meshUtils.readFile("data/CNRS_80ans_avec_support.obj");
-		//meshUtils.readFile("data/support1_0.obj");
-		meshUtils.w.normalize_points(75);
-		//bitmapUtils.readFile("data/mug.bmp");
-	}*/
-	//myPosition = Catoms3DWorld::getWorld()->lattice->gridToWorldPosition(catom->position);
-	/*if (meshUtils.isInside(catom->position)) {
-		catom->setColor(WHITE);
-	}
-	else {
-		//catom->setVisible(false);
-		BaseSimulator::getWorld()->deleteBlock(catom);
-	}*/
-	if (catom->position[2]<4 || catom->position[1]<6 || catom->position[1]>23) {
-		BaseSimulator::getWorld()->deleteBlock(catom);
-	} else if (catom->position[2]<6 && (catom->position[0]<6 || catom->position[0]>63)){
-		BaseSimulator::getWorld()->deleteBlock(catom);
-	}
-	
-	/*
 	if (target==NULL) {
 		cerr << "No target in configuration file" << endl;
 	}
@@ -85,7 +63,6 @@ void CsgCatoms3DBlockCode::startup() {
 	else {
 		BaseSimulator::getWorld()->deleteBlock(catom);
 	}
-	*/
 }
 
 
@@ -231,4 +208,3 @@ CSG_message::~CSG_message() {
 BlockCode* CsgCatoms3DBlockCode::buildNewBlockCode(BuildingBlock *host) {
     return (new CsgCatoms3DBlockCode((Catoms3DBlock*)host));
 }
-

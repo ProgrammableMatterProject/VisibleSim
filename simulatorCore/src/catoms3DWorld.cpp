@@ -235,7 +235,9 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     catom->setColor(col);
     lattice->insert(catom, pos);
 
+    lock();
     mapGlBlocks.insert(make_pair(blockId, glBlock));
+    unlock();
     linkBlock(pos);
 }
 
