@@ -34,7 +34,6 @@
 #include <fstream>
 #include <list>
 #include <vector>
-#include <Eigen/Dense>
 #include <cfloat>
 
 #define TIXML_USE_STL	1

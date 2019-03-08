@@ -8,6 +8,7 @@
 #include "targetEncoding/CSG/csgParser.h"
 #include "targetEncoding/CSG/csgUtils.h"
 #include "catoms3DWorld.h"
+#include <Eigen/Dense>
 
 #include <algorithm>
 
@@ -412,7 +413,6 @@ const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
 
 TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
     TiXmlNode *methNode = targetNode->FirstChild("method");
-    const char* attr;
     TiXmlElement *element;
     Cell3DPosition position;
     Color defaultColor = Color();
@@ -519,10 +519,10 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
         cout << "Coefficients to be calculated"<< endl;
         //Calculation of d polynom degree
         int d = 0;
-        while (pcl.size() > (d+1)*(d+2)/2){
+        while ((int)pcl.size() > (d+1)*(d+2)/2){
             d = d+1;
         }
-        if (pcl.size() < (d+1)*(d+2)/2){
+        if ((int)pcl.size() < (d+1)*(d+2)/2){
             d = d-1;
         }
         cout << pcl.size() << "points in the cloud" << endl;
@@ -669,7 +669,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                     tctlpoint.push_back(point);
                     point.clear();
                 }
-                if (tctlpoint.size()==T_NUMPOINTS){
+                if ((int)tctlpoint.size() == T_NUMPOINTS){
                     ctlpoints.push_back(tctlpoint);
                     tctlpoint.clear();
                 }
@@ -742,10 +742,10 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) const {
     if (method.compare("interpolation") == 0) {
         //Calculation of d polynom degree
         int d = 0;
-        while (coeffs.size()>(d+1)*(d+2)/2) {
+        while ((int)coeffs.size()>(d+1)*(d+2)/2) {
             d = d+1;
         }
-        if (coeffs.size()<(d+1)*(d+2)/2) {
+        if ((int)coeffs.size()<(d+1)*(d+2)/2) {
             d = d-1;
         }
         //Calculation of f(x,y)
@@ -774,7 +774,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) const {
         //Nearest neighboor research
         float mindist = FLT_MAX;
         int neighbor = 0;
-        for (int i=0;i<pcl.size();i++){
+        for (int i=0;i<(int)pcl.size();i++){
             float xi = pcl[i].pt[0];
             float yi = pcl[i].pt[1];
             float dist = pow((x-xi),2)+pow((y-yi),2);
@@ -797,8 +797,8 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) const {
         //print method
         //cout << "Call to isInTarget method =" << method << endl;
         //Initialization of dichotomy parameters
-        float precision = FLT_MAX;
-        float precGoal = 100;
+        float precision = FLT_MAX; (void)precision;
+        //float precGoal = 100;
         float approx = 0.01;
         float u0 = 0;// + approx;
         float u1 = 1;// - approx;
@@ -1073,10 +1073,9 @@ void TargetSurface::glDraw() {
     GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat mat_shininess[] = { 50.0 };
 
-    GLfloat light0_position[] = { 2.0, 0.1, 5.0, 0.0 };
-    GLfloat light1_position[] = { -2.0, 0.1, 5.0, 0.0 };
-
-    GLfloat lmodel_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
+    //GLfloat light0_position[] = { 2.0, 0.1, 5.0, 0.0 };
+    //GLfloat light1_position[] = { -2.0, 0.1, 5.0, 0.0 };
+    //GLfloat lmodel_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
