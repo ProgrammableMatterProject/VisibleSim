@@ -6,7 +6,7 @@ using namespace std;
 using namespace Catoms3D;
 
 targetColorationBlockCode::targetColorationBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
-    cout << "targetColorationBlockCode constructor" << endl;
+    // cout << "targetColorationBlockCode constructor" << endl;
     catom = (Catoms3DBlock*)hostBlock;
 }
 

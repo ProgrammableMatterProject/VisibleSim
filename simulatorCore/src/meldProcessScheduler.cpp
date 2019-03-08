@@ -59,14 +59,13 @@ void MeldProcessScheduler::SemWaitOrReadDebugMessage() {
 }
 
 void *MeldProcessScheduler::startPaused(/*void *param*/) {
-
 	Time systemCurrentTime, systemCurrentTimeMax, pausedTime;
 	pausedTime = 0;
 	int seed = 500;
 	srand (seed);
 	bool hasProcessed = false;
 	
-	// 1) world ready
+    // 1) world ready
 	// 2) user start order
 	int nbSemWait = 1; 
 	

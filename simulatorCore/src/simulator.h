@@ -91,7 +91,7 @@ protected:
 
 	static Type type;			//!< Type of simulation, i.e. language of the user program
 
-	int seed = DEFAULT_SIMULATION_SEED; //!< Simulation seed, used for every randomized operation, except for the id distribution
+	int seed = DEFAULT_SIMULATION_SEED; //!< Simulation seed, used for every randomized operation
 	uintRNG generator; //!< Simulation random generator, used for every randomized operation, except for the id distribution
 	
 	static Simulator *simulator; //!< Static member for accessing *this* simulator

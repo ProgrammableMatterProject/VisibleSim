@@ -69,6 +69,7 @@ public:
 	int getSchedulerLength() { return schedulerLength; }
 	Time getMaximumDate() { return maximumDate; }
 	bool getSchedulerAutoStop() { return schedulerAutoStop; }
+
 	bool isSimulationSeedSet() { return simulationSeedSet; }
 	int getSimulationSeed() { return simulationSeed; }
 

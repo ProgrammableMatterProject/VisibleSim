@@ -222,8 +222,8 @@ int Simulator::parseRandomIdSeed() {
 			cerr << "error: invalid seed attribute value in configuration file" << endl;
 			throw ParsingException();
 		}
-	} else {				// No seed, generate distribution with random seed
-		return -1;
+	} else { // No seed, generate distribution with random seed or cmd line seed
+        return cmdLine.isSimulationSeedSet() ? cmdLine.getSimulationSeed() : -1;
 	}
 }
 

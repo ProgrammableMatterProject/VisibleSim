@@ -18,6 +18,7 @@
 #include "trace.h"
 #include "configExporter.h"
 #include "rotation3DEvents.h"
+#include "simulator.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -222,7 +223,7 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
 
     // FIXME: Adversarial start, randomly initiate start event
     std::mt19937 rng;
-    rng.seed(std::random_device()());
+    rng.seed(Simulator::getSimulator()->getCmdLine().getSimulationSeed());
     std::uniform_int_distribution<std::mt19937::result_type> u500(0,500);
     // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + u500(rng), catom));
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
