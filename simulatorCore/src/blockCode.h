@@ -164,6 +164,13 @@ public:
      * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
      */
     virtual void onUserKeyPressed(unsigned char c, int x, int y) {};
+
+    /** 
+     * Call by world during GL drawing phase, can be used by a user 
+     *  to draw custom Gl content into the simulated world
+     * @note call is made from World::GlDraw
+     */
+    virtual void onGlDraw() {};
 };
 
 } // BaseSimulator namespace

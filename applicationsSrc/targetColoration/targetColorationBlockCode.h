@@ -7,9 +7,12 @@
 #include "rotation3DEvents.h"
 #include "catoms3DBlock.h"
 
+#include "polymer.h"
+
 class targetColorationBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
 	// custom attribute
+    Polymer *polymer = NULL;
 public:
 
     Catoms3D::Catoms3DBlock *catom;
@@ -35,6 +38,15 @@ public:
      * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
      */
     virtual void onUserKeyPressed(unsigned char c, int x, int y);
+
+    /** 
+     * Call by world during GL drawing phase, can be used by a user 
+     *  to draw custom Gl content into the simulated world
+     * @note call is made from World::GlDraw
+     */
+    virtual void onGlDraw();
+    
+    void simulatePolymer();
 };
 
 #endif /* targetColorationBlockCode_H_ */

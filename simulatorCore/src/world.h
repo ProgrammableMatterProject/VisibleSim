@@ -107,7 +107,14 @@ public:
     map<bID, BuildingBlock*>& getMap() {
         return buildingBlocksMap;
     }
-
+    
+    /**
+     * @brief Getter for the map containing all Gl blocks of the world
+     */
+    unordered_map<bID, GlBlock*>& getMapGl() {
+        return mapGlBlocks;
+    }
+    
     /**
      * @brief Returns the number of blocks in the world
      * @return Number of blocks in the world
