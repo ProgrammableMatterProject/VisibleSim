@@ -403,31 +403,36 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
 				scheduler->toggle_pause();
 				if (scheduler->state == Scheduler::State::PAUSED) {
 					cout << "[t-" << scheduler->now()
-						<< "] Simulation Paused. Press <space> again to resume..." << endl;
+                         << "] Simulation Paused. Press <space> again to resume..." << endl;
 				} else {
 					cout << "[t-" << scheduler->now()
-						<< "] Simulation Resumed." << endl;
+                         << "] Simulation Resumed." << endl;
 				}
 			} break;
-			case 'p' :
-                // FIXME: Fix this, it should not be part of the simulatorCore
-                BaseSimulator::getWorld()->simulatePolymer();
-			break;
 			case '!': 
 				BaseSimulator::getWorld()->exportSTLModel("model.stl");
-			break;
-			case '1' : case '2' : case '3' : case '4' : case '5' : case '6' : case '7' : case '8' : 
+                break;
+			case '1' : case '2' : case '3' : case '4' : case '5' : case '6' : case '7' : case '8' :  {
 				BuildingBlock *bb = BaseSimulator::getWorld()->getSelectedBuildingBlock();
 				if (bb) {
-					cout << "Change color of building block #" << bb->blockId << endl; 
+					cout << "Changed color of building block #" << bb->blockId << endl; 
 					bb->setColor(c-'0');
 				} else {
-					cout << "no selected block" << endl;
+					cout << "Cannot change color: No selected block" << endl;
 				}
-				break;
-		}
-			
+            } break;
+            default: { // Pass on key press to user blockcode handler
+                // NOTE: Since C++ does not handle static virtual functions, we need
+                //  to get a pointer to a blockcode and call onUserKeyPressed from 
+                //  this instance
+                BuildingBlock *bb = BaseSimulator::getWorld()->getSelectedBuildingBlock() ?: 
+                    BaseSimulator::getWorld()->getMap().begin()->second;
+                if (bb) bb->blockCode->onUserKeyPressed(c, x, y);
+                break;
+            }
+		}			
 	}
+    
 	glutPostRedisplay();
 }
 

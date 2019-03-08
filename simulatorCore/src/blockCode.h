@@ -157,6 +157,13 @@ public:
      * @note call is made from utils::assert_handler() 
      */
     virtual void onAssertTriggered() {};
+    
+    /** 
+     * User-implemented keyboard handler function that gets called when 
+     *  a key press event could not be caught by openglViewer
+     * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
+     */
+    virtual void onUserKeyPressed(unsigned char c, int x, int y) {};
 };
 
 } // BaseSimulator namespace

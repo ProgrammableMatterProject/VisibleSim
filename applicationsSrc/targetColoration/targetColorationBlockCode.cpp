@@ -14,8 +14,17 @@ targetColorationBlockCode::~targetColorationBlockCode() {
     //cout << "targetColorationBlockCode destructor" << endl;
 }
 
+void targetColorationBlockCode::onUserKeyPressed(unsigned char c, int x, int y) {
+    switch (c) {
+        case 'p' :
+            // FIXME: Fix this, it should not be part of the simulatorCore
+            BaseSimulator::getWorld()->simulatePolymer();
+            break;
+    }        
+}
+
 void targetColorationBlockCode::startup() {
-    //Change Color
+    // Change Color
     if (target->isInTarget(catom->position)){
         catom->setColor(GREEN);
     }
