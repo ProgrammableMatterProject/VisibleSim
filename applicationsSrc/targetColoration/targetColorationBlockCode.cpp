@@ -37,7 +37,7 @@ void targetColorationBlockCode::simulatePolymer() {
         world->unlock();
 	}
     
-	double v = 0.0;
+	double v = 0.0; (void) v;
 	int i=100;
 	do {
 		v = polymer->positionInstant(0.01);
