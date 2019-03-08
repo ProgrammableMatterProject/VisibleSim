@@ -114,8 +114,7 @@ void RobotBlocksWorld::glDraw() {
             ((RobotBlocksGlBlock*)pair.second)->glDraw(objBlock);
         }
 		unlock();
-
-		glPopMatrix();
+		glPopMatrix();                
 		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
 		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
 		glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
@@ -194,6 +193,9 @@ void RobotBlocksWorld::glDraw() {
 		glScalef(0.2f,0.2f,0.2f);
 		objRepere->glDraw();
 		glPopMatrix();
+        
+        BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+        if (bb) bb->blockCode->onGlDraw();
 }
 
 void RobotBlocksWorld::glDrawId() {
