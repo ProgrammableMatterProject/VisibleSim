@@ -13,8 +13,6 @@
 #include "datomsBlock.h"
 #include "events.h"
 
-const int nbSteps_4 = 2;
-
 using namespace Datoms;
 
 class Deformation {
@@ -22,18 +20,21 @@ public :
 /**
     \brief Create a couple of rotations
     \param p : fixed pivot catom
-    \param ax1 : rotation axe for the first rotation
-    \param ax2 : rotation axe for the second rotation
-    \param id : geometrical model id (\todo)
-*/
-    Deformation (const DatomsBlock *mobile,const  DatomsBlock *fixe,const Vector3D &ax1,const Vector3D &ax2,uint8_t id);
-    Deformation () {};
+    \param C1 : rotation axe center for the first rotation
+    \param V1 : rotation axe for the first rotation
+    \param C2 : rotation axe center for the second rotation
+    \param V2 : rotation axe for the second rotation
+    \param mid : geometrical model id for mobile module
+    \param pid : geometrical model id for pivot module
+    */
+Deformation(const DatomsBlock *mobile,const DatomsBlock *fixe,const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2,PistonId mid,PistonId  pid);
 
-    void init(const Matrix& m) {
-        step=0;
-        initialMatrix=m;
-        finalMatrix=m*finalMatrix;
-    }
+	Deformation() {};
+
+	void init() {
+		step=0;
+	}
+	
 
 /**
     \brief Return current transformation matrix in m
@@ -48,13 +49,12 @@ public :
     bool nextStep(Matrix &m);
     void getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation);
 
-	uint8_t modelId;
+	PistonId mobileShape,pivotShape;
+	const DatomsBlock *ptrPivot,*ptrMobile;
 protected :
-    short step;
-    Matrix initialMatrix,finalMatrix;
-    Vector3D A0P0,A1P1;
-    Vector3D axe1;
-    Vector3D axe2;
+	short step;
+	Matrix initialMatrix,interMatrix,finalMatrix;
+	Vector3D Caxis0,Caxis1,Vaxis0,Vaxis1;
 };
 
 //===========================================================================================================

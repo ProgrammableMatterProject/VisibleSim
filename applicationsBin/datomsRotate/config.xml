@@ -1,63 +1,66 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="8,8,6" windowSize="1280,720" >
-	<camera target="25,20,10" directionSpherical="0,30,100" angle="30" near="1.0" far="300.0"/>
-	<spotlight target="25,25,0" directionSpherical="-35,40,150" angle="20"/>
+<world gridSize="9,9,6" windowSize="1280,720" >
+	<camera target="45,45,10" directionSpherical="0,30,150" angle="30" near="1.0" far="300.0"/>
+	<spotlight target="45,45,0" directionSpherical="-35,40,150" angle="30"/>
 
-	<blockList color="128,128,128" blockSize="10,10,10">
-		<block position="2,2,0" orientation="0" color="128,128,64"/>
-		<block position="3,2,0" orientation="0" color="128,128,64"/>
-		<block position="4,2,0" orientation="0" color="128,128,64"/>
-		<block position="5,2,0" orientation="0" color="128,128,64"/>
-		<block position="2,3,0" orientation="0" color="128,128,64"/>
-		<block position="3,3,0" orientation="0" color="128,128,64"/>
-		<block position="4,3,0" orientation="0" color="128,128,64"/>
-		<block position="5,3,0" orientation="0" color="128,128,64"/>
-		<block position="2,4,0" orientation="0" color="128,128,64"/>
-		<block position="3,4,0" orientation="0" color="128,128,64"/>
-		<block position="4,4,0" orientation="0" color="128,128,64"/>
-		<block position="5,4,0" orientation="0" color="128,128,64"/>
-		<block position="2,5,0" orientation="0" color="128,128,64"/>
-		<block position="3,5,0" orientation="0" color="128,128,64"/>
-		<block position="4,5,0" orientation="0" color="128,128,64"/>
-		<block position="5,5,0" orientation="0" color="128,128,64"/>
-		<block position="2,2,1" orientation="0" color="255,128,128"/>
-		<block position="3,2,1" orientation="0" color="255,255,64"/>
-		<block position="4,2,1" orientation="0" color="255,255,64"/>
-		<block position="3,3,1" orientation="0" color="255,255,64"/>
-		<block position="4,3,1" orientation="0" color="255,255,64"/>
-		<block position="4,4,1" orientation="0" color="255,128,128"/>
+	<blockList color="255,255,128" blockSize="10,10,10">
+		<block position="2,2,1" orientation="0" color="64,255,64"/>
+		<block position="1,1,0" orientation="0" color="255,255,64"/>
+		<block position="2,1,0" orientation="0" color="255,255,64"/>
+		<block position="3,1,0" orientation="0" color="255,255,64"/>
+		<block position="4,1,0" orientation="0" color="255,255,64"/>
+		<block position="5,1,0" orientation="0" color="255,255,64"/>
+		<block position="6,1,0" orientation="0" color="255,255,64"/>
+		<block position="7,1,0" orientation="0" color="255,255,64"/>
+		<block position="1,2,0" orientation="0" color="255,255,64"/>
+		<block position="2,2,0" orientation="0" color="255,255,64"/>
+		<block position="3,2,0" orientation="0" color="255,255,64"/>
+		<block position="4,2,0" orientation="0" color="255,255,64"/>
+		<block position="5,2,0" orientation="0" color="255,255,64"/>
+		<block position="6,2,0" orientation="0" color="255,255,64"/>
+		<block position="7,2,0" orientation="0" color="255,255,64"/>
+		<block position="1,3,0" orientation="0" color="255,255,64"/>
+		<block position="2,3,0" orientation="0" color="255,255,64"/>
+		<block position="3,3,0" orientation="0" color="255,255,64"/>
+		<block position="4,3,0" orientation="0" color="255,255,64"/>
+		<block position="5,3,0" orientation="0" color="255,255,64"/>
+		<block position="6,3,0" orientation="0" color="255,255,64"/>
+		<block position="7,3,0" orientation="0" color="255,255,64"/>
+		<block position="1,4,0" orientation="0" color="255,255,64"/>
+		<block position="2,4,0" orientation="0" color="255,255,64"/>
+		<block position="3,4,0" orientation="0" color="255,255,64"/>
+		<block position="4,4,0" orientation="0" color="255,255,64"/>
+		<block position="5,4,0" orientation="0" color="255,255,64"/>
+		<block position="6,4,0" orientation="0" color="255,255,64"/>
+		<block position="7,4,0" orientation="0" color="255,255,64"/>
+		<block position="1,5,0" orientation="0" color="255,255,64"/>
+		<block position="2,5,0" orientation="0" color="255,255,64"/>
+		<block position="3,5,0" orientation="0" color="255,255,64"/>
+		<block position="4,5,0" orientation="0" color="255,255,64"/>
+		<block position="5,5,0" orientation="0" color="255,255,64"/>
+		<block position="6,5,0" orientation="0" color="255,255,64"/>
+		<block position="7,5,0" orientation="0" color="255,255,64"/>
+		<block position="1,6,0" orientation="0" color="255,255,64"/>
+		<block position="2,6,0" orientation="0" color="255,255,64"/>
+		<block position="3,6,0" orientation="0" color="255,255,64"/>
+		<block position="4,6,0" orientation="0" color="255,255,64"/>
+		<block position="5,6,0" orientation="0" color="255,255,64"/>
+		<block position="6,6,0" orientation="0" color="255,255,64"/>
+		<block position="7,6,0" orientation="0" color="255,255,64"/>
+		<block position="1,7,0" orientation="0" color="255,255,64"/>
+		<block position="2,7,0" orientation="0" color="255,255,64"/>
+		<block position="3,7,0" orientation="0" color="255,255,64"/>
+		<block position="4,7,0" orientation="0" color="255,255,64"/>
+		<block position="5,7,0" orientation="0" color="255,255,64"/>
+		<block position="6,7,0" orientation="0" color="255,255,64"/>
+		<block position="7,7,0" orientation="0" color="255,255,64"/>
+
+		<block position="1,5,1" orientation="0" color="255,64,64"/>
+		<block position="2,4,1" orientation="0" color="255,64,64"/>
+		<block position="3,3,1" orientation="0" color="255,64,64"/>
+		<block position="4,2,1" orientation="0" color="255,64,64"/>
+
 	</blockList>
 
-	<targetList>
-		<target format="grid">
-			<cell position="2,2,0" color="64,255,64"/>
-			<cell position="3,2,0" color="64,255,64"/>
-			<cell position="4,2,0" color="64,255,64"/>
-			<cell position="5,2,0" color="64,255,64"/>
-			<cell position="2,3,0" color="64,255,64"/>
-			<cell position="3,3,0" color="64,255,64"/>
-			<cell position="4,3,0" color="64,255,64"/>
-			<cell position="5,3,0" color="64,255,64"/>
-			<cell position="2,4,0" color="64,255,64"/>
-			<cell position="3,4,0" color="64,255,64"/>
-			<cell position="4,4,0" color="64,255,64"/>
-			<cell position="5,4,0" color="64,255,64"/>
-			<cell position="2,5,0" color="64,255,64"/>
-			<cell position="3,5,0" color="64,255,64"/>
-			<cell position="4,5,0" color="64,255,64"/>
-			<cell position="5,5,0" color="64,255,64"/>
-			<cell position="3,2,1" color="64,255,64"/>
-			<cell position="4,2,1" color="64,255,64"/>
-			<cell position="3,3,1" color="64,255,64"/>
-			<cell position="4,3,1" color="64,255,64"/>
-			<cell position="4,3,2" color="255,64,128"/>
-			<cell position="2,4,1" color="255,64,128"/>
-		</target>
-	</targetList>
-
-	<!--<skeleton>
-        <skeleton_line posA="25,25,0" posB="25,25,21" blobbiness="-0.1" radius="15"/>
-        <skeleton_point pos="25,25,21" blobbiness="-0.1" radius="20"/>
-	</skeleton> -->
-
+	
 </world>

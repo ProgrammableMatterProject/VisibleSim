@@ -35,7 +35,7 @@ public:
     inline const short operator[](const int i) const { return pt[i]; };
     bool operator<(const Cell3DPosition &o) const;
     bool operator==(const Cell3DPosition &o) const
-        { return (pt[0] == o.pt[0]) && (pt[1] == o.pt[1]) && (pt[2] == o.pt[2]) ; };
+        { return (pt[0] == o.pt[0]) && (pt[1] == o.pt[1]) && (pt[2] == o.pt[2]); };
 
     /**
      * @brief Compares two position by considering first the Z component, then Y, and X, and returns true if first is smaller than second

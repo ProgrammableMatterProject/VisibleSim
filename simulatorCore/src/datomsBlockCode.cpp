@@ -31,7 +31,7 @@ void DatomsBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
 
-cout << "event #" << pev->id << ":" << pev->eventType << endl;
+// cout << "event #" << pev->id << ":" << pev->eventType << endl;
     switch (pev->eventType) {
         case EVENT_NI_RECEIVE: {
             message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
@@ -45,8 +45,9 @@ cout << "event #" << pev->id << ":" << pev->eventType << endl;
             }
         } break;
         case EVENT_ADD_NEIGHBOR: {
+#ifdef verbose
             OUTPUT << "ADD_NEIGHBOR" << endl;
-            //startup();
+#endif            //startup();
         } break;
         case EVENT_TAP: {
 			int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;

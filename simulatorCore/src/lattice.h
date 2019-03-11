@@ -203,7 +203,7 @@ public:
      * @return The corresponding world position
      */
     virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos);
-    
+		
     /**
      * @brief Transforms a real world position into its grid equivalent
      * @param pos The world position to consider
@@ -572,8 +572,6 @@ class FCCLattice : public Lattice3D {
                                 Cell3DPosition(0,-1,0), Cell3DPosition(0,1,0) };
     
     static const string directionName[];
-    bool *tabLockedCells;
-    unsigned short *tabDistances;
 
     // NEIGHBORDHOOD RESTRICTIONS
     enum class BlockingPositionPlane { XY, YZ, XZ };
@@ -595,6 +593,11 @@ class FCCLattice : public Lattice3D {
     bool isPositionUnblockedSide(const Cell3DPosition &pos, const Cell3DPosition &ignore);
     bool isPositionUnblocked(const Cell3DPosition &pos, const Cell3DPosition &ignore,
                              BlockingPositionPlane plane);
+
+protected:
+    bool *tabLockedCells;
+    unsigned short *tabDistances;
+
 public:
     enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
                     Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
@@ -656,7 +659,7 @@ public:
     void initTabDistances();
     unsigned short getDistance(const Cell3DPosition &pos);
     void setDistance(const Cell3DPosition &pos,unsigned short d);
-    void glDraw();    
+    virtual void glDraw();
 };
 
 
@@ -746,6 +749,8 @@ public:
      * @copydoc Lattice::getCellDistance
      */
     virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2);
+
+    virtual void glDraw();
 }; // SkewFCCLattice
 
 /*! @brief 3D Simple Cubic Lattice

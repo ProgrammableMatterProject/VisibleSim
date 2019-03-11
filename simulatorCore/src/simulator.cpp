@@ -819,7 +819,6 @@ void Simulator::startSimulation(void) {
 	scheduler->setState(Scheduler::NOTSTARTED);
 	if (scheduler->willAutoStart())
 		scheduler->start(scheduler->getSchedulerMode());
-
 	// Enter graphical main loop
 	GlutContext::mainLoop();
 }

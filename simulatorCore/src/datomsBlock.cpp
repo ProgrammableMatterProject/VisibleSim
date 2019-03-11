@@ -61,7 +61,7 @@ void DatomsBlock::setPositionAndOrientation(const Cell3DPosition &pos, short cod
 
     Matrix M=getMatrixFromPositionAndOrientation(pos,code);
     getWorld()->updateGlData(this,M);
-    getWorld()->updateGlData(this,position);
+    getWorld()->updateGlData(this,position); // necessary for picking
 }
 
 short DatomsBlock::getOrientationFromMatrix(const Matrix &mat) {

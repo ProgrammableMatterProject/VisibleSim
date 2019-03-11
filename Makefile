@@ -28,7 +28,7 @@ TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
 # You can add any of the following debug flags to get a more verbose output
 # TEMP_CCFLAGS += -DDEBUG_EVENTS #          : trace creation and destruction of all events
 # TEMP_CCFLAGS += -DDEBUG_CONSUME_EVENTS #  : trace the consomption of all events
-TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of messages
+# TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of messages
 # TEMP_CCFLAGS += -DDEBUG_VM_MESSAGES #     : trace the messages sent to the multicores VM
 # TEMP_CCFLAGS += -DDEBUG_OBJECT_LIFECYCLE #: trace objects construction and destruction
 # TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates

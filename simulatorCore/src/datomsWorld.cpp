@@ -37,15 +37,13 @@ DatomsWorld::DatomsWorld(const Cell3DPosition &gridSize, const Vector3D &gridSca
     OUTPUT << "\033[1;31mDatomsWorld constructor\033[0m" << endl;
 
     if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures",
-											"datoms.obj");
-		objBlockForPicking =
-			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures",
-									 "datoms_picking.obj");
+		//objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures","datoms.obj");
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures","datomVS_piston.obj");
+		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures", "datoms_picking.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D_Zinc.obj");
 	}
 
-    lattice = new SkewFCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+	lattice = new SkewFCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 	motionRules = new DatomsMotionRules();
 }
 
@@ -92,16 +90,17 @@ void DatomsWorld::createPopupMenu(int ix, int iy) {
 		rotateBlockSubMenu->h = nbreMenus*35+10;
 		rotateBlockSubMenu->clearChildren();
 		rotateBlockSubMenu->show(false);
-        int i=100;
-        Cell3DPosition finalPos;
-        short finalOrient;
+		int i=100;
+		Cell3DPosition finalPos;
+		short finalOrient;
 		for(auto &elem:tab) {
-            elem.second.init(((DatomsGlBlock*)bb->ptrGlBlock)->mat);
-            elem.second.getFinalPositionAndOrientation(finalPos,finalOrient);
-            if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
-                rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",
-				elem.first->isOctaFace(),elem.first->getConFromID(),elem.first->getConToID(),finalPos,finalOrient));
-            }
+			elem.second.init();
+			elem.second.getFinalPositionAndOrientation(finalPos,finalOrient);
+			cout << elem.first->getConFromID() << "=>" << elem.first->getConToID() << " " << finalPos << "," << finalOrient << endl;
+			if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
+					rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",
+				true,elem.first->getConFromID(),elem.first->getConToID(),finalPos,finalOrient));
+			}
 		}
 	}
 
@@ -115,95 +114,103 @@ void DatomsWorld::createPopupMenu(int ix, int iy) {
 }
 
 void DatomsWorld::menuChoice(int n) {
-    DatomsBlock *bb = (DatomsBlock *)getSelectedBuildingBlock();
-    Cell3DPosition nPos;
-    switch (n) {
-        case 1: case 6:
-		    GlutContext::popupMenu->show(true);
-			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(n)->getChild(0);
-			GlutContext::popupSubMenu->show(true);
-			GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupMenu->w+5;
-			GlutContext::popupSubMenu->y=GlutContext::popupMenu->y+GlutContext::popupMenu->getButton(n)->y-GlutContext::popupSubMenu->h/2;
-			// avoid placing submenu over the top of the window
-			if (GlutContext::popupSubMenu->y+GlutContext::popupSubMenu->h > GlutContext::screenHeight) {
-				GlutContext::popupSubMenu->y = GlutContext::screenHeight-GlutContext::popupSubMenu->h;
-			}
-		break;
-        case 11:
+	DatomsBlock *bb = (DatomsBlock *)getSelectedBuildingBlock();
+	Cell3DPosition nPos;
+	switch (n) {
+		case 1: case 6:
+		GlutContext::popupMenu->show(true);
+		GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(n)->getChild(0);
+		GlutContext::popupSubMenu->show(true);
+		GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupMenu->w+5;
+		GlutContext::popupSubMenu->y=GlutContext::popupMenu->y+GlutContext::popupMenu->getButton(n)->y-GlutContext::popupSubMenu->h/2;
+		// avoid placing submenu over the top of the window
+		if (GlutContext::popupSubMenu->y+GlutContext::popupSubMenu->h > GlutContext::screenHeight) {
+			GlutContext::popupSubMenu->y = GlutContext::screenHeight-GlutContext::popupSubMenu->h;
+		}
+	break;
+	case 11:
+		GlutContext::popupSubMenu->show(false);
+		GlutContext::popupMenu->show(false);
+		if (bb->getNeighborPos(numSelectedFace,nPos)) {
+			addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0,false);
+			linkBlock(nPos);
+			linkNeighbors(nPos);
+		} else {
+			cerr << "Position out of the grid" << endl;
+		}
+	break;
+	case 12:
+		GlutContext::popupSubMenu->show(false);
+		GlutContext::popupMenu->show(false);
+		if (bb->getNeighborPos(numSelectedFace,nPos)) {
+			addBlock(0, bb->buildNewBlockCode,nPos,bb->color,bb->orientationCode,false);
+			linkBlock(nPos);
+			linkNeighbors(nPos);
+		} else {
+			cerr << "Position out of the grid" << endl;
+		}
+	break;
+	case 13:
+		GlutContext::popupSubMenu->show(false);
+		GlutContext::popupMenu->show(false);
+		if (bb->getNeighborPos(numSelectedFace,nPos)) {
+			int orient = rand()%24;
+			addBlock(0, bb->buildNewBlockCode,nPos,bb->color,orient,false);
+			linkBlock(nPos);
+			linkNeighbors(nPos);
+		} else {
+			cerr << "Position out of the grid" << endl;
+		}
+	break;
+	default:
+		if (n>=100) {
 			GlutContext::popupSubMenu->show(false);
 			GlutContext::popupMenu->show(false);
-            if (bb->getNeighborPos(numSelectedFace,nPos)) {
-                addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0,false);
-				linkBlock(nPos);
-				linkNeighbors(nPos);
-			} else {
-				cerr << "Position out of the grid" << endl;
-			}
-		break;
-		case 12:
-			GlutContext::popupSubMenu->show(false);
-			GlutContext::popupMenu->show(false);
-			if (bb->getNeighborPos(numSelectedFace,nPos)) {
-				addBlock(0, bb->buildNewBlockCode,nPos,bb->color,bb->orientationCode,false);
-				linkBlock(nPos);
-				linkNeighbors(nPos);
-			} else {
-				cerr << "Position out of the grid" << endl;
-			}
-		break;
-		case 13:
-			GlutContext::popupSubMenu->show(false);
-			GlutContext::popupMenu->show(false);
-			if (bb->getNeighborPos(numSelectedFace,nPos)) {
-				int orient = rand()%24;
-				addBlock(0, bb->buildNewBlockCode,nPos,bb->color,orient,false);
-				linkBlock(nPos);
-				linkNeighbors(nPos);
-			} else {
-				cerr << "Position out of the grid" << endl;
-			}
-		break;
-    default:
-          if (n>=100) {
-				GlutContext::popupSubMenu->show(false);
-				GlutContext::popupMenu->show(false);
-				// if (getScheduler()->state == RUNNING) {
-				// scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(), bb, Rotations3D r));
-				// } else {
-                Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
-                short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
-                DatomsWorld *wrld = getWorld();
-                wrld->disconnectBlock(bb);
-                bb->setPositionAndOrientation(pos,orient);
-                wrld->connectBlock(bb);
-				//}
-			} else World::menuChoice(n); // For all non-catoms2D-specific cases
-		break;
-    }
+			// if (getScheduler()->state == RUNNING) {
+			// scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(), bb, Rotations3D r));
+			// } else {
+				Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
+				short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
+				DatomsWorld *wrld = getWorld();
+				wrld->disconnectBlock(bb);
+				bb->setPositionAndOrientation(pos,orient);
+				wrld->connectBlock(bb);
+			//}
+		} else World::menuChoice(n); // For all non-catoms2D-specific cases
+	break;
+	}
 }
 
 void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
 							 short orientation, bool master) {
-	if (blockId > maxBlockId)
+	if (blockId > maxBlockId) {
 		maxBlockId = blockId;
-	else if (blockId == 0)
+	} else if (blockId == 0) {
 		blockId = incrementBlockId();
+	}
+	
+	DatomsBlock *datom = new DatomsBlock(blockId,bcb);
+	
+	PistonId pId = (PistonId)(orientation >> 8);
+	orientation = orientation & 0xFF;
+//	cout << "ID=" << blockId << "  piston=" << pId << "  orient=" << orientation << endl;
+	
+	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
+							(datom->blockId, (BaseSimulator::BuildingBlock*)datom));
 
-    DatomsBlock *datom = new DatomsBlock(blockId,bcb);
-    buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
-							 (datom->blockId, (BaseSimulator::BuildingBlock*)datom));
+	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), datom));
 
-    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), datom));
+	DatomsGlBlock *glBlock = new DatomsGlBlock(blockId);
+	glBlock->setPosition(lattice->gridToWorldPosition(pos));
+	glBlock->currentModel=pId;
+	//datom->setModel(pId);
+	datom->compressedPiston = pId;
+	datom->setGlBlock(glBlock);
+	datom->setPositionAndOrientation(pos,orientation);
+	datom->setColor(col);
+	lattice->insert(datom, pos);
 
-    DatomsGlBlock *glBlock = new DatomsGlBlock(blockId);
-    glBlock->setPosition(lattice->gridToWorldPosition(pos));
-
-    datom->setGlBlock(glBlock);
-    datom->setPositionAndOrientation(pos,orientation);
-    datom->setColor(col);
-    lattice->insert(datom, pos);
-
-    mapGlBlocks.insert(make_pair(blockId,glBlock));
+	mapGlBlocks.insert(make_pair(blockId,glBlock));
 }
 
 /**
@@ -213,8 +220,9 @@ void DatomsWorld::linkBlock(const Cell3DPosition& pos) {
     DatomsBlock *datom = (DatomsBlock *)lattice->getBlock(pos);
 
     if (datom) {
+#ifdef verbose
 		OUTPUT << "link datom " << datom->blockId << endl;
-
+#endif
 		Cell3DPosition neighborPos;
 		DatomsBlock* neighborBlock;
 
@@ -222,11 +230,13 @@ void DatomsWorld::linkBlock(const Cell3DPosition& pos) {
 			if (datom->getNeighborPos(i,neighborPos)
 				&& (neighborBlock = (DatomsBlock *)lattice->getBlock(neighborPos))!=NULL) {
 				datom->getInterface(i)->connect(neighborBlock->getInterface(pos));
+#ifdef verbose
 				OUTPUT << "connection #" << datom->blockId << "(" << i << ") to #"
 					   << neighborBlock->blockId << endl;
+#endif
 			}
 		}
-    }
+	}
 }
 
 /**
@@ -234,22 +244,21 @@ void DatomsWorld::linkBlock(const Cell3DPosition& pos) {
  */
 void DatomsWorld::glDraw() {
 // material for the grid walls
-    if (background) {
-        glDrawBackground();
-    }
+	if (background) {
+		glDrawBackground();
+	}
 
-    glPushMatrix();
-    glDisable(GL_TEXTURE_2D);
-	
+	glPushMatrix();
+	glDisable(GL_TEXTURE_2D);
 // draw datoms
-    lock();
-    for (const auto& pair : mapGlBlocks) {
-        ((DatomsGlBlock*)pair.second)->glDraw(objBlock);
-    }
-    unlock();
-    glPopMatrix();
+	lock();
+	for (const auto& pair : mapGlBlocks) {
+		((DatomsGlBlock*)pair.second)->glDraw(objBlock);
+	}
+	unlock();
+	glPopMatrix();
 
-    enableTexture(false);
+	enableTexture(false);
 	lattice->glDraw();
 }
 
@@ -382,7 +391,7 @@ void DatomsWorld::updateGlData(BuildingBlock *bb) {
     }
 }
 
-void DatomsWorld::updateGlData(DatomsBlock*blc, const Color &color) {
+void DatomsWorld::updateGlData(const DatomsBlock*blc, const Color &color) {
     DatomsGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
 		lock();
@@ -430,6 +439,16 @@ void DatomsWorld::updateGlData(DatomsBlock*blc, const Matrix &mat) {
 		unlock();
     }
 }
+
+void DatomsWorld::updateGlData(const DatomsBlock*blc, PistonId id) {
+	DatomsGlBlock *glblc = blc->getGlBlock();
+	if (glblc) {
+		lock();
+		glblc->currentModel = id;
+		unlock();
+	}
+}
+
 
 void DatomsWorld::setSelectedFace(int n) {
     numSelectedGlBlock = n / 13;

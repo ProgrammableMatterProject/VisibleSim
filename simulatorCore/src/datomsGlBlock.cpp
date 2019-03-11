@@ -25,7 +25,7 @@ void DatomsGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glDisable(GL_CULL_FACE);
 	if (color[3] > 0) ptrObj->glDraw(currentModel);
 	glEnable(GL_CULL_FACE);
-    glPopMatrix();
+	glPopMatrix();
 }
 
 }

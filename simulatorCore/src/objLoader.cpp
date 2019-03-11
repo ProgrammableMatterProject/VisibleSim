@@ -11,7 +11,6 @@
 
 #include "objLoader.h"
 #include "trace.h"
-//#define DEBUG	1
 
 using namespace std;
 
@@ -67,7 +66,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 #endif
 	ifstream fin(txt);
 	if (!fin.is_open()) {
-		cerr << "File error : " << txt << endl;
+		cerr << "File error: " << txt << endl;
 		exit(EXIT_FAILURE);
 	}
 #ifdef DEBUG_GRAPHICS

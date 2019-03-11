@@ -37,8 +37,7 @@ void DatomsSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder b
 	simulator->startSimulation();
 }
 
-void DatomsSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-				      int argc, char *argv[]) {
+void DatomsSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale, int argc, char *argv[]) {
     world = new DatomsWorld(gridSize, gridScale, argc, argv);
 
 	if (GlutContext::GUIisEnabled)
@@ -54,15 +53,25 @@ void DatomsSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBu
 	//  here, using the blockElt TiXmlElement.
 
 	// set the orientation
-	int orientation = 0;
+	short orientation = 0;
 	const char *attr = blockElt->Attribute("orientation");
 	if (attr) {
 		orientation = atoi(attr);
-		OUTPUT << "orientation : " << orientation << endl;
+		OUTPUT << "orientation: " << orientation << endl;
 	}
-
+	
+	// set the compressed piston
+	PistonId piston = AllPistonsOff;
+	attr = blockElt->Attribute("piston");
+	if (attr) {
+		string str = attr;
+	  if (str=="2345") piston = Piston2345;
+	}
+	OUTPUT << "piston: " << piston << endl;
+	
 	// Finally, add block to the world
-	((DatomsWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+	((DatomsWorld*)world)->addBlock(blockId, bcb, pos, color, orientation + (piston<<8), master);
+	
 }
 
 } // Datoms namespace

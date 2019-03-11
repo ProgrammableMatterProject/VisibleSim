@@ -17,7 +17,7 @@ class DatomsGlBlock:public GlBlock {
 protected :
 public :
     Matrix mat{};
-    GLuint currentModel;
+    GLshort currentModel;
 
 	DatomsGlBlock(bID id) : GlBlock(id) { currentModel=1; };
 	virtual ~DatomsGlBlock() {};

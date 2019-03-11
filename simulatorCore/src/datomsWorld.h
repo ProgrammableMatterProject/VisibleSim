@@ -36,8 +36,7 @@ protected:
 
     virtual ~DatomsWorld();
 public:
-    DatomsWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-                  int argc, char *argv[]);
+    DatomsWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale, int argc, char *argv[]);
 
     static void deleteWorld();
     static DatomsWorld* getWorld() {
@@ -55,7 +54,7 @@ public:
 
 
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation, bool master);
+													short orientation, bool master);
 	inline DatomsMotionRules *getMotionRules() { return motionRules; };
 
     /**
@@ -69,11 +68,12 @@ public:
     virtual void glDrawIdByMaterial();
     virtual void glDrawBackground();
     void updateGlData(BuildingBlock *bb);
-    void updateGlData(DatomsBlock*blc,const Color &color);
+    void updateGlData(const DatomsBlock*blc,const Color &color);
     void updateGlData(DatomsBlock*blc, bool visible);
     void updateGlData(DatomsBlock*blc, const Cell3DPosition &position);
     void updateGlData(DatomsBlock*blc, const Vector3D &position);
     void updateGlData(DatomsBlock*blc, const Matrix &mat);
+	void updateGlData(const DatomsBlock*blc, PistonId id);
     virtual void setSelectedFace(int n);
     virtual void exportConfiguration();
 

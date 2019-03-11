@@ -47,8 +47,7 @@ public:
      * @return a connector link that can be used for the desired motion if it exists, NULL otherwise
      */
     static const DatomsMotionRulesLink* findConnectorLink(const DatomsBlock *module,
-                                                            short conFrom, short conTo,
-                                                            DeformationLinkType  ft);
+                                                            short conFrom, short conTo);
 
     /** 
      * Same as findConnectorLink, but with planning directly using the connectors of the pivot
@@ -62,23 +61,7 @@ public:
      * @return 
      */
     static const DatomsMotionRulesLink* findPivotConnectorLink(const DatomsBlock *pivot,
-                                                                 short conFrom, short conTo,
-                                                                 DeformationLinkType  ft);
-
-    /** 
-     * Computes and return the mirror connector of mirroringCon of m1, on the surface of m2 with m1 and m2 connected through the connector of id dockingConM1  and dockingConM2, of m1 and m2, respectively.
-     * @note If m1 was to rotate from its mirroringCon connector to its dockingConM1 connector using m2 as pivot, the mirror connector of mirroringCon corresponds to the connector of m2 on which m1 is now attached.
-     * @param m1 reference module. Module that wants to move.
-     * @param m2 pivot module
-     * @param dockingConM1 connector through which m1 is attached to m2 (belongs to m1).
-     * @param dockingConM2 connector through which m2 is attached to m1 (belongs to m2).
-     * @param mirroringCon connector to be mirrored on m2 (belongs to m1).
-     * @return mirror connector of dockingCon on m2 (belongs to m2), or -1 if the two connectors are not neighbors (not connected through a face).
-     */
-    static short getMirrorConnectorOnModule(const DatomsBlock *m1, const DatomsBlock *m2,
-                                            short dockingConM1, short dockingConM2,
-                                            short mirroringCon);
-
+                                                                 short conFrom, short conTo);
 
     /** 
      * Attempts to find all pairs of pivot and connector link on that pivot that would allow
@@ -89,9 +72,8 @@ public:
      *  type of face of the module
      * @return a vector of {pivot, link} pair representing the possible motions
      */
-    static std::vector<std::pair<DatomsBlock*, const DatomsMotionRulesLink*>>
-    findPivotLinkPairsForTargetCell(const DatomsBlock* m, const Cell3DPosition& tPos,
-                                    DeformationLinkType  faceReq = DeformationLinkType ::Any);
+    /*static std::vector<std::pair<DatomsBlock*, const DatomsMotionRulesLink*>>
+    findPivotLinkPairsForTargetCell(const DatomsBlock* m, const Cell3DPosition& tPos);*/
     
 	/** 
 		\brief Tries to find a neighbor module of m that can be used as a pivot to move m to tPos
@@ -101,9 +83,8 @@ public:
 		\return a pointer to a potential pivot, or NULL if none exist
 		\todo Implement function
 	**/
-    static DatomsBlock*
-    findMotionPivot(const DatomsBlock* m, const Cell3DPosition& tPos,
-                    DeformationLinkType  faceReq = DeformationLinkType ::Any);
+    /*static DatomsBlock*
+    findMotionPivot(const DatomsBlock* m, const Cell3DPosition& tPos);*/
 
 	/** 
 		\brief Computes a list of all possible rotations for module m

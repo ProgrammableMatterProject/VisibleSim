@@ -49,7 +49,7 @@ const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_
 class DatomsBlockCode;
 
 enum DeformationLinkType { HexaFace, OctaFace, Any, None }; //!< Kind of face to be used for a rotation. Any refers to no preference and None is used as a return statement to indicate an absence of possible link
-
+enum PistonId { AllPistonsOff=1, Piston012A, Piston136B, Piston4678, Piston0579, Piston2345, Piston89AB }; //!< ID of piston for deformation
 
 /*! @class DatomsBlock
   @brief Special treatement and data for 3D quasi-spherical robot
@@ -57,6 +57,7 @@ enum DeformationLinkType { HexaFace, OctaFace, Any, None }; //!< Kind of face to
 class DatomsBlock : public BaseSimulator::BuildingBlock {
 public :
     short orientationCode; //!< number of the connector that is along the x axis.
+    short compressedPiston; // -1 for none
 public:
     /**
        @brief Constructor
@@ -126,7 +127,7 @@ public:
      * @attention SHOULD BE getConnector(p2p...)!
      */
     int getDirection(P2PNetworkInterface*) const;
-    
+
     /** 
      * @brief For a given connector, returns the direction corresponding to this connector 
      *  relative to a catom whose 0 connector is aligned with the x-axis
@@ -141,7 +142,7 @@ public:
      * @param p :  the grid position (x,y,z) of the block as a Cell3DPosition
      */
     void setPosition(const Cell3DPosition &p);
-          
+
     /**
        @brief Get the orientation code from the transformation matrix of the catom
        @param mat: homogeneous transformation matrix

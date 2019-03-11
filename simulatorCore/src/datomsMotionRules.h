@@ -8,36 +8,51 @@
 //!< \namespace Datoms
 namespace Datoms {
 	
-enum ConnectorDirection { NORTH_WEST, NORTH_EAST,
+/*enum ConnectorDirection { NORTH_WEST, NORTH_EAST,
                           EAST,
                           SOUTH_EAST, SOUTH_WEST,
                           WEST,
                           NUM_CONDIRS};
-enum ConnectorOrientation { UP, DOWN, LEFT, RIGHT };
+enum ConnectorOrientation { UP, DOWN, LEFT, RIGHT };*/
 
 class DatomsMotionRulesLink;
+class DatomsMotionRulesPiston;
 
 class DatomsMotionRulesConnector {
 public :
-    int ID;
-    vector <DatomsMotionRulesLink*> tabLinks;
+	int ID;
+	vector <DatomsMotionRulesLink*> tabLinks;
+	DatomsMotionRulesPiston* tabPtrPistons[4];
+	DatomsMotionRulesConnector(int n):ID(n) {};
+	void addLink(DatomsMotionRulesLink *lnk);
+	void addPiston(DatomsMotionRulesPiston*ptr);
+};
 
-    DatomsMotionRulesConnector(int n):ID(n) {};
-    void addLink(DatomsMotionRulesLink *lnk);
+class DatomsMotionRulesPiston {
+public :
+	int ID;
+	Vector3D direction; // direction of the piston in the datom coordinate system
+	PistonId modelId;
+	Vector3D Caxis[4],Vaxis[4];
+	
+	DatomsMotionRulesPiston(int n,const Vector3D& V,PistonId model):ID(n),direction(V),modelId(model) {};
+	void setAxis(short i,const Vector3D& C, const Vector3D& V) {
+		Caxis[i]=C; Vaxis[i]=V.normer();
+	};
 };
 
 class DatomsMotionRulesLink {
-
-    DatomsMotionRulesConnector *conFrom; //!< origin connector
-    DatomsMotionRulesConnector *conTo; //!< destination connector
-    Vector3D axis1; //!< first rotation axis
-    Vector3D axis2; //!< second rotation axis
-    vector <int> tabBlockingIDs; //!< array of blocking ID
-    DeformationLinkType MRLT;
-	uint8_t modelId;
 public :
-    DatomsMotionRulesLink(DeformationLinkType  m,DatomsMotionRulesConnector *from,DatomsMotionRulesConnector *to,const Vector3D& ax1,const Vector3D& ax2,uint8_t id):
-        MRLT(m),conFrom(from),conTo(to),axis1(ax1),axis2(ax2),modelId(id) {};
+	DatomsMotionRulesConnector *conFrom; //!< origin connector
+	DatomsMotionRulesConnector *conTo; //!< destination connector
+	DatomsMotionRulesPiston *piston; // !< actuator
+	short jointFrom,jointTo;
+	Cell3DPosition tabBlockingCells[4]; // !< array of blocking ID
+	short nbBlockingCells;
+
+	DatomsMotionRulesLink(DatomsMotionRulesConnector *from,DatomsMotionRulesConnector *to,DatomsMotionRulesPiston *p,short s1,short s2,const Cell3DPosition &pos1,const Cell3DPosition &pos2,const Cell3DPosition &pos3);
+	DatomsMotionRulesLink(DatomsMotionRulesConnector *from,DatomsMotionRulesConnector *to,DatomsMotionRulesPiston *p,short s1,short s2,const Cell3DPosition &pos1,const Cell3DPosition &pos2,const Cell3DPosition &pos3,const Cell3DPosition &pos4);
+	
 /**
    \brief Get connector ID of destination of the motion
    \return destination connector ID
@@ -49,9 +64,6 @@ public :
 **/
     inline short getConFromID() const { return conFrom->ID; };
 
-    inline bool isOctaFace() const { return MRLT==OctaFace; };
-    inline bool isHexaFace() const { return MRLT==HexaFace; };
-    inline DeformationLinkType  getMRLT() const { return MRLT; };
 	
 /** 
 	@param mobile datom about to move
@@ -85,33 +97,24 @@ public :
 **/
     string getID();
 /**
-   \brief Add a blocking connector ID to the list
-   \param id of the connector that must be free to allow the motion
-**/
-    void addBlockingConnector(int id);
-/**
-   \brief Add a blocking connectors into the list
-   \param Comma separated string of ids of the connectors that must be free to allow the motion
-**/
-    void addBlockingConnectorsString(const string &str);
-/**
    \brief Return if the rule is valid for a Catoms 3D
-   \param The evaluated 3D catom
+   \param pivot The evaluated pivot datom
    \return boolean result
 **/
-    bool isValid(const DatomsBlock *c3d);
+	bool isValid(const DatomsBlock *pivot);
 /**
    \brief Get the list of cells that must be free to apply the rule
-   \param The evaluated 3D catom, get position and orientation for the rule
+   \param pivot The evaluated 3D catom, get position and orientation for the rule
    \return vector of Cell3DPosition containing blocking positions in the grid
 **/
-    vector<Cell3DPosition> getBlockingCellsList(const DatomsBlock *c3d);
+	vector<Cell3DPosition> getBlockingCellsList(const DatomsBlock *pivot);
+	
 /**
-   \brief Get the final position of the catom c3D after applying the rule
-   \param The evaluated 3D catom
-   \return Position in the grid
+   \brief Get the list of cells that must be free to apply the rule
+   \param mobile The mobile datom, get position and orientation for the rule
+   \return vector of Cell3DPosition containing blocking positions in the grid
 **/
-    Cell3DPosition getFinalPosition(DatomsBlock *c3d);
+    Cell3DPosition getFinalPosition(DatomsBlock *mobile);
 /**
    \brief Send a rotation event associated to the rule
    \param mobile : mobile catom that will turn
@@ -119,12 +122,6 @@ public :
    \param t : time of start of rotation
 **/
     void sendRotationEvent(DatomsBlock *mobile,DatomsBlock *fixed,double t);
-	
-/** 
-	\brief Could return something like TOP_TOPLEFT, so as to project one couple of connectors from one module over the ones of a neighbor
-    \todo */
-    DatomsMotionRulesLink* getDirectionTuple() const;
-
 };
 
 /*! \class DatomsMotionRules
@@ -132,6 +129,7 @@ public :
 */
 class DatomsMotionRules {
     DatomsMotionRulesConnector *tabConnectors[12]; //!< array of connector rules
+    DatomsMotionRulesPiston *tabPistons[6]; //<! array of piston data
     public:
         DatomsMotionRules();
         virtual ~DatomsMotionRules();
@@ -141,109 +139,38 @@ class DatomsMotionRules {
 		@return a reference to the vector of links for that connector
 	**/
     const vector<DatomsMotionRulesLink*>& getMotionRulesLinksForConnector(short con);
-
-	/** 
-		@param anchorCon latching connector to another datom
-		@param conTo connector whose direction to determine relative to anchorCon
-		@return ConnectorDirection corresponding to conTo relative to anchorCon or -1 if an input is invalid or anchorCon and conTo are not neighbor connectors
-	**/
-    short getConnectorDirection(short anchorCon, short conTo);
-        
-	/**
-		@brief Transforms the input connector direction and returns the result
-		@param d input connector direction
-		@param inverted if false, mirroring will be done relative to the y-axis, and x-axis if true (\attention{false is default if left unspecified})
-		@return mirror connector of input direction d
-	**/
-    static ConnectorDirection getMirrorConnectorDirection(ConnectorDirection d,
-                                                          bool inverted = false);
-
-	/**
-		@brief Returns connector in mirror direction of d from connector conFrom
-		@param conFrom source connector
-		@param d connector direction that must be mirrored to find mirror neighbor
-		@param inverted if false, mirroring will be done relative to the y-axis, and x-axis if true (\attention{false is default if left unspecified})
-		@return connector in mirror direction of d from connector conFrom, or -1 if conFrom invalid
-	**/
-    static short getMirrorNeighborConnector(short conFrom, ConnectorDirection d,
-                                            bool inverted = false);
-
-	/**
-		@brief Returns connector in direction d from conFrom
-		@param conFrom source connector
-		@param d direction of the neighbor
-		@return connector in direction d from conFrom, or -1 if input is invalid
-	**/
-    static short getNeighborConnector(short conFrom, ConnectorDirection d);
-
-    static const short* getNeighborConnectors(short conFrom);
 	
 	/**
-		\brief Returns if atom datom is able to turn from the orientation fromId to the toId one
+		\brief Returns if module datom is able to turn from the orientation fromId to the toId one
 		\param atom: the datom
 		\param fromId : initial connector
 		\param toId : final connector
 		\return true if atom datom is able to turn from the orientation fromId to the toId one 
 	**/
-    bool isValide(const DatomsBlock& atom,int fromId, int toId);
+    bool isValid(const DatomsBlock& atom,int fromId, int toId);
 	
 	/**
 		\brief Get the list of valid motion rules from a connector for atom datom
-		\param atom: the datom
-		\param fromId : initial connector
-		\param vec : vector of valid motion rules
+		\param pivot the datom pivot
+		\param fromId initial connector
+		\param vec vector of valid motion rules
 		\return return if atom datom is able to turn from the orientation fromId to the toId one 
 	**/
-    bool getValidMotionList(const DatomsBlock* atom,int from,vector<DatomsMotionRulesLink*>&vec);
+	bool getValidMotionList(const DatomsBlock* pivot,int from,vector<DatomsMotionRulesLink*>&vec);
 	
 	/**
-		\brief Get the list of valid motion rules from any connector around a pivot datom
-		\param pivot The datom used as pivot
-		\param vec an output vector of the resulting valid motion rules
-		\return return true if at least one rotation is possible, false otherwise 
-	**/
-    bool getValidMotionListFromPivot(const DatomsBlock* pivot,int from,vector<DatomsMotionRulesLink*>&vec,const SkewFCCLattice *lattice,const Target *target);
-
-	/**
-		\brief Finds all possible connector links on the surface of the pivot datom that a neighbor module could take
-		\param pivot The catom on whose surface a path needs to be found
-		\param links A vector reference that will hold all the solution links (\attention {PTHA: a set might be better suited})
-		\return true if at least one link exists, false otherwise (\attention{PTHA: might not be necessary})
-		\remarks This is different from finding a set of rotations that a module could perform, as in this case it's not the pivot catom that will perform the motion, hence there are fewer blocking constraints
-	**/
-    bool getValidSurfaceLinksOnDatom(const DatomsBlock* pivot,
-                                     vector<DatomsMotionRulesLink*>& links);
-
-	/** 
-		\brief Attempts to match a surface link from a pivot to a connector link for a connected mobile module to follow
-		@param pivLink link to match
-		@param m module that seeks to use surface link
-		@param pivot pivot module
-		@return a link of m that matches pivLink
-	**/
-    const DatomsMotionRulesLink*
-    getMobileModuleLinkMatchingPivotLink(const DatomsMotionRulesLink* pivLink,
-                                         const DatomsBlock* m,
-                                         const DatomsBlock* pivot);
-
-    /** 
-		\brief  Computes and return the mirror connector of mirroringCon of m1, on the surface of m2 with m1 and m2 connected through the connector of id dockingConM1  and dockingConM2, of m1 and m2, respectively.
-		@note If m1 was to rotate from its mirroringCon connector to its dockingConM1 connector using m2 as pivot, the mirror connector of mirroringCon corresponds to the connector of m2 on which m1 is now attached.
-		@param m1 reference module. Module that wants to move.
-		@param m2 pivot module
-		@param dockingConM1 connector through which m1 is attached to m2 (belongs to m1).
-		@param dockingConM2 connector through which m2 is attached to m1 (belongs to m2).
-		@param mirroringCon connector to be mirrored on m2 (belongs to m1).
-		@return mirror connector of dockingCon on m2 (belongs to m2), or -1 if the two connectors are not neighbors (not connected through a face).
-	**/
-    static short getMirrorConnectorOnModule(const DatomsBlock *m1, const DatomsBlock *m2,
-                                            short dockingConM1, short dockingConM2,
-                                            short mirroringCon);
-
-    protected:
-    private:
-        void addLinks4(int id1, int id2, int id3, int id4,const Vector3D &left,const Vector3D &lup,const Vector3D &rup,uint8_t modelId);
-        void addLink(DeformationLinkType  mrlt,int id1, int id2,const Vector3D &axis1,const Vector3D &axis2,int n,int *tabBC,uint8_t modelId);
+		*		\brief Get the PistonId of modul close to a position
+		*		\param module The selected module
+		*		\param pos position in front of the piston
+		*		\return return id of the piston
+		**/
+	PistonId getPistonId(const DatomsBlock *module,const Vector3D &pos);
+	DatomsMotionRulesPiston** getTabPtrPistons(short connector) { return tabConnectors[connector]->tabPtrPistons; }
+	protected:
+	private:
+		void addLinks(int conFrom,DatomsMotionRulesPiston* act,int id1, int id2,int id3,const DatomsMotionRulesPiston* P0, const DatomsMotionRulesPiston* P1, const DatomsMotionRulesPiston* P2,short j0,short j1,short j2,short j3);
+		void addLink(int conFrom, int id1, DatomsMotionRulesPiston* act, const Vector3D &C1, const Vector3D &C2, const Vector3D &C3,short j0,short j1);
+		void addLink(int conFrom, int id1, DatomsMotionRulesPiston* act, const Vector3D &C1, const Vector3D &C2, const Vector3D &C3, const Vector3D &C4,short j0,short j1);
 };
 
 std::ostream& operator<<(std::ostream &stream, DatomsMotionRulesLink const& mrl);

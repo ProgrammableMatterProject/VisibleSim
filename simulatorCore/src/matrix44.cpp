@@ -188,19 +188,19 @@ void Matrix::setGLmat(const Matrix &R,const Vector3D &T)
 }
 
 void Matrix::setRotation(double a,const Vector3D &V)
-{ double cosa=cos(a*M_PI/180.),sina=sin(a*M_PI/180.);
+{ double cosa=cos(a*M_PI/180.),sina=sin(a*M_PI/180.),c1=1.0-cosa;
 
-  m[0] = V.pt[0]*V.pt[0] + cosa*(1.-V.pt[0]*V.pt[0]);
-  m[1] = V.pt[0]*V.pt[1]*(1.-cosa) - V.pt[2]*sina;
-  m[2] = V.pt[0]*V.pt[2]*(1.-cosa) + V.pt[1]*sina;
+  m[0] = V.pt[0]*V.pt[0]*c1 + cosa;
+  m[1] = V.pt[0]*V.pt[1]*c1 - V.pt[2]*sina;
+  m[2] = V.pt[0]*V.pt[2]*c1 + V.pt[1]*sina;
   m[3] = 0.0;
-  m[4] = V.pt[0]*V.pt[1]*(1.-cosa) + V.pt[2]*sina;
-  m[5] = V.pt[1]*V.pt[1] + cosa*(1.-V.pt[1]*V.pt[1]);
-  m[6] = V.pt[1]*V.pt[2]*(1.-cosa) - V.pt[0]*sina;
+  m[4] = V.pt[0]*V.pt[1]*c1 + V.pt[2]*sina;
+  m[5] = V.pt[1]*V.pt[1]*c1 + cosa;
+  m[6] = V.pt[1]*V.pt[2]*c1 - V.pt[0]*sina;
   m[7] = 0.0;
-  m[8] = V.pt[0]*V.pt[2]*(1.-cosa) - V.pt[1]*sina;
-  m[9] = V.pt[1]*V.pt[2]*(1.-cosa) + V.pt[0]*sina;
-  m[10] = V.pt[2]*V.pt[2] + cosa*(1.-V.pt[2]*V.pt[2]);
+  m[8] = V.pt[0]*V.pt[2]*c1 - V.pt[1]*sina;
+  m[9] = V.pt[1]*V.pt[2]*c1 + V.pt[0]*sina;
+  m[10] = V.pt[2]*V.pt[2]*c1 + cosa;
   m[11] = 0.0;
   m[12] = 0.0;
   m[13] = 0.0;
