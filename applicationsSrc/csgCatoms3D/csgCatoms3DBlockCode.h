@@ -31,19 +31,19 @@ public:
     static bool bitmap[27000]; // used to generate the bitmap file from any method in use
     static int side_size; // used to read the bitmap vector as a matrix
 
-	Scheduler *scheduler;
-	Catoms3D::Catoms3DBlock *catom;
+    Scheduler *scheduler;
+    Catoms3D::Catoms3DBlock *catom;
     Vector3D myPosition; // has relative position from the master
     bool hasPosition; // flag position
     StoyUtils stoyUtils;
     MeshUtils meshUtils;
     BitmapUtils bitmapUtils;
 
-	CsgCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
-	~CsgCatoms3DBlockCode();
+    CsgCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
+    ~CsgCatoms3DBlockCode();
 
-	void startup();
-	void processLocalEvent(EventPtr pev);
+    void startup();
+    void processLocalEvent(EventPtr pev);
     void createCSG();
     void sendCSGMessage();
 
@@ -55,8 +55,9 @@ public:
     void methodsDifference();
     void generateBitmap(int side_size);
 
-	static BlockCode *buildNewBlockCode(BuildingBlock *host);
+    static BlockCode *buildNewBlockCode(BuildingBlock *host);
 
+    virtual void onGlDraw() override;
 };
 
 class CSG_message : public Message {
@@ -65,13 +66,13 @@ class CSG_message : public Message {
     vector<Brick> bricks;
     string bitmap;
 public :
-	CSG_message(vector<Brick> bricks, string _bitmap, Vector3D position);
-	~CSG_message();
+    CSG_message(vector<Brick> bricks, string _bitmap, Vector3D position);
+    ~CSG_message();
 
-	//char* getCsgBuffer() { return csgBuffer; };
-	vector<Brick> getBricks() { return bricks; };
-	string getBitmap() { return bitmap; };
-	Vector3D getPosition() { return position; };
+    //char* getCsgBuffer() { return csgBuffer; };
+    vector<Brick> getBricks() { return bricks; };
+    string getBitmap() { return bitmap; };
+    Vector3D getPosition() { return position; };
 };
 
 class CsgCatoms3DStats {

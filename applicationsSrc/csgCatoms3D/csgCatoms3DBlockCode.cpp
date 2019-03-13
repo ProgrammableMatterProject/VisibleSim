@@ -31,13 +31,13 @@ bool CsgCatoms3DBlockCode::bitmap[27000] = {0};
 int CsgCatoms3DBlockCode::side_size = 0;
 
 CsgCatoms3DBlockCode::CsgCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
-	cout << "CsgCatoms3DBlockCode constructor" << endl;
-	scheduler = getScheduler();
-	catom = (Catoms3DBlock*)hostBlock;
+    cout << "CsgCatoms3DBlockCode constructor" << endl;
+    scheduler = getScheduler();
+    catom = (Catoms3DBlock*)hostBlock;
 }
 
 CsgCatoms3DBlockCode::~CsgCatoms3DBlockCode() {
-	cout << "CsgCatoms3DBlockCode destructor" << endl;
+    cout << "CsgCatoms3DBlockCode destructor" << endl;
 }
 
 void CsgCatoms3DBlockCode::generateBitmap(int side_size) {
@@ -50,27 +50,27 @@ void CsgCatoms3DBlockCode::generateBitmap(int side_size) {
 }
 
 void CsgCatoms3DBlockCode::startup() {
-	console << "Starting\n";
+    console << "Starting\n";
 
-	hasPosition = false;
-	if (target==NULL) {
-		cerr << "No target in configuration file" << endl;
-	}
-	if (BlockCode::target->isInTarget(catom->position)) {
-		//catom->setColor(RED);
-		catom->setColor(BlockCode::target->getTargetColor(catom->position));
-	}
-	else {
-		BaseSimulator::getWorld()->deleteBlock(catom);
-	}
+    hasPosition = false;
+    if (target==NULL) {
+        cerr << "No target in configuration file" << endl;
+    }
+    if (BlockCode::target->isInTarget(catom->position)) {
+        //catom->setColor(RED);
+        catom->setColor(BlockCode::target->getTargetColor(catom->position));
+    }
+    else {
+        BaseSimulator::getWorld()->deleteBlock(catom);
+    }
 }
 
 
 void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
-	MessagePtr message;
-	stringstream info;
+    MessagePtr message;
+    stringstream info;
 
-	switch (pev->eventType) {
+    switch (pev->eventType) {
     case EVENT_NI_RECEIVE: {
       message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
         switch(message->id) {
@@ -108,7 +108,7 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
           }
       }
       break;
-	}
+    }
 }
 /*
 void CsgCatoms3DBlockCode::methodsDifference() {
@@ -190,7 +190,7 @@ void CsgCatoms3DBlockCode::sendCSGMessage() {
 }
 
 CSG_message::CSG_message(vector<Brick> _bricks, string _bitmap, Vector3D pos) {
-	id = CSG_MSG_ID;
+    id = CSG_MSG_ID;
 
 //    csgBuffer = new char[_csgBufferSize];
 //    memcpy(csgBuffer, _csgBuffer, _csgBufferSize);
@@ -207,4 +207,12 @@ CSG_message::~CSG_message() {
 
 BlockCode* CsgCatoms3DBlockCode::buildNewBlockCode(BuildingBlock *host) {
     return (new CsgCatoms3DBlockCode((Catoms3DBlock*)host));
+}
+
+void CsgCatoms3DBlockCode::onGlDraw() {
+    try {
+        // target->glDraw();
+    } catch (const NotImplementedException& e) {
+        // Silently fail
+    }
 }

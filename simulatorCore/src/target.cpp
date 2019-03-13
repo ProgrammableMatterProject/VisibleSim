@@ -20,7 +20,7 @@ TiXmlNode *Target::targetListNode = NULL;
 TiXmlNode *Target::targetNode = NULL;
 
 Target *Target::loadNextTarget() {
-	if (Target::targetListNode) {
+    if (Target::targetListNode) {
         // Move targetNode pointer to next target (or NULL if there is none)
         Target::targetNode = targetListNode->IterateChildren(targetNode);
 
@@ -99,7 +99,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
                       atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
                       atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
         }
-		OUTPUT << "add target " << position << "," << color << endl;
+        OUTPUT << "add target " << position << "," << color << endl;
         addTargetCell(position, color);
         cellNode = cellNode->NextSibling("cell");
     } // end while (cellNode)
@@ -339,7 +339,7 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     csgRoot = csgUtils.readCSGBuffer(csgBin);
     csgRoot->toString();
 
-    if (boundingBox) csgRoot->boundingBox(bb);    
+    if (boundingBox) csgRoot->boundingBox(bb);
 }
 
 // #define OFFSET_BOUNDINGBOX
@@ -372,7 +372,7 @@ Cell3DPosition TargetCSG::CSGToGridPosition(const Vector3D &pos) const {
     unboundPos.pt[1] -= bb.P0[1];
     unboundPos.pt[2] -= bb.P0[2];
 #endif
-    
+
     Cell3DPosition res = getWorld()->lattice->unscaledWorldToGridPosition(unboundPos);
     return res;
 }
@@ -405,6 +405,10 @@ const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
         throw InvalidPositionException(pos);
     }
     return color;
+}
+
+void TargetCSG::glDraw() {
+    csgRoot->glDraw();
 }
 
 /************************************************************
@@ -699,34 +703,34 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
 
 
 
-		/*
-		float_sknots = new float[S_NUMKNOTS];
-		float_tknots = new float[T_NUMKNOTS];
-		float_ctlpoints = new float**[S_NUMPOINTS];
+        /*
+        float_sknots = new float[S_NUMKNOTS];
+        float_tknots = new float[T_NUMKNOTS];
+        float_ctlpoints = new float**[S_NUMPOINTS];
 
-		for (int i=0; i<S_NUMKNOTS; i++) {
-			float_sknots[i] = sknots[i];
-			cout << "float_sknots[" << i << "]=" << float_sknots[i] << endl;
-		}
-		for (int i=0; i<T_NUMKNOTS; i++) {
-			float_tknots[i] = tknots[i];
-			cout << "float_tknots[" << i << "]=" << float_tknots[i] << endl;
-		}
-		for (int i=0; i<S_NUMPOINTS; i++) {
-			float_ctlpoints[i] = new float*[T_NUMPOINTS];
-			for(int j=0; j<T_NUMPOINTS; j++) {
-				float_ctlpoints[i][j] = new float[4];
-				for (int k=0; k<4; k++) {
-					float_ctlpoints[i][j][k] = ctlpoints[i][j][k];
-					cout << "float_ctlpoints[" << i << "]["<<j<<"]["<<k<<"]=" << float_ctlpoints[i][j][k]<< endl;
-				}
-			}
-		}
+        for (int i=0; i<S_NUMKNOTS; i++) {
+            float_sknots[i] = sknots[i];
+            cout << "float_sknots[" << i << "]=" << float_sknots[i] << endl;
+        }
+        for (int i=0; i<T_NUMKNOTS; i++) {
+            float_tknots[i] = tknots[i];
+            cout << "float_tknots[" << i << "]=" << float_tknots[i] << endl;
+        }
+        for (int i=0; i<S_NUMPOINTS; i++) {
+            float_ctlpoints[i] = new float*[T_NUMPOINTS];
+            for(int j=0; j<T_NUMPOINTS; j++) {
+                float_ctlpoints[i][j] = new float[4];
+                for (int k=0; k<4; k++) {
+                    float_ctlpoints[i][j][k] = ctlpoints[i][j][k];
+                    cout << "float_ctlpoints[" << i << "]["<<j<<"]["<<k<<"]=" << float_ctlpoints[i][j][k]<< endl;
+                }
+            }
+        }
 
 
-		theNurb = gluNewNurbsRenderer();
-		gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 50.0);
-		gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);*/
+        theNurb = gluNewNurbsRenderer();
+        gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 50.0);
+        gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);*/
         //NURBS parameters initialization finished
     }
 
@@ -1068,7 +1072,7 @@ void TargetSurface::boundingBox(BoundingBox &bb) {
 }
 
 void TargetSurface::glDraw() {
-	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat mat_diffuse[] = { 1.0, 0.2, 1.0, 1.0 };
     GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat mat_shininess[] = { 50.0 };
@@ -1082,18 +1086,18 @@ void TargetSurface::glDraw() {
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
-	glPushMatrix();
-	gluBeginSurface(theNurb);
+    glPushMatrix();
+    gluBeginSurface(theNurb);
     gluNurbsSurface(theNurb,
-	    S_NUMKNOTS, float_sknots,
-	    T_NUMKNOTS, float_tknots,
-	    4 * T_NUMPOINTS,
-	    4,
-	    &float_ctlpoints[0][0][0],
-	    S_ORDER, T_ORDER,
-	    GL_MAP2_VERTEX_4);
+        S_NUMKNOTS, float_sknots,
+        T_NUMKNOTS, float_tknots,
+        4 * T_NUMPOINTS,
+        4,
+        &float_ctlpoints[0][0][0],
+        S_ORDER, T_ORDER,
+        GL_MAP2_VERTEX_4);
     gluEndSurface(theNurb);
-	glPopMatrix();
+    glPopMatrix();
 }
 
 
