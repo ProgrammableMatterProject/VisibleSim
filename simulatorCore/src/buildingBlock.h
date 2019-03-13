@@ -203,6 +203,13 @@ public:
 	 */
 	unsigned short getNbNeighbors() const;
 	/**
+	 * @brief Returns the list of neighbors of the module
+	 * @attention NULL interfaces are not pushed in this array
+	 * @return vector of buildingBlocks
+	 */
+	vector<BuildingBlock*> getNeighbors();
+
+	/**
 	 * @brief Schedules a stop event for this block at a given date and update its state
 	 * @param date : date at which the stop event must be processed
 	 * @param s : new state of the block

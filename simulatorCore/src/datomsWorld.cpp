@@ -204,7 +204,6 @@ void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
 	glBlock->setPosition(lattice->gridToWorldPosition(pos));
 	glBlock->currentModel=pId;
 	//datom->setModel(pId);
-	datom->compressedPiston = pId;
 	datom->setGlBlock(glBlock);
 	datom->setPositionAndOrientation(pos,orientation);
 	datom->setColor(col);

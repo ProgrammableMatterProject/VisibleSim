@@ -48,7 +48,7 @@ const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_
 
 class DatomsBlockCode;
 
-enum DeformationLinkType { HexaFace, OctaFace, Any, None }; //!< Kind of face to be used for a rotation. Any refers to no preference and None is used as a return statement to indicate an absence of possible link
+
 enum PistonId { AllPistonsOff=1, Piston012A, Piston136B, Piston4678, Piston0579, Piston2345, Piston89AB }; //!< ID of piston for deformation
 
 /*! @class DatomsBlock
@@ -57,7 +57,6 @@ enum PistonId { AllPistonsOff=1, Piston012A, Piston136B, Piston4678, Piston0579,
 class DatomsBlock : public BaseSimulator::BuildingBlock {
 public :
     short orientationCode; //!< number of the connector that is along the x axis.
-    short compressedPiston; // -1 for none
 public:
     /**
        @brief Constructor
@@ -172,19 +171,6 @@ public:
      * @return a pointer to the neighbor on cell pos or NULL if pos is not adjacent to the module or out of lattice
     **/
     DatomsBlock* getNeighborOnCell(const Cell3DPosition &pos) const;
-    
-	/** 
-     * Indicates whether the module is can reach position pos in a single rotation,
-     *  given its current local neighborhood
-     * @param pos target position
-     * @param faceReq face requirement, if indicated the function will return true only if the 
-     *  motion is possible using the type of face passed as argument. Any by default.
-     * @attention this does not guarantee an absence of collision, as might occur if 
-     *  a blocking modules exists in the 2nd-order neighborhood of the current block
-     * @return true if motion is possible, false otherwise
-     */
-    bool canRotateToPosition(const Cell3DPosition &pos,
-                             DeformationLinkType  faceReq = DeformationLinkType ::Any) const;
 
     /** 
      * Queries each of the module interface to determine the state of the local neighborhood.

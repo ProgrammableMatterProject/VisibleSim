@@ -27,9 +27,10 @@ public :
     \param mid : geometrical model id for mobile module
     \param pid : geometrical model id for pivot module
     */
-Deformation(const DatomsBlock *mobile,const DatomsBlock *fixe,const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2,PistonId mid,PistonId  pid);
-
+    Deformation(const DatomsBlock *mobile,const DatomsBlock *fixe,const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2,PistonId mid,PistonId  pid, vector<pair<DatomsBlock*,PistonId>> blockingModules);
 	Deformation() {};
+
+	void setup(const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2);
 
 	void init() {
 		step=0;
@@ -55,6 +56,7 @@ protected :
 	short step;
 	Matrix initialMatrix,interMatrix,finalMatrix;
 	Vector3D Caxis0,Caxis1,Vaxis0,Vaxis1;
+    vector<pair<DatomsBlock*,PistonId>> animated;
 };
 
 //===========================================================================================================

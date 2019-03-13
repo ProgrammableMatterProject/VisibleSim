@@ -832,7 +832,7 @@ Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, in
  *   SkewFCCLattice::glDraw()
  ************************************************************/
 void SkewFCCLattice::glDraw() {
-    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f}, gray[]={0.2f,0.2f,0.2f,1.0f};
+    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f}, gray[]={0.4f,0.4f,0.4f,1.0f};
 
     if (tabDistances) {
         short ix,iy,iz,decz;
@@ -845,26 +845,27 @@ void SkewFCCLattice::glDraw() {
         glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
         glMaterialfv(GL_FRONT,GL_SPECULAR,white);
         glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-
+        unsigned int index;
         for (iz=0; iz<gridSize[2]; iz++) {
-            decz = iz/2;
-            for (iy=0; iy<gridSize[1]; iy++) {
-                for (ix=0; ix<gridSize[0]; ix++) {
+            decz=iz/2;
+            for (iy=-decz; iy<gridSize[1]-decz; iy++) {
+                for (ix=-decz; ix<gridSize[0]-decz; ix++) {
+                    gp.set(ix,iy,iz);
+                    index = getIndex(gp);
                     if (*ptr) {
                         glPushMatrix();
-                        gp.set(ix-decz,iy-decz,iz);
                         v = gridToWorldPosition(gp);
                         glTranslatef(v[0],v[1],v[2]);
                         glutSolidSphere(0.065*gridScale[0],6,6);
                         glPopMatrix();
                     }
+                    // if (*ptrDistance!=USHRT_MAX && grid[index]==NULL) {
                     if (*ptrDistance!=USHRT_MAX) {
                         glPushMatrix();
-                        gp.set(ix-decz,iy-decz,iz);
                         v = gridToWorldPosition(gp);
                         glTranslatef(v[0],v[1],v[2]);
 
-                        glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,tabColors[*ptrDistance%12]);
+                        glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
                         glutSolidCube(0.2*gridScale[0]);
                         glPopMatrix();
                     }

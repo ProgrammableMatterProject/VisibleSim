@@ -172,6 +172,17 @@ unsigned short BuildingBlock::getNbNeighbors() const {
   return n;
 }
 
+vector<BuildingBlock*> BuildingBlock::getNeighbors() {
+    vector<BuildingBlock*> res;
+    for (P2PNetworkInterface* p2p:P2PNetworkInterfaces) {
+      if (p2p->isConnected()) {
+          res.push_back(p2p->connectedInterface->hostBlock);
+      }
+    }
+    return res;
+}
+
+
 bool BuildingBlock::getNeighborPos(short connectorId,Cell3DPosition &pos) const {
   Lattice *lattice = getWorld()->lattice;
 	vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(position);

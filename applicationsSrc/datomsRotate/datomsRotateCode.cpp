@@ -104,15 +104,15 @@ void DatomsRotateCode::initDistances() {
 bool DatomsRotateCode::tryToMove() {
 	vector<std::pair<const DatomsMotionRulesLink*, Deformation>> tab = DatomsMotionEngine::getAllDeformationsForModule(module);
 	Cell3DPosition pos;
-	double d,dmin=1e32;
+	unsigned short d,dmin=USHRT_MAX;
 	int i=0,imin=-1;
 	short n;
 	OUTPUT << "Search dest:" << endl;
-	/*for (std::pair<const DatomsMotionRulesLink*, Deformation> v:tab) {
+	for (std::pair<const DatomsMotionRulesLink*, Deformation> v:tab) {
 		v.second.getFinalPositionAndOrientation(pos,n);
 		OUTPUT << v.second.ptrPivot->blockId << ":" << v.first->getConFromID() << "->" << v.first->getConToID() << "  ";
 		OUTPUT << pos << ":";
-		d = (pos-goalPos).l2_norm();
+		d = lattice->getDistance(pos);
 		OUTPUT << d << " ";
 		if (d<dmin) {
 			imin=i;
@@ -124,14 +124,14 @@ bool DatomsRotateCode::tryToMove() {
 	}
 	if (imin!=-1) {
 		getScheduler()->schedule(new DeformationStartEvent(scheduler->now()+2000,module,tab[imin].second));
-	}*/
+	}
 	return false;
 }
 
 void DatomsRotateCode::onMotionEnd() {
 	OUTPUT << "onMotionEnd" << endl;
-	/*if (module->position!=goalPos) {
+	if (lattice->getDistance(module->position)!=0) {
 		tryToMove();
-	}*/
+	}
 }
 

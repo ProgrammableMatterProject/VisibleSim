@@ -24,10 +24,10 @@ DatomsMotionRules::DatomsMotionRules() {
 	const Vector3D up(0,0,1),xy(1,1,0),_xy(-1,1,0);
 	Lattice *lattice = DatomsWorld::getWorld()->lattice;
 	float r = 0.5*lattice->gridScale[0],
-		c = 0.30389*r, // c/2
+	c = 0.30389*r, // c/2
     cx = 0.56374*r,
     cy = 0.12774*r, // e/sqrt(2)
-		cz = 0.92516932*r, // c(0.5+sqrt(2)/2)+e
+	cz = 0.92516932*r, // c(0.5+sqrt(2)/2)+e
     dx = 0.872258*r, // dy+c/sqrt(2)
     dy = 0.436129*r, // c/2+e/sqrt(2)
     dz = 0.48904*r; // c/2+e
@@ -41,36 +41,36 @@ DatomsMotionRules::DatomsMotionRules() {
 		tabConnectors[i]->tabPtrPistons[3]=NULL;
 	}
 
-	tabPistons[0] = new DatomsMotionRulesPiston(0,Vector3D(1,1,0),Piston012A);
+	tabPistons[0] = new DatomsMotionRulesPiston(0,Vector3D(r,r,0),Piston012A);
 	tabPistons[0]->setAxis(0,Vector3D(r,-c,-c),up); //#0
 	tabPistons[0]->setAxis(1,Vector3D(-c,r,c),-up); //#1
 	tabPistons[0]->setAxis(2,Vector3D(cx,cy,cz),_xy); //#2
 	tabPistons[0]->setAxis(3,Vector3D(cy,cx,-cz),-_xy); //#10
-	tabPistons[1] = new DatomsMotionRulesPiston(1,Vector3D(-1,1,0),Piston136B);
+	tabPistons[1] = new DatomsMotionRulesPiston(1,Vector3D(-r,r,0),Piston136B);
 	tabPistons[1]->setAxis(0,Vector3D(c,r,-c),up); //#1
 	tabPistons[1]->setAxis(1,Vector3D(-cy,cx,cz),-xy); //#3
 	tabPistons[1]->setAxis(2,Vector3D(-r,-c,c),-up); //#6
 	tabPistons[1]->setAxis(3,Vector3D(-cx,cy,-cz),xy); //#11
-	tabPistons[2] = new DatomsMotionRulesPiston(2,Vector3D(-1,-1,0),Piston4678);
-  tabPistons[2]->setAxis(0,Vector3D(-cx,-cy,cz),-_xy); //#4
+	tabPistons[2] = new DatomsMotionRulesPiston(2,Vector3D(-r,-r,0),Piston4678);
+	tabPistons[2]->setAxis(0,Vector3D(-cx,-cy,cz),-_xy); //#4
 	tabPistons[2]->setAxis(1,Vector3D(-r,c,-c),up); //#6
 	tabPistons[2]->setAxis(2,Vector3D(c,-r,c),-up); //#7
 	tabPistons[2]->setAxis(3,Vector3D(-cy,-cx,-cz),_xy); //#8
-	tabPistons[3] = new DatomsMotionRulesPiston(3,Vector3D(1,-1,0),Piston0579);
-  tabPistons[3]->setAxis(0,Vector3D(r,c,c),-up); //#0
+	tabPistons[3] = new DatomsMotionRulesPiston(3,Vector3D(r,-r,0),Piston0579);
+	tabPistons[3]->setAxis(0,Vector3D(r,c,c),-up); //#0
 	tabPistons[3]->setAxis(1,Vector3D(cy,-cx,cz),xy); //#5
 	tabPistons[3]->setAxis(2,Vector3D(-c,-r,-c),up); //#7
 	tabPistons[3]->setAxis(3,Vector3D(cx,-cy,-cz),-xy); //#9
-	tabPistons[4] = new DatomsMotionRulesPiston(4,Vector3D(0,0,1),Piston2345);
-  tabPistons[4]->setAxis(0,Vector3D(dx,dy,dz),-_xy); //#2
+	tabPistons[4] = new DatomsMotionRulesPiston(4,Vector3D(0,0,M_SQRT2*r),Piston2345);
+    tabPistons[4]->setAxis(0,Vector3D(dx,dy,dz),-_xy); //#2
 	tabPistons[4]->setAxis(1,Vector3D(-dy,dx,dz),xy); //#3
 	tabPistons[4]->setAxis(2,Vector3D(-dx,-dy,dz),_xy); //#4
 	tabPistons[4]->setAxis(3,Vector3D(dy,-dx,dz),-xy); //#5
-	tabPistons[5] = new DatomsMotionRulesPiston(5,Vector3D(0,0,-1),Piston89AB);
-  tabPistons[5]->setAxis(0,Vector3D(-dx,-dy,-dz),-_xy); //#8
-  tabPistons[5]->setAxis(1,Vector3D(dy,-dx,-dz),xy); //#9
-  tabPistons[5]->setAxis(2,Vector3D(dx,dy,-dz),_xy); //#10
-  tabPistons[5]->setAxis(3,Vector3D(-dy,dx,-dz),-xy); //#11
+	tabPistons[5] = new DatomsMotionRulesPiston(5,Vector3D(0,0,-M_SQRT2*r),Piston89AB);
+    tabPistons[5]->setAxis(0,Vector3D(-dx,-dy,-dz),-_xy); //#8
+    tabPistons[5]->setAxis(1,Vector3D(dy,-dx,-dz),xy); //#9
+    tabPistons[5]->setAxis(2,Vector3D(dx,dy,-dz),_xy); //#10
+    tabPistons[5]->setAxis(3,Vector3D(-dy,dx,-dz),-xy); //#11
 
 	addLinks(0,tabPistons[0],2,1,10,tabPistons[4],tabPistons[1],tabPistons[5],0,2,1,3);
 	addLinks(0,tabPistons[3],9,7,5,tabPistons[5],tabPistons[1],tabPistons[4],0,3,2,1);
@@ -127,44 +127,57 @@ string DatomsMotionRulesLink::getID() {
     c[0]=ch;
     ch = (id2<10?'0'+id2:'A'+id2-10);
     c[7]=ch;
-		c[4] = '0'+piston->ID;
+	c[4] = '0'+piston->ID;
     return c;
 }
 
 void DatomsMotionRules::addLinks(int conFrom, DatomsMotionRulesPiston* act, int id1, int id2, int id3, const DatomsMotionRulesPiston* Pleft, const DatomsMotionRulesPiston* Pfront, const DatomsMotionRulesPiston* Pright,short j0,short j1,short j2,short j3) {
 
-	tabConnectors[conFrom]->addPiston(act); 
-	addLink(conFrom,id1,act,
-		Pleft->direction+2.0*act->direction-Pfront->direction,
+	tabConnectors[conFrom]->addPiston(act);
+    DatomsMotionRulesLink *lnk = new DatomsMotionRulesLink(tabConnectors[conFrom],tabConnectors[id1],act,j0,j1); // go to left
+	tabConnectors[conFrom]->tabLinks.push_back(lnk);
+    lnk->addBlockingDirection(act->direction+Pleft->direction); // left must be free (goal)
+    lnk->addBlockingDirection(act->direction+Pright->direction,Pleft->direction); // right must be free or compressed along Pleft direction
+    lnk->addBlockingDirection(act->direction+Pfront->direction,-Pfront->direction); // front must be free or compressed along -Pfront direction
+    lnk->addBlockingDirection(Pleft->direction+2.0*act->direction-Pfront->direction);
+    lnk->addBlockingDirection(Pleft->direction+2.0*act->direction+Pfront->direction,-Pfront->direction);
+    lnk->addBlockingDirection(Pright->direction+2.0*act->direction-Pfront->direction,Pleft->direction);
+	lnk->addBlockingDirection(2.0*act->direction);
+    /*Pleft->direction+2.0*act->direction-Pfront->direction,
 		Pleft->direction+2.0*act->direction+Pfront->direction,
-		Pright->direction+2.0*act->direction-Pfront->direction,
-		j0,j1);
-	addLink(conFrom,id2,act,
-		Pleft->direction+2.0*act->direction-Pfront->direction,
+		Pright->direction+2.0*act->direction-Pfront->direction,*/
+
+	lnk = new DatomsMotionRulesLink(tabConnectors[conFrom],tabConnectors[id2],act,j0,j2); // go ahead
+	tabConnectors[conFrom]->tabLinks.push_back(lnk);
+	lnk->addBlockingDirection(act->direction+Pleft->direction,Pright->direction); // left must be free or compressed along Pright direction
+	lnk->addBlockingDirection(act->direction+Pright->direction,Pleft->direction); // right must be free or compressed along Pleft direction
+	lnk->addBlockingDirection(act->direction+Pfront->direction); // front must be free (goal)
+	lnk->addBlockingDirection(Pleft->direction+2.0*act->direction-Pfront->direction,Pright->direction);
+	lnk->addBlockingDirection(Pleft->direction+2.0*act->direction+Pfront->direction,Pright->direction);
+	lnk->addBlockingDirection(Pright->direction+2.0*act->direction-Pfront->direction,Pleft->direction);
+	lnk->addBlockingDirection(Pright->direction+2.0*act->direction+Pfront->direction,Pleft->direction);
+	lnk->addBlockingDirection(2.0*act->direction);
+
+	/*	Pleft->direction+2.0*act->direction-Pfront->direction,
 		Pright->direction+2.0*act->direction-Pfront->direction,
 		Pleft->direction+2.0*act->direction+Pfront->direction,
-		Pright->direction+2.0*act->direction-Pfront->direction,
-		j0,j2);
-	addLink(conFrom,id3,act,
+		Pright->direction+2.0*act->direction+Pfront->direction,*/
+
+	lnk = new DatomsMotionRulesLink(tabConnectors[conFrom],tabConnectors[id3],act,j0,j3); // go to right
+	tabConnectors[conFrom]->tabLinks.push_back(lnk);
+	/*addLink(conFrom,id3,act,
 		Pright->direction+2.0*act->direction-Pfront->direction,
 		Pleft->direction+2.0*act->direction-Pfront->direction,
 		Pright->direction+2.0*act->direction-Pfront->direction,
-		j0,j3);
+		j0,j3);*/
+	lnk->addBlockingDirection(act->direction+Pleft->direction,Pright->direction); // left must be free or compressed along Pright direction
+	lnk->addBlockingDirection(act->direction+Pright->direction); // right must be free
+	lnk->addBlockingDirection(act->direction+Pfront->direction,-Pfront->direction); // front must be free or compressed along -Pfront direction
+	lnk->addBlockingDirection(Pleft->direction+2.0*act->direction-Pfront->direction,Pright->direction);
+	lnk->addBlockingDirection(Pleft->direction+2.0*act->direction+Pfront->direction,-Pfront->direction);
+	lnk->addBlockingDirection(Pright->direction+2.0*act->direction-Pfront->direction);
+	lnk->addBlockingDirection(2.0*act->direction);
 }
-
-
-void DatomsMotionRules::addLink(int conFrom, int id1, DatomsMotionRulesPiston* act, const Vector3D &C1, const Vector3D &C2, const Vector3D &C3,short j0,short j1) {
-
-	DatomsMotionRulesLink *lnk = new DatomsMotionRulesLink(tabConnectors[conFrom],tabConnectors[id1],act,j0,j1,C1,C2,C3);
-    tabConnectors[conFrom]->addLink(lnk);
-}
-
-void DatomsMotionRules::addLink(int conFrom, int id1, DatomsMotionRulesPiston* act, const Vector3D &C1, const Vector3D &C2, const Vector3D &C3, const Vector3D &C4,short j0,short j1) {
-
-	DatomsMotionRulesLink *lnk = new DatomsMotionRulesLink(tabConnectors[conFrom],tabConnectors[id1],act,j0,j1,C1,C2,C3,C4);
-	tabConnectors[conFrom]->addLink(lnk);
-}
-
 
 bool DatomsMotionRules::getValidMotionList(const DatomsBlock* pivot,int from,vector<DatomsMotionRulesLink*>&vec) {
 	DatomsMotionRulesConnector *conn = tabConnectors[from];
@@ -182,119 +195,92 @@ bool DatomsMotionRules::getValidMotionList(const DatomsBlock* pivot,int from,vec
 	return notEmpty;
 }
 
-void DatomsMotionRulesConnector::addLink(DatomsMotionRulesLink *lnk) {
-	tabLinks.push_back(lnk);
-}
-
-DatomsMotionRulesLink::DatomsMotionRulesLink(DatomsMotionRulesConnector *from,DatomsMotionRulesConnector *to,DatomsMotionRulesPiston *p,short s0,short s1,const Cell3DPosition &pos1,const Cell3DPosition &pos2,const Cell3DPosition &pos3) {
+DatomsMotionRulesLink::DatomsMotionRulesLink(DatomsMotionRulesConnector *from,DatomsMotionRulesConnector *to,DatomsMotionRulesPiston *p,short s0,short s1) {
 	conFrom = from;
 	conTo = to;
 	piston = p;
-	tabBlockingCells[0]=pos1;
-	tabBlockingCells[1]=pos2;
-	tabBlockingCells[2]=pos3;
-	nbBlockingCells=3;
 	jointFrom=s0; // for the rotation axis
 	jointTo=s1; // for the rotation axis
 }
 
-DatomsMotionRulesLink::DatomsMotionRulesLink(DatomsMotionRulesConnector *from,DatomsMotionRulesConnector *to,DatomsMotionRulesPiston *p,short s0,short s1,const Cell3DPosition &pos1,const Cell3DPosition &pos2,const Cell3DPosition &pos3,const Cell3DPosition &pos4) {
-	conFrom = from;
-	conTo = to;
-	piston = p;
-	tabBlockingCells[0]=pos1;
-	tabBlockingCells[1]=pos2;
-	tabBlockingCells[2]=pos3;
-	tabBlockingCells[3]=pos4;
-	nbBlockingCells=4;
-	jointFrom=s0;
-	jointTo=s1;
+void DatomsMotionRulesLink::addBlockingDirection(const Vector3D &dir) {
+	tabBlockingCellDirections.push_back(BlockingCell(dir));
 }
-/*
-bool DatomsMotionRulesLink::isRelativeCellFree(const DatomsBlock *pivot, const Cell3DPosition& VP) {
-	Vm = lattice->gridToWorldVector(piston->VP);
-	Vm.setPoint(true);
-	Vm = M*Vm;
-	Cell3DPosition pos = lattice->worldToGridPosition(Vm);
-	return lattice->isFree(pos);
+
+void DatomsMotionRulesLink::addBlockingDirection(const Vector3D &dir, const Vector3D &compDir) {
+	tabBlockingCellDirections.push_back(BlockingCell(dir,compDir));
 }
-*/
+
 bool DatomsMotionRulesLink::isValid(const DatomsBlock *pivot) {
 	Lattice *lattice = DatomsWorld::getWorld()->lattice;
-	Matrix M=DatomsBlock::getMatrixFromPositionAndOrientation(pivot->position,pivot->orientationCode);
-	Vector3D Vm;
-	
-	// cell of destination position must be free
-	Cell3DPosition pos;
-	pivot->getNeighborPos(conTo->ID,pos);
-	//OUTPUT << "   dest=" << pos << endl;
-	if (!lattice->isFree(pos) || !lattice->isInGrid(pos)) {
-		//OUTPUT << " dest pos: " << pos << " is not free" << endl;
-		return false;
-	}
-	//OUTPUT << " piston=" << piston->ID << endl;
-	// Cell over pivot must be free
-	Vector3D P = (2.0*5.0*M_SQRT2)*piston->direction;
-	//OUTPUT << "P = " << P ;
-	P.setPoint(true);
-	P = pivot->getGlBlock()->mat*P;
-	//OUTPUT << "  Pwrld = " << P << endl;
-	
-	pos = lattice->worldToGridPosition(P);
-	if (!lattice->isFree(pos)) {
-		//OUTPUT << " upper pos: " << pos << " is not free" << endl;
-		return false;
-	}
-	/*
-	if (nbBlockingCells==3) { // Corner cell must be free
-		P = tabBlockingCells[0];
-		Vm.setPoint(true);
-		Vm = M*Vm;
-		pos = lattice->worldToGridPosition(Vm);
-		if (!lattice->isFree(pos)) {
-			OUTPUT << " corner pos: " << pos << " is not free" << endl;
+
+// cell of destination position must be in the lattice
+    Cell3DPosition pos;
+    pivot->getNeighborPos(conTo->ID,pos);
+    if (!lattice->isInGrid(pos)) {
+        //OUTPUT << " dest pos: " << pos << " is not in the grid" << endl;
+        return false;
+    }
+	vector<pair<Cell3DPosition,Vector3D>> blocking = getBlockingCellsList(pivot);
+	for (pair<Cell3DPosition,Vector3D> p:blocking) {
+		if (p.second[3]==1 && !lattice->isFree(p.first)) {
+			//OUTPUT << " pos: " << p.first << " is not free" << endl;
 			return false;
 		}
-	}*/
-	// TODO vérifier que les modules en tabBlockingCells ne sont pas attachés que par des connecteurs attachés au piston
-	/*for (Cell3DPosition cell:tabBlockingCells) {
-		Vm = lattice->gridToWorldVector(tabBlockingCells[0]);
-		Vm.setPoint(true);
-		Vm = M*Vm;
-		pos = lattice->worldToGridPosition(Vm);
-		if (!lattice->isFree(pos)) {
-			DatomsBlock *datom = (DatomsBlock*)lattice->getBlock(pos);
-			short i=0;
-			bool found=false; // il existe un module attaché à un connecteur non relié à piston ?
-			while (i<12 && !found) {
-				if (datom->getInterface(i)->connectedInterface->hostBlock!=NULL) {
-					DatomsMotionRulesPiston **tab = DatomsWorld::getWorld()->getMotionRules()->getTabPtrPistons(datom->getInterface(i)->connectedInterface->localId);
-					found= tab[0]!=piston && tab[1]!=piston && tab[2]!=piston && tab[3]!=piston; 
-				}
-				i++;
-			}
-			return found;
-		} 
-	}*/
+		// TODO vérifier que les modules en tabBlockingCells ne sont pas attachés que par des connecteurs attachés au piston
+
+	}
 	return true;
 }
 
-vector<Cell3DPosition> DatomsMotionRulesLink::getBlockingCellsList(const DatomsBlock *pivot) {
+vector<pair<Cell3DPosition,Vector3D>> DatomsMotionRulesLink::getBlockingCellsList(const DatomsBlock *pivot) {
 	Lattice *lattice = DatomsWorld::getWorld()->lattice;
-	vector<Cell3DPosition> tabPos;
+	vector<pair<Cell3DPosition,Vector3D>> tabPos;
 
-	//OUTPUT << "getBlockingCellsList ";
-	Matrix M=DatomsBlock::getMatrixFromPositionAndOrientation(pivot->position,pivot->orientationCode);
-	Vector3D Vm;
-	Cell3DPosition tabPosition[4];
-	for (int i=0; i<nbBlockingCells; i++) {
-		Vm = M*lattice->gridToWorldPosition(pivot->position+tabBlockingCells[i]);
-		tabPos.push_back(lattice->worldToGridPosition(Vm));
-		//OUTPUT << *ci << ":" << pos << ", ";
+	Vector3D Vm,Vcomp;
+
+	for (const BlockingCell bc:tabBlockingCellDirections) {
+		Vm = bc.relPos;
+		Vm.setPoint(true);
+		Vm = pivot->getGlBlock()->mat*Vm;
+		if (!bc.mustBeFree) {
+			Vcomp = pivot->getGlBlock()->mat*bc.compDir;
+		} else {
+			Vcomp.set(0,0,0,1);
+		}
+		tabPos.push_back(make_pair(lattice->worldToGridPosition(Vm),Vcomp));
 	}
-	//OUTPUT << endl;
-
 	return tabPos;
+}
+
+vector<pair<DatomsBlock*,PistonId>> DatomsMotionRulesLink::getBlockingDatoms(const DatomsBlock *pivot) {
+    Lattice *lattice = DatomsWorld::getWorld()->lattice;
+    vector<pair<DatomsBlock*,PistonId>> tabPos;
+
+    OUTPUT << "getBlockingModulesList " << endl;
+    Vector3D Vm,Vcomp;
+
+    for (const BlockingCell bc:tabBlockingCellDirections) {
+        Vm = bc.relPos;
+        Vm.setPoint(true);
+        Vm = pivot->getGlBlock()->mat*Vm;
+        if (!bc.mustBeFree) {
+			// get module
+			DatomsBlock *datom = (DatomsBlock*)lattice->getBlock(lattice->worldToGridPosition(Vm));
+			if (datom) {
+			    Vcomp = bc.compDir;
+			    Vcomp.setPoint(true);
+				Vcomp = pivot->getGlBlock()->mat * Vcomp;
+				OUTPUT << "search pid" << Vcomp << endl;
+				PistonId pid =  ((DatomsWorld*) getWorld())->getMotionRules()->getPistonId(datom,Vcomp);
+				tabPos.push_back(make_pair(datom,pid));
+                OUTPUT << "Blocking Datom #" << datom->blockId << ":" << pid << endl;
+			}
+		}
+    }
+    OUTPUT << endl;
+    return tabPos;
+
 }
 
 
@@ -302,7 +288,11 @@ Cell3DPosition DatomsMotionRulesLink::getFinalPosition(DatomsBlock *mobile) {
     Cell3DPosition finalPosition;
     short orient;
     DatomsBlock *pivot = (DatomsBlock *)mobile->getInterface(conFrom->ID)->connectedInterface->hostBlock;
-    Deformation deformation=getDeformations(mobile,pivot);
+	Vector3D P(piston->direction[0],piston->direction[1],piston->direction[2],1);
+	Vector3D posPiston = pivot->getGlBlock()->mat*P;
+	PistonId mobileId=((DatomsWorld*) getWorld())->getMotionRules()->getPistonId(mobile,posPiston);
+    vector<pair<DatomsBlock*,PistonId>> blockingModules;
+	Deformation deformation(mobile,pivot,piston->Caxis[jointFrom],piston->Vaxis[jointFrom],piston->Caxis[jointTo],piston->Vaxis[jointTo],mobileId,piston->modelId,blockingModules);
     deformation.init();
     deformation.getFinalPositionAndOrientation(finalPosition,orient);
     OUTPUT << "deformation " << mobile->blockId << ":P" << piston->ID << ":" << conFrom->ID << " / " << pivot->blockId << endl;
@@ -314,28 +304,29 @@ void DatomsMotionRulesLink::sendRotationEvent(DatomsBlock*mobile,DatomsBlock*piv
     getScheduler()->schedule(new DeformationStartEvent(t,mobile,deformation));*/
 }
 
-Deformation DatomsMotionRulesLink::getDeformations(const DatomsBlock* mobile,const DatomsBlock* pivot) const {
-	Vector3D P(5*piston->direction[0],5*piston->direction[1],5*piston->direction[2],1);
+Deformation DatomsMotionRulesLink::getDeformations(const DatomsBlock* mobile,const DatomsBlock* pivot, vector<pair<DatomsBlock*,PistonId>> blockingModules) const {
+	Vector3D P(piston->direction[0],piston->direction[1],piston->direction[2],1);
 	Vector3D posPiston = pivot->getGlBlock()->mat*P;
 	PistonId mobileId=((DatomsWorld*) getWorld())->getMotionRules()->getPistonId(mobile,posPiston);
-	return Deformation(mobile,pivot,piston->Caxis[jointFrom],piston->Vaxis[jointFrom],piston->Caxis[jointTo],piston->Vaxis[jointTo],mobileId,piston->modelId);
+
+	return Deformation(mobile,pivot,piston->Caxis[jointFrom],piston->Vaxis[jointFrom],piston->Caxis[jointTo],piston->Vaxis[jointTo],mobileId,piston->modelId,blockingModules);
 }
 
 PistonId DatomsMotionRules::getPistonId(const DatomsBlock *module,const Vector3D &pos) {
 	Vector3D P;
 	Vector3D vecPiston;
-	
+
 	DatomsMotionRulesPiston *pmin;
 	double dmin=1e32,d2;
 	for (DatomsMotionRulesPiston *p:tabPistons) {
-		P.set(5*p->direction[0],5*p->direction[1],5*p->direction[2],1);
+		P.set(p->direction[0],p->direction[1],p->direction[2],1);
 		vecPiston = module->getGlBlock()->mat*P-pos;
 		d2 = vecPiston.norme2();
 		if (d2<dmin) {
 			pmin=p;
 			dmin = d2;
 		}
-	} 
+	}
 	return pmin->modelId;
 }
 

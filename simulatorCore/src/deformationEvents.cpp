@@ -175,47 +175,50 @@ const string DeformationEndEvent::getEventName() {
 //          Deformation  (class)
 //
 //===========================================================================================================
-
-Deformation::Deformation(const DatomsBlock *mobile,const DatomsBlock *pivot,const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2,PistonId mid,PistonId pid) {
-	Matrix MA = ((DatomsGlBlock*)pivot->getGlBlock())->mat;
-	Matrix MB = ((DatomsGlBlock*)mobile->getGlBlock())->mat;
-	Matrix MA_1;
-
-		
-	initialMatrix=MB;
+Deformation::Deformation(const DatomsBlock *mobile,const DatomsBlock *pivot,const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2,PistonId mid,PistonId pid, vector<pair<DatomsBlock*,PistonId>> blockingModules) {
 	ptrPivot = pivot;
 	ptrMobile = mobile;
 	mobileShape = mid;
 	pivotShape = pid;
-	
-	// we calculate BA translation
-	MA.inverse(MA_1);
-	Matrix m = MA_1*MB;
-	
-	Matrix matTC,matTC_1;
-	matTC.setTranslation(C1);
-	matTC_1.setTranslation(-C1);
-	//OUTPUT << "matT_C1:\n" << matTC;
-	//OUTPUT << "matT_C1-1:\n" << matTC_1;
-	Matrix R;
-	R.setRotation(90.0,V1);
-	//OUTPUT << "R1:\n" << R;
-	
-	m = matTC*(R*(matTC_1*m));
-	interMatrix = MA*m;
-	//OUTPUT << C1 << "/" << V1 << endl;
-	//OUTPUT << (interMatrix) << endl;
-	
-	matTC.setTranslation(C2);
-	matTC_1.setTranslation(-C2);
-	//OUTPUT << "matT_C2:\n" << matTC;
-	//OUTPUT << "matT_C2-1:\n" << matTC_1;
-	
-	R.setRotation(-90.0,V2);
-	finalMatrix = MA*matTC*(R*(matTC_1*m));
-	
-	//OUTPUT << C2 << "/" << V2 << endl;
-	OUTPUT << finalMatrix << endl;
+    copy(blockingModules.begin(), blockingModules.end(),std::back_inserter(animated));
+
+    setup(C1,V1,C2,V2);
+}
+
+void Deformation::setup(const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2) {
+    Matrix MA = ptrPivot->getGlBlock()->mat;
+    Matrix MB = ptrMobile->getGlBlock()->mat;
+    Matrix MA_1;
+
+    initialMatrix=MB;
+    // we calculate BA translation
+    MA.inverse(MA_1);
+    Matrix m = MA_1*MB;
+
+    Matrix matTC,matTC_1;
+    matTC.setTranslation(C1);
+    matTC_1.setTranslation(-C1);
+    //OUTPUT << "matT_C1:\n" << matTC;
+    //OUTPUT << "matT_C1-1:\n" << matTC_1;
+    Matrix R;
+    R.setRotation(90.0,V1);
+    //OUTPUT << "R1:\n" << R;
+
+    m = matTC*(R*(matTC_1*m));
+    interMatrix = MA*m;
+    //OUTPUT << C1 << "/" << V1 << endl;
+    //OUTPUT << (interMatrix) << endl;
+
+    matTC.setTranslation(C2);
+    matTC_1.setTranslation(-C2);
+    //OUTPUT << "matT_C2:\n" << matTC;
+    //OUTPUT << "matT_C2-1:\n" << matTC_1;
+
+    R.setRotation(-90.0,V2);
+    finalMatrix = MA*matTC*(R*(matTC_1*m));
+
+    //OUTPUT << C2 << "/" << V2 << endl;
+    //OUTPUT << finalMatrix << endl;
 }
 
 bool Deformation::nextStep(Matrix &m) {
@@ -225,26 +228,29 @@ bool Deformation::nextStep(Matrix &m) {
 	switch (step) {
 		case 1: 
 			m = initialMatrix;
-			wrl->updateGlData(ptrMobile,mobileShape);
-			wrl->updateGlData(ptrPivot,pivotShape);
-			cout << "ModelMobile="<< (int)mobileShape << endl;
-			cout << "ModelPivot="<< (int)pivotShape << endl;		
-		break;
-		case 2: 
+            for (pair<const DatomsBlock*,PistonId> data:animated) {
+                wrl->updateGlData(data.first,data.second);
+            }
+        break;
+		case 2:
 			m = interMatrix;
 			wrl->updateGlData(ptrMobile,mobileShape);
 			wrl->updateGlData(ptrPivot,pivotShape);
-			cout << "ModelMobile="<< (int)mobileShape << endl;
-			cout << "ModelPivot="<< (int)pivotShape << endl;		
 		break;
 		case 3: 
 			m = finalMatrix;
-			//m = interMatrix;
 			wrl->updateGlData(ptrMobile,AllPistonsOff);
 			wrl->updateGlData(ptrPivot,AllPistonsOff);
 		break;
-	} 
-	return step==3;	
+        case 4:
+            m = finalMatrix;
+            for (pair<const DatomsBlock*,PistonId> data:animated) {
+                wrl->updateGlData(data.first,AllPistonsOff);
+            }
+            break;
+
+    }
+	return step==4;
 }
 
 void Deformation::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {

@@ -27,13 +27,15 @@ DatomsMotionEngine::getAllDeformationsForModule(const DatomsBlock* m) {
 			vector<DatomsMotionRulesLink*>v;
 			short j = pivot->getInterfaceId(m->getInterface(i)->connectedInterface);
 			
-			OUTPUT << "Interface #" << m->blockId << ":" << i << " / #" << pivot->blockId << ":" << j << endl; 
+			//OUTPUT << "Interface #" << m->blockId << ":" << i << " / #" << pivot->blockId << ":" << j << endl;
 			
 			if (getMotionRules()->getValidMotionList(pivot,j,v)) { // list of theoretical motion
-				for (const DatomsMotionRulesLink* validRule : v) {
-					Deformation d = validRule->getDeformations(m,pivot);
+				for (DatomsMotionRulesLink* validRule : v) {
+					vector<pair<DatomsBlock*,PistonId>> blockingDatoms = validRule->getBlockingDatoms(pivot);
+
+					Deformation d = validRule->getDeformations(m,pivot,blockingDatoms);
 					allDeformations.push_back(make_pair(validRule, d));
-					OUTPUT << validRule->getConFromID() << "=>" << validRule->getConToID() << endl << "-------------------------" << endl;
+					//OUTPUT << validRule->getConFromID() << "=>" << validRule->getConToID() << endl << "-------------------------" << endl;
 				}
 			}
 		}
