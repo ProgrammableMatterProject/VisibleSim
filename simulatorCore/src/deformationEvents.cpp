@@ -159,8 +159,6 @@ DeformationEndEvent::~DeformationEndEvent() {
 void DeformationEndEvent::consume() {
     EVENT_CONSUME_INFO();
     DatomsBlock *rb = (DatomsBlock*)concernedBlock;
-	rb->getGlBlock()->currentModel=1;
-    // Bizarre !
     concernedBlock->blockCode->processLocalEvent(EventPtr(new DeformationEndEvent(date+COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(rb->stats);

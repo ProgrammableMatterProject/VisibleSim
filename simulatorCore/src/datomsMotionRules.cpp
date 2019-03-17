@@ -174,7 +174,7 @@ void DatomsMotionRules::addLinks(int conFrom, DatomsMotionRulesPiston* act, int 
 	lnk->addBlockingDirection(act->direction+Pright->direction); // right must be free
 	lnk->addBlockingDirection(act->direction+Pfront->direction,-Pfront->direction); // front must be free or compressed along -Pfront direction
 	lnk->addBlockingDirection(Pleft->direction+2.0*act->direction-Pfront->direction,Pright->direction);
-	lnk->addBlockingDirection(Pleft->direction+2.0*act->direction+Pfront->direction,-Pfront->direction);
+	lnk->addBlockingDirection(Pright->direction+2.0*act->direction+Pfront->direction,-Pfront->direction);
 	lnk->addBlockingDirection(Pright->direction+2.0*act->direction-Pfront->direction);
 	lnk->addBlockingDirection(2.0*act->direction);
 }

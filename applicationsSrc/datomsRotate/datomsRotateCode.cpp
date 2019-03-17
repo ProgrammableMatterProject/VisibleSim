@@ -1,104 +1,48 @@
-#include <queue>
 #include <climits>
 #include "datomsRotateCode.h"
 #include "datomsMotionEngine.h"
-bool first=true;
+
+bool distanceCalculated=false;
 
 void DatomsRotateCode::startup() {
 	lattice = (SkewFCCLattice*)(Datoms::getWorld()->lattice);
 	
-	if (first) {
+	if (module->blockId==1) {
 		lattice->initTabDistances();
-		first=false;
+		lattice->setDistance(module->position,0);
 		initDistances();
 	}
-	
-	if (module->blockId==1) {
-		tryToMove();
-	}
+
 }
 
 void DatomsRotateCode::initDistances() {
-	// goal cell =0
-	
-	assert(target!=NULL);
-	short ix,iy,iz;
-	Cell3DPosition pos;
-	queue<DatomsBlock*> lstModules;
-	unsigned int ngoal=0,nwp=0;
-    DatomsBlock *datom;
-	for (iz=0; iz<lattice->gridSize.pt[2]; iz++) {
-		for (iy=0; iy<lattice->gridSize.pt[1]; iy++) {
-			for (ix=0; ix<lattice->gridSize.pt[0]; ix++) {
-				pos.set(ix,iy,iz);
-				// free cell that must be filled
-				if (target->isInTarget(pos) && !lattice->cellHasBlock(pos)) {
-					lattice->setDistance(pos,0);
-					cout << "dist0: " << pos << endl;
-					ngoal++;
-					
-					// goal pivot d=0
-					vector<Cell3DPosition> neighbor = lattice->getNeighborhood(pos);
-					for (Cell3DPosition p:neighbor) {
-						if (lattice->cellHasBlock(p)) {
-						    datom = (DatomsBlock*)lattice->getBlock(p);
-							lstModules.push(datom);
-							lattice->setDistance(p,1);
-							datom->setColor(1);
-							nwp++;
-						}
-					}
-				}
-			}
+	short distance=lattice->getDistance(module->position)+1;
+	vector<Cell3DPosition> neighbor = lattice->getNeighborhood(module->position); //
+	vector<DatomsMotionRulesLink*>tabMRL;
+	Cell3DPosition pDest;
+	short r;
+	vector<std::pair<const DatomsMotionRulesLink*, Deformation>> tab = DatomsMotionEngine::getAllDeformationsForModule(module);
+	for (auto p:tab) {
+		p.second.getFinalPositionAndOrientation(pDest,r);
+		if (lattice->getDistance(pDest)>distance) {
+			OUTPUT << "--> new Distance" << pDest << "," << distance << endl;
+			lattice->setDistance(pDest,distance);
+			cellsList.push(pDest);
 		}
 	}
-    DatomsMotionRules *motionRules = DatomsWorld::getWorld()->getMotionRules();
-    vector<Cell3DPosition> tabNextCells;
-    vector<Cell3DPosition> neighborhood;
-    vector<DatomsMotionRulesLink*>tabMRL;
-    while (!lstModules.empty()) {
-	    datom = lstModules.front(); // pivot
-	    lstModules.pop();
-        tabNextCells.clear();
-        neighborhood = lattice->getNeighborhood(datom->position);
-        unsigned short distance = lattice->getDistance(datom->position);
-        //OUTPUT << "Selected:" << datom->blockId << ", " << datom->position << ", " << distance << endl;
-        for (Cell3DPosition p:neighborhood) {
-            if (!lattice->cellHasBlock(p) && lattice->getDistance(p)<distance) {
-                short j = datom->getConnectorId(p);
-                //OUTPUT << "Neighbor " << p << "#" << j << ": " << lattice->getDistance(p) << endl;
-                if (motionRules->getValidMotionList(datom, j, tabMRL)) { // list of theoretical motion
-                    for (const DatomsMotionRulesLink *validRule : tabMRL) {
-                        Cell3DPosition pDest;
-                        datom->getNeighborPos(validRule->getConToID(), pDest);
-                        //OUTPUT << "ConTo" << validRule->getConToID() << ":" << pDest << endl;
-                        if (!lattice->cellHasBlock(pDest) && lattice->getDistance(pDest) > distance) {
-                            tabNextCells.push_back(pDest);
-                            lattice->setDistance(pDest, distance);
-                        }
-                    }
-                }
-            }
-        }
-
-
-        for (Cell3DPosition cell:tabNextCells) {
-            vector<Cell3DPosition> neighbor = lattice->getNeighborhood(cell);
-            distance = lattice->getDistance(cell);
-            for (Cell3DPosition p:neighbor) {
-                if (lattice->cellHasBlock(p)) {
-                    datom = (DatomsBlock*)lattice->getBlock(p);
-                    lstModules.push(datom);
-                    if (lattice->getDistance(p)>distance+1) {
-                        lattice->setDistance(p,distance+1);
-                        datom->setColor(distance+1);
-                        nwp++;
-                    }
-                }
-            }
-        }
+	
+	if (!cellsList.empty()) {
+		pDest = cellsList.front();
+		cellsList.pop();
+		
+		getScheduler()->schedule(new TeleportationStartEvent(scheduler->now()+2000,module,pDest));
+	} else {
+		distanceCalculated=true;
+		//lattice->showTabDistances(false);
+		pDest.set(0,0,2);
+		getScheduler()->schedule(new TeleportationStartEvent(scheduler->now()+2000,module,pDest));
 	}
-    cout << "Target: " << nwp << "/" << ngoal << " cells" << endl;
+	
 }
 
 bool DatomsRotateCode::tryToMove() {
@@ -130,8 +74,10 @@ bool DatomsRotateCode::tryToMove() {
 
 void DatomsRotateCode::onMotionEnd() {
 	OUTPUT << "onMotionEnd" << endl;
-	if (lattice->getDistance(module->position)!=0) {
-		tryToMove();
+	if (distanceCalculated) {
+		//if (lattice->getDistance(module->position)>0) tryToMove();
+	} else {
+		initDistances();
 	}
 }
 

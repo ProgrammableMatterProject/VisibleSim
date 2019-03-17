@@ -55,7 +55,7 @@ public:
     };
     
 protected:
-    static const string directionName[];
+	static const string directionName[];
 	
 	map<const Cell3DPosition, Color> mapHighlightedCells;
 public:
@@ -595,9 +595,9 @@ class FCCLattice : public Lattice3D {
                              BlockingPositionPlane plane);
 
 protected:
-    bool *tabLockedCells;
-    unsigned short *tabDistances;
-
+	bool *tabLockedCells;
+	unsigned short *tabDistances;
+	bool showDistance;
 public:
     enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
                     Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
@@ -660,6 +660,7 @@ public:
     unsigned short getDistance(const Cell3DPosition &pos);
     void setDistance(const Cell3DPosition &pos,unsigned short d);
     virtual void glDraw();
+		virtual void showTabDistances(bool v) { showDistance=v; }
 };
 
 

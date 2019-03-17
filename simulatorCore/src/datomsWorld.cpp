@@ -193,7 +193,8 @@ void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
 	
 	PistonId pId = (PistonId)(orientation >> 8);
 	orientation = orientation & 0xFF;
-//	cout << "ID=" << blockId << "  piston=" << pId << "  orient=" << orientation << endl;
+	if (pId==0) pId=AllPistonsOff;
+	cout << "ID=" << blockId << "  piston=" << pId << "  pos=" << pos << "  orient=" << orientation << endl;
 	
 	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							(datom->blockId, (BaseSimulator::BuildingBlock*)datom));
@@ -367,6 +368,7 @@ void DatomsWorld::glDrawBackground() {
         glPopMatrix();
         // draw the axes
         glPushMatrix();
+				glScalef(0.2f,0.2f,0.2f);
         objRepere->glDraw();
         glPopMatrix();
 }

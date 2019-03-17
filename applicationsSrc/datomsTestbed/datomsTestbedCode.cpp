@@ -10,7 +10,6 @@ void DatomsTestbedCode::startup() {
 	    lattice->initTabDistances();
 
 		// find list of motions
-		// if goalCell is available : move
 		DatomsMotionRules *motionRules = DatomsWorld::getWorld()->getMotionRules();
 		// find pivot in neighbor list
 		vector<BuildingBlock*> neighborBlock = module->getNeighbors();
@@ -18,7 +17,7 @@ void DatomsTestbedCode::startup() {
 		for (BuildingBlock* bb:neighborBlock) {
 		    if (bb->blockId==2) pivot=(DatomsBlock*)bb;
 		}
-	    assert(pivot!=NULL);
+	  assert(pivot!=NULL);
 		short j=pivot->getConnectorId(module->position);
         vector<DatomsMotionRulesLink*>tabMRL;
         cout << "pivot " << pivot->blockId << "#" << j << endl;

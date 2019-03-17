@@ -380,6 +380,7 @@ string SLattice::getDirectionString(short d) {
 
 /********************* FCCLattice *********************/
 FCCLattice::FCCLattice() : Lattice3D() {
+	showDistance=false;
 }
 
 FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {
@@ -611,7 +612,6 @@ bool FCCLattice::unlockCell(const Cell3DPosition &pos) {
 }
 
 void FCCLattice::initTabDistances() {
-	cout << "initTabDistances..." << endl;
 	int n = gridSize[0] * gridSize[1] * gridSize[2];
 	if (tabDistances==NULL) {
 		tabDistances = new unsigned short[n];
@@ -621,7 +621,7 @@ void FCCLattice::initTabDistances() {
 	while (n--) {
 		*ptr++=USHRT_MAX;
 	}
-	cout << "tabDistances Initialized"<< endl;
+	showDistance=true;
 }
 
 unsigned short FCCLattice::getDistance(const Cell3DPosition &pos) {
@@ -834,7 +834,7 @@ Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, in
 void SkewFCCLattice::glDraw() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f}, gray[]={0.4f,0.4f,0.4f,1.0f};
 
-    if (tabDistances) {
+    if (tabDistances && showDistance) {
         short ix,iy,iz,decz;
         Cell3DPosition gp;
         Vector3D v;
@@ -866,7 +866,8 @@ void SkewFCCLattice::glDraw() {
                         glTranslatef(v[0],v[1],v[2]);
 
                         glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-                        glutSolidCube(0.2*gridScale[0]);
+                        //glutSolidCube(0.2*gridScale[0]);
+												glutSolidSphere(0.25*gridScale[0],6,6);
                         glPopMatrix();
                     }
                     ptr++;
