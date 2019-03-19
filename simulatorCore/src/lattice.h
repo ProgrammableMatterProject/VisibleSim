@@ -688,6 +688,7 @@ class SkewFCCLattice : public FCCLattice {
 
     static const string directionName[];
 public:
+	vector<Cell3DPosition> ptsLine;
     /**
      * @brief SkewFCCLattice constructor. 
      */

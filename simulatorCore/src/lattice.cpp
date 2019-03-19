@@ -832,7 +832,7 @@ Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, in
  *   SkewFCCLattice::glDraw()
  ************************************************************/
 void SkewFCCLattice::glDraw() {
-    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f}, gray[]={0.4f,0.4f,0.4f,1.0f};
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f}, gray[]={0.4f,0.4f,0.4f,1.0f}, red[]={1.0f,0.2f,0.2f,1.0f};
 
     if (tabDistances && showDistance) {
         short ix,iy,iz,decz;
@@ -866,8 +866,10 @@ void SkewFCCLattice::glDraw() {
                         glTranslatef(v[0],v[1],v[2]);
 
                         glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-                        //glutSolidCube(0.2*gridScale[0]);
-												glutSolidSphere(0.25*gridScale[0],6,6);
+												glScalef(1.0f,1.0f,0.1f);
+												glRotatef(90.0f,0,0,1.0f);
+                        glutSolidCube(0.5*gridScale[0]);
+												//glutSolidSphere(0.25*gridScale[0],12,12);
                         glPopMatrix();
                     }
                     ptr++;
@@ -876,6 +878,33 @@ void SkewFCCLattice::glDraw() {
             }
         }
     }
+    if (ptsLine.size()>1) {
+			glMaterialfv(GL_FRONT,GL_AMBIENT,red);
+			glMaterialfv(GL_FRONT,GL_DIFFUSE,red);
+			glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+			glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+			glColor3f(1.0f,0,0);
+			Vector3D p,q,v;
+			double d,phi,theta;
+			vector<Cell3DPosition>::const_iterator ci=ptsLine.begin();
+			while ((ci+1)!=ptsLine.end()) {
+				p = gridToWorldPosition(*ci);
+				q = gridToWorldPosition(*(ci+1));
+				glPushMatrix();
+				glTranslatef(p[0],p[1],p[2]);
+				glutSolidSphere(1.0,6,6);
+				v = q-p;
+				d = v.norme();
+				v.normer_interne();
+				phi = asin(v[2]);
+				theta = (v[0]>0)?asin(v[1]/cos(phi)):M_PI-asin(v[1]/cos(phi));
+				glRotatef(theta*180.0/M_PI,0,0,1.0);
+				glRotatef(90.0-phi*180.0/M_PI,0,1.0,0);
+				glutSolidCylinder(0.75,d,12,1);
+				glPopMatrix();
+				ci++;
+			}
+		}
 }
 
 /********************* SCLattice *********************/

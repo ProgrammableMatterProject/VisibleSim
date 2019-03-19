@@ -38,9 +38,9 @@ void DatomsRotateCode::initDistances() {
 		getScheduler()->schedule(new TeleportationStartEvent(scheduler->now()+2000,module,pDest));
 	} else {
 		distanceCalculated=true;
-		//lattice->showTabDistances(false);
 		pDest.set(0,0,2);
-		getScheduler()->schedule(new TeleportationStartEvent(scheduler->now()+2000,module,pDest));
+		lattice->ptsLine.push_back(pDest);
+		getScheduler()->schedule(new TeleportationStartEvent(scheduler->now()+2000000,module,pDest));
 	}
 	
 }
@@ -75,7 +75,9 @@ bool DatomsRotateCode::tryToMove() {
 void DatomsRotateCode::onMotionEnd() {
 	OUTPUT << "onMotionEnd" << endl;
 	if (distanceCalculated) {
-		//if (lattice->getDistance(module->position)>0) tryToMove();
+		lattice->showTabDistances(false);
+		if (lattice->getDistance(module->position)>0) tryToMove();
+		lattice->ptsLine.push_back(module->position);
 	} else {
 		initDistances();
 	}
