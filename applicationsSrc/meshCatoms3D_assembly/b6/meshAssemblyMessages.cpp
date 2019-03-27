@@ -24,32 +24,107 @@
 void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 
+    Cell3DPosition nextHopPos;
+
     // Routing catom must be part of the scaffold
     VS_ASSERT(mabc.ruleMatcher->isInMesh(mabc.norm(mabc.catom->position)));
 
     // Assumptions:
     // (1) Scaffold is convex
     //
-
     // Questions:
     // (a) Is it better to go up/down and then left/right, or the opposite? Does it matter?
 
-    // Simple cases:
-    // (i) Destination is within my own tile:
-    //   if I am coordinator (TR), pass on to first module of the dst branch
-    //   else if position is part of my branch
-    //     if further down, send to next module along branch
-    //     else pass on to previous
-    //   else if on another branch, pass on to previous module until reaching the TR
-    // (ii) Destination is part of a child tile
-    //   if I am on coordinator, pass on to first module of branch to child tile
-    //   else if I am on branch to child tile, pass down branch
-    //   else if I am on another branch, pass up my branch to the TR of my tile
+    // 1. Si la destination est dans sa tile
+    if (mabc.ruleMatcher->isInTileWithRootAt(mabc.norm(mabc.coordinatorPos),
+                                             mabc.norm(dstPos))) {
+        if (mabc.ruleMatcher->isTileRoot(mabc.norm(mabc.catom->position))) {
+            // 1.0 Module is tile root, forward to correct branch
+            nextHopPos = mabc.catom->position +
+                mabc.ruleMatcher->getBranchUnitOffset(mabc.norm(dstPos));
+        } else if (mabc.ruleMatcher->areOnTheSameBranch(mabc.norm(mabc.catom->position),
+                                                        mabc.norm(dstPos))) {
+            // 1.1 Si la destination est dans sa branche, on remonte ou descend la branche.
+            if (Cell3DPosition::compare_ZYX(mabc.catom->position, dstPos))
+                nextHopPos = mabc.catom->position +
+                    mabc.ruleMatcher->getBranchUnitOffset(mabc.norm(mabc.catom->position));
+            else
+                nextHopPos = mabc.catom->position -
+                    mabc.ruleMatcher->getBranchUnitOffset(mabc.norm(mabc.catom->position));
+        } else {
+            // 1.2 Si la destination est dans la tile mais pas dans la branche, on renvoie au TR de la tile puis remonte la branche de destination.
+            // Send backward
+                nextHopPos = mabc.catom->position -
+                    mabc.ruleMatcher->getBranchUnitOffset(mabc.norm(mabc.catom->position));
+        }
+
+    } else {
+        // 2. Si la destination est dans le même plan de tile
+        if (mabc.norm(mabc.coordinatorPos)[2] ==
+            mabc.ruleMatcher->getTileRootPositionForMeshPosition(mabc.norm(dstPos))[2]) {
+            // 2.1 Si la destination n’est pas dans la tile mais est sur une tile du même plan, on navigue horizontalement jusqu’au TR de la tile de destination puis remonte la branche de destination. (On définit aussi une priorité entre x et y en cas d’égalité, trivial).
+            if (mabc.norm(mabc.coordinatorPos)[0] < mabc.ruleMatcher->
+                getTileRootPositionForMeshPosition(mabc.norm(dstPos))[0]) {
+                // Send frontward X
+                // TODO
+            } else if (mabc.norm(mabc.coordinatorPos)[0] > mabc.ruleMatcher->
+                       getTileRootPositionForMeshPosition(mabc.norm(dstPos))[0]) {
+                // Send backward X
+                // TODO
+            } else { // ==
+                if (mabc.norm(mabc.coordinatorPos)[1] < mabc.ruleMatcher->
+                    getTileRootPositionForMeshPosition(mabc.norm(dstPos))[1]) {
+                    // Send frontward Y
+                    // TODO
+                } else if (mabc.norm(mabc.coordinatorPos)[1] > mabc.ruleMatcher->
+                           getTileRootPositionForMeshPosition(mabc.norm(dstPos))[1]) {
+                    // Send backward Y
+                    // TODO
+                } else {
+                    VS_ASSERT(false);
+                }
+            }
+
+        } else {
+            // 4. Si la destination n’est pas dans la tile et pas dans le même plan :
+            if (mabc.ruleMatcher->isTileRoot(mabc.norm(mabc.catom->position))) {
+                // 4.0 Envoi sur l'une des branches verticales via une fonction de décision
+                // Send upward to best branch candidate
+                // TODO
+            } else if (mabc.ruleMatcher->getBranchIndexForNonRootPosition
+                       (mabc.norm(mabc.catom->position)) == XBranch
+                       or mabc.ruleMatcher->getBranchIndexForNonRootPosition
+                       (mabc.norm(mabc.catom->position)) == YBranch) {
+                // 4.1 Si on est sur une branche horizontale, on remonte jusqu’au TR de notre tile, puis monte ou descend l’une des branches verticales, jusqu’à arriver au plan de tile de destination, avant d’appliquer 3.
+                // Send backwards
+                // TODO
+            } else {
+                // 4.2 Sinon, on monte ou descend la branche courante suivant le plan de destination, jusqu’à arriver au plan cible, et on applique 3.
+                if (mabc.norm(mabc.coordinatorPos)[2] < mabc.ruleMatcher->
+                    getTileRootPositionForMeshPosition(mabc.norm(dstPos))[2]) {
+                    // Send updwards
+                    // TODO
+                } else {
+                    // Send downwards
+                    // TODO
+                }
+            }
+        }
+
+        P2PNetworkInterface *nextHopItf = mabc.catom->getInterface(nextHopPos);
+        VS_ASSERT_MSG(nextHopItf,
+                      "RoutableScaffoldMessage::route: invalid next hop position");
+        mabc.sendMessage(this->clone(), nextHopItf, MSG_DELAY_MC, 0);
+    }
 }
 
 void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
     // cout << "[t-" << getScheduler()->now() << "] received request target cell" << endl;
+
+    if (mabc.catom->position != dstPos) {
+        route(bc); return;
+    }
 
     if (mabc.role == ActiveBeamTip) {
         // Forward message to coordinator

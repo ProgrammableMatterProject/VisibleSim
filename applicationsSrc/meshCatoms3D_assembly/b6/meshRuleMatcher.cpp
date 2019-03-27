@@ -401,7 +401,8 @@ bool MeshRuleMatcher::isSupportModule(const Cell3DPosition& pos) const {
         and m_mod(pos[2], B) == 0;
 }
 
-BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos){
+BranchIndex
+MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos) const{
     Cell3DPosition fixPos;
     fixPos.pt[0] = (pos[0] >= X_MAX ? pos[0] - B : pos[0]);
     fixPos.pt[1] = (pos[1] >= Y_MAX ? pos[1] - B : pos[1]);
@@ -490,12 +491,16 @@ Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(int bi) const {
         case LZBranch: return Cell3DPosition(-1,0,1);
         case XBranch: return Cell3DPosition(1,0,0);
         case YBranch: return Cell3DPosition(0,1,0);
-        default: 
+        default:
             cerr << "bi: " << bi << endl;
             VS_ASSERT_MSG(false, "invalid branch index");
     }
 
     return Cell3DPosition(0,0,0); // Unreachable
+}
+
+Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(const Cell3DPosition& pos) const {
+    return getBranchUnitOffset(getBranchIndexForNonRootPosition(pos));
 }
 
 bool MeshRuleMatcher::isTileRoot(const Cell3DPosition& pos) const {
@@ -683,6 +688,20 @@ MeshRuleMatcher::getTileRootPositionForMeshPosition(const Cell3DPosition& pos) c
     return Cell3DPosition(pos[0] - m_mod(pos[0], B),
                           pos[1] - m_mod(pos[1], B),
                           pos[2] - m_mod(pos[2], B));
+}
+
+bool MeshRuleMatcher::isInTileWithRootAt(const Cell3DPosition& root,
+                                         const Cell3DPosition& pos) const {
+    return root == getTileRootPositionForMeshPosition(pos);
+}
+
+bool MeshRuleMatcher::areOnTheSameBranch(const Cell3DPosition& pos1,
+                                         const Cell3DPosition& pos2) const {
+    return (getTileRootPositionForMeshPosition(pos1) ==
+            getTileRootPositionForMeshPosition(pos2))
+        and (not isTileRoot(pos1) or isTileRoot(pos2))
+        and (getBranchIndexForNonRootPosition(pos1) ==
+             getBranchIndexForNonRootPosition(pos2));
 }
 
 const Cell3DPosition

@@ -21,6 +21,7 @@ static const uint MSG_DELAY = 0;
 using namespace MeshCoating;
 
 class RoutableScaffoldMessage : public HandleableMessage {
+protected:
     const Cell3DPosition srcPos;
     const Cell3DPosition dstPos;
 public:
@@ -35,12 +36,12 @@ public:
     void route(BaseSimulator::BlockCode *bc);
 };
 
-class RequestTargetCellMessage : public HandleableMessage {
-    const Cell3DPosition srcPos;
+class RequestTargetCellMessage : public RoutableScaffoldMessage {
     bID srcId;
 public:
-    RequestTargetCellMessage(const Cell3DPosition& _srcPos, bID _srcId)
-        : HandleableMessage(), srcPos(_srcPos), srcId(_srcId) {};
+    RequestTargetCellMessage(const Cell3DPosition& _srcPos, const Cell3DPosition& _dstPos,
+                             bID _srcId)
+        : RoutableScaffoldMessage(_srcPos, _dstPos), srcId(_srcId) {};
     virtual ~RequestTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);

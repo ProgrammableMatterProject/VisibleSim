@@ -799,8 +799,8 @@ bool MeshAssemblyBlockCode::requestTargetCellFromTileRoot() {
             P2PNetworkInterface* nItf = catom->getInterface(nPos);
             VS_ASSERT(nItf);
             // cout << "[t-" << getScheduler()->now() << "] requesting target cell" << endl;
-            sendMessage(new RequestTargetCellMessage(catom->position, catom->blockId), nItf,
-                        MSG_DELAY_MC, 0);
+            sendMessage(new RequestTargetCellMessage(catom->position, coordinatorPos,
+                                                     catom->blockId), nItf,MSG_DELAY_MC, 0);
             log_send_message();
             return true;
         } // else Support module not yet in place, wait for it to come online and notify us
@@ -839,15 +839,15 @@ void MeshAssemblyBlockCode::initializeSandbox() {
     sandboxInitialized = true;
     // cout << "round duration: " << getRoundDuration() << endl;
 }
- 
+
 std::bitset<12> MeshAssemblyBlockCode::getMeshLocalNeighborhoodState() {
     bitset<12> bitset = {0};
     const vector<Cell3DPosition> localNeighborhood =
         Catoms3DWorld::getWorld()->lattice->getNeighborhood(catom->position);
-        
+
     for (const Cell3DPosition& nPos : localNeighborhood) {
         P2PNetworkInterface *itf = catom->getInterface(nPos);
-        bitset.set(catom->getAbsoluteDirection(nPos), 
+        bitset.set(catom->getAbsoluteDirection(nPos),
                    itf->isConnected() and ruleMatcher->isInMeshOrSandbox(norm(nPos)));
     }
 
