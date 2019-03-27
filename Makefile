@@ -21,9 +21,9 @@ TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
 #
 # MeldProcess: Uncomment this block to enable
 # TEMP_CCFLAGS += -DENABLE_MELDPROCESS # Enable MeldProcess source files compilation,
-# 				       # required by any MeldProcess CodeBlock.
-# 				       # if this flag is not set, the boost libraries will not be included,
-# 				       # since they are the only source files using them.
+#				       # required by any MeldProcess CodeBlock.
+#				       # if this flag is not set, the boost libraries will not be included,
+#				       # since they are the only source files using them.
 
 # You can add any of the following debug flags to get a more verbose output
 # TEMP_CCFLAGS += -DDEBUG_EVENTS #          : trace creation and destruction of all events
@@ -36,7 +36,7 @@ TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of 
 TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
 TEMP_CCFLAGS += -DDEBUG_CSG #: trace CSG parsing
-TEMP_CCFLAGS += -DshowStatsFPS
+#TEMP_CCFLAGS += -DshowStatsFPS
 
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"

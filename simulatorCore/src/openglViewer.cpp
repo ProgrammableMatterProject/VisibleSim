@@ -26,8 +26,6 @@
 #include "meldProcessDebugger.h"
 #endif
 
-#define showStatsFPS	0
-
 //===========================================================================================================
 //
 //          GlutContext  (class)
@@ -490,12 +488,9 @@ void GlutContext::idleFunc(void) {
 #endif
     if (saveScreenMode) {
         static int num=0;
-        char title[32];
-        strncpy(title, animationDirName.c_str(), sizeof(title));
-        strncat(title, "/save%04d.ppm", sizeof(title));
-
-        sprintf(title,title,num++);
-        saveScreen(title);
+        stringstream title;
+        title << animationDirName << "/save" <<  num++ << ".ppm";
+        saveScreen(title.str().c_str());
     }
     if (lastMotionTime) {
         int tm = glutGet(GLUT_ELAPSED_TIME);
