@@ -41,8 +41,13 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
         cout << "0.0 - ";
         nextHopPos = mabc.catom->position - mabc.ruleMatcher->getBranchUnitOffset(
             mabc.ruleMatcher->getAlternateBranchIndex(mabc.branch));
-    } else if (mabc.getTileRootPosition(mabc.catom->position)
-               == mabc.getTileRootPosition(dstPos)){
+    } else if ( (mabc.getTileRootPosition(mabc.catom->position)[2]
+                 == mabc.getTileRootPosition(dstPos)[2])
+                and ( (mabc.getTileRootPosition(mabc.catom->position)[2]
+                       == mabc.getTileRootPosition(dstPos)[2])
+                      or (mabc.catom->position[2] // Not on horizontal plane, go there
+                          != mabc.getTileRootPosition(mabc.catom->position)[2]))
+        ) {
         // 1. Si la destination est dans sa tile
 
         if (mabc.ruleMatcher->isTileRoot(mabc.sbnorm(mabc.catom->position))) {
@@ -65,10 +70,11 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
             }
         } else {
             // 1.2 Si la destination est dans la tile mais pas dans la branche, on renvoie au TR de la tile puis remonte la branche de destination.
+            // Ou 2.0, la tile dst est sur le plan de notre tile, il faut déjà router au TR
             // Send backward
                 nextHopPos = mabc.catom->position -
                     mabc.ruleMatcher->getBranchUnitOffset(mabc.sbnorm(mabc.catom->position));
-                cout << "1.1.2 - ";
+                cout << "1.1.2/2.0 - ";
         }
 
     } else {
@@ -77,30 +83,35 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
         cout << "dstTR: " << mabc.getTileRootPosition(dstPos) << endl;
 
         // 2. Si la destination est dans le même plan de tile
+        //   et que l'on est sur le même plan que les TR
         if (mabc.getTileRootPosition(mabc.catom->position)[2]
             == mabc.getTileRootPosition(dstPos)[2]) {
             // 2.1 Si la destination n’est pas dans la tile mais est sur une tile du même plan, on navigue horizontalement jusqu’au TR de la tile de destination puis remonte la branche de destination. (On définit aussi une priorité entre x et y en cas d’égalité, trivial).
             if (mabc.getTileRootPosition(mabc.catom->position)[0]
                 < mabc.getTileRootPosition(dstPos)[0]) {
                 // Send frontward X
-                // TODO
                 cout << "2.1.x.< - ";
+                nextHopPos = mabc.catom->position + mabc.ruleMatcher->
+                    getBranchUnitOffset(XBranch);
             } else if (mabc.getTileRootPosition(mabc.catom->position)[0]
                        > mabc.getTileRootPosition(dstPos)[0]) {
                 // Send backward X
-                // TODO
                 cout << "2.1.x.> - ";
+                nextHopPos = mabc.catom->position - mabc.ruleMatcher->
+                    getBranchUnitOffset(XBranch);
             } else { // ==
                 if (mabc.getTileRootPosition(mabc.catom->position)[1]
                     < mabc.getTileRootPosition(dstPos)[1]) {
                     // Send frontward Y
-                    // TODO
                     cout << "2.1.y.< - ";
+                    nextHopPos = mabc.catom->position + mabc.ruleMatcher->
+                        getBranchUnitOffset(YBranch);
                 } else if (mabc.getTileRootPosition(mabc.catom->position)[1]
                            > mabc.getTileRootPosition(dstPos)[1]) {
                     // Send backward Y
-                    // TODO
                     cout << "2.1.y.< - ";
+                    nextHopPos = mabc.catom->position - mabc.ruleMatcher->
+                        getBranchUnitOffset(XBranch);
                 } else {
                     VS_ASSERT(false);
                 }
