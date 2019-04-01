@@ -1101,3 +1101,12 @@ Cell3DPosition MeshAssemblyBlockCode::getTileRootPosition(const Cell3DPosition& 
                           norm(pos)));
     }
 }
+
+bool MeshAssemblyBlockCode::areOnTheSameBranch(const Cell3DPosition& pos1,
+                                               const Cell3DPosition& pos2) const {
+    return (getTileRootPosition(pos1) == getTileRootPosition(pos2))
+        and (not ruleMatcher->isTileRoot(sbnorm(pos1))
+             or ruleMatcher->isTileRoot(sbnorm(pos2)))
+        and (ruleMatcher->getBranchIndexForNonRootPosition(sbnorm(pos1)) ==
+             ruleMatcher->getBranchIndexForNonRootPosition(sbnorm(pos2)));
+}

@@ -706,15 +706,6 @@ bool MeshRuleMatcher::isInTileWithRootAt(const Cell3DPosition& root,
     return root == getTileRootPositionForMeshPosition(pos);
 }
 
-bool MeshRuleMatcher::areOnTheSameBranch(const Cell3DPosition& pos1,
-                                         const Cell3DPosition& pos2) const {
-    return (getTileRootPositionForMeshPosition(pos1) ==
-            getTileRootPositionForMeshPosition(pos2))
-        and (not isTileRoot(pos1) or isTileRoot(pos2))
-        and (getBranchIndexForNonRootPosition(pos1) ==
-             getBranchIndexForNonRootPosition(pos2));
-}
-
 const Cell3DPosition
 MeshRuleMatcher::getSupportPositionForPosition(const Cell3DPosition& pos) const {
     if (isOnZBranch(pos)) return Cell3DPosition(-1, -1, 0);

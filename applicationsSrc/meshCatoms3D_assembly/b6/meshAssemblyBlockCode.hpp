@@ -514,6 +514,13 @@ y the module
      * @return the position of the tile root module of the tile to which this module belongs
      */
     Cell3DPosition getTileRootPosition(const Cell3DPosition& pos) const;
+
+    /*
+     * @param pos1 first position
+     * @param pos2 second position to compare
+     * @return true pos1 and pos2 are on the same branch of the same tile
+     */
+    bool areOnTheSameBranch(const Cell3DPosition& pos1, const Cell3DPosition& pos2) const;
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

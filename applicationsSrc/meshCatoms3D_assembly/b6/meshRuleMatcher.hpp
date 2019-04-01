@@ -148,13 +148,6 @@ public:
      */
     bool isInTileWithRootAt(const Cell3DPosition& root, const Cell3DPosition& pos) const;
 
-    /*
-     * @param pos1 first position
-     * @param pos2 second position to compare
-     * @return true pos1 and pos2 are on the same branch of the same tile
-     */
-    bool areOnTheSameBranch(const Cell3DPosition& pos1, const Cell3DPosition& pos2) const;
-
     /**
      * @param pos position of the module to consider
      * @return the position of the parent module in the spanning tree, or pos if module has no parent

@@ -35,8 +35,15 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
     // Questions:
     // (a) Is it better to go up/down and then left/right, or the opposite? Does it matter?
 
-    // 1. Si la destination est dans sa tile
-    if (mabc.getTileRootPosition(mabc.catom->position) == mabc.getTileRootPosition(dstPos)){
+    // 0. Support modules case
+    //  Either route to TR, or to module on EPL below depending on dst
+    if (mabc.ruleMatcher->isSupportModule(mabc.sbnorm(mabc.catom->position))) {
+        cout << "0.0 - ";
+        nextHopPos = mabc.catom->position - mabc.ruleMatcher->getBranchUnitOffset(
+            mabc.ruleMatcher->getAlternateBranchIndex(mabc.branch));
+    } else if (mabc.getTileRootPosition(mabc.catom->position)
+               == mabc.getTileRootPosition(dstPos)){
+        // 1. Si la destination est dans sa tile
 
         if (mabc.ruleMatcher->isTileRoot(mabc.sbnorm(mabc.catom->position))) {
             cout << "1.0 - ";
@@ -44,8 +51,8 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
             // 1.0 Module is tile root, forward to correct branch
             nextHopPos = mabc.catom->position +
                 mabc.ruleMatcher->getBranchUnitOffset(mabc.sbnorm(dstPos));
-        } else if (mabc.ruleMatcher->areOnTheSameBranch(mabc.sbnorm(mabc.catom->position),
-                                                        mabc.sbnorm(dstPos))) {
+        } else if (mabc.areOnTheSameBranch(mabc.sbnorm(mabc.catom->position),
+                                           mabc.sbnorm(dstPos))) {
             // 1.1 Si la destination est dans sa branche, on remonte ou descend la branche.
             if (Cell3DPosition::compare_ZYX(mabc.catom->position, dstPos)) {
                 nextHopPos = mabc.catom->position +
