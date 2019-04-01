@@ -80,7 +80,7 @@ public:
         for (int i = 0; i < 2 * Rotations3D::nbRotationSteps; i++) {
             duration += Rotations3D::getNextRotationEventDelay();
         }
-        
+
         return duration;
     }
 
@@ -98,6 +98,10 @@ public:
             norm(pos) + (norm(pos)[2] < 0 ? Cell3DPosition(0,0,B) : Cell3DPosition(0,0,0)));
     }
 
+    inline bool isInSandbox(const Cell3DPosition& pos) const {
+        return pos[2] < meshSeedPosition[2];
+    }
+
     int debugColorIndex = 0;
 
     Scheduler *scheduler;
@@ -105,6 +109,8 @@ public:
     Lattice *lattice;
     Catoms3D::Catoms3DBlock *catom;
     MeshCoating::MeshRuleMatcher *ruleMatcher;
+
+    /** MESSAGE ROUTING **/
 
     /** CONTINUOUS FEEDING **/
     bool moduleWaitingOnBranch[4] = { false, false, false, false};
@@ -354,6 +360,12 @@ y the module
     static const Cell3DPosition denorm(const Cell3DPosition& pos);
 
     /**
+     * denorm variant to be used with sandbox modules as their are not considered inside the
+     *  mesh by the MeshRuleMatcher module
+     */
+    static const Cell3DPosition sbdenorm(const Cell3DPosition& pos);
+
+    /**
      * Transforms an absolute position into a tile-relative position
      * @param pos position to relatify
      * @return the corresponding position of pos in the tile-relative coordinate system
@@ -482,35 +494,26 @@ y the module
     void awakenPausedModules();
     std::array<bool, 12> moduleAwaitingOnEPL = {0};
 
-    // std::queue<MeshComponent> targetQueueForEPL[12] = {
-    //     queue<MeshComponent>({
-    //             RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
-    //             Z_R_EPL, Z_L_EPL, Z_R_EPL
-    //         }), // RevZ_EPL
-    //     {}, // RevZ_R_EPL
-    //     {},  // RZ_L_EPL
-    //     queue<MeshComponent>({
-    //             S_RevZ,
-    //             X_2, X_3, X_4, X_5,
-    //             RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,
-    //             LZ_R_EPL
-    //         }), // RZ__EPL x
-    //     queue<MeshComponent>({ S_RZ }), // RZ__R_EPL
-    //     queue<MeshComponent>({ X_1 }), // Z__R_EPL x
-    //     queue<MeshComponent>({
-    //             Z_1, Z_2, Z_3, Z_4, Z_5
-    //         }), // Z__EPL
-    //     queue<MeshComponent>({ Y_1 }), // Z__L_EPL x
-    //     queue<MeshComponent>({ S_LZ }), // LZ__R_EPL x
-    //     queue<MeshComponent>({
-    //             S_Z,
-    //             Y_2, Y_3, Y_4, Y_5,
-    //             LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
-    //             RZ_R_EPL
-    //         }), // LZ__EPL x
-    //     {}, // LZ__L_EPL x
-    //     {} // RevZ__L_EPL x
-    // };
+    /**
+     * @param dst target position to get closer to
+     * @param upward whether to consider upward branches (of the tile)
+     *  or downward branches (parent)
+     * @return The branch index of the branch that leads the closest to dst
+     */
+    BranchIndex findBestBranchIndexForMsgDst(const Cell3DPosition& dst,
+                                             bool upward) const;
+
+    /**
+     * @attention must be called only from a coordinator module
+     * @param bi index of branch to evaluate
+     * @return true if the current tile has an incident branch of index bi
+     */
+    bool hasIncidentBranch(BranchIndex bi) const;
+
+    /**
+     * @return the position of the tile root module of the tile to which this module belongs
+     */
+    Cell3DPosition getTileRootPosition(const Cell3DPosition& pos) const;
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

@@ -685,6 +685,17 @@ MeshRuleMatcher::getNearestTileRootPosition(const Cell3DPosition& pos) const {
 
 const Cell3DPosition
 MeshRuleMatcher::getTileRootPositionForMeshPosition(const Cell3DPosition& pos) const {
+    if (isSupportModule(pos)) {
+        if (isTileRoot(pos - getPositionForComponent(S_RevZ)))
+            return pos - getPositionForComponent(S_RevZ);
+        else if (isTileRoot(pos - getPositionForComponent(S_Z)))
+            return pos - getPositionForComponent(S_Z);
+        else if (isTileRoot(pos - getPositionForComponent(S_RZ)))
+            return pos - getPositionForComponent(S_RZ);
+        else if (isTileRoot(pos - getPositionForComponent(S_LZ)))
+            return pos - getPositionForComponent(S_LZ);
+    }
+
     return Cell3DPosition(pos[0] - m_mod(pos[0], B),
                           pos[1] - m_mod(pos[1], B),
                           pos[2] - m_mod(pos[2], B));
