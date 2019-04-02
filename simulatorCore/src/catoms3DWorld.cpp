@@ -766,7 +766,7 @@ bool Catoms3DWorld::exportSTLModel(string title) {
 							}
 						}
 					}
-					if (n>=2) {
+					if (n==2) {
 						vector<uint> aff;
 						aff.push_back(block->blockId);
 						for (int j=0; j<3; j++) {
