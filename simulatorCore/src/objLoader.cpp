@@ -59,7 +59,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	vector <Point2> tabTexture;
 	char txt[256];
 	GLuint currentObjectNumber=0;
-	
+
 #ifdef WIN32
 	sprintf_s(txt,256,"%s\\%s",rep,titre);
 #else
@@ -337,6 +337,12 @@ void ObjLoader::setLightedColor(GLfloat *color) {
     ptrMtlLighted->Ka[2] = color[2]*0.3f;
 }
 
+ObjData* ObjLoader::getObjDataByName(const string &name) const {
+	for (const auto &obj:tabObj) {
+		if (obj->nomOriginal==name) return obj;
+	}
+	return NULL;
+}
 
 ObjLoader::~ObjLoader(void) {
 	vector <ObjData*>::const_iterator ci = tabObj.begin();
@@ -464,7 +470,7 @@ void ObjData::glDrawId(void) {
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void ObjData::saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const {
+void ObjData::saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1,bool invNormal) const {
 	vertexPosNrmTx* pv;
 	Vector3D p0,p1,p2,normal,v1,v2;
 	GLuint *ptrInd = tabIndices+ind0*3;
@@ -477,24 +483,39 @@ void ObjData::saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) 
 		p1.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
 		pv =  tabVertices + *ptrInd++;
 		p2.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
-		
+
 		v1 = p1-p0;
 		v2 = p2-p0;
 		if (v1.norme2()!=0 && v2.norme2()!=0) {
 			normal = v1^v2;
 			normal.normer_interne();
 			char buf[25];
-			snprintf(buf,25,"%5.3f %5.3f %5.3f", normal[0], normal[1], normal[2]);
-			file << "          facet normal " << buf << endl;
-			file << "            outer loop" << endl;
-			snprintf(buf,25,"%5.3f %5.3f %5.3f", p0[0], p0[1], p0[2]);
-			file << "              vertex " << buf << endl;
-			snprintf(buf,25,"%5.3f %5.3f %5.3f", p1[0], p1[1], p1[2]);
-			file << "              vertex " << buf << endl;
-			snprintf(buf,25,"%5.3f %5.3f %5.3f", p2[0], p2[1], p2[2]);
-			file << "              vertex " << buf << endl;
-			file << "            endloop" << endl;
-			file << "          endfacet" << endl;
+			if (invNormal) {
+				normal = -1.0*normal;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", normal[0], normal[1], normal[2]);
+				file << "          facet normal " << buf << endl;
+				file << "            outer loop" << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p2[0], p2[1], p2[2]);
+				file << "              vertex " << buf << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p1[0], p1[1], p1[2]);
+				file << "              vertex " << buf << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p0[0], p0[1], p0[2]);
+				file << "              vertex " << buf << endl;
+				file << "            endloop" << endl;
+				file << "          endfacet" << endl;
+			} else {
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", normal[0], normal[1], normal[2]);
+				file << "          facet normal " << buf << endl;
+				file << "            outer loop" << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p0[0], p0[1], p0[2]);
+				file << "              vertex " << buf << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p1[0], p1[1], p1[2]);
+				file << "              vertex " << buf << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p2[0], p2[1], p2[2]);
+				file << "              vertex " << buf << endl;
+				file << "            endloop" << endl;
+				file << "          endfacet" << endl;
+			}
 		}
 	}
 }
