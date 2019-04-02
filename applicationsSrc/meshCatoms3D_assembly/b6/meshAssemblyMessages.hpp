@@ -69,15 +69,17 @@ public:
  * Sent by a coordinator that has just arrived in order to ask waiting module to
  *  resend their RequestTargetCell
  */
-class CoordinatorReadyMessage : public HandleableMessage {
+class CoordinatorReadyMessage : public RoutableScaffoldMessage {
 public:
-    CoordinatorReadyMessage()
-        : HandleableMessage() {};
+    CoordinatorReadyMessage(const Cell3DPosition& _srcPos, const Cell3DPosition& _dstPos)
+        : RoutableScaffoldMessage(_srcPos, _dstPos) {};
+
     virtual ~CoordinatorReadyMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
     virtual Message* clone() const { return new CoordinatorReadyMessage(*this); }
-    virtual string getName() const { return "CoordinatorReady"; }
+    virtual string getName() const { return "CoordinatorReady{" + srcPos.to_string()
+            + ", " + dstPos.to_string() + "}"; }
 };
 
 class TileNotReadyMessage : public HandleableMessage {

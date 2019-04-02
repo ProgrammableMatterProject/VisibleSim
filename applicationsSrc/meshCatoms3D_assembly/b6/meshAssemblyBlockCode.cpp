@@ -720,9 +720,13 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     //  the construction of the tile
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
         if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {
+            BranchIndex bi = ruleMatcher->getBranchIndexForNonRootPosition(sbnorm(nPos));
             P2PNetworkInterface* nItf = catom->getInterface(nPos);
             VS_ASSERT(nItf and nItf->isConnected());
-            sendMessage(new CoordinatorReadyMessage(), nItf, MSG_DELAY_MC, 0);
+            Cell3DPosition dstPos = catom->position + getEntryPointRelativePos(
+                ruleMatcher->getTargetEPLComponentForBranch(bi));
+            sendMessage(new CoordinatorReadyMessage(catom->position, dstPos),
+                        nItf, MSG_DELAY_MC, 0);
         }
     }
 
