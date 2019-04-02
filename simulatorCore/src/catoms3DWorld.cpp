@@ -667,28 +667,30 @@ bool Catoms3DWorld::exportSTLModel(string title) {
 	vector <Catoms3DBlock*> borderBlocks;
 	cout << "step #1: " << endl;
 	for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
-		Catoms3DBlock *bb = (Catoms3DBlock *)pair.second;
-		if (bb->getNbNeighbors()<12) { // soit 12 voisins
-			bb->setColor(RED);
-			borderBlocks.push_back(bb);
-		} else { // soit Il existe un ref qui a 4 voisins borders
-			int i=0;
-			bool visible = false;
-			Catoms3DBlock *neighbor;
-			while (i<6 && !visible) {
-				// C'est suffisant de tester un connecteur
-				neighbor = (Catoms3DBlock *)bb->getInterface(tabRefConId[i][0])->connectedInterface->hostBlock;
-				visible = !neighbor->getInterface(tabRefConId[i][2])->isConnected();
-				i++;
-			}
-			if (visible) {
-				bb->setColor(YELLOW);
+		if (pair.second->getState() != BuildingBlock::REMOVED
+			and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
+			Catoms3DBlock *bb = (Catoms3DBlock *)pair.second;
+			if (bb->getNbNeighbors()<12) { // soit 12 voisins
+				bb->setColor(RED);
 				borderBlocks.push_back(bb);
-			} else {
-				bb->setColor(WHITE);
+			} else { // soit Il existe un ref qui a 4 voisins borders
+				int i=0;
+				bool visible = false;
+				Catoms3DBlock *neighbor;
+				while (i<6 && !visible) {
+					// C'est suffisant de tester un connecteur
+					neighbor = (Catoms3DBlock *)bb->getInterface(tabRefConId[i][0])->connectedInterface->hostBlock;
+					visible = !neighbor->getInterface(tabRefConId[i][2])->isConnected();
+					i++;
+				}
+				if (visible) {
+					bb->setColor(YELLOW);
+					borderBlocks.push_back(bb);
+				} else {
+					bb->setColor(WHITE);
+				}
 			}
 		}
-
 	}
 	cout << "border blocks: " << borderBlocks.size() << "/" << buildingBlocksMap.size() << endl;
 
