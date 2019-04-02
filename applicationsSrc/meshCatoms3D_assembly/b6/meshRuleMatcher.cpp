@@ -408,9 +408,10 @@ MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos) con
     fixPos.pt[1] = (pos[1] >= Y_MAX ? pos[1] - B : pos[1]);
     fixPos.pt[2] = (pos[2] >= Z_MAX ? pos[2] - B : pos[2]);
 
-    // cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
-    // cout << fixPos << endl;
-    // cout << pos << endl;
+    cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
+    cout << fixPos << endl;
+    cout << pos << endl;
+
     VS_ASSERT_MSG(isInMesh(fixPos) and not isTileRoot(fixPos), "attempting to get branch index of tile root fixPosition or fixPosition outside of mesh");
 
     if (isOnXBranch(fixPos)) return XBranch;

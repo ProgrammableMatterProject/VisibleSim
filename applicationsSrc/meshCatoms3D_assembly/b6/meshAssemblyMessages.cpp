@@ -29,6 +29,34 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
     // Routing catom must be part of the scaffold
     VS_ASSERT(mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(mabc.catom->position)));
 
+    // Attempt direct delivery
+    P2PNetworkInterface *nextHopItf = mabc.catom->getInterface(dstPos);
+    if (nextHopItf and nextHopItf->isConnected()) {
+        mabc.sendMessage(this->clone(), nextHopItf, MSG_DELAY_MC, 0);
+        return;
+    }
+
+    // Otherwise, check if dstPos is part of scaffold and if that's not the case,
+    //  find the nearest scaffold position for routing. Use the position with the lowest
+    //  ZYX, as it is the most likely to have already been built
+    bool dstInMesh = mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(dstPos));
+    Cell3DPosition dstSFPos = dstInMesh ? dstPos :
+        Cell3DPosition(numeric_limits<short>::max(), numeric_limits<short>::max(),
+                       numeric_limits<short>::max());
+    if (not dstInMesh) {
+        for (const Cell3DPosition& nPos : mabc.lattice->getActiveNeighborCells(dstPos)) {
+            if (mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(nPos))
+                and Cell3DPosition::compare_ZYX(nPos, dstSFPos))
+                dstSFPos = nPos;
+        }
+
+        cout << dstPos << " not in mesh -> " << dstSFPos << endl;
+
+        VS_ASSERT(dstSFPos != Cell3DPosition(numeric_limits<short>::max(),
+                                             numeric_limits<short>::max(),
+                                             numeric_limits<short>::max()));
+    }
+
     // Assumptions:
     // (1) Scaffold is convex
     //
@@ -42,9 +70,9 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
         nextHopPos = mabc.catom->position - mabc.ruleMatcher->getBranchUnitOffset(
             mabc.ruleMatcher->getAlternateBranchIndex(mabc.branch));
     } else if ( (mabc.getTileRootPosition(mabc.catom->position)[2]
-                 == mabc.getTileRootPosition(dstPos)[2])
+                 == mabc.getTileRootPosition(dstSFPos)[2])
                 and ( (mabc.getTileRootPosition(mabc.catom->position)[2]
-                       == mabc.getTileRootPosition(dstPos)[2])
+                       == mabc.getTileRootPosition(dstSFPos)[2])
                       or (mabc.catom->position[2] // Not on horizontal plane, go there
                           != mabc.getTileRootPosition(mabc.catom->position)[2]))
         ) {
@@ -55,11 +83,10 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
 
             // 1.0 Module is tile root, forward to correct branch
             nextHopPos = mabc.catom->position +
-                mabc.ruleMatcher->getBranchUnitOffset(mabc.sbnorm(dstPos));
-        } else if (mabc.areOnTheSameBranch(mabc.sbnorm(mabc.catom->position),
-                                           mabc.sbnorm(dstPos))) {
+                mabc.ruleMatcher->getBranchUnitOffset(mabc.sbnorm(dstSFPos));
+        } else if (mabc.areOnTheSameBranch(mabc.catom->position, dstSFPos)) {
             // 1.1 Si la destination est dans sa branche, on remonte ou descend la branche.
-            if (Cell3DPosition::compare_ZYX(mabc.catom->position, dstPos)) {
+            if (Cell3DPosition::compare_ZYX(mabc.catom->position, dstSFPos)) {
                 nextHopPos = mabc.catom->position +
                     mabc.ruleMatcher->getBranchUnitOffset(mabc.sbnorm(mabc.catom->position));
                 cout << "1.1.< - ";
@@ -78,36 +105,36 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
         }
 
     } else {
-        cout << "dstPos: " << dstPos << endl;
+        cout << "dstSFPos: " << dstSFPos << endl;
         cout << "cTR: " << mabc.getTileRootPosition(mabc.catom->position) << endl;
-        cout << "dstTR: " << mabc.getTileRootPosition(dstPos) << endl;
+        cout << "dstTR: " << mabc.getTileRootPosition(dstSFPos) << endl;
 
         // 2. Si la destination est dans le même plan de tile
         //   et que l'on est sur le même plan que les TR
         if (mabc.getTileRootPosition(mabc.catom->position)[2]
-            == mabc.getTileRootPosition(dstPos)[2]) {
+            == mabc.getTileRootPosition(dstSFPos)[2]) {
             // 2.1 Si la destination n’est pas dans la tile mais est sur une tile du même plan, on navigue horizontalement jusqu’au TR de la tile de destination puis remonte la branche de destination. (On définit aussi une priorité entre x et y en cas d’égalité, trivial).
             if (mabc.getTileRootPosition(mabc.catom->position)[0]
-                < mabc.getTileRootPosition(dstPos)[0]) {
+                < mabc.getTileRootPosition(dstSFPos)[0]) {
                 // Send frontward X
                 cout << "2.1.x.< - ";
                 nextHopPos = mabc.catom->position + mabc.ruleMatcher->
                     getBranchUnitOffset(XBranch);
             } else if (mabc.getTileRootPosition(mabc.catom->position)[0]
-                       > mabc.getTileRootPosition(dstPos)[0]) {
+                       > mabc.getTileRootPosition(dstSFPos)[0]) {
                 // Send backward X
                 cout << "2.1.x.> - ";
                 nextHopPos = mabc.catom->position - mabc.ruleMatcher->
                     getBranchUnitOffset(XBranch);
             } else { // ==
                 if (mabc.getTileRootPosition(mabc.catom->position)[1]
-                    < mabc.getTileRootPosition(dstPos)[1]) {
+                    < mabc.getTileRootPosition(dstSFPos)[1]) {
                     // Send frontward Y
                     cout << "2.1.y.< - ";
                     nextHopPos = mabc.catom->position + mabc.ruleMatcher->
                         getBranchUnitOffset(YBranch);
                 } else if (mabc.getTileRootPosition(mabc.catom->position)[1]
-                           > mabc.getTileRootPosition(dstPos)[1]) {
+                           > mabc.getTileRootPosition(dstSFPos)[1]) {
                     // Send backward Y
                     cout << "2.1.y.< - ";
                     nextHopPos = mabc.catom->position - mabc.ruleMatcher->
@@ -124,8 +151,8 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
                 //  envoi sur l'une des branches verticales via une fonction de décision
                 // Send upward/downward to best branch candidate
                 bool upward = mabc.getTileRootPosition(mabc.catom->position)[2]
-                    < mabc.getTileRootPosition(dstPos)[2];
-                BranchIndex nextHopBi = mabc.findBestBranchIndexForMsgDst(dstPos, upward);
+                    < mabc.getTileRootPosition(dstSFPos)[2];
+                BranchIndex nextHopBi = mabc.findBestBranchIndexForMsgDst(dstSFPos, upward);
                 if (upward) {
                     cout << "4.0.< - ";
                     nextHopPos = mabc.catom->position +
@@ -147,13 +174,13 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
             } else {
                 // 4.2 Sinon, on monte ou descend la branche courante suivant le plan de destination, jusqu’à arriver au plan cible, et on applique 3.
                 if (mabc.getTileRootPosition(mabc.catom->position)[2]
-                    < mabc.getTileRootPosition(dstPos)[2]) {
+                    < mabc.getTileRootPosition(dstSFPos)[2]) {
                     // Send updwards
                     cout << "4.2.< - ";
                     nextHopPos = mabc.catom->position +
                         mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
                 } else if (mabc.getTileRootPosition(mabc.catom->position)[2]
-                           > mabc.getTileRootPosition(dstPos)[2]) {
+                           > mabc.getTileRootPosition(dstSFPos)[2]) {
 
                     // Send downwards
                     cout << "4.2.> - ";
@@ -166,11 +193,11 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
         }
     }
 
-    cout << "RSM(" << srcPos << ", " << dstPos << "): "
+    cout << "RSM(" << srcPos << ", " << dstSFPos << "): "
          << mabc.catom->position
          << " -> " << nextHopPos;
 
-    P2PNetworkInterface *nextHopItf = mabc.catom->getInterface(nextHopPos);
+    nextHopItf = mabc.catom->getInterface(nextHopPos);
     VS_ASSERT_MSG(nextHopItf,
                   "RoutableScaffoldMessage::route: invalid next hop position");
 
@@ -265,7 +292,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
         // Send to requesting catom
         VS_ASSERT(destinationInterface->isConnected());
-        mabc.sendMessage(new ProvideTargetCellMessage(tPos, srcPos),
+        mabc.sendMessage(new ProvideTargetCellMessage(dstPos, srcPos, tPos),
                          destinationInterface, MSG_DELAY_MC, 0);
 
         // UPDATE WAITING CATOMS
@@ -298,7 +325,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
                         // Send
                         VS_ASSERT(tipItf and tipItf->isConnected());
-                        mabc.sendMessage(new ProvideTargetCellMessage(tPos, wPos),
+                        mabc.sendMessage(new ProvideTargetCellMessage(dstPos, wPos, tPos),
                                          tipItf, MSG_DELAY_MC, 0);
 
                         // Update looping condition and waiting state
@@ -319,6 +346,10 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
+
+    if (mabc.catom->position != dstPos) {
+        route(bc); return;
+    }
 
     if (mabc.role == ActiveBeamTip
         or mabc.role == Support

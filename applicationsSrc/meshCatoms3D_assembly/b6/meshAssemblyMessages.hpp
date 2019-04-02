@@ -50,12 +50,13 @@ public:
             + ", " + to_string(srcId) + "}"; }
 };
 
-class ProvideTargetCellMessage : public HandleableMessage {
+class ProvideTargetCellMessage : public RoutableScaffoldMessage {
     const Cell3DPosition tPos;
-    const Cell3DPosition dstPos;
 public:
-    ProvideTargetCellMessage(const Cell3DPosition& _tPos, const Cell3DPosition& _dstPos)
-        : HandleableMessage(), tPos(_tPos), dstPos(_dstPos) {};
+    ProvideTargetCellMessage(const Cell3DPosition& _srcPos,
+                             const Cell3DPosition& _dstPos,
+                             const Cell3DPosition& _tPos)
+        : RoutableScaffoldMessage(_srcPos, _dstPos), tPos(_tPos) {};
     virtual ~ProvideTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
