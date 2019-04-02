@@ -26,23 +26,23 @@ public :
     friend ostream& operator<<(ostream& f,const Color &c);
 };
 
-const Color WHITE(1.0f,1.0f,1.0f);
-const Color RED(1.0f,0.0f,0.0f);
-const Color GREEN(0.0f,1.0f,0.0f);
-const Color LIGHTGREEN(0.75f,1.0f,0.25f);
-const Color BLUE(0.0f,0.0f,1.0f);
-const Color YELLOW(1.0f,1.0f,0.0f);
-const Color CYAN(0.0f,1.0f,1.0f);
-const Color MAGENTA(1.0f,0.0f,1.0f);
-const Color LIGHTBLUE(173/255.0,216/255.0,230/255.0);
-const Color GOLD(1.0,215/255.0,0);
-const Color PINK(1.0,192/255.0,203/255.0);
-const Color GREY(0.5,0.5,0.5);
-const Color LIGHTGREY(0.75,0.75,0.75);
-const Color DARKGREY(0.25,0.25,0.25);
-const Color ORANGE(1.0,0.64706,0.0);
-const Color DARKORANGE(1.0,0.549,0.0);
-const Color BLACK(0.0,0.0,0.0);
+inline static const Color WHITE(1.0f,1.0f,1.0f);
+inline static const Color RED(1.0f,0.0f,0.0f);
+inline static const Color GREEN(0.0f,1.0f,0.0f);
+inline static const Color LIGHTGREEN(0.75f,1.0f,0.25f);
+inline static const Color BLUE(0.0f,0.0f,1.0f);
+inline static const Color YELLOW(1.0f,1.0f,0.0f);
+inline static const Color CYAN(0.0f,1.0f,1.0f);
+inline static const Color MAGENTA(1.0f,0.0f,1.0f);
+inline static const Color LIGHTBLUE(173/255.0,216/255.0,230/255.0);
+inline static const Color GOLD(1.0,215/255.0,0);
+inline static const Color PINK(1.0,192/255.0,203/255.0);
+inline static const Color GREY(0.5,0.5,0.5);
+inline static const Color LIGHTGREY(0.75,0.75,0.75);
+inline static const Color DARKGREY(0.25,0.25,0.25);
+inline static const Color ORANGE(1.0,0.64706,0.0);
+inline static const Color DARKORANGE(1.0,0.549,0.0);
+inline static const Color BLACK(0.0,0.0,0.0);
 
 static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},
                                          {0.0,1.0,0.0,1.0},{0.0,0.0,1.0,1.0},
@@ -82,26 +82,6 @@ public:
     inline static const string BCyan = "\033[1;36m";
     //!< Bright White
     inline static const string BWhite = "\033[1;37m";
-
-    //!< Background Black
-    inline static const string BG_Black = "\033[0;40m";
-    inline static const string BG_Red = "\033[0;41m";
-    inline static const string BG_Green = "\033[0;42m";
-    inline static const string BG_Yellow = "\033[0;43m";
-    inline static const string BG_Blue = "\033[0;44m";
-    inline static const string BG_Magenta = "\033[0;45m";
-    inline static const string BG_Cyan = "\033[0;46m";
-    inline static const string BG_White = "\033[0;47m";
-
-    inline static const string BG_BBlack = "\033[1;40m";
-    inline static const string BG_BRed = "\033[1;41m";
-    inline static const string BG_BGreen = "\033[1;42m";
-    inline static const string BG_BYellow = "\033[1;43m";
-    inline static const string BG_BBlue = "\033[1;44m";
-    inline static const string BG_BMagenta = "\033[1;45m";
-    inline static const string BG_BCyan = "\033[1;46m";
-    inline static const string BG_BWhite = "\033[1;47m";
-
 
     //!< Reset Tag
     inline static const string Reset = "\033[0m";

@@ -341,7 +341,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             if (not saveScreenMode) {
                 // Will start animation capture,
                 //  make sure animation directory exists
-                int err; extern int errno;
+                int err; //extern int errno;
                 struct stat sb;
                 animationDirName = generateTimestampedDirName("animation");
                 static const char* animationDirNameC = animationDirName.c_str();

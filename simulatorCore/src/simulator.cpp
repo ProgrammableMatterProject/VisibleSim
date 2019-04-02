@@ -41,7 +41,7 @@ bool Simulator::regrTesting = false; // No regression testing by default
 
 Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
+    OUTPUT << TermColor::LifecycleColor << "Simulator constructor" << TermColor::Reset << endl;
 #endif
 
     // Ensure that only one instance of simulator is running at once
@@ -49,8 +49,8 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
         simulator = this;
         BaseSimulator::simulator = simulator;
     } else {
-        ERRPUT << "\033[1;31m" << "Only one Simulator instance can be created, aborting !"
-               << "\033[0m" << endl;
+        ERRPUT << TermColor::ErrorColor << "Only one Simulator instance can be created, aborting !"
+               << TermColor::Reset << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -86,11 +86,11 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
         if (xmlWorldNode) {
 #ifdef DEBUG_CONF_PARSING
             OUTPUT << "\033[1;34m  " << confFileName << " successfully loaded "
-                   << "\033[0m" << endl;
+                   << TermColor::Reset << endl;
 #endif
         } else {
-            ERRPUT << "\033[1;31m" << "error: Could not find root 'world' element in configuration file"
-                   << "\033[0m" << endl;
+            ERRPUT << TermColor::ErrorColor << "error: Could not find root 'world' element in configuration file"
+                   << TermColor::Reset << endl;
             exit(EXIT_FAILURE);
         }
     }
@@ -98,7 +98,7 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 
 Simulator::~Simulator() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "\033[1;34m"  << "Simulator destructor" << "\033[0m" << endl;
+    OUTPUT << TermColor::LifecycleColor  << "Simulator destructor" << TermColor::Reset << endl;
 #endif
     delete xmlDoc;
 
