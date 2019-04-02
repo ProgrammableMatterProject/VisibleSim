@@ -26,23 +26,23 @@ public :
     friend ostream& operator<<(ostream& f,const Color &c);
 };
 
-const Color WHITE(1.0f,1.0f,1.0f);
-const Color RED(1.0f,0.0f,0.0f);
-const Color GREEN(0.0f,1.0f,0.0f);
-const Color LIGHTGREEN(0.75f,1.0f,0.25f);
-const Color BLUE(0.0f,0.0f,1.0f);
-const Color YELLOW(1.0f,1.0f,0.0f);
-const Color CYAN(0.0f,1.0f,1.0f);
-const Color MAGENTA(1.0f,0.0f,1.0f);
-const Color LIGHTBLUE(173/255.0,216/255.0,230/255.0);
-const Color GOLD(1.0,215/255.0,0);
-const Color PINK(1.0,192/255.0,203/255.0);
-const Color GREY(0.5,0.5,0.5);
-const Color LIGHTGREY(0.75,0.75,0.75);
-const Color DARKGREY(0.25,0.25,0.25);
-const Color ORANGE(1.0,0.64706,0.0);
-const Color DARKORANGE(1.0,0.549,0.0);
-const Color BLACK(0.0,0.0,0.0);
+inline static const Color WHITE(1.0f,1.0f,1.0f);
+inline static const Color RED(1.0f,0.0f,0.0f);
+inline static const Color GREEN(0.0f,1.0f,0.0f);
+inline static const Color LIGHTGREEN(0.75f,1.0f,0.25f);
+inline static const Color BLUE(0.0f,0.0f,1.0f);
+inline static const Color YELLOW(1.0f,1.0f,0.0f);
+inline static const Color CYAN(0.0f,1.0f,1.0f);
+inline static const Color MAGENTA(1.0f,0.0f,1.0f);
+inline static const Color LIGHTBLUE(173/255.0,216/255.0,230/255.0);
+inline static const Color GOLD(1.0,215/255.0,0);
+inline static const Color PINK(1.0,192/255.0,203/255.0);
+inline static const Color GREY(0.5,0.5,0.5);
+inline static const Color LIGHTGREY(0.75,0.75,0.75);
+inline static const Color DARKGREY(0.25,0.25,0.25);
+inline static const Color ORANGE(1.0,0.64706,0.0);
+inline static const Color DARKORANGE(1.0,0.549,0.0);
+inline static const Color BLACK(0.0,0.0,0.0);
 
 static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},
                                          {0.0,1.0,0.0,1.0},{0.0,0.0,1.0,1.0},
@@ -53,6 +53,43 @@ static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,
                                          {0.094117647,0.545098039,0.094117647,1.0}};
 
 #define NB_COLORS 9
-const Color Colors[NB_COLORS] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK};
+inline static const Color Colors[NB_COLORS] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK};
+
+class TermColor {
+public:
+    inline static const string Black = "\033[0;30m";
+    inline static const string Red = "\033[0;31m";
+    inline static const string Green = "\033[0;32m";
+    inline static const string Yellow = "\033[0;33m";
+    inline static const string Blue = "\033[0;34m";
+    inline static const string Magenta = "\033[0;35m";
+    inline static const string Cyan = "\033[0;36m";
+    inline static const string White = "\033[0;37m";
+
+    //!< Bright Black
+    inline static const string BBlack = "\033[1;30m";
+    //!< Bright Red
+    inline static const string BRed = "\033[1;31m";
+    //!< Bright Green
+    inline static const string BGreen = "\033[1;32m";
+    //!< Bright Yellow
+    inline static const string BYellow = "\033[1;33m";
+    //!< Bright Blue
+    inline static const string BBlue = "\033[1;34m";
+    //!< Bright Magenta
+    inline static const string BMagenta = "\033[1;35m";
+    //!< Bright Cyan
+    inline static const string BCyan = "\033[1;36m";
+    //!< Bright White
+    inline static const string BWhite = "\033[1;37m";
+
+    //!< Reset Tag
+    inline static const string Reset = "\033[0m";
+
+    //<! Color Output Configuration
+    inline static const string SchedulerColor = BGreen;
+    inline static const string LifecycleColor = BYellow;
+    inline static const string ErrorColor = BRed;
+};
 
 #endif // COLOR_H_
