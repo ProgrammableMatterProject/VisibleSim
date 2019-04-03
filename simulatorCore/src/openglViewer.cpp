@@ -543,17 +543,27 @@ void GlutContext::showFPS(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     char str[32];
 
-    glColor3f(255,255,0);
-
+		glColor4f(1.0,1.0,1.0,0.75);
+		glPushMatrix();
+		glTranslatef(50,75,0);
+		glBegin(GL_QUADS);
+		glVertex2i(0,0);
+		glVertex2i(200,0);
+		glVertex2i(200,30);
+		glVertex2i(0,30);
+		glEnd();
+		glPopMatrix();
     sprintf(str, "FPS: %4.2f", fps);
-    GlutWindow::drawString(50, 75, str, font);
+		glColor4f(0.0,0.0,0.0,0.75);
+		GlutWindow::drawString(50, 75, str, font);
+		cout << str << endl;
 }
 
 void GlutContext::showSimulationInfo(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     char str[32];
 
-    glColor3f(255,255,0);
+		glColor4f(1.0,1.0,1.0,0.75);
 
     sprintf(str,"Timestep: %lu", timestep);
     GlutWindow::drawString(50, 50, str, font);
@@ -580,7 +590,7 @@ void GlutContext::drawFunc(void) {
     shadowedRenderingStep4();
 
     // drawing of the interface
-    glEnable(GL_BLEND);
+		glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glMatrixMode(GL_PROJECTION);
@@ -599,10 +609,15 @@ void GlutContext::drawFunc(void) {
     if (helpWindow) helpWindow->glDraw();
 
 #ifdef showStatsFPS
-    showFPS();
-#endif
-    //showSimulationInfo();
+		glDisable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
 
+    //showFPS();
+		calculateSimulationInfo();
+		showSimulationInfo();
+#endif
+
+		glFlush();
     glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
 }
