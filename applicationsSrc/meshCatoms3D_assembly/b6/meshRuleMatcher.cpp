@@ -401,7 +401,7 @@ bool MeshRuleMatcher::isSupportModule(const Cell3DPosition& pos) const {
         and m_mod(pos[2], B) == 0;
 }
 
-BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos){
+BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos) const{
     Cell3DPosition fixPos;
     fixPos.pt[0] = (pos[0] >= X_MAX ? pos[0] - B : pos[0]);
     fixPos.pt[1] = (pos[1] >= Y_MAX ? pos[1] - B : pos[1]);
@@ -490,7 +490,7 @@ Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(int bi) const {
         case LZBranch: return Cell3DPosition(-1,0,1);
         case XBranch: return Cell3DPosition(1,0,0);
         case YBranch: return Cell3DPosition(0,1,0);
-        default: 
+        default:
             cerr << "bi: " << bi << endl;
             VS_ASSERT_MSG(false, "invalid branch index");
     }
@@ -680,9 +680,19 @@ MeshRuleMatcher::getNearestTileRootPosition(const Cell3DPosition& pos) const {
 
 const Cell3DPosition
 MeshRuleMatcher::getTileRootPositionForMeshPosition(const Cell3DPosition& pos) const {
-    return Cell3DPosition(pos[0] - m_mod(pos[0], B),
-                          pos[1] - m_mod(pos[1], B),
-                          pos[2] - m_mod(pos[2], B));
+    if (isTileRoot(pos)) return pos;
+
+    // cout << pos << endl;
+    BranchIndex bi = getBranchIndexForNonRootPosition(pos[2] >= 0 ? pos : pos + Cell3DPosition(0,0,6));
+
+    const Cell3DPosition& mult =
+        Cell3DPosition(B - m_mod(abs(pos[0]), B),
+                       B - m_mod(abs(pos[1]), B),
+                       B - m_mod(abs(pos[2]), B));
+
+    const Cell3DPosition& rPos = pos - mult * getBranchUnitOffset(bi);
+
+    return rPos;
 }
 
 const Cell3DPosition

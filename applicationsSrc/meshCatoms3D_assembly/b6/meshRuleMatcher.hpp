@@ -90,7 +90,7 @@ public:
     bool shouldGrowYBranch(const Cell3DPosition& pos) const;
 
     Cell3DPosition getBranchUnitOffset(int bi) const;
-    BranchIndex getBranchIndexForNonRootPosition(const Cell3DPosition& pos);
+    BranchIndex getBranchIndexForNonRootPosition(const Cell3DPosition& pos) const;
 
     MeshRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _Z_MAX,
                                 const uint _B) :
