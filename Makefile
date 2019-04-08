@@ -13,7 +13,7 @@ OS = $(shell uname -s)
 VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen -lsimDatoms
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
+TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL
 # TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 
 # ADDITIONAL CCFLAGS
@@ -36,7 +36,7 @@ TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of 
 TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
 TEMP_CCFLAGS += -DDEBUG_CSG #: trace CSG parsing
-#TEMP_CCFLAGS += -DshowStatsFPS
+TEMP_CCFLAGS += #-DshowStatsFPS
 
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"

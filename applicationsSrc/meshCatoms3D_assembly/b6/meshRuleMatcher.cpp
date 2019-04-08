@@ -401,7 +401,19 @@ bool MeshRuleMatcher::isSupportModule(const Cell3DPosition& pos) const {
         and m_mod(pos[2], B) == 0;
 }
 
-BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos){
+BranchIndex
+MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& pos) const{
+    if (isSupportModule(pos)) {
+        if (isTileRoot(pos - getPositionForComponent(S_RevZ)))
+            return RevZBranch;
+        else if (isTileRoot(pos - getPositionForComponent(S_Z)))
+            return ZBranch;
+        else if (isTileRoot(pos - getPositionForComponent(S_RZ)))
+            return RZBranch;
+        else if (isTileRoot(pos - getPositionForComponent(S_LZ)))
+            return LZBranch;
+    }
+
     Cell3DPosition fixPos;
     fixPos.pt[0] = (pos[0] >= X_MAX ? pos[0] - B : pos[0]);
     fixPos.pt[1] = (pos[1] >= Y_MAX ? pos[1] - B : pos[1]);
@@ -410,7 +422,9 @@ BranchIndex MeshRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPositi
     // cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
     // cout << fixPos << endl;
     // cout << pos << endl;
-    VS_ASSERT_MSG(isInMesh(fixPos) and not isTileRoot(fixPos), "attempting to get branch index of tile root fixPosition or fixPosition outside of mesh");
+
+    VS_ASSERT_MSG(isInMesh(fixPos), "attempting to get branch index of position outside of mesh");
+    VS_ASSERT_MSG(not isTileRoot(fixPos), "attempting to get branch index of tile root position:");
 
     if (isOnXBranch(fixPos)) return XBranch;
     if (isOnYBranch(fixPos)) return YBranch;
@@ -490,12 +504,16 @@ Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(int bi) const {
         case LZBranch: return Cell3DPosition(-1,0,1);
         case XBranch: return Cell3DPosition(1,0,0);
         case YBranch: return Cell3DPosition(0,1,0);
-        default: 
+        default:
             cerr << "bi: " << bi << endl;
             VS_ASSERT_MSG(false, "invalid branch index");
     }
 
     return Cell3DPosition(0,0,0); // Unreachable
+}
+
+Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(const Cell3DPosition& pos) const {
+    return getBranchUnitOffset(getBranchIndexForNonRootPosition(pos));
 }
 
 bool MeshRuleMatcher::isTileRoot(const Cell3DPosition& pos) const {
@@ -680,9 +698,42 @@ MeshRuleMatcher::getNearestTileRootPosition(const Cell3DPosition& pos) const {
 
 const Cell3DPosition
 MeshRuleMatcher::getTileRootPositionForMeshPosition(const Cell3DPosition& pos) const {
-    return Cell3DPosition(pos[0] - m_mod(pos[0], B),
-                          pos[1] - m_mod(pos[1], B),
-                          pos[2] - m_mod(pos[2], B));
+    // cout << "pos: " << pos << endl;
+    if (isSupportModule(pos)) {
+        if (isTileRoot(pos - getPositionForComponent(S_RevZ)))
+            return pos - getPositionForComponent(S_RevZ);
+        else if (isTileRoot(pos - getPositionForComponent(S_Z)))
+            return pos - getPositionForComponent(S_Z);
+        else if (isTileRoot(pos - getPositionForComponent(S_RZ)))
+            return pos - getPositionForComponent(S_RZ);
+        else if (isTileRoot(pos - getPositionForComponent(S_LZ)))
+            return pos - getPositionForComponent(S_LZ);
+    } else if (isTileRoot(pos)) return pos;
+
+    BranchIndex bi = getBranchIndexForNonRootPosition(pos[2] >= 0 ? pos : pos + Cell3DPosition(0,0,6));
+
+    // cout << "bi: " << branch_to_string(bi) << endl;
+
+    bool iis = isInSandbox(pos);
+    const Cell3DPosition& mult = Cell3DPosition(
+        iis ? m_mod(pos[0] + B, B) : m_mod(pos[0], B),
+        iis ? m_mod(pos[1] + B, B) : m_mod(pos[1], B),
+        iis ? m_mod(pos[2] + B, B) : m_mod(pos[2], B));
+
+    // cout << "mult: " << mult << endl;
+    int rank = std::max(mult[0], max(mult[1], mult[2]));
+    // cout << "rank: " << rank << endl;
+
+    const Cell3DPosition& rPos = pos - rank * getBranchUnitOffset(bi);
+
+    // cout << "rPos: " << mult << endl;
+
+    return rPos;
+}
+
+bool MeshRuleMatcher::isInTileWithRootAt(const Cell3DPosition& root,
+                                         const Cell3DPosition& pos) const {
+    return root == getTileRootPositionForMeshPosition(pos);
 }
 
 const Cell3DPosition
