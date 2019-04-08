@@ -270,6 +270,7 @@ public:
     P2PNetworkInterface *awaitingModuleProbeItf = NULL;
     Cell3DPosition actuationTargetPos;
     Cell3DPosition stepTargetPos;
+    Catoms3DBlock *stepPivot;
 
     bool rotating = false;
 
@@ -277,6 +278,9 @@ public:
     // NOTE: what if there is more than 1?
     Catoms3DBlock* findTargetLightAmongNeighbors(const Cell3DPosition& targetPos,
                                                  const Cell3DPosition& srcPos) const;
+    Catoms3DBlock* findTargetLightAroundTarget(const Cell3DPosition& targetPos,
+                                               const Cell3DPosition& finalPos) const;
+
     void setGreenLightAndResumeFlow();
     /**                     **/
 

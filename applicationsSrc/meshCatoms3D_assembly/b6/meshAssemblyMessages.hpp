@@ -82,18 +82,9 @@ public:
             + ", " + dstPos.to_string() + "}"; }
 };
 
-class TileNotReadyMessage : public HandleableMessage {
-    const Cell3DPosition dstPos;
-public:
-    TileNotReadyMessage(const Cell3DPosition& _dstPos)
-        : HandleableMessage(), dstPos(_dstPos) {};
-    virtual ~TileNotReadyMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new TileNotReadyMessage(*this); }
-    virtual string getName() const { return "TileNotReady"; }
-};
-
+// Cannot use RoutableScaffoldMessage as is because it is used in a scenario where
+//  routing cannot rely on TRs as they are not yet in place.
 class TileInsertionReadyMessage : public HandleableMessage {
 public:
     TileInsertionReadyMessage() : HandleableMessage() {};
@@ -113,6 +104,30 @@ public:
  *  module must check whether its light is on and either give a go, or wait until its status
  *  clears and send a go at that time.
  */
+// class ProbePivotLightStateMessage : public RoutableScaffoldMessage {
+//     const Cell3DPosition targetPos; // Next position the module is seeking to reach
+//     /**
+//      * Final component to be reached by a series of intermediate motions such as this one
+//      */
+//     const MeshComponent finalComponent;
+
+// public:
+//     ProbePivotLightStateMessage(const Cell3DPosition& _srcPos,
+//                                 const Cell3DPosition& _dstPos,
+//                                 const Cell3DPosition& _targetPos,
+//                                 const MeshComponent _finalComponent)
+//                                 // const Cell3DPosition& _finalPos)
+//         : RoutableScaffoldMessage(_srcPos,_dstPos),
+//           targetPos(_targetPos), finalComponent(_finalComponent) {};
+//     virtual ~ProbePivotLightStateMessage() {};
+
+//     virtual void handle(BaseSimulator::BlockCode*);
+//     virtual Message* clone() const { return new ProbePivotLightStateMessage(*this); }
+//     virtual string getName() const { return "ProbePivotLightState{" + srcPos.to_string()
+//             + ", " + targetPos.to_string()
+//             + ", " + MeshRuleMatcher::component_to_string(finalComponent)
+//             + "}";
+//     }
 class ProbePivotLightStateMessage : public HandleableMessage {
     const Cell3DPosition srcPos;
     const Cell3DPosition targetPos; // Next position the module is seeking to reach
@@ -137,20 +152,18 @@ public:
             + ", " + MeshRuleMatcher::component_to_string(finalComponent)
             + "}";
     }
-};
 
+};
 
 /**
  * This message is routed back from the pivot module to the module awaiting motion
  *  in order to notify it that it can be safely performed.
  */
-class GreenLightIsOnMessage : public HandleableMessage {
-    const Cell3DPosition srcPos;
-    const Cell3DPosition dstPos;
+class GreenLightIsOnMessage : public RoutableScaffoldMessage {
 public:
     GreenLightIsOnMessage(const Cell3DPosition& _srcPos,
                           const Cell3DPosition& _dstPos)
-        : HandleableMessage(), srcPos(_srcPos), dstPos(_dstPos) {};
+        : RoutableScaffoldMessage(_srcPos, _dstPos) {};
     virtual ~GreenLightIsOnMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);

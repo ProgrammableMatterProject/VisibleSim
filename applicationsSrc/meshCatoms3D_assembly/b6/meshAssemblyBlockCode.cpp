@@ -21,6 +21,7 @@
 #include "teleportationEvents.h"
 #include "rotation3DEvents.h"
 #include "catoms3DMotionEngine.h"
+#include "color.h"
 
 #include "meshAssemblyBlockCode.hpp"
 
@@ -94,10 +95,20 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                  << hasIncidentBranch((BranchIndex)i) << endl;
     }
 
-    cout << "branch: " << ruleMatcher->branch_to_string(branch) << endl;
-    cout << "coordinatorPos: " << coordinatorPos << endl;
-    cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
-    cout << "tileRootPosForMeshPos: " << sbdenorm(ruleMatcher->getTileRootPositionForMeshPosition(sbnorm(catom->position))) << endl;
+    if (ruleMatcher->isInMeshOrSandbox(norm(catom->position))) {
+        if (ruleMatcher->isTileRoot(norm(catom->position))) {
+            cout << "branch: " << ruleMatcher->branch_to_string(branch)
+                 << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
+        }
+
+        cout << "coordinatorPos: " << coordinatorPos << endl;
+        cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
+        cout << "isSupportModule: " << ruleMatcher->isSupportModule(sbnorm(catom->position)) << endl;
+        cout <<
+            "tileRootPosForMeshPos: " << getTileRootPosition(catom->position)
+             << endl;
+    }
+
     cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
     cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
     Cell3DPosition nextHop;
@@ -932,6 +943,38 @@ findTargetLightAmongNeighbors(const Cell3DPosition& targetPos,
     return NULL;
 }
 
+Catoms3DBlock* MeshAssemblyBlockCode::
+findTargetLightAroundTarget(const Cell3DPosition& targetPos,
+                            const Cell3DPosition& finalPos) const {
+    cout << catom->position << " seeks light around " << targetPos
+         << " to get to " << finalPos;
+
+    bool reverse = Cell3DPosition::compare_ZYX(finalPos, catom->position);
+    Cell3DPosition bestCandidate =  reverse ?
+        Cell3DPosition(numeric_limits<short>::max(),
+                       numeric_limits<short>::max(),
+                       numeric_limits<short>::max())
+        :
+        Cell3DPosition(numeric_limits<short>::min(),
+                       numeric_limits<short>::min(),
+                       numeric_limits<short>::min());
+    for (const auto& cell : lattice->getActiveNeighborCells(targetPos)) {
+        if (ruleMatcher->isInMeshOrSandbox(norm(cell))
+            and cell != catom->position
+            and cell != finalPos
+            and (reverse ? Cell3DPosition::compare_ZYX(cell, bestCandidate)
+                 : Cell3DPosition::compare_ZYX(bestCandidate, cell) ))
+            bestCandidate = cell;
+    }
+
+    cout << " and found " << bestCandidate << endl;
+
+    if (bestCandidate[0] == numeric_limits<short>::max()
+        or bestCandidate[0] == numeric_limits<short>::min()) return NULL;
+
+    return static_cast<Catoms3DBlock*>(lattice->getBlock(bestCandidate));
+}
+
 void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
     Cell3DPosition nextPos;
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
@@ -942,6 +985,7 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
     if (matched) {
         stepTargetPos = nextPos;
         Catoms3DBlock *pivot = customFindMotionPivot(catom, stepTargetPos);
+        stepPivot = pivot;
         catom->setColor(YELLOW);
 
         // VS_ASSERT(pivot); // FIXME: TODO:
@@ -964,8 +1008,17 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
                                                                   coordinatorPos);
         VS_ASSERT(finalComponent != -1);
         sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos,
-                                                    static_cast<MeshComponent>(finalComponent))
-                    , catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
+                                                    (MeshComponent)finalComponent),
+                    catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
+
+        // Catoms3DBlock* targetLight =
+        //     findTargetLightAroundTarget(stepTargetPos,
+        //                                 coordinatorPos + ruleMatcher->getPositionForComponent(static_cast<MeshComponent>(finalComponent)));
+        // VS_ASSERT(targetLight);
+        // sendMessage(new ProbePivotLightStateMessage(catom->position, targetLight->position,
+        //                                             stepTargetPos,
+        //                                             (MeshComponent)finalComponent),
+        //             catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
     } else {
         // Try matching rules again once neighborhood updates
         catom->setColor(BLUE);
@@ -1071,6 +1124,12 @@ MeshAssemblyBlockCode::findBestBranchIndexForMsgDst(const Cell3DPosition& dst,
     VS_ASSERT_MSG(ruleMatcher->isTileRoot(norm(catom->position)),
                   "findBestBranchIndexForMsgDst: Only coordinator caller is allowed");
 
+    // if (not ruleMatcher->isTileRoot(sbnorm(dst))
+    //     and not ruleMatcher->isSupportModule(sbnorm(dst))) {
+    // }
+
+    // cout << upward << endl;
+
     BranchIndex bestBi = ZBranch;
     int bestDist = numeric_limits<int>::max();
     for (int i = 0; i < XBranch; i++) {
@@ -1081,8 +1140,19 @@ MeshAssemblyBlockCode::findBestBranchIndexForMsgDst(const Cell3DPosition& dst,
                 and dst.dist_euclid(denorm(ruleMatcher->getTileRootAtEndOfBranch(catom->position,(BranchIndex)i))) < bestDist)
                 bestBi = (BranchIndex)i;
         } else {
-            // Consider parent vertical branches of the tile
-            // TODO
+            // cout << "Aqui estamos" << endl;
+            // consider parent vertical branches of the Tile
+            // Ensure branch tip exists
+            Cell3DPosition bTipPos = catom->position - ruleMatcher->getBranchUnitOffset(i);
+            // cout << "i: " << ruleMatcher->branch_to_string((BranchIndex)i) << " -- bTipPos: " << bTipPos
+            //      << " -- rPos: " << getTileRootPosition(bTipPos)
+            //      << " -- dist: " << getTileRootPosition(dst).dist_euclid(getTileRootPosition(bTipPos)) << endl;
+
+            int dist = getTileRootPosition(dst).dist_euclid(getTileRootPosition(bTipPos));
+            if (catom->getNeighborBlock(bTipPos) and dist < bestDist) {
+                bestBi = (BranchIndex)i;
+                bestDist = dist;
+            }
         }
     }
 
@@ -1097,13 +1167,40 @@ bool MeshAssemblyBlockCode::hasIncidentBranch(BranchIndex bi) const {
 }
 
 Cell3DPosition MeshAssemblyBlockCode::getTileRootPosition(const Cell3DPosition& pos) const {
-    if (isInSandbox(pos)) {
-        // TR is out of bounds, it's all that matters for sandbox modules
-        return Cell3DPosition(-1, -1, -1);
-    } else {
+    // if (isInSandbox(pos)) {
+    //     const Cell3DPosition& normPos = norm(pos);
+    //     cout << "pos: " << pos << " -- normPos: " << normPos;
+
+    //     BranchIndex bi = ruleMatcher->getBranchIndexForNonRootPosition(sbnorm(pos));
+    //     cout << "bi: " << ruleMatcher->branch_to_string(branch) << endl;
+    //     const Cell3DPosition& mult =
+    //         Cell3DPosition(B - m_mod(abs(normPos[0]), B),
+    //                        B - m_mod(abs(normPos[1]), B),
+    //                        B - m_mod(abs(normPos[2]), B));
+
+    //     cout << " -- mult: " << mult << endl;
+
+    //     const Cell3DPosition& rPos = normPos -
+    //         mult * ruleMatcher->getBranchUnitOffset(bi);
+
+    //     // const Cell3DPosition& rPos =
+    //     //     Cell3DPosition((normPos[0] < 0 ?
+    //     //                     normPos[0] - (B - m_mod(abs(normPos[0]), B)) :
+    //     //                     normPos[0] - m_mod(normPos[0], B)),
+    //     //                    (normPos[1] < 0 ?
+    //     //                     normPos[1] - (B - m_mod(abs(normPos[1]), B)) :
+    //     //                     normPos[1] - m_mod(normPos[1], B)),
+    //     //                    (normPos[2] < 0 ?
+    //     //                     normPos[2] - (B - m_mod(abs(normPos[2]),B)) :
+    //     //                     normPos[2] - m_mod(normPos[2],B)));
+
+    // cout << " -- rPos: " << rPos << " -- dr: " << denorm(rPos) << endl;
+
+    // return denorm(rPos);
+    // } else {
         return denorm(ruleMatcher->getTileRootPositionForMeshPosition(
                           norm(pos)));
-    }
+    // }
 }
 
 bool MeshAssemblyBlockCode::areOnTheSameBranch(const Cell3DPosition& pos1,
