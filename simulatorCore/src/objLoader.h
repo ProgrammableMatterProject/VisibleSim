@@ -67,6 +67,7 @@ public :
 	Sommet() { v[0]=0; v[1]=0; v[2]=0; t[0]=0; t[1]=0; n[0]=0; n[1]=0; n[2]=0; };
 	void set(GLfloat *tabV,GLfloat *tabN,GLfloat *tabT);
 	bool operator==(const Sommet &s);
+	bool isCloseTo(const Sommet &s,float threshold2);
 };
 
 class FaceTri {
@@ -127,7 +128,7 @@ public :
 	GLuint objectNumber;
 	char nom[128],nomOriginal[64];
 	Mtl *objMtl;
-
+  Point3 *center;
 	ObjData(const char*);
 	~ObjData();
 	void addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3);
@@ -135,7 +136,8 @@ public :
 	void glDraw(void);
 	void glDrawId(void);
 	void createVertexArray();
-  void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1=-1,bool invNormal=false) const;
+	void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1=-1,bool invNormal=false) const;
+	const Point3* getCenter() { return center;	}
 };
 
 /////////////////////////////////////////////////////////////////////////////

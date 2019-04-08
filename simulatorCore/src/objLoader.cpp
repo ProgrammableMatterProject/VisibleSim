@@ -9,8 +9,11 @@
 // Version: 1.6 Windows
 /////////////////////////////////////////////////////////////////////////////
 
+#include <limits.h>
+#include <assert.h>
 #include "objLoader.h"
 #include "trace.h"
+#include "vector3D.h"
 //#define DEBUG	1
 
 using namespace std;
@@ -305,8 +308,8 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 
 void ObjLoader::glDraw(void) {
 	for (const auto& obj:tabObj) {
-        obj->glDraw();
-    }
+		obj->glDraw();
+	}
 }
 
 void ObjLoader::glDraw(GLuint n) {
@@ -318,23 +321,23 @@ void ObjLoader::glDraw(GLuint n) {
 void ObjLoader::glDrawId(int n) {
 	glLoadName(n);
 	for (const auto &obj:tabObj) {
-        obj->glDrawId();
-    }
+		obj->glDrawId();
+	}
 }
 
 void ObjLoader::glDrawIdByMaterial(int &n) {
 	for (const auto &obj:tabObj) {
-        glLoadName(n++);
+		glLoadName(n++);
 		obj->glDrawId();
-    }
+	}
 }
 
 void ObjLoader::setLightedColor(GLfloat *color) {
 //	memcpy(ptrMtlLighted->Ka,color,4*sizeof(GLfloat));
 	memcpy(ptrMtlLighted->Kd,color,4*sizeof(GLfloat));
-    ptrMtlLighted->Ka[0] = color[0]*0.3f;
-    ptrMtlLighted->Ka[1] = color[1]*0.3f;
-    ptrMtlLighted->Ka[2] = color[2]*0.3f;
+	ptrMtlLighted->Ka[0] = color[0]*0.3f;
+	ptrMtlLighted->Ka[1] = color[1]*0.3f;
+	ptrMtlLighted->Ka[2] = color[2]*0.3f;
 }
 
 ObjData* ObjLoader::getObjDataByName(const string &name) const {
@@ -365,15 +368,15 @@ void ObjLoader::numeroPoint(char* str,int &vert,int &norm,int &tex) {
 	str[pos1]=0;
 
 #ifdef WIN32
-  if (sscanf_s(str,"%d",&vert)<=0) vert=0;
-  str[pos2]=0;
-  if (sscanf_s(str+pos1+1,"%d",&tex)<=0) tex=0;
-  if (sscanf_s(str+pos2+1,"%d",&norm)<=0) norm=0;
+	if (sscanf_s(str,"%d",&vert)<=0) vert=0;
+	str[pos2]=0;
+	if (sscanf_s(str+pos1+1,"%d",&tex)<=0) tex=0;
+	if (sscanf_s(str+pos2+1,"%d",&norm)<=0) norm=0;
 #else
-  if (sscanf(str,"%d",&vert)<=0) vert=0;
-  str[pos2]=0;
-  if (sscanf(str+pos1+1,"%d",&tex)<=0) tex=0;
-  if (sscanf(str+pos2+1,"%d",&norm)<=0) norm=0;
+	if (sscanf(str,"%d",&vert)<=0) vert=0;
+	str[pos2]=0;
+	if (sscanf(str+pos1+1,"%d",&tex)<=0) tex=0;
+	if (sscanf(str+pos2+1,"%d",&norm)<=0) norm=0;
 #endif
 }
 
@@ -392,14 +395,14 @@ void ObjLoader::saveSTLfacets(ofstream &fout,const Vector3D &v, int ind0,int ind
 	}
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // class ObjData
 ObjData::ObjData(const char *str) {
 	objMtl=NULL;
 	nbreIndices=0;
 	tabVertices=NULL;
-	tabIndices=NULL,
+	tabIndices=NULL;
+	center=NULL;
 #ifdef WIN32
   strncpy_s(nomOriginal,str,64);
 #else
@@ -410,6 +413,7 @@ ObjData::ObjData(const char *str) {
 ObjData::~ObjData() {
 	delete [] tabVertices;
 	delete [] tabIndices;
+	delete center;
 }
 
 void ObjData::glDraw(void) {
@@ -545,15 +549,20 @@ GLuint ObjData::addVertex(const Sommet &s) {
 }
 
 void ObjData::createVertexArray() {
-	int sizeVert = tabVertex.size();
+	GLuint sizeVert = tabVertex.size();
 	tabVertices = new vertexPosNrmTx[sizeVert];
 	vertexPosNrmTx *ptrV = tabVertices;
 
+	center = new Point3(0,0,0);
 	vector<Sommet*>::const_iterator pv = tabVertex.begin();
+	int n=0;
 	while(pv!=tabVertex.end()) {
 		ptrV->x = (*pv)->v[0];
 		ptrV->y = (*pv)->v[1];
 		ptrV->z = (*pv)->v[2];
+		center->v[0]+=ptrV->x;
+		center->v[1]+=ptrV->y;
+		center->v[2]+=ptrV->z;
 		ptrV->nx = (*pv)->n[0];
 		ptrV->ny = (*pv)->n[1];
 		ptrV->nz = (*pv)->n[2];
@@ -561,8 +570,12 @@ void ObjData::createVertexArray() {
 		ptrV->t = (*pv)->t[1];
 		ptrV++;
 		pv++;
-    }
-
+		n++;
+	}
+	center->v[0]/=n;
+	center->v[1]/=n;
+	center->v[2]/=n;
+	
 	nbreIndices = 3*tabFaces.size();
 	tabIndices = new GLuint[nbreIndices];
 	GLuint *ptrI = tabIndices;
@@ -847,6 +860,13 @@ bool Sommet::operator==(const Sommet &s) {
 	return (v[0]==s.v[0] && v[1]==s.v[1] && v[2]==s.v[2] &&
           n[0]==s.n[0] && n[1]==s.n[1] && n[2]==s.n[2] &&
 		  t[0]==s.t[0] && t[1]==s.t[1]);
+}
+
+bool Sommet::isCloseTo(const Sommet &s,float threshold2) {
+	float dx = v[0]-s.v[0],dy = v[1]-s.v[1],dz = v[2]-s.v[2];
+	float d2 = dx*dx+dy*dy+dz*dz;
+	//cout << d2 << endl;
+	return d2<threshold2;
 }
 
 }
