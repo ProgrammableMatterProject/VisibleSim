@@ -36,7 +36,7 @@ namespace Catoms3D {
 Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                              int argc, char *argv[]):World(argc, argv) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "\033[1;31mCatoms3DWorld constructor\033[0m" << endl;
+    OUTPUT << TermColor::LifecycleColor << "Catoms3DWorld constructor" << TermColor::Reset << endl;
 #endif
 
     if (GlutContext::GUIisEnabled) {

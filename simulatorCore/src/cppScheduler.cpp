@@ -24,60 +24,60 @@ using get_time = chrono::steady_clock;
 
 CPPScheduler::CPPScheduler() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-	OUTPUT << "CPPScheduler constructor" << endl;
+    OUTPUT << TermColor::LifecycleColor << "CPPScheduler constructor" << endl;
 #endif
-	state = NOTREADY;
-	schedulerMode = SCHEDULER_MODE_REALTIME;
-	schedulerThread = new thread(bind(&CPPScheduler::startPaused, this));
+    state = NOTREADY;
+    schedulerMode = SCHEDULER_MODE_REALTIME;
+    schedulerThread = new thread(bind(&CPPScheduler::startPaused, this));
 }
 
 CPPScheduler::~CPPScheduler() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-	OUTPUT << "\033[1;31mCPPScheduler destructor\33[0m" << endl;
+    OUTPUT << TermColor::LifecycleColor << "CPPScheduler destructor\33[0m" << endl;
 #endif
 }
 
 void CPPScheduler::createScheduler() {
-	scheduler = new CPPScheduler();
+    scheduler = new CPPScheduler();
 }
 
 void CPPScheduler::deleteScheduler() {
-	delete((CPPScheduler*)scheduler);
+    delete((CPPScheduler*)scheduler);
 }
 
 void *CPPScheduler::startPaused(/*void *param*/) {
-	cout << "\033[1;33mScheduler Mode :" << schedulerMode << "\033[0m"  << endl;
-	cout << "\033[1;33mScheduler Length :" << schedulerLength << "\033[0m"  << endl;
-	sem_schedulerStart->wait();
+    cout << TermColor::SchedulerColor << "Scheduler Mode :" << schedulerMode << TermColor::Reset  << endl;
+    cout << TermColor::SchedulerColor << "Scheduler Length :" << schedulerLength << TermColor::Reset  << endl;
+    sem_schedulerStart->wait();
 
-	// if ENDED: Simulation terminated before scheduler start, quitting
-	if (state != ENDED) {		
-	
-		state = RUNNING;
+    // if ENDED: Simulation terminated before scheduler start, quitting
+    if (state != ENDED) {
 
-		multimap<Time, EventPtr>::iterator first;
-		EventPtr pev;
+        state = RUNNING;
 
-		auto systemStartTime = get_time::now();
-		cout << "\033[1;33m" << "Scheduler : start order received " << 0 << "\033[0m" << endl;
+        multimap<Time, EventPtr>::iterator first;
+        EventPtr pev;
 
-		switch (schedulerMode) {
-			case SCHEDULER_MODE_FASTEST:
-				while(!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
-					//JUSTE POUR DEBUG
-					//~ cout << endl << "Contenu du scheduler :" << endl;
-					//~ first=eventsMap.begin();
-					//~ do {
-					//~ std::cout << (*first).first << " : Evennement de type " << (*first).second->eventType << " au temps " << (*first).second->date << endl;
-					//~ first++;
-					//~ } while( first != eventsMap.end());
-					//~ cout << endl;
-					//
+        auto systemStartTime = get_time::now();
+        cout << TermColor::SchedulerColor << "" << "Scheduler : start order received " << 0 << TermColor::Reset << endl;
 
-					// Check that we have not reached the maximum simulation date, if there is one
+        switch (schedulerMode) {
+            case SCHEDULER_MODE_FASTEST:
+                while(!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
+                    //JUSTE POUR DEBUG
+                    //~ cout << endl << "Contenu du scheduler :" << endl;
+                    //~ first=eventsMap.begin();
+                    //~ do {
+                    //~ std::cout << (*first).first << " : Evennement de type " << (*first).second->eventType << " au temps " << (*first).second->date << endl;
+                    //~ first++;
+                    //~ } while( first != eventsMap.end());
+                    //~ cout << endl;
+                    //
+
+                    // Check that we have not reached the maximum simulation date, if there is one
                     if (currentDate > maximumDate) {
-                        cout << "\033[1;33m" << "Scheduler : maximum simulation date (" << maximumDate
-                             << ") has been reached. Terminating..." << "\033[0m" << endl;
+                        cout << TermColor::SchedulerColor << "" << "Scheduler : maximum simulation date (" << maximumDate
+                             << ") has been reached. Terminating..." << TermColor::Reset << endl;
                         break;
                     }
 
@@ -96,14 +96,14 @@ void *CPPScheduler::startPaused(/*void *param*/) {
                     if (terminate.load()) {
                         break;
                     }
-				}
-				break;
-			case SCHEDULER_MODE_REALTIME: {
-				cout << "Realtime mode scheduler\n";
+                }
+                break;
+            case SCHEDULER_MODE_REALTIME: {
+                cout << "Realtime mode scheduler\n";
                 auto globalPauseTime = get_time::now() - get_time::now();
                 while((state != ENDED && !eventsMap.empty())
                       || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
-                    
+
                     //gettimeofday(&heureGlobaleActuelle,NULL);
                     // cout << "globalPauseTime1: " << static_cast<uint64_t>(chrono::duration_cast<us>(globalPauseTime).count()) << endl;
                     auto systemCurrentTime = get_time::now() - globalPauseTime;
@@ -121,7 +121,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
                             globalPauseTime += pauseDuration;
                             // cout << "PAUSED FOR: " << static_cast<uint64_t>(chrono::duration_cast<us>(pauseDuration).count()) << endl;
                             // cout << "globalPauseTime2: " << static_cast<uint64_t>(chrono::duration_cast<us>(globalPauseTime).count()) << endl;
-                            
+
                             first=eventsMap.begin();
                             pev = (*first).second;
                             currentDate = pev->date;
@@ -141,7 +141,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
                         first=eventsMap.begin();
                         pev = (*first).second;
                     }
-			
+
                     if (!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
                         std::chrono::milliseconds timespan(5);
                         std::this_thread::sleep_for(timespan);
@@ -150,39 +150,39 @@ void *CPPScheduler::startPaused(/*void *param*/) {
                     if (terminate.load()) {
                         break;
                     }
-				}
+                }
 
             } break;
-			default:
-				cout << "ERROR : Scheduler mode not recognized !!" << endl;
-		}
+            default:
+                cout << "ERROR : Scheduler mode not recognized !!" << endl;
+        }
 
-		auto systemStopTime = get_time::now();
-		auto elapsedTime = systemStopTime - systemStartTime;
+        auto systemStopTime = get_time::now();
+        auto elapsedTime = systemStopTime - systemStartTime;
 
-		cout << "\033[1;33m" << "Scheduler end : " << chrono::duration_cast<us>(elapsedTime).count() << "\033[0m" << endl;
+        cout << TermColor::SchedulerColor << "Scheduler end : " << chrono::duration_cast<us>(elapsedTime).count() << TermColor::Reset << endl;
 
-		pev.reset();
+        pev.reset();
 
-		StatsCollector::getInstance().updateElapsedTime(currentDate, chrono::duration_cast<us>(elapsedTime).count());
-		StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
-		StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
+        StatsCollector::getInstance().updateElapsedTime(currentDate, chrono::duration_cast<us>(elapsedTime).count());
+        StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
+        StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
-		// if simulation is a regression testing run, export configuration before leaving
-		if (Simulator::regrTesting && !terminate.load())
-			getWorld()->exportConfiguration();
-	
-		// if autoStop is enabled, terminate simulation
-		if (willAutoStop() && !terminate.load()) {
-			glutLeaveMainLoop();
-		}
+        // if simulation is a regression testing run, export configuration before leaving
+        if (Simulator::regrTesting && !terminate.load())
+            getWorld()->exportConfiguration();
 
-		printStats();
+        // if autoStop is enabled, terminate simulation
+        if (willAutoStop() && !terminate.load()) {
+            glutLeaveMainLoop();
+        }
 
-	}
-	
-	terminate.store(true);
-	schedulerThread = NULL;	// No need for the scheduler to delete this thread, it will have terminated already
-	
-	return(NULL);
+        printStats();
+
+    }
+
+    terminate.store(true);
+    schedulerThread = NULL;	// No need for the scheduler to delete this thread, it will have terminated already
+
+    return(NULL);
 }
