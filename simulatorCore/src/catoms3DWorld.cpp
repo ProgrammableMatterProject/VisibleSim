@@ -622,6 +622,30 @@ void Catoms3DWorld::exportConfiguration() {
     exporter.exportConfiguration();
 }
 
+vector<Vector3D> tabAddCenter;
+
+bool addAdd(ObjLoader::ObjData*obj,const Vector3D &pos) {
+	
+	const ObjLoader::Point3 *c = obj->getCenter();
+	Vector3D center(pos[0]+c->v[0],pos[1]+c->v[1],pos[2]+c->v[2]);
+	
+	// calculate distance to min center
+	float dmin=1e32;
+	float d;
+	for(Vector3D v:tabAddCenter) {
+		d=(v-center).norme2();
+		if (d<dmin) {
+			dmin=d;
+		}
+	}
+	if (dmin>0.1) {
+		tabAddCenter.push_back(center);
+		return true;
+	}
+	
+	return false;
+}
+
 bool Catoms3DWorld::exportSTLModel(string title) {
   const char* connectorStr[12]={"connecteur00","connecteur01","connecteur02","connecteur03","connecteur04","connecteur05","connecteur06","connecteur07","connecteur08","connecteur09","connecteur10","connecteur11"};
 	const char* refStr[6]={"ref0","ref1","ref2","ref3","ref4","ref5"};
@@ -640,12 +664,11 @@ bool Catoms3DWorld::exportSTLModel(string title) {
 	ObjLoader::ObjData* tabCorners[8];
 	ObjLoader::ObjData* tabAdds[6][4];
 
-	vector<uint*> tabPlacedAdds;
-
 	Matrix mt;
 	Vector3D pos;
 	Cell3DPosition cell,neighborCell;
 
+	
 	for (int i=0; i<12; i++) {
 		tabConnectors[i] = stl.getObjDataByName(connectorStr[i]);
 	}
@@ -749,7 +772,9 @@ bool Catoms3DWorld::exportSTLModel(string title) {
 			if (memRefs[i]) {
 				for (int j=0; j<4; j++) {
 					if (!memCorners[tabRefCornerId[i][j]]) {
-						tabAdds[i][j]->saveSTLfacets(file,pos,0);
+						if (addAdd(tabAdds[i][j],pos)) {
+							tabAdds[i][j]->saveSTLfacets(file,pos,0);
+						}
 					}
 				}
 			} else {
@@ -768,36 +793,8 @@ bool Catoms3DWorld::exportSTLModel(string title) {
 							}
 						}
 					}
-					if (n==2) {
-						vector<uint> aff;
-						aff.push_back(block->blockId);
-						for (int j=0; j<3; j++) {
-							if (block->getInterface(tabCornerConId[corner][j])->isConnected()) {
-								neighbor = block->getInterface(tabCornerConId[corner][j])->connectedInterface->hostBlock;
-								if (neighbor->getNbNeighbors()<12) {
-									aff.push_back(neighbor->blockId);
-								}
-							}
-						}
-						sort(aff.begin(), aff.end());
-						uint *t = new uint[4];
-						int k=0;
-						t[3]=0; // case of 3 elements only
-						for(uint v:aff) {
-							t[k++] = v;
-						}
-
-						// search if t is in tabPlacedAdds
-						vector<uint*>::const_iterator ci = tabPlacedAdds.begin();
-						bool found=false;
-						while (ci!=tabPlacedAdds.end() && !found) {
-							found = (*ci)[0]==t[0] && (*ci)[1]==t[1] && (*ci)[2]==t[2] && (*ci)[3]==t[3];
-							ci++;
-						}
-						if (!found) {
-							tabAdds[i][j]->saveSTLfacets(file,pos,0,-1,true);
-							tabPlacedAdds.push_back(t);
-						}
+					if (n==2 && addAdd(tabAdds[i][j],pos)) {
+						tabAdds[i][j]->saveSTLfacets(file,pos,0,-1,true);
 					}
 				}
 			}
@@ -817,11 +814,7 @@ bool Catoms3DWorld::exportSTLModel(string title) {
 	file.close();
 	cout << "...done." << endl;
 
-	// clear tab objects
-	for (uint *t:tabPlacedAdds) {
-		delete t;
-	}
-	tabPlacedAdds.clear();
+	tabAddCenter.clear();
 
 	return true;
 }
