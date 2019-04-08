@@ -554,44 +554,15 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
         route(bc); return;
     }
 
-    if (mabc.role != FreeAgent) { // module is pivot
-        bool nextToDest = mabc.isAdjacentToPosition(dstPos);
-        P2PNetworkInterface* itf;
+    VS_ASSERT(mabc.catom->position == dstPos);
 
-        Cell3DPosition nnCell = Cell3DPosition(0,0,0);
-        if (not nextToDest) {
-            for (const auto &nCell:mabc.lattice->getActiveNeighborCells(mabc.catom->position)){
-                if (mabc.lattice->cellsAreAdjacent(nCell, dstPos)) {
-                    nnCell = nCell;
-                    continue;
-                }
-            }
-        }
+    // Perform pending motion
+    mabc.rotating = true;
 
-        if (nextToDest) {
-            mabc.SET_GREEN_LIGHT(false);
-            itf = mabc.catom->getInterface(dstPos);
-        } else if (nnCell != Cell3DPosition(0,0,0)) {
-            itf = mabc.catom->getInterface(nnCell);
-        } else {
-            itf = mabc.catom->getInterface(mabc.catom->position -
-                                           mabc.ruleMatcher->getBranchUnitOffset(
-                                               mabc.getBranchIndex(mabc.catom->position)));
-        }
-
-        VS_ASSERT(itf and itf->isConnected());
-
-        mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
-    } else { // module is target
-        VS_ASSERT(mabc.catom->position == dstPos);
-
-        // Perform pending motion
-        mabc.rotating = true;
-        // Sender should be pivot to be used for next motion
-        Catoms3DBlock* pivot = mabc.stepPivot;
-        VS_ASSERT(pivot and pivot != mabc.catom);
-        mabc.scheduleRotationTo(mabc.stepTargetPos, pivot);
-    }
+    // Sender should be pivot to be used for next motion
+    Catoms3DBlock* pivot = mabc.stepPivot;
+    VS_ASSERT(pivot and pivot != mabc.catom);
+    mabc.scheduleRotationTo(mabc.stepTargetPos, pivot);
 }
 
 void FinalTargetReachedMessage::handle(BaseSimulator::BlockCode* bc) {
