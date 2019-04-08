@@ -83,6 +83,26 @@ public:
     //!< Bright White
     inline static const string BWhite = "\033[1;37m";
 
+    //!< Background Black
+    inline static const string BG_Black = "\033[0;40m";
+    inline static const string BG_Red = "\033[0;41m";
+    inline static const string BG_Green = "\033[0;42m";
+    inline static const string BG_Yellow = "\033[0;43m";
+    inline static const string BG_Blue = "\033[0;44m";
+    inline static const string BG_Magenta = "\033[0;45m";
+    inline static const string BG_Cyan = "\033[0;46m";
+    inline static const string BG_White = "\033[0;47m";
+
+    inline static const string BG_BBlack = "\033[1;40m";
+    inline static const string BG_BRed = "\033[1;41m";
+    inline static const string BG_BGreen = "\033[1;42m";
+    inline static const string BG_BYellow = "\033[1;43m";
+    inline static const string BG_BBlue = "\033[1;44m";
+    inline static const string BG_BMagenta = "\033[1;45m";
+    inline static const string BG_BCyan = "\033[1;46m";
+    inline static const string BG_BWhite = "\033[1;47m";
+
+
     //!< Reset Tag
     inline static const string Reset = "\033[0m";
 
