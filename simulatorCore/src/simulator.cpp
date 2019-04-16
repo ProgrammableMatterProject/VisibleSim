@@ -891,9 +891,11 @@ void Simulator::parseBlockList() {
             if (boundingBox) csgRoot->boundingBox(bb);
 
             Vector3D csgPos;
-            for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
-                for (short iy=0; iy<world->lattice->gridSize[1]; iy++) {
-                    for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
+            const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+            const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+            for (short iz = glb[2]; iz < ulb[2]; iz++) {
+                for (short iy = glb[1]; iy < ulb[1]; iy++) {
+                    for (short ix = glb[0]; ix < ulb[0]; ix++) {
                         position.set(ix,iy,iz);
                         csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
@@ -907,7 +909,8 @@ void Simulator::parseBlockList() {
                         csgPos.pt[2] += bb.P0[2];
 #endif
 
-                        if (csgRoot->isInside(csgPos, color)) {
+                        if (world->lattice->isInGrid(position)
+                            and csgRoot->isInside(csgPos, color)) {
                             loadBlock(element,
                                       ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
                                       bcb, position, color, false);
