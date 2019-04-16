@@ -20,7 +20,7 @@ namespace SmartBlocks {
 
 SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                                    int argc, char *argv[]):World(argc, argv) {
-    cout << "\033[1;31mSmartBlocksWorld constructor\033[0m" << endl;
+    cout << TermColor::LifecycleColor << "SmartBlocksWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
@@ -35,7 +35,7 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 }
 
 SmartBlocksWorld::~SmartBlocksWorld() {
-    cout << "\033[1;31mSmartBlocksWorld destructor\033[0m" << endl;
+    cout << TermColor::LifecycleColor << "SmartBlocksWorld destructor" << TermColor::Reset << endl;
 }
 
 void SmartBlocksWorld::deleteWorld() {
@@ -46,10 +46,10 @@ void SmartBlocksWorld::deleteWorld() {
 void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
                                 const Cell3DPosition &pos, const Color &col,
                                 short orientation, bool master) {
-	if (blockId > maxBlockId)
-		maxBlockId = blockId;
-	else if (blockId == 0)
-		blockId = incrementBlockId();
+    if (blockId > maxBlockId)
+        maxBlockId = blockId;
+    else if (blockId == 0)
+        blockId = incrementBlockId();
 
     SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId, bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
@@ -112,7 +112,7 @@ void SmartBlocksWorld::glDraw() {
 
         BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
         if (bb) bb->blockCode->onGlDraw();
-        
+
         glDrawBackground();
 }
 
@@ -135,7 +135,7 @@ void SmartBlocksWorld::glDrawId() {
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((SmartBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
-    }    
+    }
     unlock();
     glPopMatrix();
 }
@@ -192,7 +192,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     else if (name == "Material__71") numSelectedFace = SLattice::West;
     else if (name == "Material__68") numSelectedFace = SLattice::North;
     else {
-		numSelectedFace = 4;	// Top
+        numSelectedFace = 4;	// Top
         return;
     }
 
@@ -201,8 +201,8 @@ void SmartBlocksWorld::setSelectedFace(int n) {
 }
 
 void SmartBlocksWorld::exportConfiguration() {
-	SmartBlocksConfigExporter exporter = SmartBlocksConfigExporter(this);
-	exporter.exportConfiguration();
+    SmartBlocksConfigExporter exporter = SmartBlocksConfigExporter(this);
+    exporter.exportConfiguration();
 }
 
 

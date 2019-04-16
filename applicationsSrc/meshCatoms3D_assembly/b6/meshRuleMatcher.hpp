@@ -90,6 +90,7 @@ public:
     bool shouldGrowYBranch(const Cell3DPosition& pos) const;
 
     Cell3DPosition getBranchUnitOffset(int bi) const;
+    Cell3DPosition getBranchUnitOffset(const Cell3DPosition& pos) const;
     BranchIndex getBranchIndexForNonRootPosition(const Cell3DPosition& pos) const;
 
     MeshRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _Z_MAX,
@@ -139,6 +140,13 @@ public:
      * @attention returned position might be out of mesh is pos is an out of mesh component
      */
     const Cell3DPosition getTileRootPositionForMeshPosition(const Cell3DPosition& pos) const;
+
+    /*
+     * @param root position of the tile root of the tile to consider
+     * @param pos position of the module to consider, has to be a valid mesh component
+     * @return true if pos belongs to the tile whose root is in argument
+     */
+    bool isInTileWithRootAt(const Cell3DPosition& root, const Cell3DPosition& pos) const;
 
     /**
      * @param pos position of the module to consider

@@ -30,13 +30,13 @@ using namespace std;
 namespace ObjLoader {
 /////////////////////////////////////////////////////////////////////////////
 // Point2
-class Point2 { 
+class Point2 {
 public :
 	float v[2];
-	
+
 	Point2() {};
 	Point2(double x,double y) { this->v[0]=(float)x; this->v[1]=(float)y; };
-	int scan(const char *str) 
+	int scan(const char *str)
 #ifdef WIN32
 	{ return sscanf_s(str,"%f %f",&v[0],&v[1]); };
 #else
@@ -44,13 +44,13 @@ public :
 #endif
 };
 
-class Point3 { 
+class Point3 {
 public :
 	float v[3];
-	
+
 	Point3() {};
 	Point3(double x,double y,double z) { this->v[0]=(float)x; this->v[1]=(float)y; this->v[2]=(float)z; };
-	int scan(const char *str) 
+	int scan(const char *str)
 #ifdef WIN32
 	{ return sscanf_s(str,"%f %f %f",&v[0],&v[1],&v[2]); };
 #else
@@ -60,13 +60,14 @@ public :
 
 /////////////////////////////////////////////////////////////////////////////
 // sommet : vertex data
-class Sommet { 
+class Sommet {
 public :
 	GLfloat v[3],t[2],n[3];
-	
+
 	Sommet() { v[0]=0; v[1]=0; v[2]=0; t[0]=0; t[1]=0; n[0]=0; n[1]=0; n[2]=0; };
 	void set(GLfloat *tabV,GLfloat *tabN,GLfloat *tabT);
 	bool operator==(const Sommet &s);
+	bool isCloseTo(const Sommet &s,float threshold2);
 };
 
 class FaceTri {
@@ -82,9 +83,9 @@ public :
 
 /////////////////////////////////////////////////////////////////////////////
 // mtl : material data
-class Mtl { 
+class Mtl {
 public :
-	int id; 
+	int id;
 	char *name;
 	GLfloat Ka[4],Kd[4],Ks[4],Ke[4],Ns;
 	char *mapKd;
@@ -96,7 +97,7 @@ public :
 
 /////////////////////////////////////////////////////////////////////////////
 // mtlLib : list of materials
-class MtlLib { 
+class MtlLib {
 public :
 	vector <Mtl*> tabMtl;
 
@@ -116,7 +117,7 @@ struct vertexPosNrmTx {
 };
 
 #define BUFFER_OFFSET(i) ((char *)NULL+i)
-class ObjData { 
+class ObjData {
 public :
 	std::vector <Sommet*> tabVertex;
 	std::vector <FaceTri*> tabFaces;
@@ -127,7 +128,7 @@ public :
 	GLuint objectNumber;
 	char nom[128],nomOriginal[64];
 	Mtl *objMtl;
-	
+  Point3 *center;
 	ObjData(const char*);
 	~ObjData();
 	void addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3);
@@ -135,7 +136,8 @@ public :
 	void glDraw(void);
 	void glDrawId(void);
 	void createVertexArray();
-    void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const;
+	void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1=-1,bool invNormal=false) const;
+	const Point3* getCenter() { return center;	}
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -156,6 +158,7 @@ public:
 	void glDrawId(int i);
 	void setLightedColor(GLfloat *color);
 	inline string getObjMtlName(int pos) { return tabObj[pos]->objMtl->name; };
+	ObjData* getObjDataByName(const string &name) const;
 	void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const;
 };
 

@@ -31,13 +31,13 @@ bool CsgCatoms3DBlockCode::bitmap[27000] = {0};
 int CsgCatoms3DBlockCode::side_size = 0;
 
 CsgCatoms3DBlockCode::CsgCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
-    cout << "CsgCatoms3DBlockCode constructor" << endl;
+//    cout << "CsgCatoms3DBlockCode constructor" << endl;
     scheduler = getScheduler();
     catom = (Catoms3DBlock*)hostBlock;
 }
 
 CsgCatoms3DBlockCode::~CsgCatoms3DBlockCode() {
-    cout << "CsgCatoms3DBlockCode destructor" << endl;
+//    cout << "CsgCatoms3DBlockCode destructor" << endl;
 }
 
 void CsgCatoms3DBlockCode::generateBitmap(int side_size) {
