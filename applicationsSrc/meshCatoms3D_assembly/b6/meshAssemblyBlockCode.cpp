@@ -72,28 +72,28 @@ void MeshAssemblyBlockCode::onAssertTriggered() {
 
 void MeshAssemblyBlockCode::onBlockSelected() {
 
-    const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
-    const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-    Cell3DPosition pos;
-    for (short iz = glb[2]; iz < ulb[2]; iz++) {
-        for (short iy = glb[1]; iy < ulb[1]; iy++) {
-            for (short ix = glb[0]; ix < ulb[0]; ix++) {
-                pos.set(ix, iy, iz);
+    // const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+    // const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+    // Cell3DPosition pos;
+    // for (short iz = glb[2]; iz < ulb[2]; iz++) {
+    //     for (short iy = glb[1]; iy < ulb[1]; iy++) {
+    //         for (short ix = glb[0]; ix < ulb[0]; ix++) {
+    //             pos.set(ix, iy, iz);
 
-                if (ruleMatcher->isInCube(norm(pos)))
-                    lattice->highlightCell(pos, PINK);
+    //             if (ruleMatcher->isInCube(norm(pos)))
+    //                 lattice->highlightCell(pos, PINK);
 
-                // if (ruleMatcher->isOnXOppCubeBorder(norm(pos)))
-                //     lattice->highlightCell(pos, BLUE);
-                // else if (ruleMatcher->isOnYOppCubeBorder(norm(pos)))
-                //     lattice->highlightCell(pos, RED);
-                // else if (ruleMatcher->isOnXCubeBorder(norm(pos)))
-                //     lattice->highlightCell(pos, CYAN);
-                // else if (ruleMatcher->isOnYCubeBorder(norm(pos)))
-                //     lattice->highlightCell(pos, MAGENTA);
-            }
-        }
-    }
+    //             // if (ruleMatcher->isOnXOppCubeBorder(norm(pos)))
+    //             //     lattice->highlightCell(pos, BLUE);
+    //             // else if (ruleMatcher->isOnYOppCubeBorder(norm(pos)))
+    //             //     lattice->highlightCell(pos, RED);
+    //             // else if (ruleMatcher->isOnXCubeBorder(norm(pos)))
+    //             //     lattice->highlightCell(pos, CYAN);
+    //             // else if (ruleMatcher->isOnYCubeBorder(norm(pos)))
+    //             //     lattice->highlightCell(pos, MAGENTA);
+    //         }
+    //     }
+    // }
 
     // Debug:
     // (1) Print details of branch growth plan and previous round
@@ -117,6 +117,13 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         for (int i = 0; i < N_BRANCHES; i++)
             cout << "hasIncidentBranch(" << i << "): "
                  << hasIncidentBranch((BranchIndex)i) << endl;
+
+        if (not constructionQueue.empty())
+            cout << "nextPos: "
+                 << ruleMatcher->component_to_string(constructionQueue.front().first)
+                 << endl;
+        else
+            cout << "nextPos: " << "NULL" << endl;
     }
 
     if (ruleMatcher->isInMeshOrSandbox(norm(catom->position))) {
@@ -137,7 +144,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
     Cell3DPosition nextHop;
     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
-                    targetPosition, coordinatorPos, step, nextHop);
+                    targetPosition, coordinatorPos, step, nextHop, true);
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
@@ -445,7 +452,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 // Pyramid construction ends with the arrival of the S_RevZ top level module
                 if (// catom is top level module
                     catom->position[2] == (short int)(
-                        (ruleMatcher->getPyramidDimension() - 1) * B + meshSeedPosition[2])
+                        (ruleMatcher->getCubeDimension() - 1) * B + meshSeedPosition[2])
                     and // catom is S_RZ
                     ruleMatcher->getComponentForPosition(
                         catom->position - coordinatorPos) == S_RevZ) {
@@ -453,7 +460,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                    / ((Rotations3D::ANIMATION_DELAY *
                                        Rotations3D::rotationDelayMultiplier +
                                        Rotations3D::COM_DELAY) + 20128));
-                    cerr << ruleMatcher->getPyramidDimension()
+                    cerr << ruleMatcher->getCubeDimension()
                          << "-PYRAMID CONSTRUCTION OVER AT TimeStep = "
                          << ts << " with " << lattice->nbModules << " modules" << endl;
                     constructionOver = true;
@@ -529,10 +536,13 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     //  wait for above layer XY modules to notify completion of previous tiles
                     if (lattice->isFree(coordinatorPos)) { //FIXME: NON-LOCAL!
                         if (ruleMatcher->isOnXPyramidBorder(norm(coordinatorPos))
-                            and ruleMatcher->isOnYPyramidBorder(norm(coordinatorPos))) {
+                            and ruleMatcher->isOnYPyramidBorder(norm(coordinatorPos))
+                            and incidentBranchesToRootAreComplete(coordinatorPos)
+                            and claimedTileRoots.find(coordinatorPos)==claimedTileRoots.end()) {
                             targetPosition = coordinatorPos;
                             stringstream info;
                             info << " claims coordinator position at " << targetPosition;
+                            claimedTileRoots.insert(coordinatorPos);
                             scheduler->trace(info.str(), catom->blockId, GREY);
                         } else {
                             // catom->setColor(WHITE);
@@ -694,8 +704,14 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
     VS_ASSERT(ruleMatcher->isInMesh(norm(pos))
               and ruleMatcher->isTileRoot(norm(pos)));
 
+    // cout << "ibtrac for " << pos << ": " << endl;
+
     for (int i = 0; i < N_BRANCHES; i++) {
-        if (!isIncidentBranchTipInPlace(pos, static_cast<BranchIndex>(i))) return false;
+        if (!isIncidentBranchTipInPlace(pos, static_cast<BranchIndex>(i))) {
+            // cout << ruleMatcher->branch_to_string(static_cast<BranchIndex>(i)) << "NOT in place!!!" << endl;
+            return false;
+        }
+        // cout << ruleMatcher->branch_to_string(static_cast<BranchIndex>(i)) << " in place" << endl;
     }
 
     return true;
@@ -704,8 +720,13 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
 bool MeshAssemblyBlockCode::
 isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& tipp = trp + incidentTipRelativePos[bi];
-    return (not ruleMatcher->isInPyramid(ruleMatcher->
-                                         getTileRootPositionForMeshPosition(norm(tipp))))
+    return (not ruleMatcher->isInCube(ruleMatcher->
+                                      getTileRootPositionForMeshPosition(norm(tipp))))
+        or ((bi == XBranch or bi == YBranch)
+            and ruleMatcher->isInCube(ruleMatcher->
+                                      getTileRootPositionForMeshPosition(norm(tipp)))
+            and not ruleMatcher->isInPyramid(ruleMatcher->
+                                             getTileRootPositionForMeshPosition(norm(tipp))))
         or lattice->cellHasBlock(tipp);
 }
 
@@ -745,7 +766,7 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     // and initialize growth data structures
     for (short bi = 0; bi < N_BRANCHES; bi++) {
         catomsReqByBranch[bi] = ruleMatcher->
-            shouldGrowPyramidBranch(norm(catom->position), (BranchIndex)bi) ? B - 1 : -1;
+            shouldGrowCubeBranch(norm(catom->position), (BranchIndex)bi) ? B - 1 : -1;
     }
 
     // Initialize construction queue from here

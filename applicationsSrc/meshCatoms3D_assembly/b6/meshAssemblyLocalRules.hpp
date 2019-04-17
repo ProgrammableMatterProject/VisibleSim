@@ -121,7 +121,9 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x808, Cell3DPosition(5, 0, 0), 1), Cell3DPosition(0, 0, 1) }, // X5 1
     { LRKeyTuple(0x220, Cell3DPosition(0, 5, 0), 1), Cell3DPosition(0, 0, 1) }, // Y5 1
     { LRKeyTuple(0xB80, Cell3DPosition(0, 0, 2), 3), Cell3DPosition(0, -1, 1) }, // Z2 3
+    { LRKeyTuple(0x280, Cell3DPosition(0, 0, 2), 3), Cell3DPosition(0, -1, 1) }, // Z2 3 CUBE XOPP BORDER
     { LRKeyTuple(0xE02, Cell3DPosition(-2, -2, 2), 3), Cell3DPosition(-1, 0, 1) }, // RevZ2 3
+    { LRKeyTuple(0x802, Cell3DPosition(-2, -2, 2), 3), Cell3DPosition(-1, 0, 1) }, // RevZ2 3 EDGE ORIGIN
     { LRKeyTuple(0xC00, Cell3DPosition(4, 0, 0), 3), Cell3DPosition(1, 0, 0) }, // X4 3
     { LRKeyTuple(0x600, Cell3DPosition(0, 4, 0), 3), Cell3DPosition(0, 1, 0) }, // Y4 3
     { LRKeyTuple(0x800, Cell3DPosition(4, 0, 0), 4), Cell3DPosition(1, 1, -1) }, // X4 4
@@ -159,7 +161,9 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0xA0, Cell3DPosition(0, 0, 5), 3), Cell3DPosition(0, 0, 1) }, // Z5 3
     { LRKeyTuple(0xA, Cell3DPosition(-5, -5, 5), 3), Cell3DPosition(-1, -1, 2) }, // RevZ5 3
     { LRKeyTuple(0xD40, Cell3DPosition(0, -2, 2), 3), Cell3DPosition(-1, -1, 1) }, // RZ2 3
+    { LRKeyTuple(0x140, Cell3DPosition(0, -2, 2), 3), Cell3DPosition(-1, -1, 1) }, // RZ2 3 CUBE YOPP BORDER
     { LRKeyTuple(0x701, Cell3DPosition(-2, 0, 2), 3), Cell3DPosition(0, 0, 1) }, // LZ2 3
+    { LRKeyTuple(0x401, Cell3DPosition(-2, 0, 2), 3), Cell3DPosition(0, 0, 1) }, // LZ2 3 CUBE Y BORDER
     { LRKeyTuple(0x808, Cell3DPosition(0, -3, 3), 1), Cell3DPosition(-1, -1, 2) }, // RZ3 1
     { LRKeyTuple(0x220, Cell3DPosition(-3, 0, 3), 1), Cell3DPosition(-1, -1, 2) }, // LZ3 1
     { LRKeyTuple(0xA0, Cell3DPosition(0, 0, 5), 4), Cell3DPosition(-1, -1, 2) }, // Z5 4
@@ -247,18 +251,23 @@ inline static bool matchLocalRules(const std::bitset<12>& localNeighborhood,
                                    const Cell3DPosition& tPos,
                                    const Cell3DPosition& tileRootPos,
                                    const short step,
-                                   Cell3DPosition& nextPos) {
+                                   Cell3DPosition& nextPos,
+                                   bool debug=false) {
     auto match = localMotionRules.find(LRKeyTuple(localNeighborhood,
                                                   tPos - tileRootPos, step));
 
     if (match != localMotionRules.end()) {
         nextPos =  match->second + pos;
-        // cout << match->second << endl;
+
+        if (debug)
+            cout << match->second << endl;
     } else {
-        // cerr << "{ " << localNeighborhood << "("
-        //      << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
-        //      << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
-        // cerr << "NO MATCH" << endl;
+        if (debug) {
+            cerr << "{ " << localNeighborhood << "("
+                 << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
+                 << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
+            cerr << "NO MATCH" << endl;
+        }
     }
 
     return match != localMotionRules.end();

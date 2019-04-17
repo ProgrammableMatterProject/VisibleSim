@@ -14,6 +14,7 @@
 
 #include <deque>
 #include <unordered_set>
+#include <set>
 
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
@@ -260,6 +261,8 @@ public:
     void setGreenLight(bool onoff, int _line_);
 
     Time randomRotationTimeStart = 0;
+
+    inline static set<Cell3DPosition> claimedTileRoots;
 
     /** END CF **/
 

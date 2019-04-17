@@ -406,9 +406,12 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
 
         P2PNetworkInterface* itf = mabc.catom->getInterface(mabc.catom->position
                                                             + relNeighborPos);
-        VS_ASSERT(itf and itf->isConnected());
-        mabc.sendMessage(new TileInsertionReadyMessage(), itf,MSG_DELAY_MC, 0);
-        mabc.log_send_message();
+        // VS_ASSERT(itf and itf->isConnected());
+        // This is not true anymore with the cube:
+        if (itf and itf->isConnected()) {
+            mabc.sendMessage(new TileInsertionReadyMessage(), itf,MSG_DELAY_MC, 0);
+            mabc.log_send_message();
+        } else return;
     } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)){
         // Forward to module waiting on EPL
         P2PNetworkInterface* EPLItf = mabc.catom->getInterface(mabc.catom->position
@@ -423,6 +426,12 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         // Get moving towards tile root position
         mabc.targetPosition = mabc.coordinatorPos;
         // mabc.lattice->unhighlightCell(mabc.targetPosition);
+
+        stringstream info;
+        info << " claims coordinator position at " << mabc.targetPosition;
+        mabc.claimedTileRoots.insert(mabc.coordinatorPos);
+        mabc.scheduler->trace(info.str(), mabc.catom->blockId, GREY);
+
         mabc.matchRulesAndRotate();
     }
 }
