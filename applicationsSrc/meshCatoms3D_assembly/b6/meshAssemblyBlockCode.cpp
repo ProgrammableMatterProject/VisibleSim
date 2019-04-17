@@ -124,6 +124,12 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                  << endl;
         else
             cout << "nextPos: " << "NULL" << endl;
+
+        for (int i = 0; i < N_BRANCHES; i++) {
+            BranchIndex bi = (BranchIndex)i;
+            cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
+                 << ruleMatcher->resourcesForCubeBranch(norm(catom->position), bi) << endl;
+        }
     }
 
     if (ruleMatcher->isInMeshOrSandbox(norm(catom->position))) {
@@ -766,7 +772,8 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     // and initialize growth data structures
     for (short bi = 0; bi < N_BRANCHES; bi++) {
         catomsReqByBranch[bi] = ruleMatcher->
-            shouldGrowCubeBranch(norm(catom->position), (BranchIndex)bi) ? B - 1 : -1;
+            resourcesForCubeBranch(norm(catom->position), (BranchIndex)bi);
+        if (catomsReqByBranch[bi] == 0) catomsReqByBranch[bi] = -1;
     }
 
     // Initialize construction queue from here
@@ -803,38 +810,38 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
 void MeshAssemblyBlockCode::buildConstructionQueue() {
     constructionQueue.push_back({ S_RZ, RZ_EPL});  // 0
     constructionQueue.push_back({ S_LZ, LZ_EPL }); // 0
-    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_1, Z_EPL }); // 1
-    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_1, Z_EPL }); // 3
+    if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL }); // 1
+    if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL }); // 3
     constructionQueue.push_back({ S_Z, LZ_EPL }); // 4
     constructionQueue.push_back({ S_RevZ, RZ_EPL }); // 4
-    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_2, LZ_EPL }); // 5
-    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_2, RZ_EPL }); // 5
-    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_3, LZ_EPL }); // 7
-    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_3, RZ_EPL }); // 7
-    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_1, Z_EPL }); // 8
-    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_1, RevZ_EPL }); // 8
-    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_4, LZ_EPL }); // 9
-    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_4, RZ_EPL }); // 9
-    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_2, Z_EPL }); // 10
-    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_2, RevZ_EPL }); // 10
-    if (catomsReqByBranch[YBranch] != -1) constructionQueue.push_back({ Y_5, LZ_EPL }); // 11
-    if (catomsReqByBranch[XBranch] != -1) constructionQueue.push_back({ X_5, RZ_EPL }); // 11
-    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_3, Z_EPL }); // 12
-    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_3, RevZ_EPL }); // 12
-    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_4, Z_EPL }); // 14
-    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_4, RevZ_EPL }); // 14
-    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_1, LZ_EPL }); // 14
-    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_1, RZ_EPL }); // 14
-    if (catomsReqByBranch[ZBranch] != -1) constructionQueue.push_back({ Z_5, Z_EPL }); // 16
-    if (catomsReqByBranch[RevZBranch] != -1) constructionQueue.push_back({ RevZ_5, RevZ_EPL }); // 16
-    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_2, LZ_EPL }); // 16
-    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_2, RZ_EPL }); // 16
-    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_3, LZ_EPL }); // 18
-    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_3, RZ_EPL }); // 18
-    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_4, LZ_EPL }); // 20
-    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_4, RZ_EPL }); // 20
-    if (catomsReqByBranch[LZBranch] != -1) constructionQueue.push_back({ LZ_5, LZ_EPL }); // 22
-    if (catomsReqByBranch[RZBranch] != -1) constructionQueue.push_back({ RZ_5, RZ_EPL }); // 22
+    if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, LZ_EPL }); // 5
+    if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, RZ_EPL }); // 5
+    if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, LZ_EPL }); // 7
+    if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, RZ_EPL }); // 7
+    if (catomsReqByBranch[ZBranch] > 0) constructionQueue.push_back({ Z_1, Z_EPL }); // 8
+    if (catomsReqByBranch[RevZBranch] > 0) constructionQueue.push_back({ RevZ_1, RevZ_EPL }); // 8
+    if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, LZ_EPL }); // 9
+    if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, RZ_EPL }); // 9
+    if (catomsReqByBranch[ZBranch] > 1) constructionQueue.push_back({ Z_2, Z_EPL }); // 10
+    if (catomsReqByBranch[RevZBranch] > 1) constructionQueue.push_back({ RevZ_2, RevZ_EPL }); // 10
+    if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, LZ_EPL }); // 11
+    if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, RZ_EPL }); // 11
+    if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL }); // 12
+    if (catomsReqByBranch[RevZBranch] > 2) constructionQueue.push_back({ RevZ_3, RevZ_EPL }); // 12
+    if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL }); // 14
+    if (catomsReqByBranch[RevZBranch] > 3) constructionQueue.push_back({ RevZ_4, RevZ_EPL }); // 14
+    if (catomsReqByBranch[LZBranch] > 0) constructionQueue.push_back({ LZ_1, LZ_EPL }); // 14
+    if (catomsReqByBranch[RZBranch] > 0) constructionQueue.push_back({ RZ_1, RZ_EPL }); // 14
+    if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL }); // 16
+    if (catomsReqByBranch[RevZBranch] > 4) constructionQueue.push_back({ RevZ_5, RevZ_EPL }); // 16
+    if (catomsReqByBranch[LZBranch] > 1) constructionQueue.push_back({ LZ_2, LZ_EPL }); // 16
+    if (catomsReqByBranch[RZBranch] > 1) constructionQueue.push_back({ RZ_2, RZ_EPL }); // 16
+    if (catomsReqByBranch[LZBranch] > 2) constructionQueue.push_back({ LZ_3, LZ_EPL }); // 18
+    if (catomsReqByBranch[RZBranch] > 2) constructionQueue.push_back({ RZ_3, RZ_EPL }); // 18
+    if (catomsReqByBranch[LZBranch] > 3) constructionQueue.push_back({ LZ_4, LZ_EPL }); // 20
+    if (catomsReqByBranch[RZBranch] > 3) constructionQueue.push_back({ RZ_4, RZ_EPL }); // 20
+    if (catomsReqByBranch[LZBranch] > 4) constructionQueue.push_back({ LZ_5, LZ_EPL }); // 22
+    if (catomsReqByBranch[RZBranch] > 4) constructionQueue.push_back({ RZ_5, RZ_EPL }); // 22
 }
 
 void MeshAssemblyBlockCode::initializeSupportModule() {
@@ -1180,8 +1187,7 @@ MeshAssemblyBlockCode::findBestBranchIndexForMsgDst(const Cell3DPosition& dst,
     for (int i = 0; i < XBranch; i++) {
         if (upward) {
             // Consider vertical branches of the tile
-            if (catomsReqByBranch[i] != -1
-                and catomsReqByBranch[i] != B
+            if (catomsReqByBranch[i] != -1 and catomsReqByBranch[i] == B - 1
                 and dst.dist_euclid(denorm(ruleMatcher->getTileRootAtEndOfBranch(catom->position,(BranchIndex)i))) < bestDist)
                 bestBi = (BranchIndex)i;
         } else {
@@ -1212,40 +1218,7 @@ bool MeshAssemblyBlockCode::hasIncidentBranch(BranchIndex bi) const {
 }
 
 Cell3DPosition MeshAssemblyBlockCode::getTileRootPosition(const Cell3DPosition& pos) const {
-    // if (isInSandbox(pos)) {
-    //     const Cell3DPosition& normPos = norm(pos);
-    //     cout << "pos: " << pos << " -- normPos: " << normPos;
-
-    //     BranchIndex bi = ruleMatcher->getBranchIndexForNonRootPosition(sbnorm(pos));
-    //     cout << "bi: " << ruleMatcher->branch_to_string(branch) << endl;
-    //     const Cell3DPosition& mult =
-    //         Cell3DPosition(B - m_mod(abs(normPos[0]), B),
-    //                        B - m_mod(abs(normPos[1]), B),
-    //                        B - m_mod(abs(normPos[2]), B));
-
-    //     cout << " -- mult: " << mult << endl;
-
-    //     const Cell3DPosition& rPos = normPos -
-    //         mult * ruleMatcher->getBranchUnitOffset(bi);
-
-    //     // const Cell3DPosition& rPos =
-    //     //     Cell3DPosition((normPos[0] < 0 ?
-    //     //                     normPos[0] - (B - m_mod(abs(normPos[0]), B)) :
-    //     //                     normPos[0] - m_mod(normPos[0], B)),
-    //     //                    (normPos[1] < 0 ?
-    //     //                     normPos[1] - (B - m_mod(abs(normPos[1]), B)) :
-    //     //                     normPos[1] - m_mod(normPos[1], B)),
-    //     //                    (normPos[2] < 0 ?
-    //     //                     normPos[2] - (B - m_mod(abs(normPos[2]),B)) :
-    //     //                     normPos[2] - m_mod(normPos[2],B)));
-
-    // cout << " -- rPos: " << rPos << " -- dr: " << denorm(rPos) << endl;
-
-    // return denorm(rPos);
-    // } else {
-        return denorm(ruleMatcher->getTileRootPositionForMeshPosition(
-                          norm(pos)));
-    // }
+        return denorm(ruleMatcher->getTileRootPositionForMeshPosition(norm(pos)));
 }
 
 bool MeshAssemblyBlockCode::areOnTheSameBranch(const Cell3DPosition& pos1,

@@ -13,6 +13,7 @@
 #define MESH_RULE_MATCHER_HPP_
 
 #include <array>
+#include <functional>
 
 #include "network.h"
 #include "cell3DPosition.h"
@@ -81,13 +82,19 @@ public:
     bool isZBranchModule(const Cell3DPosition& pos) const;
     bool isEPLPivotModule(const Cell3DPosition& pos) const;
 
+    /**
+     * Indicates how many modules are in branch bi for tile at pos
+     * @param pos tile root position of reference
+     * @param bi target branch
+     * @param lambda a function that acts as an additional condition on pos
+     (e.g., belongs to target shape?)
+     * @return 0 if branch should not be grown, or n \in [1,B-1] otherwise
+     */
+    short resourcesForBranch(const Cell3DPosition& pos,
+                             BranchIndex bi,
+                             std::function<bool(const Cell3DPosition&)> lambda) const;
+
     bool shouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi) const;
-    bool shouldGrowZBranch(const Cell3DPosition& pos) const;
-    bool shouldGrowRevZBranch(const Cell3DPosition& pos) const;
-    bool shouldGrowLZBranch(const Cell3DPosition& pos) const;
-    bool shouldGrowRZBranch(const Cell3DPosition& pos) const;
-    bool shouldGrowXBranch(const Cell3DPosition& pos) const;
-    bool shouldGrowYBranch(const Cell3DPosition& pos) const;
 
     Cell3DPosition getBranchUnitOffset(int bi) const;
     Cell3DPosition getBranchUnitOffset(const Cell3DPosition& pos) const;
@@ -355,6 +362,8 @@ public:
      * @return
      */
     bool shouldGrowCubeBranch(const Cell3DPosition& pos, BranchIndex bi) const;
+
+    short resourcesForCubeBranch(const Cell3DPosition& pos, BranchIndex bi) const;
 
     /**
      * Checks whether module at the tip of branch tipB relative to tile root at position pos

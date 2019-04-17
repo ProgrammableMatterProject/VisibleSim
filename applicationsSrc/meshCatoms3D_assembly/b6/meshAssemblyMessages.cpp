@@ -269,6 +269,8 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     BranchIndex bi = MeshRuleMatcher::getBranchForEPL(epl); VS_ASSERT(bi < 4);
     Cell3DPosition tPos;
 
+    cout << srcPos << " " << mabc.ruleMatcher->branch_to_string(bi)
+         << " " << mabc.catomsReqByBranch[bi] << endl;
     if (not mabc.constructionQueue.empty() and mabc.catomsReqByBranch[bi] != 0) {
         pair<MeshComponent, MeshComponent> nextComponent = mabc.constructionQueue.front();
 
@@ -279,7 +281,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                 + MeshRuleMatcher::getPositionForMeshComponent(nextComponent.first);
 
             // Update construction plan if nextComponent is branch component
-            int ncBi =MeshRuleMatcher::getBranchIndexForMeshComponent(nextComponent.first);
+            int ncBi = MeshRuleMatcher::getBranchIndexForMeshComponent(nextComponent.first);
             if (ncBi != -1) mabc.catomsReqByBranch[ncBi]--;
 
             // Update queue
@@ -300,7 +302,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     } else {
         // Else redirect to EPL corresponding to that branch
         // ONLY IF BRANCH HAD TO BE GROWN!
-        if (mabc.catomsReqByBranch[bi] == -1) return;
+        if (mabc.catomsReqByBranch[bi] == 1) return;
 
         tPos = mabc.catom->position + MeshRuleMatcher::getTargetEPLPositionForBranch(bi);
     }
