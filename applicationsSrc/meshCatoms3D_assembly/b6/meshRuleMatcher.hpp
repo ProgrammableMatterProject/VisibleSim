@@ -278,6 +278,17 @@ public:
     static int getBranchIndexForMeshComponent(MeshComponent mc);
 
 
+    /**
+     * Returns the position of the tile root at the end of branch bi for tile root
+     *  at posiion trRef
+     * @param trRef position of the tile root relative to which the answer is asked
+     * @param bi branch to evaluate
+     * @return the position of the tile root at the end of branch bi for tile root
+     *  at posiion trRef
+     */
+    const Cell3DPosition getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
+                                                  BranchIndex bi) const;
+
     /*********************************************************************/
     /*************************** PYRAMID STUFF ***************************/
     /*********************************************************************/
@@ -292,17 +303,6 @@ public:
      * @return true if pos is part of the mesh pyramid
      */
     bool isInPyramid(const Cell3DPosition& pos) const;
-
-    /**
-     * Returns the position of the tile root at the end of branch bi for tile root
-     *  at posiion trRef
-     * @param trRef position of the tile root relative to which the answer is asked
-     * @param bi branch to evaluate
-     * @return the position of the tile root at the end of branch bi for tile root
-     *  at posiion trRef
-     */
-    const Cell3DPosition getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
-                                                  BranchIndex bi) const;
 
     /**
      * Like shouldGrowBranch, but also takes into account whether branch would be outside
@@ -331,6 +331,49 @@ public:
      * @return dimension of the h-pyramid, or -1 if undefined
      */
     int getPyramidDimension() const;
+
+    /*********************************************************************/
+    /*************************** CUBE STUFF ***************************/
+    /*********************************************************************/
+
+    bool isOnXCubeBorder(const Cell3DPosition& pos) const;
+    bool isOnXOppCubeBorder(const Cell3DPosition& pos) const;
+    bool isOnYCubeBorder(const Cell3DPosition& pos) const;
+    bool isOnYOppCubeBorder(const Cell3DPosition& pos) const;
+
+    /**
+     * @param pos position to evaluate
+     * @return true if pos is part of the mesh cube
+     */
+    bool isInCube(const Cell3DPosition& pos) const;
+
+    /**
+     * Like shouldGrowBranch, but also takes into account whether branch would be outside
+     *  of the mesh cube
+     * @param pos
+     * @param bi
+     * @return
+     */
+    bool shouldGrowCubeBranch(const Cell3DPosition& pos, BranchIndex bi) const;
+
+    /**
+     * Checks whether module at the tip of branch tipB relative to tile root at position pos
+     *  should grow branch growthB according to cube and mesh rules.
+     * @param pos position of the source tile root
+     * @attention pos must be a tile root
+     * @param tipB branch whose tip to consider
+     * @param growthB branch that tip TR should consider growing
+     * @return true if TR at tip of branch tipB should grow branch growthB, false otherwise.
+     */
+    bool cubeTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
+                                              BranchIndex tipB, BranchIndex growthB) const;
+
+    /**
+     * For a the current mesh cube instance, returns the dimension of the
+     *  h-cube formed by the scaffold
+     * @return dimension of the h-cube, or -1 if undefined
+     */
+    int getCubeDimension() const;
 };
 
 }

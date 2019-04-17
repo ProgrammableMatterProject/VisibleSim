@@ -71,6 +71,30 @@ void MeshAssemblyBlockCode::onAssertTriggered() {
 }
 
 void MeshAssemblyBlockCode::onBlockSelected() {
+
+    const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+    const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+    Cell3DPosition pos;
+    for (short iz = glb[2]; iz < ulb[2]; iz++) {
+        for (short iy = glb[1]; iy < ulb[1]; iy++) {
+            for (short ix = glb[0]; ix < ulb[0]; ix++) {
+                pos.set(ix, iy, iz);
+
+                if (ruleMatcher->isInCube(norm(pos)))
+                    lattice->highlightCell(pos, PINK);
+
+                // if (ruleMatcher->isOnXOppCubeBorder(norm(pos)))
+                //     lattice->highlightCell(pos, BLUE);
+                // else if (ruleMatcher->isOnYOppCubeBorder(norm(pos)))
+                //     lattice->highlightCell(pos, RED);
+                // else if (ruleMatcher->isOnXCubeBorder(norm(pos)))
+                //     lattice->highlightCell(pos, CYAN);
+                // else if (ruleMatcher->isOnYCubeBorder(norm(pos)))
+                //     lattice->highlightCell(pos, MAGENTA);
+            }
+        }
+    }
+
     // Debug:
     // (1) Print details of branch growth plan and previous round
     cout << endl << "--- PRINT MODULE " << *catom << "---" << endl;
@@ -96,10 +120,10 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     }
 
     if (ruleMatcher->isInMeshOrSandbox(norm(catom->position))) {
-        if (ruleMatcher->isTileRoot(norm(catom->position))) {
-            cout << "branch: " << ruleMatcher->branch_to_string(branch)
-                 << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
-        }
+        // if (ruleMatcher->isTileRoot(norm(catom->position))) {
+        //     cout << "branch: " << ruleMatcher->branch_to_string(branch)
+        //          << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
+        // }
 
         cout << "coordinatorPos: " << coordinatorPos << endl;
         cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;

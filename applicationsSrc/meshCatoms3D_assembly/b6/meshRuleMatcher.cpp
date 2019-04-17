@@ -900,50 +900,6 @@ BranchIndex MeshRuleMatcher::getAlternateBranchIndex(BranchIndex bi) const {
     return N_BRANCHES; // unreachable
 }
 
-bool MeshRuleMatcher::isOnXPyramidBorder(const Cell3DPosition& pos) const {
-    return pos[1] == 0 and m_mod(pos[2], B) == 0;
-}
-
-bool MeshRuleMatcher::isOnXOppPyramidBorder(const Cell3DPosition& pos) const {
-    return pos[1] == Y_MAX - pos[2] - 2 and m_mod(pos[2], B) == 0;
-}
-
-bool MeshRuleMatcher::isOnYPyramidBorder(const Cell3DPosition& pos) const {
-    return pos[0] == 0 and m_mod(pos[2], B) == 0;
-}
-
-bool MeshRuleMatcher::isOnYOppPyramidBorder(const Cell3DPosition& pos) const {
-    return pos[0] == X_MAX - pos[2] - 2 and m_mod(pos[2], B) == 0;
-}
-
-bool MeshRuleMatcher::isInPyramid(const Cell3DPosition& pos) const {
-    return  isInMesh(pos) and isInRange(pos[0], 0, X_MAX - pos[2] - 2)
-        and isInRange(pos[1], 0, Y_MAX - pos[2] - 2);
-}
-
-const Cell3DPosition
-MeshRuleMatcher::getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
-                                          BranchIndex bi) const {
-    if (not isInMesh(trRef)) return trRef;
-    // cout << "trRef: " << trRef << " - bi: " << bi << " - res: "
-    //      << trRef + B * getBranchUnitOffset(bi) << endl;
-    return trRef + B * getBranchUnitOffset(bi);
-}
-
-bool MeshRuleMatcher::shouldGrowPyramidBranch(const Cell3DPosition& pos,
-                                              BranchIndex bi) const {
-    return shouldGrowBranch(pos, bi)
-        and isInPyramid(getTileRootAtEndOfBranch(pos, bi));
-}
-
-bool MeshRuleMatcher::pyramidTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
-                                                           BranchIndex tipB,
-                                                           BranchIndex growthB) const {
-    if (not isInMesh(pos) or not isTileRoot(pos)) return false;
-
-    const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
-    return shouldGrowPyramidBranch(tipTRPos, growthB);
-}
 
 string MeshRuleMatcher::roleToString(AgentRole ar) {
     switch(ar) {
@@ -1005,6 +961,97 @@ const Cell3DPosition MeshRuleMatcher::getTargetEPLPositionForBranch(BranchIndex 
     return Cell3DPosition(); // unreachable
 }
 
+const Cell3DPosition
+MeshRuleMatcher::getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
+                                          BranchIndex bi) const {
+    if (not isInMesh(trRef)) return trRef;
+    // cout << "trRef: " << trRef << " - bi: " << bi << " - res: "
+    //      << trRef + B * getBranchUnitOffset(bi) << endl;
+    return trRef + B * getBranchUnitOffset(bi);
+}
+
+bool MeshRuleMatcher::isOnXPyramidBorder(const Cell3DPosition& pos) const {
+    return pos[1] == 0 and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnXOppPyramidBorder(const Cell3DPosition& pos) const {
+    return pos[1] == Y_MAX - pos[2] - 2 and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnYPyramidBorder(const Cell3DPosition& pos) const {
+    return pos[0] == 0 and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnYOppPyramidBorder(const Cell3DPosition& pos) const {
+    return pos[0] == X_MAX - pos[2] - 2 and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isInPyramid(const Cell3DPosition& pos) const {
+    return  isInMesh(pos) and isInRange(pos[0], 0, X_MAX - pos[2] - 2)
+        and isInRange(pos[1], 0, Y_MAX - pos[2] - 2);
+}
+
+bool MeshRuleMatcher::shouldGrowPyramidBranch(const Cell3DPosition& pos,
+                                              BranchIndex bi) const {
+    return shouldGrowBranch(pos, bi)
+        and isInPyramid(getTileRootAtEndOfBranch(pos, bi));
+}
+
+bool MeshRuleMatcher::pyramidTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
+                                                           BranchIndex tipB,
+                                                           BranchIndex growthB) const {
+    if (not isInMesh(pos) or not isTileRoot(pos)) return false;
+
+    const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
+    return shouldGrowPyramidBranch(tipTRPos, growthB);
+}
+
 int MeshRuleMatcher::getPyramidDimension() const {
+    return (Z_MAX / B) + 1;
+}
+
+bool MeshRuleMatcher::isOnXCubeBorder(const Cell3DPosition& pos) const {
+    return pos[1] == 0 - pos[2] / 2 + m_mod(X_MAX - 2 - pos[2] / 2, B)
+        and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnXOppCubeBorder(const Cell3DPosition& pos) const {
+    return pos[1] == (X_MAX - 2 - pos[2] / 2) - m_mod(X_MAX - 2 - pos[2] / 2, B)
+        and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnYCubeBorder(const Cell3DPosition& pos) const {
+    return pos[0] == 0 - pos[2] / 2 + m_mod(X_MAX - 2 - pos[2] / 2, B)
+        and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isOnYOppCubeBorder(const Cell3DPosition& pos) const {
+    return pos[0] == (Y_MAX - 2 - pos[2] / 2) - m_mod(Y_MAX - 2 - pos[2] / 2, B)
+        and m_mod(pos[2], B) == 0;
+}
+
+bool MeshRuleMatcher::isInCube(const Cell3DPosition& pos) const {
+    return  isInMesh(pos)
+        and isInRange(pos[0], - pos[2] / 2, X_MAX - pos[2] / 2 - 2)
+        and isInRange(pos[1], - pos[2] / 2, Y_MAX - pos[2] / 2 - 2)
+        and isInRange(pos[2], 0, Z_MAX - 2);
+}
+
+bool MeshRuleMatcher::shouldGrowCubeBranch(const Cell3DPosition& pos,
+                                              BranchIndex bi) const {
+    return shouldGrowBranch(pos, bi)
+        and isInCube(getTileRootAtEndOfBranch(pos, bi));
+}
+
+bool MeshRuleMatcher::cubeTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
+                                                           BranchIndex tipB,
+                                                           BranchIndex growthB) const {
+    if (not isInMesh(pos) or not isTileRoot(pos)) return false;
+
+    const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
+    return shouldGrowCubeBranch(tipTRPos, growthB);
+}
+
+int MeshRuleMatcher::getCubeDimension() const {
     return (Z_MAX / B) + 1;
 }
