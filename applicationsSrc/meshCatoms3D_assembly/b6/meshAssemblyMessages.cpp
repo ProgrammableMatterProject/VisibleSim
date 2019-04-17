@@ -269,8 +269,8 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     BranchIndex bi = MeshRuleMatcher::getBranchForEPL(epl); VS_ASSERT(bi < 4);
     Cell3DPosition tPos;
 
-    cout << srcPos << " " << mabc.ruleMatcher->branch_to_string(bi)
-         << " " << mabc.catomsReqByBranch[bi] << endl;
+    // cout << srcPos << " " << mabc.ruleMatcher->branch_to_string(bi)
+    //      << " " << mabc.catomsReqByBranch[bi] << endl;
     if (not mabc.constructionQueue.empty() and mabc.catomsReqByBranch[bi] != 0) {
         pair<MeshComponent, MeshComponent> nextComponent = mabc.constructionQueue.front();
 

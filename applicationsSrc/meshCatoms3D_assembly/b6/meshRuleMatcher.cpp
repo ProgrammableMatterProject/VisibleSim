@@ -21,7 +21,7 @@ using namespace BaseSimulator;
 using namespace utils;
 using namespace Catoms3D;
 
-std::array<Cell3DPosition, 47> MeshRuleMatcher::componentPosition = {
+std::array<Cell3DPosition, N_COMPONENTS> MeshRuleMatcher::componentPosition = {
     Cell3DPosition(0, 0, 0), // R
 
     Cell3DPosition(1, 1, 0), // S_Z
@@ -83,6 +83,17 @@ std::array<Cell3DPosition, 47> MeshRuleMatcher::componentPosition = {
     Cell3DPosition(-1, -(B2 - 1), (B2 - 1)), // LZ_L_EPL
 
     Cell3DPosition(-1, 0, B2 - 1), // RevZ_L_EPL
+
+    Cell3DPosition(-1, 0, 0), // OPP_X1
+    Cell3DPosition(-2, 0, 0), // OPP_X2
+    Cell3DPosition(-3, 0, 0), // OPP_X3
+    Cell3DPosition(-4, 0, 0), // OPP_X4
+    Cell3DPosition(-5, 0, 0), // OPP_X5
+    Cell3DPosition(0, -1, 0), // OPP_Y1
+    Cell3DPosition(0, -2, 0), // OPP_Y2
+    Cell3DPosition(0, -3, 0), // OPP_Y3
+    Cell3DPosition(0, -4, 0), // OPP_Y4
+    Cell3DPosition(0, -5, 0) // OPP_Y5
 };
 
 string MeshRuleMatcher::component_to_string(MeshComponent comp) {
@@ -134,13 +145,24 @@ string MeshRuleMatcher::component_to_string(MeshComponent comp) {
         case LZ_EPL: return "LZ_EPL";
         case LZ_L_EPL: return "LZ_L_EPL";
         case RevZ_L_EPL: return "RevZ_L_EPL";
+        case OPP_X1: return "OPP_X1";
+        case OPP_X2: return "OPP_X2";
+        case OPP_X3: return "OPP_X3";
+        case OPP_X4: return "OPP_X4";
+        case OPP_X5: return "OPP_X5";
+        case OPP_Y1: return "OPP_Y1";
+        case OPP_Y2: return "OPP_Y2";
+        case OPP_Y3: return "OPP_Y3";
+        case OPP_Y4: return "OPP_Y4";
+        case OPP_Y5: return "OPP_Y5";
+        case N_COMPONENTS: return "N_COMPONENTS";
     }
 
     return ""; // UNREACHABLE
 }
 
 Cell3DPosition MeshRuleMatcher::getPositionForComponent(MeshComponent comp) {
-    return comp < 47 ? componentPosition[comp] : Cell3DPosition();
+    return comp < N_COMPONENTS ? componentPosition[comp] : Cell3DPosition();
 }
 
 int MeshRuleMatcher::getComponentForPosition(const Cell3DPosition& pos) {
@@ -179,68 +201,6 @@ MeshComponent MeshRuleMatcher::getTargetEPLComponentForBranch(BranchIndex bi) {
 
     return R; // unreachable
 }
-
-std::array<int, 47> MeshRuleMatcher::componentInsertionTime = {
-    0, // R
-
-    4, // S_Z
-    4, // S_RevZ
-    0, // S_RZ
-    0, // S_RZ
-
-    3, // X1
-    6, // X2
-    8, // X3
-    10, // X4
-    12, // X5
-
-    1, // Y1
-    6, // Y2
-    8, // Y3
-    10, // Y4
-    12, // Y5
-
-    8, // Z1
-    10, // Z2
-    12, // Z3
-    14, // Z4
-    16, // Z5
-
-    8, // RevZ1
-    10, // RevZ2
-    12, // RevZ3
-    14, // RevZ4
-    16, // RevZ5
-
-    14, // LZ1
-    16, // LZ2
-    18, // LZ3
-    20, // LZ4
-    22, // LZ5
-
-    14, // RZ1
-    16, // RZ2
-    18, // RZ3
-    20, // RZ4
-    22, // RZ5
-
-    -1, // RevZ_EPL
-    -1, // RevZ_R_EPL
-
-    -1, // RZ_L_EPL
-    -1, // RZ_EPL
-    -1, // RZ_R_EPL
-
-    18, // Z_R_EPL --> New R
-    -1, // Z_EPL
-    -1, // Z_L_EPL
-
-    -1, // LZ_R_EPL
-    -1, // LZ_EPL
-    -1, // LZ_L_EPL
-
-    -1 // RevZ_L_EPL
-};
 
 void MeshRuleMatcher::printDebugInfo(const Cell3DPosition& pos) const {
   cout << "--- DEBUG INFO: " << pos << endl;
@@ -755,9 +715,23 @@ const Cell3DPosition MeshRuleMatcher::getPositionForMeshComponent(MeshComponent 
         case LZ_EPL: return Cell3DPosition(-1,2,-1);
         case LZ_L_EPL: return Cell3DPosition(-1,1,-1);
         case RevZ_L_EPL: return Cell3DPosition(-1,0,-1);
+
+            // case OPP
+        case OPP_X1: return Cell3DPosition(-1, 0, 0);
+        case OPP_X2: return Cell3DPosition(-2, 0, 0);
+        case OPP_X3: return Cell3DPosition(-3, 0, 0);
+        case OPP_X4: return Cell3DPosition(-4, 0, 0);
+        case OPP_X5: return Cell3DPosition(-5, 0, 0);
+        case OPP_Y1: return Cell3DPosition(0, -1, 0);
+        case OPP_Y2: return Cell3DPosition(0, -2, 0);
+        case OPP_Y3: return Cell3DPosition(0, -3, 0);
+        case OPP_Y4: return Cell3DPosition(0, -4, 0);
+        case OPP_Y5: return Cell3DPosition(0, -5, 0);
+
+        case N_COMPONENTS: return Cell3DPosition();
     }
 
-    return Cell3DPosition(); // unreachable
+    return componentPosition[mc];
 }
 
 int MeshRuleMatcher::getBranchIndexForMeshComponent(MeshComponent mc) {

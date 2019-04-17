@@ -49,7 +49,11 @@ enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
                      LZ_R_EPL, // 43
                      LZ_EPL, // 44
                      LZ_L_EPL, // 45
-                     RevZ_L_EPL }; // 46
+                     RevZ_L_EPL, // 46
+                     OPP_X1, OPP_X2, OPP_X3, OPP_X4, OPP_X5, // 47 - 51
+                     OPP_Y1, OPP_Y2, OPP_Y3, OPP_Y4, OPP_Y5, // 52 - 57
+                     N_COMPONENTS
+};
 
 class MeshRuleMatcher {
     const int X_MAX, Y_MAX, Z_MAX, B;
@@ -57,12 +61,8 @@ class MeshRuleMatcher {
     /**
      * Contains the position of each MeshComponent, indexed by their id
      */
-    static std::array<Cell3DPosition, 47> componentPosition;
+    static std::array<Cell3DPosition, N_COMPONENTS> componentPosition;
 
-    /**
-     * Contains the insertion time of each meshComponent, indexed by their id
-     */
-    static std::array<int, 47> componentInsertionTime;
 public:
     bool isOnXBranch(const Cell3DPosition& pos) const;
     bool isOnXBorder(const Cell3DPosition& pos) const;
