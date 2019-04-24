@@ -234,6 +234,35 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0xA, Cell3DPosition(-(B2 - 2), -(B2 - 2), (B2 - 1)), 3), Cell3DPosition(-1, -1, 2) }, // Z_EPL3
     { LRKeyTuple(0x840, Cell3DPosition(-(B2 - 2), -(B2 - 2), (B2 - 1)), (B2 - 2)), Cell3DPosition(-1, 0, 1) }, // Z_EPL4
 
+    // OPP X
+
+    // OPP Y
+    { LRKeyTuple(0x400, Cell3DPosition(0, -1, 0), 1), Cell3DPosition(1, 0, 0) }, // OPP_Y1 1
+    { LRKeyTuple(0x802, Cell3DPosition(0, -1, 0), 2), Cell3DPosition(0, 0, 1) }, // OPP_Y1 2
+
+    { LRKeyTuple(0x404, Cell3DPosition(0, -2, 0), 1), Cell3DPosition(0, -1, 1) }, // OPP_Y2 1
+    { LRKeyTuple(0x404, Cell3DPosition(0, -3, 0), 1), Cell3DPosition(0, -1, 1) }, // OPP_Y3 1
+    { LRKeyTuple(0x404, Cell3DPosition(0, -4, 0), 1), Cell3DPosition(0, -1, 1) }, // OPP_Y4 1
+    { LRKeyTuple(0x404, Cell3DPosition(0, -5, 0), 1), Cell3DPosition(0, -1, 1) }, // OPP_Y5 1
+
+    { LRKeyTuple(0x002, Cell3DPosition(0, -2, 0), 2), Cell3DPosition(0, 0, 1) }, // OPP_Y2 2
+    { LRKeyTuple(0x003, Cell3DPosition(0, -3, 0), 2), Cell3DPosition(0, -1, 1) }, // OPP_Y3 2
+    { LRKeyTuple(0x003, Cell3DPosition(0, -4, 0), 2), Cell3DPosition(0, -1, 1) }, // OPP_Y4 2
+    { LRKeyTuple(0x003, Cell3DPosition(0, -5, 0), 2), Cell3DPosition(0, -1, 1) }, // OPP_Y5 2
+
+    { LRKeyTuple(0xc02, Cell3DPosition(0, -2, 0), 3), Cell3DPosition(1, 0, -1) }, // OPP_Y2 3
+    { LRKeyTuple(0x400, Cell3DPosition(0, -3, 0), 3), Cell3DPosition(1, 0, -1) }, // OPP_Y3 3
+    { LRKeyTuple(0x600, Cell3DPosition(0, -4, 0), 3), Cell3DPosition(0, -1, 0) }, // OPP_Y4 3
+    { LRKeyTuple(0x600, Cell3DPosition(0, -5, 0), 3), Cell3DPosition(0, -1, 0) }, // OPP_Y5 3
+
+    { LRKeyTuple(0x400, Cell3DPosition(0, -4, 0), 4), Cell3DPosition(1, 0, -1) }, // OPP_Y4 4
+    { LRKeyTuple(0x600, Cell3DPosition(0, -5, 0), 4), Cell3DPosition(0, -1, 0) }, // OPP_Y5 4
+
+    { LRKeyTuple(0x400, Cell3DPosition(0, -5, 0), 6), Cell3DPosition(1, 0, -1) }, // OPP_Y5 5
+
+    // New cases
+    { LRKeyTuple(0xC00, Cell3DPosition(-1, -1, 0), 3), Cell3DPosition(-1, 0, 0) }, // S_RevZ 3
+    { LRKeyTuple(0x400, Cell3DPosition(-1, -1, 0), 4), Cell3DPosition(0, 1, -1) }, // S_RevZ 4
 };
 
 /**
