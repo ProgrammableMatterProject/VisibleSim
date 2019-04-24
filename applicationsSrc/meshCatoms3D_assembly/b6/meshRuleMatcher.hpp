@@ -27,8 +27,9 @@ static const uint MC_ST_B = 69;
 
 namespace MeshCoating {
 
+static inline const int N_INC_BRANCHES = 6;
 enum BranchIndex { ZBranch, RevZBranch, LZBranch,
-                   RZBranch, XBranch, YBranch, N_BRANCHES };
+    RZBranch, XBranch, YBranch, OppXBranch, OppYBranch, N_BRANCHES };
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip, Support};
 enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
                      X_1, X_2, X_3, X_4, X_5,
@@ -67,9 +68,11 @@ public:
     bool isOnXBranch(const Cell3DPosition& pos) const;
     bool isOnXBorder(const Cell3DPosition& pos) const;
     bool isOnXOppBorder(const Cell3DPosition& pos) const;
+    bool isOnOppXBranch(const Cell3DPosition& pos) const;
     bool isOnYBranch(const Cell3DPosition& pos) const;
     bool isOnYBorder(const Cell3DPosition& pos) const;
     bool isOnYOppBorder(const Cell3DPosition& pos) const;
+    bool isOnOppYBranch(const Cell3DPosition& pos) const;
     bool isOnZBranch(const Cell3DPosition& pos) const;
     bool isOnRevZBranch(const Cell3DPosition& pos) const;
     bool isOnRZBranch(const Cell3DPosition& pos) const;
@@ -94,7 +97,8 @@ public:
                              BranchIndex bi,
                              std::function<bool(const Cell3DPosition&)> lambda) const;
 
-    bool shouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi) const;
+    bool shouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi,
+                          function<bool(const Cell3DPosition&)> lambda) const;
 
     Cell3DPosition getBranchUnitOffset(int bi) const;
     Cell3DPosition getBranchUnitOffset(const Cell3DPosition& pos) const;

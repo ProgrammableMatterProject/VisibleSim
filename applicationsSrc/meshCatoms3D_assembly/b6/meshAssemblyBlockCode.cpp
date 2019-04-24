@@ -72,28 +72,39 @@ void MeshAssemblyBlockCode::onAssertTriggered() {
 
 void MeshAssemblyBlockCode::onBlockSelected() {
 
-    // const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
-    // const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-    // Cell3DPosition pos;
-    // for (short iz = glb[2]; iz < ulb[2]; iz++) {
-    //     for (short iy = glb[1]; iy < ulb[1]; iy++) {
-    //         for (short ix = glb[0]; ix < ulb[0]; ix++) {
-    //             pos.set(ix, iy, iz);
+    const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+    const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+    Cell3DPosition pos;
+    for (short iz = glb[2]; iz < ulb[2]; iz++) {
+        for (short iy = glb[1]; iy < ulb[1]; iy++) {
+            for (short ix = glb[0]; ix < ulb[0]; ix++) {
+                pos.set(ix, iy, iz);
 
-    //             if (ruleMatcher->isInCube(norm(pos)))
-    //                 lattice->highlightCell(pos, PINK);
+                // if (ruleMatcher->isInGrid(norm(pos)))
+                //     lattice->highlightCell(pos, WHITE);
 
-    //             // if (ruleMatcher->isOnXOppCubeBorder(norm(pos)))
-    //             //     lattice->highlightCell(pos, BLUE);
-    //             // else if (ruleMatcher->isOnYOppCubeBorder(norm(pos)))
-    //             //     lattice->highlightCell(pos, RED);
-    //             // else if (ruleMatcher->isOnXCubeBorder(norm(pos)))
-    //             //     lattice->highlightCell(pos, CYAN);
-    //             // else if (ruleMatcher->isOnYCubeBorder(norm(pos)))
-    //             //     lattice->highlightCell(pos, MAGENTA);
-    //         }
-    //     }
-    // }
+                // if (ruleMatcher->isInSandbox(norm(pos)))
+                //     lattice->highlightCell(pos, BLACK);
+
+                // if (ruleMatcher->isInCube(norm(pos)))
+                //     lattice->highlightCell(pos, PINK);
+
+                if (ruleMatcher->isOnOppXBranch(norm(pos)))
+                    lattice->highlightCell(pos, RED);
+                else if (ruleMatcher->isOnOppYBranch(norm(pos)))
+                    lattice->highlightCell(pos, BLUE);
+
+                // if (ruleMatcher->isOnXOppCubeBorder(norm(pos)))
+                //     lattice->highlightCell(pos, BLUE);
+                // else if (ruleMatcher->isOnYOppCubeBorder(norm(pos)))
+                //     lattice->highlightCell(pos, RED);
+                // else if (ruleMatcher->isOnXCubeBorder(norm(pos)))
+                //     lattice->highlightCell(pos, CYAN);
+                // else if (ruleMatcher->isOnYCubeBorder(norm(pos)))
+                //     lattice->highlightCell(pos, MAGENTA);
+            }
+        }
+    }
 
     // Debug:
     // (1) Print details of branch growth plan and previous round
@@ -114,7 +125,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     }
 
     if (ruleMatcher->isTileRoot(norm(catom->position))) {
-        for (int i = 0; i < N_BRANCHES; i++)
+        for (int i = 0; i < N_INC_BRANCHES; i++)
             cout << "hasIncidentBranch(" << i << "): "
                  << hasIncidentBranch((BranchIndex)i) << endl;
 
@@ -133,12 +144,13 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     }
 
     if (ruleMatcher->isInMeshOrSandbox(norm(catom->position))) {
-        // if (ruleMatcher->isTileRoot(norm(catom->position))) {
-        //     cout << "branch: " << ruleMatcher->branch_to_string(branch)
-        //          << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
-        // }
+        if (not ruleMatcher->isTileRoot(norm(catom->position))) {
+            cout << "branch: " << ruleMatcher->branch_to_string(branch)
+                 << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
+        }
 
         cout << "coordinatorPos: " << coordinatorPos << endl;
+        cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(coordinatorPos) << endl;
         cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
         cout << "isSupportModule: " << ruleMatcher->isSupportModule(sbnorm(catom->position)) << endl;
         cout <<
@@ -152,6 +164,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
                     targetPosition, coordinatorPos, step, nextHop, true);
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
+    cout << "isInGrid: " << ruleMatcher->isInGrid(norm(catom->position)) << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
     cout << "targetPosition: " << targetPosition;
@@ -221,10 +234,8 @@ void MeshAssemblyBlockCode::startup() {
         role = ActiveBeamTip; // nothing to be done, wait for tPos requests
 
         // Add z = B to ensure that level -1 catoms are handled properly
-        short bi = ruleMatcher->determineBranchForPosition(
-            norm(catom->position[2] < meshSeedPosition[2] ?
-                 catom->position + Cell3DPosition(0,0,B) : catom->position));
-        VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
+        short bi = ruleMatcher->determineBranchForPosition(norm(catom->position));
+        VS_ASSERT_MSG(bi >= 0 and bi < N_INC_BRANCHES, "cannot determine branch.");
         branch = static_cast<BranchIndex>(bi);
     } else if (meshSeedPosition[2] - catom->position[2] > 1) {
         role = PassiveBeam; // nothing to be done here for visual decoration only
@@ -232,7 +243,7 @@ void MeshAssemblyBlockCode::startup() {
         // Add z = B to ensure that level -1 catoms are handled properly
         short bi = ruleMatcher->getBranchIndexForNonRootPosition(norm(catom->position)
                                                                  + Cell3DPosition(0, 0, B));
-        VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
+        VS_ASSERT_MSG(bi >= 0 and bi < N_INC_BRANCHES, "cannot determine branch.");
         branch = static_cast<BranchIndex>(bi);
     } else {
         // Catom is active module summoned from the sandbox and that will be used for scaffolding
@@ -473,7 +484,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 }
 
                 // STAT EXPORT
-                OUTPUT << "nbCatomsInPlace:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << ++nbCatomsInPlace << endl;
+                // OUTPUT << "nbCatomsInPlace:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << ++nbCatomsInPlace << endl;
 
                 if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
                     coordinatorPos =
@@ -482,6 +493,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     BranchIndex bi =
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
                     branch = bi;
+                    VS_ASSERT_MSG(bi >= 0 and bi < N_INC_BRANCHES, "cannot determine branch.");
 
                     stringstream info;
                     info << " assigned to branch " << ruleMatcher->branch_to_string(bi);
@@ -498,6 +510,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     BranchIndex bi =
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
                     branch = bi;
+                    VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
 
                     stringstream info;
                     info << " assigned to branch " << ruleMatcher->branch_to_string(bi);
@@ -712,7 +725,7 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
 
     // cout << "ibtrac for " << pos << ": " << endl;
 
-    for (int i = 0; i < N_BRANCHES; i++) {
+    for (int i = 0; i < N_INC_BRANCHES; i++) {
         if (!isIncidentBranchTipInPlace(pos, static_cast<BranchIndex>(i))) {
             // cout << ruleMatcher->branch_to_string(static_cast<BranchIndex>(i)) << "NOT in place!!!" << endl;
             return false;
@@ -726,13 +739,19 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
 bool MeshAssemblyBlockCode::
 isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& tipp = trp + incidentTipRelativePos[bi];
+    // cout << ruleMatcher->branch_to_string(bi) << " - tipp: " << tipp << endl;
+    // cout << "gtrpfmp: " << denorm(ruleMatcher->getTileRootPositionForMeshPosition(norm(tipp))) << endl;
     return (not ruleMatcher->isInCube(ruleMatcher->
                                       getTileRootPositionForMeshPosition(norm(tipp))))
         or ((bi == XBranch or bi == YBranch)
-            and ruleMatcher->isInCube(ruleMatcher->
-                                      getTileRootPositionForMeshPosition(norm(tipp)))
-            and not ruleMatcher->isInPyramid(ruleMatcher->
-                                             getTileRootPositionForMeshPosition(norm(tipp))))
+            and ( ( (bi == XBranch and ruleMatcher->isOnYBorder(norm(trp)))
+                    or (bi == YBranch and ruleMatcher->isOnXBorder(norm(trp))))
+             or
+             (ruleMatcher->isInCube(ruleMatcher->
+                                    getTileRootPositionForMeshPosition(norm(tipp)))
+              and not ruleMatcher->isInPyramid(ruleMatcher->
+                                               getTileRootPositionForMeshPosition(norm(tipp))))
+                ))
         or lattice->cellHasBlock(tipp);
 }
 
@@ -741,7 +760,7 @@ void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
     try {
         if (not pivot) pivot = customFindMotionPivot(catom, pos);
 
-        OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
+        // OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
         // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
         scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
                                                      catom, pivot, pos,
@@ -766,7 +785,7 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     coordinatorPos = catom->position;
 
     if (norm(catom->position) == Cell3DPosition(0,0,0)) t0 = scheduler->now();
-    OUTPUT << "root: " << (int)(round((scheduler->now() - t0) / getRoundDuration())) << "\t" << norm(catom->position) << endl;
+    // OUTPUT << "root: " << (int)(round((scheduler->now() - t0) / getRoundDuration())) << "\t" << norm(catom->position) << endl;
 
     // Determine how many branches need to grow from here
     // and initialize growth data structures
@@ -810,6 +829,8 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
 void MeshAssemblyBlockCode::buildConstructionQueue() {
     constructionQueue.push_back({ S_RZ, RZ_EPL});  // 0
     constructionQueue.push_back({ S_LZ, LZ_EPL }); // 0
+// if (catomsReqByBranch[OppYBranch] > 0) constructionQueue.push_back({ OPP_Y1, RevZ_EPL }); // 0.5
+    // if (catomsReqByBranch[OppXBranch] > 0) constructionQueue.push_back({ Opp_X1, LZ_EPL }); // 0.5
     if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL }); // 1
     if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL }); // 3
     constructionQueue.push_back({ S_Z, LZ_EPL }); // 4
@@ -848,7 +869,8 @@ void MeshAssemblyBlockCode::initializeSupportModule() {
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
         if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {
             branchTipPos = nPos;
-            short bi = ruleMatcher->determineBranchForPosition(sbnorm(nPos));
+            short bi = ruleMatcher->determineBranchForPosition(norm(nPos));
+            VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
             branch = static_cast<BranchIndex>(bi);
             return;
         }
@@ -1167,7 +1189,7 @@ int MeshAssemblyBlockCode::sendMessage(Message *msg,P2PNetworkInterface *dest,
 }
 
 void MeshAssemblyBlockCode::log_send_message() const {
-    OUTPUT << "lfmsg: " << round((scheduler->now() - startTime) / getRoundDuration()) << "\t" << MeshRuleMatcher::roleToString(role) << endl;
+    // OUTPUT << "lfmsg: " << round((scheduler->now() - startTime) / getRoundDuration()) << "\t" << MeshRuleMatcher::roleToString(role) << endl;
 }
 
 BranchIndex
