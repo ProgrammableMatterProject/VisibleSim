@@ -554,8 +554,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // Check that that new tile root is in place and if absent,
                     //  wait for above layer XY modules to notify completion of previous tiles
                     if (lattice->isFree(coordinatorPos)) { //FIXME: NON-LOCAL!
-                        if (ruleMatcher->isOnXPyramidBorder(norm(coordinatorPos))
-                            and ruleMatcher->isOnYPyramidBorder(norm(coordinatorPos))
+                        if (ruleMatcher->isOnXCubeBorder(norm(coordinatorPos))
+                            and ruleMatcher->isOnYCubeBorder(norm(coordinatorPos))
                             and incidentBranchesToRootAreComplete(coordinatorPos)
                             and claimedTileRoots.find(coordinatorPos)==claimedTileRoots.end()) {
                             targetPosition = coordinatorPos;
@@ -813,12 +813,19 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     }
 
     // Populate EPLPivots to be used by ground modules
-    EPLPivotBC[0] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 0, -2))->blockCode); // RevZBranch
-    EPLPivotBC[1] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(2, 2, -2))->blockCode); // ZBranch
-    EPLPivotBC[2] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(2, 0, -2))->blockCode); // RZBranch
-    EPLPivotBC[3] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 2, -2))->blockCode); // LZBranch
-    for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]);
+    const Cell3DPosition EPLPivotPos[4] = {
+        Cell3DPosition(0, 0, -2), Cell3DPosition(2, 2, -2),
+        Cell3DPosition(2, 0, -2), Cell3DPosition(0, 2, -2)
+    };
 
+    for (short i = 0; i < 4; i++) {
+        BuildingBlock* EPLPivot = lattice->getBlock(catom->position + EPLPivotPos[i]);
+        EPLPivotBC[i] = EPLPivot ?
+            static_cast<MeshAssemblyBlockCode*>(EPLPivot->blockCode) : NULL;
+    }
+
+    // NOT AN ASSUMPTION ANYMORE
+    // for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]); //
 
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
