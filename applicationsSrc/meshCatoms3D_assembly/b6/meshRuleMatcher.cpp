@@ -426,7 +426,8 @@ short MeshRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, BranchIndex
                                           [](const Cell3DPosition& pos){return true;}) const {
     if (not isTileRoot(pos)) return 0;
 
-    if (bi == OppXBranch or bi == OppYBranch) {
+    if (bi == OppXBranch or bi == OppYBranch
+        or bi == XBranch or bi == YBranch) {
         for (int i = 0; i < B - 1; i++) {
             // if (bi == OppXBranch or bi == OppYBranch)
             //     cout << "OppN" << i << ": " << pos + (i + 1) * getBranchUnitOffset(bi) << endl;

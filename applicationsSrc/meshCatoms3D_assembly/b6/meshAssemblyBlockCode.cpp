@@ -151,13 +151,13 @@ void MeshAssemblyBlockCode::onBlockSelected() {
 
         cout << "coordinatorPos: " << coordinatorPos << endl;
         cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(coordinatorPos) << endl;
-        cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
         cout << "isSupportModule: " << ruleMatcher->isSupportModule(sbnorm(catom->position)) << endl;
-        cout <<
-            "tileRootPosForMeshPos: " << getTileRootPosition(catom->position)
-             << endl;
+        cout << "tileRootPosForMeshPos: " << getTileRootPosition(catom->position) << endl;
+    } else {
+        cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)))) << endl;
     }
 
+    cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
     cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
     cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
     Cell3DPosition nextHop;
@@ -827,18 +827,27 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
 }
 
 void MeshAssemblyBlockCode::buildConstructionQueue() {
+    if (catomsReqByBranch[OppYBranch] > 0) constructionQueue.push_back({ OPP_Y1, RevZ_EPL });
+    if (catomsReqByBranch[OppXBranch] > 0) constructionQueue.push_back({ OPP_X1, LZ_EPL });
+
     constructionQueue.push_back({ S_RZ, RZ_EPL});  // 0
     constructionQueue.push_back({ S_LZ, LZ_EPL }); // 0
-    if (catomsReqByBranch[OppYBranch] > 0) constructionQueue.push_back({ OPP_Y1, RevZ_EPL });
-    // if (catomsReqByBranch[OppXBranch] > 0) constructionQueue.push_back({ Opp_X1, LZ_EPL }); // 0.5
+
     if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL }); // 1
     if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL }); // 3
+
     constructionQueue.push_back({ S_Z, LZ_EPL }); // 4
     constructionQueue.push_back({ S_RevZ, RZ_EPL }); // 4
-        if (catomsReqByBranch[OppYBranch] > 1) constructionQueue.push_back({ OPP_Y2, RevZ_EPL });
+
+    if (catomsReqByBranch[OppYBranch] > 1) constructionQueue.push_back({ OPP_Y2, RevZ_EPL });
     if (catomsReqByBranch[OppYBranch] > 2) constructionQueue.push_back({ OPP_Y3, RevZ_EPL });
     if (catomsReqByBranch[OppYBranch] > 3) constructionQueue.push_back({ OPP_Y4, RevZ_EPL });
     if (catomsReqByBranch[OppYBranch] > 4) constructionQueue.push_back({ OPP_Y5, RevZ_EPL });
+
+    if (catomsReqByBranch[OppXBranch] > 1) constructionQueue.push_back({ OPP_X2, LZ_EPL });
+    if (catomsReqByBranch[OppXBranch] > 2) constructionQueue.push_back({ OPP_X3, LZ_EPL });
+    if (catomsReqByBranch[OppXBranch] > 3) constructionQueue.push_back({ OPP_X4, LZ_EPL });
+    if (catomsReqByBranch[OppXBranch] > 4) constructionQueue.push_back({ OPP_X5, LZ_EPL });
 
     if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, LZ_EPL }); // 5
     if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, RZ_EPL }); // 5
