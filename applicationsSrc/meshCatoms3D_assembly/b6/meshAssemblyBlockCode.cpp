@@ -829,12 +829,17 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
 void MeshAssemblyBlockCode::buildConstructionQueue() {
     constructionQueue.push_back({ S_RZ, RZ_EPL});  // 0
     constructionQueue.push_back({ S_LZ, LZ_EPL }); // 0
-// if (catomsReqByBranch[OppYBranch] > 0) constructionQueue.push_back({ OPP_Y1, RevZ_EPL }); // 0.5
+    if (catomsReqByBranch[OppYBranch] > 0) constructionQueue.push_back({ OPP_Y1, RevZ_EPL });
     // if (catomsReqByBranch[OppXBranch] > 0) constructionQueue.push_back({ Opp_X1, LZ_EPL }); // 0.5
     if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL }); // 1
     if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL }); // 3
     constructionQueue.push_back({ S_Z, LZ_EPL }); // 4
     constructionQueue.push_back({ S_RevZ, RZ_EPL }); // 4
+        if (catomsReqByBranch[OppYBranch] > 1) constructionQueue.push_back({ OPP_Y2, RevZ_EPL });
+    if (catomsReqByBranch[OppYBranch] > 2) constructionQueue.push_back({ OPP_Y3, RevZ_EPL });
+    if (catomsReqByBranch[OppYBranch] > 3) constructionQueue.push_back({ OPP_Y4, RevZ_EPL });
+    if (catomsReqByBranch[OppYBranch] > 4) constructionQueue.push_back({ OPP_Y5, RevZ_EPL });
+
     if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, LZ_EPL }); // 5
     if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, RZ_EPL }); // 5
     if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, LZ_EPL }); // 7
