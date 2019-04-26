@@ -128,6 +128,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         for (int i = 0; i < N_INC_BRANCHES; i++)
             cout << "hasIncidentBranch(" << i << "): "
                  << hasIncidentBranch((BranchIndex)i) << endl;
+        cout << "numIncidentVerticalBranches: " << numIncidentVerticalBranches << endl;
 
         if (not constructionQueue.empty())
             cout << "nextPos: "
@@ -162,7 +163,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
     Cell3DPosition nextHop;
     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
-                    targetPosition, coordinatorPos, step, nextHop, true);
+                    targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     cout << "isInGrid: " << ruleMatcher->isInGrid(norm(catom->position)) << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
@@ -212,7 +213,12 @@ void MeshAssemblyBlockCode::startup() {
                             + Cell3DPosition(0, 1, 0))
         and coordinatorPos[2] == meshSeedPosition[2]
         and lattice->isFree(coordinatorPos)) {
-        // Catom is one of the future ground tile roots waiting on RZ_EPL
+
+        // Determine EPL and set as last visited
+        lastVisitedEPL = getEntryPointLocationForCell(catom->position);
+        VS_ASSERT(lastVisitedEPL != -1);
+
+        // Catom is one of the future ground tile roots waiting on R_EPL
         role = FreeAgent;
 
         if (coordinatorPos == meshSeedPosition) {
@@ -248,6 +254,11 @@ void MeshAssemblyBlockCode::startup() {
     } else {
         // Catom is active module summoned from the sandbox and that will be used for scaffolding
         role = FreeAgent;
+
+        // Determine EPL and set as last visited
+        lastVisitedEPL = getEntryPointLocationForCell(catom->position);
+        VS_ASSERT(lastVisitedEPL != -1);
+
         requestTargetCellFromTileRoot();
         // if (not requestTargetCellFromTileRoot() )
         // VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a delegate coordinator in its vicinity.");
@@ -544,6 +555,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 }
             } else {
                 if (catom->position == targetPosition and isOnEntryPoint(catom->position)) {
+                    // Determine EPL and set as last visited
+                    lastVisitedEPL = getEntryPointLocationForCell(catom->position);
+                    VS_ASSERT(lastVisitedEPL != -1);
+
                     // Update tile belonging
                     coordinatorPos = denorm(ruleMatcher->
                                             getNearestTileRootPosition(norm(catom->position)));
@@ -622,7 +637,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
 short MeshAssemblyBlockCode::getEntryPointLocationForCell(const Cell3DPosition& pos) {
     for (int i = 0; i < 12; i++)
-        if (pos == catom->position + entryPointRelativePos[i]) return i + RevZ_EPL;
+        if (pos == denorm(ruleMatcher->getNearestTileRootPosition(norm(pos)))
+            + entryPointRelativePos[i])
+            return i + RevZ_EPL;
 
     return -1;
 }
@@ -795,9 +812,6 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
         if (catomsReqByBranch[bi] == 0) catomsReqByBranch[bi] = -1;
     }
 
-    // Initialize construction queue from here
-    buildConstructionQueue();
-
     // Inspect each incoming vertical branch to see where catoms are ready to take part in
     //  the construction of the tile
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
@@ -820,9 +834,15 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
 
     for (short i = 0; i < 4; i++) {
         BuildingBlock* EPLPivot = lattice->getBlock(catom->position + EPLPivotPos[i]);
-        EPLPivotBC[i] = EPLPivot ?
-            static_cast<MeshAssemblyBlockCode*>(EPLPivot->blockCode) : NULL;
+
+        if (EPLPivot) {
+            EPLPivotBC[i] = static_cast<MeshAssemblyBlockCode*>(EPLPivot->blockCode);
+            numIncidentVerticalBranches++;
+        } else EPLPivotBC[i] =  NULL;
     }
+
+    // Initialize construction queue from here
+    buildConstructionQueue();
 
     // NOT AN ASSUMPTION ANYMORE
     // for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]); //
@@ -834,6 +854,14 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
 }
 
 void MeshAssemblyBlockCode::buildConstructionQueue() {
+    if (numIncidentVerticalBranches == 4) {
+        buildConstructionQueueWithFourIncidentBranches();
+    } else {
+        buildConstructionQueueWithFewerIncidentBranches();
+    }
+}
+
+void MeshAssemblyBlockCode::buildConstructionQueueWithFourIncidentBranches() {
     if (catomsReqByBranch[OppYBranch] > 0) constructionQueue.push_back({ OPP_Y1, RevZ_EPL });
     if (catomsReqByBranch[OppXBranch] > 0) constructionQueue.push_back({ OPP_X1, LZ_EPL });
 
@@ -886,6 +914,42 @@ void MeshAssemblyBlockCode::buildConstructionQueue() {
     if (catomsReqByBranch[RZBranch] > 4) constructionQueue.push_back({ RZ_5, RZ_EPL }); // 22
 }
 
+
+void MeshAssemblyBlockCode::buildConstructionQueueWithFewerIncidentBranches() {
+    // NOTE: This is under the assumption that tiles with fewer than four incident branches
+    //  do not need to grow Opp branches for now
+
+    if (numIncidentVerticalBranches == 1 and hasIncidentBranch(RevZBranch)) {
+        constructionQueue.push_back({ S_Z, Z_EPL });
+
+        if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL });
+
+        if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, Z_EPL });
+        if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, Z_EPL });
+        if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, Z_EPL });
+        if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, Z_EPL });
+
+        if (catomsReqByBranch[ZBranch] > 0) constructionQueue.push_back({ Z_1, Z_EPL });
+        if (catomsReqByBranch[ZBranch] > 1) constructionQueue.push_back({ Z_2, Z_EPL });
+        if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL });
+        if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
+        if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
+    }
+
+    // if (hasIncidentBranch(RZBranch)) constructionQueue.push_back({ S_RZ, RZ_EPL});
+    // if (hasIncidentBranch(LZBranch)) constructionQueue.push_back({ S_LZ, LZ_EPL });
+
+    // if (hasIncidentBranch(ZBranch)) constructionQueue.push_back({ S_Z, LZ_EPL });
+    // //  TODO: what if there is no LZ branch?
+    // if (hasIncidentBranch(RevZBranch)) constructionQueue.push_back({ S_RevZ, RZ_EPL });
+    // //  TODO: what if there is no RZ branch?
+}
+
 void MeshAssemblyBlockCode::initializeSupportModule() {
     for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
         if (ruleMatcher->isVerticalBranchTip(norm(nPos))) {
@@ -906,8 +970,8 @@ MeshAssemblyBlockCode::getEntryPointPosition(MeshComponent epl) const {
 }
 
 bool MeshAssemblyBlockCode::isOnEntryPoint(const Cell3DPosition& pos) const {
-    const Cell3DPosition& nearestTR = denorm(
-        ruleMatcher->getNearestTileRootPosition(norm(pos)));
+    const Cell3DPosition& nearestTR =
+        denorm(ruleMatcher->getNearestTileRootPosition(norm(pos)));
 
     for (const Cell3DPosition& ep : entryPointRelativePos) {
         if (pos == ep + nearestTR) return true;
@@ -985,7 +1049,8 @@ void MeshAssemblyBlockCode::matchRulesAndRotate() {
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,
                                    targetPosition,
-                                   coordinatorPos, step, nextPos);
+                                   coordinatorPos,
+                                   step, lastVisitedEPL, nextPos);
 
     if (matched) {
         scheduleRotationTo(nextPos);
@@ -1075,7 +1140,8 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,
                                    targetPosition,
-                                   coordinatorPos, step, nextPos);
+                                   coordinatorPos,
+                                   step, lastVisitedEPL, nextPos);
 
     if (matched) {
         stepTargetPos = nextPos;

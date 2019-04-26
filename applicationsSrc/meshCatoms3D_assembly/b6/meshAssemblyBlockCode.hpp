@@ -142,12 +142,25 @@ public:
     MeshAssemblyBlockCode* EPLPivotBC[4] = { NULL, NULL, NULL, NULL };
 
     /**
+     * Indicates how many incident branches the current tile has.
+     * Four incident branches feeding it produces the best
+     *  construction speed and convenience is optimal
+     */
+    short numIncidentVerticalBranches = 0;
+
+    /**
      * matchingLocalRule is set to true if a module has received a PROVIDE_TARGET_CELL
      *  but could match any local rule upon reception. Perhaps the correct environmental
      *  conditions are not met yet. This variable forces local rules reevaluation upon
      *  any local neighborhood update.
      */
     bool matchingLocalRule = false;
+
+    /**
+     * Identifier of the last visited EPL, used for local rules matching until
+     *  module reaches another EPL or a component
+     */
+    short lastVisitedEPL = -1;
 
     /**
      * Indicates whether the module using this pivot as support is on its final rotation
@@ -216,6 +229,8 @@ public:
      * Dynamically builds the construction queue based on the position of the tile.
      */
     void buildConstructionQueue();
+    void buildConstructionQueueWithFourIncidentBranches();
+    void buildConstructionQueueWithFewerIncidentBranches();
 
     /**
      * Indicates whether an EPL pivot module has received a TileInsertionReady message
