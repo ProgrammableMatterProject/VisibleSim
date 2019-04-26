@@ -464,47 +464,91 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     // Tiles with less than 4 incident branches
 
     // FROM REVZ ONLY
-    { LRKeyTuple(0x100, LR_RevZ_EPL, Cell3DPosition(1, 1, 0), 1),
-            Cell3DPosition(-1, 0, 0) }, // S_Z 1 From
-    { LRKeyTuple(0x280, LR_RevZ_EPL, Cell3DPosition(1, 1, 0), 2),
+    { LRKeyTuple(0x100, LR_Z_EPL, Cell3DPosition(1, 1, 0), 1),
+            Cell3DPosition(-1, 0, 0) }, // S_Z 1
+    { LRKeyTuple(0x280, LR_Z_EPL, Cell3DPosition(1, 1, 0), 2),
             Cell3DPosition(0, -1, 1) }, // S_Z 2
 
-    { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(0, 1, 0), 1),
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(0, 1, 0), 1),
             Cell3DPosition(-1, 0, 1) }, // Y1 1
-    { LRKeyTuple(0x080, LR_RevZ_EPL, Cell3DPosition(0, 1, 0), 2),
-            Cell3DPosition(-1, -1, 0) }, // Y2 1
+    { LRKeyTuple(0x080, LR_Z_EPL, Cell3DPosition(0, 1, 0), 2),
+            Cell3DPosition(-1, -1, 0) }, // Y1 2
 
-    { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(0, 2, 0), 1),
-            Cell3DPosition(-1, -1, 2) }, // Y2 1
-//     // { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(0, 3, 0), 1),
-//                                 Cell3DPosition(-1, 0, 1) }, // Y3 1
-//     // { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(0, 4, 0), 1),
-// Cell3DPosition(-1, 0, 1) }, // Y4 1
-//     // { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(0, 5, 0), 1),
-// Cell3DPosition(-1, 0, 1) }, // Y5 1
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(0, 2, 0), 1),
+            Cell3DPosition(-1, 0, 1) }, // Y2 1
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(0, 3, 0), 1),
+      Cell3DPosition(-1, 0, 1) }, // Y3 1
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(0, 4, 0), 1),
+      Cell3DPosition(-1, 0, 1) }, // Y4 1
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(0, 5, 0), 1),
+      Cell3DPosition(-1, 0, 1) }, // Y5 1
 
-//     { LRKeyTuple(0x100, LR_RevZ_EPL, Cell3DPosition(0, 2, 0), 2),
-//             Cell3DPosition(-1, 0, 0) }, // Y2 2
-//     // { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(0, 3, 0), 2),
-//                                Cell3DPosition(-1, 0, 1) }, // Y3 2
-//     // { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(0, 4, 0), 2),
-// Cell3DPosition(-1, 0, 1) }, // Y4 2
-//     // { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(0, 5, 0), 2),
-// Cell3DPosition(-1, 0, 1) }, // Y5 2
+    { LRKeyTuple(0x080, LR_Z_EPL, Cell3DPosition(0, 2, 0), 2),
+      Cell3DPosition(-1, -1, 1) }, // Y2 2
+    { LRKeyTuple(0x0c0, LR_Z_EPL, Cell3DPosition(0, 3, 0), 2),
+      Cell3DPosition(-1, 0, 1) }, // Y3 2
+    { LRKeyTuple(0x0c0, LR_Z_EPL, Cell3DPosition(0, 4, 0), 2),
+      Cell3DPosition(-1, 0, 1) }, // Y4 2
+    { LRKeyTuple(0x0c0, LR_Z_EPL, Cell3DPosition(0, 5, 0), 2),
+      Cell3DPosition(-1, 0, 1) }, // Y5 2
 
-    { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(1, 0, 0), 1),
+    { LRKeyTuple(0x300, LR_Z_EPL, Cell3DPosition(0, 2, 0), 3),
+      Cell3DPosition(0, 1, -1) }, // Y2 3
+    { LRKeyTuple(0x100, LR_Z_EPL, Cell3DPosition(0, 3, 0), 3),
+      Cell3DPosition(0, 1, -1) }, // Y3 3
+    { LRKeyTuple(0x900, LR_Z_EPL, Cell3DPosition(0, 4, 0), 3),
+      Cell3DPosition(0, 1, 0) }, // Y4 3
+    { LRKeyTuple(0x900, LR_Z_EPL, Cell3DPosition(0, 5, 0), 3),
+      Cell3DPosition(0, 1, 0) }, // Y5 3
+
+    { LRKeyTuple(0x100, LR_Z_EPL, Cell3DPosition(0, 4, 0), 4),
+      Cell3DPosition(0, 1, -1) }, // Y4 4
+    { LRKeyTuple(0x900, LR_Z_EPL, Cell3DPosition(0, 5, 0), 4),
+      Cell3DPosition(0, 1, 0) }, // Y5 4
+
+    { LRKeyTuple(0x100, LR_Z_EPL, Cell3DPosition(0, 5, 0), 5),
+      Cell3DPosition(0, 1, -1) }, // Y5 5
+
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(1, 0, 0), 1),
             Cell3DPosition(0, -1, 1) }, // X1 1
-    { LRKeyTuple(0x040, LR_RevZ_EPL, Cell3DPosition(1, 0, 0), 2),
+    { LRKeyTuple(0x040, LR_Z_EPL, Cell3DPosition(1, 0, 0), 2),
             Cell3DPosition(-1, -1, 0) }, // X1 2
 
-    { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(2, 0, 0), 1),
-            Cell3DPosition(1, -1, 1) }, // X2 1
-    { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(3, 0, 0), 1),
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(2, 0, 0), 1),
+            Cell3DPosition(0, -1, 1) }, // X2 1
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(3, 0, 0), 1),
             Cell3DPosition(0, -1, 1) }, // X3 1
-    { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(4, 0, 0), 1),
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(4, 0, 0), 1),
             Cell3DPosition(0, -1, 1) }, // X4 1
-    { LRKeyTuple(0x110, LR_RevZ_EPL, Cell3DPosition(5, 0, 0), 1),
+    { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(5, 0, 0), 1),
             Cell3DPosition(0, -1, 1) }, // X5 1
+
+    { LRKeyTuple(0x040, LR_Z_EPL, Cell3DPosition(2, 0, 0), 2),
+          Cell3DPosition(-1, -1, 1) }, // X2 2
+    { LRKeyTuple(0x0c0, LR_Z_EPL, Cell3DPosition(3, 0, 0), 2),
+            Cell3DPosition(0, -1, 1) }, // X3 2
+    { LRKeyTuple(0x0c0, LR_Z_EPL, Cell3DPosition(4, 0, 0), 2),
+      Cell3DPosition(0, -1, 1) }, // X4 2
+    { LRKeyTuple(0x0c0, LR_Z_EPL, Cell3DPosition(5, 0, 0), 2),
+      Cell3DPosition(0, -1, 1) }, // X5 2
+
+    { LRKeyTuple(0x900, LR_Z_EPL, Cell3DPosition(2, 0, 0), 3),
+      Cell3DPosition(1, 0, -1) }, // X2 3
+    { LRKeyTuple(0x100, LR_Z_EPL, Cell3DPosition(3, 0, 0), 3),
+      Cell3DPosition(1, 0, -1) }, // X3 3
+    { LRKeyTuple(0x300, LR_Z_EPL, Cell3DPosition(4, 0, 0), 3),
+      Cell3DPosition(1, 0, 0) }, // X4 3
+    { LRKeyTuple(0x300, LR_Z_EPL, Cell3DPosition(5, 0, 0), 3),
+      Cell3DPosition(1, 0, 0) }, // X5 3
+
+    { LRKeyTuple(0x100, LR_Z_EPL, Cell3DPosition(4, 0, 0), 4),
+      Cell3DPosition(1, 0, -1) }, // X4 4
+    { LRKeyTuple(0x300, LR_Z_EPL, Cell3DPosition(5, 0, 0), 4),
+      Cell3DPosition(1, 0, 0) }, // X5 4
+
+    { LRKeyTuple(0x100, LR_Z_EPL, Cell3DPosition(5, 0, 0), 5),
+      Cell3DPosition(1, 0, -1) }, // X5 5
+
     // END FROM REVZ ONLY
 };
 
