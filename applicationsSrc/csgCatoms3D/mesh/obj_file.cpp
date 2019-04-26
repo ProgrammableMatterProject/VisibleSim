@@ -34,6 +34,7 @@ void Obj_File::read_v_line(string line) {
 }
 
 void Obj_File::read_f_line(string line) {
+    // int v0a, v0b, v0c, v1a, v1b, v1c, v2a, v2b, v2c, v3a, v3b, v3c;
     int v0a, v1a, v2a;
     char first;
     if (line.find("/") == string::npos) {

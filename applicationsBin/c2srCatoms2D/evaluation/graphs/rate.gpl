@@ -1,0 +1,30 @@
+set terminal pdf enhanced mono font ",16"
+
+set termoption enhanced
+
+#set encoding iso_8859_1
+
+#set key inside center center vertical Right title "2D Catom"
+
+set xlabel "Average Bit-rate (kbps)"
+set ylabel "Simulated Time (min)"
+
+set key title "Average motion speed"
+
+set logscale y
+
+set mxtics 5
+set mytics 5
+set grid xtics ytics
+
+# convert us in min
+convertTime(x) = x/1000/1000/60
+# convert bit/sec in kbit/sec
+convertRate(x) = x/1000
+
+set output "rate.pdf"
+
+#[][0:200] 
+
+plot '../results-rate/summary-0.93.out' using (convertRate($1)):(convertTime($2)):(convertTime($3)) with yerrorlines title "0.94 mm{/Symbol \327}s^{-1}" pt 1 lt 1,\
+'../results-rate/summary-1.88.out' using (convertRate($1)):(convertTime($2)):(convertTime($3)) with yerrorlines title "1.88 mm{/Symbol \327}s^{-1}" pt 2

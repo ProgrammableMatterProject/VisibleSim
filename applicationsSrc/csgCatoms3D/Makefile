@@ -15,7 +15,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = csgCatoms3D.cpp csgCatoms3DBlockCode.cpp csgUtils.cpp stoyUtils.cpp meshUtils.cpp bitmapUtils.cpp mesh/geometrics.cpp mesh/obj_file.cpp mesh/polygon.cpp mesh/triangle.cpp mesh/world.cpp
+SRCS = csgCatoms3D.cpp csgCatoms3DBlockCode.cpp stoyUtils.cpp meshUtils.cpp bitmapUtils.cpp mesh/geometrics.cpp mesh/obj_file.cpp mesh/polygon.cpp mesh/triangle.cpp mesh/world.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/csgCatoms3D
@@ -40,6 +40,8 @@ else
 INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 endif
 
+INCLUDES += -I../../simulatorCore/src/targetEncoding/CSG
+
 ifeq ($(GLOBAL_LIBS), )
 	ifeq ($(OS),Darwin)
 LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(MODULELIB)
@@ -54,7 +56,7 @@ ifeq ($(GLOBAL_CCFLAGS),)
 CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 	ifeq ($(OS), Darwin)
 	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
-	endif 
+	endif
 else
 CCFLAGS = $(GLOBAL_CCFLAGS)
 endif

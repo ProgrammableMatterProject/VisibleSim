@@ -194,7 +194,7 @@ If `-l` option is not found, nothing will be printed to the file.
 ##### Detailed Simulation Statistics (`-i`)
 Prints more detailed statistics at the end of the simulation. It prints the minimum, the mean, the maximum and the standard-deviation values of the number of messages sent/received per module, the maximum message queue size reached and the number of motions per module. Be aware that collecting these statistics requires O(number of modules) memory space.
 ##### Simulation Seed (`-a`)
-The randomness of the simulation (variability in the communication rate, variability in the motion duration (not fully supported yet), clock randomness) depends on the simulation seed. Using the same simulation seed on the same configuration produces the same simulation. By default, the simulation seed is equal to 50. If  `-a < seed < 0 >` is used, a randomly generated seed is set.
+The randomness of the simulation (variability in the communication rate, variability in the motion duration (not fully supported yet), clock randomness) depends on the simulation seed. Using the same simulation seed on the same configuration produces the same simulation. By default, the simulation seed is equal to 50. If  `-a < seed < 0 >` is used, a randomly generated seed is set. Providing a negative seed (e.g., `-3`) lets the simulator randomly select a seed by itself.
 ##### Help (`-h`)
 Displays the usage message in the terminal.
 
@@ -548,7 +548,7 @@ __N.B.:__ NOT necessary if using  _terminal mode_.
 #### !`blockList` 
 
 The `blockList` element describes the starting physical position and color of modules (+ extra attributes depending on module type) in the simulated world, as well as their logical identifier for simulation. 
-There are two types of children elements that can be used to describe the ensemble, and that can be combined, `block` and `blocksLine`.
+There are several types of children elements that can be used to describe the ensemble, and that can be combined: `block`, `blocksLine`, and `blocksBox`.
 
 ```xml
 <blockList color="r,g,b" ids="[MANUAL|ORDERED|RANDOM]" step="sp" seed="sd">
@@ -557,6 +557,7 @@ There are two types of children elements that can be used to describe the ensemb
 	<!-- ... -->
 	<blocksLine plane="p" line="l" color="r,g,b" values="00101...1110"/>
 	<!-- ... -->
+    <blockBox boxOrigin="x,y,z" boxSize="L, l, h" color="r,g,b" />
 </blockList>
 ```
 Attributes: 
@@ -632,6 +633,21 @@ Both description methods are subject to a number of constraints:
 - Two modules cannot be placed on the same lattice cell. (i.e. No `block` or `blocksLine` elements should overlap)
 - Every described module needs to have a position. 
 - Two modules cannot have the same ID. 
+
+#### Behavioral Customization
+Some of VisibleSim's behaviors can be customized so as to let the user tweak some variables of the simulation. 
+
+##### Description
+The list of customizations to apply falls under the `customization` XML tag, where each child is a customization groupe that tweaks one specific behavior.
+
+```xml
+<customization>
+  <rotationDelay multiplier="0.5" />
+  <...>
+</customization>
+```
+##### Rotation Speed Tweaking
+For now, the only customizable property is the rotation speed of catoms. This is done in the `rotationDelay` element of the `customization` group. The editable attribute is `multiplier`, which takes a float value that will be used as a multiplier to the default rotation **delay** - i.e., a multiplier of 0.5 will result in a rotation twice as fast as normal, and 2.0 twice as slow.
 
 #### <a name="target"></a>Reconfiguration Targets
 As mentioned earlier, a VisibleSim configuration can also be used to describe one or multiple reconfiguration `targets` (_i.e._ an objective configuration in term of module positions and colors). 
@@ -741,15 +757,20 @@ When running VisibleSim in graphical mode (enabled by default), the user is give
 
 ### Base Interactions
 
-- <kbd>ctrl</kbd> + `left-click`: __Block Selection__
+- <kbd>ctrl</kbd> + <kbd>Left-Click</kbd>: __Block Selection__
 	- When performed on a block, selects the clicked block (Show its information and messages on the left interface panel. Selected block is _blinking_).
 	- When performed elsewhere, unselect previously selected block.
-- <kbd>ctrl</kbd> + `right-click`: __Display Contextual Menu__
+- <kbd>ctrl</kbd> + <kbd>Right-Click</kbd>: __Display Contextual Menu__
 	- Makes the contextual menu appear when on a block.
 	- Does nothing otherwise.
 - <kbd>r</kbd> / <kbd>R</kbd>: __Simulation Start__
 	- <kbd>r</kbd> starts the simulation in realtime mode.
 	- <kbd>R</kbd> starts the simulation in fastest mode.
+- <kbd>s</kbd>: __Export Screenshot__ (both _.ppm_ and _.jpeg_).
+- <kbd>S</kbd>: __Start/End Video Capture__ (_.mkv_, package `ffmpeg` must be installed! `sudo apt-get install ffmpeg`).
+- <kbd>Page-Up</kbd>: __Increase Rotation Speed__ (only _Catoms3D_ supported).
+- <kbd>Page-Down</kbd>: __Decrease Rotation Speed__ (only _Catoms3D_ supported).
+- <kbd>Space</kbd>: __Pause/Resume Simulation__
 - <kbd>z</kbd>: __Camera Centering__
 	- Centers the camera on the selected block if there is one.
 - <kbd>w</kbd> / <kbd>W</kbd>: __Toggle Full Screen__
@@ -836,14 +857,31 @@ By default, the modules are initialised with a _drift-free_ clock model, which m
 
 #### QClock: Quadratic-Model Clock 
 
-Many hardware clock oscillators can be modeled using a quadratic model [1]: $x(t) =  \frac{1}{2} \cdot D \cdot t^2 + y_0 \cdot t + x_0 + \epsilon(t)$, where $t$ is the real-time (i.e., the simulator time), $x(t)$ is the clock local time, $D$ is the frequency drift , $y_0$ is the frequency offset, $x_0$ is the time offset, and $\epsilon(t)$ is the random noise.
+Many hardware clock oscillators can be modeled using a quadratic model<sup>_[1]_</sup>:  
+![Quadratic Model](https://latex.codecogs.com/png.latex?x%28t%29%20%3D%20%5Cfrac%7B1%7D%7B2%7D%20%5Ccdot%20D%20%5Ccdot%20t%5E2%20&plus;%20y_0%20%5Ccdot%20t%20&plus;%20x_0%20&plus;%20%5Cepsilon%28t%29)
 
- `QClock` uses this quadratic clock model.  Two types of  `QClock`  are available VisibleSim, namely  `GNoiseQClock` and `DNoiseQClock`. They differ by the way the noise $\epsilon(t)$ is simulated. In  `GNoiseQClock` (Gaussian-noise quadratic-model clock), the noise is simulated using a Gaussian distribution.  The method used in `DNoiseQClock` is inspired by the work presented in [2]. In `DNoiseQClock` (data-noise quadratic-model clock), the noise is replayed from data. We experimentally collected noise data for some BlinkyBlocks clocks during four hours. BlinkyBlocks clocks are driven by XMEGA_RTC_OSC1K_CRC calibrated RC oscillators with  a resolution of 1 millisecond and an accuracy of 1% accuracy (10 000 ppm) at 3V and 25°C. Users can easily instantiate such clocks using `DNoiseQClock DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(ruint seed)` method. Be aware that the clocks generated using this method only work until the simulator time four hours.
+Where `t` is the real-time (i.e. simulator time), `x(t)` is the clock local time, `D` is the frequency drift , `y0` is the frequency offset, `x0` is the time offset, and `ε(t)` is the random noise.
 
-For quadratic-model clocks, converting simulator time into local time using `clock->getTime(simTime)` is a relatively straightforward and efficient operation. On the other hand, users should be aware that the reverse operation, perfomed with `clock->getSimulationTime(moduleTime)`, is quite expensive. Because the random noise is not constant over time,  this operation is perfomed using a guided search mechanism.
+ `QClock` uses this quadratic clock model. Two types of `QClock` are available VisibleSim, namely `GNoiseQClock` and `DNoiseQClock`. They differ by the way the noise `ε(t)` is simulated: 
+ 
+ - In `GNoiseQClock` (Gaussian-noise quadratic-model clock), the noise is simulated using a Gaussian distribution. 
+ - The method used in `DNoiseQClock` is inspired by the work presented in _[2]_. 
+    - In `DNoiseQClock` (data-noise quadratic-model clock), the noise is replayed from data. We experimentally collected noise data for some BlinkyBlocks clocks during four hours. BlinkyBlocks clocks are driven by `XMEGA_RTC_OSC1K_CRC` calibrated RC oscillators with  a resolution of 1 millisecond and an accuracy of 1% accuracy (10 000 ppm) at 3V and 25°C. 
+ 	- Users can easily instantiate such clocks using the following function (Only works until simulator time reaches four hours): 
+```C++
+  /**
+   * @brief Create a DNoiseQClock that simulates the XMEGA_RTC_OSC1K_CRC 
+   * hardware clock. XMEGA_RTC_OSC1K_CRC: Calibrated RC Oscillator, 1 ms 
+   * 1% accuracy (10 000 ppm) at 3V and 25°C.
+   * @para seed seed use to randomly select the noise signal
+   */ 
+  static DNoiseQClock* createXMEGA_RTC_OSC1K_CRC(ruint seed);
+```
 
-[1] David W Allan. Time and frequency(time-domain) characterization, estimation, and prediction of precision clocks and oscillators. IEEE transactions on ultrasonics, ferroelectrics, and frequency control, 34(6):647–654, 1987.
-[2] Ring, F., Nagy, A., Gaderer, G., & Loschmidt, P. (2010, November). Clock synchronization simulation for wireless sensor networks. In Sensors, 2010 IEEE (pp. 2022-2026). IEEE.
+For quadratic-model clocks, converting simulator time into local time using `clock->getTime(simTime)` is a relatively straightforward and efficient operation. On the other hand, users should be aware that the reverse operation, perfomed with `clock->getSimulationTime(moduleTime)`, is quite costly: This operation is perfomed using a guided search mechanism as the random noise is not constant over time.
+
+_[1] David W Allan. Time and frequency(time-domain) characterization, estimation, and prediction of precision clocks and oscillators. IEEE transactions on ultrasonics, ferroelectrics, and frequency control, 34(6):647–654, 1987.  
+[2] Ring, F., Nagy, A., Gaderer, G., & Loschmidt, P. (2010, November). Clock synchronization simulation for wireless sensor networks. In Sensors, 2010 IEEE (pp. 2022-2026). IEEE._
 
 ## <a name="autotest"></a>Automated BlockCode Testing
 We have designed a way for contributors to effortlessly ensure that the behaviour of VisibleSim is not altered, when some changes are made to the core of the simulator. The idea is that every previously working BlockCode is tested for regression, and returns a simple console output to the user, either __PASS__ if test succeeded, or __FAILED__ if some issues have to be investigated. 

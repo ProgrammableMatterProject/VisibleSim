@@ -24,58 +24,58 @@ using namespace std;
 namespace MultiRobots {
 
 MultiRobotsWorld::MultiRobotsWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-									 int argc, char *argv[]):World(argc, argv) {
-	OUTPUT << "\033[1;31mMultiRobotsWorld constructor\033[0m" << endl;
+                                     int argc, char *argv[]):World(argc, argv) {
+    OUTPUT << TermColor::LifecycleColor << "MultiRobotsWorld constructor" << TermColor::Reset << endl;
 
-	if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/multiRobotsTextures",
+    if (GlutContext::GUIisEnabled) {
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/multiRobotsTextures",
                                             "multiRobotSimple.obj");
-		objBlockForPicking = NULL;
+        objBlockForPicking = NULL;
         // = new ObjLoader::ObjLoader("../../simulatorCore/multiRobotsTextures",
-        //    					  "multiRobotPicking.obj");
-		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
+        //                        "multiRobotPicking.obj");
+        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
                                              "repere25.obj");
-	}
+    }
 
-	lattice = new BCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+    lattice = new BCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
 MultiRobotsWorld::~MultiRobotsWorld() {
-#ifdef DEBUG_OBJECT_LIFECYCLE   
-	OUTPUT << "MultiRobotsWorld destructor" << endl;
+#ifdef DEBUG_OBJECT_LIFECYCLE
+    OUTPUT << "MultiRobotsWorld destructor" << endl;
 #endif
 }
 
 void MultiRobotsWorld::deleteWorld() {
-	delete((MultiRobotsWorld*)world);
+    delete((MultiRobotsWorld*)world);
 }
 
 void MultiRobotsWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
-								 const Cell3DPosition &pos, const Color &col,
-								 short orientation, bool master) {
-	if (blockId > maxBlockId)
-		maxBlockId = blockId;
-	else if (blockId == 0)
-		blockId = incrementBlockId();
-		
-	MultiRobotsBlock *mrb = new MultiRobotsBlock(blockId, bcb);
-	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
-							 (mrb->blockId, (BaseSimulator::BuildingBlock*)mrb));
-	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), mrb));
+                                 const Cell3DPosition &pos, const Color &col,
+                                 short orientation, bool master) {
+    if (blockId > maxBlockId)
+        maxBlockId = blockId;
+    else if (blockId == 0)
+        blockId = incrementBlockId();
 
-	MultiRobotsGlBlock *glBlock = new MultiRobotsGlBlock(blockId);
+    MultiRobotsBlock *mrb = new MultiRobotsBlock(blockId, bcb);
+    buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
+                             (mrb->blockId, (BaseSimulator::BuildingBlock*)mrb));
+    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), mrb));
+
+    MultiRobotsGlBlock *glBlock = new MultiRobotsGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
-	mrb->setGlBlock(glBlock);
-	mrb->setPosition(pos);
-	mrb->setColor(col);
+    mrb->setGlBlock(glBlock);
+    mrb->setPosition(pos);
+    mrb->setColor(col);
 
-	if (lattice->isInGrid(pos)) {
-		lattice->insert(mrb, pos);
+    if (lattice->isInGrid(pos)) {
+        lattice->insert(mrb, pos);
         static_cast<BCLattice*>(lattice)->connected.push_back(mrb);
-	} else {
-		ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
-		exit(1);
-	}
+    } else {
+        ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
+        exit(1);
+    }
 }
 
 void MultiRobotsWorld::linkBlock(const Cell3DPosition &pos) {
@@ -83,8 +83,8 @@ void MultiRobotsWorld::linkBlock(const Cell3DPosition &pos) {
 }
 
 void MultiRobotsWorld::glDraw() {
-	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-		gray[]={0.2f,0.2f,0.2f,1.0};
+    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+        gray[]={0.2f,0.2f,0.2f,1.0};
 
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
@@ -93,10 +93,10 @@ void MultiRobotsWorld::glDraw() {
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((MultiRobotsGlBlock*)pair.second)->glDraw(objBlock);
-    }        
+    }
     unlock();
-
     glPopMatrix();
+
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
     glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
     glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
@@ -172,64 +172,67 @@ void MultiRobotsWorld::glDraw() {
     glPopMatrix();
     // draw the axes
     objRepere->glDraw();
+
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
 }
 
 void MultiRobotsWorld::glDrawId() {
-	glPushMatrix();
-	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
-	glDisable(GL_TEXTURE_2D);
-	lock();
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
+    glDisable(GL_TEXTURE_2D);
+    lock();
     for (const auto& pair : mapGlBlocks) {
         ((MultiRobotsGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
-    }    
-	unlock();
-	glPopMatrix();
+    }
+    unlock();
+    glPopMatrix();
 }
 
 void MultiRobotsWorld::glDrawIdByMaterial() {
-	glPushMatrix();
-	// glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
+    glPushMatrix();
+    // glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
 
-	// glDisable(GL_TEXTURE_2D);
-	// vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-	// int n=1;
-	// lock();
-	// while (ic!=tabGlBlocks.end()) {
-	// 	((MultiRobotsGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
-	// 	ic++;
-	// }
-	// unlock();
-	// glPopMatrix();
+    // glDisable(GL_TEXTURE_2D);
+    // vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+    // int n=1;
+    // lock();
+    // while (ic!=tabGlBlocks.end()) {
+    //  ((MultiRobotsGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
+    //  ic++;
+    // }
+    // unlock();
+    // glPopMatrix();
 }
 
 
 void MultiRobotsWorld::loadTextures(const string &str) {
-	string path = str+"/texture_plane.tga";
-	int lx,ly;
-	idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    string path = str+"/texture_plane.tga";
+    int lx,ly;
+    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
 void MultiRobotsWorld::setSelectedFace(int n) {
     //PTHY: INCONSISTENCY
-    
-	// numSelectedGlBlock=n/6;
-	// string name = objBlockForPicking->getObjMtlName(n%6);
 
-	// if (name=="_multiRobotPickingface_top") numSelectedFace=SCLattice::Top;
-	// else if (name=="_multiRobotPickingface_bottom") numSelectedFace=SCLattice::Bottom;
-	// else if (name=="_multiRobotPickingface_right") numSelectedFace=SCLattice::Right;
-	// else if (name=="_multiRobotPickingface_left") numSelectedFace=SCLattice::Left;
-	// else if (name=="_multiRobotPickingface_front") numSelectedFace=SCLattice::Front;
-	// else if (name=="_multiRobotPickingface_back") numSelectedFace=SCLattice::Back;
-	// else {
-	// 	cerr << "warning: Unrecognized picking face" << endl;
-	// 	numSelectedFace = 7;	// UNDEFINED
-	// }
+    // numSelectedGlBlock=n/6;
+    // string name = objBlockForPicking->getObjMtlName(n%6);
+
+    // if (name=="_multiRobotPickingface_top") numSelectedFace=SCLattice::Top;
+    // else if (name=="_multiRobotPickingface_bottom") numSelectedFace=SCLattice::Bottom;
+    // else if (name=="_multiRobotPickingface_right") numSelectedFace=SCLattice::Right;
+    // else if (name=="_multiRobotPickingface_left") numSelectedFace=SCLattice::Left;
+    // else if (name=="_multiRobotPickingface_front") numSelectedFace=SCLattice::Front;
+    // else if (name=="_multiRobotPickingface_back") numSelectedFace=SCLattice::Back;
+    // else {
+    //  cerr << "warning: Unrecognized picking face" << endl;
+    //  numSelectedFace = 7;	// UNDEFINED
+    // }
 }
 
 void MultiRobotsWorld::exportConfiguration() {
-	MultiRobotsConfigExporter exporter = MultiRobotsConfigExporter(this);
-	exporter.exportConfiguration();
+    MultiRobotsConfigExporter exporter = MultiRobotsConfigExporter(this);
+    exporter.exportConfiguration();
 }
 
 } // MultiRobots namespace

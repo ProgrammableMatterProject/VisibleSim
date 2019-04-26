@@ -91,7 +91,7 @@ protected:
 
 	static Type type;			//!< Type of simulation, i.e. language of the user program
 
-	int seed = DEFAULT_SIMULATION_SEED; //!< Simulation seed, used for every randomized operation, except for the id distribution
+	int seed = DEFAULT_SIMULATION_SEED; //!< Simulation seed, used for every randomized operation
 	uintRNG generator; //!< Simulation random generator, used for every randomized operation, except for the id distribution
 	
 	static Simulator *simulator; //!< Static member for accessing *this* simulator
@@ -240,7 +240,7 @@ protected:
 	 *
 	 */
 	virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-						   const Cell3DPosition &pos, const Color &color, bool master) {};
+						   const Cell3DPosition &pos, const Color &color, bool master)=0;
    
 	Simulator(int argc, char *argv[], BlockCodeBuilder bcb);
 	virtual ~Simulator();

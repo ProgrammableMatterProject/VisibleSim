@@ -2,6 +2,7 @@
 #define C3DRotateCode_H_
 #include "catoms3DSimulator.h"
 #include "catoms3DBlockCode.h"
+#include "catoms3DMotionRules.h"
 
 static const int LOCK_MSG=1001;
 static const int ANSLOCK_MSG=1002;

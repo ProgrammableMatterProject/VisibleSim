@@ -1,0 +1,29 @@
+set terminal pdf enhanced font ",16"
+
+set termoption enhanced
+
+set key inside top left vertical Right title "Goal shape"
+
+set xlabel "Configuration size (2D Catom)"
+set ylabel "Maximum message queue size"
+
+set key title "Goal shape"
+
+set xtics 3000
+set mxtics 3
+set ytics 1
+
+set grid xtics ytics
+set output "queue-color.pdf"
+
+f(x) = a
+fit f(x) '../results/global-summary.out' using 1:8 via a
+ti = sprintf("y = %.2f", a)
+
+set label ti at 4000,1.75
+
+plot [0:][0:5]'../results/car/summary.out' using 1:8 with linespoints title "car" pt 1 lt rgb 'red' ,\
+     '../results/flag/summary.out' using 1:8 with linespoints title "flag"  pt 2 lt rgb 'green',\
+'../results/magnet/summary.out' using 1:8 with linespoints title "magnet" pt 3 lt rgb 'blue',\
+'../results/pyramid/summary.out' using 1:8 with linespoints title "pyramid" pt 4 lt rgb '#8B4513',\
+f(x) title "" with lines lt rgb 'black'

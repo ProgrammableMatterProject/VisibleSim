@@ -23,4 +23,3 @@ ostream& operator<<(ostream& f,const Color&p)
 { f << "(" << p.rgba[0] << "," << p.rgba[1] << "," << p.rgba[2] << "," << p.rgba[3] << ")";
   return f;
 }
-

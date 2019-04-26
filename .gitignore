@@ -1,3 +1,12 @@
+# Application binary files
+## Exclude all files from applicationsBin sub-directories
+applicationsBin/*/*
+## Except sub-directories of those
+!applicationsBin/*/*/
+## And files with extension
+!applicationsBin/*/*.*
+## Hence, all extension-less files from these directories are ignored => No binaries
+
 # Compiled Object files
 *.slo
 *.lo
@@ -48,21 +57,26 @@ simulatorCode/deps/
 *.xcworkspace
 *.cbp
 *.layout
-
-# Application binary files
-## Exclude all files from applicationsSrc and applicationsBin sub-directories
-applications*/*
-## Except sub-directories of those
-!/**/
-## And files with extension
-!*.*
-## Hence, all extension-less files from these directories are ignored => No binaries
+utilities/LMParser/LMParser
+utilities/meld-compiler/dists/quicklisp/archives/
+utilities/meld-compiler/dists/quicklisp/software/
 
 # Doxyfile documentation output
 doc/xml/
 doc/html/
 
+# Configuration files (must be added manually)
+applicationsBin/*/*.xml
 
-utilities/LMParser/LMParser
-utilities/meld-compiler/dists/quicklisp/archives/
-utilities/meld-compiler/dists/quicklisp/software/
+# Screenshot and video exports
+applicationsBin/*/*.ppm
+applicationsBin/*/*.jpg
+applicationsBin/*/*.jpeg
+applicationsBin/*/*.mkv
+applicationsBin/*/*.mpeg
+applicationsBin/*/animation_*/
+applicationsBin/*/Screenshots/
+
+# User-generated files
+applicationsBin/*/*.m
+TAGS

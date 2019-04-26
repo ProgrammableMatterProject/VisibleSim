@@ -151,6 +151,26 @@ public:
      * @note call is made from GlBlock::getInfo() as it is convenient there. Adding an actual GUI button could more convenient and less "hacky"
      */
     virtual void onBlockSelected() {};
+    
+    /** 
+     * User-implemented debug function that gets called when a VS_ASSERT is triggered
+     * @note call is made from utils::assert_handler() 
+     */
+    virtual void onAssertTriggered() {};
+    
+    /** 
+     * User-implemented keyboard handler function that gets called when 
+     *  a key press event could not be caught by openglViewer
+     * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
+     */
+    virtual void onUserKeyPressed(unsigned char c, int x, int y) {};
+
+    /** 
+     * Call by world during GL drawing phase, can be used by a user 
+     *  to draw custom Gl content into the simulated world
+     * @note call is made from World::GlDraw
+     */
+    virtual void onGlDraw() {};
 };
 
 } // BaseSimulator namespace

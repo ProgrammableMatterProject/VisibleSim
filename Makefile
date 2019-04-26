@@ -13,7 +13,7 @@ OS = $(shell uname -s)
 VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen -lsimDatoms
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
+TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL
 # TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 
 # ADDITIONAL CCFLAGS
@@ -21,9 +21,9 @@ TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
 #
 # MeldProcess: Uncomment this block to enable
 # TEMP_CCFLAGS += -DENABLE_MELDPROCESS # Enable MeldProcess source files compilation,
-# 				       # required by any MeldProcess CodeBlock.
-# 				       # if this flag is not set, the boost libraries will not be included,
-# 				       # since they are the only source files using them.
+#				       # required by any MeldProcess CodeBlock.
+#				       # if this flag is not set, the boost libraries will not be included,
+#				       # since they are the only source files using them.
 
 # You can add any of the following debug flags to get a more verbose output
 # TEMP_CCFLAGS += -DDEBUG_EVENTS #          : trace creation and destruction of all events
@@ -33,10 +33,10 @@ TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
 # TEMP_CCFLAGS += -DDEBUG_OBJECT_LIFECYCLE #: trace objects construction and destruction
 # TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates
 # TEMP_CCFLAGS += -DDEBUG_NEIGHBORHOOD #: trace robot neighborhood updates and interface linking
-# TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
+TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
-TEMP_CCFLAGS += -DshowStatsFPS
-#TEMP_CCFLAGS += -DUseC3DSkewFCC #: if activated, Catoms3D will use a FCC Lattice with skew coordinates
+TEMP_CCFLAGS += -DDEBUG_CSG #: trace CSG parsing
+TEMP_CCFLAGS += #-DshowStatsFPS
 
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"
@@ -52,7 +52,7 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt
 endif
 
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -lmuparser -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(VSIM_LIBS) $(INC_BOOST_IF_NEEDED)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib /usr/local/lib/libmuparser.dylib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(VSIM_LIBS) $(INC_BOOST_IF_NEEDED)"
 
 else
 
@@ -61,7 +61,7 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono
 endif
 
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lmuparser -lglut -lGL -lGLEW -lGLU -lpthread $(INC_BOOST_IF_NEEDED)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lmuparser -lglut -lGL -lGLEW -lGLU -lpthread -ldl -export-dynamic $(INC_BOOST_IF_NEEDED)"
 
 endif
 

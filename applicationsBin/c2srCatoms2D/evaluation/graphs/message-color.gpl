@@ -1,0 +1,43 @@
+set terminal pdf enhanced font ",16"
+
+set termoption enhanced
+
+set key inside top left vertical Right title "Goal shape"
+
+set xlabel "Configuration size (2D Catom)"
+set ylabel "Number of messages"
+
+set key title "Goal shape"
+
+set logscale xy
+
+set format y "10^{%.0T}"
+set format x "10^{%.0T}"
+
+
+set grid xtics ytics
+set output "message-color.pdf"
+
+#FIT_MAXITER = 1
+#p(x) = a*x**n
+#fit p(x) '../results/global-summary.out' using 1:4 via a, n
+#ti = sprintf("y(x) = %.2fx^{%.2f}", a,n)
+
+f(x) = m*x+b
+fit f(x) '../results/global-summary.out' using (log10($1)):(log10($4)) via m,b
+n=m
+beta=10**(b)
+
+ti = sprintf("y(x) = %.2fx^{%.2f}",beta,n)
+
+p(x) = beta*x**n
+
+set label ti at 200,10000 rotate by 27.5
+
+# [0:200] 
+plot '../results/car/summary.out' using 1:4:5 with yerrorbars title "car" pt 1 lt rgb 'red' ,\
+     '../results/flag/summary.out' using 1:4:5 with yerrorbars title "flag" pt 2 lt rgb 'green',\
+'../results/magnet/summary.out' using 1:4:5 with yerrorbars title "magnet" pt 3 lt rgb 'blue',\
+'../results/pyramid/summary.out' using 1:4:5 with yerrorbars title "pyramid" pt 4 lt rgb '#8B4513',\
+p(x) title "" with lines lt rgb 'black'
+

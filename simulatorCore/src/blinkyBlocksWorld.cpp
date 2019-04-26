@@ -23,65 +23,65 @@ using namespace std;
 namespace BlinkyBlocks {
 
 BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-									 int argc, char *argv[]):World(argc, argv) {
-	OUTPUT << "\033[1;31mBlinkyBlocksWorld constructor\033[0m" << endl;
+                                     int argc, char *argv[]):World(argc, argv) {
+    OUTPUT << TermColor::LifecycleColor << "BlinkyBlocksWorld constructor" << TermColor::Reset << endl;
 
-	if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
-											"blinkyBlockCentered.obj");
-		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
-													  "blinkyBlockPickingCentered.obj");
-		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
-	}
+    if (GlutContext::GUIisEnabled) {
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
+                                            "blinkyBlockCentered.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
+                                                      "blinkyBlockPickingCentered.obj");
+        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
+    }
 
-	lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+    lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
 BlinkyBlocksWorld::~BlinkyBlocksWorld() {
 #ifdef OBJECT_LIFECYCLE_DEBUG
-	OUTPUT << "BlinkyBlocksWorld destructor" << endl;
+    OUTPUT << "BlinkyBlocksWorld destructor" << endl;
 #endif
-	/*	block linked are deleted by world::~world() */
+    /*	block linked are deleted by world::~world() */
 }
 
 void BlinkyBlocksWorld::deleteWorld() {
-	delete((BlinkyBlocksWorld*)world);
+    delete((BlinkyBlocksWorld*)world);
 }
 
 void BlinkyBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
-								 const Cell3DPosition &pos, const Color &col,
-								 short orientation, bool master) {
-	if (blockId > maxBlockId)
-		maxBlockId = blockId;
-	else if (blockId == 0)
-		blockId = incrementBlockId();
-		
-	BlinkyBlocksBlock *blinkyBlock = new BlinkyBlocksBlock(blockId, bcb);
-	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
-							 (blinkyBlock->blockId, (BaseSimulator::BuildingBlock*)blinkyBlock));
-	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), blinkyBlock));
+                                 const Cell3DPosition &pos, const Color &col,
+                                 short orientation, bool master) {
+    if (blockId > maxBlockId)
+        maxBlockId = blockId;
+    else if (blockId == 0)
+        blockId = incrementBlockId();
 
-	BlinkyBlocksGlBlock *glBlock = new BlinkyBlocksGlBlock(blockId);
+    BlinkyBlocksBlock *blinkyBlock = new BlinkyBlocksBlock(blockId, bcb);
+    buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
+                             (blinkyBlock->blockId, (BaseSimulator::BuildingBlock*)blinkyBlock));
+    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), blinkyBlock));
+
+    BlinkyBlocksGlBlock *glBlock = new BlinkyBlocksGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
-	blinkyBlock->setGlBlock(glBlock);
-	blinkyBlock->setPosition(pos);
-	blinkyBlock->setColor(col);
+    blinkyBlock->setGlBlock(glBlock);
+    blinkyBlock->setPosition(pos);
+    blinkyBlock->setColor(col);
 
-	if (lattice->isInGrid(pos)) {
-		lattice->insert(blinkyBlock, pos);
-	} else {
-		ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
-		exit(1);
-	}
+    if (lattice->isInGrid(pos)) {
+        lattice->insert(blinkyBlock, pos);
+    } else {
+        ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
+        exit(1);
+    }
 }
 
 void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
-	BlinkyBlocksBlock *ptrNeighbor;
-	BlinkyBlocksBlock *ptrBlock = (BlinkyBlocksBlock*)lattice->getBlock(pos);	
+    BlinkyBlocksBlock *ptrNeighbor;
+    BlinkyBlocksBlock *ptrBlock = (BlinkyBlocksBlock*)lattice->getBlock(pos);
     vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
-	Cell3DPosition nPos;
+    Cell3DPosition nPos;
 
-	
+
     // Check neighbors for each interface
     for (int i = 0; i < 6; i++) {
         nPos = pos + nRelCells[i];
@@ -106,45 +106,48 @@ void BlinkyBlocksWorld::glDraw() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
     // glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
-    glDisable(GL_TEXTURE_2D);    
-    lock();    
+    glDisable(GL_TEXTURE_2D);
+    lock();
     for (const auto& pair : mapGlBlocks) {
         ((BlinkyBlocksGlBlock*)pair.second)->glDraw(objBlock);
-    }    
+    }
     unlock();
-    
+
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
+
     glDrawBackground();
 }
 
 void BlinkyBlocksWorld::glDrawId() {
-	glPushMatrix();
-	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
-	glDisable(GL_TEXTURE_2D);
-	lock();
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
+    glDisable(GL_TEXTURE_2D);
+    lock();
     for (const auto& pair : mapGlBlocks) {
         ((BlinkyBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
     }
     unlock();
-	glPopMatrix();
+    glPopMatrix();
 }
 
 void BlinkyBlocksWorld::glDrawIdByMaterial() {
-	glPushMatrix();
-	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
 
-	glDisable(GL_TEXTURE_2D);
-	int n=1;
-	lock();
+    glDisable(GL_TEXTURE_2D);
+    int n=1;
+    lock();
     for (const auto& pair : mapGlBlocks) {
         ((BlinkyBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
-	unlock();
-	glPopMatrix();
+    unlock();
+    glPopMatrix();
 }
 
 void BlinkyBlocksWorld::glDrawSpecificBg() {
-	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-		gray[]={0.2f,0.2f,0.2f,1.0};
+    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+        gray[]={0.2f,0.2f,0.2f,1.0};
     glPopMatrix();
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
     glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
@@ -224,25 +227,25 @@ void BlinkyBlocksWorld::glDrawSpecificBg() {
 }
 
 void BlinkyBlocksWorld::loadTextures(const string &str) {
-	string path = str+"/texture_plane.tga";
-	int lx,ly;
-	idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    string path = str+"/texture_plane.tga";
+    int lx,ly;
+    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
 void BlinkyBlocksWorld::setSelectedFace(int n) {
-	numSelectedGlBlock=n/6;
-	string name = objBlockForPicking->getObjMtlName(n%6);
+    numSelectedGlBlock=n/6;
+    string name = objBlockForPicking->getObjMtlName(n%6);
 
-	if (name=="_blinkyBlockPickingface_top") numSelectedFace=SCLattice::Top;
-	else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=SCLattice::Bottom;
-	else if (name=="_blinkyBlockPickingface_right") numSelectedFace=SCLattice::Right;
-	else if (name=="_blinkyBlockPickingface_left") numSelectedFace=SCLattice::Left;
-	else if (name=="_blinkyBlockPickingface_front") numSelectedFace=SCLattice::Front;
-	else if (name=="_blinkyBlockPickingface_back") numSelectedFace=SCLattice::Back;
-	else {
-		cerr << "warning: Unrecognized picking face" << endl;
-		numSelectedFace = 7;	// UNDEFINED
-	}
+    if (name=="_blinkyBlockPickingface_top") numSelectedFace=SCLattice::Top;
+    else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=SCLattice::Bottom;
+    else if (name=="_blinkyBlockPickingface_right") numSelectedFace=SCLattice::Right;
+    else if (name=="_blinkyBlockPickingface_left") numSelectedFace=SCLattice::Left;
+    else if (name=="_blinkyBlockPickingface_front") numSelectedFace=SCLattice::Front;
+    else if (name=="_blinkyBlockPickingface_back") numSelectedFace=SCLattice::Back;
+    else {
+        cerr << "warning: Unrecognized picking face" << endl;
+        numSelectedFace = 7;	// UNDEFINED
+    }
 }
 
 /**
@@ -256,8 +259,8 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
  * @param z : z coordinate of accelerometer change
  */
 void BlinkyBlocksWorld::accelBlock(Time date, bID id, int x, int y, int z) {
-	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
-	bb->accel(date, x,y,z);
+    BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
+    bb->accel(date, x,y,z);
 }
 
 /**
@@ -269,8 +272,8 @@ void BlinkyBlocksWorld::accelBlock(Time date, bID id, int x, int y, int z) {
  * @param f : force of the shake
  */
 void BlinkyBlocksWorld::shakeBlock(Time date, bID id, int f) {
-	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
-	bb->shake(date, f);
+    BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
+    bb->shake(date, f);
 }
 
 /**
@@ -280,32 +283,32 @@ void BlinkyBlocksWorld::shakeBlock(Time date, bID id, int f) {
  * @param id : the id of the target block
  */
 void BlinkyBlocksWorld::stopBlock(Time date, bID id) {
-	if (id == 0) {
-		// Delete the block	without deleting the links
-		map<bID, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-			it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			if (bb->getState() >= BlinkyBlocksBlock::ALIVE )
-				bb->stop(date, BlinkyBlocksBlock::STOPPED);
-		}
-	} else {
-		// Delete all the links and then the block
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(id);
-		if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
-			// cut links between bb and others
-			disconnectBlock(bb);
-			// free grid cell
-			lattice->remove(bb->position);
-			bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state
-			linkNeighbors(bb->position);
-		}
-	}
+    if (id == 0) {
+        // Delete the block	without deleting the links
+        map<bID, BaseSimulator::BuildingBlock*>::iterator it;
+        for(it = buildingBlocksMap.begin();
+            it != buildingBlocksMap.end(); it++) {
+            BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
+            if (bb->getState() >= BlinkyBlocksBlock::ALIVE )
+                bb->stop(date, BlinkyBlocksBlock::STOPPED);
+        }
+    } else {
+        // Delete all the links and then the block
+        BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(id);
+        if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
+            // cut links between bb and others
+            disconnectBlock(bb);
+            // free grid cell
+            lattice->remove(bb->position);
+            bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state
+            linkNeighbors(bb->position);
+        }
+    }
 }
 
 void BlinkyBlocksWorld::exportConfiguration() {
-	BlinkyBlocksConfigExporter exporter = BlinkyBlocksConfigExporter(this);
-	exporter.exportConfiguration();
+    BlinkyBlocksConfigExporter exporter = BlinkyBlocksConfigExporter(this);
+    exporter.exportConfiguration();
 }
 
 /**
@@ -313,13 +316,13 @@ void BlinkyBlocksWorld::exportConfiguration() {
  *
  */
 void BlinkyBlocksWorld::dump() {
-	map<bID, BaseSimulator::BuildingBlock*>::iterator it;
-	cout << "World:" << endl;
-	for(it = buildingBlocksMap.begin();
-		it != buildingBlocksMap.end(); it++) {
-		BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-		cout << *bb << endl;
-	}
+    map<bID, BaseSimulator::BuildingBlock*>::iterator it;
+    cout << "World:" << endl;
+    for(it = buildingBlocksMap.begin();
+        it != buildingBlocksMap.end(); it++) {
+        BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
+        cout << *bb << endl;
+    }
 }
 
 } // BlinkyBlock namespace

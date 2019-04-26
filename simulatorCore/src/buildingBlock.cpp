@@ -161,14 +161,18 @@ P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destB
 
 unsigned short BuildingBlock::getNbNeighbors() const {
   unsigned short n = 0;
-  P2PNetworkInterface *p;
+/*  P2PNetworkInterface *p;
   vector<P2PNetworkInterface*>::const_iterator it;
   for (it = P2PNetworkInterfaces.begin(); it != P2PNetworkInterfaces.end(); ++it) {
     p = *it;
     if (p->isConnected()) {
       n++;
     }
-  }
+  }*/
+	for (const P2PNetworkInterface* p2p : P2PNetworkInterfaces) {
+		n+=p2p->isConnected();
+	}
+
   return n;
 }
 
@@ -304,7 +308,7 @@ unsigned short BuildingBlock::getNeighborIDForFace(int faceNum) const {
 }
 
 int BuildingBlock::getFaceForNeighborID(int nId) const {
-	for (uint face = 0; face < P2PNetworkInterfaces.size(); face++) {
+	for (unsigned int face = 0; face < P2PNetworkInterfaces.size(); face++) {
 		if (nId == getNeighborIDForFace(face))
 			return face;
 	}
