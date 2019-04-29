@@ -257,7 +257,7 @@ bool MeshRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
 bool MeshRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
         // FIXME: Make lambda below
-        and isInGrid(pos) and pos[2] > 0
+        and isInGrid(pos) and (pos[2] / B) % 2 == 1
         and isInRange(pos[0], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[0], B));
 }
 
@@ -295,7 +295,7 @@ bool MeshRuleMatcher::isOnYOppBorder(const Cell3DPosition& pos) const {
 bool MeshRuleMatcher::isOnOppYBranch(const Cell3DPosition& pos) const {
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
         // FIXME: Make lambda below
-        and isInGrid(pos) and pos[2] > 0
+        and isInGrid(pos) and (pos[2] / B) % 2 == 1
         and isInRange(pos[1], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[1], B));
 }
 
