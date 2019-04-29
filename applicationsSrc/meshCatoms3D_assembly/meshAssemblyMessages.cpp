@@ -2,10 +2,10 @@
  * @file   messages.cpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Tue Jul 10 14:13:13 2018
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <iostream>
@@ -23,9 +23,9 @@
 
 
 void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
-    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);    
+    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
     // cout << "[t-" << getScheduler()->now() << "] received request target cell" << endl;
-    
+
     if (mabc.role == ActiveBeamTip) {
         // Forward message to coordinator
         P2PNetworkInterface* coordItf =
@@ -45,13 +45,13 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         MeshComponent epl = static_cast<MeshComponent>(idx);
 
         Cell3DPosition tPos;
-        tPos = mabc.catom->position + mabc.getNextTargetForEPL(epl);        
+        tPos = mabc.catom->position + mabc.getNextTargetForEPL(epl);
 
-        // cout << "Spawnee Position: " << srcPos 
+        // cout << "Spawnee Position: " << srcPos
         //      << " -- Target Position: " << tPos
-        //      << " -- epl Position: " << srcPos - mabc.catom->position 
+        //      << " -- epl Position: " << srcPos - mabc.catom->position
         //      << " -- epl: " << epl << endl;
-    
+
         // send to requesting catom
         VS_ASSERT(destinationInterface->isConnected());
         mabc.sendMessage(new ProvideTargetCellMessage(tPos, srcPos),
@@ -73,19 +73,29 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         P2PNetworkInterface* itf =
             mabc.catom->getInterface(dstPos) ?: mabc.catom->getInterface(
                 mabc.derelatify(mabc.ruleMatcher->getSupportPositionForPosition(
-                                    mabc.norm(mabc.catom->position))));  
+                                    mabc.norm(mabc.catom->position))));
         VS_ASSERT_MSG(itf, "cannot find neither dest or support among neighbor interfaces");
         mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
         mabc.log_send_message();
     } else {
         mabc.targetPosition = tPos;
         // cout << "Target position for #" << mabc.catom->blockId << " is " << tPos << endl;
-    
+
         if (tPos == mabc.catom->position) {
             mabc.role = mabc.ruleMatcher->getRoleForPosition(mabc.norm(mabc.catom->position));
             mabc.catom->setColor(mabc.ruleMatcher->getColorForPosition(
                                      mabc.norm(mabc.catom->position)));
         } else {
+            if (mabc.coordinatorPos == Cell3DPosition(9,9,3)
+                and mabc.ruleMatcher->positionIsEPL(mabc.catom->position-mabc.coordinatorPos)) {
+                int mc = mabc.ruleMatcher->getComponentForPosition(mabc.targetPosition - mabc.coordinatorPos);
+                VS_ASSERT(mc != -1);
+                OUTPUT << "bp:\t" << (int)round(mabc.scheduler->now() / mabc.getRoundDuration() - mabc.tbp0) << "\t"
+                       << mabc.ruleMatcher->component_to_string(static_cast<MeshComponent>(mc))
+                       << "\t" << mabc.catom->position - mabc.coordinatorPos << endl;
+            }
+
+
             Cell3DPosition nextHop;
             bool matched = matchLocalRules(mabc.catom->getLocalNeighborhoodState(),
                                            mabc.catom->position,
@@ -96,10 +106,10 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                 cout << "#" << mabc.catom->blockId << endl;
                 VS_ASSERT_MSG(matched, "DID NOT FIND RULE TO MATCH.");
             }
-    
+
             mabc.scheduleRotationTo(nextHop);
         }
-    }    
+    }
 }
 
 void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
@@ -125,7 +135,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
                                                             + relNeighborPos);
         mabc.sendMessage(new TileInsertionReadyMessage(), itf,MSG_DELAY_MC, 0);
         mabc.log_send_message();
-    } else {        
+    } else {
         // Get moving towards tile root position
         mabc.targetPosition = mabc.coordinatorPos;
         // mabc.lattice->unhighlightCell(mabc.targetPosition);
@@ -136,9 +146,9 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
-    
+
     if (mabc.role == ActiveBeamTip or mabc.role == PassiveBeam) {
-        BranchIndex bi = 
+        BranchIndex bi =
             mabc.ruleMatcher->getBranchIndexForNonRootPosition(mabc.norm(mabc.catom->position));
         const Cell3DPosition& nextPosAlongBranch =
             mabc.catom->position - mabc.ruleMatcher->getBranchUnitOffset(bi);
@@ -147,9 +157,9 @@ void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
         mabc.sendMessage(new InitiateFeedingMechanismMessage(requirements, level), itf,
                          MSG_DELAY_MC, 0);
         mabc.log_send_message();
-    } else { // role == coordinator        
+    } else { // role == coordinator
         // Determine branch of sender
-        BranchIndex bi = 
+        BranchIndex bi =
             mabc.ruleMatcher->getBranchIndexForNonRootPosition(mabc.norm(sourceInterface->hostBlock->position));
 
         // If module level is right below target level, discard unneeded targetPositions
@@ -158,13 +168,13 @@ void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
                 mabc.discardNextTargetForComponent(Z_L_EPL);
         }
 
-        
+
         if (mabc.isAtGroundLevel()) {
             mabc.feedBranch[bi] = true;
             mabc.branchTime[bi] = 0;
             mabc.feedBranchRequires[bi] = requirements;
             mabc.targetLevel[bi] = level;
-        } else {            
+        } else {
             // Forward message down the branch right below the incoming one
             const Cell3DPosition& tipOfNextBranchDown =
                 mabc.catom->position + mabc.ruleMatcher->getIndexOfBranchTipUnder(bi);
@@ -176,4 +186,3 @@ void InitiateFeedingMechanismMessage::handle(BaseSimulator::BlockCode* bc) {
         }
     }
 }
-
