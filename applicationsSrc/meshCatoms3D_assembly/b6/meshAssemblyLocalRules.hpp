@@ -34,7 +34,8 @@ enum LR_EPL {
     LR_LZ_R_EPL = 43,
     LR_LZ_EPL = 44,
     LR_LZ_L_EPL = 45,
-    LR_RevZ_L_EPL = 46
+    LR_RevZ_L_EPL = 46,
+    LR_Z_EPL_ALT = 141, // FIXME: TODO: This is due to a conflict with S_Z on iBorders
 };
 
 class LRKeyTuple {
@@ -464,10 +465,22 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     // Tiles with less than 4 incident branches
 
     // FROM REVZ ONLY
+
+    // Climb to the righ
     { LRKeyTuple(0x100, LR_Z_EPL, Cell3DPosition(1, 1, 0), 1),
             Cell3DPosition(-1, 0, 0) }, // S_Z 1
     { LRKeyTuple(0x280, LR_Z_EPL, Cell3DPosition(1, 1, 0), 2),
             Cell3DPosition(0, -1, 1) }, // S_Z 2
+    // Alt: climb to the left
+    { LRKeyTuple(0x100, LR_Z_EPL_ALT, Cell3DPosition(1, 1, 0), 1),
+            Cell3DPosition(0 , -1, 0) }, // S_Z 1 ALT
+    { LRKeyTuple(0x840, LR_Z_EPL_ALT, Cell3DPosition(1, 1, 0), 2),
+            Cell3DPosition(-1, 0, 1) }, // S_Z 2 ALT
+
+    { LRKeyTuple(0xC00, LR_RZ_EPL, Cell3DPosition(-1, -1, 0), 3),
+            Cell3DPosition(-1, 0, 0) }, // S_RevZ 3
+    { LRKeyTuple(0x400, LR_RZ_EPL, Cell3DPosition(-1, -1, 0), 4),
+            Cell3DPosition(0, 1, -1) }, // S_RevZ 4
 
     { LRKeyTuple(0x110, LR_Z_EPL, Cell3DPosition(0, 1, 0), 1),
             Cell3DPosition(-1, 0, 1) }, // Y1 1

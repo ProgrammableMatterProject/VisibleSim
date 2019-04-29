@@ -774,14 +774,8 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     return (not ruleMatcher->isInCube(ruleMatcher->
                                       getTileRootPositionForMeshPosition(norm(tipp))))
         or ((bi == XBranch or bi == YBranch)
-            and ( ( (bi == XBranch and ruleMatcher->isOnYBorder(norm(trp)))
-                    or (bi == YBranch and ruleMatcher->isOnXBorder(norm(trp))))
-             or
-             (ruleMatcher->isInCube(ruleMatcher->
-                                    getTileRootPositionForMeshPosition(norm(tipp)))
-              and not ruleMatcher->isInPyramid(ruleMatcher->
-                                               getTileRootPositionForMeshPosition(norm(tipp))))
-                ))
+            and ((bi == XBranch and ruleMatcher->isOnYBorder(norm(trp)))
+                 or (bi == YBranch and ruleMatcher->isOnXBorder(norm(trp)))))
         or lattice->cellHasBlock(tipp);
 }
 
@@ -955,11 +949,10 @@ void MeshAssemblyBlockCode::buildConstructionQueueWithFewerIncidentBranches() {
     } else if (numIncidentVerticalBranches == 2
                and (hasIncidentBranch(RevZBranch) and hasIncidentBranch(LZBranch))) {
         constructionQueue.push_back({ S_RZ, RZ_EPL});
-
         if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL });
-
         constructionQueue.push_back({ S_Z, Z_EPL });
         if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL });
+
         if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, RZ_EPL });
         if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, Z_EPL });
         if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, RZ_EPL });
@@ -979,15 +972,33 @@ void MeshAssemblyBlockCode::buildConstructionQueueWithFewerIncidentBranches() {
         if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
         if (catomsReqByBranch[RZBranch] > 4) constructionQueue.push_back({ RZ_5, RZ_EPL });
         if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
+    } else if (numIncidentVerticalBranches == 2
+               and (hasIncidentBranch(RevZBranch) and hasIncidentBranch(RZBranch))) {
+        constructionQueue.push_back({ S_LZ, LZ_EPL});
+        if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL });
+        constructionQueue.push_back({ S_Z, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL });
+
+        if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, LZ_EPL });
+        if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, Z_EPL });
+        if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, LZ_EPL });
+        if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, Z_EPL });
+        if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, LZ_EPL });
+        if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, Z_EPL });
+        if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, LZ_EPL });
+        if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, Z_EPL });
+
+        if (catomsReqByBranch[LZBranch] > 0) constructionQueue.push_back({ LZ_1, LZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 0) constructionQueue.push_back({ Z_1, Z_EPL });
+        if (catomsReqByBranch[LZBranch] > 1) constructionQueue.push_back({ LZ_2, LZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 1) constructionQueue.push_back({ Z_2, Z_EPL });
+        if (catomsReqByBranch[LZBranch] > 2) constructionQueue.push_back({ LZ_3, LZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL });
+        if (catomsReqByBranch[LZBranch] > 3) constructionQueue.push_back({ LZ_4, LZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
+        if (catomsReqByBranch[LZBranch] > 4) constructionQueue.push_back({ LZ_5, LZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
     }
-
-    // if (hasIncidentBranch(RZBranch)) constructionQueue.push_back({ S_RZ, RZ_EPL});
-    // if (hasIncidentBranch(LZBranch)) constructionQueue.push_back({ S_LZ, LZ_EPL });
-
-    // if (hasIncidentBranch(ZBranch)) constructionQueue.push_back({ S_Z, LZ_EPL });
-    // //  TODO: what if there is no LZ branch?
-    // if (hasIncidentBranch(RevZBranch)) constructionQueue.push_back({ S_RevZ, RZ_EPL });
-    // //  TODO: what if there is no RZ branch?
 }
 
 void MeshAssemblyBlockCode::initializeSupportModule() {
@@ -1177,6 +1188,16 @@ findTargetLightAroundTarget(const Cell3DPosition& targetPos,
 
 void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
     Cell3DPosition nextPos;
+
+    // TODO: FIXME: Special ALT case due to collision on Z_EPL with iBorders
+    if (lastVisitedEPL == Z_EPL
+        and targetPosition - coordinatorPos == Cell3DPosition(1,1,0) // S_Z
+        and ruleMatcher->isOnXBorder(norm(coordinatorPos))
+        and (coordinatorPos[2] / B) % 2 == 0
+        and coordinatorPos[2] != meshSeedPosition[2]) {
+        lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
+    }
+
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,
                                    targetPosition,
