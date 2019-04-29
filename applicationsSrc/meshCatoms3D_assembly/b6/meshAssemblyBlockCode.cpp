@@ -476,23 +476,24 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 sendMessage(new FinalTargetReachedMessage(catom->position),
                             pivotItf, MSG_DELAY_MC, 0);
 
-                // Check algorithm termination
-                // Pyramid construction ends with the arrival of the S_RevZ top level module
-                if (// catom is top level module
-                    catom->position[2] == (short int)(
-                        (ruleMatcher->getCubeDimension() - 1) * B + meshSeedPosition[2])
-                    and // catom is S_RZ
-                    ruleMatcher->getComponentForPosition(
-                        catom->position - coordinatorPos) == S_RevZ) {
-                    int ts = round(getScheduler()->now()
-                                   / ((Rotations3D::ANIMATION_DELAY *
-                                       Rotations3D::rotationDelayMultiplier +
-                                       Rotations3D::COM_DELAY) + 20128));
-                    cerr << ruleMatcher->getCubeDimension()
-                         << "-PYRAMID CONSTRUCTION OVER AT TimeStep = "
-                         << ts << " with " << lattice->nbModules << " modules" << endl;
-                    constructionOver = true;
-                }
+                // FIXME:
+                // // Check algorithm termination
+                // // Pyramid construction ends with the arrival of the S_RevZ top level module
+                // if (// catom is top level module
+                //     catom->position[2] == (short int)(
+                //         (ruleMatcher->getCubeDimension() - 1) * B + meshSeedPosition[2])
+                //     and // catom is S_RZ
+                //     ruleMatcher->getComponentForPosition(
+                //         catom->position - coordinatorPos) == S_RevZ) {
+                //     int ts = round(getScheduler()->now()
+                //                    / ((Rotations3D::ANIMATION_DELAY *
+                //                        Rotations3D::rotationDelayMultiplier +
+                //                        Rotations3D::COM_DELAY) + 20128));
+                //     cerr << ruleMatcher->getCubeDimension()
+                //          << "-PYRAMID CONSTRUCTION OVER AT TimeStep = "
+                //          << ts << " with " << lattice->nbModules << " modules" << endl;
+                //     constructionOver = true;
+                // }
 
                 // STAT EXPORT
                 // OUTPUT << "nbCatomsInPlace:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << ++nbCatomsInPlace << endl;
@@ -500,17 +501,6 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
                     coordinatorPos =
                         denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
-
-                    BranchIndex bi =
-                        ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
-                    branch = bi;
-                    VS_ASSERT_MSG(bi >= 0 and bi < N_INC_BRANCHES, "cannot determine branch.");
-
-                    stringstream info;
-                    info << " assigned to branch " << ruleMatcher->branch_to_string(bi);
-                    scheduler->trace(info.str(),catom->blockId, CYAN);
-
-                    return;
                 }
 
                 if (ruleMatcher->isTileRoot(norm(catom->position)))
@@ -532,6 +522,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                     // Coordinate to let the last arrived branch continue the construction
                     if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
+                        and not (bi == RevZBranch // corner goes by itself
+                                 and ruleMatcher->isOnXBorder(norm(nextPosAlongBranch))
+                                 and ruleMatcher->isOnYBorder(norm(nextPosAlongBranch)))
                         and incidentBranchesToRootAreComplete(nextPosAlongBranch)) {
                         // lattice->highlightCell(nextPosAlongBranch, BLUE);
                         // cout << "Some branches are missing around "
@@ -539,16 +532,26 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                         // Notify future tile root as position should be filled
                         P2PNetworkInterface* zBranchTipItf = NULL;
-                        for (const auto& pos:lattice->getActiveNeighborCells(catom->position)) {
-                            if (ruleMatcher->isOnZBranch(norm(pos))
-                                or (ruleMatcher->isOnYBorder(norm(nextPosAlongBranch))
-                                    and (nextPosAlongBranch[2] / B) % 2 == 0
-                                    and ruleMatcher->isOnLZBranch(norm(pos)))
-                                or (ruleMatcher->isOnXBorder(norm(nextPosAlongBranch))
-                                    and (nextPosAlongBranch[2] / B) % 2 == 0
-                                    and ruleMatcher->isOnRZBranch(norm(pos)))) {
-                                zBranchTipItf = catom->getInterface(pos);
-                                break;
+
+
+                        if (bi == RevZBranch) {
+                            // Send message down branch, next module is likely
+                            //  not on EPL yet, it will use TileInsertionPending = true
+                            zBranchTipItf = catom->getInterface(catom->position
+                                                                + Cell3DPosition(1,1,-1));
+                        } else {
+                            for (const auto& pos :
+                                     lattice->getActiveNeighborCells(catom->position)) {
+                                if (ruleMatcher->isOnZBranch(norm(pos))
+                                    or (ruleMatcher->isOnYBorder(norm(nextPosAlongBranch))
+                                        and (nextPosAlongBranch[2] / B) % 2 == 0
+                                        and ruleMatcher->isOnLZBranch(norm(pos)))
+                                    or (ruleMatcher->isOnXBorder(norm(nextPosAlongBranch))
+                                        and (nextPosAlongBranch[2] / B) % 2 == 0
+                                        and ruleMatcher->isOnRZBranch(norm(pos)))) {
+                                    zBranchTipItf = catom->getInterface(pos);
+                                    break;
+                                }
                             }
                         }
 
