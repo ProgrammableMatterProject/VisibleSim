@@ -539,9 +539,14 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                         // Notify future tile root as position should be filled
                         P2PNetworkInterface* zBranchTipItf = NULL;
-                        for (const auto& pos : lattice->
-                                 getActiveNeighborCells(catom->position)) {
-                            if (ruleMatcher->isOnZBranch(norm(pos))) {
+                        for (const auto& pos:lattice->getActiveNeighborCells(catom->position)) {
+                            if (ruleMatcher->isOnZBranch(norm(pos))
+                                or (ruleMatcher->isOnYBorder(norm(nextPosAlongBranch))
+                                    and (nextPosAlongBranch[2] / B) % 2 == 0
+                                    and ruleMatcher->isOnLZBranch(norm(pos)))
+                                or (ruleMatcher->isOnXBorder(norm(nextPosAlongBranch))
+                                    and (nextPosAlongBranch[2] / B) % 2 == 0
+                                    and ruleMatcher->isOnRZBranch(norm(pos)))) {
                                 zBranchTipItf = catom->getInterface(pos);
                                 break;
                             }
@@ -551,6 +556,14 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         sendMessage(new TileInsertionReadyMessage(),
                                     zBranchTipItf, MSG_DELAY_MC, 0);
                         log_send_message();
+                    } else {
+                        stringstream info;
+                        info << " not ready to send coordinator ready"
+                             << " - NP: " << nextPosAlongBranch << " : "
+                             << ruleMatcher->isTileRoot(norm(nextPosAlongBranch));
+                        if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch)))
+                            info << incidentBranchesToRootAreComplete(nextPosAlongBranch);
+                        scheduler->trace(info.str(), catom->blockId, RED);
                     }
                 }
             } else {

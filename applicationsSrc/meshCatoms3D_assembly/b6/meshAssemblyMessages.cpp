@@ -413,7 +413,13 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         if (itf and itf->isConnected()) {
             mabc.sendMessage(new TileInsertionReadyMessage(), itf,MSG_DELAY_MC, 0);
             mabc.log_send_message();
-        } else return;
+        } else {
+            stringstream info;
+            info << " couldn't send coordinator ready to "
+                 << mabc.catom->position + relNeighborPos;
+            mabc.scheduler->trace(info.str(), mabc.catom->blockId, RED);
+            return;
+        }
     } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)){
         // Forward to module waiting on EPL
         P2PNetworkInterface* EPLItf = mabc.catom->getInterface(mabc.catom->position
