@@ -11,6 +11,8 @@ subdir: $(B_LENGTH_DIR)
 $(B_LENGTH_DIR):
 	@$(MAKE) -C $@ APPDIR="../$(APPDIR)" GLOBAL_INCLUDES="$(GLOBAL_INCLUDES)" GLOBAL_LIBS="$(GLOBAL_LIBS)" GLOBAL_CCFLAGS="$(GLOBAL_CCFLAGS)"
 
-test: $(MAKE) -C $(B_LENGTH_DIR) test;
+test:
+	$(MAKE) -C $(B_LENGTH_DIR) test;
 
-clean: $(MAKE) -C $(B_LENGTH_DIR) clean;
+clean:
+	$(MAKE) -C $(B_LENGTH_DIR) clean;
