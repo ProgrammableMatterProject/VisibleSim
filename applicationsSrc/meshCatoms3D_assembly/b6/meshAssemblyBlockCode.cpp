@@ -952,6 +952,33 @@ void MeshAssemblyBlockCode::buildConstructionQueueWithFewerIncidentBranches() {
         if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL });
         if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
         if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
+    } else if (numIncidentVerticalBranches == 2
+               and (hasIncidentBranch(RevZBranch) and hasIncidentBranch(LZBranch))) {
+        constructionQueue.push_back({ S_RZ, RZ_EPL});
+
+        if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL });
+
+        constructionQueue.push_back({ S_Z, Z_EPL });
+        if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, RZ_EPL });
+        if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, RZ_EPL });
+        if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, RZ_EPL });
+        if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, Z_EPL });
+        if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, RZ_EPL });
+        if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, Z_EPL });
+
+        if (catomsReqByBranch[RZBranch] > 0) constructionQueue.push_back({ RZ_1, RZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 0) constructionQueue.push_back({ Z_1, Z_EPL });
+        if (catomsReqByBranch[RZBranch] > 1) constructionQueue.push_back({ RZ_2, RZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 1) constructionQueue.push_back({ Z_2, Z_EPL });
+        if (catomsReqByBranch[RZBranch] > 2) constructionQueue.push_back({ RZ_3, RZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL });
+        if (catomsReqByBranch[RZBranch] > 3) constructionQueue.push_back({ RZ_4, RZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
+        if (catomsReqByBranch[RZBranch] > 4) constructionQueue.push_back({ RZ_5, RZ_EPL });
+        if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
     }
 
     // if (hasIncidentBranch(RZBranch)) constructionQueue.push_back({ S_RZ, RZ_EPL});
