@@ -393,7 +393,12 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     Cell3DPosition relNeighborPos;
     if (mabc.role == ActiveBeamTip) {
         if (mabc.ruleMatcher->isOnZBranch(mabc.norm(mabc.catom->position))) {
-            if (mabc.ruleMatcher->isOnYOppBorder(mabc.norm(mabc.coordinatorPos)))
+            if (mabc.ruleMatcher->isOnXOppBorder(mabc.norm(mabc.coordinatorPos))
+                and mabc.ruleMatcher->isOnYOppBorder(mabc.norm(mabc.coordinatorPos))
+                and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2]
+                and (mabc.coordinatorPos[2] / mabc.B) % 2 == 0)
+                relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
+            else if (mabc.ruleMatcher->isOnYOppBorder(mabc.norm(mabc.coordinatorPos)))
                 // Forward to incident RZ tip
                 relNeighborPos = Cell3DPosition(0,1,0);
             else
@@ -442,6 +447,8 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             EPLItf = mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(-1,0,1));
         else if (mabc.branch == LZBranch)
             EPLItf = mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(0,-1,1));
+        else if (mabc.branch == ZBranch)
+            EPLItf = mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(-1,-1,1));
 
         VS_ASSERT(EPLItf);
 

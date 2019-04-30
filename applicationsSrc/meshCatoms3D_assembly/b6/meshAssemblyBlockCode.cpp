@@ -80,11 +80,11 @@ void MeshAssemblyBlockCode::onBlockSelected() {
             for (short ix = glb[0]; ix < ulb[0]; ix++) {
                 pos.set(ix, iy, iz);
 
-                if (ruleMatcher->isOnYOppBorder(norm(pos))
-                    and ruleMatcher->isOnXBorder(norm(pos))
-                    and pos[2] > meshSeedPosition[2]
-                    and (pos[2] / B) % 2 == 0)
-                    lattice->highlightCell(pos, BLACK);
+                // if (ruleMatcher->isOnYOppBorder(norm(pos))
+                //     and ruleMatcher->isOnXBorder(norm(pos))
+                //     and pos[2] > meshSeedPosition[2]
+                //     and (pos[2] / B) % 2 == 0)
+                //     lattice->highlightCell(pos, BLACK);
 
                 // if (ruleMatcher->isInGrid(norm(pos)))
                 //     lattice->highlightCell(pos, WHITE);
@@ -547,10 +547,15 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                 or (bi == LZBranch
                                     and ruleMatcher->isOnXOppBorder(norm(nextPosAlongBranch))
                                     and nextPosAlongBranch[2] > meshSeedPosition[2]
-                                    and (nextPosAlongBranch[2] / B) % 2 == 1)) {
+                                    and (nextPosAlongBranch[2] / B) % 2 == 1)
+                                or (bi == ZBranch
+                                    and ruleMatcher->isOnXOppBorder(norm(nextPosAlongBranch))
+                                    and ruleMatcher->isOnYOppBorder(norm(nextPosAlongBranch))
+                                    and nextPosAlongBranch[2] > meshSeedPosition[2]
+                                    and (nextPosAlongBranch[2] / B) % 2 == 0)) {
                                 nextHopItf =
                                     catom->getInterface(catom->position
-                                                        - ruleMatcher->getBranchUnitOffset(bi));
+                                                        -ruleMatcher->getBranchUnitOffset(bi));
                             } else {
                                 for (const auto& pos :
                                          lattice->getActiveNeighborCells(catom->position)) {
@@ -963,6 +968,14 @@ void MeshAssemblyBlockCode::buildConstructionQueueWithFewerIncidentBranches() {
         if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL });
         if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
         if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
+    } else if (numIncidentVerticalBranches == 1 and hasIncidentBranch(ZBranch)) {
+        constructionQueue.push_back({ S_RevZ, RevZ_EPL });
+
+        if (catomsReqByBranch[RevZBranch] > 0) constructionQueue.push_back({ RevZ_1,RevZ_EPL});
+        if (catomsReqByBranch[RevZBranch] > 1) constructionQueue.push_back({ RevZ_2,RevZ_EPL});
+        if (catomsReqByBranch[RevZBranch] > 2) constructionQueue.push_back({ RevZ_3,RevZ_EPL});
+        if (catomsReqByBranch[RevZBranch] > 3) constructionQueue.push_back({ RevZ_4,RevZ_EPL});
+        if (catomsReqByBranch[RevZBranch] > 4) constructionQueue.push_back({ RevZ_5,RevZ_EPL});
     } else if ( hasIncidentBranch(RZBranch)
                 and ((numIncidentVerticalBranches == 1) or (numIncidentVerticalBranches == 2
                                                             and hasIncidentBranch(ZBranch)))){

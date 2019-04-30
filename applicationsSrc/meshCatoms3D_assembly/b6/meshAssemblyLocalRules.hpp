@@ -619,6 +619,32 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0xe00, LR_RZ_EPL_ALT, Cell3DPosition(-1, -1, 0), 5),
       Cell3DPosition(0, 0, -1) }, // S_RevZ 5
 
+    // START OPPXY CORNER //
+    // R from RevZ_EPL
+    { LRKeyTuple(0x400, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 1),
+      Cell3DPosition(1, 0, -1) }, // R 1
+    { LRKeyTuple(0x802, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 2),
+      Cell3DPosition(1, 1, 0) }, // R 2
+    { LRKeyTuple(0x048, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 3),
+      Cell3DPosition(0, 1, 0) }, // R 3
+    { LRKeyTuple(0x010, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 4),
+      Cell3DPosition(-1, -1, 2) }, // R 4
+
+    // S_Z from RevZ_EPL
+    { LRKeyTuple(0x400, LR_RevZ_EPL, Cell3DPosition(-1, -1, 0), 1),
+      Cell3DPosition(1, 0, -1) }, // S_RevZ 1
+    { LRKeyTuple(0x802, LR_RevZ_EPL, Cell3DPosition(-1, -1, 0), 2),
+      Cell3DPosition(1, 1, 0) }, // S_RevZ 2
+    { LRKeyTuple(0x048, LR_RevZ_EPL, Cell3DPosition(-1, -1, 0), 3),
+      Cell3DPosition(0, 0, 1) }, // S_RevZ 3
+    { LRKeyTuple(0x058, LR_RevZ_EPL, Cell3DPosition(-1, -1, 0), 4),
+      Cell3DPosition(0, 0, 1) }, // S_RevZ 4
+    { LRKeyTuple(0x040, LR_RevZ_EPL, Cell3DPosition(-1, -1, 0), 5),
+      Cell3DPosition(-1, 0, 1) }, // S_RevZ 5
+    { LRKeyTuple(0x100, LR_RevZ_EPL, Cell3DPosition(-1, -1, 0), 6),
+      Cell3DPosition(-1, -1, 0) }, // S_RevZ 6
+    { LRKeyTuple(0xe00, LR_RevZ_EPL, Cell3DPosition(-1, -1, 0), 7),
+      Cell3DPosition(0, 0, -1) }, // S_RevZ 7
 };
 
 /**
