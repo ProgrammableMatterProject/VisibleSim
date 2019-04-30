@@ -280,7 +280,8 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 VS_ASSERT(mc != -1);
                 OUTPUT << "bp:\t" << (int)round(scheduler->now() / getRoundDuration() - tbp0) << "\t"
                        << ruleMatcher->component_to_string(static_cast<MeshComponent>(mc))
-                       << "\t" << catom->position - coordinatorPos << endl;
+                       << "\t" << catom->position - coordinatorPos
+                       << "\t" << catom->orientationCode << endl;
             }
 
             step++;

@@ -92,7 +92,8 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                 VS_ASSERT(mc != -1);
                 OUTPUT << "bp:\t" << (int)round(mabc.scheduler->now() / mabc.getRoundDuration() - mabc.tbp0) << "\t"
                        << mabc.ruleMatcher->component_to_string(static_cast<MeshComponent>(mc))
-                       << "\t" << mabc.catom->position - mabc.coordinatorPos << endl;
+                       << "\t" << mabc.catom->position - mabc.coordinatorPos
+                       << "\t" << mabc.catom->orientationCode << endl;
             }
 
 
