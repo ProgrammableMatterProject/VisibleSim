@@ -543,6 +543,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                 or (bi == RZBranch
                                     and ruleMatcher->isOnYOppBorder(norm(nextPosAlongBranch))
                                     and nextPosAlongBranch[2] > meshSeedPosition[2]
+                                    and (nextPosAlongBranch[2] / B) % 2 == 1)
+                                or (bi == LZBranch
+                                    and ruleMatcher->isOnXOppBorder(norm(nextPosAlongBranch))
+                                    and nextPosAlongBranch[2] > meshSeedPosition[2]
                                     and (nextPosAlongBranch[2] / B) % 2 == 1)) {
                                 nextHopItf =
                                     catom->getInterface(catom->position
@@ -961,7 +965,6 @@ void MeshAssemblyBlockCode::buildConstructionQueueWithFewerIncidentBranches() {
         if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
     } else if ( hasIncidentBranch(RZBranch)
                 and ((numIncidentVerticalBranches == 1) or (numIncidentVerticalBranches == 2
-                                                            and hasIncidentBranch(RZBranch)
                                                             and hasIncidentBranch(ZBranch)))){
         if (hasIncidentBranch(ZBranch)) constructionQueue.push_back({ S_RevZ, LZ_EPL });
         constructionQueue.push_back({ S_LZ, LZ_EPL });
@@ -982,6 +985,28 @@ void MeshAssemblyBlockCode::buildConstructionQueueWithFewerIncidentBranches() {
         if (catomsReqByBranch[LZBranch] > 2) constructionQueue.push_back({ LZ_3, LZ_EPL });
         if (catomsReqByBranch[LZBranch] > 3) constructionQueue.push_back({ LZ_4, LZ_EPL });
         if (catomsReqByBranch[LZBranch] > 4) constructionQueue.push_back({ LZ_5, LZ_EPL });
+    } else if ( hasIncidentBranch(LZBranch)
+                and ((numIncidentVerticalBranches == 1) or (numIncidentVerticalBranches == 2
+                                                            and hasIncidentBranch(ZBranch)))){
+        if (hasIncidentBranch(ZBranch)) constructionQueue.push_back({ S_RevZ, RZ_EPL });
+        constructionQueue.push_back({ S_RZ, RZ_EPL });
+
+        if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, RZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 0) constructionQueue.push_back({ RevZ_1,RevZ_EPL});
+        if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, RZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 1) constructionQueue.push_back({ RevZ_2,RevZ_EPL});
+        if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, RZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 2) constructionQueue.push_back({ RevZ_3,RevZ_EPL});
+        if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, RZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 3) constructionQueue.push_back({ RevZ_4,RevZ_EPL});
+        if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, RZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 4) constructionQueue.push_back({ RevZ_5,RevZ_EPL});
+
+        if (catomsReqByBranch[RZBranch] > 0) constructionQueue.push_back({ RZ_1, RZ_EPL });
+        if (catomsReqByBranch[RZBranch] > 1) constructionQueue.push_back({ RZ_2, RZ_EPL });
+        if (catomsReqByBranch[RZBranch] > 2) constructionQueue.push_back({ RZ_3, RZ_EPL });
+        if (catomsReqByBranch[RZBranch] > 3) constructionQueue.push_back({ RZ_4, RZ_EPL });
+        if (catomsReqByBranch[RZBranch] > 4) constructionQueue.push_back({ RZ_5, RZ_EPL });
     } else if (numIncidentVerticalBranches == 2
                and (hasIncidentBranch(RevZBranch) and hasIncidentBranch(LZBranch))) {
         constructionQueue.push_back({ S_RZ, RZ_EPL});
@@ -1225,14 +1250,21 @@ findTargetLightAroundTarget(const Cell3DPosition& targetPos,
 void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
     Cell3DPosition nextPos;
 
-    // TODO: FIXME: Special ALT case due to collision on Z_EPL with iBorders
+    // TODO: FIXME: Special ALT case due to collision on Z_EPL/RZ_EPL with iBorders
     if (lastVisitedEPL == Z_EPL
         and targetPosition - coordinatorPos == Cell3DPosition(1,1,0) // S_Z
         and ruleMatcher->isOnXBorder(norm(coordinatorPos))
         and (coordinatorPos[2] / B) % 2 == 0
         and coordinatorPos[2] != meshSeedPosition[2]) {
         lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
+    } else if (lastVisitedEPL == RZ_EPL
+               and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0) // S_RZ
+               and ruleMatcher->isOnXOppBorder(norm(coordinatorPos))
+               and (coordinatorPos[2] / B) % 2 == 0
+               and coordinatorPos[2] != meshSeedPosition[2]) {
+        lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
     }
+
 
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,

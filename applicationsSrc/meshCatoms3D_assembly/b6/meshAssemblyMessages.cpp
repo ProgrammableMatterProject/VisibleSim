@@ -407,8 +407,13 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             else
                 relNeighborPos = Cell3DPosition(1,0,0); // forward to incoming RevZ tip
         } else if (mabc.ruleMatcher->isOnLZBranch(mabc.norm(mabc.catom->position))) {
-            // forward to RevZ tip
-            relNeighborPos = Cell3DPosition(0,1,0);
+            if (mabc.ruleMatcher->isOnXOppBorder(mabc.norm(mabc.coordinatorPos))
+                and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2]
+                and (mabc.coordinatorPos[2] / mabc.B) % 2 == 0)
+                relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
+            else
+                // forward to RevZ tip
+                relNeighborPos = Cell3DPosition(0,1,0);
         } else if (mabc.ruleMatcher->isOnRevZBranch(mabc.norm(mabc.catom->position))) {
             // forward to RevZ EPL Pivot
             relNeighborPos = Cell3DPosition(1,1,-1);
@@ -432,11 +437,11 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         // Forward to module waiting on EPL
         P2PNetworkInterface* EPLItf = NULL;
         if (mabc.branch == RevZBranch)
-            EPLItf = mabc.catom->getInterface(mabc.catom->position
-                                              + Cell3DPosition(0,0,1));
+            EPLItf = mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(0,0,1));
         else if (mabc.branch == RZBranch)
-            EPLItf = mabc.catom->getInterface(mabc.catom->position
-                                              + Cell3DPosition(-1,0,1));
+            EPLItf = mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(-1,0,1));
+        else if (mabc.branch == LZBranch)
+            EPLItf = mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(0,-1,1));
 
         VS_ASSERT(EPLItf);
 
