@@ -393,11 +393,19 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     Cell3DPosition relNeighborPos;
     if (mabc.role == ActiveBeamTip) {
         if (mabc.ruleMatcher->isOnZBranch(mabc.norm(mabc.catom->position))) {
-            // Forward to incoming LZ tip
-            relNeighborPos = Cell3DPosition(1,0,0);
+            if (mabc.ruleMatcher->isOnYOppBorder(mabc.norm(mabc.coordinatorPos)))
+                // Forward to incident RZ tip
+                relNeighborPos = Cell3DPosition(0,1,0);
+            else
+                // Forward to incoming LZ tip
+                relNeighborPos = Cell3DPosition(1,0,0);
         } else if (mabc.ruleMatcher->isOnRZBranch(mabc.norm(mabc.catom->position))) {
-            // forward to incoming RevZ tip
-            relNeighborPos = Cell3DPosition(1,0,0);
+            if (mabc.ruleMatcher->isOnYOppBorder(mabc.norm(mabc.coordinatorPos))
+                and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2]
+                and (mabc.coordinatorPos[2] / mabc.B) % 2 == 0)
+                relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
+            else
+                relNeighborPos = Cell3DPosition(1,0,0); // forward to incoming RevZ tip
         } else if (mabc.ruleMatcher->isOnLZBranch(mabc.norm(mabc.catom->position))) {
             // forward to RevZ tip
             relNeighborPos = Cell3DPosition(0,1,0);
@@ -422,8 +430,14 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         }
     } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)){
         // Forward to module waiting on EPL
-        P2PNetworkInterface* EPLItf = mabc.catom->getInterface(mabc.catom->position
-                                                               + Cell3DPosition(0,0,1));
+        P2PNetworkInterface* EPLItf = NULL;
+        if (mabc.branch == RevZBranch)
+            EPLItf = mabc.catom->getInterface(mabc.catom->position
+                                              + Cell3DPosition(0,0,1));
+        else if (mabc.branch == RZBranch)
+            EPLItf = mabc.catom->getInterface(mabc.catom->position
+                                              + Cell3DPosition(-1,0,1));
+
         VS_ASSERT(EPLItf);
 
         if (EPLItf->isConnected())

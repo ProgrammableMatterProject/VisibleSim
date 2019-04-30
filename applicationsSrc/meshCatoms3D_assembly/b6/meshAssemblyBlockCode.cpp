@@ -80,6 +80,12 @@ void MeshAssemblyBlockCode::onBlockSelected() {
             for (short ix = glb[0]; ix < ulb[0]; ix++) {
                 pos.set(ix, iy, iz);
 
+                if (ruleMatcher->isOnYOppBorder(norm(pos))
+                    and ruleMatcher->isOnXBorder(norm(pos))
+                    and pos[2] > meshSeedPosition[2]
+                    and (pos[2] / B) % 2 == 0)
+                    lattice->highlightCell(pos, BLACK);
+
                 // if (ruleMatcher->isInGrid(norm(pos)))
                 //     lattice->highlightCell(pos, WHITE);
 
@@ -89,10 +95,10 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                 // if (ruleMatcher->isInCube(norm(pos)))
                 //     lattice->highlightCell(pos, PINK);
 
-                if (ruleMatcher->isOnOppXBranch(norm(pos)))
-                    lattice->highlightCell(pos, RED);
-                else if (ruleMatcher->isOnOppYBranch(norm(pos)))
-                    lattice->highlightCell(pos, BLUE);
+                // if (ruleMatcher->isOnOppXBranch(norm(pos)))
+                //     lattice->highlightCell(pos, RED);
+                // else if (ruleMatcher->isOnOppYBranch(norm(pos)))
+                //     lattice->highlightCell(pos, BLUE);
 
                 // if (ruleMatcher->isOnXOppCubeBorder(norm(pos)))
                 //     lattice->highlightCell(pos, BLUE);
@@ -521,52 +527,55 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
                     // Coordinate to let the last arrived branch continue the construction
-                    if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
-                        and not (bi == RevZBranch // corner goes by itself
-                                 and ruleMatcher->isOnXBorder(norm(nextPosAlongBranch))
-                                 and ruleMatcher->isOnYBorder(norm(nextPosAlongBranch)))
-                        and incidentBranchesToRootAreComplete(nextPosAlongBranch)) {
-                        // lattice->highlightCell(nextPosAlongBranch, BLUE);
-                        // cout << "Some branches are missing around "
-                        //      << nextPosAlongBranch << endl;
+                    if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))) {
+                        if (incidentBranchesToRootAreComplete(nextPosAlongBranch)) {
+                            // lattice->highlightCell(nextPosAlongBranch, BLUE);
+                            // cout << "Some branches are missing around "
+                            //      << nextPosAlongBranch << endl;
 
-                        // Notify future tile root as position should be filled
-                        P2PNetworkInterface* zBranchTipItf = NULL;
+                            // Notify future tile root as position should be filled
+                            P2PNetworkInterface* nextHopItf = NULL;
 
 
-                        if (bi == RevZBranch) {
                             // Send message down branch, next module is likely
                             //  not on EPL yet, it will use TileInsertionPending = true
-                            zBranchTipItf = catom->getInterface(catom->position
-                                                                + Cell3DPosition(1,1,-1));
-                        } else {
-                            for (const auto& pos :
-                                     lattice->getActiveNeighborCells(catom->position)) {
-                                if (ruleMatcher->isOnZBranch(norm(pos))
-                                    or (ruleMatcher->isOnYBorder(norm(nextPosAlongBranch))
-                                        and (nextPosAlongBranch[2] / B) % 2 == 0
-                                        and ruleMatcher->isOnLZBranch(norm(pos)))
-                                    or (ruleMatcher->isOnXBorder(norm(nextPosAlongBranch))
-                                        and (nextPosAlongBranch[2] / B) % 2 == 0
-                                        and ruleMatcher->isOnRZBranch(norm(pos)))) {
-                                    zBranchTipItf = catom->getInterface(pos);
-                                    break;
+                            if (bi == RevZBranch
+                                or (bi == RZBranch
+                                    and ruleMatcher->isOnYOppBorder(norm(nextPosAlongBranch))
+                                    and nextPosAlongBranch[2] > meshSeedPosition[2]
+                                    and (nextPosAlongBranch[2] / B) % 2 == 1)) {
+                                nextHopItf =
+                                    catom->getInterface(catom->position
+                                                        - ruleMatcher->getBranchUnitOffset(bi));
+                            } else {
+                                for (const auto& pos :
+                                         lattice->getActiveNeighborCells(catom->position)) {
+                                    if (ruleMatcher->isOnZBranch(norm(pos))
+                                        or (ruleMatcher->isOnYBorder(norm(nextPosAlongBranch))
+                                            and (nextPosAlongBranch[2] / B) % 2 == 0
+                                            and ruleMatcher->isOnLZBranch(norm(pos)))
+                                        or (ruleMatcher->isOnXBorder(norm(nextPosAlongBranch))
+                                            and (nextPosAlongBranch[2] / B) % 2 == 0
+                                            and ruleMatcher->isOnRZBranch(norm(pos)))) {
+                                        nextHopItf = catom->getInterface(pos);
+                                        break;
+                                    }
                                 }
                             }
-                        }
 
-                        VS_ASSERT(zBranchTipItf);
-                        sendMessage(new TileInsertionReadyMessage(),
-                                    zBranchTipItf, MSG_DELAY_MC, 0);
-                        log_send_message();
-                    } else {
-                        stringstream info;
-                        info << " not ready to send coordinator ready"
-                             << " - NP: " << nextPosAlongBranch << " : "
-                             << ruleMatcher->isTileRoot(norm(nextPosAlongBranch));
-                        if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch)))
-                            info << incidentBranchesToRootAreComplete(nextPosAlongBranch);
-                        scheduler->trace(info.str(), catom->blockId, RED);
+                            VS_ASSERT(nextHopItf);
+                            sendMessage(new TileInsertionReadyMessage(),
+                                        nextHopItf, MSG_DELAY_MC, 0);
+                            log_send_message();
+                        } else{
+                            stringstream info;
+                            info << " not ready to send coordinator ready"
+                                 << " - NP: " << nextPosAlongBranch << " : "
+                                 << ruleMatcher->isTileRoot(norm(nextPosAlongBranch));
+                            if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch)))
+                                info << incidentBranchesToRootAreComplete(nextPosAlongBranch);
+                            scheduler->trace(info.str(), catom->blockId, RED);
+                        }
                     }
                 }
             } else {
@@ -587,6 +596,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     if (lattice->isFree(coordinatorPos)) { //FIXME: NON-LOCAL!
                         if (ruleMatcher->isOnXCubeBorder(norm(coordinatorPos))
                             and ruleMatcher->isOnYCubeBorder(norm(coordinatorPos))
+                            and coordinatorPos[2] == meshSeedPosition[2]
                             and incidentBranchesToRootAreComplete(coordinatorPos)
                             and claimedTileRoots.find(coordinatorPos)==claimedTileRoots.end()) {
                             targetPosition = coordinatorPos;
@@ -949,6 +959,29 @@ void MeshAssemblyBlockCode::buildConstructionQueueWithFewerIncidentBranches() {
         if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL });
         if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
         if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
+    } else if ( hasIncidentBranch(RZBranch)
+                and ((numIncidentVerticalBranches == 1) or (numIncidentVerticalBranches == 2
+                                                            and hasIncidentBranch(RZBranch)
+                                                            and hasIncidentBranch(ZBranch)))){
+        if (hasIncidentBranch(ZBranch)) constructionQueue.push_back({ S_RevZ, LZ_EPL });
+        constructionQueue.push_back({ S_LZ, LZ_EPL });
+
+        if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, LZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 0) constructionQueue.push_back({ RevZ_1,RevZ_EPL});
+        if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, LZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 1) constructionQueue.push_back({ RevZ_2,RevZ_EPL});
+        if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, LZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 2) constructionQueue.push_back({ RevZ_3,RevZ_EPL});
+        if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, LZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 3) constructionQueue.push_back({ RevZ_4,RevZ_EPL});
+        if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, LZ_EPL });
+        if (catomsReqByBranch[RevZBranch] > 4) constructionQueue.push_back({ RevZ_5,RevZ_EPL});
+
+        if (catomsReqByBranch[LZBranch] > 0) constructionQueue.push_back({ LZ_1, LZ_EPL });
+        if (catomsReqByBranch[LZBranch] > 1) constructionQueue.push_back({ LZ_2, LZ_EPL });
+        if (catomsReqByBranch[LZBranch] > 2) constructionQueue.push_back({ LZ_3, LZ_EPL });
+        if (catomsReqByBranch[LZBranch] > 3) constructionQueue.push_back({ LZ_4, LZ_EPL });
+        if (catomsReqByBranch[LZBranch] > 4) constructionQueue.push_back({ LZ_5, LZ_EPL });
     } else if (numIncidentVerticalBranches == 2
                and (hasIncidentBranch(RevZBranch) and hasIncidentBranch(LZBranch))) {
         constructionQueue.push_back({ S_RZ, RZ_EPL});
