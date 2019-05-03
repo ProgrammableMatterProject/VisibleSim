@@ -78,18 +78,18 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
     // Determine target cell of motion
     Cell3DPosition tPos = Cell3DPosition(-1,-1,-1);
     pivot->getNeighborPos(toCon, tPos);
-    
+
     if (toConM == -1) {
         cerr << "cannot compute mirror connector of #" << pivot->blockId << "("
              << toCon << ") on module #" << m->blockId << endl;
         throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
     }
-    
+
     // OUTPUT << "Building rotation from piv_con " << fromConP << " / " << m->position
     //        << " to piv_con " << toCon << "/ " << tPos
     //        << " [m_con(" << fromConM << " -> " << toConM << ")]"
     //        << " on surface of pivot #" << pivot->blockId << " " << pivot->position <<  endl;
-    
+
     // VS_ASSERT_MSG(fromConM >= 0 and toConM >= 0,
     //               "attempting rotation to or from an unreachable position");
     if (fromConM < 0 or toConM < 0) {
@@ -98,7 +98,7 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlo
         throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
     }
 
-    
+
     // Get valid links on surface of m
     const Catoms3DMotionRulesLink* link =
         Catoms3DMotionEngine::findConnectorLink(m, fromConM, toConM, faceReq);
@@ -265,9 +265,38 @@ const string Rotation3DEndEvent::getEventName() {
 //
 //===========================================================================================================
 
+void Rotations3D::init(const Matrix& m) {
+    firstRotation=true;
+    step=0;
+    initialMatrix=m;
+    finalMatrix=m*finalMatrix;
+
+    exportMatrix(initialMatrix);
+}
+
+
+void Rotations3D::exportMatrix(const Matrix& m) const {
+#ifdef ROTATION_STEP_MATRIX_EXPORT
+    // Catoms3DBlock* block = static_cast<Catoms3DBlock*>
+    //     (BaseSimulator::getWorld()->getBlockById(catomId));
+    // block->blockCode->onBlockSelected();
+
+    OUTPUT << scheduler->now() << "|";
+    OUTPUT << catomId << "|";
+    OUTPUT << "(matrix3 "
+           << "[" << m[0] << "," << m[4] << "," << m[8] << "] "
+           << "[" << m[1] << "," << m[5] << "," << m[9] << "] "
+           << "[" << m[2] << "," << m[6] << "," << m[10] << "] "
+           << "[" << m[3] << "," << m[7] << "," << m[11] << "])"
+           << endl;
+#endif
+}
+
 Rotations3D::Rotations3D(const Catoms3DBlock *mobile, const Catoms3DBlock *fixe, double rprim,
                          const Vector3D &ax1, double ang1,
                          const Vector3D &ax2, double ang2) : angle1(ang1),angle2(ang2) {
+    catomId = mobile->blockId;
+
     static const double c_2 = 1.0/(3+sqrt(2));
     Matrix MA = ((Catoms3DGlBlock*)mobile->getGlBlock())->mat;
     Matrix MB = ((Catoms3DGlBlock*)fixe->getGlBlock())->mat;
@@ -339,9 +368,9 @@ bool Rotations3D::nextStep(Matrix &m) {
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = initialMatrix * m;
 //        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
-        if (step==Rotations3D::nbRotationSteps) {
+
+        if (step==Rotations3D::nbRotationSteps)
             firstRotation=false;
-        }
     } else {
         step--;
         double angle=-angle2*step/Rotations3D::nbRotationSteps;
@@ -356,11 +385,11 @@ bool Rotations3D::nextStep(Matrix &m) {
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = finalMatrix * m;
 //        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
-        if (step==0) {
-            return true;
-        }
     }
-    return false;
+
+    exportMatrix(m);
+
+    return step == 0;
 }
 
 void Rotations3D::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
@@ -371,4 +400,3 @@ void Rotations3D::getFinalPositionAndOrientation(Cell3DPosition &position, short
 //    OUTPUT << "final grid=" << position << endl;
     orientation=Catoms3DBlock::getOrientationFromMatrix(finalMatrix);
 }
-
