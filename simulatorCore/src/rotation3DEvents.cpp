@@ -276,6 +276,7 @@ void Rotations3D::init(const Matrix& m) {
 
 
 void Rotations3D::exportMatrix(const Matrix& m) const {
+//#define ROTATION_STEP_MATRIX_EXPORT
 #ifdef ROTATION_STEP_MATRIX_EXPORT
     // Catoms3DBlock* block = static_cast<Catoms3DBlock*>
     //     (BaseSimulator::getWorld()->getBlockById(catomId));
