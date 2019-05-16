@@ -72,13 +72,29 @@ void MeshAssemblyBlockCode::onAssertTriggered() {
 
 void MeshAssemblyBlockCode::onBlockSelected() {
 
-    const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
-    const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-    Cell3DPosition pos;
-    for (short iz = glb[2]; iz < ulb[2]; iz++) {
-        for (short iy = glb[1]; iy < ulb[1]; iy++) {
-            for (short ix = glb[0]; ix < ulb[0]; ix++) {
-                pos.set(ix, iy, iz);
+    // int dimension = ruleMatcher->getCubeDimension();
+    // int zmax = (dimension - 1) * B + meshSeedPosition[2];
+    // int a = (dimension - 1) / 2;
+    // const Cell3DPosition &last = dimension % 2 == 0 ?
+    //     Cell3DPosition(a * B + B / 2 + meshSeedPosition[0],
+    //                    a * B + B / 2,
+    //                    zmax)
+    //     : Cell3DPosition(a * B + meshSeedPosition[0] - 1,
+    //                      a * B + meshSeedPosition[1] - 1,
+    //                      zmax);
+
+    // cout << "dimension: " << dimension << endl;
+    // cout << "max: " << last << endl;
+    // lattice->highlightCell(last, RED);
+
+    // const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+    // const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+    // Cell3DPosition pos;
+    // for (short iz = glb[2]; iz < ulb[2]; iz++) {
+    //     for (short iy = glb[1]; iy < ulb[1]; iy++) {
+    //         for (short ix = glb[0]; ix < ulb[0]; ix++) {
+    //             pos.set(ix, iy, iz);
+
 
                 // if (ruleMatcher->isOnYOppBorder(norm(pos))
                 //     and ruleMatcher->isOnXBorder(norm(pos))
@@ -108,9 +124,9 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                 //     lattice->highlightCell(pos, CYAN);
                 // else if (ruleMatcher->isOnYCubeBorder(norm(pos)))
                 //     lattice->highlightCell(pos, MAGENTA);
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 
     // Debug:
     // (1) Print details of branch growth plan and previous round
@@ -451,6 +467,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             rotating = false;
             step++;
             if (catom->position == targetPosition and not isOnEntryPoint(catom->position)) {
+                static int nbModulesInShape = 0;
+                nbModulesInShape++;
+
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
 
@@ -482,24 +501,33 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 sendMessage(new FinalTargetReachedMessage(catom->position),
                             pivotItf, MSG_DELAY_MC, 0);
 
-                // FIXME:
-                // // Check algorithm termination
-                // // Pyramid construction ends with the arrival of the S_RevZ top level module
-                // if (// catom is top level module
-                //     catom->position[2] == (short int)(
-                //         (ruleMatcher->getCubeDimension() - 1) * B + meshSeedPosition[2])
-                //     and // catom is S_RZ
-                //     ruleMatcher->getComponentForPosition(
-                //         catom->position - coordinatorPos) == S_RevZ) {
-                //     int ts = round(getScheduler()->now()
-                //                    / ((Rotations3D::ANIMATION_DELAY *
-                //                        Rotations3D::rotationDelayMultiplier +
-                //                        Rotations3D::COM_DELAY) + 20128));
-                //     cerr << ruleMatcher->getCubeDimension()
-                //          << "-PYRAMID CONSTRUCTION OVER AT TimeStep = "
-                //          << ts << " with " << lattice->nbModules << " modules" << endl;
-                //     constructionOver = true;
-                // }
+                // Check algorithm termination
+                // Cube construction ending depends on parity of the dimension of the cube
+
+                int dimension = ruleMatcher->getCubeDimension();
+                int zmax = (dimension - 1) * B + meshSeedPosition[2];
+                int a = (dimension - 1) / 2;
+                const Cell3DPosition &last = dimension % 2 == 0 ?
+                    Cell3DPosition(a * B + B / 2 + meshSeedPosition[0],
+                                   a * B + B / 2,
+                                   zmax)
+                    : Cell3DPosition(a * B + meshSeedPosition[0] - 1,
+                                     a * B + meshSeedPosition[1] - 1,
+                                     zmax);
+
+                if (// catom is top level module
+                    catom->position == last) {
+                    int ts = round(getScheduler()->now() / getRoundDuration());
+                    cerr << ruleMatcher->getCubeDimension()
+                         << "-CUBE CONSTRUCTION OVER AT TimeStep = "
+                         << ts << " with " << lattice->nbModules << " modules in total"
+                         << " including " << nbModulesInShape << " in the shape" << endl;
+                    cout << "res: " << ruleMatcher->getCubeDimension() << " " << ts
+                         << " " << lattice->nbModules << " "
+                         << nbModulesInShape << endl;
+
+                    constructionOver = true;
+                }
 
                 // STAT EXPORT
                 // OUTPUT << "nbCatomsInPlace:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << ++nbCatomsInPlace << endl;
