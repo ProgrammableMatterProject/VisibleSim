@@ -274,7 +274,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     if (not mabc.constructionQueue.empty() and mabc.catomsReqByBranch[bi] != 0) {
         pair<MeshComponent, MeshComponent> nextComponent = mabc.constructionQueue.front();
 
-        // If on the righ EPL, module is eligible for building next component
+        // If on the right EPL, module is eligible for building next component
         if (epl == nextComponent.second) {
             // Return correct target, then check status of each waiting module
             tPos = mabc.catom->position
@@ -302,7 +302,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     } else {
         // Else redirect to EPL corresponding to that branch
         // ONLY IF BRANCH HAD TO BE GROWN!
-        if (mabc.catomsReqByBranch[bi] == 1) return;
+        if (mabc.catomsReqByBranch[bi] == -1) return;
 
         tPos = mabc.catom->position + MeshRuleMatcher::getTargetEPLPositionForBranch(bi);
     }

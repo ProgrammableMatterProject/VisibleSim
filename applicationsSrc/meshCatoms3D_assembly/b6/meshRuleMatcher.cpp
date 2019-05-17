@@ -597,7 +597,7 @@ getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const {
         if (shouldSendToNeighbor(pos, nPos)) expectedConfirms++;
     }
 
-    OUTPUT << "NumberExpectedConfirms for " << pos << " : " << expectedConfirms << endl;
+    // OUTPUT << "NumberExpectedConfirms for " << pos << " : " << expectedConfirms << endl;
 
     return expectedConfirms;
 }

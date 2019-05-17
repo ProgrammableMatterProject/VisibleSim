@@ -1433,14 +1433,14 @@ void MeshAssemblyBlockCode::updateMsgRate() {
 
 int MeshAssemblyBlockCode::sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
                                        Time t0,Time dt) {
-    // OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl   ;
+    OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl   ;
     // updateMsgRate();
     return BlockCode::sendMessage(msg, dest, t0, dt);
 }
 
 int MeshAssemblyBlockCode::sendMessage(Message *msg,P2PNetworkInterface *dest,
                                        Time t0,Time dt) {
-    // OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl;
+    OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl;
     // updateMsgRate();
     return BlockCode::sendMessage(msg, dest, t0, dt);
 }
