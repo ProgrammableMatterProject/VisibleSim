@@ -359,6 +359,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             rotating = false;
             step++;
             if (catom->position == targetPosition and not isOnEntryPoint(catom->position)) {
+                static int nbModulesInShape = 0;
+                nbModulesInShape++;
+
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
                 catom->setColor(ruleMatcher->getColorForPosition(norm(catom->position)));
 
@@ -398,13 +401,15 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     and // catom is S_RZ
                     ruleMatcher->getComponentForPosition(
                         catom->position - coordinatorPos) == S_RevZ) {
-                    int ts = round(getScheduler()->now()
-                                   / ((Rotations3D::ANIMATION_DELAY *
-                                       Rotations3D::rotationDelayMultiplier +
-                                       Rotations3D::COM_DELAY) + 20128));
+                    int ts = round(getScheduler()->now() / getRoundDuration());
                     cerr << ruleMatcher->getPyramidDimension()
                          << "-PYRAMID CONSTRUCTION OVER AT TimeStep = "
                          << ts << " with " << lattice->nbModules << " modules" << endl;
+                    OUTPUT << "main: " << ruleMatcher->getPyramidDimension() << "\t"
+                           << ts << "\t"
+                           << lattice->nbModules  << "\t"
+                           << nbModulesInShape << endl;
+
                     constructionOver = true;
                 }
 
@@ -688,7 +693,7 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     coordinatorPos = catom->position;
 
     if (norm(catom->position) == Cell3DPosition(0,0,0)) t0 = scheduler->now();
-    OUTPUT << "root: " << (int)(round((scheduler->now() - t0) / getRoundDuration())) << "\t" << norm(catom->position) << endl;
+    // OUTPUT << "root: " << (int)(round((scheduler->now() - t0) / getRoundDuration())) << "\t" << norm(catom->position) << endl;
 
     // Determine how many branches need to grow from here
     // and initialize growth data structures
@@ -839,15 +844,15 @@ void MeshAssemblyBlockCode::initializeSandbox() {
     sandboxInitialized = true;
     // cout << "round duration: " << getRoundDuration() << endl;
 }
- 
+
 std::bitset<12> MeshAssemblyBlockCode::getMeshLocalNeighborhoodState() {
     bitset<12> bitset = {0};
     const vector<Cell3DPosition> localNeighborhood =
         Catoms3DWorld::getWorld()->lattice->getNeighborhood(catom->position);
-        
+
     for (const Cell3DPosition& nPos : localNeighborhood) {
         P2PNetworkInterface *itf = catom->getInterface(nPos);
-        bitset.set(catom->getAbsoluteDirection(nPos), 
+        bitset.set(catom->getAbsoluteDirection(nPos),
                    itf->isConnected() and ruleMatcher->isInMeshOrSandbox(norm(nPos)));
     }
 
@@ -1029,15 +1034,15 @@ void MeshAssemblyBlockCode::updateMsgRate() {
 
 int MeshAssemblyBlockCode::sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
                                        Time t0,Time dt) {
-    // OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl   ;
-    // updateMsgRate();
+    OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl   ;
+    updateMsgRate();
     return BlockCode::sendMessage(msg, dest, t0, dt);
 }
 
 int MeshAssemblyBlockCode::sendMessage(Message *msg,P2PNetworkInterface *dest,
                                        Time t0,Time dt) {
-    // OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl;
-    // updateMsgRate();
+    OUTPUT << "nbMessages:\t" << round(scheduler->now() / getRoundDuration()) << "\t" << ++nbMessages << endl;
+    updateMsgRate();
     return BlockCode::sendMessage(msg, dest, t0, dt);
 }
 
