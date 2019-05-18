@@ -132,8 +132,8 @@ void Scheduler::trace(string message, bID id,const Color &color) {
         mutex_trace.unlock();
     }
 
-    OUTPUT.precision(6);
-    OUTPUT << fixed << (double)(currentDate)/1000000 << " #" << id << ": " << message << endl;
+    // OUTPUT.precision(6);
+    // OUTPUT << fixed << (double)(currentDate)/1000000 << " #" << id << ": " << message << endl;
 }
 
 void Scheduler::start(int mode) {

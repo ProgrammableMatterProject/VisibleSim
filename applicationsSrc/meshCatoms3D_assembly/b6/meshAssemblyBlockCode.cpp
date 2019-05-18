@@ -522,7 +522,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                          << "-CUBE CONSTRUCTION OVER AT TimeStep = "
                          << ts << " with " << lattice->nbModules << " modules in total"
                          << " including " << nbModulesInShape << " in the shape" << endl;
-                    cout << "res: " << ruleMatcher->getCubeDimension() << " " << ts
+                    cout << "main: " << ruleMatcher->getCubeDimension() << " " << ts
                          << " " << lattice->nbModules << " "
                          << nbModulesInShape << endl;
 
