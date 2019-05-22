@@ -1086,10 +1086,10 @@ void MeshAssemblyBlockCode::log_send_message() const {
 
 int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
                                                    MeshComponent epl) const {
-    cout << "resourcesForTileThrough(" << pos
-         << ", " << ruleMatcher->component_to_string(epl) << "): " << endl;
+    // cout << "resourcesForTileThrough(" << pos
+    //      << ", " << ruleMatcher->component_to_string(epl) << "): " << endl;
     if (not ruleMatcher->isInPyramid(norm(pos))) {
-        cout << "\tnot in shape" << endl;
+        // cout << "\tnot in shape" << endl;
         return 0;
     }
 
@@ -1110,7 +1110,7 @@ int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
     BranchIndex bi = ruleMatcher->getBranchForEPL(epl);
     MeshComponent eplAlt = ruleMatcher->getTargetEPLComponentForBranch(bi);
 
-    cout << "\tcount: " << count << endl;
+    // cout << "\tcount: " << count << endl;
 
     return count + resourcesForTileThrough(denorm(ruleMatcher->getTileRootAtEndOfBranch(
                                                       norm(pos), bi)), eplAlt);
