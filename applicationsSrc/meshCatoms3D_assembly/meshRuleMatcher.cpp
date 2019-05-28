@@ -678,7 +678,7 @@ const Color& MeshRuleMatcher::getColorForPosition(const Cell3DPosition& pos) con
         case Coordinator: return GREEN;
         case Support: return YELLOW;
         case FreeAgent: return ORANGE;
-        case ActiveBeamTip: return RED;
+        case ActiveBeamTip: return BLUE;
         case PassiveBeam: return BLUE;
     }
 

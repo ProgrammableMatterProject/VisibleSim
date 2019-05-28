@@ -275,21 +275,29 @@ void Rotations3D::init(const Matrix& m) {
 }
 
 
-void Rotations3D::exportMatrix(const Matrix& m) const {
-//#define ROTATION_STEP_MATRIX_EXPORT
+void Rotations3D::exportMatrix(const Matrix& m) {
+#define ROTATION_STEP_MATRIX_EXPORT
 #ifdef ROTATION_STEP_MATRIX_EXPORT
-    // Catoms3DBlock* block = static_cast<Catoms3DBlock*>
-    //     (BaseSimulator::getWorld()->getBlockById(catomId));
-    // block->blockCode->onBlockSelected();
 
-    OUTPUT << scheduler->now() << "|";
-    OUTPUT << catomId << "|";
-    OUTPUT << "(matrix3 "
-           << "[" << m[0] << "," << m[4] << "," << m[8] << "] "
-           << "[" << m[1] << "," << m[5] << "," << m[9] << "] "
-           << "[" << m[2] << "," << m[6] << "," << m[10] << "] "
-           << "[" << m[3] << "," << m[7] << "," << m[11] << "])"
-           << endl;
+    Catoms3DBlock* block = static_cast<Catoms3DBlock*>
+        (BaseSimulator::getWorld()->getBlockById(catomId));
+
+    if ((exportMatrixCount % 2) == 0 or exportMatrixCount == 40) {
+        OUTPUT << getScheduler()->now() << "|";
+
+        block->blockCode->onBlockSelected();
+
+        OUTPUT << catomId << "|";
+
+        OUTPUT << "(matrix3 "
+               << "[" << m.m[0] << "," << m.m[4] << "," << m.m[8] << "] "
+               << "[" << m.m[1] << "," << m.m[5] << "," << m.m[9] << "] "
+               << "[" << m.m[2] << "," << m.m[6] << "," << m.m[10] << "] "
+               << "[" << m.m[3] << "," << m.m[7] << "," << m.m[11] << "])"
+               << endl;
+    }
+
+    exportMatrixCount++;
 #endif
 }
 

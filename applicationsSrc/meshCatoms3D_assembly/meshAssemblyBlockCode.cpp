@@ -66,8 +66,8 @@ MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
 
 void MeshAssemblyBlockCode::onBlockSelected() {
     // if (catom->blockId == 1) {
-    //     cout << "Modules in system: " << lattice->nbModules << endl;
-    //     cout << "MAX: " << X_MAX << ", " << Y_MAX << ", " << Z_MAX << endl;
+    //     // cout << "Modules in system: " << lattice->nbModules << endl;
+    //     // cout << "MAX: " << X_MAX << ", " << Y_MAX << ", " << Z_MAX << endl;
     //     for (int x = 0; x < (int)X_MAX + meshSeedPosition[0]; x++) {
     //         for (int y = 0; y < (int)Y_MAX + meshSeedPosition[1]; y++) {
     //             for (int z = 0; z < (int)Z_MAX + meshSeedPosition[2]; z++) {
@@ -85,86 +85,107 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     //     }
     // }
 
-    // Debug:
-    // (1) Print details of branch growth plan and previous round
-    if (role == Coordinator) {
-        cout << "Growth Plan: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << catomsReqByBranch[i] << ", ";
-        cout << " ]" << endl;
-
-        // cout << "Last Round: [ ";
-        // for (int i = 0; i < 6; i++)
-        //     cout << fedCatomOnLastRound[i] << ", ";
-        // cout << " ]" << endl;
-
-        cout << "Open Positions: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << endl << "\t\t  "
-                 <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
-        cout << " ]" << endl;
-
-        cout << "branchTime: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << branchTime[i] << ", ";
-        cout << " ]" << endl;
-
-        cout << "feedBranch: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << feedBranch[i] << ", ";
-        cout << " ]" << endl;
-
-        cout << "targetLevel: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << targetLevel[i] << ", ";
-        cout << " ]" << endl;
-
-        // cout << "Target for Entry Points: [ ";
-        // for (int i = 0; i < 8; i++)
-        //     cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
-        // cout << " ]" << endl;
-
-        cout << "itCounter: " << itCounter << endl;
-
-        // for (int i = 0; i < N_BRANCHES; i++) {
-        //     cout << "shouldGrowPyramidBranch(: " << i << ") " <<
-        //         ruleMatcher->shouldGrowPyramidBranch(norm(catom->position), (BranchIndex)i)
-        //          << endl;
-        // }
-
-        // for (int i = 0; i < N_BRANCHES; i++) {
-        //     cout << "tileRootAtEndOfBranch(: " << i << ") " <<
-        //         denorm(ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position), (BranchIndex)i))
-        //          << endl;
-        // }
-
-    }
-
-    // catom->setColor(debugColorIndex++);
-
-    cout << "branch: " << branch << endl;
-    cout << "coordinatorPos: " << coordinatorPos << endl;
-    cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
-    cout << "role: " << role << endl;
-    cout << "localNeighborhood: " << catom->getLocalNeighborhoodState() << endl;
-    Cell3DPosition nextHop;
-    matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
-                    targetPosition, coordinatorPos, step, nextHop);
-    cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
-    cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
-
-    // cout << "Possible Rotations: " << endl;
-    // const vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> allRotations =
-    //     Catoms3DMotionEngine::getAllRotationsForModule(catom);
-
-    // for (const auto& rotation : allRotations) {
-    //         cout << *rotation.first << " --> " << rotation.second << endl;
+    // Cell3DPosition pos;
+    // for (auto &pair : world->mapGlBlocks) {
+    //     Catoms3DGlBlock* c3dgl = static_cast<Catoms3DGlBlock*>(pair.second);
+    //     OUTPUT << pair.first << "|";
+    //     Matrix m = c3dgl->mat;
+    //     OUTPUT << "(matrix3 "
+    //            << "[" << m.m[0] << "," << m.m[4] << "," << m.m[8] << "] "
+    //            << "[" << m.m[1] << "," << m.m[5] << "," << m.m[9] << "] "
+    //            << "[" << m.m[2] << "," << m.m[6] << "," << m.m[10] << "] "
+    //            << "[" << m.m[3] << "," << m.m[7] << "," << m.m[11] << "])"
+    //            << endl;
     // }
 
-    // cout << "isOnEntryPoint: " << isOnEntryPoint(catom->position) << endl;
-    // cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
-    // cout << "isOnOppXBorder: " << ruleMatcher->isOnXOppBorder(norm(catom->position)) << endl;
-    // cout << "isOnOppYBorder: " << ruleMatcher->isOnYOppBorder(norm(catom->position)) << endl;
+    // // (1) Print details of branch growth plan and previous round
+    // if (role == Coordinator) {
+    //     cout << "Growth Plan: [ ";
+    //     for (int i = 0; i < 6; i++)
+    //         cout << catomsReqByBranch[i] << ", ";
+    //     cout << " ]" << endl;
+
+    //     // cout << "Last Round: [ ";
+    //     // for (int i = 0; i < 6; i++)
+    //     //     cout << fedCatomOnLastRound[i] << ", ";
+    //     // cout << " ]" << endl;
+
+    //     cout << "Open Positions: [ ";
+    //     for (int i = 0; i < 6; i++)
+    //         cout << endl << "\t\t  "
+    //              <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
+    //     cout << " ]" << endl;
+
+    //     cout << "branchTime: [ ";
+    //     for (int i = 0; i < 6; i++)
+    //         cout << branchTime[i] << ", ";
+    //     cout << " ]" << endl;
+
+    //     cout << "feedBranch: [ ";
+    //     for (int i = 0; i < 6; i++)
+    //         cout << feedBranch[i] << ", ";
+    //     cout << " ]" << endl;
+
+    //     cout << "targetLevel: [ ";
+    //     for (int i = 0; i < 6; i++)
+    //         cout << targetLevel[i] << ", ";
+    //     cout << " ]" << endl;
+
+    //     // cout << "Target for Entry Points: [ ";
+    //     // for (int i = 0; i < 8; i++)
+    //     //     cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
+    //     // cout << " ]" << endl;
+
+    //     cout << "itCounter: " << itCounter << endl;
+
+    //     // for (int i = 0; i < N_BRANCHES; i++) {
+    //     //     cout << "shouldGrowPyramidBranch(: " << i << ") " <<
+    //     //         ruleMatcher->shouldGrowPyramidBranch(norm(catom->position), (BranchIndex)i)
+    //     //          << endl;
+    //     // }
+
+    //     // for (int i = 0; i < N_BRANCHES; i++) {
+    //     //     cout << "tileRootAtEndOfBranch(: " << i << ") " <<
+    //     //         denorm(ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position), (BranchIndex)i))
+    //     //          << endl;
+    //     // }
+
+    // }
+
+    // // catom->setColor(debugColorIndex++);
+
+    // // cout << "branch: " << branch << endl;
+    // // cout << "coordinatorPos: " << coordinatorPos << endl;
+    // // cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
+    // // cout << "role: " << role << endl;
+    // // cout << "localNeighborhood: " << catom->getLocalNeighborhoodState() << endl;
+    // // Cell3DPosition nextHop;
+    // // matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
+    // //                 targetPosition, coordinatorPos, step, nextHop);
+    // // cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
+    // // cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
+
+    // // cout << "Possible Rotations: " << endl;
+    // // const vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> allRotations =
+    // //     Catoms3DMotionEngine::getAllRotationsForModule(catom);
+
+    // // for (const auto& rotation : allRotations) {
+    // //         cout << *rotation.first << " --> " << rotation.second << endl;
+    // // }
+
+    // // cout << "isOnEntryPoint: " << isOnEntryPoint(catom->position) << endl;
+    // // cout << X_MAX << " " << Y_MAX << " " << Z_MAX << endl;
+    // // cout << "isOnOppXBorder: " << ruleMatcher->isOnXOppBorder(norm(catom->position)) << endl;
+    // // cout << "isOnOppYBorder: " << ruleMatcher->isOnYOppBorder(norm(catom->position)) << endl;
+
+    // if (coordinatorPos == Cell3DPosition(3,3,9)
+    //     or (isInRange(catom->position[0], 3, 9) and isInRange(catom->position[1], 3, 9)
+    //         and isInRange(catom->position[2], 2, 9))) {
+        int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
+        VS_ASSERT(mc != -1);
+        // OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
+        OUTPUT << ruleMatcher->component_to_string(static_cast<MeshComponent>(mc)) << "|";
+    // }
 }
 
 void MeshAssemblyBlockCode::startup() {

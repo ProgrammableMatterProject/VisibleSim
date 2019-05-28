@@ -53,9 +53,10 @@ public :
 */
     bool nextStep(Matrix &m);
     void getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation);
-    void exportMatrix(const Matrix& m) const;
+    void exportMatrix(const Matrix& m);
 
 protected :
+    short exportMatrixCount = 0;
     bool firstRotation;
     short step;
     Matrix initialMatrix,finalMatrix;
