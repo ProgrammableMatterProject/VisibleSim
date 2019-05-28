@@ -232,8 +232,8 @@ bool MeshRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
 
 bool MeshRuleMatcher::isInSandbox(const Cell3DPosition& pos) const {
     // add -2 for new tile construction using modules below R
-    return isInMesh(pos) and isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2 - 1)
-        and isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2 - 1)
+    return isInMesh(pos) and isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2)
+        and isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2)
         and isInRange(pos[2], -3, 0);
 }
 
@@ -931,11 +931,13 @@ const Cell3DPosition MeshRuleMatcher::getTargetEPLPositionForBranch(BranchIndex 
 
 const Cell3DPosition
 MeshRuleMatcher::getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
-                                          BranchIndex bi) const {
+                                          BranchIndex bi,
+                                          bool upward) const {
     if (not isInMesh(trRef)) return trRef;
     // cout << "trRef: " << trRef << " - bi: " << bi << " - res: "
     //      << trRef + B * getBranchUnitOffset(bi) << endl;
-    return trRef + B * getBranchUnitOffset(bi);
+    return upward ? trRef + B * getBranchUnitOffset(bi)
+        : trRef - B * getBranchUnitOffset(bi);
 }
 
 bool MeshRuleMatcher::isOnXPyramidBorder(const Cell3DPosition& pos) const {
@@ -1022,8 +1024,8 @@ short MeshRuleMatcher::resourcesForCubeBranch(const Cell3DPosition& pos,
 }
 
 bool MeshRuleMatcher::cubeTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
-                                                           BranchIndex tipB,
-                                                           BranchIndex growthB) const {
+                                                        BranchIndex tipB,
+                                                        BranchIndex growthB) const {
     if (not isInMesh(pos) or not isTileRoot(pos)) return false;
 
     const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
@@ -1032,4 +1034,46 @@ bool MeshRuleMatcher::cubeTRAtBranchTipShouldGrowBranch(const Cell3DPosition& po
 
 int MeshRuleMatcher::getCubeDimension() const {
     return (Z_MAX / B) + 1;
+}
+
+
+short MeshRuleMatcher::
+getNbIncidentVerticalBranches(const Cell3DPosition& pos,
+                              function<bool(const Cell3DPosition&)> lambda =
+                              [](const Cell3DPosition& pos) { return true; }) const {
+    // Invalid input
+    if (not isTileRoot(pos)) return -1;
+
+    // Tile is right above sandbox
+    if (pos[2] == 0) return 4;
+
+    // Otherwise, count
+    short count = 0;
+    for (int bi = 0; bi < XBranch; bi++)
+        if (hasIncidentBranch(pos, (BranchIndex)bi, lambda)) ++count;
+
+    return count;
+}
+
+bool MeshRuleMatcher::
+hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
+                  function<bool(const Cell3DPosition&)> lambda =
+                  [](const Cell3DPosition& pos) { return true; }) const {
+    // Invalid input
+    if (not isTileRoot(pos)) return false;
+
+    // TR has incident branch is parent tile TR exists and is in object
+    const Cell3DPosition& trIVB = getTileRootAtEndOfBranch(pos, bi, false);
+    return isInGrid(trIVB) and lambda(trIVB);
+}
+
+short MeshRuleMatcher::getNbIncidentVerticalCubeBranches(const Cell3DPosition& pos) const{
+    return getNbIncidentVerticalBranches(pos, [this](const Cell3DPosition& p){
+                                                  return isInCube(p);
+                                              }
+        );
+}
+
+bool MeshRuleMatcher::hasIncidentCubeBranch(const Cell3DPosition& pos, BranchIndex bi) const{
+    return hasIncidentBranch(pos, bi, [this](const Cell3DPosition& p){return isInCube(p);});
 }

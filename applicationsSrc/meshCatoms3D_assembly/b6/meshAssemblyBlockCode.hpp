@@ -228,9 +228,12 @@ public:
     /**
      * Dynamically builds the construction queue based on the position of the tile.
      */
-    void buildConstructionQueue();
-    void buildConstructionQueueWithFourIncidentBranches();
-    void buildConstructionQueueWithFewerIncidentBranches();
+    deque<pair<MeshComponent, MeshComponent>>
+    buildConstructionQueue(const Cell3DPosition& pos) const;
+    deque<pair<MeshComponent, MeshComponent>>
+    buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const;
+    deque<pair<MeshComponent, MeshComponent>>
+    buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const;
 
     /**
      * Indicates whether an EPL pivot module has received a TileInsertionReady message
@@ -543,6 +546,14 @@ y the module
      * @return true pos1 and pos2 are on the same branch of the same tile
      */
     bool areOnTheSameBranch(const Cell3DPosition& pos1, const Cell3DPosition& pos2) const;
+
+    /*********************************************************************/
+    /*********************** NO FLOODING STUFF ***************************/
+    /*********************************************************************/
+
+    std::map<MeshComponent, int> sandboxResourcesRequirement; //!< returns the number of modules to be spawned by the current coordinator at the sandbox level on epl MeshComponent
+
+    int resourcesForTileThrough(const Cell3DPosition& pos, MeshComponent epl) const;
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

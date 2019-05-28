@@ -294,11 +294,13 @@ public:
      *  at posiion trRef
      * @param trRef position of the tile root relative to which the answer is asked
      * @param bi branch to evaluate
+     * @param upward whether to go up or down from tile root, true = up
      * @return the position of the tile root at the end of branch bi for tile root
      *  at posiion trRef
      */
     const Cell3DPosition getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
-                                                  BranchIndex bi) const;
+                                                  BranchIndex bi,
+                                                  bool upward = true) const;
 
     /*********************************************************************/
     /*************************** PYRAMID STUFF ***************************/
@@ -387,6 +389,30 @@ public:
      * @return dimension of the h-cube, or -1 if undefined
      */
     int getCubeDimension() const;
+
+    /**
+     * Indicates the number of incident branches for tile whose TR is at pos
+     * @param pos position of concerned TR
+     * @param lambda a filtering function that returns whether a position is within the
+     *  scaffold for a particular type of object
+     * @return the number of vertical branches incident to the specified tile,
+     *  or -1 if the input is invalid
+     */
+    short getNbIncidentVerticalBranches(const Cell3DPosition& pos,
+                                        function<bool(const Cell3DPosition&)> lambda) const;
+
+    short getNbIncidentVerticalCubeBranches(const Cell3DPosition& pos) const;
+
+    /**
+     * Indicates whether a tile has an incident branch on index bi
+     * @param pos position of a tile root in the scaffold
+     * @param bi branch to evaluate
+     * @return true if pos is a TR position and TR at lower end of branch bi exists
+     */
+    bool hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
+                           function<bool(const Cell3DPosition&)> lambda) const;
+
+    bool hasIncidentCubeBranch(const Cell3DPosition& pos, BranchIndex bi) const;
 };
 
 }
