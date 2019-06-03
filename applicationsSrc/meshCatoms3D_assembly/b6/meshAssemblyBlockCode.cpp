@@ -124,6 +124,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                 //     lattice->highlightCell(pos, CYAN);
                 // else if (ruleMatcher->isOnYCubeBorder(norm(pos)))
                 //     lattice->highlightCell(pos, MAGENTA);
+
     //         }
     //     }
     // }
@@ -161,7 +162,6 @@ void MeshAssemblyBlockCode::onBlockSelected() {
 
 
         cout << "NbIncidentVerticalCubeBranches: " << ruleMatcher->getNbIncidentVerticalCubeBranches(norm(catom->position)) << endl;
-
     }
 
     if (ruleMatcher->isTileRoot(norm(catom->position))) {
@@ -1590,10 +1590,10 @@ bool MeshAssemblyBlockCode::areOnTheSameBranch(const Cell3DPosition& pos1,
 
 int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
                                                    MeshComponent epl) const {
-    cout << "resourcesForTileThrough(" << pos
-         << ", " << ruleMatcher->component_to_string(epl) << "): " << endl;
+    // cout << "resourcesForTileThrough(" << pos
+    //      << ", " << ruleMatcher->component_to_string(epl) << "): " << endl;
     if (not ruleMatcher->isInCube(norm(pos))) {
-        cout << "\tnot in shape" << endl;
+        // cout << "\tnot in shape" << endl;
         return 0;
     }
 
@@ -1604,49 +1604,48 @@ int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
         if (pair.second == epl) relevantComponents.push_back(pair.first);
 
     short count = 0;
-    // if ( (epl == RevZ_EPL and
-    //      or // Y/OPPX Corner
-    //      (epl == LZ_EPL and ruleMatcher->shouldGrowCubeBranch(norm(pos), LZBranch)
-    //       and ruleMatcher->isInCube(
-    //           ruleMatcher->getTileRootAtEndOfBranch(norm(pos), LZBranch))
-    //       and ruleMatcher->getNbIncidentVerticalCubeBranches(ruleMatcher->getTileRootAtEndOfBranc), [this](const Cell3DPosition& p){return ruleMatcher->isInCube(p);}) == 1
-    //       and ruleMatcher->hasIncidentBranch(ruleMatcher->getTileRootAtEndOfBranch(norm(pos), LZBranch), LZBranch, [this](const Cell3DPosition& p){return ruleMatcher->isInCube(p);}))
-    //      or // OPPY/X Corner
-    //      (epl == RZ_EPL and ruleMatcher->shouldGrowCubeBranch(norm(pos), RZBranch)
-    //       and ruleMatcher->isInCube(
-    //           ruleMatcher->getTileRootAtEndOfBranch(norm(pos), RZBranch))
-    //       and ruleMatcher->getNbIncidentVerticalCubeBranches(ruleMatcher->getTileRootAtEndOfBranc), [this](const Cell3DPosition& p){return ruleMatcher->isInCube(p);}) == 1
-    //       and ruleMatcher->hasIncidentBranch(ruleMatcher->getTileRootAtEndOfBranch(norm(pos), RZBranch), RZBranch, [this](const Cell3DPosition& p){return ruleMatcher->isInCube(p);}))
 
-    //      or // OPPY Border
-    //      (epl == RZ_EPL and ruleMatcher->shouldGrowCubeBranch(norm(pos), RZBranch)
-    //       and ruleMatcher->isInCube(
-    //           ruleMatcher->getTileRootAtEndOfBranch(norm(pos), RZBranch))
-    //       and ruleMatcher->getNbIncidentVerticalCubeBranches(ruleMatcher->getTileRootAtEndOfBranc), [this](const Cell3DPosition& p){return ruleMatcher->isInCube(p);}) == 2
-    //       and ruleMatcher->hasIncidentBranch(ruleMatcher->getTileRootAtEndOfBranch(norm(pos), ZBranch), ZBranch, [this](const Cell3DPosition& p){return ruleMatcher->isInCube(p);})
-    //          )
-    //      or
-    //      (epl == LZ_EPL and ruleMatcher->shouldGrowCubeBranch(norm(pos), LZBranch)
-    //       and ruleMatcher->isInCube(
-    //           ruleMatcher->getTileRootAtEndOfBranch(norm(pos), LZBranch))
-    //       and ruleMatcher->getNbIncidentVerticalCubeBranches(ruleMatcher->getTileRootAtEndOfBranc), [this](const Cell3DPosition& p){return ruleMatcher->isInCube(p);}) == 2
-    //       and ruleMatcher->hasIncidentBranch(ruleMatcher->getTileRootAtEndOfBranch(norm(pos), ZBranch), ZBranch, [this](const Cell3DPosition& p){return ruleMatcher->isInCube(p);})
-    //          )
-    //     ) {
-    if ( (epl == Z_EPL and pos[2] > meshSeedPosition[2]
-          and ruleMatcher->hasIncidentCubeBranch(norm(pos), RevZBranch))
-        or (epl != Z_EPL
-            and ( (epl == RZ_EPL
-                   and ruleMatcher->getNbIncidentVerticalCubeBranches(norm(pos)) == 1
-                   and ruleMatcher->hasIncidentCubeBranch(norm(pos), RZBranch))
-                  or
-                  (epl == LZ_EPL
-                   and ruleMatcher->getNbIncidentVerticalCubeBranches(norm(pos)) == 2
-                   and ruleMatcher->hasIncidentCubeBranch(norm(pos), RZBranch)
-                   and ruleMatcher->hasIncidentCubeBranch(norm(pos), ZBranch))
-                ))
-        ) {
-        cout << "\tshouldSendTR " << 1 << endl;
+    const Cell3DPosition& trTip =
+        ruleMatcher->getTileRootAtEndOfBranch(norm(pos),ruleMatcher->getBranchForEPL(epl));
+    if ( (epl == RevZ_EPL and ruleMatcher->isInCube(trTip)
+          and ruleMatcher->shouldGrowCubeBranch(norm(pos), RevZBranch)
+          and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 4)
+
+
+         or (epl == RevZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), RevZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 1)
+
+         or (epl == LZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), LZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 1)
+
+         or (epl == RZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), RZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 1)
+
+         or (epl == Z_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), ZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 1)
+
+         or (epl == RevZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), RevZBranch)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), LZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
+
+         or (epl == LZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), ZBranch)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), LZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
+
+         or (epl == RZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), ZBranch)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), RZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
+
+         ) {
+
+        // cout << "\tshouldSendTR " << 1 << endl;
         count += 1; // TileRoot to be sent through RevZBranch
     }
 
@@ -1659,7 +1658,7 @@ int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
     BranchIndex bi = ruleMatcher->getBranchForEPL(epl);
     MeshComponent eplAlt = ruleMatcher->getTargetEPLComponentForBranch(bi);
 
-    cout << "\tcount: " << count << endl;
+    // cout << "\tcount: " << count << endl;
 
     return count + resourcesForTileThrough(denorm(ruleMatcher->getTileRootAtEndOfBranch(
                                                       norm(pos), bi)), eplAlt);
