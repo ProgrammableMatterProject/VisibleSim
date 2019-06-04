@@ -1611,7 +1611,6 @@ int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
           and ruleMatcher->shouldGrowCubeBranch(norm(pos), RevZBranch)
           and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 4)
 
-
          or (epl == RevZ_EPL and ruleMatcher->isInCube(trTip)
              and ruleMatcher->shouldGrowCubeBranch(norm(pos), RevZBranch)
              and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 1)
@@ -1634,13 +1633,13 @@ int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
              and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
 
          or (epl == LZ_EPL and ruleMatcher->isInCube(trTip)
-             and ruleMatcher->shouldGrowCubeBranch(norm(pos), ZBranch)
-             and ruleMatcher->shouldGrowCubeBranch(norm(pos), LZBranch)
+             and ruleMatcher->shouldGrowCubeBranch(trTip,RZBranch)
+             and ruleMatcher->shouldGrowCubeBranch(trTip, RevZBranch)
              and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
 
          or (epl == RZ_EPL and ruleMatcher->isInCube(trTip)
-             and ruleMatcher->shouldGrowCubeBranch(norm(pos), ZBranch)
-             and ruleMatcher->shouldGrowCubeBranch(norm(pos), RZBranch)
+             and ruleMatcher->shouldGrowCubeBranch(trTip, LZBranch)
+             and ruleMatcher->shouldGrowCubeBranch(trTip, RevZBranch)
              and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
 
          ) {
