@@ -27,7 +27,8 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
     Cell3DPosition nextHopPos = Cell3DPosition(-10,-10,-10);
 
     // Routing catom must be part of the scaffold
-    VS_ASSERT(mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(mabc.catom->position)));
+    // VS_ASSERT(mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(mabc.catom->position)));
+    if (not mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(mabc.catom->position)));
 
     // Attempt direct delivery
     P2PNetworkInterface *nextHopItf = mabc.catom->getInterface(dstPos);
@@ -307,6 +308,9 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         tPos = mabc.catom->position + MeshRuleMatcher::getTargetEPLPositionForBranch(bi);
     }
 
+    if (mabc.NO_FLOODING)
+        mabc.sandboxResourcesRequirement.find(epl)->second--;
+
     // Send to requesting catom
     VS_ASSERT(destinationInterface->isConnected());
     mabc.sendMessage(new ProvideTargetCellMessage(dstPos, srcPos, tPos),
@@ -339,6 +343,10 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                     int ncBi = MeshRuleMatcher::
                         getBranchIndexForMeshComponent(ncp.first);
                     if (ncBi != -1) mabc.catomsReqByBranch[ncBi]--;
+
+                    // Update sandbox requirements
+                    if (mabc.NO_FLOODING)
+                        mabc.sandboxResourcesRequirement.find(epl)->second--;
 
                     // Send
                     VS_ASSERT(tipItf and tipItf->isConnected());
@@ -375,6 +383,16 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
+
+    // Attempt direct delivery
+    P2PNetworkInterface *nextHopItf = mabc.catom->getInterface(dstPos);
+    if (nextHopItf) {
+        if (nextHopItf->isConnected())
+            mabc.sendMessage(this->clone(), nextHopItf, MSG_DELAY_MC, 0);
+        // else no module found on EPL, message is not needed
+        return;
+    }
+
 
     if (mabc.catom->position != dstPos) {
         route(bc); return;

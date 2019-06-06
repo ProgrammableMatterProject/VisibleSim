@@ -124,18 +124,20 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                 //     lattice->highlightCell(pos, CYAN);
                 // else if (ruleMatcher->isOnYCubeBorder(norm(pos)))
                 //     lattice->highlightCell(pos, MAGENTA);
+
     //         }
     //     }
     // }
+
 
     // Debug:
     // (1) Print details of branch growth plan and previous round
     cout << endl << "--- PRINT MODULE " << *catom << "---" << endl;
     if (role == Coordinator) {
-        cout << "Growth Plan: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << catomsReqByBranch[i] << ", ";
-        cout << " ]" << endl;
+        // cout << "Growth Plan: [ ";
+        // for (int i = 0; i < 6; i++)
+        //     cout << catomsReqByBranch[i] << ", ";
+        // cout << " ]" << endl;
 
         cout << "Construction Queue: [ " << endl;
         cout << "|   Component   |   EPL  |" << endl << endl;
@@ -144,13 +146,29 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                  << ruleMatcher->component_to_string(pair.second) << " }" << endl;
         }
         cout << "]" << endl;
+
+        cout << "sandboxResourcesRequirement: " << endl;
+        for (int bi = 0; bi < XBranch; bi++)
+            cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
+                sandboxResourcesRequirement.find(
+                    ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))->second
+                 << endl;
+
+        cout << "ResourcesForTileThrough: " << endl;
+        for (int bi = 0; bi < XBranch; bi++)
+            cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
+                resourcesForTileThrough(catom->position, ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))
+                 << endl;
+
+
+        cout << "NbIncidentVerticalCubeBranches: " << ruleMatcher->getNbIncidentVerticalCubeBranches(norm(catom->position)) << endl;
     }
 
     if (ruleMatcher->isTileRoot(norm(catom->position))) {
-        for (int i = 0; i < N_INC_BRANCHES; i++)
-            cout << "hasIncidentBranch(" << i << "): "
-                 << hasIncidentBranch((BranchIndex)i) << endl;
-        cout << "numIncidentVerticalBranches: " << numIncidentVerticalBranches << endl;
+    //     for (int i = 0; i < N_INC_BRANCHES; i++)
+    //         cout << "hasIncidentBranch(" << i << "): "
+    //              << hasIncidentBranch((BranchIndex)i) << endl;
+    //     cout << "numIncidentVerticalBranches: " << numIncidentVerticalBranches << endl;
 
         if (not constructionQueue.empty())
             cout << "nextPos: "
@@ -159,50 +177,50 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         else
             cout << "nextPos: " << "NULL" << endl;
 
-        for (int i = 0; i < N_BRANCHES; i++) {
-            BranchIndex bi = (BranchIndex)i;
-            cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
-                 << ruleMatcher->resourcesForCubeBranch(norm(catom->position), bi) << endl;
-        }
+    //     for (int i = 0; i < N_BRANCHES; i++) {
+    //         BranchIndex bi = (BranchIndex)i;
+    //         cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
+    //              << ruleMatcher->resourcesForCubeBranch(norm(catom->position), bi) << endl;
+    //     }
     }
 
-    if (ruleMatcher->isInMeshOrSandbox(norm(catom->position))) {
-        if (not ruleMatcher->isTileRoot(norm(catom->position))) {
-            cout << "branch: " << ruleMatcher->branch_to_string(branch)
-                 << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
-        }
+    // if (ruleMatcher->isInMeshOrSandbox(norm(catom->position))) {
+    //     if (not ruleMatcher->isTileRoot(norm(catom->position))) {
+    //         cout << "branch: " << ruleMatcher->branch_to_string(branch)
+    //              << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
+    //     }
 
-        cout << "coordinatorPos: " << coordinatorPos << endl;
-        cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(coordinatorPos) << endl;
-        cout << "isSupportModule: " << ruleMatcher->isSupportModule(sbnorm(catom->position)) << endl;
-        cout << "tileRootPosForMeshPos: " << getTileRootPosition(catom->position) << endl;
-    } else {
-        cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)))) << endl;
-    }
+    //     cout << "coordinatorPos: " << coordinatorPos << endl;
+    //     cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(coordinatorPos) << endl;
+    //     cout << "isSupportModule: " << ruleMatcher->isSupportModule(sbnorm(catom->position)) << endl;
+    //     cout << "tileRootPosForMeshPos: " << getTileRootPosition(catom->position) << endl;
+    // } else {
+    //     cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)))) << endl;
+    // }
 
-    cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
-    cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
-    cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
-    Cell3DPosition nextHop;
-    matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
-                    targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
-    cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
+    // cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
+    // cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
+    // cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
+    // Cell3DPosition nextHop;
+    // matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
+    //                 targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
+    // cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     cout << "isInGrid: " << ruleMatcher->isInGrid(norm(catom->position)) << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
-    cout << "targetPosition: " << targetPosition;
-    if (targetPosition != Cell3DPosition(0,0,0)
-        and ruleMatcher->isInMesh(norm(targetPosition))
-        and MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
-        cout << "[" << MeshRuleMatcher::component_to_string(
-            static_cast<MeshComponent>(MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
-    cout << endl;
+    // cout << "targetPosition: " << targetPosition;
+    // if (targetPosition != Cell3DPosition(0,0,0)
+    //     and ruleMatcher->isInMesh(norm(targetPosition))
+    //     and MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
+    //     cout << "[" << MeshRuleMatcher::component_to_string(
+    //         static_cast<MeshComponent>(MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
+    // cout << endl;
 
-    cout << "matchingLocalRule: " << matchingLocalRule << endl;
-    cout << "greenLightIsOn: " << greenLightIsOn << endl;
-    cout << "pivotPosition: " << pivotPosition << endl;
-    cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
-    cout << "--- END " << *catom << "---" << endl;
+    // cout << "matchingLocalRule: " << matchingLocalRule << endl;
+    // cout << "greenLightIsOn: " << greenLightIsOn << endl;
+    // cout << "pivotPosition: " << pivotPosition << endl;
+    // cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
+    // cout << "--- END " << *catom << "---" << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -220,12 +238,12 @@ void MeshAssemblyBlockCode::startup() {
     // Need to initialize target light for sandbox modules at algorithm start
     if (ruleMatcher->isInSandbox(norm(catom->position))) {
         // EPLPivots will appear with a module on its EPL
-        if (ruleMatcher->isEPLPivotModule(norm(catom->position))) {
-            SET_GREEN_LIGHT(false);
-        } else {
+        // if (ruleMatcher->isEPLPivotModule(norm(catom->position))) {
+        //     SET_GREEN_LIGHT(false);
+        // } else {
         // All other modules should be green (set by default)
             SET_GREEN_LIGHT(true);
-        }
+        // }
 
     }
 
@@ -503,10 +521,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                 // Check algorithm termination
                 // Cube construction ending depends on parity of the dimension of the cube
-
                 int dimension = ruleMatcher->getCubeDimension();
                 int zmax = (dimension - 1) * B + meshSeedPosition[2];
                 int a = (dimension - 1) / 2;
+                // Last module is Z support of top level if odd
                 const Cell3DPosition &last = dimension % 2 == 0 ?
                     Cell3DPosition(a * B + B / 2 + meshSeedPosition[0],
                                    a * B + B / 2,
@@ -676,11 +694,12 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     if (catom->position[2] == meshSeedPosition[2]) {
                         feedIncidentBranches();
 
-                        if (not constructionOver)
+                        if (not constructionOver) {
                             getScheduler()->schedule(
                                 new InterruptionEvent(getScheduler()->now() +
                                                       (getRoundDuration()),
                                                       catom, IT_MODE_TILEROOT_ACTIVATION));
+                        }
                     }
                 } break;
 
@@ -899,10 +918,22 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     }
 
     // Initialize construction queue from here
-    buildConstructionQueue();
+    constructionQueue = buildConstructionQueue(catom->position);
 
     // NOT AN ASSUMPTION ANYMORE
     // for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]); //
+
+    if (NO_FLOODING) {
+        // Initialize Resources Allocation Requirements from sandbox
+        sandboxResourcesRequirement.insert(
+            make_pair(RevZ_EPL,resourcesForTileThrough(catom->position, RevZ_EPL)));
+        sandboxResourcesRequirement.insert(
+            make_pair(Z_EPL,resourcesForTileThrough(catom->position, Z_EPL)));
+        sandboxResourcesRequirement.insert(
+            make_pair(LZ_EPL,resourcesForTileThrough(catom->position, LZ_EPL)));
+        sandboxResourcesRequirement.insert(
+            make_pair(RZ_EPL,resourcesForTileThrough(catom->position, RZ_EPL)));
+    }
 
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
@@ -910,197 +941,241 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
                               catom, IT_MODE_TILEROOT_ACTIVATION));
 }
 
-void MeshAssemblyBlockCode::buildConstructionQueue() {
-    if (numIncidentVerticalBranches == 4) {
-        buildConstructionQueueWithFourIncidentBranches();
+deque<pair<MeshComponent, MeshComponent>> MeshAssemblyBlockCode::
+buildConstructionQueue(const Cell3DPosition& pos) const {
+    if (ruleMatcher->getNbIncidentVerticalCubeBranches(norm(pos)) == 4) {
+        return buildConstructionQueueWithFourIncidentBranches(pos);
     } else {
-        buildConstructionQueueWithFewerIncidentBranches();
+        return buildConstructionQueueWithFewerIncidentBranches(pos);
     }
 }
 
-void MeshAssemblyBlockCode::buildConstructionQueueWithFourIncidentBranches() {
-    if (catomsReqByBranch[OppYBranch] > 0) constructionQueue.push_back({ OPP_Y1, RevZ_EPL });
-    if (catomsReqByBranch[OppXBranch] > 0) constructionQueue.push_back({ OPP_X1, LZ_EPL });
+deque<pair<MeshComponent, MeshComponent>> MeshAssemblyBlockCode::
+buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const {
+    std::array<int, 6> catomsReqs = {-1,-1,-1,-1,-1,-1};
 
-    constructionQueue.push_back({ S_RZ, RZ_EPL});  // 0
-    constructionQueue.push_back({ S_LZ, LZ_EPL }); // 0
+    for (short bi = 0; bi < N_BRANCHES; bi++) {
+        catomsReqs[bi] = ruleMatcher->
+            resourcesForCubeBranch(norm(pos), (BranchIndex)bi);
+        if (catomsReqs[bi] == 0) catomsReqs[bi] = -1;
+    }
 
-    if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL }); // 1
-    if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL }); // 3
+    deque<pair<MeshComponent, MeshComponent>> deque;
 
-    constructionQueue.push_back({ S_Z, LZ_EPL }); // 4
-    constructionQueue.push_back({ S_RevZ, RZ_EPL }); // 4
+    std::function fn_isInCube = [this](const Cell3DPosition& p) {
+                                    return ruleMatcher->isInCube(p) ;
+                                };
 
-    if (catomsReqByBranch[OppYBranch] > 1) constructionQueue.push_back({ OPP_Y2, RevZ_EPL });
-    if (catomsReqByBranch[OppYBranch] > 2) constructionQueue.push_back({ OPP_Y3, RevZ_EPL });
-    if (catomsReqByBranch[OppYBranch] > 3) constructionQueue.push_back({ OPP_Y4, RevZ_EPL });
-    if (catomsReqByBranch[OppYBranch] > 4) constructionQueue.push_back({ OPP_Y5, RevZ_EPL });
+    if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RevZ_EPL });
+    if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
 
-    if (catomsReqByBranch[OppXBranch] > 1) constructionQueue.push_back({ OPP_X2, LZ_EPL });
-    if (catomsReqByBranch[OppXBranch] > 2) constructionQueue.push_back({ OPP_X3, LZ_EPL });
-    if (catomsReqByBranch[OppXBranch] > 3) constructionQueue.push_back({ OPP_X4, LZ_EPL });
-    if (catomsReqByBranch[OppXBranch] > 4) constructionQueue.push_back({ OPP_X5, LZ_EPL });
+    deque.push_back({ S_RZ, RZ_EPL});  // 0
+    deque.push_back({ S_LZ, LZ_EPL }); // 0
 
-    if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, LZ_EPL }); // 5
-    if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, RZ_EPL }); // 5
-    if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, LZ_EPL }); // 7
-    if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, RZ_EPL }); // 7
-    if (catomsReqByBranch[ZBranch] > 0) constructionQueue.push_back({ Z_1, Z_EPL }); // 8
-    if (catomsReqByBranch[RevZBranch] > 0) constructionQueue.push_back({ RevZ_1, RevZ_EPL }); // 8
-    if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, LZ_EPL }); // 9
-    if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, RZ_EPL }); // 9
-    if (catomsReqByBranch[ZBranch] > 1) constructionQueue.push_back({ Z_2, Z_EPL }); // 10
-    if (catomsReqByBranch[RevZBranch] > 1) constructionQueue.push_back({ RevZ_2, RevZ_EPL }); // 10
-    if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, LZ_EPL }); // 11
-    if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, RZ_EPL }); // 11
-    if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL }); // 12
-    if (catomsReqByBranch[RevZBranch] > 2) constructionQueue.push_back({ RevZ_3, RevZ_EPL }); // 12
-    if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL }); // 14
-    if (catomsReqByBranch[RevZBranch] > 3) constructionQueue.push_back({ RevZ_4, RevZ_EPL }); // 14
-    if (catomsReqByBranch[LZBranch] > 0) constructionQueue.push_back({ LZ_1, LZ_EPL }); // 14
-    if (catomsReqByBranch[RZBranch] > 0) constructionQueue.push_back({ RZ_1, RZ_EPL }); // 14
-    if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL }); // 16
-    if (catomsReqByBranch[RevZBranch] > 4) constructionQueue.push_back({ RevZ_5, RevZ_EPL }); // 16
-    if (catomsReqByBranch[LZBranch] > 1) constructionQueue.push_back({ LZ_2, LZ_EPL }); // 16
-    if (catomsReqByBranch[RZBranch] > 1) constructionQueue.push_back({ RZ_2, RZ_EPL }); // 16
-    if (catomsReqByBranch[LZBranch] > 2) constructionQueue.push_back({ LZ_3, LZ_EPL }); // 18
-    if (catomsReqByBranch[RZBranch] > 2) constructionQueue.push_back({ RZ_3, RZ_EPL }); // 18
-    if (catomsReqByBranch[LZBranch] > 3) constructionQueue.push_back({ LZ_4, LZ_EPL }); // 20
-    if (catomsReqByBranch[RZBranch] > 3) constructionQueue.push_back({ RZ_4, RZ_EPL }); // 20
-    if (catomsReqByBranch[LZBranch] > 4) constructionQueue.push_back({ LZ_5, LZ_EPL }); // 22
-    if (catomsReqByBranch[RZBranch] > 4) constructionQueue.push_back({ RZ_5, RZ_EPL }); // 22
+    if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL }); // 1
+    if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL }); // 3
+
+    deque.push_back({ S_Z, LZ_EPL }); // 4
+    deque.push_back({ S_RevZ, RZ_EPL }); // 4
+
+    if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RevZ_EPL });
+    if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RevZ_EPL });
+    if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RevZ_EPL });
+    if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RevZ_EPL });
+
+    if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, LZ_EPL });
+    if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, LZ_EPL });
+    if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, LZ_EPL });
+    if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, LZ_EPL });
+
+    if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL }); // 5
+    if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, RZ_EPL }); // 5
+    if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, LZ_EPL }); // 7
+    if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, RZ_EPL }); // 7
+    if (catomsReqs[ZBranch] > 0) deque.push_back({ Z_1, Z_EPL }); // 8
+    if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1, RevZ_EPL }); // 8
+    if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, LZ_EPL }); // 9
+    if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, RZ_EPL }); // 9
+    if (catomsReqs[ZBranch] > 1) deque.push_back({ Z_2, Z_EPL }); // 10
+    if (catomsReqs[RevZBranch] > 1) deque.push_back({ RevZ_2, RevZ_EPL }); // 10
+    if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, LZ_EPL }); // 11
+    if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, RZ_EPL }); // 11
+    if (catomsReqs[ZBranch] > 2) deque.push_back({ Z_3, Z_EPL }); // 12
+    if (catomsReqs[RevZBranch] > 2) deque.push_back({ RevZ_3, RevZ_EPL }); // 12
+    if (catomsReqs[ZBranch] > 3) deque.push_back({ Z_4, Z_EPL }); // 14
+    if (catomsReqs[RevZBranch] > 3) deque.push_back({ RevZ_4, RevZ_EPL }); // 14
+    if (catomsReqs[LZBranch] > 0) deque.push_back({ LZ_1, LZ_EPL }); // 14
+    if (catomsReqs[RZBranch] > 0) deque.push_back({ RZ_1, RZ_EPL }); // 14
+    if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL }); // 16
+    if (catomsReqs[RevZBranch] > 4) deque.push_back({ RevZ_5, RevZ_EPL }); // 16
+    if (catomsReqs[LZBranch] > 1) deque.push_back({ LZ_2, LZ_EPL }); // 16
+    if (catomsReqs[RZBranch] > 1) deque.push_back({ RZ_2, RZ_EPL }); // 16
+    if (catomsReqs[LZBranch] > 2) deque.push_back({ LZ_3, LZ_EPL }); // 18
+    if (catomsReqs[RZBranch] > 2) deque.push_back({ RZ_3, RZ_EPL }); // 18
+    if (catomsReqs[LZBranch] > 3) deque.push_back({ LZ_4, LZ_EPL }); // 20
+    if (catomsReqs[RZBranch] > 3) deque.push_back({ RZ_4, RZ_EPL }); // 20
+    if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL }); // 22
+    if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL }); // 22
+
+    return deque;
 }
 
 
-void MeshAssemblyBlockCode::buildConstructionQueueWithFewerIncidentBranches() {
+deque<pair<MeshComponent, MeshComponent>> MeshAssemblyBlockCode::
+buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const {
     // NOTE: This is under the assumption that tiles with fewer than four incident branches
     //  do not need to grow Opp branches for now
 
-    if (numIncidentVerticalBranches == 1 and hasIncidentBranch(RevZBranch)) {
-        constructionQueue.push_back({ S_Z, Z_EPL });
+    std::array<int, 6> catomsReqs = {-1,-1,-1,-1,-1,-1};
 
-        if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL });
-        if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL });
-
-        if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, Z_EPL });
-        if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, Z_EPL });
-        if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, Z_EPL });
-        if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, Z_EPL });
-        if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, Z_EPL });
-        if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, Z_EPL });
-        if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, Z_EPL });
-        if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, Z_EPL });
-
-        if (catomsReqByBranch[ZBranch] > 0) constructionQueue.push_back({ Z_1, Z_EPL });
-        if (catomsReqByBranch[ZBranch] > 1) constructionQueue.push_back({ Z_2, Z_EPL });
-        if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL });
-        if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
-        if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
-    } else if (numIncidentVerticalBranches == 1 and hasIncidentBranch(ZBranch)) {
-        constructionQueue.push_back({ S_RevZ, RevZ_EPL });
-
-        if (catomsReqByBranch[RevZBranch] > 0) constructionQueue.push_back({ RevZ_1,RevZ_EPL});
-        if (catomsReqByBranch[RevZBranch] > 1) constructionQueue.push_back({ RevZ_2,RevZ_EPL});
-        if (catomsReqByBranch[RevZBranch] > 2) constructionQueue.push_back({ RevZ_3,RevZ_EPL});
-        if (catomsReqByBranch[RevZBranch] > 3) constructionQueue.push_back({ RevZ_4,RevZ_EPL});
-        if (catomsReqByBranch[RevZBranch] > 4) constructionQueue.push_back({ RevZ_5,RevZ_EPL});
-    } else if ( hasIncidentBranch(RZBranch)
-                and ((numIncidentVerticalBranches == 1) or (numIncidentVerticalBranches == 2
-                                                            and hasIncidentBranch(ZBranch)))){
-        if (hasIncidentBranch(ZBranch)) constructionQueue.push_back({ S_RevZ, LZ_EPL });
-        constructionQueue.push_back({ S_LZ, LZ_EPL });
-
-        if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, LZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 0) constructionQueue.push_back({ RevZ_1,RevZ_EPL});
-        if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, LZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 1) constructionQueue.push_back({ RevZ_2,RevZ_EPL});
-        if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, LZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 2) constructionQueue.push_back({ RevZ_3,RevZ_EPL});
-        if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, LZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 3) constructionQueue.push_back({ RevZ_4,RevZ_EPL});
-        if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, LZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 4) constructionQueue.push_back({ RevZ_5,RevZ_EPL});
-
-        if (catomsReqByBranch[LZBranch] > 0) constructionQueue.push_back({ LZ_1, LZ_EPL });
-        if (catomsReqByBranch[LZBranch] > 1) constructionQueue.push_back({ LZ_2, LZ_EPL });
-        if (catomsReqByBranch[LZBranch] > 2) constructionQueue.push_back({ LZ_3, LZ_EPL });
-        if (catomsReqByBranch[LZBranch] > 3) constructionQueue.push_back({ LZ_4, LZ_EPL });
-        if (catomsReqByBranch[LZBranch] > 4) constructionQueue.push_back({ LZ_5, LZ_EPL });
-    } else if ( hasIncidentBranch(LZBranch)
-                and ((numIncidentVerticalBranches == 1) or (numIncidentVerticalBranches == 2
-                                                            and hasIncidentBranch(ZBranch)))){
-        if (hasIncidentBranch(ZBranch)) constructionQueue.push_back({ S_RevZ, RZ_EPL });
-        constructionQueue.push_back({ S_RZ, RZ_EPL });
-
-        if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, RZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 0) constructionQueue.push_back({ RevZ_1,RevZ_EPL});
-        if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, RZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 1) constructionQueue.push_back({ RevZ_2,RevZ_EPL});
-        if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, RZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 2) constructionQueue.push_back({ RevZ_3,RevZ_EPL});
-        if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, RZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 3) constructionQueue.push_back({ RevZ_4,RevZ_EPL});
-        if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, RZ_EPL });
-        if (catomsReqByBranch[RevZBranch] > 4) constructionQueue.push_back({ RevZ_5,RevZ_EPL});
-
-        if (catomsReqByBranch[RZBranch] > 0) constructionQueue.push_back({ RZ_1, RZ_EPL });
-        if (catomsReqByBranch[RZBranch] > 1) constructionQueue.push_back({ RZ_2, RZ_EPL });
-        if (catomsReqByBranch[RZBranch] > 2) constructionQueue.push_back({ RZ_3, RZ_EPL });
-        if (catomsReqByBranch[RZBranch] > 3) constructionQueue.push_back({ RZ_4, RZ_EPL });
-        if (catomsReqByBranch[RZBranch] > 4) constructionQueue.push_back({ RZ_5, RZ_EPL });
-    } else if (numIncidentVerticalBranches == 2
-               and (hasIncidentBranch(RevZBranch) and hasIncidentBranch(LZBranch))) {
-        constructionQueue.push_back({ S_RZ, RZ_EPL});
-        if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL });
-        constructionQueue.push_back({ S_Z, Z_EPL });
-        if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL });
-
-        if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, RZ_EPL });
-        if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, Z_EPL });
-        if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, RZ_EPL });
-        if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, Z_EPL });
-        if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, RZ_EPL });
-        if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, Z_EPL });
-        if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, RZ_EPL });
-        if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, Z_EPL });
-
-        if (catomsReqByBranch[RZBranch] > 0) constructionQueue.push_back({ RZ_1, RZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 0) constructionQueue.push_back({ Z_1, Z_EPL });
-        if (catomsReqByBranch[RZBranch] > 1) constructionQueue.push_back({ RZ_2, RZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 1) constructionQueue.push_back({ Z_2, Z_EPL });
-        if (catomsReqByBranch[RZBranch] > 2) constructionQueue.push_back({ RZ_3, RZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL });
-        if (catomsReqByBranch[RZBranch] > 3) constructionQueue.push_back({ RZ_4, RZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
-        if (catomsReqByBranch[RZBranch] > 4) constructionQueue.push_back({ RZ_5, RZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
-    } else if (numIncidentVerticalBranches == 2
-               and (hasIncidentBranch(RevZBranch) and hasIncidentBranch(RZBranch))) {
-        constructionQueue.push_back({ S_LZ, LZ_EPL});
-        if (catomsReqByBranch[YBranch] > 0) constructionQueue.push_back({ Y_1, Z_EPL });
-        constructionQueue.push_back({ S_Z, Z_EPL });
-        if (catomsReqByBranch[XBranch] > 0) constructionQueue.push_back({ X_1, Z_EPL });
-
-        if (catomsReqByBranch[YBranch] > 1) constructionQueue.push_back({ Y_2, LZ_EPL });
-        if (catomsReqByBranch[XBranch] > 1) constructionQueue.push_back({ X_2, Z_EPL });
-        if (catomsReqByBranch[YBranch] > 2) constructionQueue.push_back({ Y_3, LZ_EPL });
-        if (catomsReqByBranch[XBranch] > 2) constructionQueue.push_back({ X_3, Z_EPL });
-        if (catomsReqByBranch[YBranch] > 3) constructionQueue.push_back({ Y_4, LZ_EPL });
-        if (catomsReqByBranch[XBranch] > 3) constructionQueue.push_back({ X_4, Z_EPL });
-        if (catomsReqByBranch[YBranch] > 4) constructionQueue.push_back({ Y_5, LZ_EPL });
-        if (catomsReqByBranch[XBranch] > 4) constructionQueue.push_back({ X_5, Z_EPL });
-
-        if (catomsReqByBranch[LZBranch] > 0) constructionQueue.push_back({ LZ_1, LZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 0) constructionQueue.push_back({ Z_1, Z_EPL });
-        if (catomsReqByBranch[LZBranch] > 1) constructionQueue.push_back({ LZ_2, LZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 1) constructionQueue.push_back({ Z_2, Z_EPL });
-        if (catomsReqByBranch[LZBranch] > 2) constructionQueue.push_back({ LZ_3, LZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 2) constructionQueue.push_back({ Z_3, Z_EPL });
-        if (catomsReqByBranch[LZBranch] > 3) constructionQueue.push_back({ LZ_4, LZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 3) constructionQueue.push_back({ Z_4, Z_EPL });
-        if (catomsReqByBranch[LZBranch] > 4) constructionQueue.push_back({ LZ_5, LZ_EPL });
-        if (catomsReqByBranch[ZBranch] > 4) constructionQueue.push_back({ Z_5, Z_EPL });
+    for (short bi = 0; bi < N_BRANCHES; bi++) {
+        catomsReqs[bi] = ruleMatcher->
+            resourcesForCubeBranch(norm(pos), (BranchIndex)bi);
+        if (catomsReqs[bi] == 0) catomsReqs[bi] = -1;
     }
+
+    deque<pair<MeshComponent, MeshComponent>> deque;
+
+    std::function fn_isInCube = [this](const Cell3DPosition& p) {
+                                    return ruleMatcher->isInCube(p) ;
+                                };
+
+    int nbIVB = ruleMatcher->getNbIncidentVerticalCubeBranches(norm(pos));
+
+    if (nbIVB == 1
+        and ruleMatcher->hasIncidentBranch(norm(pos), RevZBranch, fn_isInCube)) {
+        deque.push_back({ S_Z, Z_EPL });
+
+        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+
+        if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, Z_EPL });
+        if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, Z_EPL });
+        if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, Z_EPL });
+        if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, Z_EPL });
+        if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, Z_EPL });
+        if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, Z_EPL });
+        if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, Z_EPL });
+        if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, Z_EPL });
+
+        if (catomsReqs[ZBranch] > 0) deque.push_back({ Z_1, Z_EPL });
+        if (catomsReqs[ZBranch] > 1) deque.push_back({ Z_2, Z_EPL });
+        if (catomsReqs[ZBranch] > 2) deque.push_back({ Z_3, Z_EPL });
+        if (catomsReqs[ZBranch] > 3) deque.push_back({ Z_4, Z_EPL });
+        if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
+    } else if (nbIVB == 1
+               and ruleMatcher->hasIncidentBranch(norm(pos), ZBranch, fn_isInCube)) {
+        deque.push_back({ S_RevZ, RevZ_EPL });
+
+        if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1,RevZ_EPL});
+        if (catomsReqs[RevZBranch] > 1) deque.push_back({ RevZ_2,RevZ_EPL});
+        if (catomsReqs[RevZBranch] > 2) deque.push_back({ RevZ_3,RevZ_EPL});
+        if (catomsReqs[RevZBranch] > 3) deque.push_back({ RevZ_4,RevZ_EPL});
+        if (catomsReqs[RevZBranch] > 4) deque.push_back({ RevZ_5,RevZ_EPL});
+    } else if (ruleMatcher->hasIncidentBranch(norm(pos), RZBranch, fn_isInCube)
+                and ((nbIVB == 1)
+                     or (nbIVB == 2 and ruleMatcher->hasIncidentBranch(norm(pos), ZBranch,
+                                                                       fn_isInCube)))){
+        if (ruleMatcher->hasIncidentBranch(norm(pos), ZBranch, fn_isInCube))
+            deque.push_back({ S_RevZ, LZ_EPL });
+        deque.push_back({ S_LZ, LZ_EPL });
+
+        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, LZ_EPL });
+        if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1,RevZ_EPL});
+        if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL });
+        if (catomsReqs[RevZBranch] > 1) deque.push_back({ RevZ_2,RevZ_EPL});
+        if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, LZ_EPL });
+        if (catomsReqs[RevZBranch] > 2) deque.push_back({ RevZ_3,RevZ_EPL});
+        if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, LZ_EPL });
+        if (catomsReqs[RevZBranch] > 3) deque.push_back({ RevZ_4,RevZ_EPL});
+        if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, LZ_EPL });
+        if (catomsReqs[RevZBranch] > 4) deque.push_back({ RevZ_5,RevZ_EPL});
+
+        if (catomsReqs[LZBranch] > 0) deque.push_back({ LZ_1, LZ_EPL });
+        if (catomsReqs[LZBranch] > 1) deque.push_back({ LZ_2, LZ_EPL });
+        if (catomsReqs[LZBranch] > 2) deque.push_back({ LZ_3, LZ_EPL });
+        if (catomsReqs[LZBranch] > 3) deque.push_back({ LZ_4, LZ_EPL });
+        if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
+    } else if (ruleMatcher->hasIncidentBranch(norm(pos), LZBranch, fn_isInCube)
+               and ((nbIVB == 1) or (nbIVB == 2 and ruleMatcher->
+                                     hasIncidentBranch(norm(pos),ZBranch,fn_isInCube)))){
+        if (ruleMatcher->hasIncidentBranch(norm(pos), ZBranch, fn_isInCube))
+            deque.push_back({ S_RevZ, RZ_EPL });
+        deque.push_back({ S_RZ, RZ_EPL });
+
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, RZ_EPL });
+        if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1,RevZ_EPL});
+        if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, RZ_EPL });
+        if (catomsReqs[RevZBranch] > 1) deque.push_back({ RevZ_2,RevZ_EPL});
+        if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, RZ_EPL });
+        if (catomsReqs[RevZBranch] > 2) deque.push_back({ RevZ_3,RevZ_EPL});
+        if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, RZ_EPL });
+        if (catomsReqs[RevZBranch] > 3) deque.push_back({ RevZ_4,RevZ_EPL});
+        if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, RZ_EPL });
+        if (catomsReqs[RevZBranch] > 4) deque.push_back({ RevZ_5,RevZ_EPL});
+
+        if (catomsReqs[RZBranch] > 0) deque.push_back({ RZ_1, RZ_EPL });
+        if (catomsReqs[RZBranch] > 1) deque.push_back({ RZ_2, RZ_EPL });
+        if (catomsReqs[RZBranch] > 2) deque.push_back({ RZ_3, RZ_EPL });
+        if (catomsReqs[RZBranch] > 3) deque.push_back({ RZ_4, RZ_EPL });
+        if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL });
+    } else if (nbIVB == 2
+               and (ruleMatcher->hasIncidentBranch(norm(pos), RevZBranch, fn_isInCube)and
+                    ruleMatcher->hasIncidentBranch(norm(pos), LZBranch, fn_isInCube))) {
+        deque.push_back({ S_RZ, RZ_EPL});
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+        deque.push_back({ S_Z, Z_EPL });
+        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
+
+        if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, RZ_EPL });
+        if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, Z_EPL });
+        if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, RZ_EPL });
+        if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, Z_EPL });
+        if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, RZ_EPL });
+        if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, Z_EPL });
+        if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, RZ_EPL });
+        if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, Z_EPL });
+
+        if (catomsReqs[RZBranch] > 0) deque.push_back({ RZ_1, RZ_EPL });
+        if (catomsReqs[ZBranch] > 0) deque.push_back({ Z_1, Z_EPL });
+        if (catomsReqs[RZBranch] > 1) deque.push_back({ RZ_2, RZ_EPL });
+        if (catomsReqs[ZBranch] > 1) deque.push_back({ Z_2, Z_EPL });
+        if (catomsReqs[RZBranch] > 2) deque.push_back({ RZ_3, RZ_EPL });
+        if (catomsReqs[ZBranch] > 2) deque.push_back({ Z_3, Z_EPL });
+        if (catomsReqs[RZBranch] > 3) deque.push_back({ RZ_4, RZ_EPL });
+        if (catomsReqs[ZBranch] > 3) deque.push_back({ Z_4, Z_EPL });
+        if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL });
+        if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
+    } else if (nbIVB == 2
+               and (ruleMatcher->hasIncidentBranch(norm(pos), RevZBranch, fn_isInCube)and
+                    ruleMatcher->hasIncidentBranch(norm(pos), RZBranch, fn_isInCube))) {
+        deque.push_back({ S_LZ, LZ_EPL});
+        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
+        deque.push_back({ S_Z, Z_EPL });
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+
+        if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL });
+        if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, Z_EPL });
+        if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, LZ_EPL });
+        if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, Z_EPL });
+        if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, LZ_EPL });
+        if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, Z_EPL });
+        if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, LZ_EPL });
+        if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, Z_EPL });
+
+        if (catomsReqs[LZBranch] > 0) deque.push_back({ LZ_1, LZ_EPL });
+        if (catomsReqs[ZBranch] > 0) deque.push_back({ Z_1, Z_EPL });
+        if (catomsReqs[LZBranch] > 1) deque.push_back({ LZ_2, LZ_EPL });
+        if (catomsReqs[ZBranch] > 1) deque.push_back({ Z_2, Z_EPL });
+        if (catomsReqs[LZBranch] > 2) deque.push_back({ LZ_3, LZ_EPL });
+        if (catomsReqs[ZBranch] > 2) deque.push_back({ Z_3, Z_EPL });
+        if (catomsReqs[LZBranch] > 3) deque.push_back({ LZ_4, LZ_EPL });
+        if (catomsReqs[ZBranch] > 3) deque.push_back({ Z_4, Z_EPL });
+        if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
+        if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
+    }
+
+    return deque;
 }
 
 void MeshAssemblyBlockCode::initializeSupportModule() {
@@ -1169,13 +1244,13 @@ void MeshAssemblyBlockCode::initializeSandbox() {
         }
 
         // Add waiting tile EPL modules
-        for (int i = 0; i < XBranch; i++) {
-                MeshComponent epl =ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)i);
-                if (denormPos != meshSeedPosition or i != ZBranch) {
-                    world->addBlock(0, buildNewBlockCode,
-                                    denormPos + getEntryPointRelativePos(epl), YELLOW);
-                }
-        }
+        // for (int i = 0; i < XBranch; i++) {
+        //         MeshComponent epl =ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)i);
+        if (denormPos != meshSeedPosition) // or i != ZBranch) {
+            world->addBlock(0, buildNewBlockCode,
+                            denormPos + getEntryPointRelativePos(Z_EPL), YELLOW);
+        // }
+    // }
 
     }
 
@@ -1221,12 +1296,19 @@ void MeshAssemblyBlockCode::feedIncidentBranches() {
             getSupportPositionForPosition(sbnorm(EPLPivotBC[bi]->catom->position));
         Catoms3DBlock* support = static_cast<Catoms3DBlock*>(lattice->getBlock(supportPos));
 
+        MeshComponent epl = ruleMatcher->getDefaultEPLComponentForBranch(
+            ruleMatcher->getAlternateBranchIndex((BranchIndex)bi));
+
         // Only insert if green light on EPL pivot
         if (EPLPivotBC[bi]->greenLightIsOn
             // and if support is ready to receive modules as well
-            and (not support
-                 or static_cast<MeshAssemblyBlockCode*>(support->blockCode)->greenLightIsOn))
+            and (not support or
+                 static_cast<MeshAssemblyBlockCode*>(support->blockCode)->greenLightIsOn)
+            // and if current resources allocation goal has not been met
+            and (not NO_FLOODING or sandboxResourcesRequirement.find(epl)->second > 0)) {
+            // sandboxResourcesRequirement.find(epl)->second--;
             handleModuleInsertionToIncidentBranch(static_cast<BranchIndex>(bi));
+        }
     }
 }
 
@@ -1507,4 +1589,85 @@ bool MeshAssemblyBlockCode::areOnTheSameBranch(const Cell3DPosition& pos1,
              or ruleMatcher->isTileRoot(sbnorm(pos2)))
         and (ruleMatcher->getBranchIndexForNonRootPosition(sbnorm(pos1)) ==
              ruleMatcher->getBranchIndexForNonRootPosition(sbnorm(pos2)));
+}
+
+int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
+                                                   MeshComponent epl) const {
+    // cout << "resourcesForTileThrough(" << pos
+    //      << ", " << ruleMatcher->component_to_string(epl) << "): " << endl;
+    if (not ruleMatcher->isInCube(norm(pos))) {
+        // cout << "\tnot in shape" << endl;
+        return 0;
+    }
+
+    vector<MeshComponent> relevantComponents;
+    // Build a vector containg all MeshComponents that must be sourced from epl in the
+    //  construction queue of the module
+    for (const auto& pair : buildConstructionQueue(pos))
+        if (pair.second == epl) relevantComponents.push_back(pair.first);
+
+    short count = 0;
+
+    const Cell3DPosition& trTip =
+        ruleMatcher->getTileRootAtEndOfBranch(norm(pos),ruleMatcher->getBranchForEPL(epl));
+    if ( (epl == RevZ_EPL and ruleMatcher->isInCube(trTip)
+          and ruleMatcher->shouldGrowCubeBranch(norm(pos), RevZBranch)
+          and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 4)
+
+         or (epl == RevZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), RevZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 1)
+
+         or (epl == LZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), LZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 1)
+
+         or (epl == RZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), RZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 1)
+
+         or (epl == Z_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), ZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 1)
+
+         or (epl == RevZ_EPL and ruleMatcher->isInCube(trTip)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), RevZBranch)
+             and ruleMatcher->shouldGrowCubeBranch(norm(pos), LZBranch)
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
+
+         or (epl == LZ_EPL and ruleMatcher->isInCube(trTip)
+             and ( (ruleMatcher->shouldGrowCubeBranch(trTip,RZBranch)
+                    and ruleMatcher->shouldGrowCubeBranch(trTip, RevZBranch))
+                   // For Odd dimensions
+                   or (ruleMatcher->shouldGrowCubeBranch(trTip,XBranch)
+                       and not ruleMatcher->shouldGrowCubeBranch(trTip,YBranch)) )
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
+
+         or (epl == RZ_EPL and ruleMatcher->isInCube(trTip)
+             and ( (ruleMatcher->shouldGrowCubeBranch(trTip,LZBranch)
+                    and ruleMatcher->shouldGrowCubeBranch(trTip, RevZBranch))
+                   // For Odd dimensions
+                   or (ruleMatcher->shouldGrowCubeBranch(trTip,YBranch)
+                       and not ruleMatcher->shouldGrowCubeBranch(trTip,XBranch)) )
+             and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
+
+         ) {
+
+        // cout << "\tshouldSendTR " << 1 << endl;
+        count += 1; // TileRoot to be sent through RevZBranch
+    }
+
+    for (const MeshComponent& mc : relevantComponents) {
+        const Cell3DPosition& cPos = norm(pos + ruleMatcher->getPositionForComponent(mc));
+        if (ruleMatcher->isInCube(cPos) or ruleMatcher->isSupportModule(cPos))
+            count++;
+    }
+
+    BranchIndex bi = ruleMatcher->getBranchForEPL(epl);
+    MeshComponent eplAlt = ruleMatcher->getTargetEPLComponentForBranch(bi);
+
+    // cout << "\tcount: " << count << endl;
+
+    return count + resourcesForTileThrough(denorm(ruleMatcher->getTileRootAtEndOfBranch(
+                                                      norm(pos), bi)), eplAlt);
 }
