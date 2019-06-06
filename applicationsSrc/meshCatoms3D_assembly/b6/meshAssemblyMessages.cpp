@@ -382,6 +382,16 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 
+    // Attempt direct delivery
+    P2PNetworkInterface *nextHopItf = mabc.catom->getInterface(dstPos);
+    if (nextHopItf) {
+        if (nextHopItf->isConnected())
+            mabc.sendMessage(this->clone(), nextHopItf, MSG_DELAY_MC, 0);
+        // else no module found on EPL, message is not needed
+        return;
+    }
+
+
     if (mabc.catom->position != dstPos) {
         route(bc); return;
     }
