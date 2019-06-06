@@ -308,7 +308,8 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         tPos = mabc.catom->position + MeshRuleMatcher::getTargetEPLPositionForBranch(bi);
     }
 
-    mabc.sandboxResourcesRequirement.find(epl)->second--;
+    if (mabc.NO_FLOODING)
+        mabc.sandboxResourcesRequirement.find(epl)->second--;
 
     // Send to requesting catom
     VS_ASSERT(destinationInterface->isConnected());
@@ -344,7 +345,8 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                     if (ncBi != -1) mabc.catomsReqByBranch[ncBi]--;
 
                     // Update sandbox requirements
-                    mabc.sandboxResourcesRequirement.find(epl)->second--;
+                    if (mabc.NO_FLOODING)
+                        mabc.sandboxResourcesRequirement.find(epl)->second--;
 
                     // Send
                     VS_ASSERT(tipItf and tipItf->isConnected());

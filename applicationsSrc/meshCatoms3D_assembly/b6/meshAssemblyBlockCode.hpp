@@ -60,6 +60,8 @@ public:
     static int nbMessages;
     static Time t0;
 
+    inline static const bool NO_FLOODING = false;
+
     // For stats export
     pair<int, string> maxBitrate;
     pair<Time, int> rate = { 0, 0 };
