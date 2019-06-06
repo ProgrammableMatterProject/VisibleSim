@@ -521,10 +521,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                 // Check algorithm termination
                 // Cube construction ending depends on parity of the dimension of the cube
-
                 int dimension = ruleMatcher->getCubeDimension();
                 int zmax = (dimension - 1) * B + meshSeedPosition[2];
                 int a = (dimension - 1) / 2;
+                // Last module is Z support of top level if odd
                 const Cell3DPosition &last = dimension % 2 == 0 ?
                     Cell3DPosition(a * B + B / 2 + meshSeedPosition[0],
                                    a * B + B / 2,
@@ -694,11 +694,12 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     if (catom->position[2] == meshSeedPosition[2]) {
                         feedIncidentBranches();
 
-                        if (not constructionOver)
+                        if (not constructionOver) {
                             getScheduler()->schedule(
                                 new InterruptionEvent(getScheduler()->now() +
                                                       (getRoundDuration()),
                                                       catom, IT_MODE_TILEROOT_ACTIVATION));
+                        }
                     }
                 } break;
 
@@ -1633,13 +1634,19 @@ int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
              and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
 
          or (epl == LZ_EPL and ruleMatcher->isInCube(trTip)
-             and ruleMatcher->shouldGrowCubeBranch(trTip,RZBranch)
-             and ruleMatcher->shouldGrowCubeBranch(trTip, RevZBranch)
+             and ( (ruleMatcher->shouldGrowCubeBranch(trTip,RZBranch)
+                    and ruleMatcher->shouldGrowCubeBranch(trTip, RevZBranch))
+                   // For Odd dimensions
+                   or (ruleMatcher->shouldGrowCubeBranch(trTip,XBranch)
+                       and not ruleMatcher->shouldGrowCubeBranch(trTip,YBranch)) )
              and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
 
          or (epl == RZ_EPL and ruleMatcher->isInCube(trTip)
-             and ruleMatcher->shouldGrowCubeBranch(trTip, LZBranch)
-             and ruleMatcher->shouldGrowCubeBranch(trTip, RevZBranch)
+             and ( (ruleMatcher->shouldGrowCubeBranch(trTip,LZBranch)
+                    and ruleMatcher->shouldGrowCubeBranch(trTip, RevZBranch))
+                   // For Odd dimensions
+                   or (ruleMatcher->shouldGrowCubeBranch(trTip,YBranch)
+                       and not ruleMatcher->shouldGrowCubeBranch(trTip,XBranch)) )
              and ruleMatcher->getNbIncidentVerticalCubeBranches(trTip) == 2)
 
          ) {
