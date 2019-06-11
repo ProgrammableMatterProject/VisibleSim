@@ -12,7 +12,7 @@ SUBDIRS = #C3DRotate #simpleColorC2D simpleColorRB simpleColorSB distanceRB simp
 # ALL
 # SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB
 
-SUBDIRS += scaffolding_cube scaffolding_pyramid_async scaffolding_pyramid_sync
+SUBDIRS += scaffolding_cube scaffolding_pyramid_async scaffolding_pyramid_sync scaffolding_csg
 
 .PHONY: subdirs $(SUBDIRS) test
 
