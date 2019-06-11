@@ -738,14 +738,16 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]);
 
     // Initialize Resources Allocation Requirements from sandbox
-    sandboxResourcesRequirement.insert(
-        make_pair(RevZ_EPL,resourcesForTileThrough(catom->position, RevZ_EPL)));
-    sandboxResourcesRequirement.insert(
-        make_pair(Z_EPL,resourcesForTileThrough(catom->position, Z_EPL)));
-    sandboxResourcesRequirement.insert(
-        make_pair(LZ_EPL,resourcesForTileThrough(catom->position, LZ_EPL)));
-    sandboxResourcesRequirement.insert(
-        make_pair(RZ_EPL,resourcesForTileThrough(catom->position, RZ_EPL)));
+    if (NO_FLOODING) {
+        sandboxResourcesRequirement.insert(
+            make_pair(RevZ_EPL,resourcesForTileThrough(catom->position, RevZ_EPL)));
+        sandboxResourcesRequirement.insert(
+            make_pair(Z_EPL,resourcesForTileThrough(catom->position, Z_EPL)));
+        sandboxResourcesRequirement.insert(
+            make_pair(LZ_EPL,resourcesForTileThrough(catom->position, LZ_EPL)));
+        sandboxResourcesRequirement.insert(
+            make_pair(RZ_EPL,resourcesForTileThrough(catom->position, RZ_EPL)));
+    }
 
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
@@ -917,8 +919,8 @@ void MeshAssemblyBlockCode::feedIncidentBranches() {
             and (not support or
                  static_cast<MeshAssemblyBlockCode*>(support->blockCode)->greenLightIsOn)
             // and if current resources allocation goal has not been met
-            and sandboxResourcesRequirement.find(epl)->second > 0) {
-            sandboxResourcesRequirement.find(epl)->second--;
+            and ( (sandboxResourcesRequirement.find(epl)->second > 0) or not NO_FLOODING)) {
+            if (NO_FLOODING) sandboxResourcesRequirement.find(epl)->second--;
             handleModuleInsertionToIncidentBranch(static_cast<BranchIndex>(bi));
         }
     }
