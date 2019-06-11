@@ -26,7 +26,7 @@
 #include "meldProcessDebugger.h"
 #endif
 
-#define showStatsFPS	0
+// #define showStatsFPS	0
 
 //===========================================================================================================
 //
