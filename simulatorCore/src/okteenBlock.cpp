@@ -121,7 +121,7 @@ void OkteenBlock::setConnectorLength(short connectorId,float length) {
 void OkteenBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(new AddNeighborEvent(getScheduler()->now(), this,getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
@@ -129,7 +129,7 @@ void OkteenBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 void OkteenBlock::removeNeighbor(P2PNetworkInterface *ni) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), this,getWorld()->lattice->getOppositeDirection(getDirection(ni))));
     getWorld()->updateGlData(this,getDirection(ni),0);

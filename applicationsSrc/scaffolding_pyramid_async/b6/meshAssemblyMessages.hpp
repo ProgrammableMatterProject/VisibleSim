@@ -2,10 +2,10 @@
  * @file   messages.hpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Tue Jul 10 13:47:20 2018
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 
@@ -28,9 +28,9 @@ public:
         : HandleableMessage(), srcPos(_srcPos), srcId(_srcId) {};
     virtual ~RequestTargetCellMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new RequestTargetCellMessage(*this); }
-    virtual string getName() const { return "RequestTargetCell{" + srcPos.to_string()
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new RequestTargetCellMessage(*this); }
+    virtual string getName() const override { return "RequestTargetCell{" + srcPos.to_string()
             + ", " + to_string(srcId) + "}"; }
 };
 
@@ -42,9 +42,9 @@ public:
         : HandleableMessage(), tPos(_tPos), dstPos(_dstPos) {};
     virtual ~ProvideTargetCellMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new ProvideTargetCellMessage(*this); }
-    virtual string getName() const { return "ProvideTargetCell{" + tPos.to_string()
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new ProvideTargetCellMessage(*this); }
+    virtual string getName() const override { return "ProvideTargetCell{" + tPos.to_string()
             + ", " + dstPos.to_string() + "}"; }
 };
 
@@ -58,9 +58,9 @@ public:
         : HandleableMessage() {};
     virtual ~CoordinatorReadyMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new CoordinatorReadyMessage(*this); }
-    virtual string getName() const { return "CoordinatorReady"; }
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new CoordinatorReadyMessage(*this); }
+    virtual string getName() const override { return "CoordinatorReady"; }
 };
 
 class TileNotReadyMessage : public HandleableMessage {
@@ -70,19 +70,19 @@ public:
         : HandleableMessage(), dstPos(_dstPos) {};
     virtual ~TileNotReadyMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new TileNotReadyMessage(*this); }
-    virtual string getName() const { return "TileNotReady"; }
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new TileNotReadyMessage(*this); }
+    virtual string getName() const override { return "TileNotReady"; }
 };
 
-class TileInsertionReadyMessage : public HandleableMessage {    
+class TileInsertionReadyMessage : public HandleableMessage {
 public:
     TileInsertionReadyMessage() : HandleableMessage() {};
     virtual ~TileInsertionReadyMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new TileInsertionReadyMessage(*this); }
-    virtual string getName() const { return "TileInsertionReady"; }
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new TileInsertionReadyMessage(*this); }
+    virtual string getName() const override { return "TileInsertionReady"; }
 };
 
 /////////////////////////////////////////////////////////////////
@@ -91,13 +91,13 @@ public:
 
 /**
  * This message should be routed through the line until it reaches the dstPos, which as a pivot
- *  module must check whether its light is on and either give a go, or wait until its status 
+ *  module must check whether its light is on and either give a go, or wait until its status
  *  clears and send a go at that time.
  */
 class ProbePivotLightStateMessage : public HandleableMessage {
     const Cell3DPosition srcPos;
     const Cell3DPosition targetPos; // Next position the module is seeking to reach
-    /** 
+    /**
      * Final component to be reached by a series of intermediate motions such as this one
      */
     const MeshComponent finalComponent;
@@ -107,13 +107,13 @@ public:
                                 const Cell3DPosition& _targetPos,
                                 const MeshComponent _finalComponent)
                                 // const Cell3DPosition& _finalPos)
-        : HandleableMessage(), srcPos(_srcPos), 
+        : HandleableMessage(), srcPos(_srcPos),
           targetPos(_targetPos), finalComponent(_finalComponent) {};
     virtual ~ProbePivotLightStateMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new ProbePivotLightStateMessage(*this); }
-    virtual string getName() const { return "ProbePivotLightState{" + srcPos.to_string()
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new ProbePivotLightStateMessage(*this); }
+    virtual string getName() const override { return "ProbePivotLightState{" + srcPos.to_string()
             + ", " + targetPos.to_string()
             + ", " + MeshRuleMatcher::component_to_string(finalComponent)
             + "}";
@@ -134,9 +134,9 @@ public:
         : HandleableMessage(), srcPos(_srcPos), dstPos(_dstPos) {};
     virtual ~GreenLightIsOnMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new GreenLightIsOnMessage(*this); }
-    virtual string getName() const { return "GreenLightIsOn{" + srcPos.to_string()
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new GreenLightIsOnMessage(*this); }
+    virtual string getName() const override { return "GreenLightIsOn{" + srcPos.to_string()
             + ", " + dstPos.to_string() + "}";
     }
 };
@@ -153,9 +153,9 @@ public:
         : HandleableMessage(), finalPos(_finalPos) {};
     virtual ~FinalTargetReachedMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new FinalTargetReachedMessage(*this); }
-    virtual string getName() const { return "FinalTargetReached{" + finalPos.to_string() +"}";
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new FinalTargetReachedMessage(*this); }
+    virtual string getName() const override { return "FinalTargetReached{" + finalPos.to_string() +"}";
     }
 };
 #endif /* MC3D_MESSAGES_H_ */

@@ -198,9 +198,9 @@ public:
 
     Rotation3DStartEvent(Rotation3DStartEvent *ev);
     ~Rotation3DStartEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -215,9 +215,9 @@ public:
         Rotation3DStepEvent(Time, Catoms3DBlock *block,const Rotations3D& r);
         Rotation3DStepEvent(Rotation3DStepEvent *ev);
         ~Rotation3DStepEvent();
-        void consumeBlockEvent() {};
-        void consume();
-        const virtual string getEventName();
+        void consumeBlockEvent() override {};
+        void consume() override;
+        const virtual string getEventName() override;
     };
 
 //===========================================================================================================
@@ -232,9 +232,9 @@ public:
         Rotation3DStopEvent(Time, Catoms3DBlock *block,const Rotations3D& r);
         Rotation3DStopEvent(Rotation3DStepEvent *ev);
         ~Rotation3DStopEvent();
-        void consumeBlockEvent() {};
-        void consume();
-        const virtual string getEventName();
+        void consumeBlockEvent() override {}
+        void consume() override;
+        const virtual string getEventName() override;
     };
 
 //===========================================================================================================
@@ -248,9 +248,9 @@ public:
         Rotation3DEndEvent(Time, Catoms3DBlock *block);
         Rotation3DEndEvent(Rotation3DEndEvent *ev);
         ~Rotation3DEndEvent();
-        void consumeBlockEvent() {};
-        void consume();
-        const virtual string getEventName();
+        void consumeBlockEvent() override {}
+        void consume() override;
+        const virtual string getEventName() override;
     };
 
 #endif /* ROTATIONS3DEVENTS_H_ */

@@ -19,10 +19,10 @@ public :
     Matrix mat{};
     GLuint currentModel;
 
-	DatomsGlBlock(bID id) : GlBlock(id) { currentModel=1; };
-	virtual ~DatomsGlBlock() {};
+    DatomsGlBlock(bID id) : GlBlock(id) { currentModel=1; };
+    virtual ~DatomsGlBlock() {};
 
-	void glDraw(ObjLoader::ObjLoader *ptrObj);
+    void glDraw(ObjLoader::ObjLoader *ptrObj) override;
 };
 }
 #endif /* DATOMSGLBLOCK_H_ */

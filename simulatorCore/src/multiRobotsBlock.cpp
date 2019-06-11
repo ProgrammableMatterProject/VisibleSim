@@ -21,7 +21,7 @@ using namespace std;
 namespace MultiRobots {
 
 MultiRobotsBlock::MultiRobotsBlock(int bId, BlockCodeBuilder bcb)
-	: BaseSimulator::BuildingBlock(bId, bcb, BCLattice::MAX_NB_NEIGHBORS) {
+    : BaseSimulator::BuildingBlock(bId, bcb, BCLattice::MAX_NB_NEIGHBORS) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "MultiRobotsBlock constructor" << endl;
 #endif
@@ -39,14 +39,14 @@ void MultiRobotsBlock::stopBlock(Time date, State s) {
     OUTPUT << "Simulator: stop scheduled" << endl;
     setState(s);
     if (s == STOPPED) {
-		// patch en attendant l'objet 3D qui modelise un MR stopped
-		color = Color(0.1, 0.1, 0.1, 0.5);
+        // patch en attendant l'objet 3D qui modelise un MR stopped
+        color = Color(0.1, 0.1, 0.1, 0.5);
     }
 
-	getWorld()->updateGlData(this);
+    getWorld()->updateGlData(this);
 
-	if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
-		getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
+    if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
+        getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
     }
 }
 

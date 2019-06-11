@@ -72,10 +72,10 @@ public:
     virtual ~HandleableMessage();
 
     virtual void handle(BaseSimulator::BlockCode*) = 0;
-    virtual bool isMessageHandleable() const { return true; };
-    virtual string getMessageName() const { return getName(); }; // TODO: factorize getName() with this
+    virtual bool isMessageHandleable() const override { return true; };
+    virtual string getMessageName() const override { return getName(); }; // TODO: factorize getName() with this
     virtual string getName() const = 0;
-    virtual Message* clone() const = 0;
+    virtual Message* clone() const override = 0;
 };
 
 template <class T>

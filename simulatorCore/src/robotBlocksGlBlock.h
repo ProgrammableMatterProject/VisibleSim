@@ -15,18 +15,18 @@
 namespace RobotBlocks {
 class RobotBlocksGlBlock:public GlBlock {
 protected :
-	int nextId = 0;
-	int prevId = 0;
+    int nextId = 0;
+    int prevId = 0;
 public :
-	string popupString;
+    string popupString;
 
-	RobotBlocksGlBlock(bID id) : GlBlock(id) {};
-	virtual ~RobotBlocksGlBlock() {};
+    RobotBlocksGlBlock(bID id) : GlBlock(id) {};
+    virtual ~RobotBlocksGlBlock() {};
 
-	virtual void setPrevNext(int p,int n);
-	virtual string getPopupInfo();
+    virtual void setPrevNext(int p,int n);
+    virtual string getPopupInfo() override;
 
-	void glDraw(ObjLoader::ObjLoader *ptrObj);
+    void glDraw(ObjLoader::ObjLoader *ptrObj) override;
 };
 }
 #endif /* ROBOTBLOCKSGLBLOCK_H_ */

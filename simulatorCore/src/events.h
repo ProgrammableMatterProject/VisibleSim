@@ -48,25 +48,25 @@ typedef std::shared_ptr<Event> EventPtr;
 
 class Event {
 protected:
-	static int nextId;
-	static unsigned int nbLivingEvents;
+    static int nextId;
+    static unsigned int nbLivingEvents;
 
 public:
-	int id;				//!< unique ID of the event (mainly for debugging purpose)
-	Time date;		//!< time at which the event will be processed. 0 means simulation start
-	int eventType;		//!< see the various types at the beginning of this file
-	BaseSimulator::ruint randomNumber;
+    int id;				//!< unique ID of the event (mainly for debugging purpose)
+    Time date;		//!< time at which the event will be processed. 0 means simulation start
+    int eventType;		//!< see the various types at the beginning of this file
+    BaseSimulator::ruint randomNumber;
 
-	Event(Time t);
-	Event(Event *ev);
-	virtual ~Event();
+    Event(Time t);
+    Event(Event *ev);
+    virtual ~Event();
 
-	virtual void consume() = 0;
-	virtual const string getEventName();
+    virtual void consume() = 0;
+    virtual const string getEventName();
 
-	static unsigned int getNextId();
-	static unsigned int getNbLivingEvents();
-	virtual BaseSimulator::BuildingBlock* getConcernedBlock() { return NULL; };
+    static unsigned int getNextId();
+    static unsigned int getNbLivingEvents();
+    virtual BaseSimulator::BuildingBlock* getConcernedBlock() { return NULL; };
 };
 
 //===========================================================================================================
@@ -78,20 +78,20 @@ public:
 class BlockEvent : public Event {
 
 protected:
-	BaseSimulator::BuildingBlock *concernedBlock;
-	BlockEvent(Time t, BaseSimulator::BuildingBlock *conBlock);
-	BlockEvent(BlockEvent *ev);
-	virtual ~BlockEvent();
-	virtual const string getEventName();
+    BaseSimulator::BuildingBlock *concernedBlock;
+    BlockEvent(Time t, BaseSimulator::BuildingBlock *conBlock);
+    BlockEvent(BlockEvent *ev);
+    virtual ~BlockEvent();
+    virtual const string getEventName() override;
 
 public:
-	BaseSimulator::BuildingBlock* getConcernedBlock() {return concernedBlock;};
-	virtual void consumeBlockEvent() = 0;
-	virtual void consume() {
-		if (concernedBlock->getState() >= BaseSimulator::BuildingBlock::ALIVE) {
-			this->consumeBlockEvent();
-		}
-	};
+    BaseSimulator::BuildingBlock* getConcernedBlock() override { return concernedBlock;};
+    virtual void consumeBlockEvent() = 0;
+    virtual void consume() override {
+        if (concernedBlock->getState() >= BaseSimulator::BuildingBlock::ALIVE) {
+            this->consumeBlockEvent();
+        }
+    };
 };
 
 //===========================================================================================================
@@ -103,10 +103,10 @@ public:
 class CodeStartEvent : public BlockEvent {
 public:
 
-	CodeStartEvent(Time, BaseSimulator::BuildingBlock *conBlock);
-	~CodeStartEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    CodeStartEvent(Time, BaseSimulator::BuildingBlock *conBlock);
+    ~CodeStartEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -118,10 +118,10 @@ public:
 class CodeEndSimulationEvent : public Event {
 public:
 
-	CodeEndSimulationEvent(Time);
-	~CodeEndSimulationEvent();
-	void consume();
-	const virtual string getEventName();
+    CodeEndSimulationEvent(Time);
+    ~CodeEndSimulationEvent();
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -133,10 +133,10 @@ public:
 class ProcessLocalEvent : public BlockEvent {
 public:
 
-	ProcessLocalEvent(Time, BaseSimulator::BuildingBlock *conBlock);
-	~ProcessLocalEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    ProcessLocalEvent(Time, BaseSimulator::BuildingBlock *conBlock);
+    ~ProcessLocalEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -147,12 +147,12 @@ public:
 
 class NetworkInterfaceStartTransmittingEvent : public Event {
 public:
-	P2PNetworkInterface *interface;
+    P2PNetworkInterface *interface;
 
-	NetworkInterfaceStartTransmittingEvent(Time, P2PNetworkInterface *ni);
-	~NetworkInterfaceStartTransmittingEvent();
-	void consume();
-	const virtual string getEventName();
+    NetworkInterfaceStartTransmittingEvent(Time, P2PNetworkInterface *ni);
+    ~NetworkInterfaceStartTransmittingEvent();
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -163,12 +163,12 @@ public:
 
 class NetworkInterfaceStopTransmittingEvent : public Event {
 public:
-	P2PNetworkInterface *interface;
+    P2PNetworkInterface *interface;
 
-	NetworkInterfaceStopTransmittingEvent(Time, P2PNetworkInterface *ni);
-	~NetworkInterfaceStopTransmittingEvent();
-	void consume();
-	const virtual string getEventName();
+    NetworkInterfaceStopTransmittingEvent(Time, P2PNetworkInterface *ni);
+    ~NetworkInterfaceStopTransmittingEvent();
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -179,12 +179,12 @@ public:
 
 class NetworkInterfaceReceiveEvent : public Event {
 public:
-	P2PNetworkInterface *interface;
-	MessagePtr message;
-	NetworkInterfaceReceiveEvent(Time,P2PNetworkInterface *ni, MessagePtr mes);
-	~NetworkInterfaceReceiveEvent();
-	void consume();
-	const virtual string getEventName();
+    P2PNetworkInterface *interface;
+    MessagePtr message;
+    NetworkInterfaceReceiveEvent(Time,P2PNetworkInterface *ni, MessagePtr mes);
+    ~NetworkInterfaceReceiveEvent();
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -195,14 +195,14 @@ public:
 
 class NetworkInterfaceEnqueueOutgoingEvent : public Event {
 public:
-	MessagePtr message;
-	P2PNetworkInterface *sourceInterface;
+    MessagePtr message;
+    P2PNetworkInterface *sourceInterface;
 
-	NetworkInterfaceEnqueueOutgoingEvent(Time, Message *mes, P2PNetworkInterface *ni);
-	NetworkInterfaceEnqueueOutgoingEvent(Time, MessagePtr mes, P2PNetworkInterface *ni);
-	~NetworkInterfaceEnqueueOutgoingEvent();
-	void consume();
-	const virtual string getEventName();
+    NetworkInterfaceEnqueueOutgoingEvent(Time, Message *mes, P2PNetworkInterface *ni);
+    NetworkInterfaceEnqueueOutgoingEvent(Time, MessagePtr mes, P2PNetworkInterface *ni);
+    ~NetworkInterfaceEnqueueOutgoingEvent();
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 
@@ -214,14 +214,14 @@ public:
 
 class SetColorEvent : public BlockEvent {
 public:
-	Color color;
+    Color color;
 
-	SetColorEvent(Time, BaseSimulator::BuildingBlock *conBlock, float r, float g, float b, float a);
-	SetColorEvent(Time, BaseSimulator::BuildingBlock *conBlock, Color &c);
-	SetColorEvent(SetColorEvent *ev);
-	~SetColorEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    SetColorEvent(Time, BaseSimulator::BuildingBlock *conBlock, float r, float g, float b, float a);
+    SetColorEvent(Time, BaseSimulator::BuildingBlock *conBlock, Color &c);
+    SetColorEvent(SetColorEvent *ev);
+    ~SetColorEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 
@@ -233,14 +233,14 @@ public:
 
 class AddNeighborEvent : public BlockEvent {
 public:
-	uint64_t face;
-	uint64_t target;
+    uint64_t face;
+    uint64_t target;
 
-	AddNeighborEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t f, uint64_t ta);
-	AddNeighborEvent(AddNeighborEvent *ev);
-	~AddNeighborEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    AddNeighborEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t f, uint64_t ta);
+    AddNeighborEvent(AddNeighborEvent *ev);
+    ~AddNeighborEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -251,13 +251,13 @@ public:
 
 class RemoveNeighborEvent : public BlockEvent {
 public:
-	uint64_t face;
+    uint64_t face;
 
-	RemoveNeighborEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
-	RemoveNeighborEvent(RemoveNeighborEvent *ev);
-	~RemoveNeighborEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    RemoveNeighborEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
+    RemoveNeighborEvent(RemoveNeighborEvent *ev);
+    ~RemoveNeighborEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -268,13 +268,13 @@ public:
 
 class TapEvent : public BlockEvent {
 public:
-	const int tappedFace;
+    const int tappedFace;
 
-	TapEvent(Time, BaseSimulator::BuildingBlock *conBlock, const int face);
-	TapEvent(TapEvent *ev);
-	~TapEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    TapEvent(Time, BaseSimulator::BuildingBlock *conBlock, const int face);
+    TapEvent(TapEvent *ev);
+    ~TapEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 
@@ -286,15 +286,15 @@ public:
 
 class AccelEvent : public BlockEvent {
 public:
-	uint64_t x;
-	uint64_t y;
-	uint64_t z;
+    uint64_t x;
+    uint64_t y;
+    uint64_t z;
 
-	AccelEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz);
-	AccelEvent(AccelEvent *ev);
-	~AccelEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    AccelEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz);
+    AccelEvent(AccelEvent *ev);
+    ~AccelEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -305,13 +305,13 @@ public:
 
 class ShakeEvent : public BlockEvent {
 public:
-	uint64_t force;
+    uint64_t force;
 
-	ShakeEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
-	ShakeEvent(ShakeEvent *ev);
-	~ShakeEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    ShakeEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
+    ShakeEvent(ShakeEvent *ev);
+    ~ShakeEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -321,17 +321,17 @@ public:
 //===========================================================================================================
 
 /** InterruptionEvent is meant to be used as an interruption triggered by one module
- * it is meant to model this behavior to enable module actions such as periodically 
+ * it is meant to model this behavior to enable module actions such as periodically
  * checking some sensor information or updating its state based on local information **/
 class InterruptionEvent : public BlockEvent {
 public:
     uint64_t mode; //!< A used-defined identifier for non general-purpose interruptions
-    
-	InterruptionEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t mode);
-	InterruptionEvent(InterruptionEvent *ev);
-	~InterruptionEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+
+    InterruptionEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t mode);
+    InterruptionEvent(InterruptionEvent *ev);
+    ~InterruptionEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -343,15 +343,15 @@ public:
 class PivotActuationStartEvent : public BlockEvent {
 public:
     const BaseSimulator::BuildingBlock *mobile;
-	short fromConP;
+    short fromConP;
     short toConP;
 
-	PivotActuationStartEvent(Time t, BuildingBlock *conBlock, const BuildingBlock *mobile,
+    PivotActuationStartEvent(Time t, BuildingBlock *conBlock, const BuildingBlock *mobile,
                              short from, short to);
-	PivotActuationStartEvent(PivotActuationStartEvent *ev);
-	~PivotActuationStartEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    PivotActuationStartEvent(PivotActuationStartEvent *ev);
+    ~PivotActuationStartEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -363,15 +363,15 @@ public:
 class PivotActuationEndEvent : public BlockEvent {
 public:
     const BaseSimulator::BuildingBlock *mobile;
-	short fromConP;
+    short fromConP;
     short toConP;
-    
-	PivotActuationEndEvent(Time t, BuildingBlock *conBlock, const BuildingBlock *mobile,
+
+    PivotActuationEndEvent(Time t, BuildingBlock *conBlock, const BuildingBlock *mobile,
                            short from, short to);
-	PivotActuationEndEvent(PivotActuationEndEvent *ev);
-	~PivotActuationEndEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    PivotActuationEndEvent(PivotActuationEndEvent *ev);
+    ~PivotActuationEndEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 #endif /* EVENTS_H_ */

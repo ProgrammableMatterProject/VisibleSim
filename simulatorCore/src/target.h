@@ -191,7 +191,7 @@ protected:
      Cell3DPosition *origin = NULL;
      //<! @brief Exception thrown if an there is an attempt to use the RelativeTargetGrid without having set its origin beforehand
      struct MissingInitializationException : std::exception {
-          const char* what() const noexcept {
+          const char* what() const noexcept override {
                return "Attempted to call isInTarget without having set the target's origin first\n";
           }
      };
@@ -210,7 +210,7 @@ public:
     //!< @copydoc Target::getTargetColor
     //!< a cell is in the target grid if and only if it is present in the target cells container
      //!< @warning Can only be used once origin has been set, and expects a relative position as input
-    virtual bool isInTarget(const Cell3DPosition &pos) const;
+    virtual bool isInTarget(const Cell3DPosition &pos) const override;
 
     bool reconfigurationIsComplete() const;
     void highlightByDistanceToRoot() const;

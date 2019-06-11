@@ -347,10 +347,10 @@ y the module
      * \param sender Connector that has received the message and hence that is connected to the sender */
     void processReceivedMessage(MessagePtr msg, P2PNetworkInterface* sender);
 
-    void startup();
-    void processLocalEvent(EventPtr pev);
-    void onBlockSelected();
-    void onAssertTriggered();
+    void startup() override;
+    void processLocalEvent(EventPtr pev) override;
+    void onBlockSelected() override;
+    void onAssertTriggered() override;
 
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
         return (new MeshAssemblyBlockCode((Catoms3DBlock*)host));
@@ -497,7 +497,7 @@ y the module
      *  BlockCode::sendMessage immediatly after
      */
     virtual int sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
-                            Time t0,Time dt);
+                            Time t0,Time dt) override;
 
     /**
      * @copydoc BlockCode::sendMessage

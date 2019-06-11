@@ -123,7 +123,7 @@ public:
      * @copydoc ConfigExporter::exportAdditionalAttribute
      *  Exports the rotation attribute of a Catoms3DBlock
      */
-    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb);
+    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) override;
 };
 
 /**
@@ -159,7 +159,7 @@ public:
      * @copydoc ConfigExporter::exportAdditionalAttribute
      *  Exports the rotation attribute of a Catoms3DBlock
      */
-    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb);
+    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) override;
 };
 
 /**
@@ -225,7 +225,7 @@ public:
      * @copydoc ConfigExporter::exportAdditionalAttribute
      *  Exports the rotation attribute of a Datoms3DBlock
      */
-    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb);
+    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) override;
 };
 
 } // BASESIMULATOR_NAMESPACE

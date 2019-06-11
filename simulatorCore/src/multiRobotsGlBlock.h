@@ -18,10 +18,10 @@ namespace MultiRobots {
 class MultiRobotsGlBlock:public GlBlock {
 protected :
 public :
-	MultiRobotsGlBlock(bID id) : GlBlock(id) {};
-	virtual ~MultiRobotsGlBlock() {};
+    MultiRobotsGlBlock(bID id) : GlBlock(id) {};
+    virtual ~MultiRobotsGlBlock() {};
 
-	virtual void glDraw(ObjLoader::ObjLoader *ptrObj);
+    virtual void glDraw(ObjLoader::ObjLoader *ptrObj) override;
 };
 
 }

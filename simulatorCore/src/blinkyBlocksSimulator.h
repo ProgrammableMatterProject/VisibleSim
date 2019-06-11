@@ -25,19 +25,19 @@ protected:
 
 public:
 
-    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);   
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
 
     static BlinkyBlocksSimulator* getSimulator() {
-	assert(simulator != NULL);
-	return((BlinkyBlocksSimulator*)simulator);
+    assert(simulator != NULL);
+    return((BlinkyBlocksSimulator*)simulator);
     }
 
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-		   int argc, char *argv[]);
+           int argc, char *argv[]) override;
     virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                           const Cell3DPosition &pos, const Color &color, bool master);
+                           const Cell3DPosition &pos, const Color &color, bool master) override;
     virtual void parseScenario();
-    virtual void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
+    virtual void printInfo() override { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
 };
 
 inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {

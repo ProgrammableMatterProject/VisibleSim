@@ -27,9 +27,9 @@ public:
         : HandleableMessage(), srcPos(_srcPos) {};
     virtual ~RequestTargetCellMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new RequestTargetCellMessage(*this); }
-    virtual string getName() const { return "RequestTargetCell"; }
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new RequestTargetCellMessage(*this); }
+    virtual string getName() const override { return "RequestTargetCell"; }
 };
 
 class ProvideTargetCellMessage : public HandleableMessage {
@@ -40,9 +40,9 @@ public:
         : HandleableMessage(), tPos(_tPos), dstPos(_dstPos) {};
     virtual ~ProvideTargetCellMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new ProvideTargetCellMessage(*this); }
-    virtual string getName() const { return "ProvideTargetCell"; }
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new ProvideTargetCellMessage(*this); }
+    virtual string getName() const override { return "ProvideTargetCell"; }
 };
 
 class TileInsertionReadyMessage : public HandleableMessage {
@@ -50,9 +50,9 @@ public:
     TileInsertionReadyMessage() : HandleableMessage() {};
     virtual ~TileInsertionReadyMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new TileInsertionReadyMessage(*this); }
-    virtual string getName() const { return "TileInsertionReady"; }
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new TileInsertionReadyMessage(*this); }
+    virtual string getName() const override { return "TileInsertionReady"; }
 };
 
 class InitiateFeedingMechanismMessage : public HandleableMessage {
@@ -64,9 +64,9 @@ public:
         : HandleableMessage(), requirements(_requirements), level(_level) {};
     virtual ~InitiateFeedingMechanismMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new InitiateFeedingMechanismMessage(*this); }
-    virtual string getName() const { return "InitiateFeedingMechanism"; }
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new InitiateFeedingMechanismMessage(*this); }
+    virtual string getName() const override { return "InitiateFeedingMechanism"; }
 };
 
 

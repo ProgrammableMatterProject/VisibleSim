@@ -33,19 +33,19 @@ public:
    * @brief Clock destructor.
    */
   virtual ~Clock() {};
-  
+
   /**
    * @brief returns the local time for the simulator time in parameter.
    * @para simTime Simulator time for which the local time is requested.
-   */ 
+   */
   virtual Time getTime(Time simTime) = 0;
 
   /**
    * @brief returns the local time for the current simulator time
    * @return local time for current simulator time
-   */ 
+   */
   Time getTime();
-  
+
   /**
    * @brief returns the simulator time for the local time in parameter.
    * @para localTime Local time for which the simulator time is requested.
@@ -68,13 +68,13 @@ public:
    * @brief PerfectClock destructor.
    */
   ~PerfectClock();
-  
-  Time getTime(Time simTime);
-  Time getSimulationTime(Time localTime);
+
+  Time getTime(Time simTime) override;
+  Time getSimulationTime(Time localTime) override;
 };
 
 
- 
+
 }
 
 #endif // CLOCK_H_

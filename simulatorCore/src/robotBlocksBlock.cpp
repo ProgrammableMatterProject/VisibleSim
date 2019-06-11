@@ -18,7 +18,7 @@ using namespace std;
 namespace RobotBlocks {
 
 RobotBlocksBlock::RobotBlocksBlock(int bId, BlockCodeBuilder bcb)
-	: BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
+    : BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "RobotBlocksBlock constructor" << endl;
 #endif
@@ -35,12 +35,12 @@ void RobotBlocksBlock::setPrevNext(int prev,int next) {
 void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next) {
     int prevId=0,nextId=0;
     if (prev) {
-		RobotBlocksBlock*rb = (RobotBlocksBlock*)(prev->hostBlock);
-		prevId = rb->blockId;
+        RobotBlocksBlock*rb = (RobotBlocksBlock*)(prev->hostBlock);
+        prevId = rb->blockId;
     }
     if (next) {
-		RobotBlocksBlock*rb = (RobotBlocksBlock*)(next->hostBlock);
-		nextId = rb->blockId;
+        RobotBlocksBlock*rb = (RobotBlocksBlock*)(next->hostBlock);
+        nextId = rb->blockId;
     }
     //cout << (prev?prev->hostBlock->blockId:-1) << "," << (next?next->hostBlock->blockId:-1) << endl;
     getWorld()->updateGlData(this,prevId,nextId);
@@ -49,29 +49,29 @@ void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetw
 void RobotBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(
-		new AddNeighborEvent(getScheduler()->now(), this,
-							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
+        new AddNeighborEvent(getScheduler()->now(), this,
+                             getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void RobotBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(
-		new RemoveNeighborEvent(getScheduler()->now(), this,
-								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
+        new RemoveNeighborEvent(getScheduler()->now(), this,
+                                getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
 
 int RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) const {
     if( !given_interface) {
-		return SCLattice::Direction(0);
+        return SCLattice::Direction(0);
     }
     for( int i(0); i < 6; ++i) {
-		if(P2PNetworkInterfaces[i] == given_interface) return SCLattice::Direction(i);
+        if(P2PNetworkInterfaces[i] == given_interface) return SCLattice::Direction(i);
     }
     return SCLattice::Direction(0);
 }

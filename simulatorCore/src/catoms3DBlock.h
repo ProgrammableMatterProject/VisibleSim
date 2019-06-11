@@ -66,7 +66,7 @@ public:
     Catoms3DBlock(int bId, BlockCodeBuilder bcb);
     ~Catoms3DBlock();
 
-    inline virtual Catoms3DGlBlock* getGlBlock() const {
+    inline virtual Catoms3DGlBlock* getGlBlock() const override {
         return static_cast<Catoms3DGlBlock*>(ptrGlBlock);
     };
 
@@ -90,7 +90,7 @@ public:
        @param connectorId: id of connector (0..11)
        @param pos: position of the cell (if in the grid)
        @return return true if the cell is in the grid, false otherwise. */
-    bool getNeighborPos(short connectorId,Cell3DPosition &pos) const;
+    bool getNeighborPos(short connectorId,Cell3DPosition &pos) const override;
 
     /**
      * Gets a pointer to direct neighbor on connector conId
@@ -123,7 +123,7 @@ public:
     /**
      * @attention SHOULD BE getConnector(p2p...)!
      */
-    int getDirection(P2PNetworkInterface*) const;
+    int getDirection(P2PNetworkInterface*) const override;
 
     /**
      * @brief For a given connector, returns the direction corresponding to this connector
@@ -138,7 +138,7 @@ public:
      *
      * @param p :  the grid position (x,y,z) of the block as a Cell3DPosition
      */
-    void setPosition(const Cell3DPosition &p);
+    void setPosition(const Cell3DPosition &p) override;
 
     /**
        @brief Get the orientation code from the transformation matrix of the catom
@@ -197,11 +197,11 @@ public:
     /**
      * @copydoc BuildingBlock::addNeighbor
      */
-    virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target);
+    virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) override;
     /**
      * @copydoc BuildingBlock::removeNeighbor
      */
-    virtual void removeNeighbor(P2PNetworkInterface *ni);
+    virtual void removeNeighbor(P2PNetworkInterface *ni) override;
 
 };
 
