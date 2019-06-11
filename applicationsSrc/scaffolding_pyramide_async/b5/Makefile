@@ -1,7 +1,7 @@
 # Get current directory's name
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
-APPDIR = ../../../applicationsBin/meshCatoms3D_assembly
+APPDIR = ../../../applicationsBin/scaffolding_pyramide_async
 
 #####################################################################
 #
@@ -20,12 +20,12 @@ SRCS =  meshCatoms3D_assembly.cpp \
 	meshAssemblyMessages.cpp \
 	meshRuleMatcher.cpp #
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/meshAssembly
+OUT = $(APPDIR)/scaffoldingAsync
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimCatoms3D
 # TESTS contains the commands that will be executed when `make test` is called
-TESTS = ../../../utilities/blockCodeTest.sh meshCatoms3D $(OUT)
+#TESTS = ../../../utilities/blockCodeTest.sh meshCatoms3D $(OUT)
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -56,7 +56,7 @@ ifeq ($(GLOBAL_CCFLAGS),)
 CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 	ifeq ($(OS), Darwin)
 	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
-	endif 
+	endif
 else
 CCFLAGS = $(GLOBAL_CCFLAGS)
 endif
