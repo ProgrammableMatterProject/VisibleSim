@@ -58,6 +58,7 @@ public:
     static int nbCatomsInPlace;
     static int nbMessages;
     static Time t0;
+    inline static const bool NO_FLOODING = false;
 
     // For stats export
     pair<int, string> maxBitrate;
@@ -80,7 +81,7 @@ public:
         for (int i = 0; i < 2 * Rotations3D::nbRotationSteps; i++) {
             duration += Rotations3D::getNextRotationEventDelay();
         }
-        
+
         return duration;
     }
 
@@ -178,8 +179,7 @@ public:
         unordered_set<MeshComponent>({
                 S_RZ, S_RevZ,
                 X_2, X_3, X_4, X_5,
-                RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,
-                LZ_R_EPL
+                RZ_1, RZ_2, RZ_3, RZ_4, RZ_5
             }), // RZ_EPL x
         unordered_set<MeshComponent>({  }), // RZ_R_EPL
         unordered_set<MeshComponent>({  }), // Z_R_EPL x
@@ -293,7 +293,6 @@ public:
     std::array<int, 4> catomsSpawnedToVBranch = { 0, 0, 0, 0 }; // Number of catoms fed to each vertical branch
     std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
     std::array<bool, 6> moduleReadyOnEPL = {0}; //<! keeps track of modules which arrived on Tile Entry Point Locations
-
 
     /**
      * Finds the next target position that a module arriving at EPL epl should move to,
@@ -482,35 +481,14 @@ y the module
     void awakenPausedModules();
     std::array<bool, 12> moduleAwaitingOnEPL = {0};
 
-    // std::queue<MeshComponent> targetQueueForEPL[12] = {
-    //     queue<MeshComponent>({
-    //             RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
-    //             Z_R_EPL, Z_L_EPL, Z_R_EPL
-    //         }), // RevZ_EPL
-    //     {}, // RevZ_R_EPL
-    //     {},  // RZ_L_EPL
-    //     queue<MeshComponent>({
-    //             S_RevZ,
-    //             X_2, X_3, X_4, X_5,
-    //             RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,
-    //             LZ_R_EPL
-    //         }), // RZ__EPL x
-    //     queue<MeshComponent>({ S_RZ }), // RZ__R_EPL
-    //     queue<MeshComponent>({ X_1 }), // Z__R_EPL x
-    //     queue<MeshComponent>({
-    //             Z_1, Z_2, Z_3, Z_4, Z_5
-    //         }), // Z__EPL
-    //     queue<MeshComponent>({ Y_1 }), // Z__L_EPL x
-    //     queue<MeshComponent>({ S_LZ }), // LZ__R_EPL x
-    //     queue<MeshComponent>({
-    //             S_Z,
-    //             Y_2, Y_3, Y_4, Y_5,
-    //             LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
-    //             RZ_R_EPL
-    //         }), // LZ__EPL x
-    //     {}, // LZ__L_EPL x
-    //     {} // RevZ__L_EPL x
-    // };
+
+    /*********************************************************************/
+    /*********************** NO FLOODING STUFF ***************************/
+    /*********************************************************************/
+
+    std::map<MeshComponent, int> sandboxResourcesRequirement; //!< returns the number of modules to be spawned by the current coordinator at the sandbox level on epl MeshComponent
+
+    int resourcesForTileThrough(const Cell3DPosition& pos, MeshComponent epl) const;
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

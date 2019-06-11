@@ -73,10 +73,10 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     // (1) Print details of branch growth plan and previous round
     cout << endl << "--- PRINT MODULE " << *catom << "---" << endl;
     if (role == Coordinator) {
-        cout << "Growth Plan: [ ";
-        for (int i = 0; i < 6; i++)
-            cout << catomsReqByBranch[i] << ", ";
-        cout << " ]" << endl;
+        // cout << "Growth Plan: [ ";
+        // for (int i = 0; i < 6; i++)
+        //     cout << catomsReqByBranch[i] << ", ";
+        // cout << " ]" << endl;
 
         cout << "Construction Queue: [ " << endl;
         cout << "|   Component   |   EPL  |" << endl << endl;
@@ -85,32 +85,46 @@ void MeshAssemblyBlockCode::onBlockSelected() {
                  << ruleMatcher->component_to_string(pair.second) << " }" << endl;
         }
         cout << "]" << endl;
+
+        cout << "sandboxResourcesRequirement: " << endl;
+        for (int bi = 0; bi < XBranch; bi++)
+            cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
+                sandboxResourcesRequirement.find(
+                    ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))->second
+                 << endl;
+
+        cout << "ResourcesForTileThrough: " << endl;
+        for (int bi = 0; bi < XBranch; bi++)
+            cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
+                resourcesForTileThrough(catom->position, ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))
+                 << endl;
+
     }
 
-    cout << "branch: " << ruleMatcher->branch_to_string(branch) << endl;
-    cout << "coordinatorPos: " << coordinatorPos << endl;
-    cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
-    cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
-    cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
-    Cell3DPosition nextHop;
-    matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
-                    targetPosition, coordinatorPos, step, nextHop);
-    cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
-    cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
-    cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
-    cout << "targetPosition: " << targetPosition;
-    if (targetPosition != Cell3DPosition(0,0,0)
-        and ruleMatcher->isInMesh(norm(targetPosition))
-        and MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
-        cout << "[" << MeshRuleMatcher::component_to_string(
-            static_cast<MeshComponent>(MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
-    cout << endl;
+    // cout << "branch: " << ruleMatcher->branch_to_string(branch) << endl;
+    // cout << "coordinatorPos: " << coordinatorPos << endl;
+    // cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
+    // cout << "role: " << MeshRuleMatcher::roleToString(role) << endl;
+    // cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
+    // Cell3DPosition nextHop;
+    // matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
+    //                 targetPosition, coordinatorPos, step, nextHop);
+    // cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
+    // cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
+    // cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
+    // cout << "targetPosition: " << targetPosition;
+    // if (targetPosition != Cell3DPosition(0,0,0)
+    //     and ruleMatcher->isInMesh(norm(targetPosition))
+    //     and MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
+    //     cout << "[" << MeshRuleMatcher::component_to_string(
+    //         static_cast<MeshComponent>(MeshRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
+    // cout << endl;
 
-    cout << "matchingLocalRule: " << matchingLocalRule << endl;
-    cout << "greenLightIsOn: " << greenLightIsOn << endl;
-    cout << "pivotPosition: " << pivotPosition << endl;
-    cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
-    cout << "--- END " << *catom << "---" << endl;
+    // cout << "matchingLocalRule: " << matchingLocalRule << endl;
+    // cout << "greenLightIsOn: " << greenLightIsOn << endl;
+    // cout << "pivotPosition: " << pivotPosition << endl;
+    // cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
+    // cout << "--- END " << *catom << "---" << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -128,13 +142,14 @@ void MeshAssemblyBlockCode::startup() {
     // Need to initialize target light for sandbox modules at algorithm start
     if (ruleMatcher->isInSandbox(norm(catom->position))) {
         // EPLPivots will appear with a module on its EPL
-        if (ruleMatcher->isEPLPivotModule(norm(catom->position))) {
+        if (ruleMatcher->isEPLPivotModule(norm(catom->position))
+            and (m_mod(catom->position[0], B) == m_mod(catom->position[1], B)
+                 and m_mod(catom->position[2], B) == m_mod(B - catom->position[0], B))) {
             SET_GREEN_LIGHT(false);
         } else {
         // All other modules should be green (set by default)
             SET_GREEN_LIGHT(true);
         }
-
     }
 
     // Do stuff
@@ -722,6 +737,17 @@ void MeshAssemblyBlockCode::initializeTileRoot() {
     EPLPivotBC[3] = static_cast<MeshAssemblyBlockCode*>(lattice->getBlock(catom->position + Cell3DPosition(0, 2, -2))->blockCode); // LZBranch
     for (short bi = 0; bi < XBranch; bi++) VS_ASSERT(EPLPivotBC[bi]);
 
+    // Initialize Resources Allocation Requirements from sandbox
+    if (NO_FLOODING) {
+        sandboxResourcesRequirement.insert(
+            make_pair(RevZ_EPL,resourcesForTileThrough(catom->position, RevZ_EPL)));
+        sandboxResourcesRequirement.insert(
+            make_pair(Z_EPL,resourcesForTileThrough(catom->position, Z_EPL)));
+        sandboxResourcesRequirement.insert(
+            make_pair(LZ_EPL,resourcesForTileThrough(catom->position, LZ_EPL)));
+        sandboxResourcesRequirement.insert(
+            make_pair(RZ_EPL,resourcesForTileThrough(catom->position, RZ_EPL)));
+    }
 
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
@@ -831,13 +857,15 @@ void MeshAssemblyBlockCode::initializeSandbox() {
         }
 
         // Add waiting tile EPL modules
-        for (int i = 0; i < XBranch; i++) {
-                MeshComponent epl =ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)i);
-                if (denormPos != meshSeedPosition or i != ZBranch) {
-                    world->addBlock(0, buildNewBlockCode,
-                                    denormPos + getEntryPointRelativePos(epl), YELLOW);
-                }
+
+        // for (int i = 0; i < XBranch; i++) {
+        //         MeshComponent epl =ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)i);
+        if (denormPos != meshSeedPosition) {
+            // Add only future TR
+            world->addBlock(0, buildNewBlockCode,
+                            denormPos + getEntryPointRelativePos(Z_EPL), YELLOW);
         }
+        // }
 
     }
 
@@ -882,12 +910,19 @@ void MeshAssemblyBlockCode::feedIncidentBranches() {
             getSupportPositionForPosition(sbnorm(EPLPivotBC[bi]->catom->position));
         Catoms3DBlock* support = static_cast<Catoms3DBlock*>(lattice->getBlock(supportPos));
 
+        MeshComponent epl = ruleMatcher->getDefaultEPLComponentForBranch(
+            ruleMatcher->getAlternateBranchIndex((BranchIndex)bi));
+
         // Only insert if green light on EPL pivot
         if (EPLPivotBC[bi]->greenLightIsOn
             // and if support is ready to receive modules as well
-            and (not support
-                 or static_cast<MeshAssemblyBlockCode*>(support->blockCode)->greenLightIsOn))
+            and (not support or
+                 static_cast<MeshAssemblyBlockCode*>(support->blockCode)->greenLightIsOn)
+            // and if current resources allocation goal has not been met
+            and ( (sandboxResourcesRequirement.find(epl)->second > 0) or not NO_FLOODING)) {
+            if (NO_FLOODING) sandboxResourcesRequirement.find(epl)->second--;
             handleModuleInsertionToIncidentBranch(static_cast<BranchIndex>(bi));
+        }
     }
 }
 
@@ -1048,4 +1083,37 @@ int MeshAssemblyBlockCode::sendMessage(Message *msg,P2PNetworkInterface *dest,
 
 void MeshAssemblyBlockCode::log_send_message() const {
     OUTPUT << "lfmsg: " << round((scheduler->now() - startTime) / getRoundDuration()) << "\t" << MeshRuleMatcher::roleToString(role) << endl;
+}
+
+
+int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
+                                                   MeshComponent epl) const {
+    // cout << "resourcesForTileThrough(" << pos
+    //      << ", " << ruleMatcher->component_to_string(epl) << "): " << endl;
+    if (not ruleMatcher->isInPyramid(norm(pos))) {
+        // cout << "\tnot in shape" << endl;
+        return 0;
+    }
+
+    short eplId = epl - RevZ_EPL;
+
+    short count = 0;
+    if (epl == RevZ_EPL and ruleMatcher->shouldGrowBranch(norm(pos), RevZBranch)
+        and ruleMatcher->isInPyramid(
+            ruleMatcher->getTileRootAtEndOfBranch(norm(pos), RevZBranch)))
+        count += 1; // TileRoot to be sent through RevZBranch
+
+    for (const MeshComponent& mc : targetComponentsForEPL[eplId]) {
+        const Cell3DPosition& cPos = norm(pos + ruleMatcher->getPositionForComponent(mc));
+        if (ruleMatcher->isInPyramid(cPos) or ruleMatcher->isSupportModule(cPos))
+            count++;
+    }
+
+    BranchIndex bi = ruleMatcher->getBranchForEPL(epl);
+    MeshComponent eplAlt = ruleMatcher->getTargetEPLComponentForBranch(bi);
+
+    // cout << "\tcount: " << count << endl;
+
+    return count + resourcesForTileThrough(denorm(ruleMatcher->getTileRootAtEndOfBranch(
+                                                      norm(pos), bi)), eplAlt);
 }
