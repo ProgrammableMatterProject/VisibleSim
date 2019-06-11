@@ -1,7 +1,7 @@
 # Get current directory's name
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
-APPDIR = ../../../applicationsBin/scaffolding_pyramide_async
+APPDIR = ../../../applicationsBin/scaffolding_pyramid_async
 
 #####################################################################
 #

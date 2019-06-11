@@ -1,7 +1,7 @@
 # Get current directory's name
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
-APPDIR = ../../../applicationsBin/scaffolding_pyramid_async
+APPDIR = ../../applicationsBin/$(current_dir)
 
 #####################################################################
 #
@@ -20,12 +20,12 @@ SRCS =  meshCatoms3D_assembly.cpp \
 	meshAssemblyMessages.cpp \
 	meshRuleMatcher.cpp #
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/scaffoldingAsync
+OUT = $(APPDIR)/scaffoldingSync
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimCatoms3D
 # TESTS contains the commands that will be executed when `make test` is called
-#TESTS = ../../../utilities/blockCodeTest.sh meshCatoms3D $(OUT)
+TESTS = ../../utilities/blockCodeTest.sh meshCatoms3D $(OUT)
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -34,22 +34,22 @@ OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
 OS = $(shell uname -s)
-SIMULATORLIB = $(MODULELIB:-l%=../../../simulatorCore/lib/lib%.a)
+SIMULATORLIB = $(MODULELIB:-l%=../../simulatorCore/lib/lib%.a)
 
 ifeq ($(GLOBAL_INCLUDES), )
-INCLUDES = -I. -I../../../simulatorCore/src -I/usr/local/include -I/opt/local/include -I/usr/X11/include
+INCLUDES = -I. -I../../simulatorCore/src -I/usr/local/include -I/opt/local/include -I/usr/X11/include
 else
-INCLUDES = -I. -I../../../simulatorCore/src $(GLOBAL_INCLUDES)
+INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 endif
 
 ifeq ($(GLOBAL_LIBS), )
 	ifeq ($(OS),Darwin)
-LIBS = -L./ -L../../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(MODULELIB)
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(MODULELIB)
 	else
-LIBS = -L./ -L../../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lm -L/usr/X11/lib  -lglut -lGL -lGLU -lGLEW -lpthread $(MODULELIB)
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lm -L/usr/X11/lib  -lglut -lGL -lGLU -lGLEW -lpthread $(MODULELIB)
 	endif				#OS
 else
-LIBS = $(GLOBAL_LIBS) -L../../../simulatorCore/lib
+LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
 endif				#GLOBAL_LIBS
 
 ifeq ($(GLOBAL_CCFLAGS),)

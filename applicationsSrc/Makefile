@@ -14,7 +14,7 @@ SUBDIRS = #C3DRotate #simpleColorC2D simpleColorRB simpleColorSB distanceRB simp
 
 SUBDIRS += scaffolding_cube scaffolding_pyramide_async #meshCatoms3D #csgCatoms3D meltSortGrow targetColoration simpleMotionOkteen reconfCatoms3D
 # SUBDIRS = reconfCatoms3D reconfCatoms3DMultilayer
-SUBDIRS += #csgCatoms3D targetColoration
+SUBDIRS += scaffolding_pyramid_sync #targetColoration catoms3DRotations
 
 .PHONY: subdirs $(SUBDIRS) test
 

@@ -318,13 +318,48 @@ const string Rotation3DEndEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotations3D::Rotations3D(const Catoms3DBlock *module, const Catoms3DBlock *fixe, double rprim,
+void Rotations3D::init(const Matrix& m) {
+    firstRotation=true;
+    step=0;
+    initialMatrix=m;
+    finalMatrix=m*finalMatrix;
+
+    exportMatrix(initialMatrix);
+}
+
+
+void Rotations3D::exportMatrix(const Matrix& m) {
+#define ROTATION_STEP_MATRIX_EXPORT
+#ifdef ROTATION_STEP_MATRIX_EXPORT
+
+    Catoms3DBlock* block = static_cast<Catoms3DBlock*>
+        (BaseSimulator::getWorld()->getBlockById(catomId));
+
+    if ((exportMatrixCount % 2) == 0 or exportMatrixCount == 40) {
+        OUTPUT << getScheduler()->now() << "|";
+
+        block->blockCode->onBlockSelected();
+
+        OUTPUT << catomId << "|";
+
+        OUTPUT << "(matrix3 "
+               << "[" << m.m[0] << "," << m.m[4] << "," << m.m[8] << "] "
+               << "[" << m.m[1] << "," << m.m[5] << "," << m.m[9] << "] "
+               << "[" << m.m[2] << "," << m.m[6] << "," << m.m[10] << "] "
+               << "[" << m.m[3] << "," << m.m[7] << "," << m.m[11] << "])"
+               << endl;
+    }
+
+    exportMatrixCount++;
+#endif
+}
+
+Rotations3D::Rotations3D(const Catoms3DBlock *mobile, const Catoms3DBlock *fixe, double rprim,
                          const Vector3D &ax1, double ang1,
                          const Vector3D &ax2, double ang2,
-                         short from, short to):
-    mobile(module), pivot(fixe),
-    conFromP(from), conToP(to),
-    angle1(ang1), angle2(ang2) {
+                         short from, short to) : angle1(ang1),angle2(ang2) {
+    catomId = mobile->blockId;
+    pivot = fixe;
 
     static const double c_2 = 1.0/(3+sqrt(2));
     Matrix MA = ((Catoms3DGlBlock*)mobile->getGlBlock())->mat;
@@ -397,9 +432,9 @@ bool Rotations3D::nextStep(Matrix &m) {
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = initialMatrix * m;
 //        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
-        if (step==Rotations3D::nbRotationSteps) {
+
+        if (step==Rotations3D::nbRotationSteps)
             firstRotation=false;
-        }
     } else {
         step--;
         double angle=-angle2*step/Rotations3D::nbRotationSteps;
@@ -414,11 +449,11 @@ bool Rotations3D::nextStep(Matrix &m) {
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = finalMatrix * m;
 //        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
-        if (step==0) {
-            return true;
-        }
     }
-    return false;
+
+    exportMatrix(m);
+
+    return step == 0;
 }
 
 void Rotations3D::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
