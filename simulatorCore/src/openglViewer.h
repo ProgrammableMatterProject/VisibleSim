@@ -31,7 +31,7 @@ class GlutContext {
 public :
     static bool GUIisEnabled; //!< Enable / Disable GLUT graphical simulation, enabled by default
     static GlutSlidingMainWindow *mainWindow;
-    static GlutSlidingDebugWindow *debugWindow;
+    // static GlutSlidingDebugWindow *debugWindow;
     static GlutPopupWindow *popup;
     static GlutPopupMenuWindow *popupMenu;
     static GlutPopupMenuWindow *popupSubMenu;
@@ -47,6 +47,8 @@ public :
     static int frameCount;
     static int previousTime;
     static float fps;
+    static unsigned int nbModules;
+    static long unsigned int timestep;
 //	bool showLinks;
 
     static void init(int argc, char **argv);
@@ -69,6 +71,8 @@ private :
     static bool saveScreen(const char *title);
     static void *lanceScheduler(void *param);
     static void calculateFPS(void);
+    static void calculateSimulationInfo(void);
     static void showFPS(void);
+    static void showSimulationInfo(void);
 };
 #endif

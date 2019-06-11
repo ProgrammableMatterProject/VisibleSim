@@ -13,7 +13,7 @@ OS = $(shell uname -s)
 VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen -lsimDatoms
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
+TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL
 # TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 
 # ADDITIONAL CCFLAGS
@@ -21,9 +21,9 @@ TEMP_CCFLAGS = -g -Wall -std=c++14 -DTINYXML_USE_STL -DTIXML_USE_STL
 #
 # MeldProcess: Uncomment this block to enable
 # TEMP_CCFLAGS += -DENABLE_MELDPROCESS # Enable MeldProcess source files compilation,
-# 				       # required by any MeldProcess CodeBlock.
-# 				       # if this flag is not set, the boost libraries will not be included,
-# 				       # since they are the only source files using them.
+#				       # required by any MeldProcess CodeBlock.
+#				       # if this flag is not set, the boost libraries will not be included,
+#				       # since they are the only source files using them.
 
 # You can add any of the following debug flags to get a more verbose output
 # TEMP_CCFLAGS += -DDEBUG_EVENTS #          : trace creation and destruction of all events

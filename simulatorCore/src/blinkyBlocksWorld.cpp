@@ -113,6 +113,9 @@ void BlinkyBlocksWorld::glDraw() {
     }    
     unlock();
     
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
+
     glDrawBackground();
 }
 

@@ -110,6 +110,9 @@ void SmartBlocksWorld::glDraw() {
         */
         glPopMatrix();
 
+        BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+        if (bb) bb->blockCode->onGlDraw();
+        
         glDrawBackground();
 }
 

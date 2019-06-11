@@ -34,7 +34,6 @@
 #include <fstream>
 #include <list>
 #include <vector>
-#include <Eigen/Dense>
 #include <cfloat>
 
 #define TIXML_USE_STL	1
@@ -91,7 +90,7 @@ public: // exceptions
             m_msg = ss.str();
         }
     };
-    
+
 protected:
     /**
      * @brief prints target to an ouput string
@@ -157,7 +156,7 @@ protected:
     void addTargetCell(const Cell3DPosition &pos, const Color c = Color());
 
     //!< @copydoc Target::print
-    virtual void print(ostream& where) const;
+    virtual void print(ostream& where) const override;
 public:
     /**
      * @copydoc Target::Target
@@ -172,13 +171,13 @@ public:
 
     //!< @copydoc Target::getTargetColor
     //!< a cell is in the target grid if and only if it is present in the target cells container
-    virtual bool isInTarget(const Cell3DPosition &pos) const;
+    virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
-    virtual const Color getTargetColor(const Cell3DPosition &pos);
+    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
 
     //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb);
+    virtual void boundingBox(BoundingBox &bb) override;
 
     virtual void highlight();
     virtual void unhighlight();
@@ -244,17 +243,17 @@ public: // FIXME:
     BoundingBox bb;
 protected:
     //!< @copydoc Target::print
-    virtual void print(ostream& where) const {};
+    virtual void print(ostream& where) const override {};
 public:
     TargetCSG(TiXmlNode *targetNode);
     virtual ~TargetCSG() {};
 
     //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb);
+    virtual void boundingBox(BoundingBox &bb) override;
     //!< @copydoc Target::isInTarget
-    virtual bool isInTarget(const Cell3DPosition &pos) const;
+    virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
-    virtual const Color getTargetColor(const Cell3DPosition &pos);
+    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
 
     /**
      * @brief Grid to unscaled world position within bounding box
@@ -275,6 +274,11 @@ public:
      */
     bool isInTargetBorder(const Cell3DPosition &pos, double radius) const;
 
+    /*
+     * @brief Draw geometry of the target in the interfaces
+     */
+    virtual void glDraw() override;
+
     void highlight();
 };  // class TargetCSG
 
@@ -293,8 +297,8 @@ class TargetSurface : public Target {
     vector<float> sknots;
     vector<float> tknots;
     vector<vector<vector<float>>> ctlpoints;
-	float *float_sknots,*float_tknots,***float_ctlpoints;
-	GLUnurbsObj *theNurb;
+    float *float_sknots,*float_tknots,***float_ctlpoints;
+    GLUnurbsObj *theNurb;
 protected:
     /**
      * @brief Add a cell to the target cells container
@@ -308,7 +312,7 @@ protected:
     float dist(float x1, float y1, float x2, float y2) const;
 
     //!< @copydoc Target::print
-    virtual void print(ostream& where) const;
+    virtual void print(ostream& where) const override;
 public:
     /**
      * @copydoc Target::Target
@@ -325,15 +329,15 @@ public:
 
     //!< @copydoc Target::getTargetColor
     //!< a cell is in the target grid if it is at the same level or under as the surface described for a couple (x,y)
-    virtual bool isInTarget(const Cell3DPosition &pos) const;
+    virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
-    virtual const Color getTargetColor(const Cell3DPosition &pos);
+    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
 
     //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb);
+    virtual void boundingBox(BoundingBox &bb) override;
 
-	void glDraw();
+    virtual void glDraw() override;
 };  // class TargetSurface
 
 

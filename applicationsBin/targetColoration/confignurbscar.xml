@@ -8004,7 +8004,8 @@
 		<block position="8,10,19" orientation="0"/>
 		<block position="9,10,19" orientation="0"/>
 		<block position="10,10,19" orientation="0"/>
-	</blockList>
+	      </blockList>
+              
 	<targetList>
 	  <target format="surface">
 		<method meth="nurbs">

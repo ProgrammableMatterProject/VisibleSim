@@ -249,6 +249,9 @@ void DatomsWorld::glDraw() {
     unlock();
     glPopMatrix();
 
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
+
     enableTexture(false);
 	lattice->glDraw();
 }

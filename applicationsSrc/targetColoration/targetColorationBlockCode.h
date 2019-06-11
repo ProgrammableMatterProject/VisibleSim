@@ -7,9 +7,12 @@
 #include "rotation3DEvents.h"
 #include "catoms3DBlock.h"
 
+#include "polymer.h"
+
 class targetColorationBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
 	// custom attribute
+    Polymer *polymer = NULL;
 public:
 
     Catoms3D::Catoms3DBlock *catom;
@@ -28,6 +31,22 @@ public:
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
 	    return (new targetColorationBlockCode((Catoms3DBlock*)host));
 	};
+    
+    /** 
+     * User-implemented keyboard handler function that gets called when 
+     *  a key press event could not be caught by openglViewer
+     * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
+     */
+    virtual void onUserKeyPressed(unsigned char c, int x, int y);
+
+    /** 
+     * Call by world during GL drawing phase, can be used by a user 
+     *  to draw custom Gl content into the simulated world
+     * @note call is made from World::GlDraw
+     */
+    virtual void onGlDraw();
+    
+    void simulatePolymer();
 };
 
 #endif /* targetColorationBlockCode_H_ */

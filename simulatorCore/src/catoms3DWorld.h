@@ -19,8 +19,6 @@
 #include "objLoader.h"
 #include "trace.h"
 #include "catoms3DMotionRules.h"
-#include "polymer.h"
-
 
 //!< \namespace Catoms3D
 namespace Catoms3D {
@@ -59,8 +57,6 @@ static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
  */
 class Catoms3DWorld : public BaseSimulator::World {
 protected:
-	Polymer *polymer = NULL;
-
     GLuint idTextureHexa,idTextureGrid;
     Catoms3DMotionRules *motionRules;
 //Nurbs surface
@@ -197,7 +193,6 @@ public:
  * \brief load the background textures (internal)
  */
     void loadTextures(const string &str);
-	void simulatePolymer();
 };
 
 inline void deleteWorld() {

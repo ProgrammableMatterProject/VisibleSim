@@ -95,8 +95,8 @@ void MultiRobotsWorld::glDraw() {
         ((MultiRobotsGlBlock*)pair.second)->glDraw(objBlock);
     }        
     unlock();
-
     glPopMatrix();
+        
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
     glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
     glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
@@ -172,6 +172,9 @@ void MultiRobotsWorld::glDraw() {
     glPopMatrix();
     // draw the axes
     objRepere->glDraw();
+    
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();        
 }
 
 void MultiRobotsWorld::glDrawId() {

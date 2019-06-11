@@ -3,11 +3,11 @@
   <camera target="60.0,66.0,42.0" directionSpherical="0,10,217" angle="45.0" near="1.000000" far="1500.000000" />
   <spotlight target="7,4,0" directionSpherical="60,25,200" angle="50"/>
   <blockList color="128,128,128" blocksize="10,10,10">
-    <blockBox color="64,192,64" boxOrigin="0,0,0" boxSize="80,80,80" />
+    <csg content="translate([5,5,5]) color([0.8,0.8,0.1]) cube([10,10,10]);" />
   </blockList>
   <targetList>
     <target format="csg">
-         <csg content="translate([5,5,5]) color([0.8,0.8,0.1]) sphere(5);" />
+      <csg content="translate([5,5,5]) color([0.8,0.8,0.1]) sphere(5);" />
     </target>
   </targetList>
 </world>

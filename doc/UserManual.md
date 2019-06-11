@@ -194,7 +194,7 @@ If `-l` option is not found, nothing will be printed to the file.
 ##### Detailed Simulation Statistics (`-i`)
 Prints more detailed statistics at the end of the simulation. It prints the minimum, the mean, the maximum and the standard-deviation values of the number of messages sent/received per module, the maximum message queue size reached and the number of motions per module. Be aware that collecting these statistics requires O(number of modules) memory space.
 ##### Simulation Seed (`-a`)
-The randomness of the simulation (variability in the communication rate, variability in the motion duration (not fully supported yet), clock randomness) depends on the simulation seed. Using the same simulation seed on the same configuration produces the same simulation. By default, the simulation seed is equal to 50. If  `-a < seed < 0 >` is used, a randomly generated seed is set.
+The randomness of the simulation (variability in the communication rate, variability in the motion duration (not fully supported yet), clock randomness) depends on the simulation seed. Using the same simulation seed on the same configuration produces the same simulation. By default, the simulation seed is equal to 50. If  `-a < seed < 0 >` is used, a randomly generated seed is set. Providing a negative seed (e.g., `-3`) lets the simulator randomly select a seed by itself.
 ##### Help (`-h`)
 Displays the usage message in the terminal.
 
@@ -548,7 +548,7 @@ __N.B.:__ NOT necessary if using  _terminal mode_.
 #### !`blockList` 
 
 The `blockList` element describes the starting physical position and color of modules (+ extra attributes depending on module type) in the simulated world, as well as their logical identifier for simulation. 
-There are two types of children elements that can be used to describe the ensemble, and that can be combined, `block` and `blocksLine`.
+There are several types of children elements that can be used to describe the ensemble, and that can be combined: `block`, `blocksLine`, and `blocksBox`.
 
 ```xml
 <blockList color="r,g,b" ids="[MANUAL|ORDERED|RANDOM]" step="sp" seed="sd">
@@ -557,6 +557,7 @@ There are two types of children elements that can be used to describe the ensemb
 	<!-- ... -->
 	<blocksLine plane="p" line="l" color="r,g,b" values="00101...1110"/>
 	<!-- ... -->
+    <blockBox boxOrigin="x,y,z" boxSize="L, l, h" color="r,g,b" />
 </blockList>
 ```
 Attributes: 

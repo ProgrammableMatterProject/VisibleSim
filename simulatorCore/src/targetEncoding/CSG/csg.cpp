@@ -7,7 +7,6 @@
 
 #define EPS 1e-10
 
-// TODO: VIRTUALIZE
 void CSGNode::glDraw() {
     throw NotImplementedException("CSGNode::glDraw");
 }
@@ -26,7 +25,7 @@ bool CSGCube::isInside(const Vector3D &p, Color &color) const {
                 p.pt[2] <= size_z/2.0 && p.pt[2] >= -size_z/2.0)
             return true;
     }
-    else { // TODO
+    else { // TOCHECK
         if (p.pt[0] <= size_x && p.pt[0] >= 0 &&
                 p.pt[1] <= size_y && p.pt[1] >= 0 &&
                 p.pt[2] <= size_z && p.pt[2] >= 0)
@@ -38,18 +37,22 @@ bool CSGCube::isInside(const Vector3D &p, Color &color) const {
 bool CSGCube::isInBorder(const Vector3D &p, Color &color, double border) const {
     if (center) {
         if (isInside(p, color) &&  (
-            (p.pt[0] <= size_x/2 && p.pt[0] >= size_x/2 - border) ||
-            (p.pt[1] <= size_y/2 && p.pt[1] >= size_y/2 - border) ||
-            (p.pt[2] <= size_z/2 && p.pt[2] >= size_z/2 - border) ||
-            (p.pt[0] >= -size_x/2 && p.pt[0] <= -size_x/2 + border) ||
-            (p.pt[1] >= -size_y/2 && p.pt[1] <= -size_y/2 + border) ||
-            (p.pt[2] >= -size_z/2 && p.pt[2] <= -size_z/2 + border)))
+                (p.pt[0] <= size_x/2 && p.pt[0] >= size_x/2 - border) ||
+                (p.pt[1] <= size_y/2 && p.pt[1] >= size_y/2 - border) ||
+                (p.pt[2] <= size_z/2 && p.pt[2] >= size_z/2 - border) ||
+                (p.pt[0] >= -size_x/2 && p.pt[0] <= -size_x/2 + border) ||
+                (p.pt[1] >= -size_y/2 && p.pt[1] <= -size_y/2 + border) ||
+                (p.pt[2] >= -size_z/2 && p.pt[2] <= -size_z/2 + border)))
             return true;
     }
-    else { // TODO
-        if (p.pt[0] <= size_x && p.pt[0] >= 0 &&
-                p.pt[1] <= size_y && p.pt[1] >= 0 &&
-                p.pt[2] <= size_z && p.pt[2] >= 0)
+    else { // TOCHECK
+        if (isInside(p, color) && (
+                (p.pt[0] <= size_x && p.pt[0] >= size_x - border) ||
+                (p.pt[1] <= size_y && p.pt[1] >= size_y - border) ||
+                (p.pt[2] <= size_z && p.pt[2] >= size_z - border) ||
+                (p.pt[0] >= 0 && p.pt[0] <= 0 + border) ||
+                (p.pt[1] >= 0 && p.pt[1] <= 0 + border) ||
+                (p.pt[2] >= 0 && p.pt[2] <= 0 + border)))
             return true;
     }
     return false;
@@ -143,7 +146,8 @@ void CSGSphere::boundingBox(BoundingBox &bb) {
 CSGCylinder::CSGCylinder (double h, double r) : height(h), radius(r), center(true) {};
 
 void CSGCylinder::toString() const {
-    printf("cylinder(%lf, %lf, %lf, true);\n", height, radius, radius);
+    printf("cylinder(%lf, %lf, %lf, %s);\n", height, radius, radius, 
+           center ? "true" : "false");
 }
 
 bool CSGCylinder::isInside(const Vector3D &p, Color &color) const {
@@ -178,7 +182,7 @@ bool CSGCylinder::isInBorder(const Vector3D &p, Color &color, double border) con
             return true;
         }
     }
-    else { //TODO
+    else { // TOCHECK
         if (p.pt[2] <= height && p.pt[2] >= 0) {
             if (dist <= radius && dist >= radius - border) {
                 return true;

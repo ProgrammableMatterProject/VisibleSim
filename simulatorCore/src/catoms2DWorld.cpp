@@ -119,6 +119,9 @@ void Catoms2DWorld::glDraw() {
     unlock();
     glPopMatrix();
 
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
+
     glDrawBackground();
 }
 

@@ -36,7 +36,7 @@ Catoms3DSimulator::~Catoms3DSimulator() {
 }
 
 void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
-	simulator =  new Catoms3DSimulator(argc, argv, bcb);
+	simulator = new Catoms3DSimulator(argc, argv, bcb);
 	simulator->parseConfiguration(argc, argv);
 	simulator->startSimulation();
 }

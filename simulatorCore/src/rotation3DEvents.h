@@ -60,12 +60,7 @@ public:
                 const Vector3D &ax2, double ang2, short from = -1, short to = -1);
     Rotations3D() {};
 
-    void init(const Matrix& m) {
-        firstRotation=true;
-        step=0;
-        initialMatrix=m;
-        finalMatrix=m*finalMatrix;
-    }
+    void init(const Matrix& m);
 
 /**
    \brief Return current transformation matrix in m
@@ -79,7 +74,10 @@ public:
 */
     bool nextStep(Matrix &m);
     void getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation);
+    void exportMatrix(const Matrix& m);
+
 protected :
+    short exportMatrixCount = 0;
     bool firstRotation;
     short step;
     Matrix initialMatrix,finalMatrix;
@@ -88,6 +86,7 @@ protected :
     Vector3D axe2;
     double angle1;
     double angle2;
+    bID catomId;
     friend std::ostream& operator<<(std::ostream &stream, Rotations3D const& rots);
 };
 std::ostream& operator<<(std::ostream &stream, Rotations3D const& rots);
