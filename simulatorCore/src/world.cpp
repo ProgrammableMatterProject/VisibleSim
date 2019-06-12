@@ -15,7 +15,7 @@ using namespace std;
 
 namespace BaseSimulator {
 
-World *World::world=NULL;
+World *World::world = NULL;
 map<bID, BuildingBlock*>World::buildingBlocksMap;
 unordered_map <bID, GlBlock*>World::mapGlBlocks;
 
