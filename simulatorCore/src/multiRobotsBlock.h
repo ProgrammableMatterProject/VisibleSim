@@ -22,20 +22,20 @@ class MultiRobotsBlockCode;
 class MultiRobotsBlock : public BaseSimulator::BuildingBlock {
 
 public:
-	MultiRobotsBlock(int bId, BlockCodeBuilder bcb);
-	~MultiRobotsBlock();
+    MultiRobotsBlock(int bId, BlockCodeBuilder bcb);
+    ~MultiRobotsBlock();
 
-	inline virtual MultiRobotsGlBlock* getGlBlock() const {
+    inline virtual MultiRobotsGlBlock* getGlBlock() const override {
         return (MultiRobotsGlBlock *)ptrGlBlock;
     };
 
-	P2PNetworkInterface *getInterfaceDestId(int id) const;
-	int getDirection(P2PNetworkInterface*) const;
+    P2PNetworkInterface *getInterfaceDestId(int id) const;
+    int getDirection(P2PNetworkInterface*) const override;
 
-	void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
-	void removeNeighbor(P2PNetworkInterface *ni) {};
-	void stopBlock(Time date, State s);
-	void pauseClock(Time delay, Time start);
+    void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) override {}
+    void removeNeighbor(P2PNetworkInterface *ni) override {}
+    void stopBlock(Time date, State s);
+    void pauseClock(Time delay, Time start);
 };
 
 std::ostream& operator<<(std::ostream &stream, MultiRobotsBlock const& bb);

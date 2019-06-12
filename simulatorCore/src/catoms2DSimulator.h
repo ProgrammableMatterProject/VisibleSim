@@ -29,15 +29,15 @@ public:
     static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
 
     static Catoms2DSimulator* getSimulator() {
-	assert(simulator != NULL);
-	return((Catoms2DSimulator*)simulator);
+    assert(simulator != NULL);
+    return((Catoms2DSimulator*)simulator);
     }
 
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-			   int argc, char *argv[]);
+               int argc, char *argv[]) override;
     virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-						   const Cell3DPosition &pos, const Color &color, bool master);
-    virtual void printInfo() { OUTPUT << "I'm a Catoms2DSimulator" << endl; }
+                           const Cell3DPosition &pos, const Color &color, bool master) override;
+    virtual void printInfo() override { OUTPUT << "I'm a Catoms2DSimulator" << endl; }
     void help();
 };
 

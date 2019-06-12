@@ -130,12 +130,12 @@ short DatomsBlock::getAbsoluteDirection(short connector) const {
 short DatomsBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos, short nDirection) const {
     // cout << "pAND: " << "nPos: " << nPos << "/" << nDirection << endl
     //      << "\tPosition: " << position << endl;
-    
+
     // Find cell on direction nDirection of neighbor at nPos
     Lattice *lattice = DatomsWorld::getWorld()->lattice;
-    Cell3DPosition projectedPos = lattice->getCellInDirection(nPos, nDirection); 
+    Cell3DPosition projectedPos = lattice->getCellInDirection(nPos, nDirection);
     // cout << "\tproj: " << projectedPos << endl;
-    
+
     // No corresponding connector on current module
     if (!lattice->cellsAreAdjacent(position, projectedPos)) return -1;
 
@@ -198,7 +198,7 @@ short DatomsBlock::getConnectorId(const Cell3DPosition& pos) const {
         d=x*x+y*y+z*z;
         i++;
     }
-    
+
     return d > 0.1 ? -1 : i - 1;
 }
 
@@ -217,21 +217,21 @@ bool DatomsBlock::areOrientationsInverted(short otherOriCode) const {
 void DatomsBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(
-		new AddNeighborEvent(getScheduler()->now(), this,
-							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
+        new AddNeighborEvent(getScheduler()->now(), this,
+                             getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void DatomsBlock::removeNeighbor(P2PNetworkInterface *ni) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(
-		new RemoveNeighborEvent(getScheduler()->now(), this,
-								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
+        new RemoveNeighborEvent(getScheduler()->now(), this,
+                                getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
 
 }

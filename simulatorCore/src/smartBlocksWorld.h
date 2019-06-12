@@ -39,16 +39,16 @@ public:
 
     virtual void addBlock(bID blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
                           const Cell3DPosition &pos, const Color &col,
-                          short orientation = 0, bool master = false);
+                          short orientation = 0, bool master = false) override;
 
-    void linkBlock(const Cell3DPosition &pos);
-    void loadTextures(const string &str);
-    virtual void glDraw();
-    virtual void glDrawId();
-    virtual void glDrawIdByMaterial();
-    virtual void glDrawSpecificBg();
-    virtual void setSelectedFace(int n);
-    virtual void exportConfiguration();
+    void linkBlock(const Cell3DPosition &pos) override;
+    void loadTextures(const string &str) override;
+    virtual void glDraw() override;
+    virtual void glDrawId() override;
+    virtual void glDrawIdByMaterial() override;
+    virtual void glDrawSpecificBg() override;
+    virtual void setSelectedFace(int n) override;
+    virtual void exportConfiguration() override;
 };
 
 inline void deleteWorld() {

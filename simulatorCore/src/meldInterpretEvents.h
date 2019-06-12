@@ -23,9 +23,9 @@ public:
     VMSetIdEvent(Time, BaseSimulator::BuildingBlock *conBlock);
     VMSetIdEvent(VMSetIdEvent *ev);
     ~VMSetIdEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -40,9 +40,9 @@ public:
     VMStopEvent(Time, BaseSimulator::BuildingBlock *conBlock);
     VMStopEvent(VMStopEvent *ev);
     ~VMStopEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 
@@ -60,8 +60,8 @@ public:
     VMSendMessageEvent(Time, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes, P2PNetworkInterface *ni);
     VMSendMessageEvent(VMSendMessageEvent *ev);
     ~VMSendMessageEvent();
-    void consumeBlockEvent();
-    const virtual string getEventName();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -79,8 +79,8 @@ public:
                         MessagePtr mes, BaseSimulator::BuildingBlock* sento);
     VMSendMessageEvent2(VMSendMessageEvent2 *ev);
     ~VMSendMessageEvent2();
-    void consumeBlockEvent();
-    const virtual string getEventName();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -95,8 +95,8 @@ public:
     VMReceiveMessageEvent2(Time, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes);
     VMReceiveMessageEvent2(VMReceiveMessageEvent2* ev);
     ~VMReceiveMessageEvent2();
-    void consumeBlockEvent();
-    const virtual string getEventName();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -112,8 +112,8 @@ public:
     VMHandleDebugCommandEvent(Time, BaseSimulator::BuildingBlock *conBlock);
     VMHandleDebugCommandEvent(VMHandleDebugCommandEvent *ev);
     ~VMHandleDebugCommandEvent();
-    void consumeBlockEvent();
-    const virtual string getEventName();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -129,8 +129,8 @@ public:
     VMDebugPauseSimEvent(Time);
     VMDebugPauseSimEvent(VMDebugPauseSimEvent *ev);
     ~VMDebugPauseSimEvent();
-    void consume();
-    const virtual string getEventName();
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -145,8 +145,8 @@ public:
     VMEndPollEvent(Time, BaseSimulator::BuildingBlock *conBlock);
     VMEndPollEvent(VMEndPollEvent *ev);
     ~VMEndPollEvent();
-    void consumeBlockEvent();
-    const virtual string getEventName();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 
@@ -163,8 +163,8 @@ public:
     ComputePredicateEvent(Time, BaseSimulator::BuildingBlock *conBlock);
     ComputePredicateEvent(ComputePredicateEvent *ev);
     ~ComputePredicateEvent();
-    void consumeBlockEvent();
-    const virtual string getEventName();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -176,13 +176,13 @@ public:
 class AddTupleEvent : public BlockEvent {
 public:
     tuple_t tuple;
-    meld_byte face;
+    byte face;
 
-    AddTupleEvent(Time, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, meld_byte f);
+    AddTupleEvent(Time, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte f);
     AddTupleEvent(AddTupleEvent *ev);
     ~AddTupleEvent();
-    void consumeBlockEvent();
-    const virtual string getEventName();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 
@@ -195,13 +195,13 @@ public:
 class RemoveTupleEvent : public BlockEvent {
 public:
     tuple_t tuple;
-    meld_byte face;
+    byte face;
 
-    RemoveTupleEvent(Time, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, meld_byte f);
+    RemoveTupleEvent(Time, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte f);
     RemoveTupleEvent(RemoveTupleEvent *ev);
     ~RemoveTupleEvent();
-    void consumeBlockEvent();
-    const virtual string getEventName();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 

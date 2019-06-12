@@ -25,13 +25,13 @@ void OkteenSimulator::help() {
 OkteenSimulator::OkteenSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
     : BaseSimulator::Simulator(argc, argv, bcb) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor << "OkteenSimulator constructor" << TermColor::Reset << endl;
+    OUTPUT << "\033[1;34m" << "OkteenSimulator constructor" << "\033[0m" << endl;
 #endif
 }
 
 OkteenSimulator::~OkteenSimulator() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor << "OkteenSimulator destructor" << TermColor::Reset <<endl;
+    OUTPUT << "\033[1;34m" << "OkteenSimulator destructor" << "\033[0m" <<endl;
 #endif
 }
 

@@ -48,7 +48,7 @@ public :
     bool nextStep(Matrix &m);
     void getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation);
 
-	uint8_t modelId;
+    uint8_t modelId;
 protected :
     short step;
     Matrix initialMatrix,finalMatrix;
@@ -66,12 +66,12 @@ protected :
 class DeformationStartEvent : public BlockEvent {
     Deformation deform;
 public:
-	DeformationStartEvent(Time, DatomsBlock *block,const Deformation& r);
-	DeformationStartEvent(DeformationStartEvent *ev);
-	~DeformationStartEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    DeformationStartEvent(Time, DatomsBlock *block,const Deformation& r);
+    DeformationStartEvent(DeformationStartEvent *ev);
+    ~DeformationStartEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -83,11 +83,11 @@ public:
 class DeformationStepEvent : public BlockEvent {
     Deformation deform;
 public:
-	DeformationStepEvent(Time, DatomsBlock *block,const Deformation& r);
-	DeformationStepEvent(DeformationStepEvent *ev); ~DeformationStepEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    DeformationStepEvent(Time, DatomsBlock *block,const Deformation& r);
+    DeformationStepEvent(DeformationStepEvent *ev); ~DeformationStepEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -99,12 +99,12 @@ public:
 class DeformationStopEvent : public BlockEvent {
     Deformation deform;
 public:
-	DeformationStopEvent(Time, DatomsBlock *block,const Deformation& r);
-	DeformationStopEvent(DeformationStepEvent *ev);
-	~DeformationStopEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    DeformationStopEvent(Time, DatomsBlock *block,const Deformation& r);
+    DeformationStopEvent(DeformationStepEvent *ev);
+    ~DeformationStopEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -115,12 +115,12 @@ public:
 
 class DeformationEndEvent : public BlockEvent {
 public:
-	DeformationEndEvent(Time, DatomsBlock *block);
-	DeformationEndEvent(DeformationEndEvent *ev);
-	~DeformationEndEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    DeformationEndEvent(Time, DatomsBlock *block);
+    DeformationEndEvent(DeformationEndEvent *ev);
+    ~DeformationEndEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 #endif /* DEFORMATIONEVENTS_H_ */

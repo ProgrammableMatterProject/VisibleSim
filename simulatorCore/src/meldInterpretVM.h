@@ -29,7 +29,7 @@ typedef short tuple_type;
 typedef int32_t meld_int;
 typedef double meld_float;
 typedef uintptr_t Register;
-typedef uint8_t meld_byte;
+typedef uint8_t byte;
 typedef uint16_t NodeID;
 typedef uint16_t Uid;
 //typedef uint32_t Time;
@@ -661,7 +661,7 @@ public:
     static void readProgram(string path);
     static int characterCount(string in, char character);
 
-    meld_byte updateRuleState(meld_byte rid);
+    byte updateRuleState(byte rid);
     Time myGetTime();
     void __myassert(string file, int line, string exp);
     NodeID get_neighbor_ID(int face);
@@ -674,23 +674,23 @@ public:
     void enqueue_init();
     void init_all_consts();
     void userRegistration();
-    void receive_tuple(int isNew, tuple_t tpl, meld_byte face);
+    void receive_tuple(int isNew, tuple_t tpl, byte face);
     void free_chunk();
     void tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int isNew);
     void tuple_handle(tuple_t tuple, int isNew, Register *registers);
     void vm_init();
     void vm_alloc();
-    meld_byte getNeighborCount();
-    void setColor(meld_byte color);
+    byte getNeighborCount();
+    void setColor(byte color);
     void setColor(Color color);
-    void setLED(meld_byte r, meld_byte g, meld_byte b, meld_byte intensity);
-    inline void setColorWrapper(meld_byte color){
+    void setLED(byte r, byte g, byte b, byte intensity);
+    inline void setColorWrapper(byte color){
         setColor(color % NB_COLORS);
     }
-    inline void setLEDWrapper(meld_byte r, meld_byte g, meld_byte b, meld_byte intensity){
+    inline void setLEDWrapper(byte r, byte g, byte b, byte intensity){
         setLED(r, g, b, intensity);
     }
-    void moveTo(meld_int x, meld_int y, meld_int z);
+    void moveTo(meld_int x, meld_int y, meld_int z);   
     NodeID getGUID();
     extern_funct_type *extern_functs;
     int *extern_functs_args;
@@ -749,20 +749,20 @@ public:
 
     /* ************* MISC FUNCTION PROTOTYPES ************* */
     int process_bytecode(tuple_t tuple, const unsigned char *pc, int isNew, int isLinear,
-                         Register *reg, meld_byte state);
+                         Register *reg, byte state);
 
     void init_fields(void);
     void init_consts(void);
 
     void facts_dump(void);
     void print_program_info(void);
-    char* arg2String(tuple_t tuple, meld_byte index);
+    char* arg2String(tuple_t tuple, byte index);
 
 
     /* ************* LOW LEVEL INSTRUCTION FUNCTION ************* */
-    meld_byte val_is_float(const meld_byte x);
-    meld_byte val_is_int(const meld_byte x);
-    meld_byte val_is_field(const meld_byte x);
+    byte val_is_float(const byte x);
+    byte val_is_int(const byte x);
+    byte val_is_field(const byte x);
     void * eval_field (tuple_t tuple, const unsigned char **pc);
     int execute_iter (const unsigned char *pc, Register *reg, int isNew, int isLinear);
     void execute_run_action (const unsigned char *pc, Register *reg, int isNew);

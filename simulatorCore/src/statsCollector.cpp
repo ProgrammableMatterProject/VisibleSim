@@ -17,31 +17,18 @@ namespace BaseSimulator {
 namespace utils {
 
 ostream& operator<<(ostream& out,const StatsCollector &sc) {
-    out << TermColor::BBlue;
     out << endl << "=== GLOBAL STATISTICS ===" << endl;
-    out << TermColor::BWhite << "Number of robots: "
-        << TermColor::BMagenta << getWorld()->getSize() << endl;
-    out << TermColor::BWhite << "Simulator elapsed time: "
-        << TermColor::BMagenta << sc.simulatedElapsedTime << " us" << endl;
-    out << TermColor::BWhite << "Real elapsed time: " << std::setprecision(2) << std::fixed
-        << TermColor::BMagenta << sc.realElapsedTime << " us" << endl;
-    out << TermColor::BWhite << "Number of events processed: "
-        << TermColor::BMagenta << sc.eventsProcessed << endl;
-    out << TermColor::BWhite << "Number of messages processed: "
-        << TermColor::BMagenta << sc.messagesProcessed << endl;
-    out << TermColor::BWhite << "Number of motions processed: "
-        << TermColor::BMagenta << sc.motionsProcessed << endl;
-    out << TermColor::BWhite << "Maximum sized reached by the events list: "
-        << TermColor::BMagenta << sc.largestEventsQueueSize << endl;
-    out << TermColor::BWhite << "Size of the events list at the end: "
-        << TermColor::BMagenta << sc.endEventsQueueSize << endl;
-    out << TermColor::BWhite << "Events(s) left in memory before destroying Scheduler: "
-        << TermColor::BMagenta << sc.nbLivingEvents << endl;
-    out << TermColor::BWhite << "Message(s) left in memory before destroying Scheduler: "
-        << TermColor::BMagenta << sc.nbLivingMessages << endl;
-    out << TermColor::BWhite << "Number of events processed per second: "
-        << TermColor::BMagenta << sc.computeEventPerSec() << endl;
-    out << TermColor::Reset;
+    out << "Number of robots: " << getWorld()->getSize() << endl;
+    out << "Simulator elapsed time: " << sc.simulatedElapsedTime << " us" << endl;
+    out << "Real elapsed time: " << std::setprecision(2) << std::fixed << sc.realElapsedTime << " us" << endl;
+    out << "Number of events processed: " << sc.eventsProcessed << endl;
+    out << "Number of messages processed: " << sc.messagesProcessed << endl;
+    out << "Number of motions processed: " << sc.motionsProcessed << endl;
+    out << "Maximum sized reached by the events list: " << sc.largestEventsQueueSize << endl;
+    out << "Size of the events list at the end: " << sc.endEventsQueueSize << endl;
+    out << "Events(s) left in memory before destroying Scheduler: " << sc.nbLivingEvents << endl;
+    out << "Message(s) left in memory before destroying Scheduler: " << sc.nbLivingMessages << endl;
+    out << "Number of events processed per second: " << sc.computeEventPerSec() << endl;
     return out;
 }
 

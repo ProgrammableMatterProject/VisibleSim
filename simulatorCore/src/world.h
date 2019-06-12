@@ -35,7 +35,7 @@ namespace BaseSimulator {
  */
 class World {
     std::mutex mutex_gl;
-protected:
+public:
     /************************************************************
      *   Global variable
      ************************************************************/
@@ -107,14 +107,14 @@ public:
     map<bID, BuildingBlock*>& getMap() {
         return buildingBlocksMap;
     }
-    
+
     /**
      * @brief Getter for the map containing all Gl blocks of the world
      */
     unordered_map<bID, GlBlock*>& getMapGl() {
         return mapGlBlocks;
     }
-    
+
     /**
      * @brief Returns the number of blocks in the world
      * @return Number of blocks in the world
@@ -216,10 +216,10 @@ public:
      * @return a pointer to the selected GlBlock
      */
     inline GlBlock* setselectedGlBlock(int n) {
-        auto const &glBlock = mapGlBlocks.find(n);        
+        auto const &glBlock = mapGlBlocks.find(n);
         return (selectedGlBlock=(glBlock != mapGlBlocks.end()) ? (*glBlock).second : NULL);
     };
-    
+
     /**
      * @brief Setter for selected picking face
      * @param n : id of the texture that has been clicked by the user
@@ -233,10 +233,10 @@ public:
      * @param n : id of the Glblock to retrieve
      */
     inline GlBlock* getBlockByNum(bID n) {
-        auto const &glBlock = mapGlBlocks.find(n);       
+        auto const &glBlock = mapGlBlocks.find(n);
         return glBlock != mapGlBlocks.end() ? (*glBlock).second : NULL;
     };
-    
+
     /**
      * @brief Returns the total number of blocks in the world
      * @return the number of blocks in the world
@@ -319,10 +319,10 @@ public:
      * @return a pointer to the BuildingBlock corresponding to the selected GlBlock, or NULL if there is none
      */
     inline BuildingBlock *getSelectedBuildingBlock() {
-        auto const &glBlock = mapGlBlocks.find(numSelectedGlBlock);   
+        auto const &glBlock = mapGlBlocks.find(numSelectedGlBlock);
         return glBlock != mapGlBlocks.end() ? getBlockById((*glBlock).second->blockId) : NULL;
     };
-    
+
     /**
      * @brief Schedules a tap event for block with id bId, at time date.
      *
@@ -351,11 +351,11 @@ public:
 	 * \result Returns true if the faces was well written
 	 */
 	virtual bool exportSTLModel(string title) { return false; };
-	
+
 	/**
      * @brief Simulate Polymer surface
      */
-	virtual void simulatePolymer() {}
+    virtual void simulatePolymer() {}
     /**
     * @brief get bounding box coordinate from centers of glBlocks
     */

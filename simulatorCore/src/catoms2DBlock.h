@@ -32,50 +32,50 @@ class Catoms2DBlock : public BaseSimulator::BuildingBlock {
 protected:
 
 public:
-	int angle;
-	Catoms2DMotionEngine *motionEngine;
-	
-	Catoms2DBlock(int bId, BlockCodeBuilder bcb);
-	~Catoms2DBlock();
+    int angle;
+    Catoms2DMotionEngine *motionEngine;
 
-	inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
-	P2PNetworkInterface *getInterface(HLattice::Direction d) const;
-	inline P2PNetworkInterface *getInterface(int d) const {
-		return P2PNetworkInterfaces[(HLattice::Direction)d];
-	}
+    Catoms2DBlock(int bId, BlockCodeBuilder bcb);
+    ~Catoms2DBlock();
 
-	Cell3DPosition getPosition(HLattice::Direction d) const;
-	Cell3DPosition getPosition(P2PNetworkInterface *p2p) const;
+    inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
+    P2PNetworkInterface *getInterface(HLattice::Direction d) const;
+    inline P2PNetworkInterface *getInterface(int d) const {
+        return P2PNetworkInterfaces[(HLattice::Direction)d];
+    }
 
-	int getDirection(P2PNetworkInterface* p2p) const;
-	int nbNeighbors(bool groundIsNeighbor = false) const;
-	int nbConsecutiveNeighbors(bool groundIsNeighbor = false) const;
-	int nbConsecutiveEmptyFaces(bool groundIsNeighbor = false) const;
-	bool hasANeighbor(HLattice::Direction n, bool groundIsNeighbor = false) const;
-	bool hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor = false) const;
+    Cell3DPosition getPosition(HLattice::Direction d) const;
+    Cell3DPosition getPosition(P2PNetworkInterface *p2p) const;
 
-	//inline direction_t getOpposite(direction_t d) { return (direction_t) (d * (-1));}  
-	P2PNetworkInterface* getNextInterface(RelativeDirection::Direction dir,
-										  P2PNetworkInterface *p2p,
+    int getDirection(P2PNetworkInterface* p2p) const override;
+    int nbNeighbors(bool groundIsNeighbor = false) const;
+    int nbConsecutiveNeighbors(bool groundIsNeighbor = false) const;
+    int nbConsecutiveEmptyFaces(bool groundIsNeighbor = false) const;
+    bool hasANeighbor(HLattice::Direction n, bool groundIsNeighbor = false) const;
+    bool hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor = false) const;
+
+    //inline direction_t getOpposite(direction_t d) { return (direction_t) (d * (-1));}
+    P2PNetworkInterface* getNextInterface(RelativeDirection::Direction dir,
+                                          P2PNetworkInterface *p2p,
                                           bool connected = false) const;
 
-	// Motion
-	bool isBlocked() const;
-	bool canMove(Rotation2DMove &m) const;
-	int getCCWMovePivotId() const;
-	int getCWMovePivotId() const;
-	void startMove(Rotation2DMove &m, Time t);
-	void startMove(Rotation2DMove &m);
+    // Motion
+    bool isBlocked() const;
+    bool canMove(Rotation2DMove &m) const;
+    int getCCWMovePivotId() const;
+    int getCWMovePivotId() const;
+    void startMove(Rotation2DMove &m, Time t);
+    void startMove(Rotation2DMove &m);
 
-	// MeldInterpreter
-	/**
-	 * @copydoc BuildingBlock::addNeighbor
-	 */
-	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target);
-	/**
-	 * @copydoc BuildingBlock::removeNeighbor
-	 */
-	virtual void removeNeighbor(P2PNetworkInterface *ni);
+    // MeldInterpreter
+    /**
+     * @copydoc BuildingBlock::addNeighbor
+     */
+    virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) override;
+    /**
+     * @copydoc BuildingBlock::removeNeighbor
+     */
+    virtual void removeNeighbor(P2PNetworkInterface *ni) override;
 
 };
 

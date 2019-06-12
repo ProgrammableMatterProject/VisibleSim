@@ -10,7 +10,7 @@ Cell3DPosition::Cell3DPosition(const Vector3D& v) {
     pt[1] = v.pt[1];
     pt[2] = v.pt[2];
 }
-
+                                                         
 void Cell3DPosition::set(short x,short y,short z) {
     pt[0]=x;
     pt[1]=y;
@@ -36,7 +36,7 @@ Cell3DPosition& Cell3DPosition::addY(short y) {
     return *this;
 }
 
-Cell3DPosition& Cell3DPosition::addZ(short z) {
+Cell3DPosition& Cell3DPosition::addZ(short z) {   
     pt[2] += z;
     return *this;
 }
@@ -88,7 +88,7 @@ bool Cell3DPosition::compare_ZYX(const Cell3DPosition& first, const Cell3DPositi
 }
 
 const Cell3DPosition& Cell3DPosition::operator +=(const Cell3DPosition& p)
-{
+{    
     pt[0] += p.pt[0];
     pt[1] += p.pt[1];
     pt[2] += p.pt[2];

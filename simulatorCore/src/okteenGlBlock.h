@@ -19,16 +19,16 @@ public :
     Matrix mat{};
     uint8_t tabPosConnectors[6];
 
-	OkteenGlBlock(bID id);
-	virtual ~OkteenGlBlock() {};
+    OkteenGlBlock(bID id);
+    virtual ~OkteenGlBlock() {};
 
-	void setPosition(const Vector3D &p);
+    void setPosition(const Vector3D &p) override;
 
-	void glDraw(ObjLoader::ObjLoader *ptrObj);
-	void glDrawConnectors(ObjLoader::ObjLoader *ptrObj);
-	void glDrawIdConnectors(ObjLoader::ObjLoader *ptrObj, int n);
-	void glDrawId(ObjLoader::ObjLoader *ptrObj, int n);
-	void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj, int &n);
+    void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+    void glDrawConnectors(ObjLoader::ObjLoader *ptrObj);
+    void glDrawIdConnectors(ObjLoader::ObjLoader *ptrObj, int n);
+    void glDrawId(ObjLoader::ObjLoader *ptrObj, int n) override;
+    void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj, int &n) override;
 };
 }
 #endif /* OKTEENGLBLOCK_H_ */

@@ -24,11 +24,11 @@ void DatomsSimulator::help() {
 
 DatomsSimulator::DatomsSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
     : BaseSimulator::Simulator(argc, argv, bcb) {
-    OUTPUT << TermColor::LifecycleColor << "DatomsSimulator constructor" << TermColor::Reset << endl;
+    OUTPUT << "\033[1;34m" << "DatomsSimulator constructor" << "\033[0m" << endl;
 }
 
 DatomsSimulator::~DatomsSimulator() {
-    OUTPUT << TermColor::LifecycleColor << "DatomsSimulator destructor" << TermColor::Reset <<endl;
+    OUTPUT << "\033[1;34m" << "DatomsSimulator destructor" << "\033[0m" <<endl;
 }
 
 void DatomsSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {

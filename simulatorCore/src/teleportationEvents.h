@@ -15,7 +15,7 @@
 #include "events.h"
 
 namespace BaseSimulator {
-     
+
 //===========================================================================================================
 //
 //          TeleportationStartEvent  (class)
@@ -28,9 +28,9 @@ namespace BaseSimulator {
           TeleportationStartEvent(Time, BuildingBlock*, const Cell3DPosition &fpos);
           TeleportationStartEvent(TeleportationStartEvent *ev);
           ~TeleportationStartEvent();
-          void consumeBlockEvent() {};
-          void consume();
-          const virtual string getEventName();
+          void consumeBlockEvent() override {}
+          void consume() override;
+          const virtual string getEventName() override;
      };
 
 //===========================================================================================================
@@ -44,9 +44,9 @@ namespace BaseSimulator {
      public:
           TeleportationStopEvent(Time, BuildingBlock *block,const Cell3DPosition &fpos);
           ~TeleportationStopEvent();
-          void consumeBlockEvent() {};
-          void consume();
-          const virtual string getEventName();
+          void consumeBlockEvent() override {}
+          void consume() override;
+          const virtual string getEventName() override;
      };
 
 //===========================================================================================================
@@ -60,9 +60,9 @@ namespace BaseSimulator {
           TeleportationEndEvent(Time, BuildingBlock *block);
           TeleportationEndEvent(TeleportationEndEvent *ev);
           ~TeleportationEndEvent();
-          void consumeBlockEvent() {};
-          void consume();
-          const virtual string getEventName();
+          void consumeBlockEvent() override {}
+          void consume() override;
+          const virtual string getEventName() override;
      };
 
 }

@@ -18,7 +18,7 @@ namespace BlinkyBlocks {
 BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
     : BaseSimulator::Simulator(argc, argv, bcb) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor << "BlinkyBlocksSimulator constructor" << TermColor::Reset << endl;
+    OUTPUT << "\033[1 ;34m" << "BlinkyBlocksSimulator constructor" << "\033[0m" << endl;
 #endif
 }
 
@@ -107,7 +107,7 @@ void BlinkyBlocksSimulator::parseScenario() {
 
 BlinkyBlocksSimulator::~BlinkyBlocksSimulator() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor << "BlinkyBlocksSimulator destructor" << TermColor::Reset <<endl;
+    OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator destructor" << "\033[0m" <<endl;
 #endif
 }
 

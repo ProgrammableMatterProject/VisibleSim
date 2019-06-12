@@ -41,7 +41,7 @@ bool Simulator::regrTesting = false; // No regression testing by default
 
 Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor << "Simulator constructor" << TermColor::Reset << endl;
+    OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
 #endif
 
     // Ensure that only one instance of simulator is running at once
@@ -49,8 +49,8 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
         simulator = this;
         BaseSimulator::simulator = simulator;
     } else {
-        ERRPUT << TermColor::ErrorColor << "Only one Simulator instance can be created, aborting !"
-               << TermColor::Reset << endl;
+        ERRPUT << "\033[1;31m" << "Only one Simulator instance can be created, aborting !"
+               << "\033[0m" << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -86,11 +86,11 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
         if (xmlWorldNode) {
 #ifdef DEBUG_CONF_PARSING
             OUTPUT << "\033[1;34m  " << confFileName << " successfully loaded "
-                   << TermColor::Reset << endl;
+                   << "\033[0m" << endl;
 #endif
         } else {
-            ERRPUT << TermColor::ErrorColor << "error: Could not find root 'world' element in configuration file"
-                   << TermColor::Reset << endl;
+            ERRPUT << "\033[1;31m" << "error: Could not find root 'world' element in configuration file"
+                   << "\033[0m" << endl;
             exit(EXIT_FAILURE);
         }
     }
@@ -98,7 +98,7 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 
 Simulator::~Simulator() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor  << "Simulator destructor" << TermColor::Reset << endl;
+    OUTPUT << "\033[1;34m"  << "Simulator destructor" << "\033[0m" << endl;
 #endif
     delete xmlDoc;
 
@@ -182,8 +182,8 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
     loadScheduler(schedulerMaxDate);
 
     // Parse and configure the remaining items
-    parseBlockList();
     parseCameraAndSpotlight();
+    parseBlockList();
     parseObstacles();
     parseTarget();
     parseCustomizations();
@@ -561,18 +561,6 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 
 void Simulator::parseCameraAndSpotlight() {
     if (GlutContext::GUIisEnabled) {
-        Lattice *lattice = getWorld()->lattice;
-        // calculate the position of the camera from the lattice size
-        Vector3D target(0.5*lattice->gridSize[0]*lattice->gridScale[0],
-                        0.5*lattice->gridSize[1]*lattice->gridScale[1],
-                        0.25*lattice->gridSize[2]*lattice->gridScale[2]); // usual target point (midx,miy,quarterz)
-        world->getCamera()->setTarget(target);
-        double d=target.norme();
-        world->getCamera()->setDistance(3.0*d);
-        world->getCamera()->setDirection(45.0,30.0);
-        world->getCamera()->setNearFar(0.25*d,5.0*d);
-        world->getCamera()->setAngle(35.0);
-        world->getCamera()->setLightParameters(target,-30.0,30.0,3.0*d,30.0,0.25*d,4.0*d);
         // loading the camera parameters
         TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");
         if (nodeConfig) {
@@ -608,7 +596,7 @@ void Simulator::parseCameraAndSpotlight() {
                 dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
                 world->getCamera()->setDirection(az,ele);
                 world->getCamera()->setDistance(dist);
-                // az = dist*sin(angle*M_PI/180.0);
+                az = dist*sin(angle*M_PI/180.0);
                 // def_near = dist-az;
                 // def_far = dist+az;
             }
@@ -622,6 +610,7 @@ void Simulator::parseCameraAndSpotlight() {
             if (attr) {
                 def_far = atof(attr);
             }
+
             world->getCamera()->setNearFar(def_near,def_far);
         }
 
@@ -891,11 +880,9 @@ void Simulator::parseBlockList() {
             if (boundingBox) csgRoot->boundingBox(bb);
 
             Vector3D csgPos;
-            const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
-            const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-            for (short iz = glb[2]; iz < ulb[2]; iz++) {
-                for (short iy = glb[1]; iy < ulb[1]; iy++) {
-                    for (short ix = glb[0]; ix < ulb[0]; ix++) {
+            for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
+                for (short iy=0; iy<world->lattice->gridSize[1]; iy++) {
+                    for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
                         position.set(ix,iy,iz);
                         csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
@@ -909,8 +896,7 @@ void Simulator::parseBlockList() {
                         csgPos.pt[2] += bb.P0[2];
 #endif
 
-                        if (world->lattice->isInGrid(position)
-                            and csgRoot->isInside(csgPos, color)) {
+                        if (csgRoot->isInside(csgPos, color)) {
                             loadBlock(element,
                                       ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
                                       bcb, position, color, false);

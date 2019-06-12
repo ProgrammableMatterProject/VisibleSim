@@ -290,7 +290,7 @@ void MeldInterpretVM::processOneRule(void) {
             if (updateRuleState(i)) {
                 waiting = 1;
                 /** Set state byte used by DEBUG */
-                meld_byte processState = PROCESS_RULE | (i << 4);
+                byte processState = PROCESS_RULE | (i << 4);
                 /** Don't process persistent rules (which is useless)
                  * as they all have only a RETURN instruction.
                  */
@@ -354,7 +354,7 @@ bool MeldInterpretVM::isWaiting(){
   }*/
 
 /** Receive a tuple and enqueue it to both receivedTuples and newTuples */
-void MeldInterpretVM::receive_tuple(int isNew, tuple_t tpl, meld_byte face) {
+void MeldInterpretVM::receive_tuple(int isNew, tuple_t tpl, byte face) {
     tuple_t rcvdTuple = (tuple_t)tpl;
     tuple_t tuple;
     tuple_type type = TUPLE_TYPE(rcvdTuple);
@@ -455,7 +455,7 @@ void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int i
 
 /** Check if rule of ID rid is ready to be derived */
 /** Returns 1 if true, 0 otherwise */
-meld_byte MeldInterpretVM::updateRuleState(meld_byte rid) {
+byte MeldInterpretVM::updateRuleState(byte rid) {
     int i;
     /** A rule is ready if all included predicates are present in the database */
     for (i = 0; i < RULE_NUM_INCLPREDS(rid); ++i) {
@@ -515,7 +515,7 @@ void MeldInterpretVM::__myassert(string file, int line, string exp) {
     OUTPUT << "Assert " <<  " " << file << " " << line << " " << exp << endl;
 }
 
-meld_byte MeldInterpretVM::getNeighborCount() {
+byte MeldInterpretVM::getNeighborCount() {
     uint8_t count, i;
 
     for(count = 0, i = 0; i < host->getNbInterfaces(); ++i) {
@@ -534,11 +534,11 @@ void MeldInterpretVM::setColor(Color color){
     setLED(color[0]*255, color[1]*255, color[2]*255, color[3]*255);
 }
 
-void MeldInterpretVM::setColor(meld_byte color){
+void MeldInterpretVM::setColor(byte color){
     setLED(Colors[color][0]*255, Colors[color][1]*255, Colors[color][2]*255, Colors[color][3]*255);
 }
 
-void MeldInterpretVM::setLED(meld_byte r, meld_byte g, meld_byte b, meld_byte intensity){
+void MeldInterpretVM::setLED(byte r, byte g, byte b, byte intensity){
     BaseSimulator::getScheduler()->schedule(new SetColorEvent(BaseSimulator::getScheduler()->now(), host , (float)r/255, (float)g/255, (float)b/255, (float)intensity/255));
 }
 
@@ -664,13 +664,13 @@ int MeldInterpretVM::characterCount(string in, char character){
 
 NodeID MeldInterpretVM::getBlockId (void) { return blockId; }
 
-inline meld_byte MeldInterpretVM::val_is_float(const meld_byte x) {
+inline byte MeldInterpretVM::val_is_float(const byte x) {
     return x == 0x00;
 }
-inline meld_byte MeldInterpretVM::val_is_int(const meld_byte x) {
+inline byte MeldInterpretVM::val_is_int(const byte x) {
     return x == 0x01;
 }
-inline meld_byte MeldInterpretVM::val_is_field(const meld_byte x) {
+inline byte MeldInterpretVM::val_is_field(const byte x) {
     return x == 0x02;
 }
 
@@ -727,11 +727,11 @@ inline void MeldInterpretVM::moveTupleToReg (const unsigned char reg_index, tupl
 
 /** ************* INSTRUCTION EXECUTION FUNCTIONS ************* */
 
-/** Allocates a new tuple of type 'type' and set its type meld_byte */
+/** Allocates a new tuple of type 'type' and set its type byte */
 inline void MeldInterpretVM::execute_alloc (const unsigned char *pc, Register *reg) {
     ++pc;
     tuple_type type = FETCH(pc++);
-    meld_byte reg_index = FETCH(pc);
+    byte reg_index = FETCH(pc);
     tuple_t *dst = (void**)eval_reg (reg_index, &pc, reg);
     *dst = ALLOC_TUPLE(TYPE_SIZE(type));
 #if defined(DEBUG_INSTRS) || defined(DEBUG_ALLOCS)
@@ -749,7 +749,7 @@ inline void MeldInterpretVM::execute_alloc (const unsigned char *pc, Register *r
  */
 inline void MeldInterpretVM::execute_addtuple (const unsigned char *pc, Register *reg, int isNew) {
     ++pc;
-    meld_byte reg_index = FETCH(pc);
+    byte reg_index = FETCH(pc);
     Register tuple_reg = reg[reg_index];
 
 #ifdef DEBUG_INSTRS
@@ -770,7 +770,7 @@ inline void MeldInterpretVM::execute_addtuple (const unsigned char *pc, Register
 inline void MeldInterpretVM::execute_update (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg_index = FETCH(pc);
+    byte reg_index = FETCH(pc);
     Register tuple_reg = reg[reg_index];
 
 #ifdef DEBUG_INSTRS
@@ -804,15 +804,15 @@ inline void MeldInterpretVM::execute_send (const unsigned char *pc, Register *re
  */
 inline void MeldInterpretVM::execute_call1 (const unsigned char *pc, Register *reg) {
     ++pc;
-    meld_byte functionID = FETCH(pc++);
+    byte functionID = FETCH(pc++);
 
-    meld_byte dst_index = FETCH(pc);
+    byte dst_index = FETCH(pc);
     Register *dst = (Register*)eval_reg (dst_index, &pc, reg);
 
-    meld_byte return_type = FETCH(pc++);
-    meld_byte garbage_collected = FETCH(pc++);
+    byte return_type = FETCH(pc++);
+    byte garbage_collected = FETCH(pc++);
 
-    meld_byte arg1_index = FETCH(pc);
+    byte arg1_index = FETCH(pc);
     Register *arg1 = (Register*)eval_reg (arg1_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
@@ -843,8 +843,8 @@ inline void MeldInterpretVM::execute_call1 (const unsigned char *pc, Register *r
 inline void MeldInterpretVM::execute_send_delay (const unsigned char *pc, Register *reg, int isNew) {
     ++pc;
 
-    const meld_byte tpl = SEND_MSG(pc);
-    const meld_byte dst = SEND_RT(pc);
+    const byte tpl = SEND_MSG(pc);
+    const byte dst = SEND_RT(pc);
     Register send_reg = reg[tpl];
     NodeID send_rt = reg[dst];
     pc += 2;
@@ -872,7 +872,7 @@ int MeldInterpretVM::execute_iter (const unsigned char *pc, Register *reg, int i
     void **list;
 
     /** Reg in which match will be stored during execution*/
-    meld_byte reg_store_index = FETCH(pc+10);
+    byte reg_store_index = FETCH(pc+10);
 
     /** produce a random ordering for all tuples of the appropriate type */
     tuple_entry *entry = TUPLES[type].head;
@@ -928,7 +928,7 @@ int MeldInterpretVM::execute_iter (const unsigned char *pc, Register *reg, int i
                 val = (Register *)eval_float(&tmppc);
             } else if (val_is_field (value_type)) {
                 tmppc += 2;
-                meld_byte reg_index = FETCH(tmppc+1);
+                byte reg_index = FETCH(tmppc+1);
                 tuple_t tpl = (tuple_t)reg[reg_index];
                 val = (Register *)eval_field(tpl, &tmppc);
             }  else {
@@ -988,10 +988,10 @@ inline void MeldInterpretVM::execute_run_action0 (tuple_t action_tuple, tuple_ty
 #endif
 
             /** Don't call it directly to avoid having to import led.bbh */
-            setLEDWrapper(*(meld_byte *)GET_TUPLE_FIELD(action_tuple, 0),
-                          *(meld_byte *)GET_TUPLE_FIELD(action_tuple, 1),
-                          *(meld_byte *)GET_TUPLE_FIELD(action_tuple, 2),
-                          *(meld_byte *)GET_TUPLE_FIELD(action_tuple, 3));
+            setLEDWrapper(*(byte *)GET_TUPLE_FIELD(action_tuple, 0),
+                          *(byte *)GET_TUPLE_FIELD(action_tuple, 1),
+                          *(byte *)GET_TUPLE_FIELD(action_tuple, 2),
+                          *(byte *)GET_TUPLE_FIELD(action_tuple, 3));
         }
         FREE_TUPLE(action_tuple);
     } else if (type == TYPE_SETCOLOR2) {
@@ -1024,7 +1024,7 @@ inline void MeldInterpretVM::execute_run_action0 (tuple_t action_tuple, tuple_ty
 inline void MeldInterpretVM::execute_run_action (const unsigned char *pc, Register *reg, int isNew) {
     ++pc;
 
-    meld_byte reg_index = FETCH(pc);
+    byte reg_index = FETCH(pc);
 
     tuple_t action_tuple = (tuple_t)reg[reg_index];
     tuple_type type = TUPLE_TYPE(action_tuple);
@@ -1055,8 +1055,8 @@ inline void MeldInterpretVM::execute_mvintfield (const unsigned char *pc, Regist
     ++pc;
 
     Register *src = (Register*)eval_int (&pc);
-    meld_byte reg_index = FETCH(pc+1);
-    meld_byte field_num = FETCH(pc);
+    byte reg_index = FETCH(pc+1);
+    byte field_num = FETCH(pc);
 
     tuple_t dst_tuple = (tuple_t)reg[reg_index];
     tuple_type type = TUPLE_TYPE(dst_tuple);
@@ -1079,7 +1079,7 @@ inline void MeldInterpretVM::execute_mvintreg (const unsigned char *pc, Register
     ++pc;
 
     Register *src = (Register*)eval_int (&pc);
-    meld_byte reg_index = FETCH(pc);
+    byte reg_index = FETCH(pc);
     Register *dst = (Register*)eval_reg (reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
@@ -1095,7 +1095,7 @@ inline void MeldInterpretVM::execute_mvfloatreg (const unsigned char *pc, Regist
     ++pc;
 
     Register *src = (Register*)eval_float (&pc);
-    meld_byte reg_index = FETCH(pc);
+    byte reg_index = FETCH(pc);
     Register *dst = (Register*)eval_reg (reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
@@ -1112,8 +1112,8 @@ inline void MeldInterpretVM::execute_mvfloatfield (const unsigned char *pc, Regi
     ++pc;
 
     Register *src = (Register*)eval_float (&pc);
-    meld_byte reg_index = FETCH(pc+1);
-    meld_byte field_num = FETCH(pc);
+    byte reg_index = FETCH(pc+1);
+    byte field_num = FETCH(pc);
 
     tuple_t dst_tuple = (tuple_t)reg[reg_index];
     tuple_type type = TUPLE_TYPE(dst_tuple);
@@ -1134,13 +1134,13 @@ inline void MeldInterpretVM::execute_mvfloatfield (const unsigned char *pc, Regi
 /** Moves pointer to a tuple field to a register */
 inline void MeldInterpretVM::execute_mvfieldreg (const unsigned char *pc, Register *reg) {
     ++pc;
-    meld_byte field_reg = FETCH(pc+1);
-    meld_byte field_num = FETCH(pc);
+    byte field_reg = FETCH(pc+1);
+    byte field_num = FETCH(pc);
 
     tuple_t tpl = (tuple_t)reg[field_reg];
     Register *src = (Register*)eval_field (tpl, &pc);
 
-    meld_byte reg_index = FETCH(pc);
+    byte reg_index = FETCH(pc);
     Register *dst = (Register*)eval_reg (reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
@@ -1158,11 +1158,11 @@ inline void MeldInterpretVM::execute_mvfieldreg (const unsigned char *pc, Regist
 inline void MeldInterpretVM::execute_mvregfield (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg_index = FETCH(pc);
+    byte reg_index = FETCH(pc);
     Register *src = (Register*)eval_reg (reg_index, &pc, reg);
 
-    meld_byte field_reg = FETCH(pc+1);
-    meld_byte field_num = FETCH(pc);
+    byte field_reg = FETCH(pc+1);
+    byte field_num = FETCH(pc);
 
     tuple_t field_tpl = (tuple_t)reg[field_reg];
     tuple_type type = TUPLE_TYPE(field_tpl);
@@ -1181,14 +1181,14 @@ inline void MeldInterpretVM::execute_mvregfield (const unsigned char *pc, Regist
 /** Moves content of a tuple field to another */
 inline void MeldInterpretVM::execute_mvfieldfield (const unsigned char *pc, Register *reg) {
     ++pc;
-    meld_byte src_field_reg = FETCH(pc+1);
-    meld_byte src_field_num = FETCH(pc);
+    byte src_field_reg = FETCH(pc+1);
+    byte src_field_num = FETCH(pc);
 
     tuple_t src_field_tpl = (tuple_t)reg[src_field_reg];
     Register *src = (Register*)eval_field (src_field_tpl, &pc);
 
-    meld_byte dst_field_reg = FETCH(pc+1);
-    meld_byte dst_field_num = FETCH(pc);
+    byte dst_field_reg = FETCH(pc+1);
+    byte dst_field_num = FETCH(pc);
 
     tuple_t dst_field_tpl = (tuple_t)reg[dst_field_reg];
     tuple_type type = TUPLE_TYPE(dst_field_tpl);
@@ -1213,8 +1213,8 @@ inline void MeldInterpretVM::execute_mvhostfield (const unsigned char *pc, Regis
 
     Register *src = (Register*)EVAL_HOST;
 
-    meld_byte field_reg = FETCH(pc+1);
-    meld_byte field_num = FETCH(pc);
+    byte field_reg = FETCH(pc+1);
+    byte field_num = FETCH(pc);
 
     tuple_t field_tpl = (tuple_t)reg[field_reg];
     tuple_type type = TUPLE_TYPE(field_tpl);
@@ -1236,7 +1236,7 @@ inline void MeldInterpretVM::execute_mvhostreg (const unsigned char *pc, Registe
 
     Register *src = (Register*)EVAL_HOST;
 
-    meld_byte reg_index = FETCH(pc);
+    byte reg_index = FETCH(pc);
     Register *dst = (Register*)eval_reg (reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
@@ -1253,10 +1253,10 @@ inline void MeldInterpretVM::execute_mvhostreg (const unsigned char *pc, Registe
 inline void MeldInterpretVM::execute_mvregreg (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte src_reg_index = FETCH(pc);
+    byte src_reg_index = FETCH(pc);
     Register *src = (Register*)eval_reg (src_reg_index, &pc, reg);
 
-    meld_byte dst_reg_index = FETCH(pc);
+    byte dst_reg_index = FETCH(pc);
     Register *dst = (Register*)eval_reg (dst_reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
@@ -1275,8 +1275,8 @@ inline void MeldInterpretVM::execute_mvregreg (const unsigned char *pc, Register
 inline void MeldInterpretVM::execute_not (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
 
     Register *arg = (Register*)eval_reg (reg1, &pc, reg);
     Register *dest = (Register*)eval_reg (reg2, &pc, reg);
@@ -1296,9 +1296,9 @@ inline void MeldInterpretVM::execute_not (const unsigned char *pc, Register *reg
 inline void MeldInterpretVM::execute_boolor (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1315,9 +1315,9 @@ inline void MeldInterpretVM::execute_boolor (const unsigned char *pc, Register *
 inline void MeldInterpretVM::execute_boolequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1334,9 +1334,9 @@ inline void MeldInterpretVM::execute_boolequal (const unsigned char *pc, Registe
 inline void MeldInterpretVM::execute_boolnotequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1354,9 +1354,9 @@ inline void MeldInterpretVM::execute_boolnotequal (const unsigned char *pc, Regi
 inline void MeldInterpretVM::execute_addrequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1372,9 +1372,9 @@ inline void MeldInterpretVM::execute_addrequal (const unsigned char *pc, Registe
 inline void MeldInterpretVM::execute_addrnotequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1390,9 +1390,9 @@ inline void MeldInterpretVM::execute_addrnotequal (const unsigned char *pc, Regi
 inline void MeldInterpretVM::execute_intequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1407,9 +1407,9 @@ inline void MeldInterpretVM::execute_intequal (const unsigned char *pc, Register
 inline void MeldInterpretVM::execute_intnotequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1424,9 +1424,9 @@ inline void MeldInterpretVM::execute_intnotequal (const unsigned char *pc, Regis
 inline void MeldInterpretVM::execute_intgreater (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1441,9 +1441,9 @@ inline void MeldInterpretVM::execute_intgreater (const unsigned char *pc, Regist
 inline void MeldInterpretVM::execute_intgreaterequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1458,9 +1458,9 @@ inline void MeldInterpretVM::execute_intgreaterequal (const unsigned char *pc, R
 inline void MeldInterpretVM::execute_intlesser (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1475,9 +1475,9 @@ inline void MeldInterpretVM::execute_intlesser (const unsigned char *pc, Registe
 inline void MeldInterpretVM::execute_intlesserequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1492,9 +1492,9 @@ inline void MeldInterpretVM::execute_intlesserequal (const unsigned char *pc, Re
 inline void MeldInterpretVM::execute_intmul (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1509,9 +1509,9 @@ inline void MeldInterpretVM::execute_intmul (const unsigned char *pc, Register *
 inline void MeldInterpretVM::execute_intdiv (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1526,9 +1526,9 @@ inline void MeldInterpretVM::execute_intdiv (const unsigned char *pc, Register *
 inline void MeldInterpretVM::execute_intmod (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1542,9 +1542,9 @@ inline void MeldInterpretVM::execute_intmod (const unsigned char *pc, Register *
 inline void MeldInterpretVM::execute_intplus (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1559,9 +1559,9 @@ inline void MeldInterpretVM::execute_intplus (const unsigned char *pc, Register 
 inline void MeldInterpretVM::execute_intminus (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1576,9 +1576,9 @@ inline void MeldInterpretVM::execute_intminus (const unsigned char *pc, Register
 inline void MeldInterpretVM::execute_floatplus (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1593,9 +1593,9 @@ inline void MeldInterpretVM::execute_floatplus (const unsigned char *pc, Registe
 inline void MeldInterpretVM::execute_floatminus (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1610,9 +1610,9 @@ inline void MeldInterpretVM::execute_floatminus (const unsigned char *pc, Regist
 inline void MeldInterpretVM::execute_floatmul (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1627,9 +1627,9 @@ inline void MeldInterpretVM::execute_floatmul (const unsigned char *pc, Register
 inline void MeldInterpretVM::execute_floatdiv (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1644,9 +1644,9 @@ inline void MeldInterpretVM::execute_floatdiv (const unsigned char *pc, Register
 inline void MeldInterpretVM::execute_floatequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1661,9 +1661,9 @@ inline void MeldInterpretVM::execute_floatequal (const unsigned char *pc, Regist
 inline void MeldInterpretVM::execute_floatnotequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1678,9 +1678,9 @@ inline void MeldInterpretVM::execute_floatnotequal (const unsigned char *pc, Reg
 inline void MeldInterpretVM::execute_floatlesser (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1695,9 +1695,9 @@ inline void MeldInterpretVM::execute_floatlesser (const unsigned char *pc, Regis
 inline void MeldInterpretVM::execute_floatlesserequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1712,9 +1712,9 @@ inline void MeldInterpretVM::execute_floatlesserequal (const unsigned char *pc, 
 inline void MeldInterpretVM::execute_floatgreater (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1729,9 +1729,9 @@ inline void MeldInterpretVM::execute_floatgreater (const unsigned char *pc, Regi
 inline void MeldInterpretVM::execute_floatgreaterequal (const unsigned char *pc, Register *reg) {
     ++pc;
 
-    meld_byte reg1 = FETCH(pc);
-    meld_byte reg2 = FETCH(pc+1);
-    meld_byte reg3 = FETCH(pc+2);
+    byte reg1 = FETCH(pc);
+    byte reg2 = FETCH(pc+1);
+    byte reg3 = FETCH(pc+2);
 
     Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
     Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
@@ -1889,7 +1889,7 @@ void MeldInterpretVM::init_fields(void) {
                 break;
 
             case (int)FIELD_BOOL:
-                size = sizeof(meld_byte);
+                size = sizeof(byte);
                 break;
 
             case (int)FIELD_ADDR:
@@ -2521,7 +2521,7 @@ MeldInterpretVM::print_bytecode(const unsigned char *pc) {
 #endif
 
 int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, int isNew, int isLinear,
-                                       Register *reg, meld_byte state) {
+                                       Register *reg, byte state) {
 #ifdef DEBUG_INSTRS
 
     /** if (PROCESS_TYPE(state) == PROCESS_TUPLE) { */
@@ -2594,26 +2594,26 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
             pc = npc; goto eval_loop;
 
         case PERS_ITER_INSTR: {	/** 0x02 */
-            const meld_byte *npc = pc + ITER_OUTER_JUMP(pc);
+            const byte *npc = pc + ITER_OUTER_JUMP(pc);
             const int ret = execute_iter (pc, reg, isNew, isLinear);
             DECIDE_NEXT_ITER();
         }
 
         case LINEAR_ITER_INSTR: {	/** 0x05 */
-            const meld_byte *npc = pc + ITER_OUTER_JUMP(pc);
+            const byte *npc = pc + ITER_OUTER_JUMP(pc);
             const int ret = execute_iter (pc, reg, isNew, isLinear);
             DECIDE_NEXT_ITER();
         }
 
         case NOT_INSTR: {	/** 0x07 */
-            const meld_byte *npc = pc + NOT_BASE;
+            const byte *npc = pc + NOT_BASE;
             execute_not (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case SEND_INSTR: {	/** 0x08 */
-            const meld_byte *npc = pc + SEND_BASE;
+            const byte *npc = pc + SEND_BASE;
             execute_send (pc, reg, isNew);
             pc = npc;
             goto eval_loop;
@@ -2631,9 +2631,9 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
             return RET_LINEAR;
 
         case RULE_INSTR: {	/** 0x10 */
-            const meld_byte *npc = pc + RULE_BASE;
+            const byte *npc = pc + RULE_BASE;
 #ifdef DEBUG_INSTRS
-            meld_byte rule_number = FETCH(++pc);
+            byte rule_number = FETCH(++pc);
             printf ("--%d--\t RULE %d\n", getBlockId(),
                     rule_number);
 #endif
@@ -2645,14 +2645,14 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 #ifdef DEBUG_INSTRS
             printf ("--%d--\t RULE DONE\n", getBlockId());
 #endif
-            const meld_byte *npc = pc + RULE_DONE_BASE;
+            const byte *npc = pc + RULE_DONE_BASE;
             pc = npc;
             goto eval_loop;
         }
 
             /** NOT TESTED */
         case SEND_DELAY_INSTR: {	/** 0x15 */
-            const meld_byte *npc = pc + SEND_DELAY_BASE;
+            const byte *npc = pc + SEND_DELAY_BASE;
             execute_send_delay (pc, reg, isNew);
             pc = npc;
             goto eval_loop;
@@ -2673,35 +2673,35 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
         }
 
         case MVINTFIELD_INSTR: {	/** 0x1e */
-            const meld_byte *npc = pc + MVINTFIELD_BASE;
+            const byte *npc = pc + MVINTFIELD_BASE;
             execute_mvintfield (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case MVINTREG_INSTR: {	/** 0x1f */
-            const meld_byte *npc = pc + MVINTREG_BASE;
+            const byte *npc = pc + MVINTREG_BASE;
             execute_mvintreg (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case MVFIELDFIELD_INSTR: {	/** 0x21 */
-            const meld_byte *npc = pc + MVFIELDFIELD_BASE;
+            const byte *npc = pc + MVFIELDFIELD_BASE;
             execute_mvfieldfield (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case MVFIELDREG_INSTR: {	/** 0x22 */
-            const meld_byte *npc = pc + MVFIELDREG_BASE;
+            const byte *npc = pc + MVFIELDREG_BASE;
             execute_mvfieldreg (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case MVPTRREG_INSTR: {	/** 0x23 */
-            const meld_byte *npc = pc + MVPTRREG_BASE;
+            const byte *npc = pc + MVPTRREG_BASE;
 #ifdef DEBUG_INSTRS
             printf ("--%d--\tMOVE PTR TO REG -- Do nothing\n", getBlockId());
 #endif
@@ -2712,21 +2712,21 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 
 
         case MVFIELDFIELDR_INSTR: { /** 0x25 */
-            const meld_byte *npc = pc + MVFIELDFIELD_BASE;
+            const byte *npc = pc + MVFIELDFIELD_BASE;
             execute_mvfieldfield (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case MVREGFIELD_INSTR: {	/** 0x26 */
-            const meld_byte *npc = pc + MVREGFIELD_BASE;
+            const byte *npc = pc + MVREGFIELD_BASE;
             execute_mvregfield (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case MVHOSTFIELD_INSTR: {	/** 0x28 */
-            const meld_byte *npc = pc + MVHOSTFIELD_BASE;
+            const byte *npc = pc + MVHOSTFIELD_BASE;
             execute_mvhostfield (pc, reg);
             pc = npc;
             goto eval_loop;
@@ -2734,7 +2734,7 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 
             /** NOT TESTED */
         case MVFLOATFIELD_INSTR: {	/** 0x2d */
-            const meld_byte *npc = pc + MVFLOATFIELD_BASE;
+            const byte *npc = pc + MVFLOATFIELD_BASE;
             execute_mvfloatfield (pc, reg);
             pc = npc;
             goto eval_loop;
@@ -2742,7 +2742,7 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 
             /** NOT TESTED */
         case MVFLOATREG_INSTR: {	/** 0x2e */
-            const meld_byte *npc = pc + MVFLOATREG_BASE;
+            const byte *npc = pc + MVFLOATREG_BASE;
             execute_mvfloatreg (pc, reg);
             pc = npc;
             goto eval_loop;
@@ -2750,70 +2750,70 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 
             /** NOT TESTED */
         case MVHOSTREG_INSTR: {	/** 0x37 */
-            const meld_byte *npc = pc + MVHOSTREG_BASE;
+            const byte *npc = pc + MVHOSTREG_BASE;
             execute_mvhostreg (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case ADDRNOTEQUAL_INSTR: {	/** 0x38 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_addrnotequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case ADDREQUAL_INSTR: {	/** 0x39 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_addrequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTMINUS_INSTR: {	/** 0x3a */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intminus (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTEQUAL_INSTR: {	/** 0x3b */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTNOTEQUAL_INSTR: {	/** 0x3c */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intnotequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTPLUS_INSTR: {	/** 0x3d */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intplus (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTLESSER_INSTR: {	/** 0x3e */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intlesser (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTGREATEREQUAL_INSTR: {	/** 0x3f */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intgreaterequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case ALLOC_INSTR: {	/** 0x40 */
-            const meld_byte *npc = pc + ALLOC_BASE;
+            const byte *npc = pc + ALLOC_BASE;
             execute_alloc (pc, reg);
             pc = npc;
             goto eval_loop;
@@ -2821,105 +2821,105 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 
             /** NOT TESTED */
         case BOOLOR_INSTR: {	/** 0x41 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_boolor (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTLESSEREQUAL_INSTR: {	/** 0x42 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intlesserequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTGREATER_INSTR: {	/** 0x43 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intgreater (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTMUL_INSTR: {	/** 0x44 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intmul (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case INTDIV_INSTR: {	/** 0x45 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intdiv (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATPLUS_INSTR: {	/** 0x46 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatplus (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATMINUS_INSTR: {	/** 0x47 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatminus (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATMUL_INSTR: {	/** 0x48 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatmul (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATDIV_INSTR: {	/** 0x49 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatdiv (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATEQUAL_INSTR: {	/** 0x4a */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATNOTEQUAL_INSTR: {	/** 0x4b */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatnotequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATLESSER_INSTR: {	/** 0x4c */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatlesser (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATLESSEREQUAL_INSTR: {	/** 0x4d */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatlesserequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATGREATER_INSTR: {	/** 0x4e */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatgreater (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case FLOATGREATEREQUAL_INSTR: {	/** 0x4f */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_floatgreaterequal (pc, reg);
             pc = npc;
             goto eval_loop;
@@ -2927,7 +2927,7 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 
             /** NOT TESTED */
         case MVREGREG_INSTR: {	/** 0x50 */
-            const meld_byte *npc = pc + MVREGREG_BASE;
+            const byte *npc = pc + MVREGREG_BASE;
             execute_mvregreg (pc, reg);
             pc = npc;
             goto eval_loop;
@@ -2935,7 +2935,7 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 
             /** NOT TESTED */
         case BOOLEQUAL_INSTR: {	/** 0x51 */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_boolequal (pc, reg);
             pc = npc;
             goto eval_loop;
@@ -2943,17 +2943,17 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 
             /** NOT TESTED */
         case BOOLNOTEQUAL_INSTR: {	/** 0x51 */
-            const meld_byte *npc = pc + OP_BASE;;
+            const byte *npc = pc + OP_BASE;;
             execute_boolnotequal (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case IF_INSTR: {	/** 0x60 */
-            const meld_byte *npc = pc + IF_BASE;
-            meld_byte *base = (meld_byte*)pc;
+            const byte *npc = pc + IF_BASE;
+            byte *base = (byte*)pc;
             ++pc;
-            meld_byte reg_index = FETCH(pc);
+            byte reg_index = FETCH(pc);
             Register *if_reg = (Register*)eval_reg (reg_index, &pc, reg);
 
             if (!(unsigned char)(*if_reg)) {
@@ -2975,35 +2975,35 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
         }
 
         case CALL1_INSTR: {	/** 0x69 */
-            const meld_byte *npc = pc + CALL1_BASE;
+            const byte *npc = pc + CALL1_BASE;
             execute_call1 (pc, reg);
             pc = npc;
             goto eval_loop;
         }
 
         case ADDLINEAR_INSTR: {	/** 0x77 */
-            const meld_byte *npc = pc + ADDLINEAR_BASE;
+            const byte *npc = pc + ADDLINEAR_BASE;
             execute_addtuple (pc, reg, isNew);
             pc = npc;
             goto eval_loop;
         }
 
         case ADDPERS_INSTR: {	/** 0x78 */
-            const meld_byte *npc = pc + ADDPERS_BASE;
+            const byte *npc = pc + ADDPERS_BASE;
             execute_addtuple (pc, reg, isNew);
             pc = npc;
             goto eval_loop;
         }
 
         case RUNACTION_INSTR: {	/** 0x79 */
-            const meld_byte *npc = pc + RUNACTION_BASE;
+            const byte *npc = pc + RUNACTION_BASE;
             execute_run_action (pc, reg, isNew);
             pc = npc;
             goto eval_loop;
         }
 
         case UPDATE_INSTR: {	/** 0x7b */
-            const meld_byte *npc = pc + UPDATE_BASE;
+            const byte *npc = pc + UPDATE_BASE;
             if (PROCESS_TYPE(state) == PROCESS_ITER)
                 execute_update (pc, reg);
             pc = npc;
@@ -3011,7 +3011,7 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
         }
 
         case REMOVE_INSTR: {	/** 0x80 */
-            const meld_byte *npc = pc + REMOVE_BASE;
+            const byte *npc = pc + REMOVE_BASE;
             execute_remove (pc, reg, isNew);
             pc = npc;
             goto eval_loop;
@@ -3022,10 +3022,10 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
              * this instruction at this moment, please review this when you encounter it.
              */
         case IF_ELSE_INSTR: {	/** 0x81 */
-            const meld_byte *npc = pc + IF_ELSE_BASE;
-            meld_byte *base = (meld_byte*)pc;
+            const byte *npc = pc + IF_ELSE_BASE;
+            byte *base = (byte*)pc;
             ++pc;
-            meld_byte reg_index = FETCH(pc);
+            byte reg_index = FETCH(pc);
             Register *if_reg = (Register*)eval_reg (reg_index, &pc, reg);
 
             /** If false, jump to else */
@@ -3062,7 +3062,7 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
         }
 
         case INTMOD_INSTR: {	/** 0x7d */
-            const meld_byte *npc = pc + OP_BASE;
+            const byte *npc = pc + OP_BASE;
             execute_intmod (pc, reg);
             pc = npc;
             goto eval_loop;
@@ -3248,13 +3248,13 @@ void MeldInterpretVM::print_program_info(void) {
  */
 void MeldInterpretVM::databaseConsistencyChecker() {
     int i;
-    meld_byte neighborTCount = 0;
-    meld_byte vacantTCount = 0;
+    byte neighborTCount = 0;
+    byte vacantTCount = 0;
     for (i = 0; i < NUM_TYPES; i++) {
         if (TUPLES[i].head == NULL)
             continue;
 
-        meld_byte tupleCount = 0;
+        byte tupleCount = 0;
         tuple_entry *tupleEntry;
         for (tupleEntry = TUPLES[i].head;
              tupleEntry != NULL;

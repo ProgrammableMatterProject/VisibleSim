@@ -18,13 +18,13 @@ namespace MultiRobots {
 MultiRobotsSimulator::MultiRobotsSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
     : BaseSimulator::Simulator(argc, argv, bcb) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor << "MultiRobotsSimulator constructor" << TermColor::Reset << endl;
+    OUTPUT << "\033[1;34m" << "MultiRobotsSimulator constructor" << "\033[0m" << endl;
 #endif
 }
 
 MultiRobotsSimulator::~MultiRobotsSimulator() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor << "MultiRobotsSimulator destructor" << TermColor::Reset <<endl;
+    OUTPUT << "\033[1;34m" << "MultiRobotsSimulator destructor" << "\033[0m" <<endl;
 #endif
 }
 

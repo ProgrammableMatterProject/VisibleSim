@@ -28,7 +28,7 @@ namespace Catoms2D {
 
 Catoms2DWorld::Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                              int argc, char *argv[]):World(argc, argv) {
-    OUTPUT << TermColor::LifecycleColor << "Catoms2DWorld constructor" << TermColor::Reset << endl;
+    OUTPUT << "\033[1;31mCatoms2DWorld constructor\033[0m" << endl;
 
     if (GlutContext::GUIisEnabled) {
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms2DTextures",
@@ -54,10 +54,10 @@ void Catoms2DWorld::deleteWorld() {
 void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
                              const Cell3DPosition &pos, const Color &col,
                              short orientation, bool master) {
-    if (blockId > maxBlockId)
-        maxBlockId = blockId;
-    else if (blockId == 0)
-        blockId = incrementBlockId();
+	if (blockId > maxBlockId)
+		maxBlockId = blockId;
+	else if (blockId == 0)
+		blockId = incrementBlockId();
 
     Catoms2DBlock *catom2D = new Catoms2DBlock(blockId,bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
@@ -66,7 +66,7 @@ void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom2D));
 
     Catoms2DGlBlock *glBlock = new Catoms2DGlBlock(blockId);
-    mapGlBlocks.insert(make_pair(blockId, glBlock));
+    mapGlBlocks.insert(make_pair(blockId, glBlock));    
     catom2D->setGlBlock(glBlock);
 
     catom2D->setPosition(pos);
@@ -111,7 +111,7 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
 void Catoms2DWorld::glDraw() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
-    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D);    
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((Catoms2DGlBlock*)pair.second)->glDraw(objBlock);
@@ -130,7 +130,7 @@ void Catoms2DWorld::glDrawId() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
 
-    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D);   
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((Catoms2DGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
@@ -143,7 +143,7 @@ void Catoms2DWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
 
-    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D);    
     int n=1;
     lock();
     for (const auto& pair : mapGlBlocks) {
@@ -364,8 +364,8 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
 }
 
 void Catoms2DWorld::exportConfiguration() {
-    Catoms2DConfigExporter exporter = Catoms2DConfigExporter(this);
-    exporter.exportConfiguration();
+	Catoms2DConfigExporter exporter = Catoms2DConfigExporter(this);
+	exporter.exportConfiguration();
 }
 
 } // Catoms2D namespace

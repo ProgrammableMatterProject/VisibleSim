@@ -51,7 +51,7 @@ Time QClock::getSimulationTime(Time localTime) {
     cerr << "delta should be positive!" << endl;
     simTime = 0;
   }
-  
+
   simTime = max(0.0,simTime);
   simTime = min(numeric_limits<double>::max(),simTime);
   return (Time) simTime;
@@ -83,19 +83,19 @@ GNoiseQClock::~GNoiseQClock () {
 Time GNoiseQClock::getTime(Time simTime) {
   double localTime = 0;
   double noise_SimTime = 0;
-  
+
   double minL = 0;
   double maxL = numeric_limits<double>::max();
   list<ReferencePoint>::iterator it;
-  
+
   cleanReferencePoints();
   for (it = referencePoints.begin(); it != referencePoints.end(); it++) {
     if (it->simulation == simTime) {
       return it->local;
-    }	  
+    }
     if (it->simulation < simTime) {
       minL = max(minL,(double)it->local);
-    }	  
+    }
     if (it->simulation > simTime) {
       maxL = min(maxL,(double)it->local);
       break; //sorted list
@@ -103,7 +103,7 @@ Time GNoiseQClock::getTime(Time simTime) {
   }
 
   noise_SimTime = noise->getNoise(simTime);
-  
+
   localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise_SimTime;
   localTime = max(minL,localTime);
   localTime = min(maxL,localTime);
@@ -116,7 +116,7 @@ Time GNoiseQClock::getTime(Time simTime) {
 Time GNoiseQClock::getSimulationTime(Time localTime) {
   double noise_LocalTime = 0;
   double simTime = 0;
-    
+
   double minL = 0;
   double maxL = numeric_limits<double>::max();
   list<ReferencePoint>::iterator it;
@@ -126,19 +126,19 @@ Time GNoiseQClock::getSimulationTime(Time localTime) {
     if (it->local == localTime) {
       return it->simulation;
     }
-	  
+
     if (it->local < localTime) {
       minL = max(minL,(double)it->simulation);
     }
-	  
+
     if (it->local > localTime) {
       maxL = min(maxL,(double)it->simulation);
       break; //sorted list
     }
   }
- 
+
   noise_LocalTime = noise->getNoise(localTime);
-  
+
   double delta =  pow(y0,2) - 4 * (1.0/2.0)*d * (x0+noise_LocalTime-(double)localTime);
   if (delta > 0) {
     double s1 = (-y0 + sqrt(delta)) / d;
@@ -165,8 +165,8 @@ Time GNoiseQClock::getSimulationTime(Time localTime) {
 }
 
 void GNoiseQClock::insertReferencePoint(Time local, Time simulation,
-					list<ReferencePoint>::iterator pos) {
- ReferencePoint p = ReferencePoint(local,simulation); 
+                    list<ReferencePoint>::iterator pos) {
+ ReferencePoint p = ReferencePoint(local,simulation);
   if (pos == referencePoints.end()) {
     referencePoints.push_back(p);
   } else {
@@ -176,13 +176,13 @@ void GNoiseQClock::insertReferencePoint(Time local, Time simulation,
 
 void GNoiseQClock::cleanReferencePoints() {
   Time simTime = getScheduler()->now();
-  
+
   for (list<ReferencePoint>::iterator it = referencePoints.begin();
        it != referencePoints.end(); it++) {
     if (it->simulation >= simTime) {
       if (it != referencePoints.begin()) {
-	it--;
-	referencePoints.erase(referencePoints.begin(),it);
+    it--;
+    referencePoints.erase(referencePoints.begin(),it);
       }
       break;
     }
@@ -240,7 +240,7 @@ Time DNoiseQClock::getSimulationTime(Time localTime) {
       return s;
     }
   }
-  
+
   while(l > localTime) {
     s--;
     l = getTime(s);
@@ -269,9 +269,9 @@ DNoiseQClock* DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(ruint seed) {
   // us (4h long experiment)
   static double mean[2] = {7.132315*pow(10,-14), 0.9911011};
   static double sd[2] = {5.349995*pow(10,-14), 0.002114563};
-  static doubleRNG d = Random::getNormalDoubleRNG(seed,mean[0],sd[0]); 
+  static doubleRNG d = Random::getNormalDoubleRNG(seed,mean[0],sd[0]);
   static doubleRNG y0 = Random::getNormalDoubleRNG(seed,mean[0],sd[0]);
-  
+
   double x0 = (double) getScheduler()->now();
   return new DNoiseQClock(d(),y0(),x0,seed);
 }

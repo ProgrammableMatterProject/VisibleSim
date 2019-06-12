@@ -1,4 +1,3 @@
-
 #ifndef EXCEPTIONS_H__
 #define EXCEPTIONS_H__
 
@@ -14,8 +13,8 @@ public:
         : m_msg(std::string("An unknown simulator exception has occured\n")) {}
     VisibleSimException(const std::string &msg)
         : m_msg(msg) {}
-    
-    virtual const char* what() const throw() {
+
+    virtual const char* what() const throw() override {
         return m_msg.c_str();
     }
 };
@@ -27,7 +26,7 @@ public:
     NotImplementedException()
         : VisibleSimException(std::string("Feature not yet implemented.")) {}
     NotImplementedException(const std::string &featureName)
-        : VisibleSimException(std::string("Feature not yet implemented: ") + featureName) {}        
+        : VisibleSimException(std::string("Feature not yet implemented: ") + featureName) {}
 };
 
 //!< An exception for notifying invalid uses of functions
@@ -38,7 +37,7 @@ public:
     InvalidArgumentException(const std::string &function_name)
         : VisibleSimException(std::string("Invalid argument supplied to function: ") + function_name) {}
     InvalidArgumentException(const std::string &function_name, const std::string &arg_name)
-        : VisibleSimException(std::string("Invalid argument supplied to function: ") + function_name + std::string(" -- arg: ") + arg_name) {}        
+        : VisibleSimException(std::string("Invalid argument supplied to function: ") + function_name + std::string(" -- arg: ") + arg_name) {}
 
 };
 

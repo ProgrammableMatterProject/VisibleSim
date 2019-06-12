@@ -24,7 +24,7 @@ namespace BlinkyBlocks {
 
 BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                                      int argc, char *argv[]):World(argc, argv) {
-    OUTPUT << TermColor::LifecycleColor << "BlinkyBlocksWorld constructor" << TermColor::Reset << endl;
+    OUTPUT << "\033[1;31mBlinkyBlocksWorld constructor\033[0m" << endl;
 
     if (GlutContext::GUIisEnabled) {
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
