@@ -2,10 +2,10 @@
  * @file   utils.cpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Fri Aug 10 18:07:23 2018
- * 
+ *
  * @brief  Utils functions implementation, with utils.h as a standalone all functions need to be inline and any tweaking to the utils forces the recompilation of the whole project
- * 
- * 
+ *
+ *
  */
 
 
@@ -35,40 +35,52 @@ int utils::m_mod(int l, int mod) {
 
 bool utils::assert_handler(bool cond, const char *file, const int line,
                            const char *func, const char* msg) {
-    
-    cerr << endl 
-         << "!!!!!!!!!!!!!!!! VISIBLESIM ASSERT TRIGGERED (VS_ASSERT) !!!!!!!!!!!!!" 
-         << endl;
+
+    cerr << endl << TermColor::BWhite << TermColor::BG_BRed
+         << "!!!!!!!!!!!!!!!! VISIBLESIM ASSERT TRIGGERED (VS_ASSERT) !!!!!!!!!!!!!"
+         << TermColor::Reset << TermColor::Reset << endl;
 
     Scheduler* scheduler = getScheduler();
     BuildingBlock* contextModule = scheduler->getContextModule();
-    BlockCode* contextBlockCode = scheduler->getContextBlockCode();    
-    std::cerr << "In fonction " << func
-              << " at " << file << ":" << line << std::endl;
-    if (msg) std::cerr << "Reason: " << msg << endl;
-    
-    std::cerr << endl << "Context Module: ";
+    BlockCode* contextBlockCode = scheduler->getContextBlockCode();
+    std::cerr << "In fonction " << TermColor::BYellow << func << TermColor::Reset
+              << " at " << TermColor::BCyan << file
+              << ":" << TermColor::BWhite << line << std::endl << std::endl << TermColor::Reset;
+
+    if (msg) std::cerr << TermColor::BRed << "Reason: " <<
+                 TermColor::BWhite << msg << TermColor::Reset << endl;
+
+    std::cerr << TermColor::BRed << "Context Module: ";
     if (contextModule) {
-        cerr << "#" << contextModule->blockId << " at " << contextModule->position;
+        cerr << TermColor::BWhite << "#"
+             << contextModule->blockId << " at " << contextModule->position;
         getWorld()->getCamera()->setTarget(contextModule->ptrGlBlock->getPosition());
-    } else 
-        cerr << "NULL";
-    cerr << std::endl;
+    } else
+        cerr << TermColor::BWhite << "NULL";
+    cerr << std::endl << TermColor::Reset;
 
     if (contextBlockCode) {
-        std::cerr << "--- BlockCode::onAssertTriggered() ---" << endl;
+        std::cerr << endl;
+        std::cerr << TermColor::BG_BYellow << TermColor::BBlack
+                  << "--- BlockCode::onAssertTriggered() ---"
+                  << TermColor::Reset << endl;
         contextBlockCode->onAssertTriggered();
-        std::cerr << "---------------- END -----------------" << endl;
+        std::cerr << TermColor::BG_BYellow << TermColor::BBlack
+                  << "---------------- END -----------------"
+                  << TermColor::Reset << endl;
     }
-    
-    cerr << endl;
+
+    cerr << TermColor::Yellow << endl;
     assert_stack_print();
-    cerr << endl;
-    
-    std::cout << "Press any key to terminate..." << std::endl; std::cin.ignore();
-    
+    cerr << TermColor::Reset << endl;
+
+    std::cout << TermColor::BWhite
+              << "Press any key to terminate..." << TermColor::Reset << std::endl;
+    std::cout << endl;
+    std::cin.ignore();
+
     exit(1);
-    
+
     return true;
 }
 
@@ -76,7 +88,7 @@ bool utils::assert_stack_print() {
     cerr << "--------- StackTrace ---------" << endl;
     cerr << Backtrace(3);
     cerr << "--------- END ---------" << endl;
-    
+
     return true;
 }
 
@@ -91,10 +103,10 @@ utils::generateTimestampedFilename(const std::string& prefix, const std::string&
 
     time_t now = time(0);
     tm *ltm = localtime(&now);
-    
+
     out << prefix << "_" << ltm->tm_hour << "_"
         << ltm->tm_min << "_" << ltm->tm_sec << "." << ext;
-    
+
     return out.str();
 }
 
@@ -104,7 +116,7 @@ utils::generateTimestampedDirName(const std::string& dirBasename) {
 
     time_t now = time(0);
     tm *ltm = localtime(&now);
-    
+
     out << dirBasename << "_" << ltm->tm_hour << "_"
         << ltm->tm_min << "_" << ltm->tm_sec;
 
@@ -117,12 +129,12 @@ bool utils::file_exists(const std::string fileName) {
 }
 
 void utils::swap(int* a, int* b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
-/* 
+/*
  * Copyright (c) 2009-2017, Farooq Mela
  * All rights reserved.
  *
@@ -151,7 +163,7 @@ void utils::swap(int* a, int* b) {
  * @file   stacktrace.cxx
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Tue Jan 29 14:06:15 2019
- * 
+ *
  * @brief  https://gist.github.com/fmela/591333
  *  For printing stacktrace, to be used with our custom-defined asserts.
  */

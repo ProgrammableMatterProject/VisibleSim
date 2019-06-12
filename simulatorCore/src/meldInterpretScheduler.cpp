@@ -28,7 +28,7 @@ namespace MeldInterpret {
 
 MeldInterpretScheduler::MeldInterpretScheduler() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "MeldInterpretScheduler constructor" << endl;
+    OUTPUT << TermColor::LifecycleColor << "MeldInterpretScheduler constructor" << endl;
 #endif
     state = NOTREADY;
     schedulerMode = SCHEDULER_MODE_REALTIME;
@@ -36,7 +36,7 @@ MeldInterpretScheduler::MeldInterpretScheduler() {
 }
 
 MeldInterpretScheduler::~MeldInterpretScheduler() {
-    OUTPUT << "\033[1;31mMeldInterpretScheduler destructor\33[0m" << endl;
+    OUTPUT << TermColor::LifecycleColor << "MeldInterpretScheduler destructor" << TermColor::Reset << endl;
 }
 
 void MeldInterpretScheduler::createScheduler() {
@@ -72,7 +72,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     int nbSemWait = 1;
 
     //usleep(1000000);
-    OUTPUT << "\033[1;33mScheduler Mode :" << schedulerMode << "\033[0m" << endl;
+    OUTPUT << TermColor::SchedulerColor << "Scheduler Mode :" << schedulerMode << TermColor::Reset << endl;
 #ifndef TEST_DETER
     if (MeldInterpretVM::isInDebuggingMode()) {
         // 3) Debugger "run"
@@ -91,7 +91,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     EventPtr pev;
     auto systemStartTime = get_time::now();
     auto pausedTime = systemStartTime - systemStartTime; // zero by default
-    cout << "\033[1;33m" << "Scheduler : start order received " << 0 << "\033[0m" << endl;
+    cout << TermColor::SchedulerColor << "Scheduler : start order received " << 0 << TermColor::Reset << endl;
 
     switch (schedulerMode) {
     case SCHEDULER_MODE_FASTEST:
@@ -121,8 +121,8 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 
                         // Check that we have not reached the maximum simulation date, if there is one
                         if (currentDate > maximumDate) {
-                            cout << "\033[1;33m" << "Scheduler : maximum simulation date (" << maximumDate
-                                 << ") has been reached. Terminating..." << "\033[0m" << endl;
+                            cout << TermColor::SchedulerColor << "Scheduler : maximum simulation date (" << maximumDate
+                                 << ") has been reached. Terminating..." << TermColor::Reset << endl;
                             break;
                         }
 
@@ -247,7 +247,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     auto systemStopTime = get_time::now();
     auto elapsedTime = systemStopTime - systemStartTime;
 
-    cout << "\033[1;33m" << "Scheduler end : " << chrono::duration_cast<us>(elapsedTime).count() << "\033[0m" << endl;
+    cout << TermColor::SchedulerColor << "Scheduler end : " << chrono::duration_cast<us>(elapsedTime).count() << TermColor::Reset << endl;
 
     pev.reset();
 

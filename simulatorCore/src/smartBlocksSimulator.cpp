@@ -16,7 +16,7 @@ namespace SmartBlocks {
 SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
     : BaseSimulator::Simulator(argc, argv, bcb) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    cout << "\033[1;34m" << "SmartBlocksSimulator constructor" << "\033[0m" << endl;
+    cout << TermColor::LifecycleColor << "SmartBlocksSimulator constructor" << TermColor::Reset << endl;
 #endif
 }
 
@@ -24,7 +24,7 @@ SmartBlocksSimulator::~SmartBlocksSimulator() {
     //MODIF NICO : deleteScheduler() est déjà appellée par BaseSimulator::~Simulator()
     //~ deleteScheduler();
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    cout << "\033[1;34m" << "SmartBlocksSimulator destructor" << "\033[0m" <<endl;
+    cout << TermColor::LifecycleColor << "SmartBlocksSimulator destructor" << TermColor::Reset <<endl;
 #endif
 }
 

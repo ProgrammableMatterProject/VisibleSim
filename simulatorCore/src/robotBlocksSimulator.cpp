@@ -24,13 +24,13 @@ void RobotBlocksSimulator::help() {
 RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
     : BaseSimulator::Simulator(argc, argv, bcb) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "\033[1;34m" << "RobotBlocksSimulator constructor" << "\033[0m" << endl;
+    OUTPUT << TermColor::LifecycleColor << "RobotBlocksSimulator constructor" << TermColor::Reset << endl;
 #endif
 }
 
 RobotBlocksSimulator::~RobotBlocksSimulator() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "\033[1;34m" << "RobotBlocksSimulator destructor" << "\033[0m" <<endl;
+    OUTPUT << TermColor::LifecycleColor << "RobotBlocksSimulator destructor" << TermColor::Reset <<endl;
 #endif
 }
 

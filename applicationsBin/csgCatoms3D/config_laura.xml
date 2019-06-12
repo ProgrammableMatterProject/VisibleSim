@@ -1,5 +1,9 @@
 <?xml version="1.0" standalone="no" ?>
 <world gridSize="50,50,50">
+ <camera target="60.0,66.0,42.0" directionSpherical="0,10,217" angle="45.0" near="1.000000" far="1500.000000" />
+ <spotlight target="7,4,0" directionSpherical="60,25,200" angle="50"/>
+=======
+>>>>>>> 693bae0e... optimize STL file size
  <blockList color="128,128,128" blocksize="150,70,50">
    <csg content="
           translate([75,35,25]) {

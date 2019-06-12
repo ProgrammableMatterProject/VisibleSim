@@ -26,13 +26,13 @@ void Catoms2DSimulator::help() {
 Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
     : BaseSimulator::Simulator(argc, argv, bcb) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "\033[1;34m" << "Catoms2DSimulator constructor" << "\033[0m" << endl;
+    OUTPUT << TermColor::LifecycleColor << "Catoms2DSimulator constructor" << "" << TermColor::Reset << endl;
 #endif
 }
 
 Catoms2DSimulator::~Catoms2DSimulator() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "\033[1;34m" << "Catoms2DSimulator destructor" << "\033[0m" <<endl;
+    OUTPUT << TermColor::LifecycleColor << "Catoms2DSimulator destructor" << "" << TermColor::Reset <<endl;
 #endif
 }
 
