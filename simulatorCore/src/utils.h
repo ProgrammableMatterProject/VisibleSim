@@ -1,4 +1,3 @@
-
 #ifndef UTILS_H__
 #define UTILS_H__
 
@@ -22,7 +21,7 @@ namespace utils {
 #define IS_ODD(x) ((x>0?x:-x) % 2)     //!< returns 1 if x is odd, 0 otherwise
 #define IS_EVEN(x) (!IS_ODD(x)) //!< returns 1 if x is even, 0 otherwise
 
-/** 
+/**
  * @brief Custom modulus fonction, python style e.g. -2 % 6 = 4
  * @param l left operand
  * @param mod right operand, modulus value
@@ -30,12 +29,12 @@ namespace utils {
  */
 int m_mod(int l, int mod);
 
-/** 
+/**
  * Pause the current thread until a key is pressed
  */
 void awaitKeyPressed();
 
-/** 
+/**
  * For a given triggered assert, display its location and freeze current simulation until user provides an input
  * @return always true
  */
@@ -43,16 +42,20 @@ bool assert_handler(bool cond, const char *file,
                     const int line, const char* func,
                     const char *msg = NULL);
 
-/** 
+/**
  * For a given triggered assert, displays the stack trace of the current thread
  * @return always true
  */
 bool assert_stack_print();
-    
-/** 
+
+
+// This function produces a stack backtrace with demangled function & method names.
+std::string Backtrace(int skip);
+
+/**
  * Custom assertion macro used for debugging, it shows a message
  *  on stderr, before pausing the simulation until a key is pressed
- *  (for simulation environment analysis in the GUI), then triggers 
+ *  (for simulation environment analysis in the GUI), then triggers
  *  a standard C assert
  * @param cond assertion condition
  */

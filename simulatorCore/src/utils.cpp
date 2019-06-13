@@ -86,7 +86,7 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
 
 bool utils::assert_stack_print() {
     cerr << "--------- StackTrace ---------" << endl;
-    cerr << Backtrace(3);
+    cerr << utils::Backtrace(3);
     cerr << "--------- END ---------" << endl;
 
     return true;
@@ -173,7 +173,7 @@ void utils::swap(int* a, int* b) {
 #include <cxxabi.h>   // for __cxa_demangle
 
 // This function produces a stack backtrace with demangled function & method names.
-std::string Backtrace(int skip)
+std::string utils::Backtrace(int skip)
 {
     void *callstack[128];
     const int nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);

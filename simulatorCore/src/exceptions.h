@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "utils.h"
+
 namespace BaseSimulator {
 
 class VisibleSimException : public std::exception {
@@ -15,7 +17,7 @@ public:
         : m_msg(msg) {}
 
     virtual const char* what() const throw() override {
-        return m_msg.c_str();
+        return (m_msg + std::string("\n") + std::string(utils::Backtrace(6))).c_str();
     }
 };
 
@@ -26,7 +28,7 @@ public:
     NotImplementedException()
         : VisibleSimException(std::string("Feature not yet implemented.")) {}
     NotImplementedException(const std::string &featureName)
-        : VisibleSimException(std::string("Feature not yet implemented: ") + featureName) {}
+        : VisibleSimException(std::string("Feature not yet implemented: ")) {}
 };
 
 //!< An exception for notifying invalid uses of functions
