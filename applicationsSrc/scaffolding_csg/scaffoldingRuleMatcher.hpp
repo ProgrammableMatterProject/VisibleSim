@@ -58,6 +58,7 @@ enum ScafComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
 
 class ScaffoldingRuleMatcher {
     const int X_MAX, Y_MAX, Z_MAX, B;
+    const std::function<bool(const Cell3DPosition)> isInsideFn;
 
     /**
      * Contains the position of each ScafComponent, indexed by their id
@@ -94,6 +95,13 @@ class ScaffoldingRuleMatcher {
     };
 
 public:
+
+    ScaffoldingRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _Z_MAX,
+                           const uint _B, const std::function<bool(const Cell3DPosition&)>_fn):
+        X_MAX(_X_MAX), Y_MAX(_Y_MAX), Z_MAX(_Z_MAX), B(_B),
+        isInsideFn(_fn) {};
+    virtual ~ScaffoldingRuleMatcher() {};
+
     bool isOnXBranch(const Cell3DPosition& pos) const;
     bool isOnXBorder(const Cell3DPosition& pos) const;
     bool isOnXOppBorder(const Cell3DPosition& pos) const;
@@ -132,11 +140,6 @@ public:
     Cell3DPosition getBranchUnitOffset(int bi) const;
     Cell3DPosition getBranchUnitOffset(const Cell3DPosition& pos) const;
     BranchIndex getBranchIndexForNonRootPosition(const Cell3DPosition& pos) const;
-
-    ScaffoldingRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _Z_MAX,
-                                const uint _B) :
-        X_MAX(_X_MAX), Y_MAX(_Y_MAX), Z_MAX(_Z_MAX), B(_B) {};
-    virtual ~ScaffoldingRuleMatcher() {};
 
     static string roleToString(AgentRole ar);
     static string component_to_string(ScafComponent comp);
@@ -331,64 +334,6 @@ public:
                                                   BranchIndex bi,
                                                   bool upward = true) const;
 
-    /*********************************************************************/
-    /*************************** CUBE STUFF ***************************/
-    /*********************************************************************/
-
-    bool isOnXCubeBorder(const Cell3DPosition& pos) const;
-    bool isOnXOppCubeBorder(const Cell3DPosition& pos) const;
-    bool isOnYCubeBorder(const Cell3DPosition& pos) const;
-    bool isOnYOppCubeBorder(const Cell3DPosition& pos) const;
-
-    /**
-     * @param pos position to evaluate
-     * @return true if pos is part of the mesh cube
-     */
-    bool isInCube(const Cell3DPosition& pos) const;
-
-    /**
-     * Like shouldGrowBranch, but also takes into account whether branch would be outside
-     *  of the mesh cube
-     * @param pos
-     * @param bi
-     * @return
-     */
-    bool shouldGrowCubeBranch(const Cell3DPosition& pos, BranchIndex bi) const;
-
-    short resourcesForCubeBranch(const Cell3DPosition& pos, BranchIndex bi) const;
-
-    /**
-     * Checks whether module at the tip of branch tipB relative to tile root at position pos
-     *  should grow branch growthB according to cube and mesh rules.
-     * @param pos position of the source tile root
-     * @attention pos must be a tile root
-     * @param tipB branch whose tip to consider
-     * @param growthB branch that tip TR should consider growing
-     * @return true if TR at tip of branch tipB should grow branch growthB, false otherwise.
-     */
-    bool cubeTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
-                                              BranchIndex tipB, BranchIndex growthB) const;
-
-    /**
-     * For a the current mesh cube instance, returns the dimension of the
-     *  h-cube formed by the scaffold
-     * @return dimension of the h-cube, or -1 if undefined
-     */
-    int getCubeDimension() const;
-
-    /**
-     * Indicates the number of incident branches for tile whose TR is at pos
-     * @param pos position of concerned TR
-     * @param lambda a filtering function that returns whether a position is within the
-     *  scaffold for a particular type of object
-     * @return the number of vertical branches incident to the specified tile,
-     *  or -1 if the input is invalid
-     */
-    short getNbIncidentVerticalBranches(const Cell3DPosition& pos,
-                                        function<bool(const Cell3DPosition&)> lambda) const;
-
-    short getNbIncidentVerticalCubeBranches(const Cell3DPosition& pos) const;
-
     /**
      * Indicates whether a tile has an incident branch on index bi
      * @param pos position of a tile root in the scaffold
@@ -397,8 +342,6 @@ public:
      */
     bool hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
                            function<bool(const Cell3DPosition&)> lambda) const;
-
-    bool hasIncidentCubeBranch(const Cell3DPosition& pos, BranchIndex bi) const;
 
     inline const Cell3DPosition& getEntryPointRelativePos(short i) const {
         return entryPointRelativePos[i];
@@ -456,6 +399,60 @@ public:
 
     const Cell3DPosition getEntryPointForModuleOnIncidentBranch(const Cell3DPosition& cPos,
                                                                 BranchIndex bid);
+
+
+    /*********************************************************************/
+    /*************************** CUBE STUFF ***************************/
+    /*********************************************************************/
+
+    bool isOnXCSGBorder(const Cell3DPosition& pos) const;
+    bool isOnXOppCSGBorder(const Cell3DPosition& pos) const;
+    bool isOnYCSGBorder(const Cell3DPosition& pos) const;
+    bool isOnYOppCSGBorder(const Cell3DPosition& pos) const;
+
+    /**
+     * @param pos position to evaluate
+     * @return true if pos is part of the CSG target object
+     */
+    bool isInCSG(const Cell3DPosition& pos) const;
+
+    /**
+     * Like shouldGrowBranch, but also takes into account whether branch would be outside
+     *  of the CSG
+     * @param pos
+     * @param bi
+     * @return
+     */
+    bool shouldGrowCSGBranch(const Cell3DPosition& pos, BranchIndex bi) const;
+
+    short resourcesForCSGBranch(const Cell3DPosition& pos, BranchIndex bi) const;
+
+    /**
+     * Checks whether module at the tip of branch tipB relative to tile root at position pos
+     *  should grow branch growthB according to csg and mesh rules.
+     * @param pos position of the source tile root
+     * @attention pos must be a tile root
+     * @param tipB branch whose tip to consider
+     * @param growthB branch that tip TR should consider growing
+     * @return true if TR at tip of branch tipB should grow branch growthB, false otherwise.
+     */
+    bool CSGTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
+                                          BranchIndex tipB, BranchIndex growthB) const;
+
+    /**
+     * Indicates the number of incident branches for tile whose TR is at pos
+     * @param pos position of concerned TR
+     * @param lambda a filtering function that returns whether a position is within the
+     *  scaffold for a particular type of object
+     * @return the number of vertical branches incident to the specified tile,
+     *  or -1 if the input is invalid
+     */
+    short getNbIncidentVerticalBranches(const Cell3DPosition& pos,
+                                        function<bool(const Cell3DPosition&)> lambda) const;
+
+    short getNbIncidentVerticalCSGBranches(const Cell3DPosition& pos) const;
+
+    bool hasIncidentCSGBranch(const Cell3DPosition& pos, BranchIndex bi) const;
 };
 
 }

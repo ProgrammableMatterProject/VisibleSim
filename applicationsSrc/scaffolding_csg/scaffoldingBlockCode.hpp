@@ -336,19 +336,7 @@ y the module
      */
     static const Cell3DPosition sbdenorm(const Cell3DPosition& pos);
 
-    /**
-     * Transforms an absolute position into a tile-relative position
-     * @param pos position to relatify
-     * @return the corresponding position of pos in the tile-relative coordinate system
-     */
-    const Cell3DPosition relatify(const Cell3DPosition& pos);
-
-    /**
-     * Inverse operation of relatify
-     */
-    const Cell3DPosition derelatify(const Cell3DPosition& pos);
-
-    void updateOpenPositions();
+    bool isInsideCSGFn(const Cell3DPosition& pos) const;
 
     /**
      * Adds a new mesh component to the grid at its predetermined entry point,
