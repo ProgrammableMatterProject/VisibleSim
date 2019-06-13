@@ -32,11 +32,7 @@ Time ScaffoldingBlockCode::t0 = 0;
 int ScaffoldingBlockCode::nbCatomsInPlace = 0;
 int ScaffoldingBlockCode::nbMessages = 0;
 bool ScaffoldingBlockCode::sandboxInitialized = false;
-uint ScaffoldingBlockCode::X_MAX;
-uint ScaffoldingBlockCode::Y_MAX;
-uint ScaffoldingBlockCode::Z_MAX;
 bool ScaffoldingBlockCode::constructionOver = false;
-constexpr Cell3DPosition ScaffoldingBlockCode::meshSeedPosition;
 
 ScaffoldingBlockCode::ScaffoldingBlockCode(Catoms3DBlock *host):
     Catoms3DBlockCode(host) {
@@ -44,17 +40,6 @@ ScaffoldingBlockCode::ScaffoldingBlockCode(Catoms3DBlock *host):
     world = BaseSimulator::getWorld();
     lattice = world->lattice;
     catom = host;
-
-    const Cell3DPosition& ub = lattice->getGridUpperBounds();
-    // Round down mesh dimensions to previous multiple of B
-    // TODO: Adapt to CSG
-    X_MAX = ub[0] - (B - ub[0] % B);
-    Y_MAX = ub[1] - (B - ub[1] % B);
-    Z_MAX = ub[2] - (B - ub[2] % B);
-    ruleMatcher = new ScaffoldingRuleMatcher(X_MAX, Y_MAX, Z_MAX, B,
-                                             [this](const Cell3DPosition& pos) {
-                                                 return isInsideCSGFn(pos);
-                                             });
 }
 
 ScaffoldingBlockCode::~ScaffoldingBlockCode() {
@@ -185,6 +170,39 @@ void ScaffoldingBlockCode::startup() {
 
     VS_ASSERT_MSG(target, "Target is null, aborting...");
 
+    // Initialize scaffold bounds
+    if (X_MAX == numeric_limits<int>::min()) {
+        // Initialize Scaffold bounds
+        const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+        const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+
+        Cell3DPosition pos;
+        for (short iz = glb[2]; iz < ulb[2]; iz++) {
+            for (short iy = glb[1]; iy < ulb[1]; iy++) {
+                for (short ix = glb[0]; ix < ulb[0]; ix++) {
+                    pos.set(ix, iy, iz);
+
+                    if (target->isInTarget(pos)) {
+                        if (pos[0] > X_MAX) X_MAX = pos[0];
+                        else if (pos[0] < X_MIN) X_MIN = pos[0];
+
+                        if (pos[1] > Y_MAX) Y_MAX = pos[1];
+                        else if (pos[1] < Y_MIN) Y_MIN = pos[1];
+
+                        if (pos[2] > Z_MAX) Z_MAX = pos[2];
+                        else if (pos[2] < Z_MIN) Z_MIN = pos[2];
+                    }
+                }
+            }
+        }
+    }
+
+    ruleMatcher = new ScaffoldingRuleMatcher(X_MAX, Y_MAX, Z_MAX,
+                                             X_MIN, Y_MIN, Z_MIN, B,
+                                             [this](const Cell3DPosition& pos) {
+                                                 return isInsideCSGFn(pos);
+                                             });
+
     initialized = true;
     startTime = scheduler->now();
 
@@ -194,7 +212,17 @@ void ScaffoldingBlockCode::startup() {
     coordinatorPos =
         denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
 
-    // Need to initialize target light for sandbox modules at algorithm start
+    // Will not be used, set green and forget about it
+    if (not ruleMatcher->isInGrid(norm(catom->position))
+        and (catom->position[0] > X_MAX or catom->position[1] > Y_MAX)) {
+        if (ruleMatcher->isInMesh(norm(catom->position)))
+            SET_GREEN_LIGHT(true);
+
+        return;
+    }
+
+
+    // need to initialize target light for sandbox modules at algorithm start
     if (ruleMatcher->isInSandbox(norm(catom->position))) {
         // All other modules should be green (set by default)
         SET_GREEN_LIGHT(true);
@@ -1094,30 +1122,28 @@ void ScaffoldingBlockCode::initializeSandbox() {
         }
     }
 
-    for (const auto& pos : ruleMatcher->getAllGroundTileRootPositionsForMesh()) {
-        const Cell3DPosition& denormPos = denorm(pos);
-        // cout << pos << " " << denormPos << endl;
+    for (int x = meshSeedPosition[0]; x < ulb[0]; x+=B) {
+        for (int y = meshSeedPosition[1]; y < ulb[1]; y+=B) {
+            const Cell3DPosition& trPos = Cell3DPosition(x, y, meshSeedPosition[2]);
+            for (int i = 0; i < XBranch; i++) {
 
-        for (int i = 0; i < XBranch; i++) {
-            world->addBlock(0, buildNewBlockCode,
-                            denormPos + ruleMatcher->getIncidentTipRelativePos((BranchIndex)i), PINK);
-            world->addBlock(0, buildNewBlockCode, denormPos +
-                            ruleMatcher->getIncidentTipRelativePos((BranchIndex)i) + ruleMatcher->getIncidentTipRelativePos((BranchIndex)i), GREY);
-            world->addBlock(0, buildNewBlockCode,
-                            denormPos + ruleMatcher->getIncidentTipRelativePos((BranchIndex)i)
-                            + ruleMatcher->getIncidentTipRelativePos((BranchIndex)i) + ruleMatcher->getIncidentTipRelativePos((BranchIndex)i),
-                            GREY);
+                Cell3DPosition pos = trPos;
+                for (int j = 0; j < 3; j++) {
+                    pos += ruleMatcher->getIncidentTipRelativePos((BranchIndex)i);
+
+                    if (lattice->isInGrid(pos))
+                        world->addBlock(0, buildNewBlockCode, pos, GREY);
+                }
+            }
+
+            if (trPos != meshSeedPosition) { // or i != ZBranch)
+                Cell3DPosition futureTRPos = trPos
+                    + ruleMatcher->getEntryPointRelativePos(Z_EPL);
+
+                if (lattice->isInGrid(futureTRPos))
+                    world->addBlock(0, buildNewBlockCode, futureTRPos, YELLOW);
+            }
         }
-
-        // Add waiting tile EPL modules
-        // for (int i = 0; i < XBranch; i++) {
-        //         ScafComponent epl =ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)i);
-        if (denormPos != meshSeedPosition) // or i != ZBranch) {
-            world->addBlock(0, buildNewBlockCode,
-                            denormPos + ruleMatcher->getEntryPointRelativePos(Z_EPL), YELLOW);
-        // }
-    // }
-
     }
 
     sandboxInitialized = true;

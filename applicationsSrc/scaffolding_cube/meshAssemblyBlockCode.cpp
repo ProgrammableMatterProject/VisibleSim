@@ -48,8 +48,8 @@ MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     catom = host;
 
     const Cell3DPosition& ub = lattice->getGridUpperBounds();
+    const Cell3DPosition& lb = lattice->getGridLowerBounds();
     // Round down mesh dimensions to previous multiple of B
-    // TODO: Adapt to CSG
     X_MAX = ub[0] - (B - ub[0] % B);
     Y_MAX = ub[1] - (B - ub[1] % B);
     Z_MAX = ub[2] - (B - ub[2] % B);

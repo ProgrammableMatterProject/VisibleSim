@@ -57,7 +57,9 @@ enum ScafComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
 };
 
 class ScaffoldingRuleMatcher {
-    const int X_MAX, Y_MAX, Z_MAX, B;
+    const int X_MAX, Y_MAX, Z_MAX;
+    const int X_MIN, Y_MIN, Z_MIN;
+    const int B;
     const std::function<bool(const Cell3DPosition)> isInsideFn;
 
     /**
@@ -97,9 +99,11 @@ class ScaffoldingRuleMatcher {
 public:
 
     ScaffoldingRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _Z_MAX,
+                           const uint _X_MIN, const uint _Y_MIN, const uint _Z_MIN,
                            const uint _B, const std::function<bool(const Cell3DPosition&)>_fn):
-        X_MAX(_X_MAX), Y_MAX(_Y_MAX), Z_MAX(_Z_MAX), B(_B),
-        isInsideFn(_fn) {};
+        X_MAX(_X_MAX), Y_MAX(_Y_MAX), Z_MAX(_Z_MAX),
+        X_MIN(_X_MIN), Y_MIN(_Y_MIN), Z_MIN(_Z_MIN),
+        B(_B),isInsideFn(_fn) {};
     virtual ~ScaffoldingRuleMatcher() {};
 
     bool isOnXBranch(const Cell3DPosition& pos) const;
@@ -247,12 +251,6 @@ public:
      * @return the color assiociated with the AgentRole corresponding with position pos
      */
     const Color& getColorForPosition(const Cell3DPosition& pos) const;
-
-    /**
-     * @return a list containing all the location of all tile roots in this mesh,
-     *  according to its dimensions
-     */
-    const vector<Cell3DPosition> getAllGroundTileRootPositionsForMesh() const;
 
     static Cell3DPosition getPositionOfBranchTipUnder(BranchIndex bi);
 
@@ -402,7 +400,7 @@ public:
 
 
     /*********************************************************************/
-    /*************************** CUBE STUFF ***************************/
+    /*************************** CSG STUFF ***************************/
     /*********************************************************************/
 
     bool isOnXCSGBorder(const Cell3DPosition& pos) const;

@@ -34,9 +34,14 @@
 
 class ScaffoldingBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
-    static const uint B = B2; // defined in MeshLocalRules for convenience
-    static uint X_MAX, Y_MAX, Z_MAX; // const
-    static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(3,3,3);
+    static const int B = B2; // defined in MeshLocalRules for convenience
+    inline static int X_MAX = numeric_limits<int>::min();
+    inline static int Y_MAX = numeric_limits<int>::min();
+    inline static int Z_MAX = numeric_limits<int>::min();
+    inline static int X_MIN = numeric_limits<int>::max();
+    inline static int Y_MIN = numeric_limits<int>::max();
+    inline static int Z_MIN = numeric_limits<int>::max();
+    inline static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(3,3,3);
     static int nbCatomsInPlace;
     static int nbMessages;
     static Time t0;
