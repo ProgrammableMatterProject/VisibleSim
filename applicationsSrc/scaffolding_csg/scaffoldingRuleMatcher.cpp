@@ -221,13 +221,13 @@ void ScaffoldingRuleMatcher::printDebugInfo(const Cell3DPosition& pos) const {
 }
 
 bool ScaffoldingRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
-    return (isInRange(pos[0], 0 - pos[2]/ 2, X_MAX - pos[2] / 2)
-            and isInRange(pos[1], 0 - pos[2] / 2, Y_MAX - pos[2] / 2)
-            and isInRange(pos[2], 0, Z_MAX))
+    return (isInRange(pos[0], 0 - pos[2]/ 2, X_MAX - pos[2] / 2 - 2)
+            and isInRange(pos[1], 0 - pos[2] / 2, Y_MAX - pos[2] / 2 - 2)
+            and isInRange(pos[2], 0, Z_MAX - 1))
         or (isSupportModule(pos)
-            and isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2)
-            and isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2)
-            and isInRange(pos[2], -1, Z_MAX)); //FIXME
+            and isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2 - 1)
+            and isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2 - 1)
+            and isInRange(pos[2], -1, Z_MAX - 1));
 }
 
 bool ScaffoldingRuleMatcher::isInSandbox(const Cell3DPosition& pos) const {

@@ -214,7 +214,7 @@ void ScaffoldingBlockCode::startup() {
 
     // Will not be used, set green and forget about it
     if (not ruleMatcher->isInGrid(norm(catom->position))
-        and (catom->position[0] > X_MAX or catom->position[1] > Y_MAX)) {
+        and (coordinatorPos[0] > X_MAX or coordinatorPos[1] > Y_MAX)) {
         if (ruleMatcher->isInMesh(norm(catom->position)))
             SET_GREEN_LIGHT(true);
 
@@ -1125,8 +1125,8 @@ void ScaffoldingBlockCode::initializeSandbox() {
     for (int x = meshSeedPosition[0]; x < ulb[0]; x+=B) {
         for (int y = meshSeedPosition[1]; y < ulb[1]; y+=B) {
             const Cell3DPosition& trPos = Cell3DPosition(x, y, meshSeedPosition[2]);
-            for (int i = 0; i < XBranch; i++) {
 
+            for (int i = 0; i < XBranch; i++) {
                 Cell3DPosition pos = trPos;
                 for (int j = 0; j < 3; j++) {
                     pos += ruleMatcher->getIncidentTipRelativePos((BranchIndex)i);
