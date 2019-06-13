@@ -241,6 +241,7 @@ class TargetCSG : public Target {
 public: // FIXME:
     CSGNode *csgRoot;
     BoundingBox bb;
+    Vector3D translate; // Can be used to to offset the origin of the CSG object by x,y,z
 protected:
     //!< @copydoc Target::print
     virtual void print(ostream& where) const override {};

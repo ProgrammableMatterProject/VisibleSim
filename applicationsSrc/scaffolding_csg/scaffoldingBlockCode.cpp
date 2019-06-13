@@ -77,8 +77,7 @@ void ScaffoldingBlockCode::onBlockSelected() {
     //     for (short iy = glb[1]; iy < ulb[1]; iy++) {
     //         for (short ix = glb[0]; ix < ulb[0]; ix++) {
     //             pos.set(ix, iy, iz);
-
-
+    //             if (target->isInTarget(pos)) lattice->highlightCell(pos, YELLOW);
     //         }
     //     }
     // }
@@ -1089,6 +1088,19 @@ bool ScaffoldingBlockCode::requestTargetCellFromTileRoot() {
 }
 
 void ScaffoldingBlockCode::initializeSandbox() {
+    // Initialize Target Object Preview
+    const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+    const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+    Cell3DPosition pos;
+    for (short iz = glb[2]; iz < ulb[2]; iz++) {
+        for (short iy = glb[1]; iy < ulb[1]; iy++) {
+            for (short ix = glb[0]; ix < ulb[0]; ix++) {
+                pos.set(ix, iy, iz);
+                if (target->isInTarget(pos)) lattice->highlightCell(pos, WHITE);
+            }
+        }
+    }
+
     for (const auto& pos : ruleMatcher->getAllGroundTileRootPositionsForMesh()) {
         const Cell3DPosition& denormPos = denorm(pos);
         // cout << pos << " " << denormPos << endl;
