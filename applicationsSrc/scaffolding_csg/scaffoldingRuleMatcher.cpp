@@ -1095,6 +1095,10 @@ bool ScaffoldingRuleMatcher::isOnYCSGBorder(const Cell3DPosition& pos) const {
     return isOnYBranch(pos) and isInCSG(pos) and not isInCSG(pos - Cell3DPosition(B,0,0));
 }
 
+bool ScaffoldingRuleMatcher::isOnYOppCSGBorder(const Cell3DPosition& pos) const {
+    return isOnYBranch(pos) and isInCSG(pos) and not isInCSG(pos + Cell3DPosition(B,0,0));
+}
+
 short ScaffoldingRuleMatcher::getNbIncidentVerticalCSGBranches(const Cell3DPosition& pos) const{
     return getNbIncidentVerticalBranches(pos, [this](const Cell3DPosition& p){
         return isInCSG(p);

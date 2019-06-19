@@ -225,6 +225,8 @@ void ScaffoldingBlockCode::startup() {
         if (ruleMatcher->isInMesh(norm(catom->position)))
             SET_GREEN_LIGHT(true);
 
+        catom->setColor(GREY);
+
         return;
     }
 
@@ -550,16 +552,16 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                             //  not on EPL yet, it will use TileInsertionPending = true
                             if (bi == RevZBranch
                                 or (bi == RZBranch
-                                    and ruleMatcher->isOnYOppBorder(norm(nextPosAlongBranch))
+                                    and ruleMatcher->isOnYOppCSGBorder(norm(nextPosAlongBranch))
                                     and nextPosAlongBranch[2] > meshSeedPosition[2]
                                     and (nextPosAlongBranch[2] / B) % 2 == 1)
                                 or (bi == LZBranch
-                                    and ruleMatcher->isOnXOppBorder(norm(nextPosAlongBranch))
+                                    and ruleMatcher->isOnXOppCSGBorder(norm(nextPosAlongBranch))
                                     and nextPosAlongBranch[2] > meshSeedPosition[2]
                                     and (nextPosAlongBranch[2] / B) % 2 == 1)
                                 or (bi == ZBranch
-                                    and ruleMatcher->isOnXOppBorder(norm(nextPosAlongBranch))
-                                    and ruleMatcher->isOnYOppBorder(norm(nextPosAlongBranch))
+                                    and ruleMatcher->isOnXOppCSGBorder(norm(nextPosAlongBranch))
+                                    and ruleMatcher->isOnYOppCSGBorder(norm(nextPosAlongBranch))
                                     and nextPosAlongBranch[2] > meshSeedPosition[2]
                                     and (nextPosAlongBranch[2] / B) % 2 == 0)) {
                                 nextHopItf =
@@ -569,10 +571,10 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                 for (const auto& pos :
                                          lattice->getActiveNeighborCells(catom->position)) {
                                     if (ruleMatcher->isOnZBranch(norm(pos))
-                                        or (ruleMatcher->isOnYBorder(norm(nextPosAlongBranch))
+                                        or (ruleMatcher->isOnYCSGBorder(norm(nextPosAlongBranch))
                                             and (nextPosAlongBranch[2] / B) % 2 == 0
                                             and ruleMatcher->isOnLZBranch(norm(pos)))
-                                        or (ruleMatcher->isOnXBorder(norm(nextPosAlongBranch))
+                                        or (ruleMatcher->isOnXCSGBorder(norm(nextPosAlongBranch))
                                             and (nextPosAlongBranch[2] / B) % 2 == 0
                                             and ruleMatcher->isOnRZBranch(norm(pos)))) {
                                         nextHopItf = catom->getInterface(pos);
@@ -736,8 +738,8 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     return (not ruleMatcher->isInCSG(ruleMatcher->
                                       getTileRootPositionForMeshPosition(norm(tipp))))
         or ((bi == XBranch or bi == YBranch)
-            and ((bi == XBranch and ruleMatcher->isOnYBorder(norm(trp)))
-                 or (bi == YBranch and ruleMatcher->isOnXBorder(norm(trp)))))
+            and ((bi == XBranch and ruleMatcher->isOnYCSGBorder(norm(trp)))
+                 or (bi == YBranch and ruleMatcher->isOnXCSGBorder(norm(trp)))))
         or lattice->cellHasBlock(tipp);
 }
 
@@ -1116,13 +1118,17 @@ void ScaffoldingBlockCode::initializeSandbox() {
 
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
-                if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
+                // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);-
                 // if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
                 // if (ruleMatcher->isOnXCSGBorder(norm(pos))) lattice->highlightCell(pos, RED);
 
                 // if (ruleMatcher->isOnXOppCSGBorder(norm(pos)))
                 //     lattice->highlightCell(pos, GREEN);
+
+                // if (ruleMatcher->isOnYOppCSGBorder(norm(pos)))
+                //     lattice->highlightCell(pos, BLUE);
+
 
                 // if (ruleMatcher->isOnYCSGBorder(norm(pos))) lattice->highlightCell(pos, BLUE);
             }
@@ -1275,13 +1281,13 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
     // TODO: FIXME: Special ALT case due to collision on Z_EPL/RZ_EPL with iBorders
     if (lastVisitedEPL == Z_EPL
         and targetPosition - coordinatorPos == Cell3DPosition(1,1,0) // S_Z
-        and ruleMatcher->isOnXBorder(norm(coordinatorPos))
+        and ruleMatcher->isOnXCSGBorder(norm(coordinatorPos))
         and (coordinatorPos[2] / B) % 2 == 0
         and coordinatorPos[2] != meshSeedPosition[2]) {
         lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
     } else if (lastVisitedEPL == RZ_EPL
                and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0) // S_RZ
-               and ruleMatcher->isOnXOppBorder(norm(coordinatorPos))
+               and ruleMatcher->isOnXOppCSGBorder(norm(coordinatorPos))
                and (coordinatorPos[2] / B) % 2 == 0
                and coordinatorPos[2] != meshSeedPosition[2]) {
         lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
