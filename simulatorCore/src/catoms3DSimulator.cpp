@@ -66,6 +66,7 @@ void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId,
         OUTPUT << "orientation : " << orientation << endl;
 #endif
     }
+
     // Finally, add block to the world
     ((Catoms3DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
 }

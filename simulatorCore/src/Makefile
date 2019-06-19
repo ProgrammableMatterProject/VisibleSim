@@ -64,10 +64,15 @@ DATOMS_SRCS = datomsSimulator.cpp datomsBlock.cpp datomsBlockCode.cpp datomsWorl
 DATOMS_OBJS = $(DATOMS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 DATOMS_DEPS = $(DATOMS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(MULTIROBOTS_SRCS) $(OKTEEN_SRCS) $(DATOMS_SRCS)
+
+NODE_SRCS = nodeSimulator.cpp nodeBlock.cpp nodeBlockCode.cpp nodeWorld.cpp nodeGlBlock.cpp
+NODE_OBJS = $(NODE_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
+NODE_DEPS = $(NODE_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
+
+SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(MULTIROBOTS_SRCS) $(OKTEEN_SRCS) $(DATOMS_SRCS) $(NODE_SRCS)
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
-OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimMultiRobots.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a
+OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimMultiRobots.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a
 
 INCLUDES = $(GLOBAL_INCLUDES) -I.
 
@@ -100,7 +105,7 @@ $(OBJDIR)/%.o: %.cpp
 	$(POSTCOMPILE)
 
 
-all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimMultiRobots.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a
+all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimMultiRobots.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a
 
 ${OUTDIRS}:
 	@mkdir -p $@
@@ -136,6 +141,10 @@ $(LDIR)/libsimOkteen.a: $(OKTEEN_OBJS)
 $(LDIR)/libsimDatoms.a: $(DATOMS_OBJS)
 	@echo "Archiving Datoms library..."
 	@ar rcs $(LDIR)/libsimDatoms.a $(DATOMS_OBJS)
+
+$(LDIR)/libsimNode.a: $(NODE_OBJS)
+	@echo "Archiving Node library..."
+	@ar rcs $(LDIR)/libsimNode.a $(NODE_OBJS)
 
 $(DEPDIR)/%.depends: ;
 .PRECIOUS: $(DEPDIR)/%.depends

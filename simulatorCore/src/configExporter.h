@@ -228,6 +228,23 @@ public:
     virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) override;
 };
 
+
+/**
+ * @brief Node Configuration Exporter
+ */
+class NodeConfigExporter : public ConfigExporter {
+public:
+    /**
+     * @brief Node Configuration Exporter constructor
+     */
+    NodeConfigExporter(World *_world) : ConfigExporter(_world) {};
+    /**
+     * @brief Node Configuration Exporter destructor
+     */
+    virtual ~NodeConfigExporter() { };
+};
+
+
 } // BASESIMULATOR_NAMESPACE
 
 #endif // CONFIGEXPORTER_H__

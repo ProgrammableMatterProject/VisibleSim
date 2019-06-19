@@ -371,6 +371,7 @@ public:
     virtual short getOppositeDirection(short d) override;
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(short d) override;
+    Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
 
     /**
      * @brief SLattice constructor.
