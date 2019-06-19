@@ -221,6 +221,7 @@ void ScaffoldingBlockCode::startup() {
     if (not ruleMatcher->isInGrid(norm(catom->position))
         // Compensate for sandbox
         and (catom->position[0] > X_MAX + 2 or catom->position[1] > Y_MAX + 2)) {
+
         if (ruleMatcher->isInMesh(norm(catom->position)))
             SET_GREEN_LIGHT(true);
 
@@ -1131,8 +1132,8 @@ void ScaffoldingBlockCode::initializeSandbox() {
     for (int x = meshSeedPosition[0]; x < ulb[0]; x+=B) {
         for (int y = meshSeedPosition[1]; y < ulb[1]; y+=B) {
             const Cell3DPosition& trPos = Cell3DPosition(x, y, meshSeedPosition[2]);
-            for (int i = 0; i < XBranch; i++) {
 
+            for (int i = 0; i < XBranch; i++) {
                 Cell3DPosition pos = trPos;
                 for (int j = 0; j < 3; j++) {
                     pos += ruleMatcher->getIncidentTipRelativePos((BranchIndex)i);
