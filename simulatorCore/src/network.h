@@ -85,7 +85,7 @@ public :
     MessageOf(unsigned int t,const T &data):Message(t) { ptrData = new T(data); };
     ~MessageOf() { delete ptrData; };
     T* getData() const { return ptrData; };
-    virtual MessageOf<T>* clone() {
+    virtual Message* clone() const override {
         MessageOf<T> *ptr = new MessageOf<T>(type,*ptrData);
         ptr->sourceInterface = sourceInterface;
         ptr->destinationInterface = destinationInterface;
