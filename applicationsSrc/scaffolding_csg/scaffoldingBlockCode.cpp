@@ -197,8 +197,13 @@ void ScaffoldingBlockCode::startup() {
         }
     }
 
-    ruleMatcher = new ScaffoldingRuleMatcher(X_MAX, Y_MAX, Z_MAX,
-                                             X_MIN, Y_MIN, Z_MIN, B,
+    ruleMatcher = new ScaffoldingRuleMatcher(X_MAX - meshSeedPosition[0],
+                                             Y_MAX - meshSeedPosition[1],
+                                             Z_MAX - meshSeedPosition[2],
+                                             X_MIN - meshSeedPosition[0],
+                                             Y_MIN - meshSeedPosition[1],
+                                             Z_MIN - meshSeedPosition[2],
+                                             B,
                                              [this](const Cell3DPosition& pos) {
                                                  return isInsideCSGFn(pos);
                                              });
@@ -214,7 +219,8 @@ void ScaffoldingBlockCode::startup() {
 
     // Will not be used, set green and forget about it
     if (not ruleMatcher->isInGrid(norm(catom->position))
-        and (catom->position[0] > X_MAX or catom->position[1] > Y_MAX)) {
+        // Compensate for sandbox
+        and (catom->position[0] > X_MAX + 2 or catom->position[1] > Y_MAX + 2)) {
         if (ruleMatcher->isInMesh(norm(catom->position)))
             SET_GREEN_LIGHT(true);
 

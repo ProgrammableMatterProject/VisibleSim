@@ -221,6 +221,7 @@ void ScaffoldingRuleMatcher::printDebugInfo(const Cell3DPosition& pos) const {
 }
 
 bool ScaffoldingRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
+    // cout << X_MAX << ", " << Y_MAX << ", " << Z_MAX << endl;
     return (isInRange(pos[0], 0 - pos[2]/ 2, X_MAX - pos[2] / 2)
             and isInRange(pos[1], 0 - pos[2] / 2, Y_MAX - pos[2] / 2)
             and isInRange(pos[2], 0, Z_MAX))
@@ -232,8 +233,13 @@ bool ScaffoldingRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
 
 bool ScaffoldingRuleMatcher::isInSandbox(const Cell3DPosition& pos) const {
     // add -2 for new tile construction using modules below R
-    return isInMesh(pos) and isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2)
-        and isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2)
+    // cout << "isInMesh: " << isInMesh(pos) << endl;
+    // cout << "x: " << isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2 + 2) << endl;
+    // cout << "y: " << isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2 + 2) << endl;
+    // cout << "z: " << isInRange(pos[2], -3, 0) << endl;
+
+    return isInMesh(pos) and isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2 + 2)
+        and isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2 + 2)
         and isInRange(pos[2], -3, 0);
 }
 
