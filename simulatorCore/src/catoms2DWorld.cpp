@@ -77,6 +77,7 @@ void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 
     if (lattice->isInGrid(pos)) {
         lattice->insert(catom2D, pos);
+        linkBlock(pos);
     } else {
         ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
         exit(1);
@@ -99,7 +100,7 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
                                                       lattice->getOppositeDirection(i))));
 
 #ifdef DEBUG_NEIGHBORHOOD
-            OUTPUT << "connection #" << (ptrBlock)->blockId <<
+            cout << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
 #endif
         } else {
