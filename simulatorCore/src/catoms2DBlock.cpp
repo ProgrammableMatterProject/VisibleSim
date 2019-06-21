@@ -268,7 +268,7 @@ int Catoms2DBlock::getCWMovePivotId() const {
 
 
 // Motion
-bool Catoms2DBlock::canMove(Rotation2DMove &m) const {
+bool Catoms2DBlock::canMove(Catoms2DRotationMove &m) const {
     // physical moving condition
     // pivot is a neighbor (physically connected)
     // move CW around i connector: i+1, i+2 and i+3 should be free
@@ -319,11 +319,11 @@ bool Catoms2DBlock::canMove(Rotation2DMove &m) const {
     return res;
 }
 
-void Catoms2DBlock::startMove(Rotation2DMove &m, Time t) {
-  getScheduler()->schedule(new Rotation2DStartEvent(t,this,m));
+void Catoms2DBlock::startMove(Catoms2DRotationMove &m, Time t) {
+  getScheduler()->schedule(new Catoms2DRotationStartEvent(t,this,m));
 }
 
-void Catoms2DBlock::startMove(Rotation2DMove &m) {
+void Catoms2DBlock::startMove(Catoms2DRotationMove &m) {
   startMove(m,getScheduler()->now());
 }
 

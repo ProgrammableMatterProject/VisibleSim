@@ -25,40 +25,40 @@ const int ANGULAR_STEP=12;
 
 //===========================================================================================================
 //
-//          Rotation2DMove  (class)
+//          Catoms2DRotationMove  (class)
 //
 //===========================================================================================================
 
-Rotation2DMove::Rotation2DMove(Catoms2DBlock *p, RelativeDirection::Direction d) {
+Catoms2DRotationMove::Catoms2DRotationMove(Catoms2DBlock *p, RelativeDirection::Direction d) {
     pivot = p;
     direction = d;
 }
 
-Rotation2DMove::Rotation2DMove(const Rotation2DMove &m) {
+Catoms2DRotationMove::Catoms2DRotationMove(const Catoms2DRotationMove &m) {
     pivot = m.pivot;
     direction = m.direction;
 }
 
-Rotation2DMove::~Rotation2DMove() { }
+Catoms2DRotationMove::~Catoms2DRotationMove() { }
 
-RelativeDirection::Direction Rotation2DMove::getDirection() {
+RelativeDirection::Direction Catoms2DRotationMove::getDirection() {
     return direction;
 }
 
-Catoms2DBlock* Rotation2DMove::getPivot() {
+Catoms2DBlock* Catoms2DRotationMove::getPivot() {
     return pivot;
 }
 
 //===========================================================================================================
 //
-//          Rotation2DStartEvent  (class)
+//          Catoms2DRotationStartEvent  (class)
 //
 //===========================================================================================================
 
-Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, Rotation2DMove &m): BlockEvent(t,block) {
+Catoms2DRotationStartEvent::Catoms2DRotationStartEvent(Time t, Catoms2DBlock *block, Catoms2DRotationMove &m): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_START;
-    
+
     pivot.set(m.getPivot()->ptrGlBlock->position[0],m.getPivot()->ptrGlBlock->position[1],m.getPivot()->ptrGlBlock->position[2]);
     angle = ANGLE;
     sens = m.getDirection();
@@ -71,7 +71,7 @@ Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, Rotatio
 #endif
 }
 
-Rotation2DStartEvent::Rotation2DStartEvent(Rotation2DStartEvent *ev) : BlockEvent(ev) {
+Catoms2DRotationStartEvent::Catoms2DRotationStartEvent(Catoms2DRotationStartEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
     pivot = ev->pivot;
     angle = ev->angle;
@@ -79,11 +79,11 @@ Rotation2DStartEvent::Rotation2DStartEvent(Rotation2DStartEvent *ev) : BlockEven
     duration = ev->duration;
 }
 
-Rotation2DStartEvent::~Rotation2DStartEvent() {
+Catoms2DRotationStartEvent::~Catoms2DRotationStartEvent() {
     EVENT_DESTRUCTOR_INFO();
 }
 
-void Rotation2DStartEvent::consume() {
+void Catoms2DRotationStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
@@ -100,23 +100,23 @@ void Rotation2DStartEvent::consume() {
     cerr << "Duration: " << duration << endl;
     cerr << "Step duration: " << stepDuration << endl;
     cerr << "Motion start at " << getScheduler()->now() << endl;
-    cerr << "Motion should end at " << getScheduler()->now()+duration << endl; 
+    cerr << "Motion should end at " << getScheduler()->now()+duration << endl;
     cerr << "----------" << endl;
 #endif
-    scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + stepDuration, rb,pivot,angle,sens,remaining));
+    scheduler->schedule(new Catoms2DRotationStepEvent(scheduler->now() + stepDuration, rb,pivot,angle,sens,remaining));
 }
 
-const string Rotation2DStartEvent::getEventName() {
-    return("Rotation2DStart Event");
+const string Catoms2DRotationStartEvent::getEventName() {
+    return("Catoms2DRotationStart Event");
 }
 
 //===========================================================================================================
 //
-//          Rotation2DStepEvent  (class)
+//          Catoms2DRotationStepEvent  (class)
 //
 //===========================================================================================================
 
-Rotation2DStepEvent::Rotation2DStepEvent(Time t, Catoms2DBlock *block,const Vector3D &p,double angle2goal,int s,Time d): BlockEvent(t,block) {
+Catoms2DRotationStepEvent::Catoms2DRotationStepEvent(Time t, Catoms2DBlock *block,const Vector3D &p,double angle2goal,int s,Time d): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_STEP;
     pivot = p;
@@ -125,7 +125,7 @@ Rotation2DStepEvent::Rotation2DStepEvent(Time t, Catoms2DBlock *block,const Vect
     duration = d;
 }
 
-Rotation2DStepEvent::Rotation2DStepEvent(Rotation2DStepEvent *ev) : BlockEvent(ev) {
+Catoms2DRotationStepEvent::Catoms2DRotationStepEvent(Catoms2DRotationStepEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
     pivot = ev->pivot;
     angle = ev->angle;
@@ -133,26 +133,26 @@ Rotation2DStepEvent::Rotation2DStepEvent(Rotation2DStepEvent *ev) : BlockEvent(e
     duration = ev->duration;
 }
 
-Rotation2DStepEvent::~Rotation2DStepEvent() {
+Catoms2DRotationStepEvent::~Catoms2DRotationStepEvent() {
     EVENT_DESTRUCTOR_INFO();
 }
 
-void Rotation2DStepEvent::consume() {
+void Catoms2DRotationStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
 
     Scheduler *scheduler = getScheduler();
 #ifdef DURATION_MOTION_DEBUG
-    cerr << "@" << rb->blockId << " motion step, angle " << angle << " at " << getScheduler()->now() << " (" << date << ")" << endl; 
+    cerr << "@" << rb->blockId << " motion step, angle " << angle << " at " << getScheduler()->now() << " (" << date << ")" << endl;
 #endif
     Matrix roty;
 
     unsigned int steps = REMAINING_STEPS;
     Time stepDuration = (long double)duration/(long double)steps;
     Time remaining = duration - stepDuration;
-    
+
     if (angle < ANGULAR_STEP) {
-        scheduler->schedule(new Rotation2DStopEvent(scheduler->now() + duration,rb,duration));
+        scheduler->schedule(new Catoms2DRotationStopEvent(scheduler->now() + duration,rb,duration));
     } else {
         roty.setRotationY(-sens*ANGULAR_STEP);
         Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],
@@ -163,37 +163,37 @@ void Rotation2DStepEvent::consume() {
         rb->angle += ANGULAR_STEP*sens;
         Catoms2DWorld::getWorld()->updateGlData(rb,pos,
                                                 ((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+ANGULAR_STEP*sens);
-        scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + stepDuration,rb,
-						    pivot,angle-ANGULAR_STEP,sens,remaining));
+        scheduler->schedule(new Catoms2DRotationStepEvent(scheduler->now() + stepDuration,rb,
+                            pivot,angle-ANGULAR_STEP,sens,remaining));
     }
 }
 
-const string Rotation2DStepEvent::getEventName() {
-    return("Rotation2DStep Event");
+const string Catoms2DRotationStepEvent::getEventName() {
+    return("Catoms2DRotationStep Event");
 }
 
 //===========================================================================================================
 //
-//          Rotation2DStepEvent  (class)
+//          Catoms2DRotationStepEvent  (class)
 //
 //===========================================================================================================
 
-Rotation2DStopEvent::Rotation2DStopEvent(Time t, Catoms2DBlock *block, Time d): BlockEvent(t,block) {
+Catoms2DRotationStopEvent::Catoms2DRotationStopEvent(Time t, Catoms2DBlock *block, Time d): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_STOP;
     duration = d;
 }
 
-Rotation2DStopEvent::Rotation2DStopEvent(Rotation2DStopEvent *ev) : BlockEvent(ev) {
+Catoms2DRotationStopEvent::Catoms2DRotationStopEvent(Catoms2DRotationStopEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
     duration = ev->duration;
 }
 
-Rotation2DStopEvent::~Rotation2DStopEvent() {
+Catoms2DRotationStopEvent::~Catoms2DRotationStopEvent() {
     EVENT_DESTRUCTOR_INFO();
 }
 
-void Rotation2DStopEvent::consume() {
+void Catoms2DRotationStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
 
@@ -213,7 +213,7 @@ void Rotation2DStopEvent::consume() {
 #endif
 
     rb->setPosition(gridPos);
-    
+
     rb->angle = rb->angle%360;
 #ifdef COLOR_MOTION_DEBUG
     rb->setColor(YELLOW);
@@ -227,7 +227,7 @@ void Rotation2DStopEvent::consume() {
     cerr << "Communication should be re-established at " << date + COM_DELAY << endl;
     cerr << "----------" << endl;
 #endif
-    
+
     stringstream info;
     info.str("");
     info << "connect Block " << rb->blockId;
@@ -238,37 +238,37 @@ void Rotation2DStopEvent::consume() {
     StatsIndividual::incMotionCount(rb->stats);
 
     Scheduler *scheduler = getScheduler();
-    concernedBlock->scheduleLocalEvent(EventPtr(new Rotation2DEndEvent(scheduler->now()+COM_DELAY,rb)));
-    //concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(scheduler->now()+COM_DELAY,rb)));
+    concernedBlock->scheduleLocalEvent(EventPtr(new Catoms2DRotationEndEvent(scheduler->now()+COM_DELAY,rb)));
+    //concernedBlock->blockCode->processLocalEvent(EventPtr(new Catoms2DRotationEndEvent(scheduler->now()+COM_DELAY,rb)));
 }
 
-const string Rotation2DStopEvent::getEventName() {
-    return("Rotation2DStop Event");
+const string Catoms2DRotationStopEvent::getEventName() {
+    return("Catoms2DRotationStop Event");
 }
 
 //===========================================================================================================
 //
-//          Rotation2DEndEvent  (class)
+//          Catoms2DRotationEndEvent  (class)
 //
 //===========================================================================================================
 
-Rotation2DEndEvent::Rotation2DEndEvent(Time t, Catoms2DBlock *block): BlockEvent(t,block) {
+Catoms2DRotationEndEvent::Catoms2DRotationEndEvent(Time t, Catoms2DBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_END;
 }
 
-Rotation2DEndEvent::Rotation2DEndEvent(Rotation2DEndEvent *ev) : BlockEvent(ev) {
+Catoms2DRotationEndEvent::Catoms2DRotationEndEvent(Catoms2DRotationEndEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
 }
 
-Rotation2DEndEvent::~Rotation2DEndEvent() {
+Catoms2DRotationEndEvent::~Catoms2DRotationEndEvent() {
     EVENT_DESTRUCTOR_INFO();
 }
 
-void Rotation2DEndEvent::consume() {
+void Catoms2DRotationEndEvent::consume() {
     EVENT_CONSUME_INFO();
 }
 
-const string Rotation2DEndEvent::getEventName() {
-    return("Rotation2DEnd Event");
+const string Catoms2DRotationEndEvent::getEventName() {
+    return("Catoms2DRotationEnd Event");
 }

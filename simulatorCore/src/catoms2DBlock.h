@@ -16,7 +16,7 @@
 #include "lattice.h"
 #include "catoms2DMotionEngine.h"
 
-class Rotation2DMove;
+class Catoms2DRotationMove;
 
 namespace Catoms2D {
 
@@ -61,11 +61,11 @@ public:
 
     // Motion
     bool isBlocked() const;
-    bool canMove(Rotation2DMove &m) const;
+    bool canMove(Catoms2DRotationMove &m) const;
     int getCCWMovePivotId() const;
     int getCWMovePivotId() const;
-    void startMove(Rotation2DMove &m, Time t);
-    void startMove(Rotation2DMove &m);
+    void startMove(Catoms2DRotationMove &m, Time t);
+    void startMove(Catoms2DRotationMove &m);
 
     // MeldInterpreter
     /**

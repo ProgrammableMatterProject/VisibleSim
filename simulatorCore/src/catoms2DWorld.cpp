@@ -303,14 +303,14 @@ void Catoms2DWorld::menuChoice(int n) {
         // Identify pivot
         int pivotId = bb->getCCWMovePivotId();
         Catoms2DBlock *pivot = (Catoms2DBlock *)getBlockById(pivotId);
-        Rotation2DMove move = Rotation2DMove(pivot, RelativeDirection::CCW);
+        Catoms2DRotationMove move = Catoms2DRotationMove(pivot, RelativeDirection::CCW);
         bb->startMove(move);
     } break;
     case 6: {                // Move Right
         // Identify pivot
         int pivotId = bb->getCWMovePivotId();
         Catoms2DBlock *pivot = (Catoms2DBlock *)getBlockById(pivotId);
-        Rotation2DMove move = Rotation2DMove(pivot, RelativeDirection::CW);
+        Catoms2DRotationMove move = Catoms2DRotationMove(pivot, RelativeDirection::CW);
         bb->startMove(move);
     } break;
     default: World::menuChoice(n); break; // For all non-catoms2D-specific cases
