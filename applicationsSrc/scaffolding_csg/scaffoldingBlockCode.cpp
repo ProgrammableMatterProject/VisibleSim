@@ -1149,6 +1149,8 @@ void ScaffoldingBlockCode::initializeSandbox() {
             for (short ix = glb[0]; ix < ulb[0]; ix++) {
                 pos.set(ix, iy, iz);
 
+                // if (ruleMatcher->isInSandbox(norm(pos))) lattice->highlightCell(pos,BLACK);
+
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
                 // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
