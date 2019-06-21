@@ -578,7 +578,7 @@ void GlutContext::drawFunc(void) {
 
     shadowedRenderingStep1(camera);
     glPushMatrix();
-    wrl->glDraw();
+    wrl->glDrawShadows();
     glPopMatrix();
 
     shadowedRenderingStep2(screenWidth,screenHeight);

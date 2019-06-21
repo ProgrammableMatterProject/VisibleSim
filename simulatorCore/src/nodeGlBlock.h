@@ -30,6 +30,7 @@ public :
     void setPosition(const Vector3D &p) override;
 
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+		void glDrawShadows(ObjLoader::ObjLoader *ptrObj) override;
     void glDrawId(ObjLoader::ObjLoader *ptrObj, int n) override;
     void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj, int &n) override;
 };

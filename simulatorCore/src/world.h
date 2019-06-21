@@ -253,11 +253,15 @@ public:
     /**
      * @brief Draws the environment of the world and all included blocks
      */
-    virtual void glDraw() {};
-    /**
-     * @brief Draws the block ids of the block contained in the world
-     */
-    virtual void glDrawId() {};
+		virtual void glDraw() {};
+		/**
+		 * @brief Draws all blocks for shadows
+		 */
+		virtual void glDrawShadows() { glDraw(); };
+		/**
+		 * @brief Draws the block ids of the block contained in the world
+		 */
+		virtual void glDrawId() {};
     /**
      * @brief Draws the blocks material used for user interactions
      */

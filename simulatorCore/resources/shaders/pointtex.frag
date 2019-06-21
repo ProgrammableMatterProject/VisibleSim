@@ -11,10 +11,11 @@ void main() {
 	vec4 color = ambientGlobal;
 	if (textureEnable) {
 		vec4 texColor = texture2D(tex,gl_TexCoord[0].st); 
+		if (texColor.a<0.1) discard;
 		color+= ambient*texColor;
  		texel=diffuse*texColor;
 	} else {
-    		texel=diffuse;
+		texel=diffuse;
 		color+=ambient;
 	}
 	vec3 D = normalize(gl_LightSource[0].spotDirection);

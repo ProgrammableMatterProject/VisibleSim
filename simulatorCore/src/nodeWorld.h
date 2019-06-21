@@ -64,8 +64,9 @@ public:
      */
     virtual void linkBlock(const Cell3DPosition &pos) override;
 
-    virtual void glDraw() override;
-    virtual void glDrawId() override;
+		virtual void glDraw() override;
+		virtual void glDrawShadows() override;
+		virtual void glDrawId() override;
     virtual void glDrawIdByMaterial() override;
     void updateGlData(BuildingBlock *bb) override;
     void updateGlData(NodeBlock*blc,const Color &color);
@@ -78,12 +79,13 @@ public:
     virtual void exportConfiguration() override;
 
     virtual void disconnectBlock(BuildingBlock *block);
-
+		virtual void glDrawSpecificBg() override;
+		
+		
 /**
  * \brief load the background textures (internal)
  */
     void loadTextures(const string &str) override;
-
 };
 
 inline void deleteWorld() {

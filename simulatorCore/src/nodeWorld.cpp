@@ -38,10 +38,10 @@ NodeWorld::NodeWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
     OUTPUT << TermColor::LifecycleColor << "NodeWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
-                                            "smartBlockSimple.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
-                                                      "smartBlockPicking.obj");
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/nodeTextures",
+                                            "node.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/nodeTextures",
+                                                      "node_picking.obj");
         objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
                                              "repere25.obj");
     }
@@ -119,114 +119,146 @@ void NodeWorld::linkBlock(const Cell3DPosition& pos) {
  * \brief Draw modules and axes
  */
 void NodeWorld::glDraw() {
-    glPushMatrix();
-    glDisable(GL_TEXTURE_2D);
-    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-// draw modules
-    lock();
-    for (const auto& pair : mapGlBlocks) {
-        ((NodeGlBlock*)pair.second)->glDraw(objBlock);
-    }
-    unlock();
-    glPopMatrix();
-
-    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
-    if (bb) bb->blockCode->onGlDraw();
-
-// material for the grid walls
-    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-        gray[]={0.2f,0.2f,0.2f,1.0f};
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-
-        lattice->glDraw();
-
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-        glPushMatrix();
-        enableTexture(true);
-        glBindTexture(GL_TEXTURE_2D,idTextureWall);
-        glScalef(lattice->gridSize[0]*lattice->gridScale[0],
-                 lattice->gridSize[1]*lattice->gridScale[1],
-                 lattice->gridSize[2]*lattice->gridScale[2]);
-        glBegin(GL_QUADS);
-        // bottom
-        glNormal3f(0,0,1.0f);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,0.0f);
-        glTexCoord2f(0,lattice->gridSize[1]);
-        glVertex3f(0.0,1.0,0.0f);
-        // top
-        glNormal3f(0,0,-1.0f);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,1.0f);
-        glTexCoord2f(0,lattice->gridSize[1]);
-        glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,1.0f);
-        // left
-        glNormal3f(1.0,0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[1],0);
-        glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-        glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(0.0,0.0,1.0f);
-        // right
-        glNormal3f(-1.0,0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(1.0,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-        glVertex3f(1.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[1],0);
-        glVertex3f(1.0f,1.0f,0.0f);
-        // back
-        glNormal3f(0,-1.0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-        glVertex3f(1.0f,1.0,1.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(0.0,1.0,1.0f);
-        // front
-        glNormal3f(0,1.0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(0.0,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-        glVertex3f(1.0f,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glEnd();
-        glPopMatrix();
-        // draw the axes
-        glPushMatrix();
-        glScalef(0.2f,0.2f,0.2f);
-        objRepere->glDraw();
-        glPopMatrix();
+	/*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
+	 *          -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
+	glDisable(GL_TEXTURE_2D);
+	lock();
+	for (const auto& pair : mapGlBlocks) {
+		((NodeGlBlock*)pair.second)->glDraw(objBlock);
+	}
+	unlock();
+	
+	glPopMatrix();
+	
+	BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+	if (bb) bb->blockCode->onGlDraw();
+	
+	glDrawBackground();
 }
+
+void NodeWorld::glDrawShadows() {
+	/*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
+	 *          -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
+	glDisable(GL_TEXTURE_2D);
+	lock();
+	for (const auto& pair : mapGlBlocks) {
+		((NodeGlBlock*)pair.second)->glDrawShadows(objBlock);
+	}
+	unlock();
+	
+	glPopMatrix();
+}
+
+
+// void NodeWorld::glDraw() {
+//     glPushMatrix();
+//     glDisable(GL_TEXTURE_2D);
+//     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+// // draw modules
+//     lock();
+//     for (const auto& pair : mapGlBlocks) {
+//         ((NodeGlBlock*)pair.second)->glDraw(objBlock);
+//     }
+//     unlock();
+//     glPopMatrix();
+// 
+//     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+//     if (bb) bb->blockCode->onGlDraw();
+// 
+// // material for the grid walls
+//     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+//         gray[]={0.2f,0.2f,0.2f,1.0f};
+//         glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+//         glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+//         glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+//         glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+// 
+//         lattice->glDraw();
+// 
+//         glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+//         glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+//         glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+//         glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+// 
+//         glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+//         glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+//         glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+//         glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+//         glPushMatrix();
+//         enableTexture(true);
+//         glBindTexture(GL_TEXTURE_2D,idTextureWall);
+//         glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+//                  lattice->gridSize[1]*lattice->gridScale[1],
+//                  lattice->gridSize[2]*lattice->gridScale[2]);
+//         glBegin(GL_QUADS);
+//         // bottom
+//         glNormal3f(0,0,1.0f);
+//         glTexCoord2f(0,0);
+//         glVertex3f(0.0f,0.0f,0.0f);
+//         glTexCoord2f(lattice->gridSize[0],0);
+//         glVertex3f(1.0f,0.0f,0.0f);
+//         glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+//         glVertex3f(1.0,1.0,0.0f);
+//         glTexCoord2f(0,lattice->gridSize[1]);
+//         glVertex3f(0.0,1.0,0.0f);
+//         // top
+//         glNormal3f(0,0,-1.0f);
+//         glTexCoord2f(0,0);
+//         glVertex3f(0.0f,0.0f,1.0f);
+//         glTexCoord2f(0,lattice->gridSize[1]);
+//         glVertex3f(0.0,1.0,1.0f);
+//         glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+//         glVertex3f(1.0,1.0,1.0f);
+//         glTexCoord2f(lattice->gridSize[0],0);
+//         glVertex3f(1.0f,0.0f,1.0f);
+//         // left
+//         glNormal3f(1.0,0,0);
+//         glTexCoord2f(0,0);
+//         glVertex3f(0.0f,0.0f,0.0f);
+//         glTexCoord2f(lattice->gridSize[1],0);
+//         glVertex3f(0.0f,1.0f,0.0f);
+//         glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
+//         glVertex3f(0.0,1.0,1.0f);
+//         glTexCoord2f(0,lattice->gridSize[2]);
+//         glVertex3f(0.0,0.0,1.0f);
+//         // right
+//         glNormal3f(-1.0,0,0);
+//         glTexCoord2f(0,0);
+//         glVertex3f(1.0f,0.0f,0.0f);
+//         glTexCoord2f(0,lattice->gridSize[2]);
+//         glVertex3f(1.0,0.0,1.0f);
+//         glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
+//         glVertex3f(1.0,1.0,1.0f);
+//         glTexCoord2f(lattice->gridSize[1],0);
+//         glVertex3f(1.0f,1.0f,0.0f);
+//         // back
+//         glNormal3f(0,-1.0,0);
+//         glTexCoord2f(0,0);
+//         glVertex3f(0.0f,1.0f,0.0f);
+//         glTexCoord2f(lattice->gridSize[0],0);
+//         glVertex3f(1.0f,1.0f,0.0f);
+//         glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
+//         glVertex3f(1.0f,1.0,1.0f);
+//         glTexCoord2f(0,lattice->gridSize[2]);
+//         glVertex3f(0.0,1.0,1.0f);
+//         // front
+//         glNormal3f(0,1.0,0);
+//         glTexCoord2f(0,0);
+//         glVertex3f(0.0f,0.0f,0.0f);
+//         glTexCoord2f(0,lattice->gridSize[2]);
+//         glVertex3f(0.0,0.0,1.0f);
+//         glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
+//         glVertex3f(1.0f,0.0,1.0f);
+//         glTexCoord2f(lattice->gridSize[0],0);
+//         glVertex3f(1.0f,0.0f,0.0f);
+//         glEnd();
+//         glPopMatrix();
+//         // draw the axes
+//         glPushMatrix();
+//         glScalef(0.2f,0.2f,0.2f);
+//         objRepere->glDraw();
+//         glPopMatrix();
+// }
 
 void NodeWorld::glDrawId() {
     glPushMatrix();
@@ -255,11 +287,47 @@ void NodeWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
+void NodeWorld::glDrawSpecificBg() {
+	static const GLfloat white[]={1.0,1.0,1.0,1.0},
+	gray[]={0.2,0.2,0.2,1.0};
+	
+	glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+	glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+	glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+	glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+	glPushMatrix();
+	enableTexture(true);
+	glBindTexture(GL_TEXTURE_2D,idTextureWall);
+	glNormal3f(0,0,1.0f);
+	glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+					 lattice->gridSize[1]*lattice->gridScale[1],1.0f);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0,0);
+	glVertex3f(0.0f,0.0f,0.0f);
+	glTexCoord2f(lattice->gridSize[0],0);
+	glVertex3f(1.0f,0.0f,0.0f);
+	glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+	glVertex3f(1.0,1.0,0.0f);
+	glTexCoord2f(0,lattice->gridSize[1]);
+	glVertex3f(0.0,1.0,0.0f);
+	glEnd();
+	glPopMatrix();
+	// draw the axes
+	objRepere->glDraw();
+	
+	glPushMatrix();
+}
+
+
 
 void NodeWorld::loadTextures(const string &str) {
     string path = str+"/texture_plane.tga";
     int lx,ly;
     idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+		cout << "idWall=" << idTextureWall << endl;
+		
+		path=str+"/../smartBlocksTextures/digits.tga";
+		idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
 void NodeWorld::updateGlData(BuildingBlock *bb) {
