@@ -141,11 +141,11 @@ void ScaffoldingBlockCode::onBlockSelected() {
 
     // cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
     // cout << "role: " << ScaffoldingRuleMatcher::roleToString(role) << endl;
-    // cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
-    // Cell3DPosition nextHop;
-    // matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
-    //                 targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
-    // cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
+    cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
+    Cell3DPosition nextHop;
+    matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
+                    targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
+    cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     cout << "isInGrid: " << ruleMatcher->isInGrid(norm(catom->position)) << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
@@ -546,7 +546,6 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
 
                             // Notify future tile root as position should be filled
                             P2PNetworkInterface* nextHopItf = NULL;
-
 
                             // Send message down branch, next module is likely
                             //  not on EPL yet, it will use TileInsertionPending = true
@@ -994,8 +993,12 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
     } else if (ruleMatcher->hasIncidentBranch(norm(pos), LZBranch, fn_isInCSG)
                and ((nbIVB == 1) or (nbIVB == 2 and ruleMatcher->
                                      hasIncidentBranch(norm(pos),ZBranch,fn_isInCSG)))){
-        if (ruleMatcher->hasIncidentBranch(norm(pos), ZBranch, fn_isInCSG))
-            deque.push_back({ S_RevZ, RZ_EPL });
+        if (ruleMatcher->hasIncidentBranch(norm(pos), ZBranch, fn_isInCSG)) {
+            if (ruleMatcher->isOnYCSGBorder(norm(pos)))
+                deque.push_back({ S_RevZ, RevZ_EPL });
+            else deque.push_back({ S_RevZ, RZ_EPL });
+        }
+
         deque.push_back({ S_RZ, RZ_EPL });
 
         if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, RZ_EPL });
@@ -1014,6 +1017,13 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[RZBranch] > 2) deque.push_back({ RZ_3, RZ_EPL });
         if (catomsReqs[RZBranch] > 3) deque.push_back({ RZ_4, RZ_EPL });
         if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL });
+
+        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, RZ_EPL });
+        if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, RZ_EPL });
+        if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, RZ_EPL });
+        if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, RZ_EPL });
+        if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, RZ_EPL });
+
     } else if (nbIVB == 2
                and (ruleMatcher->hasIncidentBranch(norm(pos), RevZBranch, fn_isInCSG)and
                     ruleMatcher->hasIncidentBranch(norm(pos), LZBranch, fn_isInCSG))) {
@@ -1118,17 +1128,22 @@ void ScaffoldingBlockCode::initializeSandbox() {
 
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
-                // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);-
+                // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
                 // if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
                 // if (ruleMatcher->isOnXCSGBorder(norm(pos))) lattice->highlightCell(pos, RED);
 
-                // if (ruleMatcher->isOnXOppCSGBorder(norm(pos)))
+                // if (ruleMatcher->isOnXCSGBorder(norm(pos)))
                 //     lattice->highlightCell(pos, GREEN);
 
-                // if (ruleMatcher->isOnYOppCSGBorder(norm(pos)))
+                // if (ruleMatcher->isOnYCSGBorder(norm(pos)))
                 //     lattice->highlightCell(pos, BLUE);
 
+                // if (ruleMatcher->isOnXOppCSGBorder(norm(pos)))
+                //     lattice->highlightCell(pos, RED);
+
+                // if (ruleMatcher->isOnYOppCSGBorder(norm(pos)))
+                //     lattice->highlightCell(pos, BLACK);
 
                 // if (ruleMatcher->isOnYCSGBorder(norm(pos))) lattice->highlightCell(pos, BLUE);
             }
@@ -1289,10 +1304,16 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
                and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0) // S_RZ
                and ruleMatcher->isOnXOppCSGBorder(norm(coordinatorPos))
                and (coordinatorPos[2] / B) % 2 == 0
+               and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) < 4
                and coordinatorPos[2] != meshSeedPosition[2]) {
         lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
+    } else if (lastVisitedEPL == RevZ_EPL
+               and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0) // S_RevZ
+               and ruleMatcher->isOnYBorder(norm(coordinatorPos))
+               and (coordinatorPos[2] / B) % 2 == 1
+               and coordinatorPos[2] != meshSeedPosition[2]) {
+        lastVisitedEPL = LR_EPL::LR_RevZ_EPL_ALT;
     }
-
 
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,

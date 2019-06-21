@@ -35,6 +35,8 @@ enum LR_EPL {
     LR_LZ_EPL = 44,
     LR_LZ_L_EPL = 45,
     LR_RevZ_L_EPL = 46,
+
+    LR_RevZ_EPL_ALT = 135, // FIXME: TODO: This is due to a conflict with S_Z on iBorders
     LR_RZ_EPL_ALT = 138, // FIXME: TODO: This is due to a conflict with S_Z on iBorders
     LR_Z_EPL_ALT = 141, // FIXME: TODO: This is due to a conflict with S_Z on iBorders
 };
@@ -645,6 +647,19 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
       Cell3DPosition(-1, -1, 0) }, // S_RevZ 6
     { LRKeyTuple(0xe00, LR_RevZ_EPL, Cell3DPosition(-1, -1, 0), 7),
       Cell3DPosition(0, 0, -1) }, // S_RevZ 7
+
+    // No B
+
+    { LRKeyTuple(0xc00, LR_LZ_EPL, Cell3DPosition(-1, -1, 0), 5),
+      Cell3DPosition(0, 0, -1) }, // S_RevZ 5
+
+    { LRKeyTuple(0x400, LR_RevZ_EPL_ALT, Cell3DPosition(-1, -1, 0), 1),
+      Cell3DPosition(0, 1, 0) }, // S_RevZ 1
+    { LRKeyTuple(0x201, LR_RevZ_EPL_ALT, Cell3DPosition(-1, -1, 0), 2),
+      Cell3DPosition(0, -1, 1) }, // S_RevZ 2
+
+    { LRKeyTuple(0x201, LR_RZ_EPL_ALT, Cell3DPosition(-1, -1, 0), 1),
+      Cell3DPosition(0, -1, 1) }, // S_RevZ 2
 };
 
 /**

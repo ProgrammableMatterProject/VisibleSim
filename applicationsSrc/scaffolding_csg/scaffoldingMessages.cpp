@@ -414,8 +414,9 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         if (mabc.ruleMatcher->isOnZBranch(mabc.norm(mabc.catom->position))) {
             if (mabc.ruleMatcher->isOnXOppCSGBorder(mabc.norm(mabc.coordinatorPos))
                 and mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos))
-                and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2]
-                and (mabc.coordinatorPos[2] / mabc.B) % 2 == 0)
+                and mabc.ruleMatcher->
+                getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
+                and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2])
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else if (mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos)))
                 // Forward to incident RZ tip
@@ -425,15 +426,21 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
                 relNeighborPos = Cell3DPosition(1,0,0);
         } else if (mabc.ruleMatcher->isOnRZBranch(mabc.norm(mabc.catom->position))) {
             if (mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos))
+                and mabc.ruleMatcher->
+                getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
                 and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2]
-                and (mabc.coordinatorPos[2] / mabc.B) % 2 == 0)
+                and not mabc.ruleMatcher->
+                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else
                 relNeighborPos = Cell3DPosition(1,0,0); // forward to incoming RevZ tip
         } else if (mabc.ruleMatcher->isOnLZBranch(mabc.norm(mabc.catom->position))) {
             if (mabc.ruleMatcher->isOnXOppCSGBorder(mabc.norm(mabc.coordinatorPos))
+                and mabc.ruleMatcher->
+                getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
                 and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2]
-                and (mabc.coordinatorPos[2] / mabc.B) % 2 == 0)
+                and not mabc.ruleMatcher->
+                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else
                 // forward to RevZ tip
@@ -455,6 +462,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             info << " couldn't send coordinator ready to "
                  << mabc.catom->position + relNeighborPos;
             mabc.scheduler->trace(info.str(), mabc.catom->blockId, RED);
+            mabc.catom->setColor(BLACK);
             return;
         }
     } else if (mabc.ruleMatcher->isNFromVerticalBranchTip(mabc.norm(mabc.catom->position), 1)){
