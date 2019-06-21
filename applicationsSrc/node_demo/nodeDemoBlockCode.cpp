@@ -15,6 +15,7 @@
 #include "scheduler.h"
 #include "events.h"
 #include "trace.h"
+#include "translationEvents.h"
 
 using namespace Node;
 
@@ -28,6 +29,17 @@ NodeDemoBlockCode::~NodeDemoBlockCode() {
 
 // Function called by the module upon initialization
 void NodeDemoBlockCode::startup() {
+    // Dummy translation example
+    if (node->blockId == 36) {
+        // Go X-ward once
+        const Cell3DPosition &destination = node->position - Cell3DPosition(1, 0, 0);
+        scheduler->schedule(new TranslationStartEvent(scheduler->now(), node, destination));
+    }
+
+    updateRainbowState();
+}
+
+void NodeDemoBlockCode::updateRainbowState() {
     if (node->hasANeighbor(SLattice::Direction::South)) {
         hasBottomNeighbor = true;
     }
@@ -119,8 +131,9 @@ void NodeDemoBlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
 
-        case EVENT_ROTATION3D_END: {
-
+        case EVENT_TRANSLATION_END: {
+            // When motion ends, update rainbow stuff
+            updateRainbowState();
         } break;
 
         case EVENT_TAP: {

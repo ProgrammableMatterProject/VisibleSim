@@ -49,6 +49,7 @@ public:
     bool isTopInterface(const P2PNetworkInterface* itf) const;
     bool isBottomInterface(const P2PNetworkInterface* itf) const;
     void updateNeighborLevels();
+    void updateRainbowState();
 };
 
 #endif /* NODEDEMOBLOCKCODE_H_ */

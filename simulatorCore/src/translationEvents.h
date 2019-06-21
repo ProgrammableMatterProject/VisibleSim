@@ -25,6 +25,7 @@ class TranslationStartEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
     TranslationStartEvent(Time, BuildingBlock *block,const Vector3D &fpos);
+    TranslationStartEvent(Time, BuildingBlock *block,const Cell3DPosition &fpos);
     TranslationStartEvent(TranslationStartEvent *ev);
     ~TranslationStartEvent();
     void consumeBlockEvent() override {};

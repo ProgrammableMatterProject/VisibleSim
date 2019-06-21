@@ -30,6 +30,13 @@ TranslationStartEvent::TranslationStartEvent(Time t, BuildingBlock *block,const 
     finalPosition = fpos;
 }
 
+
+TranslationStartEvent::TranslationStartEvent(Time t, BuildingBlock *block,const Cell3DPosition &fpos): BlockEvent(t,block) {
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_TRANSLATION_START;
+    finalPosition = fpos;
+}
+
 TranslationStartEvent::TranslationStartEvent(TranslationStartEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
 }
@@ -63,7 +70,7 @@ const string TranslationStartEvent::getEventName() {
 //===========================================================================================================
 
 TranslationStepEvent::TranslationStepEvent(Time t, BuildingBlock *block,
-				 const Vector3D &fpos): BlockEvent(t,block) {
+                 const Vector3D &fpos): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_TRANSLATION_STEP;
     finalPosition = fpos;
@@ -72,7 +79,7 @@ TranslationStepEvent::TranslationStepEvent(Time t, BuildingBlock *block,
 }
 
 TranslationStepEvent::TranslationStepEvent(Time t, BuildingBlock *block,const Vector3D &fpos,
-				 const Vector3D &step, const Vector3D &mpos): BlockEvent(t,block) {
+                 const Vector3D &step, const Vector3D &mpos): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_TRANSLATION_STEP;
     concernedBlock = block;
@@ -96,8 +103,8 @@ void TranslationStepEvent::consume() {
     BuildingBlock *bb = (BuildingBlock*)concernedBlock;
     motionPosition += motionStep;
     Vector3D motionGlPos(motionPosition[0] * gridScale[0],
-			 motionPosition[1] * gridScale[1],
-			 motionPosition[2] * gridScale[2]);
+             motionPosition[1] * gridScale[1],
+             motionPosition[2] * gridScale[2]);
     wrl->updateGlData(bb, motionGlPos);
     Scheduler *scheduler = getScheduler();
 
