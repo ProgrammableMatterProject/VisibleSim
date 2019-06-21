@@ -218,9 +218,7 @@ void ScaffoldingBlockCode::startup() {
         denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
 
     // Will not be used, set green and forget about it
-    if (not ruleMatcher->isInGrid(norm(catom->position))
-        // Compensate for sandbox
-        and (catom->position[0] > X_MAX + 2 or catom->position[1] > Y_MAX + 2)) {
+    if (not ruleMatcher->isInGrid(norm(coordinatorPos))) {
 
         if (ruleMatcher->isInMesh(norm(catom->position)))
             SET_GREEN_LIGHT(true);
