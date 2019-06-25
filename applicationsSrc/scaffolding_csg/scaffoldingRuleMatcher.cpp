@@ -432,20 +432,15 @@ short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, Bran
                                           [](const Cell3DPosition& pos){return true;}) const {
     if (not isTileRoot(pos)) return 0;
 
-    if (bi == OppXBranch or bi == OppYBranch
-        or bi == XBranch or bi == YBranch) {
-        for (int i = 0; i < B - 1; i++) {
-            // if (bi == OppXBranch or bi == OppYBranch)
-            //     cout << "OppN" << i << ": " << pos + (i + 1) * getBranchUnitOffset(bi) << endl;
-            const Cell3DPosition bPos = pos + (i + 1) * getBranchUnitOffset(bi);
-            if (not isInGrid(bPos) or not isInMesh(bPos) or not lambda(bPos))
-                return i;
-        }
-
-        return B - 1;
-    } else {
-        return shouldGrowBranch(pos, bi, lambda) ? B - 1 : 0;
+    for (int i = 0; i < B - 1; i++) {
+        // if (bi == OppXBranch or bi == OppYBranch)
+        //     cout << "OppN" << i << ": " << pos + (i + 1) * getBranchUnitOffset(bi) << endl;
+        const Cell3DPosition bPos = pos + (i + 1) * getBranchUnitOffset(bi);
+        if (not isInGrid(bPos) or not isInMesh(bPos) or not lambda(bPos))
+            return i;
     }
+
+    return B - 1;
 }
 
 Cell3DPosition ScaffoldingRuleMatcher::getBranchUnitOffset(int bi) const {

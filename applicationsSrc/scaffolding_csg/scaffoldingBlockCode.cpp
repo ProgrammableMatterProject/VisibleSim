@@ -118,11 +118,11 @@ void ScaffoldingBlockCode::onBlockSelected() {
         else
             cout << "nextPos: " << "NULL" << endl;
 
-    //     for (int i = 0; i < N_BRANCHES; i++) {
-    //         BranchIndex bi = (BranchIndex)i;
-    //         cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
-    //              << ruleMatcher->resourcesForCSGBranch(norm(catom->position), bi) << endl;
-    //     }
+        for (int i = 0; i < N_BRANCHES; i++) {
+            BranchIndex bi = (BranchIndex)i;
+            cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
+                 << ruleMatcher->resourcesForCSGBranch(norm(catom->position), bi) << endl;
+        }
     }
 
     // if (ruleMatcher->isInMeshOrSandbox(norm(catom->position))) {

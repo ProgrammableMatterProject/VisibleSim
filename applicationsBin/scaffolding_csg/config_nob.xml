@@ -9,7 +9,7 @@
 
     <targetList>
       <target format="csg">
-        <csg translate="5,5,2" content="cube([10, 10, 10], true);" />
+        <csg translate="5,5,2" content="cube([10, 10, 12], true);" />
       </target>
     </targetList>
 
