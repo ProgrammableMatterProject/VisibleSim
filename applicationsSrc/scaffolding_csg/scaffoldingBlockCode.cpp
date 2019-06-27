@@ -536,7 +536,8 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                         catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
                     // Coordinate to let the last arrived branch continue the construction
-                    if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))) {
+                    if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
+                        and ruleMatcher->isInCSG(norm(nextPosAlongBranch))) {
                         if (incidentBranchesToRootAreComplete(nextPosAlongBranch)) {
                             // lattice->highlightCell(nextPosAlongBranch, BLUE);
                             // cout << "Some branches are missing around "
