@@ -64,8 +64,7 @@ DATOMS_SRCS = datomsSimulator.cpp datomsBlock.cpp datomsBlockCode.cpp datomsWorl
 DATOMS_OBJS = $(DATOMS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 DATOMS_DEPS = $(DATOMS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-
-NODE_SRCS = nodeSimulator.cpp nodeBlock.cpp nodeBlockCode.cpp nodeWorld.cpp nodeGlBlock.cpp
+NODE_SRCS = nodeSimulator.cpp nodeBlock.cpp nodeBlockCode.cpp nodeWorld.cpp nodeGlBlock.cpp nodeMotionEngine.cpp
 NODE_OBJS = $(NODE_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 NODE_DEPS = $(NODE_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 

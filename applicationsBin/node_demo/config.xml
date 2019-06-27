@@ -3,9 +3,9 @@
 	<camera target="125,125,0" directionSpherical="0,70,500" angle="45"/>
 	<spotlight target="200,180,0" directionSpherical="-45,40,500" angle="30"/>
 
-	<blockList color="0,255,0" blockSize="25.0,25.0,11.0">
-		<block position="9,8,0" color="255,64,64"/>
-		<block position="1,8,0" color="255,255,64"/>
+	<blockList color="0,255,0" blockSize="25.0,25.0,12.5">
+		<block position="9,8,0" color="255,64,64" orientation="1"/>
+		<block position="1,8,0" color="255,255,64" orientation="2"/>
 		<block position="1,7,0"/>
 		<block position="2,7,0"/>
 		<block position="3,7,0"/>

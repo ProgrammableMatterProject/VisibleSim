@@ -15,23 +15,12 @@
 namespace Node {
 
 NodeGlBlock::NodeGlBlock(bID id):GlBlock(id), displayedValue(id) {
-    for (size_t i=0; i<4; i++) {
-        tabPosConnectors[i]=0; // min length
-    }
 }
-
-void NodeGlBlock::setPosition(const Vector3D &pos) {
-    position[0] = GLfloat(pos[0]);
-    position[1] = GLfloat(pos[1]);
-    position[2] = GLfloat(pos[2]);
-    mat.setTranslation(pos);
-}
-
 
 void NodeGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
 	
-	glTranslatef(position[0]+12.5,position[1]+12.5,position[2]);
+	mat.glMultMatrix();
 	if (isHighlighted) {
 		GLfloat n = 0.5+1.5*(1.0-(glutGet(GLUT_ELAPSED_TIME)%1000)/1000.0);
 		GLfloat c[4];
@@ -47,7 +36,10 @@ void NodeGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 // glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,color);
 	}
 	ptrObj->glDraw();
+	glPopMatrix(); // text is aligned along x axis
 	if (displayedValue>=0) {
+		glPushMatrix();
+		
 		int digits = 1;
 		if (displayedValue>9) digits=2;
 		if (displayedValue>99) digits=3;
@@ -62,7 +54,7 @@ void NodeGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 		GLfloat gray[]={0.2,0.2,0.2,1.0};
 		glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,gray);
 		
-		glTranslatef(0,0,12.6);
+		glTranslatef(mat.m[3],mat.m[7],mat.m[11]+12.6);
 		for (int i=0; i<digits; i++) {
 			x = -11.0+(digits-i-1)*dx;
 			s = ((n%10)%5)*0.2;
@@ -81,28 +73,28 @@ void NodeGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 			n/=10;
 		}
 		glDisable(GL_BLEND);
+		
+		glPopMatrix();
 	}
-	glPopMatrix();
 }
 
 void NodeGlBlock::glDrawShadows(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
-	
-	glTranslatef(position[0]+12.5,position[1]+12.5,position[2]);
+	mat.glMultMatrix();
 	ptrObj->glDraw();
 	glPopMatrix();
 }
 
 void NodeGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int n) {
     glPushMatrix();
-    glTranslatef(position[0]+12.5,position[1]+12.5,position[2]);
-    ptrObj->glDrawId(n);
+		mat.glMultMatrix();
+		ptrObj->glDrawId(n);
     glPopMatrix();
 }
 
 void NodeGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
     glPushMatrix();
-    glTranslatef(position[0]+12.5,position[1]+12.5,position[2]);
+		mat.glMultMatrix();
     ptrObj->glDrawIdByMaterial(n);
     glPopMatrix();
 }

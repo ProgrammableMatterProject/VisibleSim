@@ -22,12 +22,9 @@ class NodeGlBlock:public GlBlock {
     int displayedValue;
 public :
     Matrix mat{};
-    uint8_t tabPosConnectors[4];
 
     NodeGlBlock(bID id);
     virtual ~NodeGlBlock() {};
-
-    void setPosition(const Vector3D &p) override;
 
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
 		void glDrawShadows(ObjLoader::ObjLoader *ptrObj) override;

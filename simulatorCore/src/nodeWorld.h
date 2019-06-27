@@ -27,13 +27,15 @@ namespace Node {
 
 static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
 
+class NodeMotionEngine;
+
 /**
  * \class NodeWorld nodeWorld.h
  */
 class NodeWorld : public BaseSimulator::World {
 protected:
     ObjLoader::ObjLoader *objConnector = NULL;           //!< Object loader for a block
-
+		NodeMotionEngine *nodeMotionEngine;
     virtual ~NodeWorld();
 public:
     NodeWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
@@ -74,13 +76,14 @@ public:
     void updateGlData(NodeBlock*blc, const Cell3DPosition &position);
     void updateGlData(NodeBlock*blc, const Vector3D &position);
     void updateGlData(NodeBlock*blc, const Matrix &mat);
-    void updateGlData(NodeBlock*blc, short id, float length);
     virtual void setSelectedFace(int n) override;
     virtual void exportConfiguration() override;
 
     virtual void disconnectBlock(BuildingBlock *block);
 		virtual void glDrawSpecificBg() override;
 		
+		virtual void createPopupMenu(int ix, int iy) override;
+		virtual void menuChoice(int n) override;
 		
 /**
  * \brief load the background textures (internal)

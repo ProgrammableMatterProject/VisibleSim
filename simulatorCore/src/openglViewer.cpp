@@ -254,7 +254,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
     } else { // selection of the clicked block
         if (state==GLUT_UP) {
             int n=selectFunc(x,y);
-            GlBlock *slct=BaseSimulator::getWorld()->getselectedGlBlock();
+						GlBlock *slct=BaseSimulator::getWorld()->getselectedGlBlock();
             // unselect current if exists
             if (slct) slct->toggleHighlight();
             // set n-1 block selected block (no selected block if n=0
@@ -266,6 +266,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
                 int n=selectFaceFunc(x,y);
+								cout << "selectFaceFunc=" << n << endl;
                 if (n>0) {
                     BaseSimulator::getWorld()->setSelectedFace(n);
                     BaseSimulator::getWorld()->createPopupMenu(x,y);

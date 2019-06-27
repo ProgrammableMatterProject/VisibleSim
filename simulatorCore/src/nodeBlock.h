@@ -30,8 +30,8 @@ class NodeBlockCode;
 /*! \class NodeBlock
 */
 class NodeBlock : public BaseSimulator::BuildingBlock {
-    short orientationCode; //!< number of the connector that is along the x axis.
 public:
+	short orientationCode; //!< number of the connector that is along the x axis.
 /**
    \brief Constructor
    \param bId: id of the block
@@ -66,27 +66,50 @@ public:
    \param connectorDir: direction code of the neighbor (Bottom=0, Back=1, Right=2, Left=3, Front=4, Top=5)
    \param pos: position of the cell (if in the grid)
    \return return true if the cell is in the grid, false otherwise. */
-    bool getNeighborPos(SLattice::Direction connectorDir,Cell3DPosition &pos) const;
+    //bool getNeighborPos(SLattice::Direction connectorDir,Cell3DPosition &pos) const;
+		bool getNeighborPos(short connectorId,Cell3DPosition &pos) const override ;
+		
 
 /**
-   \brief Get the direction id for the corresponding interface
-   \param p2p: pointer to the interface
-   \return return value [0..5] of the direction according SLattice::Direction. */
-    int getDirection(P2PNetworkInterface*p2p) const override;
+		\brief Get the direction id for the corresponding interface
+		\param p2p: pointer to the interface
+		\return return value [0..5] of the direction according SLattice::Direction. */
+		int getDirection(P2PNetworkInterface*p2p) const override;
 
-    bool hasANeighbor(SLattice::Direction n, bool groundIsNeighbor = false) const;
-    bool hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor = false) const;
+		bool hasANeighbor(SLattice::Direction n, bool groundIsNeighbor = false) const;
+		bool hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor = false) const;
 
-    // MeldInterpreter
-    /**
-     * @copydoc BuildingBlock::addNeighbor
-     */
-    virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) override;
-    /**
-     * @copydoc BuildingBlock::removeNeighbor
-     */
-    virtual void removeNeighbor(P2PNetworkInterface *ni) override;
-
+		// MeldInterpreter
+		/**
+			* @copydoc BuildingBlock::addNeighbor
+			*/
+		virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) override;
+		/**
+			* @copydoc BuildingBlock::removeNeighbor
+			*/
+		virtual void removeNeighbor(P2PNetworkInterface *ni) override;
+		/**
+		 * @brief Sets the grid position of the catom, and updates its position matrix
+		 *
+		 * @param p :  the grid position (x,y,z) of the block as a Cell3DPosition
+		 */
+		void setPosition(const Cell3DPosition &p) override;
+		/**
+		 *       @brief Get the orientation code from the transformation matrix of the catom
+		 *       @param mat: homogeneous transformation matrix
+		 *       @return return orientation code. */
+		static short getOrientationFromMatrix(const Matrix &mat);
+		/**
+		 *       @brief Get the transformation matrix of the catom from its position in the grid and its orientation code
+		 *       @param pos: position of the cell constaining the catom
+		 *       @param code: orientation code (number of the connector aligned with x axis)
+		 *       @return return homogeneous transformation matrix. */
+		static Matrix getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code);
+		/**
+		 *       @brief Set the catom in the grid according to a cell position and an orientation code
+		 *       @param pos: position of the cell constaining the catom
+		 *       @param code: orientation code (number of the connector aligned with x axis)*/
+		void setPositionAndOrientation(const Cell3DPosition &pos,short code);
 };
 
 std::ostream& operator<<(std::ostream &stream, NodeBlock const& bb);

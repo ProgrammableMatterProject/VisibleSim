@@ -17,6 +17,7 @@
 
 #include "nodeWorld.h"
 #include "nodeBlock.h"
+#include "nodeMotionEngine.h"
 #include "trace.h"
 #include "configExporter.h"
 
@@ -38,15 +39,12 @@ NodeWorld::NodeWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
     OUTPUT << TermColor::LifecycleColor << "NodeWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/nodeTextures",
-                                            "node.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/nodeTextures",
-                                                      "node_picking.obj");
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
-                                             "repere25.obj");
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/nodeTextures","node.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/nodeTextures","node_picking.obj");
+        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
     }
-
     lattice = new SLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+		nodeMotionEngine = new NodeMotionEngine();
 }
 
 NodeWorld::~NodeWorld() {
@@ -54,11 +52,130 @@ NodeWorld::~NodeWorld() {
     OUTPUT << "NodeWorld destructor" << endl;
 #endif
     /*	block linked are deleted by world::~world() */
+		delete nodeMotionEngine;
 }
 
 void NodeWorld::deleteWorld() {
     delete((NodeWorld*)world);
 }
+
+void NodeWorld::createPopupMenu(int ix, int iy) {
+	if (!GlutContext::popupMenu) {
+		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,202,215);
+		// create submenu "Add"
+		GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,202,112);
+		addBlockSubMenu->id=50;
+		addBlockSubMenu->addButton(11,"../../simulatorCore/resources/textures/menuTextures/menu_add_normal.tga");
+		addBlockSubMenu->addButton(12,"../../simulatorCore/resources/textures/menuTextures/menu_add_same.tga");
+		addBlockSubMenu->addButton(13,"../../simulatorCore/resources/textures/menuTextures/menu_add_random.tga");
+		// create submenu "Rotate"
+		GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,116,40);
+		rotateBlockSubMenu->id=51;
+		
+		GlutContext::popupMenu->addButton(1,"../../simulatorCore/resources/textures/menuTextures/menu_add_sub.tga",addBlockSubMenu);
+		GlutContext::popupMenu->addButton(2,"../../simulatorCore/resources/textures/menuTextures/menu_del.tga");
+		GlutContext::popupMenu->addButton(6,"../../simulatorCore/resources/textures/menuTextures/menu_rotate_sub.tga",rotateBlockSubMenu);
+		GlutContext::popupMenu->addButton(3,"../../simulatorCore/resources/textures/menuTextures/menu_tap.tga");
+		GlutContext::popupMenu->addButton(4,"../../simulatorCore/resources/textures/menuTextures/menu_save.tga");
+		GlutContext::popupMenu->addButton(5,"../../simulatorCore/resources/textures/menuTextures/menu_cancel.tga");
+	}
+	
+	// update rotateSubMenu depending on rotation/translation NodeCapabilities
+	NodeBlock *bb = (NodeBlock *)getSelectedBuildingBlock();
+	vector<NodeMotion*> tab = nodeMotionEngine->getAllMotionsForModule(bb,(SLattice*)lattice);
+	int nbreMenus=tab.size();
+	if (nbreMenus==0) {
+		((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(false);
+	} else {
+		((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(true);
+		GlutPopupMenuWindow *rotateBlockSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(6)->getChild(0);
+		rotateBlockSubMenu->h = nbreMenus*35+10;
+		rotateBlockSubMenu->clearChildren();
+		int i=100;
+		short orient;
+		for(auto &motion:tab) {
+			orient=motion->isRotation?(bb->orientationCode+(motion->direction==CW?1:3))%4:bb->orientationCode;
+			rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",
+																														 motion->isRotation,motion->fromConId,motion->toConId,motion->finalPos,orient));
+		}
+	}
+	
+	if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
+	cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace) << " selected" << endl;
+	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
+	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
+	GlutContext::popupMenu->show(true);
+	if (GlutContext::popupSubMenu) GlutContext::popupSubMenu->show(false);
+}
+
+void NodeWorld::menuChoice(int n) {
+	NodeBlock *bb = (NodeBlock *)getSelectedBuildingBlock();
+	Cell3DPosition nPos;
+	switch (n) {
+		case 1: case 6:
+			GlutContext::popupMenu->show(true);
+			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(n)->getChild(0);
+			GlutContext::popupSubMenu->show(true);
+			GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupMenu->w+5;
+			GlutContext::popupSubMenu->y=GlutContext::popupMenu->y+GlutContext::popupMenu->getButton(n)->y-GlutContext::popupSubMenu->h/2;
+			// avoid placing submenu over the top of the window
+			if (GlutContext::popupSubMenu->y+GlutContext::popupSubMenu->h > GlutContext::screenHeight) {
+				GlutContext::popupSubMenu->y = GlutContext::screenHeight-GlutContext::popupSubMenu->h;
+			}
+			break;
+		case 11:
+			GlutContext::popupSubMenu->show(false);
+			GlutContext::popupMenu->show(false);
+			if (bb->getNeighborPos(SLattice::Direction(numSelectedFace),nPos)) {
+				addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0,false);
+				linkBlock(nPos);
+				linkNeighbors(nPos);
+			} else {
+				cerr << "Position out of the grid" << endl;
+			}
+			break;
+		case 12:
+			GlutContext::popupSubMenu->show(false);
+			GlutContext::popupMenu->show(false);
+			if (bb->getNeighborPos(SLattice::Direction(numSelectedFace),nPos)) {
+				addBlock(0, bb->buildNewBlockCode,nPos,bb->color,bb->orientationCode,false);
+				linkBlock(nPos);
+				linkNeighbors(nPos);
+			} else {
+				cerr << "Position out of the grid" << endl;
+			}
+			break;
+		case 13:
+			GlutContext::popupSubMenu->show(false);
+			GlutContext::popupMenu->show(false);
+			if (bb->getNeighborPos(SLattice::Direction(numSelectedFace),nPos)) {
+				int orient = rand()%24;
+				addBlock(0, bb->buildNewBlockCode,nPos,bb->color,orient,false);
+				linkBlock(nPos);
+				linkNeighbors(nPos);
+			} else {
+				cerr << "Position out of the grid" << endl;
+			}
+			break;
+		default:
+			if (n>=100) {
+				GlutContext::popupSubMenu->show(false);
+				GlutContext::popupMenu->show(false);
+				// if (getScheduler()->state == RUNNING) {
+				// scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(), bb, Rotations3D r));
+				// } else {
+				Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
+				short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
+				NodeWorld *wrld = getWorld();
+				wrld->disconnectBlock(bb);
+				bb->setPositionAndOrientation(pos,orient);
+				wrld->connectBlock(bb);
+				//}
+			} else World::menuChoice(n); // For all non-specific cases
+			break;
+	}
+}
+
 
 void NodeWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                              short orientation, bool master) {
@@ -77,7 +194,7 @@ void NodeWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     module->setGlBlock(glBlock);
     module->setColor(col);
-    module->setPosition(pos);
+		module->setPositionAndOrientation(pos,orientation);
     lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     linkBlock(pos);
@@ -106,11 +223,8 @@ void NodeWorld::linkBlock(const Cell3DPosition& pos) {
                 " to #" << neighborBlock->blockId << ":"
                    << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
 #endif
-
-            updateGlData(module,i,1.0);
         } else {
             module->getInterface(SLattice::Direction(i))->connect(NULL);
-            updateGlData(module,i,0.0);
         }
     }
 }
@@ -119,9 +233,7 @@ void NodeWorld::linkBlock(const Cell3DPosition& pos) {
  * \brief Draw modules and axes
  */
 void NodeWorld::glDraw() {
-	/*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
-	 *          -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
-	glDisable(GL_TEXTURE_2D);
+		glDisable(GL_TEXTURE_2D);
 	lock();
 	for (const auto& pair : mapGlBlocks) {
 		((NodeGlBlock*)pair.second)->glDraw(objBlock);
@@ -137,133 +249,19 @@ void NodeWorld::glDraw() {
 }
 
 void NodeWorld::glDrawShadows() {
-	/*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
-	 *          -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
 	glDisable(GL_TEXTURE_2D);
 	lock();
 	for (const auto& pair : mapGlBlocks) {
-		((NodeGlBlock*)pair.second)->glDrawShadows(objBlock);
+		((NodeGlBlock*)pair.second)->glDrawShadows(objBlockForPicking);
 	}
 	unlock();
 	
 	glPopMatrix();
 }
 
-
-// void NodeWorld::glDraw() {
-//     glPushMatrix();
-//     glDisable(GL_TEXTURE_2D);
-//     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-// // draw modules
-//     lock();
-//     for (const auto& pair : mapGlBlocks) {
-//         ((NodeGlBlock*)pair.second)->glDraw(objBlock);
-//     }
-//     unlock();
-//     glPopMatrix();
-// 
-//     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
-//     if (bb) bb->blockCode->onGlDraw();
-// 
-// // material for the grid walls
-//     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-//         gray[]={0.2f,0.2f,0.2f,1.0f};
-//         glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-//         glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-//         glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-//         glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-// 
-//         lattice->glDraw();
-// 
-//         glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-//         glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-//         glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-//         glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-// 
-//         glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-//         glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-//         glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-//         glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-//         glPushMatrix();
-//         enableTexture(true);
-//         glBindTexture(GL_TEXTURE_2D,idTextureWall);
-//         glScalef(lattice->gridSize[0]*lattice->gridScale[0],
-//                  lattice->gridSize[1]*lattice->gridScale[1],
-//                  lattice->gridSize[2]*lattice->gridScale[2]);
-//         glBegin(GL_QUADS);
-//         // bottom
-//         glNormal3f(0,0,1.0f);
-//         glTexCoord2f(0,0);
-//         glVertex3f(0.0f,0.0f,0.0f);
-//         glTexCoord2f(lattice->gridSize[0],0);
-//         glVertex3f(1.0f,0.0f,0.0f);
-//         glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-//         glVertex3f(1.0,1.0,0.0f);
-//         glTexCoord2f(0,lattice->gridSize[1]);
-//         glVertex3f(0.0,1.0,0.0f);
-//         // top
-//         glNormal3f(0,0,-1.0f);
-//         glTexCoord2f(0,0);
-//         glVertex3f(0.0f,0.0f,1.0f);
-//         glTexCoord2f(0,lattice->gridSize[1]);
-//         glVertex3f(0.0,1.0,1.0f);
-//         glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-//         glVertex3f(1.0,1.0,1.0f);
-//         glTexCoord2f(lattice->gridSize[0],0);
-//         glVertex3f(1.0f,0.0f,1.0f);
-//         // left
-//         glNormal3f(1.0,0,0);
-//         glTexCoord2f(0,0);
-//         glVertex3f(0.0f,0.0f,0.0f);
-//         glTexCoord2f(lattice->gridSize[1],0);
-//         glVertex3f(0.0f,1.0f,0.0f);
-//         glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-//         glVertex3f(0.0,1.0,1.0f);
-//         glTexCoord2f(0,lattice->gridSize[2]);
-//         glVertex3f(0.0,0.0,1.0f);
-//         // right
-//         glNormal3f(-1.0,0,0);
-//         glTexCoord2f(0,0);
-//         glVertex3f(1.0f,0.0f,0.0f);
-//         glTexCoord2f(0,lattice->gridSize[2]);
-//         glVertex3f(1.0,0.0,1.0f);
-//         glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-//         glVertex3f(1.0,1.0,1.0f);
-//         glTexCoord2f(lattice->gridSize[1],0);
-//         glVertex3f(1.0f,1.0f,0.0f);
-//         // back
-//         glNormal3f(0,-1.0,0);
-//         glTexCoord2f(0,0);
-//         glVertex3f(0.0f,1.0f,0.0f);
-//         glTexCoord2f(lattice->gridSize[0],0);
-//         glVertex3f(1.0f,1.0f,0.0f);
-//         glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-//         glVertex3f(1.0f,1.0,1.0f);
-//         glTexCoord2f(0,lattice->gridSize[2]);
-//         glVertex3f(0.0,1.0,1.0f);
-//         // front
-//         glNormal3f(0,1.0,0);
-//         glTexCoord2f(0,0);
-//         glVertex3f(0.0f,0.0f,0.0f);
-//         glTexCoord2f(0,lattice->gridSize[2]);
-//         glVertex3f(0.0,0.0,1.0f);
-//         glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-//         glVertex3f(1.0f,0.0,1.0f);
-//         glTexCoord2f(lattice->gridSize[0],0);
-//         glVertex3f(1.0f,0.0f,0.0f);
-//         glEnd();
-//         glPopMatrix();
-//         // draw the axes
-//         glPushMatrix();
-//         glScalef(0.2f,0.2f,0.2f);
-//         objRepere->glDraw();
-//         glPopMatrix();
-// }
-
 void NodeWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((NodeGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
@@ -273,18 +271,16 @@ void NodeWorld::glDrawId() {
 }
 
 void NodeWorld::glDrawIdByMaterial() {
-    glPushMatrix();
-    glDisable(GL_TEXTURE_2D);
-    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-    int m;
-    lock();
-    // 6 objects per module
-    for (const auto& pair : mapGlBlocks) {
-        m=0;
-        ((NodeGlBlock*)pair.second)->glDrawId(objBlockForPicking,m); // structure
-    }
-    unlock();
-    glPopMatrix();
+	glPushMatrix();
+	glDisable(GL_TEXTURE_2D);
+	int m;
+	lock();
+	for (const auto& pair : mapGlBlocks) {
+		m = pair.first*5;
+		((NodeGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,m);
+	}
+	unlock();
+	glPopMatrix();
 }
 
 void NodeWorld::glDrawSpecificBg() {
@@ -304,11 +300,11 @@ void NodeWorld::glDrawSpecificBg() {
 	glBegin(GL_QUADS);
 	glTexCoord2f(0,0);
 	glVertex3f(0.0f,0.0f,0.0f);
-	glTexCoord2f(lattice->gridSize[0],0);
+	glTexCoord2f(0.5*lattice->gridSize[0],0);
 	glVertex3f(1.0f,0.0f,0.0f);
-	glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+	glTexCoord2f(0.5*lattice->gridSize[0],0.5*lattice->gridSize[1]);
 	glVertex3f(1.0,1.0,0.0f);
-	glTexCoord2f(0,lattice->gridSize[1]);
+	glTexCoord2f(0,0.5*lattice->gridSize[1]);
 	glVertex3f(0.0,1.0,0.0f);
 	glEnd();
 	glPopMatrix();
@@ -318,47 +314,43 @@ void NodeWorld::glDrawSpecificBg() {
 	glPushMatrix();
 }
 
-
-
 void NodeWorld::loadTextures(const string &str) {
-    string path = str+"/texture_plane.tga";
-    int lx,ly;
-    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
-		cout << "idWall=" << idTextureWall << endl;
-		
-		path=str+"/../smartBlocksTextures/digits.tga";
-		idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
+	string path = str+"/texture_plane.tga";
+	int lx,ly;
+	idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+	path=str+"/../smartBlocksTextures/digits.tga";
+	idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
 void NodeWorld::updateGlData(BuildingBlock *bb) {
-    NodeGlBlock *glblc = (NodeGlBlock*)bb->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setPosition(lattice->gridToWorldPosition(bb->position));
-        glblc->setColor(bb->color);
-        unlock();
-    }
+	NodeGlBlock *glblc = (NodeGlBlock*)bb->getGlBlock();
+	if (glblc) {
+			lock();
+			//cout << "update pos:" << position << endl;
+			glblc->setPosition(lattice->gridToWorldPosition(bb->position));
+			glblc->setColor(bb->color);
+			unlock();
+	}
 }
 
 void NodeWorld::updateGlData(NodeBlock*blc, const Color &color) {
-    NodeGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setColor(color);
-        unlock();
-    }
+	NodeGlBlock *glblc = blc->getGlBlock();
+	if (glblc) {
+			lock();
+			//cout << "update pos:" << position << endl;
+			glblc->setColor(color);
+			unlock();
+	}
 }
 
 void NodeWorld::updateGlData(NodeBlock*blc, bool visible) {
-    NodeGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setVisible(visible);
-        unlock();
-    }
+	NodeGlBlock *glblc = blc->getGlBlock();
+	if (glblc) {
+			lock();
+			//cout << "update pos:" << position << endl;
+			glblc->setVisible(visible);
+			unlock();
+	}
 }
 
 void NodeWorld::updateGlData(NodeBlock*blc, const Vector3D &position) {
@@ -390,19 +382,21 @@ void NodeWorld::updateGlData(NodeBlock*blc, const Matrix &mat) {
     }
 }
 
-void NodeWorld::updateGlData(NodeBlock*blc, short id, float length) {
-    NodeGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        glblc->tabPosConnectors[id] = (uint8_t)(length*255.0);
-        //OUTPUT << "#" << blc->blockId << ":" << id << "=" << (int)glblc->tabPosConnectors[id] << endl;
-        unlock();
-    }
-}
-
 void NodeWorld::setSelectedFace(int n) {
-    numSelectedGlBlock = n / SLattice::MAX_NB_NEIGHBORS;
-    numSelectedFace = n % SLattice::MAX_NB_NEIGHBORS;
+	cout << "SelectedFace("<< n << ")" <<endl;
+	
+    numSelectedGlBlock = n / 5;
+		string name = objBlockForPicking->getObjMtlName(n%5);
+	
+	if (name == "NORTH") numSelectedFace = 0;
+	else if (name == "EAST") numSelectedFace = 1;
+	else if (name == "SOUTH") numSelectedFace = 2;
+	else if (name == "WEST") numSelectedFace = 3;
+	else {
+		cerr << "warning: Unrecognized picking face" << endl;
+		numSelectedFace = 4; // UNDEFINED
+	}
+		cerr << name << " => " << numSelectedFace << endl;
 }
 
 void NodeWorld::exportConfiguration() {
