@@ -304,7 +304,11 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     } else {
         // Else redirect to EPL corresponding to that branch
         // ONLY IF BRANCH HAD TO BE GROWN!
-        if (mabc.catomsReqByBranch[bi] == -1) return;
+        if (mabc.catomsReqByBranch[bi] == -1
+            or not mabc.ruleMatcher->
+            isInCSG(mabc.ruleMatcher->
+                    getTileRootAtEndOfBranch(mabc.norm(mabc.catom->position), bi))
+            ) return;
 
         tPos = mabc.catom->position + ScaffoldingRuleMatcher::getTargetEPLPositionForBranch(bi);
     }
