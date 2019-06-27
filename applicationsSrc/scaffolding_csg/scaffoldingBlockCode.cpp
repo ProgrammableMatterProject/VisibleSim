@@ -1024,6 +1024,12 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
 
         deque.push_back({ S_RZ, RZ_EPL });
 
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, RevZ_EPL });
+        if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, RevZ_EPL });
+        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, RevZ_EPL });
+        if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, RevZ_EPL });
+        if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, RevZ_EPL });
+
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, RZ_EPL });
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, RZ_EPL });
         if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, RZ_EPL });
@@ -1158,17 +1164,17 @@ void ScaffoldingBlockCode::initializeSandbox() {
 
                 // if (ruleMatcher->isOnXCSGBorder(norm(pos))) lattice->highlightCell(pos, RED);
 
-                // if (ruleMatcher->isOnXCSGBorder(norm(pos)))
-                //     lattice->highlightCell(pos, GREEN);
+                if (ruleMatcher->isOnXCSGBorder(norm(pos)))
+                    lattice->highlightCell(pos, GREEN);
 
-                // if (ruleMatcher->isOnYCSGBorder(norm(pos)))
-                //     lattice->highlightCell(pos, BLUE);
+                if (ruleMatcher->isOnYCSGBorder(norm(pos)))
+                    lattice->highlightCell(pos, BLUE);
 
-                // if (ruleMatcher->isOnXOppCSGBorder(norm(pos)))
-                //     lattice->highlightCell(pos, RED);
+                if (ruleMatcher->isOnXOppCSGBorder(norm(pos)))
+                    lattice->highlightCell(pos, RED);
 
-                // if (ruleMatcher->isOnYOppCSGBorder(norm(pos)))
-                //     lattice->highlightCell(pos, BLACK);
+                if (ruleMatcher->isOnYOppCSGBorder(norm(pos)))
+                    lattice->highlightCell(pos, BLACK);
 
                 // if (ruleMatcher->isOnYCSGBorder(norm(pos))) lattice->highlightCell(pos, BLUE);
             }
