@@ -936,7 +936,7 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
     int nbIVB = ruleMatcher->getNbIncidentVerticalCSGBranches(norm(pos));
 
     if (nbIVB == 1
-        and ruleMatcher->hasIncidentBranch(norm(pos), RevZBranch, fn_isInCSG)) {
+        and ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)) {
         deque.push_back({ S_Z, Z_EPL });
 
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
@@ -957,7 +957,7 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[ZBranch] > 3) deque.push_back({ Z_4, Z_EPL });
         if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
     } else if (nbIVB == 1
-               and ruleMatcher->hasIncidentBranch(norm(pos), ZBranch, fn_isInCSG)) {
+               and ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch)) {
         deque.push_back({ S_RevZ, RevZ_EPL });
 
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, RevZ_EPL });
@@ -977,11 +977,10 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[RevZBranch] > 2) deque.push_back({ RevZ_3,RevZ_EPL});
         if (catomsReqs[RevZBranch] > 3) deque.push_back({ RevZ_4,RevZ_EPL});
         if (catomsReqs[RevZBranch] > 4) deque.push_back({ RevZ_5,RevZ_EPL});
-    } else if (ruleMatcher->hasIncidentBranch(norm(pos), RZBranch, fn_isInCSG)
+    } else if (ruleMatcher->hasIncidentCSGBranch(norm(pos), RZBranch)
                 and ((nbIVB == 1)
-                     or (nbIVB == 2 and ruleMatcher->hasIncidentBranch(norm(pos), ZBranch,
-                                                                       fn_isInCSG)))){
-        if (ruleMatcher->hasIncidentBranch(norm(pos), ZBranch, fn_isInCSG))
+                     or (nbIVB == 2 and ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch)))){
+        if (ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch))
             deque.push_back({ S_RevZ, LZ_EPL });
         deque.push_back({ S_LZ, LZ_EPL });
 
@@ -992,11 +991,14 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RevZ_EPL });
         if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RevZ_EPL });
 
-        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, RevZ_EPL });
-        if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, RevZ_EPL });
-        if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, RevZ_EPL });
-        if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, RevZ_EPL });
-        if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, RevZ_EPL });
+        ScafComponent xC =
+            ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch) ? RevZ_EPL : LZ_EPL;
+
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, xC });
+        if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, xC });
+        if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, xC });
+        if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, xC });
+        if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, xC });
 
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, LZ_EPL });
         if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1,RevZ_EPL});
@@ -1014,10 +1016,10 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[LZBranch] > 2) deque.push_back({ LZ_3, LZ_EPL });
         if (catomsReqs[LZBranch] > 3) deque.push_back({ LZ_4, LZ_EPL });
         if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
-    } else if (ruleMatcher->hasIncidentBranch(norm(pos), LZBranch, fn_isInCSG)
+    } else if (ruleMatcher->hasIncidentCSGBranch(norm(pos), LZBranch)
                and ((nbIVB == 1) or (nbIVB == 2 and ruleMatcher->
-                                     hasIncidentBranch(norm(pos),ZBranch,fn_isInCSG)))){
-        if (ruleMatcher->hasIncidentBranch(norm(pos), ZBranch, fn_isInCSG)) {
+                                     hasIncidentCSGBranch(norm(pos),ZBranch)))){
+        if (ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch)) {
             if (ruleMatcher->isOnYCSGBorder(norm(pos)))
                 deque.push_back({ S_RevZ, RevZ_EPL });
             else deque.push_back({ S_RevZ, RZ_EPL });
@@ -1055,8 +1057,8 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL });
 
     } else if (nbIVB == 2
-               and (ruleMatcher->hasIncidentBranch(norm(pos), RevZBranch, fn_isInCSG)and
-                    ruleMatcher->hasIncidentBranch(norm(pos), LZBranch, fn_isInCSG))) {
+               and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)and
+                    ruleMatcher->hasIncidentCSGBranch(norm(pos), LZBranch))) {
         deque.push_back({ S_RZ, RZ_EPL});
         if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
         deque.push_back({ S_Z, Z_EPL });
@@ -1082,8 +1084,8 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL });
         if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
     } else if (nbIVB == 2
-               and (ruleMatcher->hasIncidentBranch(norm(pos), RevZBranch, fn_isInCSG)and
-                    ruleMatcher->hasIncidentBranch(norm(pos), RZBranch, fn_isInCSG))) {
+               and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)and
+                    ruleMatcher->hasIncidentCSGBranch(norm(pos), RZBranch))) {
         deque.push_back({ S_LZ, LZ_EPL});
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
         deque.push_back({ S_Z, Z_EPL });
