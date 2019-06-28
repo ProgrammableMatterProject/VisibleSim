@@ -106,10 +106,11 @@ void ScaffoldingBlockCode::onBlockSelected() {
     }
 
     if (ruleMatcher->isTileRoot(norm(catom->position))) {
-    //     for (int i = 0; i < N_INC_BRANCHES; i++)
-    //         cout << "hasIncidentBranch(" << i << "): "
-    //              << hasIncidentBranch((BranchIndex)i) << endl;
-    //     cout << "numIncidentVerticalBranches: " << numIncidentVerticalBranches << endl;
+        for (int i = 0; i < N_INC_BRANCHES; i++)
+            cout << "hasIncidentBranch(" << i << "): "
+                 << ruleMatcher->hasIncidentCSGBranch(norm(catom->position), (BranchIndex)i)
+                 << endl;
+        cout << "numIncidentVerticalBranches: " << numIncidentVerticalBranches << endl;
 
         if (not constructionQueue.empty())
             cout << "nextPos: "
@@ -141,7 +142,16 @@ void ScaffoldingBlockCode::onBlockSelected() {
 
     // cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
     // cout << "role: " << ScaffoldingRuleMatcher::roleToString(role) << endl;
-    cout << "localNeighborhood: " << getMeshLocalNeighborhoodState() << endl;
+    cout << "localNeighborhood: " << int_to_hex_str((int)getMeshLocalNeighborhoodState().to_ulong(), 3) << endl;
+
+    cout << "targetPosition: " << targetPosition;
+    if (targetPosition != Cell3DPosition(0,0,0)
+        and ruleMatcher->isInMesh(norm(targetPosition))
+        and ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
+        cout << "[" << ScaffoldingRuleMatcher::component_to_string(
+            static_cast<ScafComponent>(ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
+    cout << endl;
+
     Cell3DPosition nextHop;
     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
                     targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
@@ -149,13 +159,6 @@ void ScaffoldingBlockCode::onBlockSelected() {
     cout << "isInGrid: " << ruleMatcher->isInGrid(norm(catom->position)) << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
-    // cout << "targetPosition: " << targetPosition;
-    // if (targetPosition != Cell3DPosition(0,0,0)
-    //     and ruleMatcher->isInMesh(norm(targetPosition))
-    //     and ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
-    //     cout << "[" << ScaffoldingRuleMatcher::component_to_string(
-    //         static_cast<ScafComponent>(ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
-    // cout << endl;
 
     // cout << "matchingLocalRule: " << matchingLocalRule << endl;
     // cout << "greenLightIsOn: " << greenLightIsOn << endl;
@@ -317,7 +320,8 @@ ScaffoldingBlockCode::denorm(const Cell3DPosition& pos) {
 
 const Cell3DPosition
 ScaffoldingBlockCode::sbdenorm(const Cell3DPosition& pos) {
-    return denorm(pos) - (pos[2] < meshSeedPosition[2] ? Cell3DPosition(0,0,0) : Cell3DPosition(0,0,B));
+    return denorm(pos) - (pos[2] < meshSeedPosition[2] ?
+                         Cell3DPosition(0,0,0) : Cell3DPosition(0,0,B));
 }
 
 bool ScaffoldingBlockCode::isInsideCSGFn(const Cell3DPosition& pos) const {
@@ -591,7 +595,8 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                  << " - NP: " << nextPosAlongBranch << " : "
                                  << ruleMatcher->isTileRoot(norm(nextPosAlongBranch));
                             if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch)))
-                                info << incidentBranchesToRootAreComplete(nextPosAlongBranch);
+                                info << " "
+                                     << incidentBranchesToRootAreComplete(nextPosAlongBranch);
                             scheduler->trace(info.str(), catom->blockId, RED);
                         }
                     }
@@ -731,10 +736,11 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
 bool ScaffoldingBlockCode::
 isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& tipp = trp + ruleMatcher->getIncidentTipRelativePos(bi);
+    const Cell3DPosition& crd = ruleMatcher->getTileRootPositionForMeshPosition(norm(tipp));
     // cout << ruleMatcher->branch_to_string(bi) << " - tipp: " << tipp << endl;
     // cout << "gtrpfmp: " << denorm(ruleMatcher->getTileRootPositionForMeshPosition(norm(tipp))) << endl;
-    return (not ruleMatcher->isInCSG(ruleMatcher->
-                                      getTileRootPositionForMeshPosition(norm(tipp))))
+    return (not ruleMatcher->isInCSG(crd))
+        or (not ruleMatcher->isInGrid(crd))
         or ((bi == XBranch or bi == YBranch)
             and ((bi == XBranch and ruleMatcher->isOnYCSGBorder(norm(trp)))
                  or (bi == YBranch and ruleMatcher->isOnXCSGBorder(norm(trp)))))
@@ -855,10 +861,6 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
 
     deque<pair<ScafComponent, ScafComponent>> deque;
 
-    std::function fn_isInCSG = [this](const Cell3DPosition& p) {
-                                    return ruleMatcher->isInCSG(p) ;
-                                };
-
     if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RevZ_EPL });
     if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
 
@@ -928,10 +930,6 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
     }
 
     deque<pair<ScafComponent, ScafComponent>> deque;
-
-    std::function fn_isInCSG = [this](const Cell3DPosition& p) {
-                                    return ruleMatcher->isInCSG(p) ;
-                                };
 
     int nbIVB = ruleMatcher->getNbIncidentVerticalCSGBranches(norm(pos));
 
@@ -1110,6 +1108,78 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[ZBranch] > 3) deque.push_back({ Z_4, Z_EPL });
         if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
         if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
+    } else if (nbIVB == 3
+               and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)
+                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), LZBranch)
+                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch))) {
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RZ_EPL});
+        deque.push_back({ S_RZ, RZ_EPL });
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+        deque.push_back({ S_RevZ, RZ_EPL});
+        deque.push_back({ S_Z, Z_EPL });
+
+        if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1, RevZ_EPL });
+        if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL });
+        if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, Z_EPL });
+        if (catomsReqs[RevZBranch] > 1) deque.push_back({ RevZ_2, RevZ_EPL });
+        if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, LZ_EPL });
+        if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, Z_EPL });
+        if (catomsReqs[RevZBranch] > 2) deque.push_back({ RevZ_3, RevZ_EPL });
+        if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, LZ_EPL });
+        if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, Z_EPL });
+        if (catomsReqs[RevZBranch] > 3) deque.push_back({ RevZ_4, RevZ_EPL });
+        if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, LZ_EPL });
+        if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, Z_EPL });
+        if (catomsReqs[RevZBranch] > 4) deque.push_back({ RevZ_5, RevZ_EPL });
+
+        if (catomsReqs[ZBranch] > 0) deque.push_back({ Z_1, Z_EPL });
+        if (catomsReqs[RZBranch] > 0) deque.push_back({ RZ_1, RZ_EPL });
+        if (catomsReqs[ZBranch] > 1) deque.push_back({ Z_2, Z_EPL });
+        if (catomsReqs[RZBranch] > 1) deque.push_back({ RZ_2, RZ_EPL });
+        if (catomsReqs[ZBranch] > 2) deque.push_back({ Z_3, Z_EPL });
+        if (catomsReqs[RZBranch] > 2) deque.push_back({ RZ_3, RZ_EPL });
+        if (catomsReqs[ZBranch] > 3) deque.push_back({ Z_4, Z_EPL });
+        if (catomsReqs[RZBranch] > 3) deque.push_back({ RZ_4, RZ_EPL });
+        if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
+        if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL });
+    } else if (nbIVB == 3
+               and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)
+                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), RZBranch)
+                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch))) {
+        deque.push_back({ S_LZ, LZ_EPL });
+        deque.push_back({ S_RevZ, LZ_EPL});
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RevZ_EPL});
+        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
+        deque.push_back({ S_Z, Z_EPL });
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+
+        if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RevZ_EPL});
+        if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RevZ_EPL});
+
+        if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1, RevZ_EPL });
+        if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL });
+        if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, Z_EPL });
+        if (catomsReqs[RevZBranch] > 1) deque.push_back({ RevZ_2, RevZ_EPL });
+        if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, LZ_EPL });
+        if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, Z_EPL });
+        if (catomsReqs[RevZBranch] > 2) deque.push_back({ RevZ_3, RevZ_EPL });
+        if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, LZ_EPL });
+        if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, Z_EPL });
+        if (catomsReqs[RevZBranch] > 3) deque.push_back({ RevZ_4, RevZ_EPL });
+        if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, LZ_EPL });
+        if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, Z_EPL });
+        if (catomsReqs[RevZBranch] > 4) deque.push_back({ RevZ_5, RevZ_EPL });
+
+        if (catomsReqs[ZBranch] > 0) deque.push_back({ Z_1, Z_EPL });
+        if (catomsReqs[LZBranch] > 0) deque.push_back({ LZ_1, LZ_EPL });
+        if (catomsReqs[ZBranch] > 1) deque.push_back({ Z_2, Z_EPL });
+        if (catomsReqs[LZBranch] > 1) deque.push_back({ LZ_2, LZ_EPL });
+        if (catomsReqs[ZBranch] > 2) deque.push_back({ Z_3, Z_EPL });
+        if (catomsReqs[LZBranch] > 2) deque.push_back({ LZ_3, LZ_EPL });
+        if (catomsReqs[ZBranch] > 3) deque.push_back({ Z_4, Z_EPL });
+        if (catomsReqs[LZBranch] > 3) deque.push_back({ LZ_4, LZ_EPL });
+        if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
+        if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
     }
 
     return deque;
@@ -1343,10 +1413,17 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
         lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
     } else if (lastVisitedEPL == RevZ_EPL
                and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0) // S_RevZ
-               and ruleMatcher->isOnYBorder(norm(coordinatorPos))
-               and (coordinatorPos[2] / B) % 2 == 1
-               and coordinatorPos[2] != meshSeedPosition[2]) {
+               and ruleMatcher->isOnYOppCSGBorder(norm(coordinatorPos))
+               and ruleMatcher->isOnXOppCSGBorder(norm(coordinatorPos))
+               and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 1) {
         lastVisitedEPL = LR_EPL::LR_RevZ_EPL_ALT;
+    } else if (lastVisitedEPL == Z_EPL
+               and targetPosition - coordinatorPos == Cell3DPosition(1, 1,0) // S_Z
+               and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 3
+               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), RevZBranch)
+               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), RZBranch)
+               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), ZBranch)) {
+        lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
     }
 
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
