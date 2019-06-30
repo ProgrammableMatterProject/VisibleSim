@@ -15,13 +15,16 @@
 #include "scheduler.h"
 #include "events.h"
 #include "trace.h"
-#include "translationEvents.h"
+#include "teleportationEvents.h"
+#include "nodeMotionEngine.h"
 
 using namespace Node;
 
 NodeDemoBlockCode::NodeDemoBlockCode(NodeBlock *host):NodeBlockCode(host) {
     scheduler = getScheduler();
     node = (NodeBlock*)hostBlock;
+		
+		
 }
 
 NodeDemoBlockCode::~NodeDemoBlockCode() {
@@ -29,14 +32,25 @@ NodeDemoBlockCode::~NodeDemoBlockCode() {
 
 // Function called by the module upon initialization
 void NodeDemoBlockCode::startup() {
-    // Dummy translation example
-    if (node->blockId == 36) {
-        // Go X-ward once
-        const Cell3DPosition &destination = node->position - Cell3DPosition(1, 0, 0);
-        scheduler->schedule(new TranslationStartEvent(scheduler->now(), node, destination));
-    }
-
-    updateRainbowState();
+	NodeWorld *wrl = Node::getWorld();
+	// Dummy translation example
+	if (node->blockId == 36) {
+		// turn clockwise if possible !
+		vector<NodeMotion*> tab = wrl->getAllMotionsForModule(node);
+		vector<NodeMotion*>::const_iterator ci=tab.begin();
+		while (ci!=tab.end() && (*ci)->direction!=motionDirection::CW) {
+				ci++;
+		}
+		if (ci!=tab.end()) {
+			Cell3DPosition destination = node->position + (*ci)->finalPos;
+			previousPivot = (*ci)->toConId;
+			cout << "previousPivot=" << (*ci)->toConId << "   md=" << (*ci)->direction << endl;
+			scheduler->schedule(new TeleportationStartEvent(scheduler->now()+1000000, node,destination));
+		}
+		
+	} else {
+		updateRainbowState();
+	}
 }
 
 void NodeDemoBlockCode::updateRainbowState() {
@@ -109,34 +123,48 @@ void NodeDemoBlockCode::processReceivedMessage(MessagePtr msg,
             assert(false);
             break;
     }
-
 }
 
 void NodeDemoBlockCode::processLocalEvent(EventPtr pev) {
-    MessagePtr message;
-    stringstream info;
+	MessagePtr message;
+	stringstream info;
+	
+	switch (pev->eventType) {
+		case EVENT_RECEIVE_MESSAGE: {
+			message =
+			(std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+			
+			if (message->isMessageHandleable()) {
+				(std::static_pointer_cast<HandleableMessage>(message))->handle(this);
+			} else {
+				P2PNetworkInterface * recv_interface = message->destinationInterface;
+				
+				// Handover to global message handler
+				processReceivedMessage(message, recv_interface);
+			}
+		} break;
+		
+		case EVENT_TELEPORTATION_END: {
+			motionEnd();
+		} break;
+		
+		case EVENT_TAP: {
+		} break;
+	}
+}
 
-    switch (pev->eventType) {
-        case EVENT_RECEIVE_MESSAGE: {
-            message =
-                (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-
-            if (message->isMessageHandleable()) {
-                (std::static_pointer_cast<HandleableMessage>(message))->handle(this);
-            } else {
-                P2PNetworkInterface * recv_interface = message->destinationInterface;
-
-                // Handover to global message handler
-                processReceivedMessage(message, recv_interface);
-            }
-        } break;
-
-        case EVENT_TRANSLATION_END: {
-            // When motion ends, update rainbow stuff
-            updateRainbowState();
-        } break;
-
-        case EVENT_TAP: {
-        } break;
-    }
+void NodeDemoBlockCode::motionEnd() {
+	// turn clockwise from previousPivot attachment
+	NodeWorld *wrl = Node::getWorld();
+	vector<NodeMotion*> tab = wrl->getAllMotionsForModule(node);
+	vector<NodeMotion*>::const_iterator ci=tab.begin();
+	while (ci!=tab.end() && !((*ci)->direction==motionDirection::CW && (*ci)->fromConId==previousPivot)) {
+		ci++;
+	}
+	if (ci!=tab.end()) {
+		Cell3DPosition destination = node->position + (*ci)->finalPos;
+		previousPivot = (*ci)->toConId;
+		cout << "previousPivot=" << (*ci)->toConId << "   md=" << (*ci)->direction << endl;
+		scheduler->schedule(new TeleportationStartEvent(scheduler->now()+1000000, node,destination));
+	}
 }

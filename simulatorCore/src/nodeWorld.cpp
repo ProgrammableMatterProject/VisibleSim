@@ -82,7 +82,7 @@ void NodeWorld::createPopupMenu(int ix, int iy) {
 	
 	// update rotateSubMenu depending on rotation/translation NodeCapabilities
 	NodeBlock *bb = (NodeBlock *)getSelectedBuildingBlock();
-	vector<NodeMotion*> tab = nodeMotionEngine->getAllMotionsForModule(bb,(SLattice*)lattice);
+	vector<NodeMotion*> tab = getAllMotionsForModule(bb);
 	int nbreMenus=tab.size();
 	if (nbreMenus==0) {
 		((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(false);
@@ -93,10 +93,12 @@ void NodeWorld::createPopupMenu(int ix, int iy) {
 		rotateBlockSubMenu->clearChildren();
 		int i=100;
 		short orient;
+		Cell3DPosition finalPos;
 		for(auto &motion:tab) {
 			orient=motion->isRotation?(bb->orientationCode+(motion->direction==CW?1:3))%4:bb->orientationCode;
-			rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",
-																														 motion->isRotation,motion->fromConId,motion->toConId,motion->finalPos,orient));
+			finalPos = motion->finalPos + bb->position;
+			cout << finalPos << "," << orient << endl;
+			rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link_node.tga", motion->direction,motion->fromConId,motion->toConId,finalPos,orient,0.083333333));
 		}
 	}
 	
@@ -429,6 +431,9 @@ void NodeWorld::disconnectBlock(BuildingBlock *block) {
     lattice->remove(block->position);
 }
 
+vector<NodeMotion*> NodeWorld::getAllMotionsForModule(NodeBlock*nb) {
+	return nodeMotionEngine->getAllMotionsForModule(nb,(SLattice*)lattice);
+}
 
 
 } // Node namespace

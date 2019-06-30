@@ -608,13 +608,14 @@ bool GlutButton::passiveMotionFunc(int mx,int my) {
 /* GlutRotationButton */
 /***************************************************************************************/
 
-GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation) : GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
+GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw) : GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
 	isBlue = blue;
 	id0 = idSrc;
 	id1 = idDest;
 	isHighlighted = false;
-    finalPosition=pos;
-    finalOrientation=orientation;
+	finalPosition=pos;
+	finalOrientation=orientation;
+	characterWidth=cw;
 }
 
 void GlutRotationButton::glDraw() {
@@ -638,38 +639,26 @@ void GlutRotationButton::glDraw() {
 // draw X->Y
 		glDisable(GL_DEPTH_TEST);
 		// first id
-		tx = id0*0.0625f;
+		tx = id0*characterWidth;
 		ty=0.5;
 		glBegin(GL_QUADS);
 		glTexCoord2f(tx,ty);
 		glVertex2i(0.125*w,0);
-		glTexCoord2f(tx+0.0625f,ty);
+		glTexCoord2f(tx+characterWidth,ty);
 		glVertex2i(0.375*w,0);
-		glTexCoord2f(tx+0.0625f,ty+0.5f);
+		glTexCoord2f(tx+characterWidth,ty+0.5f);
 		glVertex2i(0.375*w,h);
 		glTexCoord2f(tx,ty+0.5f);
   	glVertex2i(0.125*w,h);
   	glEnd();
-		// arrow
-    tx = 12*0.0625f;
-		glBegin(GL_QUADS);
-		glTexCoord2f(tx,ty);
-		glVertex2i(0.375*w,0);
-		glTexCoord2f(tx+0.0625f,ty);
-		glVertex2i(0.625*w,0);
-		glTexCoord2f(tx+0.0625f,ty+0.5f);
-		glVertex2i(0.625*w,h);
-		glTexCoord2f(tx,ty+0.5f);
-  	glVertex2i(0.375*w,h);
-  	glEnd();
 		// second id
-		tx = id1*0.0625f;
+		tx = id1*characterWidth;
 		glBegin(GL_QUADS);
 		glTexCoord2f(tx,ty);
 		glVertex2i(0.625*w,0);
-		glTexCoord2f(tx+0.0625f,ty);
+		glTexCoord2f(tx+characterWidth,ty);
 		glVertex2i(0.875*w,0);
-		glTexCoord2f(tx+0.0625f,ty+0.5f);
+		glTexCoord2f(tx+characterWidth,ty+0.5f);
 		glVertex2i(0.875*w,h);
 		glTexCoord2f(tx,ty+0.5f);
   	glVertex2i(0.625*w,h);

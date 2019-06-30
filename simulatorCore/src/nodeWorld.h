@@ -28,6 +28,7 @@ namespace Node {
 static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
 
 class NodeMotionEngine;
+class NodeMotion;
 
 /**
  * \class NodeWorld nodeWorld.h
@@ -85,6 +86,7 @@ public:
 		virtual void createPopupMenu(int ix, int iy) override;
 		virtual void menuChoice(int n) override;
 		
+		vector<NodeMotion*>getAllMotionsForModule(NodeBlock*nb);
 /**
  * \brief load the background textures (internal)
  */

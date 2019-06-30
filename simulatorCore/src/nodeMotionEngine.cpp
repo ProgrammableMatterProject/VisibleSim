@@ -31,14 +31,17 @@ NodeMotionEngine::~NodeMotionEngine() {
 }
 
 vector<NodeMotion*> NodeMotionEngine::getAllMotionsForModule(BuildingBlock *nb,const SLattice*sl) {
+	Cell3DPosition pos;
 	bool hasObs,hasPivot,hasFreeDest;
 	vector<NodeMotion*>res;
 	
 	for (NodeMotion*nm:tabNodeMotions) {
 		hasObs=!sl->isFree(nm->obstaclePos+nb->position);
-		hasPivot=!(sl->isFree(nm->pivotPos+nb->position));
-		hasFreeDest=sl->isFree(nm->finalPos+nb->position) && (sl->isFree(nm->pathPos+nb->position) || !nm->isRotation);
-		cout << "motion:" << nm->fromConId << "->" << nm->toConId << " hasPivot=" << hasPivot << " hasFreeDest=" << hasFreeDest << " hasObs=" << hasObs << "/" << nm->hasObstacle <<endl;
+		pos = nm->pivotPos+nb->position;
+		hasPivot=!sl->isFree(pos) && sl->isInGrid(pos);
+		pos = nm->finalPos+nb->position;
+		hasFreeDest=sl->isFree(pos) && sl->isInGrid(pos) && (sl->isFree(nm->pathPos+nb->position) || !nm->isRotation);
+		//cout << "motion:" << nm->fromConId << "->" << nm->toConId << " hasPivot=" << hasPivot << " hasFreeDest=" << hasFreeDest << " hasObs=" << hasObs << "/" << nm->hasObstacle <<endl;
 		if (hasPivot && hasFreeDest && hasObs==nm->hasObstacle) {
 			res.push_back(nm);
 		}

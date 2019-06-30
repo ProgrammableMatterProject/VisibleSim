@@ -20,6 +20,7 @@
 #include "nodeBlockCode.h"
 #include "nodeSimulator.h"
 #include "nodeBlock.h"
+#include "lattice.h"
 
 using namespace Node;
 
@@ -27,6 +28,7 @@ class NodeDemoBlockCode : public Node::NodeBlockCode {
     int level = -1;
     bool hasTopNeighbor = false;
     bool hasBottomNeighbor = false;
+		SLattice::Direction previousPivot;
 public:
     Scheduler *scheduler;
     Node::NodeBlock *node;
@@ -35,6 +37,8 @@ public:
 
     void startup() override;
     void processLocalEvent(EventPtr pev) override;
+		void motionEnd();
+		
 
 #define LEVEL_MSG 0x1 // Message ID, for identification in processReceivedMessage
     void processReceivedMessage(MessagePtr msg, P2PNetworkInterface* sender);

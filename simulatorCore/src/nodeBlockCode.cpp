@@ -62,14 +62,13 @@ void NodeBlockCode::processLocalEvent(EventPtr pev) {
             onTap(face);
         } break;
 
-        case EVENT_ROTATION3D_END: {
+        case EVENT_TELEPORTATION_END: {
 #ifdef verbose
             info.str("");
             info << "rec.: EVENT_MOTION_END";
             scheduler->trace(info.str(),hostBlock->blockId);
 #endif
-            NodeBlock*c3d = (NodeBlock*)hostBlock;
-            c3d->setPosition(c3d->position);
+            NodeBlock*nb = (NodeBlock*)hostBlock;
             onMotionEnd();
         }  break;
     }
