@@ -98,6 +98,23 @@ public :
     void glDraw() override;
 };
 
+class GlutRotation2DButton : public GlutWindow {
+	bool isHighlighted;
+	bool isBlue;
+	uint8_t id0,id1;
+	float characterWidth;
+public :
+	Cell3DPosition finalPosition;
+	short finalOrientation;
+	
+	GlutRotation2DButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw=0.0625);
+	virtual ~GlutRotation2DButton() {};
+	int mouseFunc(int button,int state,int x,int y) override;
+	bool passiveMotionFunc(int mx,int my) override;
+	void glDraw() override;
+};
+
+
 
 //
 class BlockDebugData {

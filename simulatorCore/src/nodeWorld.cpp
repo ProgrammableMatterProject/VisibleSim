@@ -98,7 +98,7 @@ void NodeWorld::createPopupMenu(int ix, int iy) {
 			orient=motion->isRotation?(bb->orientationCode+(motion->direction==CW?1:3))%4:bb->orientationCode;
 			finalPos = motion->finalPos + bb->position;
 			cout << finalPos << "," << orient << endl;
-			rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link_node.tga", motion->direction,motion->fromConId,motion->toConId,finalPos,orient,0.083333333));
+			rotateBlockSubMenu->addButton(new GlutRotation2DButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link_node.tga", motion->isRotation,motion->fromConId,motion->direction+4,finalPos,orient,0.083333333));
 		}
 	}
 	

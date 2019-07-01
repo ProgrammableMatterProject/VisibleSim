@@ -496,6 +496,85 @@ public:
                                               int direction) override;
 };
 
+/*! @brief Horizontal Hexagonal 2D Lattice
+ * 
+ * Used by HexaNode blocks. Be careful, the 2 dimensions are **x and y**.
+ *
+ */
+class HHLattice : public HLattice {
+	// This is in the same order as pickingTextures / NeighborDirections
+	vector<Cell3DPosition> nCellsOdd{
+		Cell3DPosition(1,0,0),  // RIGHT
+		Cell3DPosition(1,1,0), // TOP-RIGHT
+		Cell3DPosition(0,1,0), // TOP-LEFT
+		Cell3DPosition(-1,0,0), // LEFT
+		Cell3DPosition(0,-1,0), // BOTTOM-LEFT
+		Cell3DPosition(1,-1,0)  // BOTTOM-RIGHT
+	}; //!< Vector containing relative position of neighboring cells for even(z) cells
+	vector<Cell3DPosition> nCellsEven{
+		Cell3DPosition(1,0,0),  // RIGHT
+		Cell3DPosition(0,1,0), // TOP-RIGHT
+		Cell3DPosition(-1,1,0), // TOP-LEFT
+		Cell3DPosition(-1,0,0), // LEFT
+		Cell3DPosition(-1,-1,0), // BOTTOM-LEFT
+		Cell3DPosition(0,-1,0)   // BOTTOM-RIGHT
+	}; //!< Vector containing relative position of neighboring cells for odd(z) cells
+	
+	static const string directionName[];
+public:
+	enum Direction {Right = 0, TopRight = 1, TopLeft = 2,
+		Left = 3, BottomLeft = 4, BottomRight = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+		//!< @copydoc Lattice::getOppositeDirection
+		virtual short getOppositeDirection(short d) override;
+		//!< @copydoc Lattice::getDirectionString
+		virtual string getDirectionString(short d) override;
+		
+		/**
+		 * @brief HHLattice constructor.
+		 */
+		HHLattice();
+		/**
+		 * @brief HHLattice constructor.
+		 * @param gsz The size of the grid
+		 * @param gsc The real size of a block on the grid, also equal to the scale of the grid
+		 */
+		HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
+		/**
+		 * @brief HLattice destructor.
+		 */
+		~HHLattice();
+		
+		/**
+		 * @copydoc Lattice::gridToUnscaledWorldPosition
+		 */
+		virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+		/**
+		 * @copydoc Lattice::unscaledWorldToGridPosition
+		 */
+		virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+		/**
+		 * @copydoc Lattice::gridToWorldPosition
+		 */
+		virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) override;
+		/**
+		 * @copydoc Lattice::worldToGridPosition
+		 */
+		virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
+		/**
+		 * @copydoc Lattice::getRelativeConnectivity
+		 */
+		virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override;
+		/**
+		 * @copydoc Lattice::getMaxNumNeighbors
+		 */
+		virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
+		/**
+		 * @copydoc Lattice::getCellInDirection
+		 */
+		virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,int direction) override;
+};
+
+
 /*! @brief 3D Face-Centered Cubic Lattice
  *
  * Used by Catoms3D

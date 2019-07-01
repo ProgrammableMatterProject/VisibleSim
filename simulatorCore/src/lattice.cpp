@@ -317,6 +317,92 @@ string HLattice::getDirectionString(short d) {
     return directionName[d];
 }
 
+/********************* HHLattice *********************/
+HHLattice::HHLattice() : HLattice() {}
+HHLattice::HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : HLattice(gsz,gsc) {}
+HHLattice::~HHLattice() {}
+
+Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
+	Vector3D res;
+	
+	res.pt[2] = 0;
+	res.pt[1] = pos[1]*M_SQRT3_2;
+	res.pt[0] = pos[0]+0.5*pos[1]; 
+	
+	return res;
+}
+
+Vector3D HHLattice::gridToWorldPosition(const Cell3DPosition &pos) {
+	return gridToUnscaledWorldPosition(pos).dot(Vector3D(gridScale[0], 1, 1));
+}
+
+Cell3DPosition HHLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
+	Cell3DPosition res;
+	
+	res.pt[2] = 0;
+	res.pt[1] = round(pos[2]/M_SQRT3_2);              // grid is 2D (x,y)
+	res.pt[0] = round(pos[0] - res.pt[1]* 0.5);
+	
+	return res;
+}
+
+Cell3DPosition HHLattice::worldToGridPosition(const Vector3D &pos) {
+	Cell3DPosition res;
+	
+	res.pt[2] = 0;
+	res.pt[1] = round(pos[2] / (M_SQRT3_2 * gridScale[2]));
+	res.pt[0] = round(pos[0] / gridScale[0] - res.pt[2] * 0.5);
+	return res;
+}
+
+vector<Cell3DPosition> HHLattice::getRelativeConnectivity(const Cell3DPosition &p) {
+	return IS_EVEN(p[2]) ? nCellsEven : nCellsOdd;
+}
+
+Cell3DPosition HHLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) {
+	return pRef + getRelativeConnectivity(pRef)[direction];
+}
+
+
+/************************************************************
+ *   HHLattice::NeighborDirections
+ ************************************************************/
+
+const string HHLattice::directionName[] = {"Right","TopRight","TopLeft",
+	"Left","BottomLeft","BottomRight"};
+	
+	short HHLattice::getOppositeDirection(short d) {
+		switch (Direction(d)) {
+			case BottomLeft:
+				return TopRight;
+				break;
+			case Left:
+				return Right;
+				break;
+			case TopLeft:
+				return BottomRight;
+				break;
+			case BottomRight:
+				return TopLeft;
+				break;
+			case Right:
+				return Left;
+				break;
+			case TopRight:
+				return BottomLeft;
+				break;
+			default:
+				ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+				return -1;
+				break;
+		}
+	}
+	
+	string HHLattice::getDirectionString(short d) {
+		return directionName[d];
+	}
+	
+
 /********************* SLattice *********************/
 SLattice::SLattice() : Lattice2D() {}
 SLattice::SLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice2D(gsz,gsc) {}
