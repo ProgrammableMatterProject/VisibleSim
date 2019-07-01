@@ -15,7 +15,7 @@
 #include "scheduler.h"
 #include "events.h"
 #include "trace.h"
-#include "teleportationEvents.h"
+#include "nodeMotionEvents.h"
 #include "nodeMotionEngine.h"
 
 using namespace Node;
@@ -23,8 +23,6 @@ using namespace Node;
 NodeDemoBlockCode::NodeDemoBlockCode(NodeBlock *host):NodeBlockCode(host) {
     scheduler = getScheduler();
     node = (NodeBlock*)hostBlock;
-		
-		
 }
 
 NodeDemoBlockCode::~NodeDemoBlockCode() {
@@ -45,7 +43,7 @@ void NodeDemoBlockCode::startup() {
 			Cell3DPosition destination = node->position + (*ci)->finalPos;
 			previousPivot = (*ci)->toConId;
 			cout << "previousPivot=" << (*ci)->toConId << "   md=" << (*ci)->direction << endl;
-			scheduler->schedule(new TeleportationStartEvent(scheduler->now()+1000000, node,destination));
+			scheduler->schedule(new NodeMotionStartEvent(scheduler->now()+1000000, node,destination,(*ci)->toConId));
 		}
 		
 	} else {
@@ -144,7 +142,7 @@ void NodeDemoBlockCode::processLocalEvent(EventPtr pev) {
 			}
 		} break;
 		
-		case EVENT_TELEPORTATION_END: {
+		case EVENT_NODEMOTION_END: {
 			motionEnd();
 		} break;
 		
@@ -165,6 +163,6 @@ void NodeDemoBlockCode::motionEnd() {
 		Cell3DPosition destination = node->position + (*ci)->finalPos;
 		previousPivot = (*ci)->toConId;
 		cout << "previousPivot=" << (*ci)->toConId << "   md=" << (*ci)->direction << endl;
-		scheduler->schedule(new TeleportationStartEvent(scheduler->now()+1000000, node,destination));
+		scheduler->schedule(new NodeMotionStartEvent(scheduler->now()+1000000, node,destination,(*ci)->toConId));
 	}
 }

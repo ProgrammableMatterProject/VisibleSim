@@ -62,13 +62,12 @@ void NodeBlockCode::processLocalEvent(EventPtr pev) {
             onTap(face);
         } break;
 
-        case EVENT_TELEPORTATION_END: {
+				case EVENT_NODEMOTION_END: {
 #ifdef verbose
             info.str("");
             info << "rec.: EVENT_MOTION_END";
             scheduler->trace(info.str(),hostBlock->blockId);
 #endif
-            NodeBlock*nb = (NodeBlock*)hostBlock;
             onMotionEnd();
         }  break;
     }
