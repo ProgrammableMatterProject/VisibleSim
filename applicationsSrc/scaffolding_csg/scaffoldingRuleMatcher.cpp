@@ -238,9 +238,11 @@ bool ScaffoldingRuleMatcher::isInSandbox(const Cell3DPosition& pos) const {
     // cout << "y: " << isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2 + 2) << endl;
     // cout << "z: " << isInRange(pos[2], -3, 0) << endl;
 
-    return isInMesh(pos) and isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2 + 2)
-        and isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2 + 2)
-        and isInRange(pos[2], -3, 0);
+    // return isInMesh(pos) and isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2 + 2)
+    //     and isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2 + 2)
+    //     and isInRange(pos[2], -3, 0);
+
+    return isInMesh(pos) and pos[2] < 0;
 }
 
 bool ScaffoldingRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
@@ -251,8 +253,8 @@ bool ScaffoldingRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
         or isSupportModule(pos);
 }
 
-bool ScaffoldingRuleMatcher::isInMeshOrSandbox(const Cell3DPosition& pos) const {
-    return (isInGrid(pos) and isInMesh(pos)) or isInSandbox(pos);
+bool ScaffoldingRuleMatcher::isInCSGMeshOrSandbox(const Cell3DPosition& pos) const {
+    return (isInCSG(pos) or isSupportModule(pos)) or isInSandbox(pos);
 }
 
 bool ScaffoldingRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
@@ -436,7 +438,7 @@ short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, Bran
         // if (bi == OppXBranch or bi == OppYBranch)
         //     cout << "OppN" << i << ": " << pos + (i + 1) * getBranchUnitOffset(bi) << endl;
         const Cell3DPosition bPos = pos + (i + 1) * getBranchUnitOffset(bi);
-        if (not isInGrid(bPos) or not isInMesh(bPos) or not lambda(bPos))
+        if (not isInMesh(bPos) or not lambda(bPos))
             return i;
     }
 
@@ -605,9 +607,9 @@ getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const {
 
 short ScaffoldingRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) const {
     // cout << "norm: " << pos << endl;
-    // cout << "isInMeshOrSandbox: " << isInMeshOrSandbox(pos) << endl;
+    // cout << "isInCSGMeshOrSandbox: " << isInCSGMeshOrSandbox(pos) << endl;
 
-    if (isInMeshOrSandbox(pos) and not isTileRoot(pos)) {
+    if (isInCSGMeshOrSandbox(pos) and not isTileRoot(pos)) {
         if (isOnZBranch(pos)) return ZBranch;
         if (isOnRevZBranch(pos)) return RevZBranch;
         if (isOnLZBranch(pos)) return LZBranch;

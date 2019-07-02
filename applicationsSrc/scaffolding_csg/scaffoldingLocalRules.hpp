@@ -395,7 +395,7 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x001, LR_LZ_EPL, Cell3DPosition(-2, 0, 0), 2),
             Cell3DPosition(0, -1, 1) }, // OPP_X2 2
     { LRKeyTuple(0x081, LR_LZ_EPL, Cell3DPosition(-3, 0, 0), 2),
-            Cell3DPosition(-1, -1, 1) }, // OPP_X3 2
+            Cell3DPosition(-1, -1, 0) }, // OPP_X3 2
     { LRKeyTuple(0x081, LR_LZ_EPL, Cell3DPosition(-4, 0, 0), 2),
             Cell3DPosition(-1, -1, 1) }, // OPP_X4 2
     { LRKeyTuple(0x081, LR_LZ_EPL, Cell3DPosition(-5, 0, 0), 2),
@@ -441,7 +441,7 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x002, LR_RevZ_EPL, Cell3DPosition(0, -2, 0), 2),
             Cell3DPosition(0, 0, 1) }, // OPP_Y2 2
     { LRKeyTuple(0x003, LR_RevZ_EPL, Cell3DPosition(0, -3, 0), 2),
-            Cell3DPosition(0, -1, 1) }, // OPP_Y3 2
+            Cell3DPosition(1, -1, 0) }, // OPP_Y3 2
     { LRKeyTuple(0x003, LR_RevZ_EPL, Cell3DPosition(0, -4, 0), 2),
             Cell3DPosition(0, -1, 1) }, // OPP_Y4 2
     { LRKeyTuple(0x003, LR_RevZ_EPL, Cell3DPosition(0, -5, 0), 2),
@@ -479,6 +479,8 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
             Cell3DPosition(-1, 0, 0) }, // S_Z 1
     { LRKeyTuple(0x280, LR_Z_EPL, Cell3DPosition(1, 1, 0), 2),
             Cell3DPosition(0, -1, 1) }, // S_Z 2
+    { LRKeyTuple(0x290, LR_Z_EPL, Cell3DPosition(1, 1, 0), 2),
+      Cell3DPosition(0, -1, 1) }, // S_Z 2 ALT
     // Alt: climb to the left
     { LRKeyTuple(0x100, LR_Z_EPL_ALT, Cell3DPosition(1, 1, 0), 1),
             Cell3DPosition(0 , -1, 0) }, // S_Z 1 ALT

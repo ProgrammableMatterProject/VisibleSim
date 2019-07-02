@@ -27,8 +27,8 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
     Cell3DPosition nextHopPos = Cell3DPosition(-10,-10,-10);
 
     // Routing catom must be part of the scaffold
-    // VS_ASSERT(mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(mabc.catom->position)));
-    if (not mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(mabc.catom->position)));
+    // VS_ASSERT(mabc.ruleMatcher->isInCSGMeshOrSandbox(mabc.norm(mabc.catom->position)));
+    if (not mabc.ruleMatcher->isInCSGMeshOrSandbox(mabc.norm(mabc.catom->position)));
 
     // Attempt direct delivery
     P2PNetworkInterface *nextHopItf = mabc.catom->getInterface(dstPos);
@@ -40,13 +40,13 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
     // Otherwise, check if dstPos is part of scaffold and if that's not the case,
     //  find the nearest scaffold position for routing. Use the position with the lowest
     //  ZYX, as it is the most likely to have already been built
-    bool dstInMesh = mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(dstPos));
+    bool dstInMesh = mabc.ruleMatcher->isInCSGMeshOrSandbox(mabc.norm(dstPos));
     Cell3DPosition dstSFPos = dstInMesh ? dstPos :
         Cell3DPosition(numeric_limits<short>::max(), numeric_limits<short>::max(),
                        numeric_limits<short>::max());
     if (not dstInMesh) {
         for (const Cell3DPosition& nPos : mabc.lattice->getActiveNeighborCells(dstPos)) {
-            if (mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(nPos))
+            if (mabc.ruleMatcher->isInCSGMeshOrSandbox(mabc.norm(nPos))
                 and Cell3DPosition::compare_ZYX(nPos, dstSFPos))
                 dstSFPos = nPos;
         }
@@ -56,7 +56,7 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
         VS_ASSERT(dstSFPos != Cell3DPosition(numeric_limits<short>::max(),
                                              numeric_limits<short>::max(),
                                              numeric_limits<short>::max())
-                  and mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(dstSFPos)));
+                  and mabc.ruleMatcher->isInCSGMeshOrSandbox(mabc.norm(dstSFPos)));
     }
 
     // Re-attempt direct delivery

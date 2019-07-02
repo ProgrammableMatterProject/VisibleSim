@@ -126,7 +126,7 @@ void ScaffoldingBlockCode::onBlockSelected() {
         }
     }
 
-    // if (ruleMatcher->isInMeshOrSandbox(norm(catom->position))) {
+    // if (ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position))) {
     //     if (not ruleMatcher->isTileRoot(norm(catom->position))) {
     //         cout << "branch: " << ruleMatcher->branch_to_string(branch)
     //              << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
@@ -142,7 +142,10 @@ void ScaffoldingBlockCode::onBlockSelected() {
 
     // cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
     // cout << "role: " << ScaffoldingRuleMatcher::roleToString(role) << endl;
-    cout << "localNeighborhood: " << int_to_hex_str((int)getMeshLocalNeighborhoodState().to_ulong(), 3) << endl;
+    cout << "localNeighborhood: " << int_to_hex_str((int)getMeshLocalNeighborhoodState().to_ulong(), 3) << " (";
+    for (int i = 0; i < 12; i++)
+        cout << getMeshLocalNeighborhoodState()[i];
+    cout << ")" << endl;
 
     cout << "targetPosition: " << targetPosition;
     if (targetPosition != Cell3DPosition(0,0,0)
@@ -158,7 +161,7 @@ void ScaffoldingBlockCode::onBlockSelected() {
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     cout << "isInGrid: " << ruleMatcher->isInGrid(norm(catom->position)) << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
-    cout << "isInMeshOrSandbox: "<<ruleMatcher->isInMeshOrSandbox(norm(catom->position)) <<endl;
+    cout << "isInCSGMeshOrSandbox: "<<ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position)) <<endl;
 
     // cout << "matchingLocalRule: " << matchingLocalRule << endl;
     // cout << "greenLightIsOn: " << greenLightIsOn << endl;
@@ -389,7 +392,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                 if (addNeighborToProcess > 0) addNeighborToProcess--;
 
                 if (not rotating) {
-                    if (not ruleMatcher->isInMeshOrSandbox(norm(pos))) {
+                    if (not ruleMatcher->isInCSGMeshOrSandbox(norm(pos))) {
                         // Neighbor is not a module in terminal position
                         SET_GREEN_LIGHT(false);
                     }
@@ -487,7 +490,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                     // Check whether or not neighbor is in mesh or sandbox
                     //  if not, module must be a freeagent that was waiting
                     //  for this catom to get into place.
-                    if (not ruleMatcher->isInMeshOrSandbox(norm(nCell))) {
+                    if (not ruleMatcher->isInCSGMeshOrSandbox(norm(nCell))) {
                         // In that case catom should turn red immediatly
                         shouldTurnRed = true;
                         break;
@@ -854,9 +857,13 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
     std::array<int, 6> catomsReqs = {-1,-1,-1,-1,-1,-1};
 
     for (short bi = 0; bi < N_BRANCHES; bi++) {
+        cout << ruleMatcher->branch_to_string((BranchIndex)bi) << " -> ";
         catomsReqs[bi] = ruleMatcher->
             resourcesForCSGBranch(norm(pos), (BranchIndex)bi);
-        if (catomsReqs[bi] == 0) catomsReqs[bi] = -1;
+        cout << catomsReqs[bi] << endl;
+        if (catomsReqs[bi] == 0) {
+            catomsReqs[bi] = -1;
+        }
     }
 
     deque<pair<ScafComponent, ScafComponent>> deque;
@@ -911,6 +918,15 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
     if (catomsReqs[RZBranch] > 3) deque.push_back({ RZ_4, RZ_EPL }); // 20
     if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL }); // 22
     if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL }); // 22
+
+    cout << "Construction Queue: [ " << endl;
+    cout << "|   Component   |   EPL  |" << endl << endl;
+    for (const auto& pair : deque) {
+        cout << "\t{ " << ruleMatcher->component_to_string(pair.first) << ", "
+             << ruleMatcher->component_to_string(pair.second) << " }" << endl;
+    }
+    cout << "]" << endl;
+
 
     return deque;
 }
@@ -1232,22 +1248,24 @@ void ScaffoldingBlockCode::initializeSandbox() {
 
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
-                // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
+                if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
+                if (ruleMatcher->isInCSG(norm(pos)) and
+                    not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
                 // if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
                 // if (ruleMatcher->isOnXCSGBorder(norm(pos))) lattice->highlightCell(pos, RED);
 
-                if (ruleMatcher->isOnXCSGBorder(norm(pos)))
-                    lattice->highlightCell(pos, GREEN);
+                // if (ruleMatcher->isOnXCSGBorder(norm(pos)))
+                //     lattice->highlightCell(pos, GREEN);
 
-                if (ruleMatcher->isOnYCSGBorder(norm(pos)))
-                    lattice->highlightCell(pos, BLUE);
+                // if (ruleMatcher->isOnYCSGBorder(norm(pos)))
+                //     lattice->highlightCell(pos, BLUE);
 
-                if (ruleMatcher->isOnXOppCSGBorder(norm(pos)))
-                    lattice->highlightCell(pos, RED);
+                // if (ruleMatcher->isOnXOppCSGBorder(norm(pos)))
+                //     lattice->highlightCell(pos, RED);
 
-                if (ruleMatcher->isOnYOppCSGBorder(norm(pos)))
-                    lattice->highlightCell(pos, BLACK);
+                // if (ruleMatcher->isOnYOppCSGBorder(norm(pos)))
+                //     lattice->highlightCell(pos, BLACK);
 
                 // if (ruleMatcher->isOnYCSGBorder(norm(pos))) lattice->highlightCell(pos, BLUE);
             }
@@ -1290,7 +1308,7 @@ std::bitset<12> ScaffoldingBlockCode::getMeshLocalNeighborhoodState() {
     for (const Cell3DPosition& nPos : localNeighborhood) {
         P2PNetworkInterface *itf = catom->getInterface(nPos);
         bitset.set(catom->getAbsoluteDirection(nPos),
-                   itf->isConnected() and ruleMatcher->isInMeshOrSandbox(norm(nPos)));
+                   itf->isConnected() and ruleMatcher->isInCSGMeshOrSandbox(norm(nPos)));
     }
 
     return bitset;
@@ -1378,7 +1396,7 @@ findTargetLightAroundTarget(const Cell3DPosition& targetPos,
                        numeric_limits<short>::min(),
                        numeric_limits<short>::min());
     for (const auto& cell : lattice->getActiveNeighborCells(targetPos)) {
-        if (ruleMatcher->isInMeshOrSandbox(norm(cell))
+        if (ruleMatcher->isInCSGMeshOrSandbox(norm(cell))
             and cell != catom->position
             and cell != finalPos
             and (reverse ? Cell3DPosition::compare_ZYX(cell, bestCandidate)

@@ -9,7 +9,12 @@
 
     <targetList>
       <target format="csg">
-        <csg translate="5,5,2" content="sphere(40, true); " />
+        <csg boundingBox="false" content=" translate([10,10,2])
+ difference() {
+     sphere(10, true);
+     translate([0,0,-10])
+     cube([20,20,20], true);
+ }" />
       </target>
     </targetList>
 

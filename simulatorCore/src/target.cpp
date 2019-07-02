@@ -352,7 +352,7 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     if (boundingBox) csgRoot->boundingBox(bb);
 }
 
-// #define OFFSET_BOUNDINGBOX
+//#define OFFSET_BOUNDINGBOX
 
 Vector3D TargetCSG::gridToCSGPosition(const Cell3DPosition &pos) const {
     Vector3D res = getWorld()->lattice->gridToUnscaledWorldPosition(pos);

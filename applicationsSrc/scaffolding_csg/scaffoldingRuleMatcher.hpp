@@ -151,7 +151,7 @@ public:
 
     bool isInGrid(const Cell3DPosition& pos) const;
     bool isInMesh(const Cell3DPosition& pos) const;
-    bool isInMeshOrSandbox(const Cell3DPosition& pos) const;
+    bool isInCSGMeshOrSandbox(const Cell3DPosition& pos) const;
     bool isInSandbox(const Cell3DPosition& pos) const;
     bool isOnPartialBorderMesh(const Cell3DPosition& pos) const;
 
