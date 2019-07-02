@@ -125,13 +125,7 @@ public:
      * @param pos position to condiser
      * @return target color at cell p
      */
-    virtual const Color getTargetColor(const Cell3DPosition &pos) = 0;
-
-    /**
-     * @brief Returns the target bounding box
-     * @param bb boundingbox to be written
-     */
-    virtual void boundingBox(BoundingBox &bb) = 0;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const = 0;
 
     /*
      * @brief Draw geometry of the target in the interfaces
@@ -139,6 +133,9 @@ public:
     virtual void glDraw();
 
     friend ostream& operator<<(ostream& out,const Target *t);
+
+    virtual void highlight() const {};
+    virtual void unhighlight() const {};
 };  // class Target
 
 //<! @brief A target modeled as a container of unique positions and colors.c
@@ -174,13 +171,10 @@ public:
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
-    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
 
-    //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb) override;
-
-    virtual void highlight();
-    virtual void unhighlight();
+    virtual void highlight() const override;
+    virtual void unhighlight() const override;
 
     friend ostream& operator<<(ostream& f,const TargetGrid&tg);
 };  // class TargetGrid
@@ -238,7 +232,7 @@ public:
 
 //<! @brief A target modeled as an ensemble of shapes
 class TargetCSG : public Target {
-public: // FIXME:
+public:
     CSGNode *csgRoot;
     BoundingBox bb;
     Vector3D translate; // Can be used to to offset the origin of the CSG object by x,y,z
@@ -249,12 +243,15 @@ public:
     TargetCSG(TiXmlNode *targetNode);
     virtual ~TargetCSG() {};
 
-    //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb) override;
+    /**
+     * @brief Returns the target bounding box
+     * @param bb boundingbox to be written
+     */
+    virtual void boundingBox(BoundingBox &bb);
     //!< @copydoc Target::isInTarget
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
-    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
 
     /**
      * @brief Grid to unscaled world position within bounding box
@@ -280,7 +277,8 @@ public:
      */
     virtual void glDraw() override;
 
-    void highlight();
+    virtual void highlight() const override;
+    virtual void unhighlight() const override;
 };  // class TargetCSG
 
 //<! @brief A target modeling a surface by a point cloud
@@ -333,10 +331,7 @@ public:
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
-    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
-
-    //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb) override;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
 
     virtual void glDraw() override;
 };  // class TargetSurface
