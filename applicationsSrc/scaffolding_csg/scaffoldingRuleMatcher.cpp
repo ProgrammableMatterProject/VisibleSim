@@ -263,10 +263,12 @@ bool ScaffoldingRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
 }
 
 bool ScaffoldingRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
+    // return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
+    //     and (pos[2] / B) % 2 == 1
+    //     and isInRange(pos[0], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[0], B));
+
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
-        // FIXME: Make lambda below
-        and isInGrid(pos) and (pos[2] / B) % 2 == 1
-        and isInRange(pos[0], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[0], B));
+        and not isInsideFn(pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0));
 }
 
 bool ScaffoldingRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
@@ -301,10 +303,12 @@ bool ScaffoldingRuleMatcher::isOnYOppBorder(const Cell3DPosition& pos) const {
 }
 
 bool ScaffoldingRuleMatcher::isOnOppYBranch(const Cell3DPosition& pos) const {
+    // return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
+    //     // FIXME: Make lambda below
+    //     and (pos[2] / B) % 2 == 1
+    //     and isInRange(pos[1], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[1], B));
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
-        // FIXME: Make lambda below
-        and isInGrid(pos) and (pos[2] / B) % 2 == 1
-        and isInRange(pos[1], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[1], B));
+        and not isInsideFn(pos - m_mod(pos[1], B) * Cell3DPosition(0, 1, 0));
 }
 
 bool ScaffoldingRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
@@ -424,9 +428,7 @@ bool ScaffoldingRuleMatcher::shouldGrowBranch(const Cell3DPosition& pos,
                                        [](const Cell3DPosition& pos){ return true; }) const {
     const Cell3DPosition &nextTR = pos + (B - 1) * getBranchUnitOffset(bi);
 
-    return isTileRoot(pos)
-        and isInMesh(nextTR) and isInGrid(nextTR)
-        and lambda(pos);
+    return isTileRoot(pos) and isInMesh(nextTR) and lambda(pos);
 }
 
 short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, BranchIndex bi,
@@ -960,7 +962,7 @@ hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
 
     // TR has incident branch is parent tile TR exists and is in object
     const Cell3DPosition& trIVB = getTileRootAtEndOfBranch(pos, bi, false);
-    return isInGrid(trIVB) and lambda(trIVB);
+    return lambda(trIVB);
 }
 
 const Cell3DPosition

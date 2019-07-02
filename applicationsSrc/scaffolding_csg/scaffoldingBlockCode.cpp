@@ -159,7 +159,6 @@ void ScaffoldingBlockCode::onBlockSelected() {
     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
                     targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
-    cout << "isInGrid: " << ruleMatcher->isInGrid(norm(catom->position)) << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     cout << "isInCSGMeshOrSandbox: "<<ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position)) <<endl;
 
@@ -224,6 +223,7 @@ void ScaffoldingBlockCode::startup() {
         denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)));
 
     // Will not be used, set green and forget about it
+    // FIXME:
     if (not ruleMatcher->isInGrid(norm(coordinatorPos))) {
 
         if (ruleMatcher->isInMesh(norm(catom->position)))
@@ -743,7 +743,6 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     // cout << ruleMatcher->branch_to_string(bi) << " - tipp: " << tipp << endl;
     // cout << "gtrpfmp: " << denorm(ruleMatcher->getTileRootPositionForMeshPosition(norm(tipp))) << endl;
     return (not ruleMatcher->isInCSG(crd))
-        or (not ruleMatcher->isInGrid(crd))
         or ((bi == XBranch or bi == YBranch)
             and ((bi == XBranch and ruleMatcher->isOnYCSGBorder(norm(trp)))
                  or (bi == YBranch and ruleMatcher->isOnXCSGBorder(norm(trp)))))
@@ -857,10 +856,10 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
     std::array<int, 6> catomsReqs = {-1,-1,-1,-1,-1,-1};
 
     for (short bi = 0; bi < N_BRANCHES; bi++) {
-        cout << ruleMatcher->branch_to_string((BranchIndex)bi) << " -> ";
+        // cout << ruleMatcher->branch_to_string((BranchIndex)bi) << " -> ";
         catomsReqs[bi] = ruleMatcher->
             resourcesForCSGBranch(norm(pos), (BranchIndex)bi);
-        cout << catomsReqs[bi] << endl;
+        // cout << catomsReqs[bi] << endl;
         if (catomsReqs[bi] == 0) {
             catomsReqs[bi] = -1;
         }
@@ -918,15 +917,6 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
     if (catomsReqs[RZBranch] > 3) deque.push_back({ RZ_4, RZ_EPL }); // 20
     if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL }); // 22
     if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL }); // 22
-
-    cout << "Construction Queue: [ " << endl;
-    cout << "|   Component   |   EPL  |" << endl << endl;
-    for (const auto& pair : deque) {
-        cout << "\t{ " << ruleMatcher->component_to_string(pair.first) << ", "
-             << ruleMatcher->component_to_string(pair.second) << " }" << endl;
-    }
-    cout << "]" << endl;
-
 
     return deque;
 }
@@ -1251,9 +1241,13 @@ void ScaffoldingBlockCode::initializeSandbox() {
                 if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
                 if (ruleMatcher->isInCSG(norm(pos)) and
                     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
-                // if (not ruleMatcher->isInCSG(norm(pos))) continue;
+                if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
-                // if (ruleMatcher->isOnXCSGBorder(norm(pos))) lattice->highlightCell(pos, RED);
+                // if (ruleMatcher->isOnOppXBranch(norm(pos)))
+                //     lattice->highlightCell(pos, ORANGE);
+
+                // if (ruleMatcher->isOnOppYBranch(norm(pos)))
+                //     lattice->highlightCell(pos, MAGENTA);
 
                 // if (ruleMatcher->isOnXCSGBorder(norm(pos)))
                 //     lattice->highlightCell(pos, GREEN);
@@ -1266,8 +1260,6 @@ void ScaffoldingBlockCode::initializeSandbox() {
 
                 // if (ruleMatcher->isOnYOppCSGBorder(norm(pos)))
                 //     lattice->highlightCell(pos, BLACK);
-
-                // if (ruleMatcher->isOnYCSGBorder(norm(pos))) lattice->highlightCell(pos, BLUE);
             }
         }
     }
