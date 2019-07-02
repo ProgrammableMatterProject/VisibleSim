@@ -415,7 +415,7 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x300, LR_LZ_EPL, Cell3DPosition(-5, 0, 0), 4),
             Cell3DPosition(-1, 0, 0) }, // OPP_X5 4
 
-    { LRKeyTuple(0x200, LR_LZ_EPL, Cell3DPosition(-5, 0, 0), 6),
+    { LRKeyTuple(0x200, LR_LZ_EPL, Cell3DPosition(-5, 0, 0), 5),
             Cell3DPosition(0, 0, -1) }, // OPP_X5 5
 
     // OPP Y
@@ -461,7 +461,7 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x600, LR_RevZ_EPL, Cell3DPosition(0, -5, 0), 4),
             Cell3DPosition(0, -1, 0) }, // OPP_Y5 4
 
-    { LRKeyTuple(0x400, LR_RevZ_EPL, Cell3DPosition(0, -5, 0), 6),
+    { LRKeyTuple(0x400, LR_RevZ_EPL, Cell3DPosition(0, -5, 0), 5),
             Cell3DPosition(1, 0, -1) }, // OPP_Y5 5
 
     // New cases

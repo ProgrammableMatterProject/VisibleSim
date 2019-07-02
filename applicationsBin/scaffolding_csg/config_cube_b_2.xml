@@ -9,7 +9,9 @@
 
     <targetList>
       <target format="csg">
-        <csg translate="5,5,2" content="cube([6, 6, 6], true);" />
+        <csg boundingBox="true"
+             translate="5,5,2"
+             content="cube([6, 6, 6]);" />
       </target>
     </targetList>
 

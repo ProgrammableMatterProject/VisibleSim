@@ -173,6 +173,12 @@ void ScaffoldingBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
+    if (meshSeedPosition == Cell3DPosition(-1,-1,-1)) {
+        meshSeedPosition = determineScaffoldSeedPosition();
+        cout << "meshSeedPosition: " << meshSeedPosition << endl;
+        VS_ASSERT_MSG(meshSeedPosition != Cell3DPosition(-1,-1,-1), "Cannot find where to place scaffold seed tile. Please check CSG placement.");
+    }
+
     VS_ASSERT_MSG(target, "Target is null, aborting...");
 
     // Initialize scaffold bounds
@@ -1239,8 +1245,8 @@ void ScaffoldingBlockCode::initializeSandbox() {
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
                 if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
-                if (ruleMatcher->isInCSG(norm(pos)) and
-                    not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
+                // if (ruleMatcher->isInCSG(norm(pos)) and
+                //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
                 if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
                 // if (ruleMatcher->isOnOppXBranch(norm(pos)))
@@ -1701,4 +1707,27 @@ int ScaffoldingBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
 
     return count + resourcesForTileThrough(denorm(ruleMatcher->getTileRootAtEndOfBranch(
                                                       norm(pos), bi)), eplAlt);
+}
+
+Cell3DPosition ScaffoldingBlockCode::determineScaffoldSeedPosition() {
+    // const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+    const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+
+    Cell3DPosition pos;
+    const Cell3DPosition &sctPos = Cell3DPosition(3,3,3); // SANDBOX_CORNER_TILE_POS
+
+    target->highlight();
+
+    // Scan base for lowest XY
+    for (short ix = sctPos[0]; ix < ulb[0]; ix+=B) {
+        for (short iy = sctPos[1]; iy < ulb[1]; iy+=B) {
+            pos.set(ix, iy, sctPos[2]); // 3 is grid base over scaffold
+            lattice->highlightCell(pos, ORANGE);
+            if (target->isInTarget(pos)) {
+                return pos;
+            }
+        }
+    }
+
+    return Cell3DPosition(-1, -1, -1);
 }

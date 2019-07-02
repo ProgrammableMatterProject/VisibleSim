@@ -41,7 +41,7 @@ public:
     inline static int X_MIN = numeric_limits<int>::max();
     inline static int Y_MIN = numeric_limits<int>::max();
     inline static int Z_MIN = numeric_limits<int>::max();
-    inline static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(3,3,3);
+    inline static Cell3DPosition meshSeedPosition = Cell3DPosition(-1, -1, -1);
     static int nbCatomsInPlace;
     static int nbMessages;
     static Time t0;
@@ -445,6 +445,11 @@ y the module
     std::map<ScafComponent, int> sandboxResourcesRequirement; //!< returns the number of modules to be spawned by the current coordinator at the sandbox level on epl ScafComponent
 
     int resourcesForTileThrough(const Cell3DPosition& pos, ScafComponent epl) const;
+
+    /**
+     * @return the position of the scaffold seed for the current CSG object
+     */
+    Cell3DPosition determineScaffoldSeedPosition();
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */
