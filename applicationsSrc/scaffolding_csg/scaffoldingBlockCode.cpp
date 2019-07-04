@@ -547,10 +547,12 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                     const Cell3DPosition& nextPosAlongBranch =
                         catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
+                    vector<BranchIndex> missingIncidentBranches;
                     // Coordinate to let the last arrived branch continue the construction
                     if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
                         and ruleMatcher->isInCSG(norm(nextPosAlongBranch))) {
-                        if (incidentBranchesToRootAreComplete(nextPosAlongBranch)) {
+                        if (incidentBranchesToRootAreComplete(nextPosAlongBranch,
+                                                              missingIncidentBranches)) {
                             // lattice->highlightCell(nextPosAlongBranch, BLUE);
                             // cout << "Some branches are missing around "
                             //      << nextPosAlongBranch << endl;
@@ -599,12 +601,9 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                             log_send_message();
                         } else{
                             stringstream info;
-                            info << " not ready to send coordinator ready"
-                                 << " - NP: " << nextPosAlongBranch << " : "
-                                 << ruleMatcher->isTileRoot(norm(nextPosAlongBranch));
-                            if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch)))
-                                info << " "
-                                     << incidentBranchesToRootAreComplete(nextPosAlongBranch);
+                            info << " not ready to send coordinator ready: ";
+                            for (const BranchIndex& bi : missingIncidentBranches)
+                                info << ruleMatcher->branch_to_string(bi);
                             scheduler->trace(info.str(), catom->blockId, RED);
                         }
                     }
@@ -626,11 +625,12 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
 
                     // Check that that new tile root is in place and if absent,
                     //  wait for above layer XY modules to notify completion of previous tiles
+                    vector<BranchIndex> mb;
                     if (lattice->isFree(coordinatorPos)) { //FIXME: NON-LOCAL!
                         if (ruleMatcher->isOnXCSGBorder(norm(coordinatorPos))
                             and ruleMatcher->isOnYCSGBorder(norm(coordinatorPos))
                             and coordinatorPos[2] == scaffoldSeedPos[2]
-                            and incidentBranchesToRootAreComplete(coordinatorPos)
+                            and incidentBranchesToRootAreComplete(coordinatorPos, mb)
                             and claimedTileRoots.find(coordinatorPos)==claimedTileRoots.end()) {
                             targetPosition = coordinatorPos;
                             stringstream info;
@@ -724,7 +724,8 @@ bool ScaffoldingBlockCode::handleModuleInsertionToIncidentBranch(BranchIndex bid
 }
 
 bool ScaffoldingBlockCode::
-incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
+incidentBranchesToRootAreComplete(const Cell3DPosition& pos,
+                                  vector<BranchIndex>& missingBranches) {
     VS_ASSERT(ruleMatcher->isInMesh(norm(pos))
               and ruleMatcher->isTileRoot(norm(pos)));
 
@@ -733,25 +734,22 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
     for (int i = 0; i < N_INC_BRANCHES; i++) {
         if (!isIncidentBranchTipInPlace(pos, static_cast<BranchIndex>(i))) {
             // cout << ruleMatcher->branch_to_string(static_cast<BranchIndex>(i)) << "NOT in place!!!" << endl;
-            return false;
+            missingBranches.push_back((BranchIndex)i);
         }
         // cout << ruleMatcher->branch_to_string(static_cast<BranchIndex>(i)) << " in place" << endl;
     }
 
-    return true;
+    return missingBranches.empty();
 }
 
 bool ScaffoldingBlockCode::
 isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& tipp = trp + ruleMatcher->getIncidentTipRelativePos(bi);
-    const Cell3DPosition& crd = ruleMatcher->getTileRootPositionForMeshPosition(norm(tipp));
-    // cout << ruleMatcher->branch_to_string(bi) << " - tipp: " << tipp << endl;
-    // cout << "gtrpfmp: " << denorm(ruleMatcher->getTileRootPositionForMeshPosition(norm(tipp))) << endl;
-    return (not ruleMatcher->isInCSG(crd))
-        or ((bi == XBranch or bi == YBranch)
-            and ((bi == XBranch and ruleMatcher->isOnYCSGBorder(norm(trp)))
-                 or (bi == YBranch and ruleMatcher->isOnXCSGBorder(norm(trp)))))
-        or lattice->cellHasBlock(tipp);
+    const Cell3DPosition& crd = denorm(ruleMatcher->getTileRootPositionForMeshPosition(norm(tipp)));
+
+    return (lattice->cellHasBlock(tipp) // branch must be drawn an is present
+            or (not ruleMatcher->isInCSG(norm(crd))
+                or not ruleMatcher->shouldGrowCSGBranch(norm(crd), bi)));
 }
 
 void ScaffoldingBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
@@ -885,13 +883,12 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
     deque.push_back({ S_RevZ, RZ_EPL }); // 4
 
     if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RevZ_EPL });
-    if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RevZ_EPL });
-    if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RevZ_EPL });
-    if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RevZ_EPL });
-
     if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, LZ_EPL });
+    if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RevZ_EPL });
     if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, LZ_EPL });
+    if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RevZ_EPL });
     if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, LZ_EPL });
+    if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RevZ_EPL });
     if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, LZ_EPL });
 
     if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL }); // 5

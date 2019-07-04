@@ -356,9 +356,11 @@ y the module
     /**
      * Checks if all the incident branches around a tile root are complete
      * @param pos position of the tile root
+     * @param missingBranches a vector that will be filled with the ids of missing branches
      * @return true if all incident branches are complete, false otherwise
      */
-    bool incidentBranchesToRootAreComplete(const Cell3DPosition& pos);
+    bool incidentBranchesToRootAreComplete(const Cell3DPosition& pos,
+                                           vector<BranchIndex>& missingBranches);
 
     /**
      * Checks if branch tip from branch bi is in place around tile root at trp
