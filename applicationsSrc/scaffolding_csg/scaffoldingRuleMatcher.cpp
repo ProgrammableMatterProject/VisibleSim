@@ -429,9 +429,7 @@ bool ScaffoldingRuleMatcher::shouldGrowBranch(const Cell3DPosition& pos,
                                        BranchIndex bi,
                                        function<bool(const Cell3DPosition&)> lambda =
                                        [](const Cell3DPosition& pos){ return true; }) const {
-    const Cell3DPosition &nextTR = pos + (B - 1) * getBranchUnitOffset(bi);
-
-    return isTileRoot(pos) and isInMesh(nextTR) and lambda(pos);
+    return resourcesForBranch(pos, bi, lambda) > 0;
 }
 
 short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, BranchIndex bi,

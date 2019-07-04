@@ -106,8 +106,9 @@ void ScaffoldingBlockCode::onBlockSelected() {
     }
 
     if (ruleMatcher->isTileRoot(norm(catom->position))) {
-        for (int i = 0; i < N_INC_BRANCHES; i++)
-            cout << "hasIncidentBranch(" << i << "): "
+        for (int i = 0; i < N_BRANCHES; i++)
+            cout << "hasIncidentBranch("
+                 << ruleMatcher->branch_to_string((BranchIndex)i) << "): "
                  << ruleMatcher->hasIncidentCSGBranch(norm(catom->position), (BranchIndex)i)
                  << endl;
         cout << "numIncidentVerticalBranches: " << numIncidentVerticalBranches << endl;
@@ -280,7 +281,7 @@ void ScaffoldingBlockCode::startup() {
 
         // Add z = B to ensure that level -1 catoms are handled properly
         short bi = ruleMatcher->determineBranchForPosition(norm(catom->position));
-        VS_ASSERT_MSG(bi >= 0 and bi < N_INC_BRANCHES, "cannot determine branch.");
+        VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
         branch = static_cast<BranchIndex>(bi);
     } else if (scaffoldSeedPos[2] - catom->position[2] > 1) {
         role = PassiveBeam; // nothing to be done here for visual decoration only
@@ -288,7 +289,7 @@ void ScaffoldingBlockCode::startup() {
         // Add z = B to ensure that level -1 catoms are handled properly
         short bi = ruleMatcher->getBranchIndexForNonRootPosition(norm(catom->position)
                                                                  + Cell3DPosition(0, 0, B));
-        VS_ASSERT_MSG(bi >= 0 and bi < N_INC_BRANCHES, "cannot determine branch.");
+        VS_ASSERT_MSG(bi >= 0 and bi < N_BRANCHES, "cannot determine branch.");
         branch = static_cast<BranchIndex>(bi);
     } else {
         // Catom is active module summoned from the sandbox and that will be used for scaffolding
@@ -414,7 +415,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                     }
                 }
 
-            } else if (role == FreeAgent) {
+            } else if (role == FreeAgent and catom->position != targetPosition) {
                 if (matchingLocalRule) {
                     matchRulesAndProbeGreenLight();
                 }
@@ -588,7 +589,11 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                             and ruleMatcher->isOnLZBranch(norm(pos)))
                                         or (ruleMatcher->isOnXCSGBorder(norm(nextPosAlongBranch))
                                             and (nextPosAlongBranch[2] / B) % 2 == 0
-                                            and ruleMatcher->isOnRZBranch(norm(pos)))) {
+                                            and ruleMatcher->isOnRZBranch(norm(pos)))
+                                        or (ruleMatcher->getNbIncidentVerticalCSGBranches(
+                                                norm(coordinatorPos)) == 3
+                                            and ruleMatcher->isOnRevZBranch(norm(pos)))
+                                        ) {
                                         nextHopItf = catom->getInterface(pos);
                                         break;
                                     }
@@ -631,7 +636,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                             and ruleMatcher->isOnYCSGBorder(norm(coordinatorPos))
                             and coordinatorPos[2] == scaffoldSeedPos[2]
                             and incidentBranchesToRootAreComplete(coordinatorPos, mb)
-                            and claimedTileRoots.find(coordinatorPos)==claimedTileRoots.end()) {
+                            and claimedTileRoots.find(coordinatorPos)==claimedTileRoots.end()){
                             targetPosition = coordinatorPos;
                             stringstream info;
                             info << " claims coordinator position at " << targetPosition;
@@ -731,7 +736,7 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos,
 
     // cout << "ibtrac for " << pos << ": " << endl;
 
-    for (int i = 0; i < N_INC_BRANCHES; i++) {
+    for (int i = 0; i < N_BRANCHES; i++) {
         if (!isIncidentBranchTipInPlace(pos, static_cast<BranchIndex>(i))) {
             // cout << ruleMatcher->branch_to_string(static_cast<BranchIndex>(i)) << "NOT in place!!!" << endl;
             missingBranches.push_back((BranchIndex)i);
@@ -747,7 +752,7 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& tipp = trp + ruleMatcher->getIncidentTipRelativePos(bi);
     const Cell3DPosition& crd = denorm(ruleMatcher->getTileRootPositionForMeshPosition(norm(tipp)));
 
-    return (lattice->cellHasBlock(tipp) // branch must be drawn an is present
+    return (lattice->cellHasBlock(tipp) // branch must be drawn and is present
             or (not ruleMatcher->isInCSG(norm(crd))
                 or not ruleMatcher->shouldGrowCSGBranch(norm(crd), bi)));
 }
@@ -870,17 +875,41 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
 
     deque<pair<ScafComponent, ScafComponent>> deque;
 
-    if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RevZ_EPL });
-    if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
 
-    deque.push_back({ S_RZ, RZ_EPL});  // 0
-    deque.push_back({ S_LZ, LZ_EPL }); // 0
+    if (catom->position[1] < scaffoldSeedPos[1]) {
+        deque.push_back({ S_Z, Z_EPL});  // 0
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, RZ_EPL }); // 3
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
 
-    if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL }); // 1
-    if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL }); // 3
+        deque.push_back({ S_RZ, RZ_EPL }); // 4
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RevZ_EPL });
 
-    deque.push_back({ S_Z, LZ_EPL }); // 4
-    deque.push_back({ S_RevZ, RZ_EPL }); // 4
+        deque.push_back({ S_RevZ, RZ_EPL }); // 4
+        deque.push_back({ S_LZ, Z_EPL }); // 0
+
+    } else if (catom->position[0] < scaffoldSeedPos[0]) {
+        deque.push_back({ S_Z, Z_EPL});  // 0
+        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, LZ_EPL }); // 1
+        deque.push_back({ S_RevZ, RevZ_EPL }); // 4
+
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
+
+        deque.push_back({ S_RZ, Z_EPL }); // 4
+        deque.push_back({ S_LZ, RevZ_EPL }); // 0
+    } else {
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RevZ_EPL });
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
+
+        deque.push_back({ S_RZ, RZ_EPL});  // 0
+        deque.push_back({ S_LZ, LZ_EPL }); // 0
+
+        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL }); // 1
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL }); // 3
+
+        deque.push_back({ S_Z, LZ_EPL }); // 4
+        deque.push_back({ S_RevZ, RZ_EPL }); // 4
+    }
 
     if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RevZ_EPL });
     if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, LZ_EPL });
@@ -1393,7 +1422,20 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
         else if (lastVisitedEPL == RZ_EPL
                  and targetPosition - coordinatorPos == Cell3DPosition(1,-1,0)) // Z_RZ
             lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
+    } else if (coordinatorPos[1] < scaffoldSeedPos[1]
+               and coordinatorPos[2] == scaffoldSeedPos[2]
+               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppYBranch)) {
+
+        // OPPY Activation cases
+        if (lastVisitedEPL == LZ_EPL
+            and targetPosition - coordinatorPos == Cell3DPosition(-1,1,0)) // S_LZ
+            lastVisitedEPL = LR_EPL::LR_LZ_EPL_ALT;
+        else if (lastVisitedEPL == Z_EPL
+            and targetPosition - coordinatorPos == Cell3DPosition(1,1,0)) // S_Z
+            lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
+
     }
+
 
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,
@@ -1702,18 +1744,18 @@ void ScaffoldingBlockCode::highlightCSGScaffold() {
 
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
-                if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
+                // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
                 // if (ruleMatcher->isInCSG(norm(pos)) and
                 //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
                 if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
                 // if (ruleMatcher->isInMesh(norm(pos))) lattice->highlightCell(pos, RED);
 
-                if (ruleMatcher->isOnOppXBranch(norm(pos)))
-                    lattice->highlightCell(pos, ORANGE);
+                // if (ruleMatcher->isOnOppXBranch(norm(pos)))
+                //     lattice->highlightCell(pos, ORANGE);
 
-                if (ruleMatcher->isOnOppYBranch(norm(pos)))
-                    lattice->highlightCell(pos, MAGENTA);
+                // if (ruleMatcher->isOnOppYBranch(norm(pos)))
+                //     lattice->highlightCell(pos, MAGENTA);
 
                 // if (ruleMatcher->isOnXCSGBorder(norm(pos)))
                 //     lattice->highlightCell(pos, GREEN);

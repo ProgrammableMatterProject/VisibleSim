@@ -27,7 +27,6 @@ static const uint MC_ST_B = 69;
 
 namespace MeshCoating {
 
-static inline const int N_INC_BRANCHES = 6;
 enum BranchIndex { ZBranch, RevZBranch, LZBranch,
     RZBranch, XBranch, YBranch, OppXBranch, OppYBranch, N_BRANCHES };
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip, Support};
