@@ -1273,6 +1273,13 @@ std::bitset<12> ScaffoldingBlockCode::getMeshLocalNeighborhoodState() {
 }
 
 void ScaffoldingBlockCode::matchRulesAndRotate() {
+    if (lastVisitedEPL == Z_EPL
+               and targetPosition - coordinatorPos == Cell3DPosition(0,0,0) // R
+               and coordinatorPos[0] < scaffoldSeedPos[0]
+               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppXBranch)) {
+        lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
+    }
+
     Cell3DPosition nextPos;
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,
@@ -1399,6 +1406,11 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
                and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), RevZBranch)
                and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), RZBranch)
                and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), ZBranch)) {
+        lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
+    } else if (lastVisitedEPL == Z_EPL
+               and targetPosition - coordinatorPos == Cell3DPosition(0,0,0) // R
+               and coordinatorPos[0] < scaffoldSeedPos[0]
+               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppXBranch)) {
         lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
     }
 

@@ -969,8 +969,15 @@ hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
     // Invalid input
     if (not isTileRoot(pos)) return false;
 
-    // TR has incident branch is parent tile TR exists and is in object
+    // TR has incident branch if its parent tile TR exists and is in object
     const Cell3DPosition& trIVB = getTileRootAtEndOfBranch(pos, bi, false);
+
+    // Make a distinction between X/Y and OppX/Y branches
+    const Cell3DPosition bPos = pos + 1 * getBranchUnitOffset(bi);
+    if ( (bi == OppXBranch and not isOnOppXBranch(bPos))
+         or (bi == OppYBranch and not isOnOppYBranch(bPos)) )
+        return false;
+
     return lambda(trIVB);
 }
 
