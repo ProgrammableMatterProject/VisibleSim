@@ -442,8 +442,11 @@ short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, Bran
     for (int i = 0; i < B - 1; i++) {
         const Cell3DPosition bPos = pos + (i + 1) * getBranchUnitOffset(bi);
 
-        if ( (bi == OppXBranch and not isOnOppXBranch(bPos))
-             or (bi == OppYBranch and not isOnOppYBranch(bPos)))
+        if ( ((bi == OppXBranch and not isOnOppXBranch(bPos))
+              or (bi == OppYBranch and not isOnOppYBranch(bPos)))
+             or
+             ((bi == XBranch and isOnOppXBranch(bPos))
+              or (bi == YBranch and isOnOppYBranch(bPos))) )
             return 0;
 
         if (not isInMesh(bPos) or not lambda(bPos)) {

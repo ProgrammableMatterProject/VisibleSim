@@ -503,7 +503,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         mabc.claimedTileRoots.insert(mabc.coordinatorPos);
         mabc.scheduler->trace(info.str(), mabc.catom->blockId, GREY);
 
-        mabc.matchRulesAndRotate();
+        mabc.matchRulesAndProbeGreenLight();
     }
 }
 
@@ -512,9 +512,12 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
     ScaffoldingBlockCode& mabc = *static_cast<ScaffoldingBlockCode*>(bc);
 
 
-    // if (mabc.catom->position != dstPos) {
-    //     route(bc); return;
-    // }
+    // Special case, traffic management not needed for R
+    if (finalComponent == R) {
+        mabc.sendMessage(new GreenLightIsOnMessage(mabc.catom->position, srcPos),
+                                 destinationInterface, MSG_DELAY_MC, 0);
+        return;
+    }
 
     if (mabc.role != FreeAgent) { // module is pivot
         bool nextToSender = mabc.isAdjacentToPosition(srcPos);

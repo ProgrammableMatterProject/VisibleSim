@@ -373,7 +373,6 @@ y the module
     void scheduleRotationTo(const Cell3DPosition& pos, Catoms3DBlock* pivot);
 
     std::bitset<12> getMeshLocalNeighborhoodState();
-    void matchRulesAndRotate();
     void matchRulesAndProbeGreenLight();
 
     void initializeTileRoot();

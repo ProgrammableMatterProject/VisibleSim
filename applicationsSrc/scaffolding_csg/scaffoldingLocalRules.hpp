@@ -793,6 +793,8 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x003, LR_RevZ_EPL, Cell3DPosition(-3, 0, 0), 2),
       Cell3DPosition(-1, 1, 0) }, // OPP_X3 2
 
+    // OPP_X ACTIVATION BELOW
+
     // R from Z_EPL with OPPX Activation
     { LRKeyTuple(0x100, LR_Z_EPL_ALT, Cell3DPosition(0, 0, 0), 1),
       Cell3DPosition(-1, 0, 0) }, // R 1
@@ -806,6 +808,12 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
       Cell3DPosition(0, -1, 0) }, // R 3
     { LRKeyTuple(0x900, LR_Z_EPL, Cell3DPosition(0, 0, 0), 4),
       Cell3DPosition(-1, 0, 0) }, // R 4
+
+    // S_RZ with XBranch already in place
+    { LRKeyTuple(0x800, LR_RZ_EPL_ALT, Cell3DPosition(1, -1, 0), 1),
+      Cell3DPosition(-1,0, 0) }, // S_RZ 1
+    { LRKeyTuple(0x402, LR_RZ_EPL_ALT, Cell3DPosition(1, -1, 0), 2),
+      Cell3DPosition(0, 0, 1) }, // S_RZ 2
 };
 
 /**
