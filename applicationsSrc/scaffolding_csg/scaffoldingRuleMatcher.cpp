@@ -269,7 +269,8 @@ bool ScaffoldingRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
 
     const Cell3DPosition& oppXTr = pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0);
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
-        and (not isInsideFn(oppXTr) or (oppXTr[2] == 0 and oppXTr[0] < seed[0]));
+        and (not isInsideFn(oppXTr)
+             or (oppXTr[2] == 0 and oppXTr[0] < seed[0] and oppXTr[1] == seed[1]));
 }
 
 bool ScaffoldingRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
@@ -311,7 +312,8 @@ bool ScaffoldingRuleMatcher::isOnOppYBranch(const Cell3DPosition& pos) const {
 
     const Cell3DPosition& oppYTr = pos - m_mod(pos[1], B) * Cell3DPosition(0, 1, 0);
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
-        and (not isInsideFn(oppYTr) or (oppYTr[2] == 0 and oppYTr[1] < seed[1]));
+        and (not isInsideFn(oppYTr)
+             or (oppYTr[2] == 0 and oppYTr[1] < seed[1] and oppYTr[0] == seed[0]));
 }
 
 bool ScaffoldingRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
@@ -974,7 +976,7 @@ hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
     const Cell3DPosition& trIVB = getTileRootAtEndOfBranch(pos, bi, false);
 
     // Make a distinction between X/Y and OppX/Y branches
-    const Cell3DPosition bPos = pos + 1 * getBranchUnitOffset(bi);
+    const Cell3DPosition bPos = pos + -1 * getBranchUnitOffset(bi);
     if ( (bi == OppXBranch and not isOnOppXBranch(bPos))
          or (bi == OppYBranch and not isOnOppYBranch(bPos)) )
         return false;

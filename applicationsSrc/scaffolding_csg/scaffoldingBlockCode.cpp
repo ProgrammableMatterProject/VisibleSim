@@ -593,6 +593,14 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                         or (ruleMatcher->getNbIncidentVerticalCSGBranches(
                                                 norm(coordinatorPos)) == 3
                                             and ruleMatcher->isOnRevZBranch(norm(pos)))
+                                        or (ruleMatcher->getNbIncidentVerticalCSGBranches(
+                                                norm(coordinatorPos)) == 2
+                                            and branch == XBranch
+                                            and ruleMatcher->isOnRZBranch(norm(pos)))
+                                        or (ruleMatcher->getNbIncidentVerticalCSGBranches(
+                                                norm(coordinatorPos)) == 2
+                                            and branch == YBranch
+                                            and ruleMatcher->isOnLZBranch(norm(pos)))
                                         ) {
                                         nextHopItf = catom->getInterface(pos);
                                         break;
@@ -876,7 +884,8 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
     deque<pair<ScafComponent, ScafComponent>> deque;
 
 
-    if (catom->position[1] < scaffoldSeedPos[1]) {
+    if (catom->position[1] < scaffoldSeedPos[1]
+        and ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppYBranch)) {
         deque.push_back({ S_Z, Z_EPL});  // 0
         if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, RZ_EPL }); // 3
         if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
@@ -887,7 +896,8 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
         deque.push_back({ S_RevZ, RZ_EPL }); // 4
         deque.push_back({ S_LZ, Z_EPL }); // 0
 
-    } else if (catom->position[0] < scaffoldSeedPos[0]) {
+    } else if (catom->position[0] < scaffoldSeedPos[0]
+               and ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppXBranch)) {
         deque.push_back({ S_Z, Z_EPL});  // 0
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, LZ_EPL }); // 1
         deque.push_back({ S_RevZ, RevZ_EPL }); // 4
