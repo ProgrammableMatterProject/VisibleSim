@@ -41,7 +41,8 @@ public:
     inline static int X_MIN = numeric_limits<int>::max();
     inline static int Y_MIN = numeric_limits<int>::max();
     inline static int Z_MIN = numeric_limits<int>::max();
-    inline static Cell3DPosition meshSeedPosition = Cell3DPosition(-1, -1, -1);
+    inline static Cell3DPosition scaffoldSeedPos = Cell3DPosition(-1, -1, -1);
+    inline static const Cell3DPosition& sbSeedPos = Cell3DPosition(3, 3, 3);
     static int nbCatomsInPlace;
     static int nbMessages;
     static Time t0;
@@ -79,7 +80,7 @@ public:
     }
 
     inline bool isInSandbox(const Cell3DPosition& pos) const {
-        return pos[2] < meshSeedPosition[2];
+        return pos[2] < scaffoldSeedPos[2];
     }
 
     int debugColorIndex = 0;
@@ -450,6 +451,8 @@ y the module
      * @return the position of the scaffold seed for the current CSG object
      */
     Cell3DPosition determineScaffoldSeedPosition();
+
+    void highlightCSGScaffold();
 };
 
-#endif /* MESHCATOMS3DBLOCKCODE_H_ */
+#endif /* SCAFFOLDINGBLOCKCODE_H_ */

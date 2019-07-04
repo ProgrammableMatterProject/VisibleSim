@@ -424,7 +424,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
                 hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RZBranch)
                 and not mabc.ruleMatcher->
                 hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), LZBranch)
-                and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2])
+                and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2])
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else if (mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos))
                      and mabc.ruleMatcher->
@@ -438,7 +438,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             if (mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos))
                 and mabc.ruleMatcher->
                 getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
-                and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2]
+                and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2]
                 and not mabc.ruleMatcher->
                 hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
@@ -448,7 +448,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             if (mabc.ruleMatcher->isOnXOppCSGBorder(mabc.norm(mabc.coordinatorPos))
                 and mabc.ruleMatcher->
                 getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
-                and mabc.coordinatorPos[2] > mabc.meshSeedPosition[2]
+                and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2]
                 and not mabc.ruleMatcher->
                 hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);

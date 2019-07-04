@@ -267,8 +267,9 @@ bool ScaffoldingRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
     //     and (pos[2] / B) % 2 == 1
     //     and isInRange(pos[0], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[0], B));
 
+    const Cell3DPosition& oppXTr = pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0);
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
-        and not isInsideFn(pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0));
+        and (not isInsideFn(oppXTr) or (oppXTr[2] == 0 and oppXTr[0] < seed[0]));
 }
 
 bool ScaffoldingRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
@@ -307,8 +308,10 @@ bool ScaffoldingRuleMatcher::isOnOppYBranch(const Cell3DPosition& pos) const {
     //     // FIXME: Make lambda below
     //     and (pos[2] / B) % 2 == 1
     //     and isInRange(pos[1], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[1], B));
+
+    const Cell3DPosition& oppYTr = pos - m_mod(pos[1], B) * Cell3DPosition(0, 1, 0);
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
-        and not isInsideFn(pos - m_mod(pos[1], B) * Cell3DPosition(0, 1, 0));
+        and (not isInsideFn(oppYTr) or (oppYTr[2] == 0 and oppYTr[1] < seed[1]));
 }
 
 bool ScaffoldingRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
@@ -437,13 +440,19 @@ short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, Bran
     if (not isTileRoot(pos)) return 0;
 
     for (int i = 0; i < B - 1; i++) {
-        // if (bi == OppXBranch or bi == OppYBranch)
-        //     cout << "OppN" << i << ": " << pos + (i + 1) * getBranchUnitOffset(bi) << endl;
         const Cell3DPosition bPos = pos + (i + 1) * getBranchUnitOffset(bi);
-        if (not isInMesh(bPos) or not lambda(bPos))
+
+        if ( (bi == OppXBranch and not isOnOppXBranch(bPos))
+             or (bi == OppYBranch and not isOnOppYBranch(bPos)))
+            return 0;
+
+        if (not isInMesh(bPos) or not lambda(bPos)) {
+            // cout << branch_to_string(bi) << ": " << i << endl;
             return i;
+        }
     }
 
+    // cout << branch_to_string(bi) << ": " << B - 1 << endl;
     return B - 1;
 }
 
@@ -1120,10 +1129,6 @@ bool ScaffoldingRuleMatcher::shouldGrowCSGBranch(const Cell3DPosition& pos,
 
 short ScaffoldingRuleMatcher::resourcesForCSGBranch(const Cell3DPosition& pos,
                                               BranchIndex bi) const {
-    if ( (bi == OppXBranch and not isOnYCSGBorder(pos))
-         or (bi == OppYBranch and not isOnXCSGBorder(pos)))
-        return 0;
-
     return resourcesForBranch(pos, bi, [this](const Cell3DPosition& p){ return isInCSG(p); });
 }
 
