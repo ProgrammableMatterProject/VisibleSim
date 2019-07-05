@@ -74,6 +74,9 @@ public:
      * @copydoc World::glDrawSpecificBg
      */
     virtual void glDrawSpecificBg() override;
+
+    using World::updateGlData; // Suppresses hiding warning
+
     /**
      * @copydoc World::updateGlData
      */

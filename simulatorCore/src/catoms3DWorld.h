@@ -171,12 +171,15 @@ public:
     virtual void glDrawId() override;
     virtual void glDrawIdByMaterial() override;
     virtual void glDrawSpecificBg() override;
-    void updateGlData(BuildingBlock *bb) override;
+    virtual void updateGlData(BuildingBlock *bb) override;
+
+    using World::updateGlData; // Suppresses hiding warning
+    void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
+    void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
     void updateGlData(Catoms3DBlock*blc,const Color &color);
     void updateGlData(Catoms3DBlock*blc, bool visible);
     void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
-    void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
-    void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
+
     virtual void setSelectedFace(int n) override;
     virtual void exportConfiguration() override;
 

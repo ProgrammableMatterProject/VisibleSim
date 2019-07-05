@@ -68,6 +68,8 @@ public:
     virtual void glDrawId() override;
     virtual void glDrawIdByMaterial() override;
     virtual void glDrawBackground();
+
+    using World::updateGlData; // Suppresses hiding warning
     void updateGlData(BuildingBlock *bb) override;
     void updateGlData(DatomsBlock*blc,const Color &color);
     void updateGlData(DatomsBlock*blc, bool visible);

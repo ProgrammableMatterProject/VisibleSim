@@ -60,6 +60,7 @@ public:
     bool areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2);
     bool areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &pos2);
 
+    using World::updateGlData; // Suppresses hiding warning
     virtual void updateGlData(BuildingBlock*blc) override;
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position);
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position, double angle);
