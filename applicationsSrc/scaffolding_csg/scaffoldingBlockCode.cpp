@@ -591,15 +591,15 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                             and (nextPosAlongBranch[2] / B) % 2 == 0
                                             and ruleMatcher->isOnRZBranch(norm(pos)))
                                         or (ruleMatcher->getNbIncidentVerticalCSGBranches(
-                                                norm(coordinatorPos)) == 3
+                                                norm(nextPosAlongBranch)) == 3
                                             and ruleMatcher->isOnRevZBranch(norm(pos)))
                                         or (ruleMatcher->getNbIncidentVerticalCSGBranches(
-                                                norm(coordinatorPos)) == 2
+                                                norm(nextPosAlongBranch)) == 2
                                             and branch == XBranch
                                             and ruleMatcher->isOnRZBranch(norm(pos)))
                                         or (ruleMatcher->getNbIncidentVerticalCSGBranches(
-                                                norm(coordinatorPos)) == 2
-                                            and branch == YBranch
+                                                norm(nextPosAlongBranch)) == 2
+                                            and bi == YBranch
                                             and ruleMatcher->isOnLZBranch(norm(pos)))
                                         ) {
                                         nextHopItf = catom->getInterface(pos);
@@ -614,9 +614,9 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                             log_send_message();
                         } else{
                             stringstream info;
-                            info << " not ready to send coordinator ready: ";
+                            info << " TR-: ";
                             for (const BranchIndex& bi : missingIncidentBranches)
-                                info << ruleMatcher->branch_to_string(bi);
+                                info << ruleMatcher->branch_to_string(bi) << " ";
                             scheduler->trace(info.str(), catom->blockId, RED);
                         }
                     }
@@ -1854,6 +1854,7 @@ void ScaffoldingBlockCode::highlightCSGScaffold() {
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
                 // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
+
                 if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
                 // if (ruleMatcher->isInCSG(norm(pos)) and
