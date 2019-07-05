@@ -1853,7 +1853,7 @@ void ScaffoldingBlockCode::highlightCSGScaffold() {
 
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
-                // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
+                if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
 
                 if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
