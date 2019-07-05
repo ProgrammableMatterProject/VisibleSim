@@ -962,9 +962,10 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
 
     deque<pair<MeshComponent, MeshComponent>> deque;
 
-    std::function fn_isInCube = [this](const Cell3DPosition& p) {
-                                    return ruleMatcher->isInCube(p) ;
-                                };
+    std::function<bool (const Cell3DPosition&)> fn_isInCube =
+        [this](const Cell3DPosition& p) {
+            return ruleMatcher->isInCube(p) ;
+        };
 
     if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RevZ_EPL });
     if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
@@ -1036,9 +1037,10 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
 
     deque<pair<MeshComponent, MeshComponent>> deque;
 
-    std::function fn_isInCube = [this](const Cell3DPosition& p) {
-                                    return ruleMatcher->isInCube(p) ;
-                                };
+    std::function<bool (const Cell3DPosition&)> fn_isInCube =
+        [this](const Cell3DPosition& p) {
+            return ruleMatcher->isInCube(p) ;
+        };
 
     int nbIVB = ruleMatcher->getNbIncidentVerticalCubeBranches(norm(pos));
 
