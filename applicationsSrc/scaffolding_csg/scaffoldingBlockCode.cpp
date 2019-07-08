@@ -214,7 +214,7 @@ void ScaffoldingBlockCode::startup() {
                                              X_MIN - sbSeedPos[0],
                                              Y_MIN - sbSeedPos[1],
                                              Z_MIN - sbSeedPos[2],
-                                             B, norm(scaffoldSeedPos),
+                                             B,
                                              [this](const Cell3DPosition& pos) {
                                                  return isInsideCSGFn(pos);
                                              });
@@ -593,13 +593,9 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                         or (ruleMatcher->getNbIncidentVerticalCSGBranches(
                                                 norm(nextPosAlongBranch)) == 3
                                             and ruleMatcher->isOnRevZBranch(norm(pos)))
-                                        or (ruleMatcher->getNbIncidentVerticalCSGBranches(
-                                                norm(nextPosAlongBranch)) == 2
-                                            and branch == XBranch
+                                        or (bi == XBranch
                                             and ruleMatcher->isOnRZBranch(norm(pos)))
-                                        or (ruleMatcher->getNbIncidentVerticalCSGBranches(
-                                                norm(nextPosAlongBranch)) == 2
-                                            and bi == YBranch
+                                        or (bi == YBranch
                                             and ruleMatcher->isOnLZBranch(norm(pos)))
                                         ) {
                                         nextHopItf = catom->getInterface(pos);
@@ -758,11 +754,16 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos,
 bool ScaffoldingBlockCode::
 isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& tipp = trp + ruleMatcher->getIncidentTipRelativePos(bi);
-    const Cell3DPosition& crd = denorm(ruleMatcher->getTileRootPositionForMeshPosition(norm(tipp)));
+    const Cell3DPosition& crd = denorm(ruleMatcher->
+                                       getTileRootPositionForMeshPosition(norm(tipp)));
 
     return (lattice->cellHasBlock(tipp) // branch must be drawn and is present
-            or (not ruleMatcher->isInCSG(norm(crd))
-                or not ruleMatcher->shouldGrowCSGBranch(norm(crd), bi)));
+            or (// (bi < OppXBranch) and
+                (not ruleMatcher->isInCSG(norm(crd))
+                 or ruleMatcher->resourcesForCSGBranch(norm(crd), bi) < (B - 1)))
+            // or ((bi >= OppXBranch)
+            //     and (ruleMatcher->resourcesForCSGBranch(norm(crd), bi - 2)) < (B - 1)))
+        );
 }
 
 void ScaffoldingBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
@@ -903,7 +904,7 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
         deque.push_back({ S_RevZ, RevZ_EPL }); // 4
 
         if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RZ_EPL });
-        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, RevZ_EPL });
 
         deque.push_back({ S_RZ, Z_EPL }); // 4
         deque.push_back({ S_LZ, RevZ_EPL }); // 0
@@ -1853,7 +1854,7 @@ void ScaffoldingBlockCode::highlightCSGScaffold() {
 
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
-                if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
+                // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
 
                 if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
@@ -1862,11 +1863,11 @@ void ScaffoldingBlockCode::highlightCSGScaffold() {
 
                 // if (ruleMatcher->isInMesh(norm(pos))) lattice->highlightCell(pos, RED);
 
-                // if (ruleMatcher->isOnOppXBranch(norm(pos)))
-                //     lattice->highlightCell(pos, ORANGE);
+                if (ruleMatcher->isOnOppXBranch(norm(pos)))
+                    lattice->highlightCell(pos, ORANGE);
 
-                // if (ruleMatcher->isOnOppYBranch(norm(pos)))
-                //     lattice->highlightCell(pos, MAGENTA);
+                if (ruleMatcher->isOnOppYBranch(norm(pos)))
+                    lattice->highlightCell(pos, MAGENTA);
 
                 // if (ruleMatcher->isOnXCSGBorder(norm(pos)))
                 //     lattice->highlightCell(pos, GREEN);
@@ -1881,5 +1882,16 @@ void ScaffoldingBlockCode::highlightCSGScaffold() {
                 //     lattice->highlightCell(pos, BLACK);
             }
         }
+    }
+
+    for (int z = 0; z < (Z_MAX / B); z++) {
+        const Cell3DPosition &seedPos = denorm(ruleMatcher->getSeedForCSGLayer(z));
+
+        if (seedPos != Cell3DPosition(-1,-1,-1))
+            lattice->highlightCell(seedPos, RED);
+        else
+            lattice->highlightCell(seedPos, BLACK);
+
+        cout << z << ": " << seedPos << endl;
     }
 }

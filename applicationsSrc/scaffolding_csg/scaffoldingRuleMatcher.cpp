@@ -270,7 +270,8 @@ bool ScaffoldingRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
     const Cell3DPosition& oppXTr = pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0);
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppXTr)
-             or (oppXTr[2] == 0 and oppXTr[0] < seed[0] and oppXTr[1] == seed[1]));
+             or (oppXTr[2] == 0 and oppXTr[0] < getSeedForCSGLayer(pos[2] / B)[0]
+                 and oppXTr[1] == getSeedForCSGLayer(pos[2] / B)[1]));
 }
 
 bool ScaffoldingRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
@@ -313,7 +314,8 @@ bool ScaffoldingRuleMatcher::isOnOppYBranch(const Cell3DPosition& pos) const {
     const Cell3DPosition& oppYTr = pos - m_mod(pos[1], B) * Cell3DPosition(0, 1, 0);
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppYTr)
-             or (oppYTr[2] == 0 and oppYTr[1] < seed[1] and oppYTr[0] == seed[0]));
+             or (oppYTr[2] == 0 and oppYTr[1] < getSeedForCSGLayer(pos[2] / B)[1]
+                 and oppYTr[0] == getSeedForCSGLayer(pos[2] / B)[0]));
 }
 
 bool ScaffoldingRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
@@ -678,8 +680,7 @@ ScaffoldingRuleMatcher::getTileRootPositionForMeshPosition(const Cell3DPosition&
             return pos - getPositionForComponent(S_LZ);
     } else if (isTileRoot(pos)) return pos;
 
-    BranchIndex bi = getBranchIndexForNonRootPosition(pos[2] >= 0 ?
-                                                      pos : pos + Cell3DPosition(0,0,B));
+    BranchIndex bi = getBranchIndexForNonRootPosition(pos);
 
     // cout << "bi: " << branch_to_string(bi) << endl;
 
@@ -1149,4 +1150,24 @@ bool ScaffoldingRuleMatcher::CSGTRAtBranchTipShouldGrowBranch(const Cell3DPositi
 
     const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
     return shouldGrowCSGBranch(tipTRPos, growthB);
+}
+
+Cell3DPosition ScaffoldingRuleMatcher::getSeedForCSGLayer(int z) const {
+    static std::map<int, Cell3DPosition> seedForCSGLayerCache;
+
+    if (seedForCSGLayerCache.find(z) != seedForCSGLayerCache.end())
+        return seedForCSGLayerCache.at(z);
+
+    int zReal = z * B;
+    int bound = X_MAX > Y_MAX ? X_MAX : Y_MAX;
+    Cell3DPosition pos;
+    for (int a = 0 - zReal / 2; a < bound - zReal / 2; a++) {
+        pos.set(a, a, zReal);
+        if (isInsideFn(pos) and isTileRoot(pos)) {
+            seedForCSGLayerCache.insert(make_pair(z, pos));
+            return pos;
+        }
+    }
+
+    return Cell3DPosition(-1,-1,-1);
 }

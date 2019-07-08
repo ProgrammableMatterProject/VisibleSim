@@ -67,14 +67,16 @@ class ScaffoldingRuleMatcher {
      */
     static std::array<Cell3DPosition, N_COMPONENTS> componentPosition;
 
-    inline static constexpr std::array<Cell3DPosition, 6> incidentTipRelativePos =
+    inline static constexpr std::array<Cell3DPosition, N_BRANCHES> incidentTipRelativePos =
     {
         Cell3DPosition(0,0,-1), // ZBranch
         Cell3DPosition(1,1,-1), // RevZBranch
         Cell3DPosition(1,0,-1), // LZBranch
         Cell3DPosition(0,1,-1), // RZBranch
         Cell3DPosition(-1,0,0), // XBranch
-        Cell3DPosition(0,-1,0) // YBranch
+        Cell3DPosition(0,-1,0), // YBranch
+        Cell3DPosition(1,0,0), // XOppBranch
+        Cell3DPosition(0,1,0) // YOppBranch
     };
 
     inline static constexpr std::array<Cell3DPosition, 12> entryPointRelativePos =
@@ -95,16 +97,15 @@ class ScaffoldingRuleMatcher {
         Cell3DPosition(-1,1,-1), // LZ_L_EPL
         Cell3DPosition(-1,0,-1) // RevZ_L_EPL
     };
-
 public:
 
     ScaffoldingRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _Z_MAX,
                            const uint _X_MIN, const uint _Y_MIN, const uint _Z_MIN,
-                           const uint _B, const Cell3DPosition &_seed,
+                           const uint _B,
                            const std::function<bool(const Cell3DPosition&)>_fn):
         X_MAX(_X_MAX), Y_MAX(_Y_MAX), Z_MAX(_Z_MAX),
         X_MIN(_X_MIN), Y_MIN(_Y_MIN), Z_MIN(_Z_MIN),
-        B(_B), seed(_seed), isInsideFn(_fn) {};
+        B(_B), isInsideFn(_fn) {};
     virtual ~ScaffoldingRuleMatcher() {};
 
     bool isOnXBranch(const Cell3DPosition& pos) const;
@@ -452,6 +453,15 @@ public:
     short getNbIncidentVerticalCSGBranches(const Cell3DPosition& pos) const;
 
     bool hasIncidentCSGBranch(const Cell3DPosition& pos, BranchIndex bi) const;
+
+    /**
+     * Returns the coordinates of the first TR along the xy diagonal of the CSG object
+     *  at tile layer z
+     * @param z
+     * @remark z is the tile level, which means that z = z_real / B
+     * @return position of the seed for plane z
+     */
+    Cell3DPosition getSeedForCSGLayer(int z) const;
 };
 
 }
