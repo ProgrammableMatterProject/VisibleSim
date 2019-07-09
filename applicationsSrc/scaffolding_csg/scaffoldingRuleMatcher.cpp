@@ -270,8 +270,8 @@ bool ScaffoldingRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
     const Cell3DPosition& oppXTr = pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0);
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppXTr)
-             or (oppXTr[2] == 0 and oppXTr[0] < getSeedForCSGLayer(pos[2] / B)[0]
-                 and oppXTr[1] == getSeedForCSGLayer(pos[2] / B)[1]));
+             or (oppXTr[0] < getSeedForCSGLayer(pos[2] / B)[0]
+                 and oppXTr[1] <= getSeedForCSGLayer(pos[2] / B)[1]));
 }
 
 bool ScaffoldingRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
@@ -314,8 +314,8 @@ bool ScaffoldingRuleMatcher::isOnOppYBranch(const Cell3DPosition& pos) const {
     const Cell3DPosition& oppYTr = pos - m_mod(pos[1], B) * Cell3DPosition(0, 1, 0);
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppYTr)
-             or (oppYTr[2] == 0 and oppYTr[1] < getSeedForCSGLayer(pos[2] / B)[1]
-                 and oppYTr[0] == getSeedForCSGLayer(pos[2] / B)[0]));
+             or (oppYTr[1] < getSeedForCSGLayer(pos[2] / B)[1]
+                 and oppYTr[0] <= getSeedForCSGLayer(pos[2] / B)[0]));
 }
 
 bool ScaffoldingRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
@@ -694,7 +694,8 @@ ScaffoldingRuleMatcher::getTileRootPositionForMeshPosition(const Cell3DPosition&
     int rank = std::max(mult[0], max(mult[1], mult[2]));
     // cout << "rank: " << rank << endl;
 
-    const Cell3DPosition& rPos = pos - rank * getBranchUnitOffset(bi);
+    const Cell3DPosition& rPos = bi < OppXBranch ?
+        pos - rank * getBranchUnitOffset(bi) : pos + rank * getBranchUnitOffset(bi);
 
     // cout << "rPos: " << mult << endl;
 
@@ -982,7 +983,7 @@ hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
          or (bi == OppYBranch and not isOnOppYBranch(bPos)) )
         return false;
 
-    return lambda(trIVB);
+    return lambda(trIVB) and resourcesForCSGBranch(trIVB, bi) == (B - 1);
 }
 
 const Cell3DPosition
