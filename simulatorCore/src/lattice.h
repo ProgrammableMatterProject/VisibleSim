@@ -503,27 +503,19 @@ public:
  */
 class HHLattice : public HLattice {
 	// This is in the same order as pickingTextures / NeighborDirections
-	vector<Cell3DPosition> nCellsOdd{
-		Cell3DPosition(1,0,0),  // RIGHT
-		Cell3DPosition(1,1,0), // TOP-RIGHT
-		Cell3DPosition(0,1,0), // TOP-LEFT
-		Cell3DPosition(-1,0,0), // LEFT
-		Cell3DPosition(0,-1,0), // BOTTOM-LEFT
-		Cell3DPosition(1,-1,0)  // BOTTOM-RIGHT
-	}; //!< Vector containing relative position of neighboring cells for even(z) cells
-	vector<Cell3DPosition> nCellsEven{
-		Cell3DPosition(1,0,0),  // RIGHT
-		Cell3DPosition(0,1,0), // TOP-RIGHT
-		Cell3DPosition(-1,1,0), // TOP-LEFT
-		Cell3DPosition(-1,0,0), // LEFT
-		Cell3DPosition(-1,-1,0), // BOTTOM-LEFT
-		Cell3DPosition(0,-1,0)   // BOTTOM-RIGHT
+	vector<Cell3DPosition> nCells{
+		Cell3DPosition(1,0,0),  // EAST
+		Cell3DPosition(0,1,0), // NORTH-EAST
+		Cell3DPosition(-1,1,0), // NORTH-WEST
+		Cell3DPosition(-1,0,0), // WEST
+		Cell3DPosition(0,-1,0), // SOUTH-WEST
+		Cell3DPosition(1,-1,0)   // SOUTH-EAST
 	}; //!< Vector containing relative position of neighboring cells for odd(z) cells
 	
 	static const string directionName[];
 public:
-	enum Direction {Right = 0, TopRight = 1, TopLeft = 2,
-		Left = 3, BottomLeft = 4, BottomRight = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+	enum Direction {EAST = 0, NORTH_EAST = 1, NORTH_WEST = 2,
+		WEST = 3, SOUTH_WEST = 4, SOUTH_EAST = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
 		//!< @copydoc Lattice::getOppositeDirection
 		virtual short getOppositeDirection(short d) override;
 		//!< @copydoc Lattice::getDirectionString
@@ -572,6 +564,8 @@ public:
 		 * @copydoc Lattice::getCellInDirection
 		 */
 		virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,int direction) override;
+		
+		Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; }
 };
 
 

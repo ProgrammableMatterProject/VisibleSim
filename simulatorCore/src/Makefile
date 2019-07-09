@@ -68,10 +68,14 @@ NODE_SRCS = nodeSimulator.cpp nodeBlock.cpp nodeBlockCode.cpp nodeWorld.cpp node
 NODE_OBJS = $(NODE_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 NODE_DEPS = $(NODE_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(MULTIROBOTS_SRCS) $(OKTEEN_SRCS) $(DATOMS_SRCS) $(NODE_SRCS)
+HEXANODE_SRCS = hexanodeSimulator.cpp hexanodeBlock.cpp hexanodeBlockCode.cpp hexanodeWorld.cpp hexanodeGlBlock.cpp hexanodeMotionEngine.cpp hexanodeMotionEvents.cpp
+HEXANODE_OBJS = $(HEXANODE_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
+HEXANODE_DEPS = $(HEXANODE_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
+
+SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(MULTIROBOTS_SRCS) $(OKTEEN_SRCS) $(DATOMS_SRCS) $(NODE_SRCS) $(HEXANODE_SRCS)
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
-OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimMultiRobots.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a
+OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimMultiRobots.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a $(LDIR)/libsimHexanode.a
 
 INCLUDES = $(GLOBAL_INCLUDES) -I.
 
@@ -104,7 +108,7 @@ $(OBJDIR)/%.o: %.cpp
 	$(POSTCOMPILE)
 
 
-all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimMultiRobots.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a
+all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimMultiRobots.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a $(LDIR)/libsimHexanode.a
 
 ${OUTDIRS}:
 	@mkdir -p $@
@@ -144,6 +148,10 @@ $(LDIR)/libsimDatoms.a: $(DATOMS_OBJS)
 $(LDIR)/libsimNode.a: $(NODE_OBJS)
 	@echo "Archiving Node library..."
 	@ar rcs $(LDIR)/libsimNode.a $(NODE_OBJS)
+
+$(LDIR)/libsimHexanode.a: $(HEXANODE_OBJS)
+	@echo "Archiving Hexanode library..."
+	@ar rcs $(LDIR)/libsimHexanode.a $(HEXANODE_OBJS)
 
 $(DEPDIR)/%.depends: ;
 .PRECIOUS: $(DEPDIR)/%.depends
