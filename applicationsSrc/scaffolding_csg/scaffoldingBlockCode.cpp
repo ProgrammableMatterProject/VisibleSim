@@ -613,6 +613,13 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                             and ruleMatcher->isOnLZBranch(norm(pos)))
                                         or ((bi == OppYBranch or bi == OppXBranch)
                                             and ruleMatcher->isOnRevZBranch(norm(pos)))
+                                        or (ruleMatcher->getNbIncidentVerticalCSGBranches(
+                                                norm(nextPosAlongBranch)) == 2
+                                            and ruleMatcher->hasIncidentCSGBranch(
+                                                norm(nextPosAlongBranch), RevZBranch)
+                                            and ruleMatcher->hasIncidentCSGBranch(
+                                                norm(nextPosAlongBranch), LZBranch)
+                                            and ruleMatcher->isOnRevZBranch(norm(pos)))
                                         ) {
                                         nextHopItf = catom->getInterface(pos);
                                         break;
@@ -1889,7 +1896,7 @@ void ScaffoldingBlockCode::highlightCSGScaffold() {
 
                 // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
-                if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
+                // if (ruleMatcher->isInCSG(norm(pos))) lattice->highlightCell(pos, WHITE);
 
                 if (not ruleMatcher->isInCSG(norm(pos))) continue;
 
