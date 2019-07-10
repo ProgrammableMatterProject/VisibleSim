@@ -453,7 +453,7 @@ y the module
      */
     Cell3DPosition determineScaffoldSeedPosition();
 
-    void highlightCSGScaffold();
+    void highlightCSGScaffold(bool force = false);
 };
 
 #endif /* SCAFFOLDINGBLOCKCODE_H_ */

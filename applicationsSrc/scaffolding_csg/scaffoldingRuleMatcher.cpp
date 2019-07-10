@@ -270,8 +270,7 @@ bool ScaffoldingRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
     const Cell3DPosition& oppXTr = pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0);
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppXTr)
-             or (oppXTr[0] < getSeedForCSGLayer(pos[2] / B)[0]
-                 and oppXTr[1] <= getSeedForCSGLayer(pos[2] / B)[1]));
+             or (oppXTr[0] < getSeedForCSGLayer(pos[2] / B)[0]));
 }
 
 bool ScaffoldingRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
@@ -314,8 +313,7 @@ bool ScaffoldingRuleMatcher::isOnOppYBranch(const Cell3DPosition& pos) const {
     const Cell3DPosition& oppYTr = pos - m_mod(pos[1], B) * Cell3DPosition(0, 1, 0);
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppYTr)
-             or (oppYTr[1] < getSeedForCSGLayer(pos[2] / B)[1]
-                 and oppYTr[0] <= getSeedForCSGLayer(pos[2] / B)[0]));
+             or (oppYTr[1] < getSeedForCSGLayer(pos[2] / B)[1]));
 }
 
 bool ScaffoldingRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
