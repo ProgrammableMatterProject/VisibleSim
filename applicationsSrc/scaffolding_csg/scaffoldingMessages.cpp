@@ -413,7 +413,13 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
 
     Cell3DPosition relNeighborPos;
     if (mabc.role == ActiveBeamTip) {
-        if (mabc.ruleMatcher->isOnZBranch(mabc.norm(mabc.catom->position))) {
+        if ((mabc.ruleMatcher->
+            getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) == 1
+            and mabc.branch < XBranch)
+            or mabc.ruleMatcher->isOnRevZBranch(mabc.norm(mabc.catom->position))) {
+
+            relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
+        } else if (mabc.ruleMatcher->isOnZBranch(mabc.norm(mabc.catom->position))) {
             if (mabc.ruleMatcher->isOnXOppCSGBorder(mabc.norm(mabc.coordinatorPos))
                 and mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos))
                 and mabc.ruleMatcher->
@@ -433,12 +439,12 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
                 // Forward to incoming LZ tip
                 relNeighborPos = Cell3DPosition(1,0,0);
         } else if (mabc.ruleMatcher->isOnRZBranch(mabc.norm(mabc.catom->position))) {
-            if (mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos))
-                and mabc.ruleMatcher->
+            if (mabc.ruleMatcher->
                 getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
                 and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2]
                 and not mabc.ruleMatcher->
-                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
+                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch)
+                and mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos)))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else
                 relNeighborPos = Cell3DPosition(1,0,0); // forward to incoming RevZ tip
@@ -453,9 +459,6 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             else
                 // forward to RevZ tip
                 relNeighborPos = Cell3DPosition(0,1,0);
-        } else if (mabc.ruleMatcher->isOnRevZBranch(mabc.norm(mabc.catom->position))) {
-            // forward to RevZ EPL Pivot
-            relNeighborPos = Cell3DPosition(1,1,-1);
         }
 
         P2PNetworkInterface* itf = mabc.catom->getInterface(mabc.catom->position
@@ -468,7 +471,8 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         } else {
             stringstream info;
             info << " couldn't send coordinator ready to "
-                 << mabc.catom->position + relNeighborPos;
+                 << mabc.ruleMatcher->component_to_string((ScafComponent)mabc.ruleMatcher->getComponentForPosition(mabc.norm(mabc.catom->position + relNeighborPos)))
+                 << " - " << mabc.catom->position + relNeighborPos;
             mabc.scheduler->trace(info.str(), mabc.catom->blockId, RED);
             mabc.catom->setColor(BLACK);
             return;

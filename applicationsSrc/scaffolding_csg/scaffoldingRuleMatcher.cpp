@@ -158,7 +158,7 @@ string ScaffoldingRuleMatcher::component_to_string(ScafComponent comp) {
         case N_COMPONENTS: return "N_COMPONENTS";
     }
 
-    return ""; // UNREACHABLE
+    return "UNDEFINED"; // UNREACHABLE
 }
 
 Cell3DPosition ScaffoldingRuleMatcher::getPositionForComponent(ScafComponent comp) {

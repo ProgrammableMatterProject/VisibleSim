@@ -581,8 +581,8 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                             // Send message down branch, next module is likely
                             //  not on EPL yet, it will use TileInsertionPending = true
                             if (bi == RevZBranch
-                                or (not ruleMatcher->hasIncidentCSGBranch(
-                                        norm(nextPosAlongBranch), RevZBranch)
+                                or (not ruleMatcher->hasIncidentCSGBranch
+                                    (norm(nextPosAlongBranch), RevZBranch)
                                     and
                                     ((bi == RZBranch
                                       and ruleMatcher->
@@ -591,75 +591,87 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                       and (nextPosAlongBranch[2] / B) % 2 == 1)
                                      or ((bi == LZBranch
                                           and ruleMatcher->
-                                          isOnXOppCSGBorder(norm(nextPosAlongBranch))
-                                          and nextPosAlongBranch[2] > scaffoldSeedPos[2]
-                                          and (nextPosAlongBranch[2] / B) % 2 == 1))
-                                     or ((bi == ZBranch
-                                          and ruleMatcher->
-                                          isOnXOppCSGBorder(norm(nextPosAlongBranch))
-                                          and ruleMatcher->
-                                          isOnYOppCSGBorder(norm(nextPosAlongBranch))
-                                          and nextPosAlongBranch[2] > scaffoldSeedPos[2]
-                                          and (nextPosAlongBranch[2] / B) % 2 == 0))
+                                          isOnXOppCSGBorder(norm(nextPosAlongBranch)))
+                                         or ((bi == ZBranch
+                                              and ruleMatcher->
+                                              isOnXOppCSGBorder(norm(nextPosAlongBranch))
+                                              and ruleMatcher->
+                                              isOnYOppCSGBorder(norm(nextPosAlongBranch)))))
                                      ))) {
-                                    nextHopItf =
-                                        catom->getInterface(catom->position
-                                                            -ruleMatcher->getBranchUnitOffset(bi));
-                                } else {
-                                    for (const auto& pos :
-                                             lattice->getActiveNeighborCells(catom->position)) {
-                                        if (ruleMatcher->isOnZBranch(norm(pos))
-                                            or (ruleMatcher->
-                                                isOnYCSGBorder(norm(nextPosAlongBranch))
-                                                and (nextPosAlongBranch[2] / B) % 2 == 0
-                                                and ruleMatcher->isOnLZBranch(norm(pos)))
-                                            or (ruleMatcher->
-                                                isOnXCSGBorder(norm(nextPosAlongBranch))
-                                                and (nextPosAlongBranch[2] / B) % 2 == 0
-                                                and ruleMatcher->isOnRZBranch(norm(pos)))
-                                            or (ruleMatcher->getNbIncidentVerticalCSGBranches
-                                                (norm(nextPosAlongBranch)) == 3
-                                                and ruleMatcher->isOnRevZBranch(norm(pos)))
-                                            or (bi == XBranch
-                                                and ruleMatcher->isOnRZBranch(norm(pos)))
-                                            or (bi == YBranch
-                                                and ruleMatcher->isOnLZBranch(norm(pos)))
-                                            or ((bi == OppYBranch or bi == OppXBranch)
-                                                and ruleMatcher->isOnRevZBranch(norm(pos)))
-                                            or (ruleMatcher->getNbIncidentVerticalCSGBranches(
-                                                                                              norm(nextPosAlongBranch)) == 2
-                                                and ruleMatcher->hasIncidentCSGBranch(
-                                                                                      norm(nextPosAlongBranch), RevZBranch)
-                                                and ruleMatcher->hasIncidentCSGBranch(
-                                                                                      norm(nextPosAlongBranch), LZBranch)
-                                                and ruleMatcher->isOnRevZBranch(norm(pos)))
-                                            ) {
-                                            nextHopItf = catom->getInterface(pos);
-                                            break;
-                                        }
+                                nextHopItf =
+                                    catom->getInterface(catom->position
+                                                        -ruleMatcher->getBranchUnitOffset(bi));
+                            } else {
+                                for (const auto& pos :
+                                         lattice->getActiveNeighborCells(catom->position)) {
+                                    if (ruleMatcher->isOnZBranch(norm(pos))
+                                        or (ruleMatcher->
+                                            isOnYCSGBorder(norm(nextPosAlongBranch))
+                                            and (nextPosAlongBranch[2] / B) % 2 == 0
+                                            and ruleMatcher->isOnLZBranch(norm(pos)))
+                                        or (ruleMatcher->
+                                            isOnXCSGBorder(norm(nextPosAlongBranch))
+                                            and (nextPosAlongBranch[2] / B) % 2 == 0
+                                            and ruleMatcher->isOnRZBranch(norm(pos)))
+                                        or (ruleMatcher->getNbIncidentVerticalCSGBranches
+                                            (norm(nextPosAlongBranch)) == 3
+                                            and ruleMatcher->isOnRevZBranch(norm(pos)))
+                                        or (bi == XBranch
+                                            and ruleMatcher->isOnRZBranch(norm(pos)))
+                                        or (bi == YBranch
+                                            and ruleMatcher->isOnLZBranch(norm(pos)))
+                                        or ((bi == OppYBranch or bi == OppXBranch)
+                                            and ruleMatcher->isOnRevZBranch(norm(pos)))
+                                        or (ruleMatcher->getNbIncidentVerticalCSGBranches
+                                            (norm(nextPosAlongBranch)) == 2
+                                            and ruleMatcher->hasIncidentCSGBranch
+                                            (norm(nextPosAlongBranch), RevZBranch)
+                                            and ruleMatcher->hasIncidentCSGBranch
+                                            (norm(nextPosAlongBranch), LZBranch)
+                                            and ruleMatcher->isOnRevZBranch(norm(pos)))
+                                        ) {
+                                        nextHopItf = catom->getInterface(pos);
+                                        break;
                                     }
                                 }
+                            }
 
+                            if (nextHopItf) {
                                 VS_ASSERT(nextHopItf);
                                 sendMessage(new TileInsertionReadyMessage(),
                                             nextHopItf, MSG_DELAY_MC, 0);
                                 log_send_message();
-                                } else{
-                                    stringstream info;
-                                    info << " TR-: ";
-                                    for (const BranchIndex& bi : missingIncidentBranches)
-                                        info << ruleMatcher->branch_to_string(bi) << " ";
-                                    scheduler->trace(info.str(), catom->blockId, RED);
+                            } else {
+                                // Simulate routing or wirelessly sending message to
+                                //  branch tip if not directly connected
+                                Cell3DPosition dest = nextPosAlongBranch -
+                                    ruleMatcher->getBranchUnitOffset(RevZBranch);
+                                if (ruleMatcher->hasIncidentCSGBranch
+                                    (norm(nextPosAlongBranch), RevZBranch)
+                                    and not catom->getInterface(dest)) { // not connected
+                                    BuildingBlock* destBlk = lattice->getBlock(dest);
+                                    VS_ASSERT(destBlk);
+                                    new InterruptionEvent(getScheduler()->now() +
+                                                          MSG_DELAY_MC, destBlk,
+                                                          IT_MODE_WIRELESS_TIR_RECEIVED);
                                 }
+                            }
+                        } else{
+                            stringstream info;
+                            info << " TR-: ";
+                            for (const BranchIndex& bi : missingIncidentBranches)
+                                info << ruleMatcher->branch_to_string(bi) << " ";
+                            scheduler->trace(info.str(), catom->blockId, RED);
                         }
                     }
-                } else {
-                    if (catom->position == targetPosition
-                        and ruleMatcher->isOnEntryPoint(norm(catom->position))) {
-                        // Determine EPL and set as last visited
-                        lastVisitedEPL =
-                            ruleMatcher->getEntryPointLocationForCell(norm(catom->position));
-                        VS_ASSERT(lastVisitedEPL != -1);
+                }
+            } else {
+                if (catom->position == targetPosition
+                    and ruleMatcher->isOnEntryPoint(norm(catom->position))) {
+                    // Determine EPL and set as last visited
+                    lastVisitedEPL =
+                        ruleMatcher->getEntryPointLocationForCell(norm(catom->position));
+                    VS_ASSERT(lastVisitedEPL != -1);
 
                     // Update tile belonging
                     coordinatorPos = denorm(ruleMatcher->
@@ -735,6 +747,15 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                     matchRulesAndProbeGreenLight(); // the seed starts the algorithm
                     catom->setColor(MAGENTA);
                     break;
+
+                case IT_MODE_WIRELESS_TIR_RECEIVED: {
+                    P2PNetworkInterface *nextHopItf = catom->getInterface
+                        (catom->position - ruleMatcher->getBranchUnitOffset(branch));
+                    VS_ASSERT(nextHopItf);
+                    sendMessage(new TileInsertionReadyMessage(),
+                                nextHopItf, MSG_DELAY_MC, 0);
+
+                } break;
             }
         }
     }
@@ -1132,17 +1153,16 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
             }
         }
 
-        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, RevZ_EPL });
-        if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, RevZ_EPL });
-        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, RevZ_EPL });
-        if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, RevZ_EPL });
-        if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, RevZ_EPL });
-
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, RevZ_EPL });
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, RevZ_EPL });
         if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, RevZ_EPL });
         if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, RevZ_EPL });
         if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, RevZ_EPL });
 
         if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, RZ_EPL });
         if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1,RevZ_EPL});
@@ -1224,6 +1244,10 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (not ruleMatcher->hasIncidentCSGBranch(norm(pos), YBranch))
             deque.push_back({ S_RZ, RZ_EPL });
 
+        if (not ruleMatcher->hasIncidentCSGBranch(norm(pos), XBranch)
+            or not ruleMatcher->hasIncidentCSGBranch(norm(pos), YBranch))
+            deque.push_back({ S_RevZ, RevZ_EPL});
+
         deque.push_back({ S_Z, Z_EPL });
 
         if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, RZ_EPL });
@@ -1232,7 +1256,15 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
             deque.push_back({ S_RZ, Z_EPL });
 
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
-        deque.push_back({ S_RevZ, RZ_EPL});
+
+        if (ruleMatcher->hasIncidentCSGBranch(norm(pos), XBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(pos), YBranch))
+            deque.push_back({ S_RevZ, RZ_EPL});
+
+        if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RZ_EPL });
+        if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RZ_EPL });
+        if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RZ_EPL });
+        if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RZ_EPL });
 
         if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1, RevZ_EPL });
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, Z_EPL });
@@ -1577,6 +1609,8 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
                and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0) // S_RevZ
                and ruleMatcher->isOnYOppCSGBorder(norm(coordinatorPos))
                and ruleMatcher->isOnXOppCSGBorder(norm(coordinatorPos))
+               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), XBranch)
+               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), YBranch)
                and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 1) {
         lastVisitedEPL = LR_EPL::LR_RevZ_EPL_ALT;
     } else if (lastVisitedEPL == Z_EPL

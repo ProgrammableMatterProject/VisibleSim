@@ -31,6 +31,7 @@
 #define IT_MODE_TILEROOT_ACTIVATION 1
 #define IT_MODE_ALGORITHM_START 2
 #define IT_MODE_FINDING_PIVOT 3 // FIXME: TODO:
+#define IT_MODE_WIRELESS_TIR_RECEIVED 4 // FIXME: TODO:
 
 class ScaffoldingBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
