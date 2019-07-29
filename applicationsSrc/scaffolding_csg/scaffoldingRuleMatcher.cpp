@@ -439,6 +439,11 @@ short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, Bran
                                           [](const Cell3DPosition& pos){return true;}) const {
     if (not isTileRoot(pos)) return 0;
 
+    // FIXME: Do not consider a vertical branch for growth if the feeding branch does not exist
+    if (bi < XBranch and pos[2] > B // NOTE: Sandbox gets counted as no incident branch
+        and not hasIncidentCSGBranch(pos, getAlternateBranchIndex(bi)))
+        return 0;
+
     for (int i = 0; i < B - 1; i++) {
         const Cell3DPosition bPos = pos + (i + 1) * getBranchUnitOffset(bi);
 

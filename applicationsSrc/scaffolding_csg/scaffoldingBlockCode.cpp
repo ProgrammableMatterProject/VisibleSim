@@ -423,11 +423,10 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                     // In case tile insertion ready but there was no module on EPL at the
                     //  time echeck that new module is on EPL,
                     //  send it a TileInsertionReadyMessage
-                    if (tileInsertionPending
-                        and pos == (catom->position + Cell3DPosition(0,0,1))) {
+                    if (tileInsertionPending and ruleMatcher->isOnEntryPoint(norm(pos))) {
                         P2PNetworkInterface* itf = catom->getInterface(pos);
-                        VS_ASSERT(itf and itf->isConnected());
-                        sendMessage(new TileInsertionReadyMessage(), itf, MSG_DELAY_MC, 0);
+                        if(itf and itf->isConnected())
+                            sendMessage(new TileInsertionReadyMessage(), itf, MSG_DELAY_MC, 0);
                         tileInsertionPending = false;
                     }
                 }
@@ -644,16 +643,38 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                             } else {
                                 // Simulate routing or wirelessly sending message to
                                 //  branch tip if not directly connected
-                                Cell3DPosition dest = nextPosAlongBranch -
-                                    ruleMatcher->getBranchUnitOffset(RevZBranch);
+                                int biDest = -1;
+
                                 if (ruleMatcher->hasIncidentCSGBranch
-                                    (norm(nextPosAlongBranch), RevZBranch)
-                                    and not catom->getInterface(dest)) { // not connected
-                                    BuildingBlock* destBlk = lattice->getBlock(dest);
-                                    VS_ASSERT(destBlk);
-                                    new InterruptionEvent(getScheduler()->now() +
-                                                          MSG_DELAY_MC, destBlk,
-                                                          IT_MODE_WIRELESS_TIR_RECEIVED);
+                                    (norm(nextPosAlongBranch), RevZBranch))
+                                    biDest = RevZBranch;
+                                else if (ruleMatcher->hasIncidentCSGBranch
+                                         (norm(nextPosAlongBranch), LZBranch) and
+                                         ruleMatcher->getNbIncidentVerticalCSGBranches
+                                         (norm(nextPosAlongBranch)) == 1)
+                                    biDest = LZBranch;
+                                else if (ruleMatcher->hasIncidentCSGBranch
+                                         (norm(nextPosAlongBranch), RZBranch) and
+                                         ruleMatcher->getNbIncidentVerticalCSGBranches
+                                         (norm(nextPosAlongBranch)) == 1)
+                                    biDest = RZBranch;
+
+                                if (biDest != -1) {
+                                    Cell3DPosition dest = nextPosAlongBranch -
+                                        ruleMatcher->getBranchUnitOffset(biDest);
+
+                                    if (not catom->getInterface(dest)) { // not connected
+                                        stringstream info;
+                                        info << " sending Wireless TIR to " << dest;
+                                        scheduler->trace(info.str(),catom->blockId, ORANGE);
+
+                                        BuildingBlock* destBlk = lattice->getBlock(dest);
+                                        VS_ASSERT(destBlk);
+                                        getScheduler()->schedule
+                                            (new InterruptionEvent
+                                             (getScheduler()->now() + MSG_DELAY_MC, destBlk,
+                                              IT_MODE_WIRELESS_TIR_RECEIVED));
+                                    }
                                 }
                             }
                         } else{
@@ -749,6 +770,10 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                     break;
 
                 case IT_MODE_WIRELESS_TIR_RECEIVED: {
+                    stringstream info;
+                    info << " received wireless TIR";
+                    scheduler->trace(info.str(), catom->blockId, ORANGE);
+
                     P2PNetworkInterface *nextHopItf = catom->getInterface
                         (catom->position - ruleMatcher->getBranchUnitOffset(branch));
                     VS_ASSERT(nextHopItf);
@@ -756,6 +781,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                 nextHopItf, MSG_DELAY_MC, 0);
 
                 } break;
+
             }
         }
     }
@@ -1606,13 +1632,15 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
                and coordinatorPos[2] != scaffoldSeedPos[2]) {
         lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
     } else if (lastVisitedEPL == RevZ_EPL
-               and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0) // S_RevZ
-               and ruleMatcher->isOnYOppCSGBorder(norm(coordinatorPos))
-               and ruleMatcher->isOnXOppCSGBorder(norm(coordinatorPos))
-               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), XBranch)
-               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), YBranch)
-               and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 1) {
-        lastVisitedEPL = LR_EPL::LR_RevZ_EPL_ALT;
+               and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0)) { // S_RevZ
+        if (ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), XBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), YBranch)
+            and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 1)
+            lastVisitedEPL = LR_EPL::LR_RevZ_EPL_ALT;
+        else if (ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), XBranch)
+                 and not ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), YBranch))
+            lastVisitedEPL = LR_EPL::LR_RevZ_EPL_RIGHT;
+        // else normal left case
     } else if (lastVisitedEPL == Z_EPL
                and targetPosition - coordinatorPos == Cell3DPosition(1,1,0) // S_Z
                and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 3
@@ -1960,8 +1988,8 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                         (ruleMatcher->getTileRootPositionForMeshPosition(norm(pos))))
                         continue;
 
-                    if (ruleMatcher->isInCSG(norm(pos)))
-                        lattice->highlightCell(pos, WHITE);
+                    // if (ruleMatcher->isInCSG(norm(pos)))
+                    //     lattice->highlightCell(pos, WHITE);
 
                     // if (ruleMatcher->isInCSG(norm(pos)) and
                     //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
