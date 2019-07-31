@@ -1089,6 +1089,18 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         and ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)) {
         deque.push_back({ S_Z, Z_EPL });
 
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, Z_EPL });
+        if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, Z_EPL });
+        if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, Z_EPL });
+        if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, Z_EPL });
+        if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, Z_EPL });
+
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, Z_EPL });
+        if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, Z_EPL });
+        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, Z_EPL });
+        if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, Z_EPL });
+        if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, Z_EPL });
+
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
         if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
 
@@ -2039,8 +2051,9 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                     // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
                     if (not ruleMatcher->isInCSG(norm(pos))
-                        or (ruleMatcher->isInCSG(norm(pos)) and not ruleMatcher->isInCSG
-                            (ruleMatcher->getTileRootPositionForMeshPosition(norm(pos)))))
+                        // or (ruleMatcher->isInCSG(norm(pos)) and not ruleMatcher->isInCSG
+                        //     (ruleMatcher->getTileRootPositionForMeshPosition(norm(pos)))))
+                        )
                         continue;
 
                     if (ruleMatcher->isInCSG(norm(pos)))
