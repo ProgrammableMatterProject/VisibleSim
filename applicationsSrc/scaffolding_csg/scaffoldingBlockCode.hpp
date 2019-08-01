@@ -49,6 +49,29 @@ public:
     static Time t0;
 
     inline static const bool NO_FLOODING = false;
+    inline static bool BUILDING_MODE = false; // const after call to parseUserCommandLineArgument
+
+    ScaffoldingBlockCode(Catoms3D::Catoms3DBlock *host);
+    ~ScaffoldingBlockCode();
+
+    /**
+     * \brief Global message handler for this instance of the blockcode
+     * \param msg Message received b
+     y the module
+     * \param sender Connector that has received the message and hence that is connected to the sender */
+    void processReceivedMessage(MessagePtr msg, P2PNetworkInterface* sender);
+
+    void startup() override;
+    void processLocalEvent(EventPtr pev) override;
+    void onBlockSelected() override;
+    void onAssertTriggered() override;
+
+    bool parseUserCommandLineArgument(int argc, char *argv[]) override;
+
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return (new ScaffoldingBlockCode((Catoms3DBlock*)host));
+    }
+
 
     // For stats export
     pair<int, string> maxBitrate;
@@ -288,24 +311,6 @@ public:
     // const Cell3DPosition getNextTargetForEPL(ScafComponent epl);
 
     // TargetCSG *target;
-    ScaffoldingBlockCode(Catoms3D::Catoms3DBlock *host);
-    ~ScaffoldingBlockCode();
-
-    /**
-     * \brief Global message handler for this instance of the blockcode
-     * \param msg Message received b
-y the module
-     * \param sender Connector that has received the message and hence that is connected to the sender */
-    void processReceivedMessage(MessagePtr msg, P2PNetworkInterface* sender);
-
-    void startup() override;
-    void processLocalEvent(EventPtr pev) override;
-    void onBlockSelected() override;
-    void onAssertTriggered() override;
-
-    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-        return (new ScaffoldingBlockCode((Catoms3DBlock*)host));
-    }
 
     /**
      * Add initial sandbox modules to the lattice

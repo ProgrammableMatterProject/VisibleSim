@@ -362,7 +362,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                      << " has ended, attempting conversion" << endl;
                 // Add a script for converting into a video, asynchronously
 #ifndef WIN32
-                std::async([](const std::string& animDir){
+                (void)std::async([](const std::string& animDir){
                                const string& vidName = generateTimestampedFilename("video", "mkv");
                                int r = system(
                                    string("ffmpeg -pattern_type glob -framerate 30 -i \""
@@ -387,7 +387,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
             saveScreen(ssName.c_str());
 #ifndef WIN32
-            std::async([ssNameJpg, ssName](){
+            (void)std::async([ssNameJpg, ssName](){
                            system(string("convert " + ssName + " " + ssNameJpg
                                          + " >/dev/null 2>/dev/null").c_str());
                        });
@@ -543,27 +543,27 @@ void GlutContext::showFPS(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     char str[32];
 
-		glColor4f(1.0,1.0,1.0,0.75);
-		glPushMatrix();
-		glTranslatef(50,75,0);
-		glBegin(GL_QUADS);
-		glVertex2i(0,0);
-		glVertex2i(200,0);
-		glVertex2i(200,30);
-		glVertex2i(0,30);
-		glEnd();
-		glPopMatrix();
+        glColor4f(1.0,1.0,1.0,0.75);
+        glPushMatrix();
+        glTranslatef(50,75,0);
+        glBegin(GL_QUADS);
+        glVertex2i(0,0);
+        glVertex2i(200,0);
+        glVertex2i(200,30);
+        glVertex2i(0,30);
+        glEnd();
+        glPopMatrix();
     sprintf(str, "FPS: %4.2f", fps);
-		glColor4f(0.0,0.0,0.0,0.75);
-		GlutWindow::drawString(50, 75, str, font);
-		cout << str << endl;
+        glColor4f(0.0,0.0,0.0,0.75);
+        GlutWindow::drawString(50, 75, str, font);
+        cout << str << endl;
 }
 
 void GlutContext::showSimulationInfo(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     char str[32];
 
-		glColor4f(1.0,1.0,1.0,0.75);
+        glColor4f(1.0,1.0,1.0,0.75);
 
     sprintf(str,"Timestep: %lu", timestep);
     GlutWindow::drawString(50, 50, str, font);
@@ -590,7 +590,7 @@ void GlutContext::drawFunc(void) {
     shadowedRenderingStep4();
 
     // drawing of the interface
-		glEnable(GL_BLEND);
+        glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glMatrixMode(GL_PROJECTION);
@@ -609,15 +609,15 @@ void GlutContext::drawFunc(void) {
     if (helpWindow) helpWindow->glDraw();
 
 #ifdef showStatsFPS
-		glDisable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
 
     //showFPS();
-		calculateSimulationInfo();
-		showSimulationInfo();
+        calculateSimulationInfo();
+        showSimulationInfo();
 #endif
 
-		glFlush();
+        glFlush();
     glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
 }

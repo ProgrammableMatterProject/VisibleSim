@@ -1,4 +1,3 @@
-
 #include "commandLine.h"
 
 #include <iostream>
@@ -32,14 +31,14 @@ void CommandLine::help() {
     exit(EXIT_SUCCESS);
 }
 
-CommandLine::CommandLine(int argc, char *argv[]) {
-	read(argc,argv);
+CommandLine::CommandLine(int argc, char *argv[], BlockCodeBuilder bcb) {
+    read(argc,argv, bcb);
 }
 
-void CommandLine::read(int argc, char *argv[]) {    
+void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
     /* Reading the command line */
     argv++;
-    argc--;    
+    argc--;
     while ( (argc > 0) && (argv[0][0] == '-')) {
         switch(argv[0][1]) {
             case 'p':   {
@@ -61,13 +60,13 @@ void CommandLine::read(int argc, char *argv[]) {
                 std::getline(vm, portStr, ':');
                 try {
                     vmPort = stoi(portStr);
-                } catch(std::invalid_argument&) {                
+                } catch(std::invalid_argument&) {
                     cerr << "error: MeldVM port must be a number!" << endl;
                     help();
                     exit(EXIT_FAILURE);
                 }
                 argc--;
-                argv++;            
+                argv++;
             } break;
             case 'D': {
                 meldDebugger = true;
@@ -79,10 +78,10 @@ void CommandLine::read(int argc, char *argv[]) {
                     cerr << "error: -r and -R options cannot be enabled at the same time" << endl;
                     help();
                 }
-                
+
             } break;
             case 'R': {
-                if (schedulerMode == CMD_LINE_UNDEFINED)                           
+                if (schedulerMode == CMD_LINE_UNDEFINED)
                     schedulerMode = SCHEDULER_MODE_FASTEST;
                 else {
                     cerr << "error: -r and -R options cannot be enabled at the same time" << endl;
@@ -115,12 +114,12 @@ void CommandLine::read(int argc, char *argv[]) {
                         help();
                         exit(EXIT_FAILURE);
                     }
-                } catch(std::out_of_range&) {                    
+                } catch(std::out_of_range&) {
                         cerr << "error: Maximum Date must be an integer and smaller than (2^63 - 1)!" << endl;
                         help();
                         exit(EXIT_FAILURE);
                 }
-                
+
                 argc--;
                 argv++;
             } break;
@@ -150,7 +149,7 @@ void CommandLine::read(int argc, char *argv[]) {
                 try {
                     simulationSeed = stoi (str);
                     simulationSeedSet = true;
-                } catch(std::invalid_argument&) {                
+                } catch(std::invalid_argument&) {
                     cerr << "error: Simulation seed must be an integer!" << endl;
                     help();
                     exit(EXIT_FAILURE);
@@ -158,17 +157,25 @@ void CommandLine::read(int argc, char *argv[]) {
                     cerr << "error: Simulation seed is out of range!" << endl;
                     help();
                     exit(EXIT_FAILURE);
-                }            
+                }
 
                 argc--;
-                argv++;      
+                argv++;
             } break;
             default:
-                help();
+                // Simulate static virtual function call, through a (actually static)
+                //  class member function
+                BlockCode *bc = bcb(NULL);
+                bool parsed = bc->parseUserCommandLineArgument(argc, argv);
+                delete bc;
+
+                if (not parsed)
+                    help();
+
         }
         argc--;
         argv++;
-    }    
+    }
 }
 
 bool CommandLine::randomWorldRequested() {
@@ -180,7 +187,7 @@ ModuleType CommandLine::readModuleType(int argc, char **argv) {
     for (int i = 0; i < argc; i++) {
         if (argv[i][0] == '-' && argv[i][1] == 'k') {
             if (!argv[i+1]) break;
-            
+
             if (strcmp(argv[i+1], "BB") == 0) return BB;
             else if (strcmp(argv[i+1], "RB") == 0) return RB;
             else if (strcmp(argv[i+1], "SB") == 0) return SB;

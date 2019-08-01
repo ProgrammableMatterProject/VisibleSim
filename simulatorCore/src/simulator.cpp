@@ -39,7 +39,7 @@ Simulator* Simulator::simulator = NULL;
 Simulator::Type	Simulator::type = CPP; // CPP code by default
 bool Simulator::regrTesting = false; // No regression testing by default
 
-Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv) {
+Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv, _bcb) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << TermColor::LifecycleColor << "Simulator constructor" << TermColor::Reset << endl;
 #endif
