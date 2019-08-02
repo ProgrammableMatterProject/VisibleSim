@@ -23,18 +23,27 @@ using namespace std;
 #define B2 6 // This one is used to initialize BlockCode-wide constants
 
 enum LR_EPL {
-    LR_RevZ_EPL = 35,
-    LR_RevZ_R_EPL = 36,
-    LR_RZ_L_EPL = 37,
-    LR_RZ_EPL = 38,
-    LR_RZ_R_EPL = 39,
-    LR_Z_R_EPL = 40,
-    LR_Z_EPL = 41,
-    LR_Z_L_EPL = 42,
-    LR_LZ_R_EPL = 43,
-    LR_LZ_EPL = 44,
-    LR_LZ_L_EPL = 45,
-    LR_RevZ_L_EPL = 46,
+    LR_RevZ_EPL = 65,
+    LR_RevZ_R_EPL = 66,
+    LR_RZ_L_EPL = 67,
+    LR_RZ_EPL = 68,
+    LR_RZ_R_EPL = 69,
+    LR_Z_R_EPL = 70,
+    LR_Z_EPL = 71,
+    LR_Z_L_EPL = 72,
+    LR_LZ_R_EPL = 73,
+    LR_LZ_EPL = 74,
+    LR_LZ_L_EPL = 75,
+    LR_RevZ_L_EPL = 76,
+
+    LR_OPP_X_R_EPL = 77,
+    LR_OPP_Y_L_EPL = 78,
+    LR_OPP_Y_R_EPL = 79,
+    LR_X_L_EPL = 80,
+    LR_X_R_EPL = 81,
+    LR_Y_L_EPL = 82,
+    LR_Y_R_EPL = 83,
+    LR_OPP_X_L_EPL = 84,
 
     LR_RevZ_EPL_ALT = 135, // FIXME: TODO: This is due to a conflict with S_Z on iBorders
     LR_RZ_EPL_ALT = 138, // FIXME: TODO: This is due to a conflict with S_Z on iBorders

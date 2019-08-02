@@ -2079,14 +2079,19 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
 
                     // if (not ruleMatcher->isInMesh(norm(pos))) continue;
 
+                    if (ruleMatcher->isOnHorizontalEPL(norm(pos))
+                        and ruleMatcher->isInCSG
+                        (ruleMatcher->getNearestTileRootPosition(norm(pos))))
+                        lattice->highlightCell(pos, BLUE);
+
                     if (not ruleMatcher->isInCSG(norm(pos))
                         // or (ruleMatcher->isInCSG(norm(pos)) and not ruleMatcher->isInCSG
                         //     (ruleMatcher->getTileRootPositionForMeshPosition(norm(pos)))))
                         )
                         continue;
 
-                    if (ruleMatcher->isInCSG(norm(pos)))
-                        lattice->highlightCell(pos, WHITE);
+                    // if (ruleMatcher->isInCSG(norm(pos)))
+                    //     lattice->highlightCell(pos, WHITE);
 
                     // if (ruleMatcher->isInCSG(norm(pos)) and
                     //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);

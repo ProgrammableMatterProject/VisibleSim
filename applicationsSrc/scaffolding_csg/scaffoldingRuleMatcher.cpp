@@ -65,6 +65,17 @@ std::array<Cell3DPosition, N_COMPONENTS> ScaffoldingRuleMatcher::componentPositi
     Cell3DPosition(0, -4, 4), // RZ4
     Cell3DPosition(0, -5, 5), // RZ5
 
+    Cell3DPosition(-1, 0, 0), // OPP_X1
+    Cell3DPosition(-2, 0, 0), // OPP_X2
+    Cell3DPosition(-3, 0, 0), // OPP_X3
+    Cell3DPosition(-4, 0, 0), // OPP_X4
+    Cell3DPosition(-5, 0, 0), // OPP_X5
+    Cell3DPosition(0, -1, 0), // OPP_Y1
+    Cell3DPosition(0, -2, 0), // OPP_Y2
+    Cell3DPosition(0, -3, 0), // OPP_Y3
+    Cell3DPosition(0, -4, 0), // OPP_Y4
+    Cell3DPosition(0, -5, 0), // OPP_Y5
+
     // NEXT POSITIONS ARE __IN NEIGHBOR TILES__ BUT RELATIVE TO CURRENT TILE
 
     Cell3DPosition(-1, -1, B2 - 1), // RevZ_EPL
@@ -84,16 +95,14 @@ std::array<Cell3DPosition, N_COMPONENTS> ScaffoldingRuleMatcher::componentPositi
 
     Cell3DPosition(-1, 0, B2 - 1), // RevZ_L_EPL
 
-    Cell3DPosition(-1, 0, 0), // OPP_X1
-    Cell3DPosition(-2, 0, 0), // OPP_X2
-    Cell3DPosition(-3, 0, 0), // OPP_X3
-    Cell3DPosition(-4, 0, 0), // OPP_X4
-    Cell3DPosition(-5, 0, 0), // OPP_X5
-    Cell3DPosition(0, -1, 0), // OPP_Y1
-    Cell3DPosition(0, -2, 0), // OPP_Y2
-    Cell3DPosition(0, -3, 0), // OPP_Y3
-    Cell3DPosition(0, -4, 0), // OPP_Y4
-    Cell3DPosition(0, -5, 0) // OPP_Y5
+    Cell3DPosition((B2 - 2), -1, 0), // OPP_X_R_EPL
+    Cell3DPosition(-1, (B2 - 2), 0), // OPP_Y_L_EPL
+    Cell3DPosition(1, (B2 - 2), 0), // OPP_Y_R_EPL
+    Cell3DPosition(-(B2 - 2), -1, 0), // X_L_EPL
+    Cell3DPosition(-(B2 - 2), 1, 0), // X_R_EPL
+    Cell3DPosition(1, -(B2 - 2), 0), // Y_L_EPL
+    Cell3DPosition(-1, -(B2 - 2), 0), // Y_R_EPL
+    Cell3DPosition((B2 - 2), 1, 0), // OPP_X_L_EPL
 };
 
 string ScaffoldingRuleMatcher::component_to_string(ScafComponent comp) {
@@ -133,6 +142,16 @@ string ScaffoldingRuleMatcher::component_to_string(ScafComponent comp) {
         case RZ_3: return "RZ_3";
         case RZ_4: return "RZ_4";
         case RZ_5: return "RZ_5";
+        case OPP_X1: return "OPP_X1";
+        case OPP_X2: return "OPP_X2";
+        case OPP_X3: return "OPP_X3";
+        case OPP_X4: return "OPP_X4";
+        case OPP_X5: return "OPP_X5";
+        case OPP_Y1: return "OPP_Y1";
+        case OPP_Y2: return "OPP_Y2";
+        case OPP_Y3: return "OPP_Y3";
+        case OPP_Y4: return "OPP_Y4";
+        case OPP_Y5: return "OPP_Y5";
         case RevZ_EPL: return "RevZ_EPL";
         case RevZ_R_EPL: return "RevZ_R_EPL";
         case RZ_L_EPL: return "RZ_L_EPL";
@@ -145,16 +164,35 @@ string ScaffoldingRuleMatcher::component_to_string(ScafComponent comp) {
         case LZ_EPL: return "LZ_EPL";
         case LZ_L_EPL: return "LZ_L_EPL";
         case RevZ_L_EPL: return "RevZ_L_EPL";
-        case OPP_X1: return "OPP_X1";
-        case OPP_X2: return "OPP_X2";
-        case OPP_X3: return "OPP_X3";
-        case OPP_X4: return "OPP_X4";
-        case OPP_X5: return "OPP_X5";
-        case OPP_Y1: return "OPP_Y1";
-        case OPP_Y2: return "OPP_Y2";
-        case OPP_Y3: return "OPP_Y3";
-        case OPP_Y4: return "OPP_Y4";
-        case OPP_Y5: return "OPP_Y5";
+        case OPP_X_R_EPL: return "OPP_X_R_EPL";
+        case OPP_Y_L_EPL: return "OPP_Y_L_EPL";
+        case OPP_Y_R_EPL: return "OPP_Y_R_EPL";
+        case X_L_EPL: return "X_L_EPL";
+        case X_R_EPL: return "X_R_EPL";
+        case Y_L_EPL: return "Y_L_EPL";
+        case Y_R_EPL: return "Y_R_EPL";
+        case OPP_X_L_EPL: return "OPP_X_L_EPL";
+        case OPP_Z1: return "OPP_Z1";
+        case OPP_Z2: return "OPP_Z2";
+        case OPP_Z3: return "OPP_Z3";
+        case OPP_Z4: return "OPP_Z4";
+        case OPP_Z5: return "OPP_Z5";
+        case OPP_RevZ1: return "OPP_RevZ1";
+        case OPP_RevZ2: return "OPP_RevZ2";
+        case OPP_RevZ3: return "OPP_RevZ3";
+        case OPP_RevZ4: return "OPP_RevZ4";
+        case OPP_RevZ5: return "OPP_RevZ5";
+        case OPP_LZ1: return "OPP_LZ1";
+        case OPP_LZ2: return "OPP_LZ2";
+        case OPP_LZ3: return "OPP_LZ3";
+        case OPP_LZ4: return "OPP_LZ4";
+        case OPP_LZ5: return "OPP_LZ5";
+        case OPP_RZ1: return "OPP_RZ1";
+        case OPP_RZ2: return "OPP_RZ2";
+        case OPP_RZ3: return "OPP_RZ3";
+        case OPP_RZ4: return "OPP_RZ4";
+        case OPP_RZ5: return "OPP_RZ5";
+
         case N_COMPONENTS: return "N_COMPONENTS";
     }
 
@@ -178,6 +216,12 @@ ScafComponent ScaffoldingRuleMatcher::getDefaultEPLComponentForBranch(BranchInde
         case RevZBranch: return RevZ_EPL;
         case RZBranch: return RZ_EPL;
         case LZBranch: return LZ_EPL;
+
+        // case XBranch: ;
+        // case YBranch:
+        // case XOppBranch:
+        // case YOppBranch:
+
         default: break;
     }
 
@@ -193,6 +237,12 @@ ScafComponent ScaffoldingRuleMatcher::getTargetEPLComponentForBranch(BranchIndex
         case RevZBranch: return Z_EPL;
         case RZBranch: return LZ_EPL;
         case LZBranch: return RZ_EPL;
+
+        // case XBranch: ;
+        // case YBranch:
+        // case XOppBranch:
+        // case YOppBranch:
+
         default: break;
     }
 
@@ -758,6 +808,26 @@ const Cell3DPosition ScaffoldingRuleMatcher::getPositionForScafComponent(ScafCom
         case RZ_1: case RZ_2: case RZ_3: case RZ_4: case RZ_5:
             return Cell3DPosition(0, -1 * (mc - RZ_1 + 1), 1 * (mc - RZ_1 + 1));
 
+        // case OPP
+        case OPP_X1: case OPP_X2: case OPP_X3: case OPP_X4: case OPP_X5:
+            return Cell3DPosition(-1 * (mc - OPP_X1 + 1), 0, 0);
+
+        case OPP_Y1: case OPP_Y2: case OPP_Y3: case OPP_Y4: case OPP_Y5:
+            return Cell3DPosition(0, -1 * (mc - OPP_Y1 + 1), 0);
+
+        case OPP_Z1: case OPP_Z2: case OPP_Z3: case OPP_Z4: case OPP_Z5:
+            return Cell3DPosition(0, 0, -1 * (mc - OPP_Z1 + 1));
+
+        case OPP_RevZ1: case OPP_RevZ2: case OPP_RevZ3: case OPP_RevZ4: case OPP_RevZ5:
+            return Cell3DPosition(1 * (mc - OPP_RevZ1 + 1), 1 * (mc - OPP_RevZ1 + 1),
+                                  -1 * (mc - OPP_RevZ1 + 1));
+
+        case OPP_LZ1: case OPP_LZ2: case OPP_LZ3: case OPP_LZ4: case OPP_LZ5:
+            return Cell3DPosition(1 * (mc - OPP_LZ1 + 1), 0, -1 * (mc - OPP_LZ1 + 1));
+
+        case OPP_RZ1: case OPP_RZ2: case OPP_RZ3: case OPP_RZ4: case OPP_RZ5:
+            return Cell3DPosition(0, 1 * (mc - OPP_RZ1 + 1), -1 * (mc - OPP_RZ1 + 1));
+
         // case EPLs
         case RevZ_EPL: return Cell3DPosition(-1,-1,-1);
         case RevZ_R_EPL: return Cell3DPosition(0,-1,-1);
@@ -772,17 +842,14 @@ const Cell3DPosition ScaffoldingRuleMatcher::getPositionForScafComponent(ScafCom
         case LZ_L_EPL: return Cell3DPosition(-1,1,-1);
         case RevZ_L_EPL: return Cell3DPosition(-1,0,-1);
 
-            // case OPP
-        case OPP_X1: return Cell3DPosition(-1, 0, 0);
-        case OPP_X2: return Cell3DPosition(-2, 0, 0);
-        case OPP_X3: return Cell3DPosition(-3, 0, 0);
-        case OPP_X4: return Cell3DPosition(-4, 0, 0);
-        case OPP_X5: return Cell3DPosition(-5, 0, 0);
-        case OPP_Y1: return Cell3DPosition(0, -1, 0);
-        case OPP_Y2: return Cell3DPosition(0, -2, 0);
-        case OPP_Y3: return Cell3DPosition(0, -3, 0);
-        case OPP_Y4: return Cell3DPosition(0, -4, 0);
-        case OPP_Y5: return Cell3DPosition(0, -5, 0);
+        case OPP_X_R_EPL: return Cell3DPosition(-2, -1, 0);
+        case OPP_Y_L_EPL: return Cell3DPosition(-1, -2, 0);
+        case OPP_Y_R_EPL: return Cell3DPosition(1, -2, 0);
+        case X_L_EPL: return Cell3DPosition(2, -1, 0);
+        case X_R_EPL: return Cell3DPosition(2, 1, 0);
+        case Y_L_EPL: return Cell3DPosition(1, 2, 0);
+        case Y_R_EPL: return Cell3DPosition(-1, 2, 0);
+        case OPP_X_L_EPL: return Cell3DPosition(-2, 1, 0);
 
         case N_COMPONENTS: return Cell3DPosition();
     }
@@ -809,6 +876,13 @@ int ScaffoldingRuleMatcher::getBranchIndexForScafComponent(ScafComponent mc) {
 
         case RZ_1: case RZ_2: case RZ_3: case RZ_4: case RZ_5:
             return RZBranch;
+
+        case OPP_X1: case OPP_X2: case OPP_X3: case OPP_X4: case OPP_X5:
+            return OppXBranch;
+
+        case OPP_Y1: case OPP_Y2: case OPP_Y3: case OPP_Y4: case OPP_Y5:
+            return OppYBranch;
+
         default: break;
     }
 
@@ -922,6 +996,16 @@ BranchIndex ScaffoldingRuleMatcher::getBranchForEPL(ScafComponent epl) {
         case LZ_EPL: return LZBranch;
         case LZ_L_EPL: return LZBranch;
         case RevZ_L_EPL: return RevZBranch;
+
+        case OPP_X_R_EPL: return OppXBranch;
+        case OPP_Y_L_EPL: return OppYBranch;
+        case OPP_Y_R_EPL: return OppYBranch;
+        case X_L_EPL: return XBranch;
+        case X_R_EPL: return XBranch;
+        case Y_L_EPL: return YBranch;
+        case Y_R_EPL: return YBranch;
+        case OPP_X_L_EPL: return OppXBranch;
+
         default: VS_ASSERT_MSG(false, "getBranchForEPL: input epl is not an EPL");
     }
 
@@ -934,6 +1018,12 @@ const Cell3DPosition ScaffoldingRuleMatcher::getTargetEPLPositionForBranch(Branc
         case RZBranch: return Cell3DPosition(-1, -(B2 - 2), (B2 - 1));
         case ZBranch: return Cell3DPosition(-1, -1, (B2 - 1));
         case LZBranch: return Cell3DPosition(-(B2 - 2), -1, (B2 - 1));
+
+        // case XBranch:
+        // case YBranch:
+        // case OppXBranch:
+        // case OppXBranch:
+
         default:
             cerr << "getTargetEPLPositionForBranch(" << bi << ")" << endl;
             VS_ASSERT_MSG(false, "getTargetEPLPositionForBranch: input is not a valid branch");
@@ -996,10 +1086,22 @@ ScaffoldingRuleMatcher::getEntryPointPosition(const Cell3DPosition& cPos,
     return getEntryPointRelativePos(epl) + cPos;
 }
 
+
+bool ScaffoldingRuleMatcher::isOnHorizontalEPL(const Cell3DPosition& pos) const {
+    const Cell3DPosition& nearestTR = getNearestTileRootPosition(pos);
+
+    for (int i = OPP_X_R_EPL - RevZ_EPL; i <= OPP_X_L_EPL - RevZ_EPL; i++) {
+        const Cell3DPosition& ep = getEntryPointRelativePos(i);
+        if (pos == ep + nearestTR) return true;
+    }
+
+    return false;
+}
+
 bool ScaffoldingRuleMatcher::isOnEntryPoint(const Cell3DPosition& pos) const {
     const Cell3DPosition& nearestTR = getNearestTileRootPosition(pos);
 
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 20; i++) {
         const Cell3DPosition& ep = getEntryPointRelativePos(i);
         if (pos == ep + nearestTR) return true;
     }
