@@ -31,18 +31,29 @@ enum BranchIndex { ZBranch, RevZBranch, LZBranch,
     RZBranch, XBranch, YBranch, OppXBranch, OppYBranch, N_BRANCHES };
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip, Support};
 enum ScafComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
+
                      X_1, X_2, X_3, X_4, X_5,
                      Y_1, Y_2, Y_3, Y_4, Y_5,
+
                      Z_1, Z_2, Z_3, Z_4, Z_5,
                      RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5,
                      LZ_1, LZ_2, LZ_3, LZ_4, LZ_5,
                      RZ_1, RZ_2, RZ_3, RZ_4, RZ_5,
-                     // EPLs == 34 and on
-                     RevZ_EPL, // 35
-                     RevZ_R_EPL, // 36
-                     RZ_L_EPL, // 37
-                     RZ_EPL, // 38
-                     RZ_R_EPL, // 39
+
+                     OPP_X1, OPP_X2, OPP_X3, OPP_X4, OPP_X5,
+                     OPP_Y1, OPP_Y2, OPP_Y3, OPP_Y4, OPP_Y5,
+
+                     OPP_Z1, OPP_Z2, OPP_Z3, OPP_Z4, OPP_Z5,
+                     OPP_RevZ1, OPP_RevZ2, OPP_RevZ3, OPP_RevZ4, OPP_RevZ5,
+                     OPP_LZ1, OPP_LZ2, OPP_LZ3, OPP_LZ4, OPP_LZ5,
+                     OPP_RZ1, OPP_RZ2, OPP_RZ3, OPP_RZ4, OPP_RZ5,
+
+                     // EPLs == 64 and on
+                     RevZ_EPL, // 65
+                     RevZ_R_EPL, // 66
+                     RZ_L_EPL, // 67
+                     RZ_EPL, // 68
+                     RZ_R_EPL, // 69
                      Z_R_EPL, // 40
                      Z_EPL, // 41
                      Z_L_EPL, // 42
@@ -50,8 +61,16 @@ enum ScafComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
                      LZ_EPL, // 44
                      LZ_L_EPL, // 45
                      RevZ_L_EPL, // 46
-                     OPP_X1, OPP_X2, OPP_X3, OPP_X4, OPP_X5, // 47 - 51
-                     OPP_Y1, OPP_Y2, OPP_Y3, OPP_Y4, OPP_Y5, // 52 - 57
+
+                     OPP_X_R_EPL,
+                     OPP_Y_L_EPL,
+                     OPP_Y_R_EPL,
+                     X_L_EPL,
+                     X_R_EPL,
+                     Y_L_EPL,
+                     Y_R_EPL,
+                     OPP_X_L_EPL,
+
                      N_COMPONENTS
 };
 
@@ -79,7 +98,7 @@ class ScaffoldingRuleMatcher {
         Cell3DPosition(0,1,0) // YOppBranch
     };
 
-    inline static constexpr std::array<Cell3DPosition, 12> entryPointRelativePos =
+    inline static constexpr std::array<Cell3DPosition, 20> entryPointRelativePos =
     {
         Cell3DPosition(-1,-1,-1), // RevZ_EPL
         Cell3DPosition(0,-1,-1), // RevZ_R_EPL
@@ -95,7 +114,16 @@ class ScaffoldingRuleMatcher {
         Cell3DPosition(-1,2,-1), // LZ_EPL
 
         Cell3DPosition(-1,1,-1), // LZ_L_EPL
-        Cell3DPosition(-1,0,-1) // RevZ_L_EPL
+        Cell3DPosition(-1,0,-1), // RevZ_L_EPL
+
+        Cell3DPosition(-2, -1, 0), // OPP_X_R_EPL
+        Cell3DPosition(-1, -2, 0), // OPP_Y_L_EPL
+        Cell3DPosition(1, -2, 0), // OPP_Y_R_EPL
+        Cell3DPosition(2, -1, 0), // X_L_EPL
+        Cell3DPosition(2, 1, 0), // X_R_EPL
+        Cell3DPosition(1, 2, 0), // Y_L_EPL
+        Cell3DPosition(-1, 2, 0), // Y_R_EPL
+        Cell3DPosition(-2, 1, 0), // OPP_X_L_EPL
     };
 public:
 
@@ -127,6 +155,7 @@ public:
     bool isBranchModule(const Cell3DPosition& pos) const;
     bool isZBranchModule(const Cell3DPosition& pos) const;
     bool isEPLPivotModule(const Cell3DPosition& pos) const;
+    bool isOnHorizontalEPL(const Cell3DPosition& pos) const;
 
     /**
      * Indicates how many modules are in branch bi for tile at pos

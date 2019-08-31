@@ -250,6 +250,8 @@ public:
      *  @return a pointer to the configuration file TinyXml doc
      */
     inline TiXmlDocument *getConfigDocument() { return xmlDoc; }
+
+    inline BlockCodeBuilder getBlockCodeBuilder() { return bcb; }
 };
 
 inline void deleteSimulator() {

@@ -35,19 +35,43 @@ bool ScaffoldingBlockCode::constructionOver = false;
 
 ScaffoldingBlockCode::ScaffoldingBlockCode(Catoms3DBlock *host):
     Catoms3DBlockCode(host) {
-    scheduler = getScheduler();
-    world = BaseSimulator::getWorld();
-    lattice = world->lattice;
-    catom = host;
+
+    if (host) {
+        scheduler = getScheduler();
+        world = BaseSimulator::getWorld();
+        lattice = world->lattice;
+        catom = host;
+    }
 }
 
 ScaffoldingBlockCode::~ScaffoldingBlockCode() {
-    if (ruleMatcher->isInMesh(norm(catom->position))) {
+    if (catom) {
+      if (ruleMatcher->isInMesh(norm(catom->position))) {
         // OUTPUT << "bitrate:\t" << catom->blockId << "\t"
         //        << maxBitrate.first << "\t"
         //        << (maxBitrate.second.empty() ?
-        //            ruleMatcher->roleToString(role) : maxBitrate.second) << endl;
+        //            ruleMatcher->roleToString(role) : maxBitrate.second) <<
+        //            endl;
+      }
     }
+}
+
+bool ScaffoldingBlockCode::parseUserCommandLineArgument(int argc, char *argv[]) {
+    /* Reading the command line */
+    if ((argc > 0) && (argv[0][0] == '-')) {
+        switch(argv[0][1]) {
+            case 'b':   {
+                BUILDING_MODE = true;
+
+                argc--;
+                argv++;
+
+                return true;
+            } break;
+        }
+    }
+
+    return false;
 }
 
 void ScaffoldingBlockCode::onAssertTriggered() {
@@ -57,6 +81,8 @@ void ScaffoldingBlockCode::onAssertTriggered() {
 
 void ScaffoldingBlockCode::onBlockSelected() {
 #ifndef ROTATION_STEP_MATRIX_EXPORT
+    if (BUILDING_MODE) return;
+
     // const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
     // const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
     // Cell3DPosition pos;
@@ -377,6 +403,10 @@ void ScaffoldingBlockCode::processReceivedMessage(MessagePtr msg,
 void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
+
+    if (BUILDING_MODE
+        and scheduler->getState() == Scheduler::State::PAUSED)
+        return; // Disable any module or blockcode alteration
 
     switch (pev->eventType) {
         case EVENT_RECEIVE_MESSAGE: {
@@ -2062,6 +2092,11 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                     // if (ruleMatcher->isInSandbox(norm(pos))) lattice->highlightCell(pos,BLACK);
 
                     // if (not ruleMatcher->isInMesh(norm(pos))) continue;
+
+                    // if (ruleMatcher->isOnHorizontalEPL(norm(pos))
+                    //     and ruleMatcher->isInCSG
+                    //     (ruleMatcher->getNearestTileRootPosition(norm(pos))))
+                    //     lattice->highlightCell(pos, BLUE);
 
                     if (not ruleMatcher->isInCSG(norm(pos))
                         // or (ruleMatcher->isInCSG(norm(pos)) and not ruleMatcher->isInCSG
