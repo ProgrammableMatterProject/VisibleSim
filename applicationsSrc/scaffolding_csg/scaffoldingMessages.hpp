@@ -156,4 +156,16 @@ public:
     virtual string getName() const override { return "FinalTargetReached{" + finalPos.to_string() +"}";
     }
 };
+
+class TileConstructionFinishedMessage : public HandleableMessage {
+    BranchIndex sourceBranch; // Sender tile is the one at the end of branch $sourceBranch from the TR receiver
+public:
+    TileConstructionFinishedMessage() : HandleableMessage() {};
+    virtual ~TileConstructionFinishedMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new TileConstructionFinishedMessage(*this); }
+    virtual string getName() const override { return "TileConstructionFinished{" + ScaffoldingRuleMatcher::branch_to_string(sourceBranch) +"}";; }
+};
+
 #endif /* MC3D_MESSAGES_H_ */

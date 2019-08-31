@@ -302,6 +302,12 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             return;
         }
     } else {
+        // Check tile construction over
+        if (mabc.constructionQueue.empty() and not mabc.tileConstructionOver) {
+            mabc.tileConstructionOver = true;
+            mabc.handleTileConstructionOver();
+        }
+
         // Else redirect to EPL corresponding to that branch
         // ONLY IF BRANCH HAD TO BE GROWN!
         if (mabc.ruleMatcher->
@@ -430,8 +436,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
                 hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), LZBranch)
                 and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2])
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
-            else if (mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos))
-                     and mabc.ruleMatcher->
+            else if (mabc.ruleMatcher->
                      hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RZBranch))
                 // Forward to incident RZ tip
                 relNeighborPos = Cell3DPosition(0,1,0);
@@ -656,5 +661,24 @@ void FinalTargetReachedMessage::handle(BaseSimulator::BlockCode* bc) {
     VS_ASSERT(mabc.lattice->cellsAreAdjacent(mabc.catom->position, finalPos));
     if (not mabc.greenLightIsOn) {
         mabc.SET_GREEN_LIGHT(true);
+    }
+}
+
+void TileConstructionFinishedMessage::handle(BaseSimulator::BlockCode* bc) {
+    ScaffoldingBlockCode& mabc = *static_cast<ScaffoldingBlockCode*>(bc);
+
+    if (mabc.role == Coordinator) {
+        // Acknowledge child construction
+        mabc.numReceivedTCF++;
+
+        // If the number of expected acks has been reached, send to parents
+        mabc.handleTileConstructionOver();
+    } else {
+        // Forward in reverse along branch
+        P2PNetworkInterface* nHopItf = mabc.catom->getInterface
+            (mabc.catom->position-mabc.ruleMatcher->getBranchUnitOffset(mabc.branch));
+        VS_ASSERT(nHopItf and nHopItf->isConnected());
+
+        mabc.sendMessage(this->clone(), nHopItf, MSG_DELAY_MC, 0);
     }
 }

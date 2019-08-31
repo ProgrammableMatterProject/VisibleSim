@@ -50,10 +50,11 @@ public:
     inline static int nbCSGCatomsInPlace = 0;
     inline  static int nbModulesInShape = 0;
 
-    static int nbMessages;
-    static Time t0;
+    inline static int nbMessages = 0;
+    inline static Time t0 = 0;
     inline static const bool NO_FLOODING = false;
     inline static bool BUILDING_MODE = false; // const after call to parseUserCommandLineArgument
+    inline static bool sandboxInitialized;
 
     ScaffoldingBlockCode(Catoms3D::Catoms3DBlock *host);
     ~ScaffoldingBlockCode();
@@ -237,11 +238,11 @@ public:
      */
     int addNeighborToProcess = 0;
 
-    /**
-     * Use to limit interruption events after top level S_RevZ arrived
-     *  so that the simulation ends nicely for stat export
-     */
-    static bool constructionOver;
+    // /**
+    //  * Use to limit interruption events after top level S_RevZ arrived
+    //  *  so that the simulation ends nicely for stat export
+    //  */
+    // static bool constructionOver;
 
     /**
      * Used to ensure that only one module on the RevZBranch train can claim the R position.
@@ -305,6 +306,12 @@ public:
     std::array<bool, 6> moduleReadyOnEPL = {0}; //<! keeps track of modules which arrived on Tile Entry Point Locations
 
 
+    // Construction Finished Termination Criteria vars
+    bool tileConstructionOver = false;
+    bool constructionOver = false;
+    int numExpectedTCF = 0;
+    int numReceivedTCF = 0;
+
     /**
      * Finds the next target position that a module arriving at EPL epl should move to,
      *  and return it
@@ -319,7 +326,6 @@ public:
      * Add initial sandbox modules to the lattice
      */
     void initializeSandbox();
-    static bool sandboxInitialized;
 
     /**
      * Transforms a shifted grid position into a mesh absolute position.
@@ -464,6 +470,9 @@ public:
 
     void highlightCSGScaffold(bool force = false);
     void countCSGScaffoldOpenPositions();
+    int computeNumberOfChildrenTiles();
+    void constructionOverHandler();
+    void handleTileConstructionOver();
 };
 
 #endif /* SCAFFOLDINGBLOCKCODE_H_ */

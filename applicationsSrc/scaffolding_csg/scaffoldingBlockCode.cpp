@@ -28,11 +28,6 @@
 using namespace Catoms3D;
 using namespace MeshCoating;
 
-Time ScaffoldingBlockCode::t0 = 0;
-int ScaffoldingBlockCode::nbMessages = 0;
-bool ScaffoldingBlockCode::sandboxInitialized = false;
-bool ScaffoldingBlockCode::constructionOver = false;
-
 ScaffoldingBlockCode::ScaffoldingBlockCode(Catoms3DBlock *host):
     Catoms3DBlockCode(host) {
 
@@ -150,6 +145,9 @@ void ScaffoldingBlockCode::onBlockSelected() {
             cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
                  << ruleMatcher->resourcesForCSGBranch(norm(catom->position), bi) << endl;
         }
+
+        cout << "numExpectedTCF: " << numExpectedTCF << endl;
+        cout << "numReceivedTCF: " << numReceivedTCF << endl;
     }
 
     if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
@@ -566,15 +564,15 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                             pivotItf, MSG_DELAY_MC, 0);
 
                 // Check algorithm termination
-                int ts = round(getScheduler()->now() / getRoundDuration());
-                if (nbOpenScaffoldPositions == nbCSGCatomsInPlace) {
-                    cout << "CSG CONSTRUCTION OVER AT TimeStep = "
-                         << ts << " with " << lattice->nbModules << " modules in total"
-                         << " including " << nbModulesInShape << " in the shape" << endl;
-                    cout << "main: " << ts << " " << lattice->nbModules << " "
-                         << nbModulesInShape << " " << nbSandboxCatoms << endl;
-                    constructionOver = true;
-                }
+                // if (nbOpenScaffoldPositions == nbCSGCatomsInPlace) {
+                //     int ts = round(getScheduler()->now() / getRoundDuration());
+                //     cout << "CSG CONSTRUCTION OVER AT TimeStep = "
+                //          << ts << " with " << lattice->nbModules << " modules in total"
+                //          << " including " << nbModulesInShape << " in the shape" << endl;
+                //     cout << "main: " << ts << " " << lattice->nbModules << " "
+                //          << nbModulesInShape << " " << nbSandboxCatoms << endl;
+                //     constructionOver = true;
+                // }
 
                 lattice->unhighlightCell(catom->position);
 
@@ -996,6 +994,8 @@ void ScaffoldingBlockCode::initializeTileRoot() {
             make_pair(RZ_EPL,resourcesForTileThrough(catom->position, RZ_EPL)));
     }
 
+    numExpectedTCF = computeNumberOfChildrenTiles();
+
     // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
     getScheduler()->schedule(
         new InterruptionEvent(getScheduler()->now(),
@@ -1313,10 +1313,19 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
     } else if (nbIVB == 2
                and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch) and
                     ruleMatcher->hasIncidentCSGBranch(norm(pos), LZBranch))) {
-        deque.push_back({ S_RZ, RZ_EPL});
-        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
-        deque.push_back({ S_Z, Z_EPL });
-        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
+
+        if (ruleMatcher->hasIncidentCSGBranch(norm(pos), OppXBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(pos), YBranch)) {
+            deque.push_back({ S_Z, Z_EPL });
+            deque.push_back({ S_RZ, Z_EPL});
+            if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+            if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
+        } else {
+            deque.push_back({ S_RZ, RZ_EPL});
+            if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+            deque.push_back({ S_Z, Z_EPL });
+            if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
+        }
 
         if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, RZ_EPL });
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, Z_EPL });
@@ -1341,10 +1350,19 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
     } else if (nbIVB == 2
                and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)and
                     ruleMatcher->hasIncidentCSGBranch(norm(pos), RZBranch))) {
-        deque.push_back({ S_LZ, LZ_EPL});
-        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
-        deque.push_back({ S_Z, Z_EPL });
-        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+
+        if (ruleMatcher->hasIncidentCSGBranch(norm(pos), OppYBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(pos), XBranch)) {
+            deque.push_back({ S_Z, Z_EPL });
+            deque.push_back({ S_LZ, Z_EPL});
+            if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
+            if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+        } else {
+            deque.push_back({ S_LZ, LZ_EPL});
+            if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
+            deque.push_back({ S_Z, Z_EPL });
+            if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
+        }
 
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL });
         if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, Z_EPL });
@@ -1426,8 +1444,15 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
                and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)
                     and ruleMatcher->hasIncidentCSGBranch(norm(pos), RZBranch)
                     and ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch))) {
-        deque.push_back({ S_LZ, LZ_EPL });
-        deque.push_back({ S_RevZ, LZ_EPL});
+        if (ruleMatcher->hasIncidentCSGBranch(norm(pos), OppYBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(pos), XBranch)) {
+            deque.push_back({ S_RevZ, RevZ_EPL});
+            deque.push_back({ S_LZ, RevZ_EPL });
+        } else {
+            deque.push_back({ S_LZ, LZ_EPL});
+            deque.push_back({ S_RevZ, LZ_EPL });
+        }
+
         if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RevZ_EPL});
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
         deque.push_back({ S_Z, Z_EPL });
@@ -2159,6 +2184,57 @@ void ScaffoldingBlockCode::countCSGScaffoldOpenPositions() {
                     //                          getTileRootPositionForMeshPosition(norm(pos)))
                     )
                     nbOpenScaffoldPositions++;
+            }
+        }
+    }
+}
+
+int ScaffoldingBlockCode::computeNumberOfChildrenTiles() {
+    int numChildrenTiles = 0;
+
+    for (int i = 0; i < N_BRANCHES; i++) {
+        BranchIndex bi = (BranchIndex)i;
+
+        Cell3DPosition trEnd = ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position),bi);
+        if (ruleMatcher->isInCSG(trEnd)
+            and ruleMatcher->resourcesForCSGBranch(norm(catom->position), bi) == B-1) {
+
+            numChildrenTiles++;
+        }
+    }
+
+    return numChildrenTiles;
+}
+
+void ScaffoldingBlockCode::constructionOverHandler() {
+    int ts = round(getScheduler()->now() / getRoundDuration());
+    cout << "CSG CONSTRUCTION OVER AT TimeStep = "
+         << ts << " with " << lattice->nbModules << " modules in total"
+         << " including " << nbModulesInShape << " in the shape" << endl;
+    cout << "main: " << ts << " " << lattice->nbModules << " "
+         << nbModulesInShape << " " << nbSandboxCatoms << endl;
+}
+
+void ScaffoldingBlockCode::handleTileConstructionOver() {
+    if (numReceivedTCF == numExpectedTCF and tileConstructionOver) {
+        constructionOver = true;
+
+        if (catom->position == scaffoldSeedPos) {
+            constructionOverHandler();
+            return;
+        }
+
+        for (int i = 0; i < N_BRANCHES; i++) {
+            BranchIndex bi = (BranchIndex)i;
+            Cell3DPosition nHopPos = catom->position -
+                ruleMatcher->getBranchUnitOffset(bi);
+            P2PNetworkInterface* nHopItf = catom->getInterface(nHopPos);
+
+            if (ruleMatcher->hasIncidentCSGBranch(norm(catom->position), bi)
+                // do not forward to sandbox
+                and not (nHopPos[2] < scaffoldSeedPos[2])) {
+                VS_ASSERT(nHopItf and nHopItf->isConnected());
+                sendMessage(new TileConstructionFinishedMessage(), nHopItf, MSG_DELAY_MC, 0);
             }
         }
     }
