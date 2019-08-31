@@ -1068,6 +1068,9 @@ hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
     // Invalid input
     if (not isTileRoot(pos)) return false;
 
+    // If above sandbox, there are always all incident branches vertical
+    if (bi < XBranch and pos[2] == 0) return true;
+
     // TR has incident branch if its parent tile TR exists and is in object
     const Cell3DPosition& trIVB = getTileRootAtEndOfBranch(pos, bi, false);
 

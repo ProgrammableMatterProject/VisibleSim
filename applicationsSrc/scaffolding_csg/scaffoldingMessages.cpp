@@ -461,9 +461,13 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
                 and not mabc.ruleMatcher->
                 hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
-            else
+            else if (mabc.ruleMatcher->
+                     hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
                 // forward to RevZ tip
                 relNeighborPos = Cell3DPosition(0,1,0);
+            else
+                // forward to Z tip
+                relNeighborPos = Cell3DPosition(-1,0,0);
         }
 
         P2PNetworkInterface* itf = mabc.catom->getInterface(mabc.catom->position

@@ -1385,9 +1385,7 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
 
     } else if (nbIVB == 3
-               and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)
-                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), LZBranch)
-                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch))) {
+               and not ruleMatcher->hasIncidentCSGBranch(norm(pos), RZBranch)) {
         if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RZ_EPL});
 
         if (not ruleMatcher->hasIncidentCSGBranch(norm(pos), YBranch))
@@ -1441,9 +1439,7 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL });
 
     } else if (nbIVB == 3
-               and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)
-                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), RZBranch)
-                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch))) {
+               and not ruleMatcher->hasIncidentCSGBranch(norm(pos), LZBranch)) {
         if (ruleMatcher->hasIncidentCSGBranch(norm(pos), OppYBranch)
             and ruleMatcher->hasIncidentCSGBranch(norm(pos), XBranch)) {
             deque.push_back({ S_RevZ, RevZ_EPL});
@@ -1487,18 +1483,29 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
 
     } else if (nbIVB == 3
-               and (ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)
-                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), RZBranch)
-                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), LZBranch))) {
+               and not ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch)) {
 
         if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL});
-        deque.push_back({ S_LZ, LZ_EPL });
+
+        if (not (ruleMatcher->hasIncidentCSGBranch(norm(pos), OppYBranch)
+                 and ruleMatcher->hasIncidentCSGBranch(norm(pos), XBranch)))
+            deque.push_back({ S_LZ, LZ_EPL });
 
         if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
         deque.push_back({ S_Z, Z_EPL});
+
+        if (ruleMatcher->hasIncidentCSGBranch(norm(pos), OppYBranch)
+                 and ruleMatcher->hasIncidentCSGBranch(norm(pos), XBranch))
+            deque.push_back({ S_LZ, Z_EPL });
+
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
 
-        deque.push_back({ S_RZ, RZ_EPL });
+        if (ruleMatcher->hasIncidentCSGBranch(norm(pos), OppXBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(pos), YBranch))
+            deque.push_back({ S_RZ, Z_EPL });
+        else
+            deque.push_back({ S_RZ, RZ_EPL });
+
         if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RZ_EPL});
         if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, LZ_EPL});
         if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, Z_EPL });
@@ -1539,9 +1546,7 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
 
     } else if (nbIVB == 3
-               and (ruleMatcher->hasIncidentCSGBranch(norm(pos), ZBranch)
-                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), RZBranch)
-                    and ruleMatcher->hasIncidentCSGBranch(norm(pos), LZBranch))) {
+               and not ruleMatcher->hasIncidentCSGBranch(norm(pos), RevZBranch)) {
 
         deque.push_back({ S_RZ, RZ_EPL });
         deque.push_back({ S_LZ, LZ_EPL });
