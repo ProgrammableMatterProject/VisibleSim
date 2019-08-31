@@ -2129,8 +2129,8 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                         )
                         continue;
 
-                    // if (ruleMatcher->isInCSG(norm(pos)))
-                    //     lattice->highlightCell(pos, WHITE);
+                    if (ruleMatcher->isInCSG(norm(pos)))
+                        lattice->highlightCell(pos, WHITE);
 
                     // if (ruleMatcher->isInCSG(norm(pos)) and
                     //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
