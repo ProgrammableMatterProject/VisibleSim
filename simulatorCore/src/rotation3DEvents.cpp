@@ -329,7 +329,7 @@ void Rotations3D::init(const Matrix& m) {
 
 
 void Rotations3D::exportMatrix(const Matrix& m) {
-// #define ROTATION_STEP_MATRIX_EXPORT
+//#define ROTATION_STEP_MATRIX_EXPORT
 #ifdef ROTATION_STEP_MATRIX_EXPORT
 
     Catoms3DBlock* block = static_cast<Catoms3DBlock*>
@@ -337,6 +337,11 @@ void Rotations3D::exportMatrix(const Matrix& m) {
 
     if ((exportMatrixCount % 2) == 0 or exportMatrixCount == 40) {
         OUTPUT << getScheduler()->now() << "|";
+
+        if (exportMatrixCount == 40) {
+            short ori;
+            getFinalPositionAndOrientation(block->blockCode->motionDest, ori);
+        }
 
         block->blockCode->onBlockSelected();
 

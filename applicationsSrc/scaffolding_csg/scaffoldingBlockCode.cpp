@@ -29,7 +29,6 @@ using namespace Catoms3D;
 using namespace MeshCoating;
 
 Time ScaffoldingBlockCode::t0 = 0;
-int ScaffoldingBlockCode::nbCatomsInPlace = 0;
 int ScaffoldingBlockCode::nbMessages = 0;
 bool ScaffoldingBlockCode::sandboxInitialized = false;
 bool ScaffoldingBlockCode::constructionOver = false;
@@ -57,7 +56,7 @@ void ScaffoldingBlockCode::onAssertTriggered() {
 }
 
 void ScaffoldingBlockCode::onBlockSelected() {
-
+#ifndef ROTATION_STEP_MATRIX_EXPORT
     // const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
     // const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
     // Cell3DPosition pos;
@@ -182,6 +181,13 @@ void ScaffoldingBlockCode::onBlockSelected() {
     // cout << "pivotPosition: " << pivotPosition << endl;
     // cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
     // cout << "--- END " << *catom << "---" << endl;
+#else
+    int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
+    VS_ASSERT(mc != -1);
+    OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
+    OUTPUT << ruleMatcher->component_to_string(static_cast<ScafComponent>(mc)) << "|";
+    OUTPUT << ((targetPosition == motionDest) and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) << "|";
+#endif
 }
 
 void ScaffoldingBlockCode::startup() {
@@ -495,7 +501,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
             step++;
             if (catom->position == targetPosition
                 and not ruleMatcher->isOnEntryPoint(norm(catom->position))) {
-                static int nbModulesInShape = 0;
+                if (ruleMatcher->isInCSG(norm(catom->position))) nbCSGCatomsInPlace++;
                 nbModulesInShape++;
 
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
@@ -529,18 +535,21 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                 sendMessage(new FinalTargetReachedMessage(catom->position),
                             pivotItf, MSG_DELAY_MC, 0);
 
-                // TODO: Check algorithm termination
-                // CSG construction ending depends on parity of the dimension of the cube
-                    //      << "-CUBE CONSTRUCTION OVER AT TimeStep = "
-                    //      << ts << " with " << lattice->nbModules << " modules in total"
-                    //      << " including " << nbModulesInShape << " in the shape" << endl;
-                    // cout << "main: " << ruleMatcher->getCSGDimension() << " " << ts
-                    //      << " " << lattice->nbModules << " "
-                    //      << nbModulesInShape << endl;
-                    // constructionOver = true;
+                // Check algorithm termination
+                int ts = round(getScheduler()->now() / getRoundDuration());
+                if (nbOpenScaffoldPositions == nbCSGCatomsInPlace) {
+                    cout << "CSG CONSTRUCTION OVER AT TimeStep = "
+                         << ts << " with " << lattice->nbModules << " modules in total"
+                         << " including " << nbModulesInShape << " in the shape" << endl;
+                    cout << "main: " << ts << " " << lattice->nbModules << " "
+                         << nbModulesInShape << " " << nbSandboxCatoms << endl;
+                    constructionOver = true;
+                }
+
+                lattice->unhighlightCell(catom->position);
 
                 // STAT EXPORT
-                // OUTPUT << "nbCatomsInPlace:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << ++nbCatomsInPlace << endl;
+                OUTPUT << "nbModulesInShape:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << nbModulesInShape << endl;
 
                 if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
                     coordinatorPos =
@@ -1556,6 +1565,7 @@ bool ScaffoldingBlockCode::requestTargetCellFromTileRoot() {
 }
 
 void ScaffoldingBlockCode::initializeSandbox() {
+    countCSGScaffoldOpenPositions();
     highlightCSGScaffold();
 
     const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
@@ -1568,8 +1578,10 @@ void ScaffoldingBlockCode::initializeSandbox() {
                 for (int j = 0; j < 3; j++) {
                     pos += ruleMatcher->getIncidentTipRelativePos((BranchIndex)i);
 
-                    if (lattice->isInGrid(pos))
+                    if (lattice->isInGrid(pos)) {
                         world->addBlock(0, buildNewBlockCode, pos, GREY);
+                        nbSandboxCatoms++;
+                    }
                 }
             }
 
@@ -1584,6 +1596,7 @@ void ScaffoldingBlockCode::initializeSandbox() {
     }
 
     sandboxInitialized = true;
+    cout << "nbSandboxCatoms: " << nbSandboxCatoms << endl;
     // cout << "round duration: " << getRoundDuration() << endl;
 }
 
@@ -2056,19 +2069,19 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                         )
                         continue;
 
-                    if (ruleMatcher->isInCSG(norm(pos)))
-                        lattice->highlightCell(pos, WHITE);
+                    // if (ruleMatcher->isInCSG(norm(pos)))
+                    //     lattice->highlightCell(pos, WHITE);
 
                     // if (ruleMatcher->isInCSG(norm(pos)) and
                     //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
 
                     // if (ruleMatcher->isInMesh(norm(pos))) lattice->highlightCell(pos, RED);
 
-                    if (ruleMatcher->isOnOppXBranch(norm(pos)))
-                        lattice->highlightCell(pos, ORANGE);
+                    // if (ruleMatcher->isOnOppXBranch(norm(pos)))
+                    //     lattice->highlightCell(pos, ORANGE);
 
-                    if (ruleMatcher->isOnOppYBranch(norm(pos)))
-                        lattice->highlightCell(pos, MAGENTA);
+                    // if (ruleMatcher->isOnOppYBranch(norm(pos)))
+                    //     lattice->highlightCell(pos, MAGENTA);
 
                     // if (ruleMatcher->isOnXCSGBorder(norm(pos)))
                     //     lattice->highlightCell(pos, GREEN);
@@ -2097,4 +2110,21 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
     //     cout << z << ": " << seedPos << endl;
     // }
 
+}
+
+void ScaffoldingBlockCode::countCSGScaffoldOpenPositions() {
+    const Cell3DPosition& gs = world->lattice->gridSize;
+    Cell3DPosition pos;
+    for (short iz = 0; iz < gs[2]; iz++) {
+        for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
+            for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
+                pos.set(ix, iy, iz);
+                if (ruleMatcher->isInCSG(norm(pos))
+                    // and ruleMatcher->isInCSG(ruleMatcher->
+                    //                          getTileRootPositionForMeshPosition(norm(pos)))
+                    )
+                    nbOpenScaffoldPositions++;
+            }
+        }
+    }
 }

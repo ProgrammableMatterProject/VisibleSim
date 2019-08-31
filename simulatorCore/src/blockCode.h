@@ -32,8 +32,8 @@ class BlockCode;
 typedef std::function<void (BlockCode*,std::shared_ptr<Message>,P2PNetworkInterface*)> eventFunc;
 
 /**
- * @brief A distributed user program, will be executed by each module 
- */ 
+ * @brief A distributed user program, will be executed by each module
+ */
 class BlockCode {
 public:
     class InterfaceNotConnectedException : public VisibleSimException {
@@ -41,65 +41,67 @@ public:
         InterfaceNotConnectedException(BlockCode* bc, const Message *msg,
                                        const P2PNetworkInterface* itf);
     };
-    
+
 private:
     int sendMessageToAllNeighbors(const char*msgString, Message*msg,Time t0,Time dt, int nexcept, va_list args);
 public:
-    BuildingBlock *hostBlock; 	//!< The block to which this instance of the user program belongs 
+    BuildingBlock *hostBlock;   //!< The block to which this instance of the user program belongs
     Time availabilityDate = 0; //!< If the host is busy, the date at which it will be available
     std::multimap<int,eventFunc> eventFuncMap; //!< container of function pointers to message handlers, indexed by message typeID
     Scheduler *scheduler; //!< pointer to the single instance of scheduler of the simulation
     Lattice *lattice;  //!< pointer to the single instance of lattice of the simulation
     ConsoleStream console;  //!< pointer to the single instance of ConsoleStream of the simulation
-    static Target *target; //!< pointer shared by all blockCodes to the current target configuration    
-    
+    static Target *target; //!< pointer shared by all blockCodes to the current target configuration
+
+    Cell3DPosition motionDest;
+
 /**
  * @brief BlockCode constructor
  * @para, host The block on which this instance of the blockCode will be executed
- */ 
-    BlockCode(BuildingBlock *host);    
+ */
+    BlockCode(BuildingBlock *host);
 /**
  * @brief BlockCode destructor
- */ 
+ */
     virtual ~BlockCode();
-    
+
 /**
  * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it. Has to be overriden in the child class.
  * @param config : pointer to the TiXmlDocument representing the configuration file, all information related to VisibleSim's core have already been parsed
  *
  * Called from BuildingBlock constructor, only once.
- */ 
+ */
     virtual void parseUserElements(TiXmlDocument *config) { }
 /**
  * @brief Handler for all events received by the host block
- */ 
+ */
     virtual void processLocalEvent(EventPtr pev);
 /**
- * @brief This function is called on startup of the blockCode, 
+ * @brief This function is called on startup of the blockCode,
  it can be used to perform initial configuration of the host or this instance of the program
-*/ 
+*/
     virtual void startup() = 0;
 /**
  * @brief Initialization function called by startup(), used for scheduling initial events and performing additional configuration if needed.
- */ 
+ */
     virtual void init() {};
 
 //virtual bool getAttribute(const string &att,ostringstream &sout) { sout << "no debugging"; return false; };
     virtual void addDebugAttributes(Scheduler *scheduler){};
 
     /**
-     * @brief This function is called when a module is tapped by the user. Prints a message to the console by default. 
+     * @brief This function is called when a module is tapped by the user. Prints a message to the console by default.
      Can be overloaded in the user blockCode
      * @param face face that has been tapped */
     virtual void onTap(int face);
 
     /**
-     * @brief Loads the next target from the configuration file into the target attribute 
+     * @brief Loads the next target from the configuration file into the target attribute
      *  by calling Target::loadNextTarget()
      * @return true if a target has been loaded, false otherwise (No target remaining in config file)
      */
-    static bool loadNextTarget(); 
-    
+    static bool loadNextTarget();
+
     /**
      * @brief Add a new message handler to the block code, for message with message type type
      * @param type ID of the message for which a handler needs to be registered
@@ -126,7 +128,7 @@ public:
     /**
      * @brief Send message to interface dest at time t0 + [0,1]dt
      * @param msg message to be sent (will print the handleable message's name)
-     * @param dest destination interface. 
+     * @param dest destination interface.
      * @param t0 time to wait before sending
      * @param dt potential delay in sending time */
     virtual int sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
@@ -135,7 +137,7 @@ public:
     /**
      * @brief Send message to interface dest at time t0 + [0,1]dt
      * @param msg message to be sent
-     * @param dest destination interface. 
+     * @param dest destination interface.
      * @param t0 time to wait before sending
      * @param dt potential delay in sending time */
     int sendMessage(Message *msg,P2PNetworkInterface *dest,
@@ -146,27 +148,27 @@ public:
     int sendMessage(const char *msgString,Message *msg,P2PNetworkInterface *dest,
                      Time t0,Time dt);
 
-    /** 
+    /**
      * User-implemented debug function that gets called when a module is selected in the GUI
      * @note call is made from GlBlock::getInfo() as it is convenient there. Adding an actual GUI button could more convenient and less "hacky"
      */
     virtual void onBlockSelected() {};
-    
-    /** 
+
+    /**
      * User-implemented debug function that gets called when a VS_ASSERT is triggered
-     * @note call is made from utils::assert_handler() 
+     * @note call is made from utils::assert_handler()
      */
     virtual void onAssertTriggered() {};
-    
-    /** 
-     * User-implemented keyboard handler function that gets called when 
+
+    /**
+     * User-implemented keyboard handler function that gets called when
      *  a key press event could not be caught by openglViewer
      * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
      */
     virtual void onUserKeyPressed(unsigned char c, int x, int y) {};
 
-    /** 
-     * Call by world during GL drawing phase, can be used by a user 
+    /**
+     * Call by world during GL drawing phase, can be used by a user
      *  to draw custom Gl content into the simulated world
      * @note call is made from World::GlDraw
      */

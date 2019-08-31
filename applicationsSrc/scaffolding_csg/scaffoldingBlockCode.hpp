@@ -44,11 +44,16 @@ public:
     inline static int Z_MIN = numeric_limits<int>::max();
     inline static Cell3DPosition scaffoldSeedPos = Cell3DPosition(-1, -1, -1);
     inline static const Cell3DPosition& sbSeedPos = Cell3DPosition(3, 3, 3);
-    static int nbCatomsInPlace;
+
+    inline static int nbSandboxCatoms = 0;
+    inline static int nbOpenScaffoldPositions = 0;
+    inline static int nbCSGCatomsInPlace = 0;
+    inline  static int nbModulesInShape = 0;
+
     static int nbMessages;
     static Time t0;
 
-    inline static const bool NO_FLOODING = false;
+    inline static const bool NO_FLOODING = true;
 
     // For stats export
     pair<int, string> maxBitrate;
@@ -455,6 +460,7 @@ y the module
     Cell3DPosition determineScaffoldSeedPosition();
 
     void highlightCSGScaffold(bool force = false);
+    void countCSGScaffoldOpenPositions();
 };
 
 #endif /* SCAFFOLDINGBLOCKCODE_H_ */
