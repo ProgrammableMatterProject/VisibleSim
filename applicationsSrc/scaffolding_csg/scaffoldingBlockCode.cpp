@@ -18,6 +18,7 @@
 #include "events.h"
 #include "trace.h"
 #include "tDefs.h"
+#include "configExporter.h"
 
 #include "teleportationEvents.h"
 #include "rotation3DEvents.h"
@@ -244,6 +245,12 @@ void ScaffoldingBlockCode::startup() {
              << TermColor::BWhite << "\t---\tCurrent #Modules:\t"
              << TermColor::BMagenta << lastNbModules
              << TermColor::Reset << std::flush;
+
+    if (lastNbModules == 49040) {
+        Catoms3DConfigExporter exporter = Catoms3DConfigExporter(world);
+        exporter.exportConfiguration();
+    }
+
 
     if (scaffoldSeedPos == Cell3DPosition(-1,-1,-1)) {
         scaffoldSeedPos = determineScaffoldSeedPosition();

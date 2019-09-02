@@ -71,6 +71,13 @@ ConfigExporter::ConfigExporter(World *_world) {
     config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
 }
 
+ConfigExporter::ConfigExporter(World *_world, const string& _filename) {
+    world = _world;
+    config = new TiXmlDocument();
+    configName = _filename;
+    config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
+}
+
 ConfigExporter::~ConfigExporter() {
     delete config;
 }
