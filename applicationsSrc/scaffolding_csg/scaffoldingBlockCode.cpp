@@ -246,12 +246,6 @@ void ScaffoldingBlockCode::startup() {
              << TermColor::BMagenta << lastNbModules
              << TermColor::Reset << std::flush;
 
-    if (lastNbModules == 49040) {
-        Catoms3DConfigExporter exporter = Catoms3DConfigExporter(world);
-        exporter.exportConfiguration();
-    }
-
-
     if (scaffoldSeedPos == Cell3DPosition(-1,-1,-1)) {
         scaffoldSeedPos = determineScaffoldSeedPosition();
         cout << "scaffoldSeedPos: " << scaffoldSeedPos << endl;
@@ -2308,6 +2302,9 @@ void ScaffoldingBlockCode::constructionOverHandler() {
          << " including " << nbModulesInShape << " in the shape" << endl;
     cout << "main: " << ts << " " << lattice->nbModules << " "
          << nbModulesInShape << " " << nbSandboxCatoms << endl;
+
+    Catoms3DConfigExporter exporter = Catoms3DConfigExporter(world,"scaffolding_export.xml");
+    exporter.exportConfiguration();
 }
 
 void ScaffoldingBlockCode::handleTileConstructionOver() {
