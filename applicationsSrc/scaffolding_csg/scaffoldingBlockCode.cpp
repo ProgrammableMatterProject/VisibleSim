@@ -239,8 +239,11 @@ void ScaffoldingBlockCode::startup() {
     lastNbModules = max(lastNbModules, lattice->nbModules);
     int ts = round(getScheduler()->now() / getRoundDuration());
     if (ts > 0)
-        cout << TermColor::Magenta << "\rcurrent timestep:\t" << ts
-             << "\tcurrent modules:\t" << lastNbModules << TermColor::Reset << std::flush;
+        cout << TermColor::BWhite << "\rCurrent Timestep:\t"
+             << TermColor::BMagenta << ts
+             << TermColor::BWhite << "\t---\tCurrent #Modules:\t"
+             << TermColor::BMagenta << lastNbModules
+             << TermColor::Reset << std::flush;
 
     if (scaffoldSeedPos == Cell3DPosition(-1,-1,-1)) {
         scaffoldSeedPos = determineScaffoldSeedPosition();
