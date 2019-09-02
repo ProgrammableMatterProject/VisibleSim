@@ -451,6 +451,11 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
                 hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch)
                 and mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos)))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
+            else if (mabc.ruleMatcher->
+                     getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) == 3
+                     and not mabc.ruleMatcher->
+                     hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
+                relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else
                 relNeighborPos = Cell3DPosition(1,0,0); // forward to incoming RevZ tip
         } else if (mabc.ruleMatcher->isOnLZBranch(mabc.norm(mabc.catom->position))) {

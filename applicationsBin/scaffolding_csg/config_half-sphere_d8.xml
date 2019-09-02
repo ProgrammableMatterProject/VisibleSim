@@ -7,9 +7,9 @@
 
     <targetList>
       <target format="csg">
-        <csg boundingBox="true" translate="4,4,-20"
+        <csg boundingBox="true" translate="4,4,-24.5"
              content="difference() {
-                      sphere(19, true);
+                      sphere(22, true);
                       }" />
       </target>
     </targetList>

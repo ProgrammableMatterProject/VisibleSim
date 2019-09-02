@@ -76,7 +76,14 @@ void ScaffoldingBlockCode::onAssertTriggered() {
 
 void ScaffoldingBlockCode::onBlockSelected() {
 #ifndef ROTATION_STEP_MATRIX_EXPORT
-    if (BUILDING_MODE) return;
+
+    if (BUILDING_MODE) {
+        cout << "localNeighborhood: " << int_to_hex_str((int)getLocalNeighborhoodState().to_ulong(), 3) << " (";
+        for (int i = 0; i < 12; i++)
+            cout << getLocalNeighborhoodState()[i];
+        cout << ")" << endl;
+        return;
+    }
 
     // const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
     // const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
@@ -162,6 +169,12 @@ void ScaffoldingBlockCode::onBlockSelected() {
 
         cout << "isIncidentBranchTipInPlace(OppXBranch): "
              << isIncidentBranchTipInPlace(cPos, OppXBranch) << endl;
+
+        for (int i = 0; i < N_BRANCHES; i++)
+            cout << "hasIncidentBranch("
+                 << ruleMatcher->branch_to_string((BranchIndex)i) << "): "
+                 << ruleMatcher->hasIncidentCSGBranch(norm(cPos), (BranchIndex)i)
+                 << endl;
     }
 
     // if (ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position))) {
@@ -199,6 +212,8 @@ void ScaffoldingBlockCode::onBlockSelected() {
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
     cout << "isInCSGMeshOrSandbox: "<<ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position)) <<endl;
+
+    cout << "seedForCSGLayer: " << denorm(ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B)) << endl;
 
     // cout << "matchingLocalRule: " << matchingLocalRule << endl;
     // cout << "greenLightIsOn: " << greenLightIsOn << endl;
@@ -1055,14 +1070,40 @@ buildConstructionQueueWithFourIncidentBranches(const Cell3DPosition& pos) const 
         if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RevZ_EPL });
         if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
 
+        if (not
+            (ruleMatcher->hasIncidentCSGBranch(norm(catom->position), YBranch)
+             and ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppXBranch)
+             and not ruleMatcher->hasIncidentCSGBranch(norm(catom->position), XBranch)
+             and not ruleMatcher->hasIncidentCSGBranch(norm(catom->position),OppYBranch)))
         deque.push_back({ S_RZ, RZ_EPL});  // 0
-        deque.push_back({ S_LZ, LZ_EPL }); // 0
+
+        if (ruleMatcher->hasIncidentCSGBranch(norm(catom->position), XBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppYBranch)
+            and not ruleMatcher->hasIncidentCSGBranch(norm(catom->position), YBranch)
+            and not ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppXBranch)) {
+            deque.push_back({ S_RevZ, RevZ_EPL });
+            deque.push_back({ S_LZ, RevZ_EPL });
+        } else
+            deque.push_back({ S_LZ, LZ_EPL }); // 0
 
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL }); // 1
         if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL }); // 3
 
-        deque.push_back({ S_Z, LZ_EPL }); // 4
-        deque.push_back({ S_RevZ, RZ_EPL }); // 4
+        if (ruleMatcher->hasIncidentCSGBranch(norm(catom->position), YBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppXBranch)
+            and not ruleMatcher->hasIncidentCSGBranch(norm(catom->position), XBranch)
+            and not ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppYBranch)) {
+            deque.push_back({ S_Z, Z_EPL }); // 4
+            deque.push_back({ S_RZ, Z_EPL }); // 4
+        } else
+            deque.push_back({ S_Z, LZ_EPL }); // 4
+
+        if (not
+            (ruleMatcher->hasIncidentCSGBranch(norm(catom->position), XBranch)
+             and ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppYBranch)
+             and not ruleMatcher->hasIncidentCSGBranch(norm(catom->position), YBranch)
+             and not ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppXBranch)))
+            deque.push_back({ S_RevZ, RZ_EPL }); // 4
     }
 
     if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RevZ_EPL });
@@ -1276,11 +1317,18 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
                     and ruleMatcher->hasIncidentCSGBranch(norm(pos),ZBranch))) {
         deque.push_back({ S_RZ, RZ_EPL });
 
-        if (ruleMatcher->isOnYCSGBorder(norm(pos))) {
+        if (not (ruleMatcher->hasIncidentCSGBranch(norm(pos), XBranch)
+                 and ruleMatcher->hasIncidentCSGBranch(norm(pos), YBranch))) {
             deque.push_back({ S_RevZ, RevZ_EPL });
         } else {
             deque.push_back({ S_RevZ, RZ_EPL });
         }
+
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RZ_EPL });
+        if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RZ_EPL });
+        if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RZ_EPL });
+        if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RZ_EPL });
+        if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RZ_EPL });
 
         if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, RZ_EPL });
         if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, RevZ_EPL });
@@ -1660,6 +1708,19 @@ void ScaffoldingBlockCode::initializeSandbox() {
     // cout << "round duration: " << getRoundDuration() << endl;
 }
 
+std::bitset<12> ScaffoldingBlockCode::getLocalNeighborhoodState() {
+    bitset<12> bitset = {0};
+    const vector<Cell3DPosition> localNeighborhood =
+        Catoms3DWorld::getWorld()->lattice->getNeighborhood(catom->position);
+
+    for (const Cell3DPosition& nPos : localNeighborhood) {
+        P2PNetworkInterface *itf = catom->getInterface(nPos);
+        bitset.set(catom->getAbsoluteDirection(nPos), itf->isConnected());
+    }
+
+    return bitset;
+}
+
 std::bitset<12> ScaffoldingBlockCode::getMeshLocalNeighborhoodState() {
     bitset<12> bitset = {0};
     const vector<Cell3DPosition> localNeighborhood =
@@ -1715,7 +1776,8 @@ findTargetLightAmongNeighbors(const Cell3DPosition& targetPos,
         if (lattice->cellsAreAdjacent(cell, targetPos)
             and ruleMatcher->isInMesh(norm(cell))
             and cell != srcPos
-            and Cell3DPosition::compare_ZYX(catom->position, cell)) // TOCHECK
+            and Cell3DPosition::compare_ZYX(catom->position, cell) // TOCHECK
+            and static_cast<ScaffoldingBlockCode*>(static_cast<Catoms3DBlock*>(lattice->getBlock(cell))->blockCode)->role != FreeAgent) // FIXME: should never happen, but it does (sandcastle)
             return static_cast<Catoms3DBlock*>(lattice->getBlock(cell));
     }
 
@@ -1758,19 +1820,53 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
     Cell3DPosition nextPos;
 
     // TODO: FIXME: Special ALT case due to collision on Z_EPL/RZ_EPL with iBorders
-    if (lastVisitedEPL == Z_EPL
-        and targetPosition - coordinatorPos == Cell3DPosition(1,1,0) // S_Z
-        and ruleMatcher->isOnXCSGBorder(norm(coordinatorPos))
-        and (coordinatorPos[2] / B) % 2 == 0
-        and coordinatorPos[2] != scaffoldSeedPos[2]) {
-        lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
-    } else if (lastVisitedEPL == RZ_EPL
-               and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0) // S_RevZ
-               and ruleMatcher->isOnXOppCSGBorder(norm(coordinatorPos))
-               and (coordinatorPos[2] / B) % 2 == 0
-               and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) < 4
-               and coordinatorPos[2] != scaffoldSeedPos[2]) {
-        lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
+    if (lastVisitedEPL == Z_EPL) {
+        if (targetPosition - coordinatorPos == Cell3DPosition(1,1,0) // S_Z
+            and coordinatorPos[1] <
+            denorm(ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B))[1]
+            and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppYBranch))
+            lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
+        else if (targetPosition - coordinatorPos == Cell3DPosition(1,1,0) // S_Z
+            and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 3
+            and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), RevZBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), RZBranch)
+            and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), ZBranch))
+            lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
+        else if (ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 4
+                 and ruleMatcher->hasIncidentCSGBranch(norm(catom->position), YBranch)
+                 and ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppXBranch)
+                 and not ruleMatcher->hasIncidentCSGBranch(norm(catom->position), XBranch)
+                 and not
+                 ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppYBranch))
+            lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
+        else if (coordinatorPos[0] <
+                 denorm(ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B))[0]
+                 and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppXBranch)
+                 and targetPosition - coordinatorPos == Cell3DPosition(0,0,0)) // R
+            // OPPX Activation cases
+            lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
+
+    } else if (lastVisitedEPL == RZ_EPL) {
+        if (targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0)) { // S_RevZ
+            if ( (not
+                  (ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 3
+                   and not ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), RZBranch)
+                   and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), YBranch)))
+                 and (ruleMatcher->isOnXOppCSGBorder(norm(coordinatorPos))
+                      and (coordinatorPos[2] / B) % 2 == 0
+                      and ruleMatcher->
+                      getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) < 4
+                      and coordinatorPos[2] != scaffoldSeedPos[2]))
+                lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
+        } else if ( (targetPosition - coordinatorPos == Cell3DPosition(1,-1,0))// S_RZ
+                    and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos),OppXBranch)) {
+            lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
+        } else if (coordinatorPos[0] <
+                   denorm(ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B))[0]
+                   and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppXBranch)
+                   and targetPosition - coordinatorPos == Cell3DPosition(1,-1,0)) // Z_RZ
+            lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
+
     } else if (lastVisitedEPL == RevZ_EPL
                and targetPosition - coordinatorPos == Cell3DPosition(-1,-1,0)) { // S_RevZ
         if (ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), XBranch)
@@ -1780,37 +1876,14 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
         else if (ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), XBranch)
                  and not ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), YBranch))
             lastVisitedEPL = LR_EPL::LR_RevZ_EPL_RIGHT;
-        // else normal left case
-    } else if (lastVisitedEPL == Z_EPL
-               and targetPosition - coordinatorPos == Cell3DPosition(1,1,0) // S_Z
-               and ruleMatcher->getNbIncidentVerticalCSGBranches(norm(coordinatorPos)) == 3
-               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), RevZBranch)
-               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), RZBranch)
-               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), ZBranch)) {
-        lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
-    } else if (coordinatorPos[0] < ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B)[0]
-               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppXBranch)) {
 
-        // OPPX Activation cases
-        if (lastVisitedEPL == Z_EPL
-            and targetPosition - coordinatorPos == Cell3DPosition(0,0,0)) // R
-            lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
-        else if (lastVisitedEPL == RZ_EPL
-                 and targetPosition - coordinatorPos == Cell3DPosition(1,-1,0)) // Z_RZ
-            lastVisitedEPL = LR_EPL::LR_RZ_EPL_ALT;
-    } else if (coordinatorPos[1] < ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B)[1]
-               and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppYBranch)) {
-
-        // OPPY Activation cases
-        if (lastVisitedEPL == LZ_EPL
+    } else if (lastVisitedEPL == LZ_EPL) {
+        if (coordinatorPos[1] <
+            denorm(ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B))[1]
+            and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppYBranch)
             and targetPosition - coordinatorPos == Cell3DPosition(-1,1,0)) // S_LZ
             lastVisitedEPL = LR_EPL::LR_LZ_EPL_ALT;
-        else if (lastVisitedEPL == Z_EPL
-            and targetPosition - coordinatorPos == Cell3DPosition(1,1,0)) // S_Z
-            lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
-
     }
-
 
     bool matched = matchLocalRules(getMeshLocalNeighborhoodState(),
                                    catom->position,
