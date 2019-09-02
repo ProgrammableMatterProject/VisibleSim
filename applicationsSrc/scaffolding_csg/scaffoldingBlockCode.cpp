@@ -11,6 +11,7 @@
 #include <iostream>
 #include <set>
 #include <limits>
+#include <algorithm>
 
 #include "catoms3DWorld.h"
 #include "scheduler.h"
@@ -232,6 +233,14 @@ void ScaffoldingBlockCode::onBlockSelected() {
 void ScaffoldingBlockCode::startup() {
     stringstream info;
     info << "Starting ";
+
+    // Progress Display
+    static unsigned int lastNbModules = 0;
+    lastNbModules = max(lastNbModules, lattice->nbModules);
+    int ts = round(getScheduler()->now() / getRoundDuration());
+    if (ts > 0)
+        cout << TermColor::Magenta << "\rcurrent timestep:\t" << ts
+             << "\tcurrent modules:\t" << lastNbModules << TermColor::Reset << std::flush;
 
     if (scaffoldSeedPos == Cell3DPosition(-1,-1,-1)) {
         scaffoldSeedPos = determineScaffoldSeedPosition();
@@ -1839,10 +1848,8 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
                  and not
                  ruleMatcher->hasIncidentCSGBranch(norm(catom->position), OppYBranch))
             lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
-        else if (coordinatorPos[0] <
-                 denorm(ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B))[0]
-                 and ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos), OppXBranch)
-                 and targetPosition - coordinatorPos == Cell3DPosition(0,0,0)) // R
+        else if (targetPosition - coordinatorPos == Cell3DPosition(0,0,0) // R
+                 and (ruleMatcher->hasIncidentCSGBranch(norm(coordinatorPos),OppXBranch)))
             // OPPX Activation cases
             lastVisitedEPL = LR_EPL::LR_Z_EPL_ALT;
 
