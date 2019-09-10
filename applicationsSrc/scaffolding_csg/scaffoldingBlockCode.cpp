@@ -235,6 +235,9 @@ void ScaffoldingBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
+    departureDate = scheduler->now();
+    departurePosition = norm(catom->position);
+
     // Progress Display
     static unsigned int lastNbModules = 0;
     lastNbModules = max(lastNbModules, lattice->nbModules);
@@ -559,6 +562,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
             // OUTPUT << "rrt: " << scheduler->now() - randomRotationTimeStart << endl;
             getScheduler()->trace(" ROTATION3D_END ", catom->blockId, MAGENTA);
             // console << "Rotation to " << catom->position << " over" << "\n";
+            nbRotations++; // waiting time stat
             rotating = false;
             step++;
             if (catom->position == targetPosition
@@ -612,6 +616,16 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
 
                 // STAT EXPORT
                 OUTPUT << "nbModulesInShape:\t" << (int)round(scheduler->now() / getRoundDuration()) << "\t" << nbModulesInShape << endl;
+                arrivalDate = scheduler->now();
+                arrivalPosition = norm(catom->position);
+                timeOnTheMove = (int)round((getRoundDuration() * nbRotations) / getRoundDuration());
+                timeWaiting = (int)round((arrivalDate - departureDate) / getRoundDuration())
+                    - timeOnTheMove;
+                verticalDisplacement = arrivalPosition[2] - departurePosition[2];
+                OUTPUT << "wt:\t" << wtModuleId++
+                       << "\t" << verticalDisplacement
+                       << "\t" << timeOnTheMove << "\t" << timeWaiting
+                       << endl;
 
                 if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
                     coordinatorPos =
@@ -1394,6 +1408,17 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
             if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, Z_EPL });
         }
 
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, Z_EPL });
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, Z_EPL });
+        if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, Z_EPL });
+        if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, Z_EPL });
+        if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, Z_EPL });
+        if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RZ_EPL });
+
         if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, RZ_EPL });
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, Z_EPL });
         if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, RZ_EPL });
@@ -1430,6 +1455,18 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
             deque.push_back({ S_Z, Z_EPL });
             if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, Z_EPL });
         }
+
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
+        if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, LZ_EPL });
+        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, LZ_EPL });
+        if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, LZ_EPL });
+        if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, LZ_EPL });
+
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, LZ_EPL });
+        if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, LZ_EPL });
+        if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, LZ_EPL });
+        if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, LZ_EPL });
+        if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, LZ_EPL });
 
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL });
         if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, Z_EPL });
@@ -1475,10 +1512,16 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
             and ruleMatcher->hasIncidentCSGBranch(norm(pos), YBranch))
             deque.push_back({ S_RevZ, RZ_EPL});
 
+
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, RevZ_EPL });
         if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, RevZ_EPL });
         if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, RevZ_EPL });
         if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, RevZ_EPL });
         if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RZ_EPL });
+        if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, RevZ_EPL });
 
         if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1, RevZ_EPL });
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, Z_EPL });
@@ -1523,6 +1566,8 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
 
         if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RevZ_EPL});
         if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RevZ_EPL});
+        if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RevZ_EPL});
+        if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RevZ_EPL});
 
         if (catomsReqs[RevZBranch] > 0) deque.push_back({ RevZ_1, RevZ_EPL });
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL });
@@ -1578,9 +1623,16 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, Z_EPL });
 
         if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RZ_EPL});
-        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, LZ_EPL});
 
+        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, LZ_EPL});
         if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RZ_EPL});
+
+        if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, LZ_EPL});
+        if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RZ_EPL});
+
+        if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, LZ_EPL});
+        if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RZ_EPL});
+
         if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, Z_EPL });
         if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL });
 

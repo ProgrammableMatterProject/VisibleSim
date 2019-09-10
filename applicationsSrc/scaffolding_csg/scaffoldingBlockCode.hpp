@@ -81,6 +81,17 @@ public:
     pair<int, string> maxBitrate;
     pair<Time, int> rate = { 0, 0 };
 
+    // Waiting time export
+    inline static uint wtModuleId = 0;
+    uint nbRotations = 0;
+    Time departureDate = 0;
+    Time arrivalDate = 0;
+    Cell3DPosition departurePosition;
+    Cell3DPosition arrivalPosition;
+    uint verticalDisplacement = 0;
+    Time timeOnTheMove = 0;
+    Time timeWaiting = 0;
+
     inline static Time getRoundDuration() {
         Time duration = 0;
 

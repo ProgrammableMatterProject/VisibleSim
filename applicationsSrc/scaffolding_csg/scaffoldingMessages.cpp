@@ -464,7 +464,9 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
                 getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
                 and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2]
                 and not mabc.ruleMatcher->
-                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
+                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch)
+                and not mabc.ruleMatcher->
+                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RZBranch))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else if (mabc.ruleMatcher->
                      hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))

@@ -7,7 +7,7 @@
 
     <targetList>
       <target format="csg">
-        <csg translate="3,3,2" content="cylinder(34, 23, true);" />
+        <csg translate="3,3,2" content="cylinder(30.5, 23, true);" />
       </target>
     </targetList>
 
