@@ -1161,6 +1161,8 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
       Cell3DPosition(-1, -1, 0) }, // OPP_X1 2
     { LRKeyTuple(0x500, LR_Z_EPL, Cell3DPosition(-1, 0, 0), 3),
       Cell3DPosition(-1, -1, 0) }, // OPP_X1 3
+    { LRKeyTuple(0x700, LR_Z_EPL, Cell3DPosition(-1, 0, 0), 3),
+      Cell3DPosition(-1, -1, 0) }, // OPP_X1 3 BIS
     { LRKeyTuple(0xf00, LR_Z_EPL, Cell3DPosition(-1, 0, 0), 3),
       Cell3DPosition(-1, -1, 0) }, // OPP_X1 3 TER
     { LRKeyTuple(0x400, LR_Z_EPL, Cell3DPosition(-1, 0, 0), 4),
@@ -1190,7 +1192,7 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x100, LR_Z_EPL, Cell3DPosition(-3, 0, 0), 2),
       Cell3DPosition(-1, -1, 0) }, // OPP_X3 2
     { LRKeyTuple(0x500, LR_Z_EPL, Cell3DPosition(-3, 0, 0), 3),
-      Cell3DPosition(-1, -1, 0) }, // OPP_X1 3
+      Cell3DPosition(-1, -1, 0) }, // OPP_X3 3
     { LRKeyTuple(0xf00, LR_Z_EPL, Cell3DPosition(-3, 0, 0), 3),
       Cell3DPosition(-1, -1, 0) }, // OPP_X3 3 TER
     { LRKeyTuple(0xc00, LR_Z_EPL, Cell3DPosition(-3, 0, 0), 4),
