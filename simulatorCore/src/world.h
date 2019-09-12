@@ -186,16 +186,16 @@ public:
     void deleteBlock(BuildingBlock *blc);
     /**
      * @brief Connects the interfaces of a block to all of its neighbors and notifiy them
-     *
      * @param blc : a pointer to the block to connect to its neighborhood
+     * @param count indicates whether the inserted modules should be counted towards nbModules
      */
-    void connectBlock(BuildingBlock *block);
+    void connectBlock(BuildingBlock *block, bool count = true);
     /**
      * @brief Disconnects the interfaces of a block from all of its neighbors and notify them
-     *
      * @param blc : a pointer to the block to disconnect from its neighborhood
+     * @param count indicates whether the removed modules should be discounted from nbModules
      */
-    void disconnectBlock(BuildingBlock *block);
+    void disconnectBlock(BuildingBlock *block, bool count = true);
 
     /**
      * @brief add an obstacle to the grid as a disabled block

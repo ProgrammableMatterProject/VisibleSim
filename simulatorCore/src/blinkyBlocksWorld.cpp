@@ -297,9 +297,7 @@ void BlinkyBlocksWorld::stopBlock(Time date, bID id) {
         BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(id);
         if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
             // cut links between bb and others
-            disconnectBlock(bb);
-            // free grid cell
-            lattice->remove(bb->position);
+            disconnectBlock(bb, false);
             bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state
             linkNeighbors(bb->position);
         }

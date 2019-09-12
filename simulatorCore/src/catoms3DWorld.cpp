@@ -200,9 +200,9 @@ void Catoms3DWorld::menuChoice(int n) {
                 Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
                 short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
                 Catoms3DWorld *wrld = getWorld();
-                wrld->disconnectBlock(bb);
+                wrld->disconnectBlock(bb, false);
                 bb->setPositionAndOrientation(pos,orient);
-                wrld->connectBlock(bb);
+                wrld->connectBlock(bb, false);
                 //}
             } else World::menuChoice(n); // For all non-catoms2D-specific cases
         break;
@@ -625,198 +625,198 @@ void Catoms3DWorld::exportConfiguration() {
 vector<Vector3D> tabAddCenter;
 
 bool addAdd(ObjLoader::ObjData*obj,const Vector3D &pos) {
-	
-	const ObjLoader::Point3 *c = obj->getCenter();
-	Vector3D center(pos[0]+c->v[0],pos[1]+c->v[1],pos[2]+c->v[2]);
-	
-	// calculate distance to min center
-	float dmin=1e32;
-	float d;
-	for(Vector3D v:tabAddCenter) {
-		d=(v-center).norme2();
-		if (d<dmin) {
-			dmin=d;
-		}
-	}
-	if (dmin>0.1) {
-		tabAddCenter.push_back(center);
-		return true;
-	}
-	
-	return false;
+
+    const ObjLoader::Point3 *c = obj->getCenter();
+    Vector3D center(pos[0]+c->v[0],pos[1]+c->v[1],pos[2]+c->v[2]);
+
+    // calculate distance to min center
+    float dmin=1e32;
+    float d;
+    for(Vector3D v:tabAddCenter) {
+        d=(v-center).norme2();
+        if (d<dmin) {
+            dmin=d;
+        }
+    }
+    if (dmin>0.1) {
+        tabAddCenter.push_back(center);
+        return true;
+    }
+
+    return false;
 }
 
 bool Catoms3DWorld::exportSTLModel(string title) {
   const char* connectorStr[12]={"connecteur00","connecteur01","connecteur02","connecteur03","connecteur04","connecteur05","connecteur06","connecteur07","connecteur08","connecteur09","connecteur10","connecteur11"};
-	const char* refStr[6]={"ref0","ref1","ref2","ref3","ref4","ref5"};
-	const char* cornerStr[8]={"corner0","corner1","corner2","corner3","corner4","corner5","corner6","corner7"};
-	uint8_t tabRefConId[6][4] = {{2,3,4,5},{0,2,1,10},{0,9,7,5},{4,7,8,6},{1,3,6,11},{8,9,10,11}};
-	uint8_t tabCornerConId[8][3] = {{0,2,5},{0,9,10},{3,4,6},{6,8,11},{1,2,3},{1,10,11},{4,5,7},{7,8,9}};
-	uint8_t tabRefCornerId[6][4] = {{0,2,4,6},{0,1,4,5},{0,1,6,7},{2,3,6,7},{4,5,2,3},{1,5,3,7}};
+    const char* refStr[6]={"ref0","ref1","ref2","ref3","ref4","ref5"};
+    const char* cornerStr[8]={"corner0","corner1","corner2","corner3","corner4","corner5","corner6","corner7"};
+    uint8_t tabRefConId[6][4] = {{2,3,4,5},{0,2,1,10},{0,9,7,5},{4,7,8,6},{1,3,6,11},{8,9,10,11}};
+    uint8_t tabCornerConId[8][3] = {{0,2,5},{0,9,10},{3,4,6},{6,8,11},{1,2,3},{1,10,11},{4,5,7},{7,8,9}};
+    uint8_t tabRefCornerId[6][4] = {{0,2,4,6},{0,1,4,5},{0,1,6,7},{2,3,6,7},{4,5,2,3},{1,5,3,7}};
 
-	bool memRefs[6];
-	bool memCorners[8];
+    bool memRefs[6];
+    bool memCorners[8];
 
-	cout << "Writing STL output file..." << endl;
-	ObjLoader::ObjLoader stl("../../simulatorCore/resources/textures/catoms3DTextures","catoms3D_stl_model.obj");
-	ObjLoader::ObjData* tabConnectors[12];
-	ObjLoader::ObjData* tabRefs[6];
-	ObjLoader::ObjData* tabCorners[8];
-	ObjLoader::ObjData* tabAdds[6][4];
+    cout << "Writing STL output file..." << endl;
+    ObjLoader::ObjLoader stl("../../simulatorCore/resources/textures/catoms3DTextures","catoms3D_stl_model.obj");
+    ObjLoader::ObjData* tabConnectors[12];
+    ObjLoader::ObjData* tabRefs[6];
+    ObjLoader::ObjData* tabCorners[8];
+    ObjLoader::ObjData* tabAdds[6][4];
 
-	Matrix mt;
-	Vector3D pos;
-	Cell3DPosition cell,neighborCell;
+    Matrix mt;
+    Vector3D pos;
+    Cell3DPosition cell,neighborCell;
 
-	
-	for (int i=0; i<12; i++) {
-		tabConnectors[i] = stl.getObjDataByName(connectorStr[i]);
-	}
-	for (int i=0; i<6; i++) {
-		tabRefs[i] = stl.getObjDataByName(refStr[i]);
-	}
-	for (int i=0; i<8; i++) {
-		tabCorners[i] = stl.getObjDataByName(cornerStr[i]);
-	}
-	string str;
-	for (int i=0; i<6; i++) {
-		for (int j=0; j<4; j++) {
-			str = "add" + to_string(i) + to_string(tabRefCornerId[i][j]);
-			tabAdds[i][j] = stl.getObjDataByName(str);
-		}
-	}
 
-	// select catom in the border
-	vector <Catoms3DBlock*> borderBlocks;
-	cout << "step #1: " << endl;
-	for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
-		if (pair.second->getState() != BuildingBlock::REMOVED
-			and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
-			Catoms3DBlock *bb = (Catoms3DBlock *)pair.second;
-			if (bb->getNbNeighbors()<12) { // soit 12 voisins
-				bb->setColor(RED);
-				borderBlocks.push_back(bb);
-			} else { // soit Il existe un ref qui a 4 voisins borders
-				int i=0;
-				bool visible = false;
-				Catoms3DBlock *neighbor;
-				while (i<6 && !visible) {
-					// C'est suffisant de tester un connecteur
-					neighbor = (Catoms3DBlock *)bb->getInterface(tabRefConId[i][0])->connectedInterface->hostBlock;
-					visible = !neighbor->getInterface(tabRefConId[i][2])->isConnected();
-					i++;
-				}
-				if (visible) {
-					bb->setColor(YELLOW);
-					borderBlocks.push_back(bb);
-				} else {
-					bb->setColor(WHITE);
-				}
-			}
-		}
-	}
-	cout << "border blocks: " << borderBlocks.size() << "/" << buildingBlocksMap.size() << endl;
+    for (int i=0; i<12; i++) {
+        tabConnectors[i] = stl.getObjDataByName(connectorStr[i]);
+    }
+    for (int i=0; i<6; i++) {
+        tabRefs[i] = stl.getObjDataByName(refStr[i]);
+    }
+    for (int i=0; i<8; i++) {
+        tabCorners[i] = stl.getObjDataByName(cornerStr[i]);
+    }
+    string str;
+    for (int i=0; i<6; i++) {
+        for (int j=0; j<4; j++) {
+            str = "add" + to_string(i) + to_string(tabRefCornerId[i][j]);
+            tabAdds[i][j] = stl.getObjDataByName(str);
+        }
+    }
 
-	cout << "step #2: " << endl;
-	int loop=0,nbreLoop=borderBlocks.size();
-	ofstream file(title);
-	if (!file.is_open()) return false;
+    // select catom in the border
+    vector <Catoms3DBlock*> borderBlocks;
+    cout << "step #1: " << endl;
+    for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
+        if (pair.second->getState() != BuildingBlock::REMOVED
+            and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
+            Catoms3DBlock *bb = (Catoms3DBlock *)pair.second;
+            if (bb->getNbNeighbors()<12) { // soit 12 voisins
+                bb->setColor(RED);
+                borderBlocks.push_back(bb);
+            } else { // soit Il existe un ref qui a 4 voisins borders
+                int i=0;
+                bool visible = false;
+                Catoms3DBlock *neighbor;
+                while (i<6 && !visible) {
+                    // C'est suffisant de tester un connecteur
+                    neighbor = (Catoms3DBlock *)bb->getInterface(tabRefConId[i][0])->connectedInterface->hostBlock;
+                    visible = !neighbor->getInterface(tabRefConId[i][2])->isConnected();
+                    i++;
+                }
+                if (visible) {
+                    bb->setColor(YELLOW);
+                    borderBlocks.push_back(bb);
+                } else {
+                    bb->setColor(WHITE);
+                }
+            }
+        }
+    }
+    cout << "border blocks: " << borderBlocks.size() << "/" << buildingBlocksMap.size() << endl;
 
-	lock();
-	for (auto block: borderBlocks) {
-		GlBlock *glblock = block->getGlBlock();
-		file << "solid catom#" << glblock->blockId << endl;
-		pos.set(glblock->position[0],glblock->position[1],glblock->position[2]);
-		cell = lattice->worldToGridPosition(pos);
-		// refs si l'un des 4 voisins est absent ou bien ils sont la mais il n'y a pas d'opposé
-		bool hidden=true;
-		BuildingBlock *neighbor;
-		for (int j=0; j<6; j++) {
-			hidden=true;
-			int i=0;
-			while (i<4 && hidden) {
-				hidden = block->getInterface(tabRefConId[j][i])->isConnected();
-				i++;
-			}
-			if (hidden) {
-				neighbor = block->getInterface(tabRefConId[j][0])->connectedInterface->hostBlock;
-				hidden = neighbor->getInterface(tabRefConId[j][2])->isConnected();
-			}
-			if (!hidden) {
-				tabRefs[j]->saveSTLfacets(file,pos,0);
-			}
-			memRefs[j] = !hidden;
-		}
-		// connectors
-		for (int i=0; i<12; i++) {
-			if (!block->getInterface(i)->isConnected()) {
-				tabConnectors[i]->saveSTLfacets(file,pos,0);
-			}
-		}
-		// corners
-		for (int i=0; i<8; i++) {
-			int j=0;
-			bool hidden=true;
-			while (j<3 && hidden) {
-				hidden = block->getInterface(tabCornerConId[i][j])->isConnected();
-				j++;
-			}
-			if (!hidden) {
-				tabCorners[i]->saveSTLfacets(file,pos,0);
-			}
-			memCorners[i] = !hidden;
-		}
+    cout << "step #2: " << endl;
+    int loop=0,nbreLoop=borderBlocks.size();
+    ofstream file(title);
+    if (!file.is_open()) return false;
 
-		// adds
-		for (int i=0; i<6; i++) {
-			if (memRefs[i]) {
-				for (int j=0; j<4; j++) {
-					if (!memCorners[tabRefCornerId[i][j]]) {
-						if (addAdd(tabAdds[i][j],pos)) {
-							tabAdds[i][j]->saveSTLfacets(file,pos,0);
-						}
-					}
-				}
-			} else {
-				BuildingBlock *neighbor;
-				int corner,n;
-				for (int j=0; j<4; j++) {
-					corner = tabRefCornerId[i][j];
-					n=0;
-					for (int j=0; j<3; j++) {
-						if (block->getInterface(tabCornerConId[corner][j])->isConnected()) {
-							neighbor = block->getInterface(tabCornerConId[corner][j])->connectedInterface->hostBlock;
-							if (neighbor->getNbNeighbors()<12) {
-								n++;
-							} else {
-								n-=3; // cancel
-							}
-						}
-					}
-					if (n==2 && addAdd(tabAdds[i][j],pos)) {
-						tabAdds[i][j]->saveSTLfacets(file,pos,0,-1,true);
-					}
-				}
-			}
-		}
+    lock();
+    for (auto block: borderBlocks) {
+        GlBlock *glblock = block->getGlBlock();
+        file << "solid catom#" << glblock->blockId << endl;
+        pos.set(glblock->position[0],glblock->position[1],glblock->position[2]);
+        cell = lattice->worldToGridPosition(pos);
+        // refs si l'un des 4 voisins est absent ou bien ils sont la mais il n'y a pas d'opposé
+        bool hidden=true;
+        BuildingBlock *neighbor;
+        for (int j=0; j<6; j++) {
+            hidden=true;
+            int i=0;
+            while (i<4 && hidden) {
+                hidden = block->getInterface(tabRefConId[j][i])->isConnected();
+                i++;
+            }
+            if (hidden) {
+                neighbor = block->getInterface(tabRefConId[j][0])->connectedInterface->hostBlock;
+                hidden = neighbor->getInterface(tabRefConId[j][2])->isConnected();
+            }
+            if (!hidden) {
+                tabRefs[j]->saveSTLfacets(file,pos,0);
+            }
+            memRefs[j] = !hidden;
+        }
+        // connectors
+        for (int i=0; i<12; i++) {
+            if (!block->getInterface(i)->isConnected()) {
+                tabConnectors[i]->saveSTLfacets(file,pos,0);
+            }
+        }
+        // corners
+        for (int i=0; i<8; i++) {
+            int j=0;
+            bool hidden=true;
+            while (j<3 && hidden) {
+                hidden = block->getInterface(tabCornerConId[i][j])->isConnected();
+                j++;
+            }
+            if (!hidden) {
+                tabCorners[i]->saveSTLfacets(file,pos,0);
+            }
+            memCorners[i] = !hidden;
+        }
 
-		file << "        endsolid catom#" << glblock->blockId << endl;
+        // adds
+        for (int i=0; i<6; i++) {
+            if (memRefs[i]) {
+                for (int j=0; j<4; j++) {
+                    if (!memCorners[tabRefCornerId[i][j]]) {
+                        if (addAdd(tabAdds[i][j],pos)) {
+                            tabAdds[i][j]->saveSTLfacets(file,pos,0);
+                        }
+                    }
+                }
+            } else {
+                BuildingBlock *neighbor;
+                int corner,n;
+                for (int j=0; j<4; j++) {
+                    corner = tabRefCornerId[i][j];
+                    n=0;
+                    for (int j=0; j<3; j++) {
+                        if (block->getInterface(tabCornerConId[corner][j])->isConnected()) {
+                            neighbor = block->getInterface(tabCornerConId[corner][j])->connectedInterface->hostBlock;
+                            if (neighbor->getNbNeighbors()<12) {
+                                n++;
+                            } else {
+                                n-=3; // cancel
+                            }
+                        }
+                    }
+                    if (n==2 && addAdd(tabAdds[i][j],pos)) {
+                        tabAdds[i][j]->saveSTLfacets(file,pos,0,-1,true);
+                    }
+                }
+            }
+        }
 
-		int p0 = (10*loop)/nbreLoop;
-		loop++;
-		int p1 = (10*loop)/nbreLoop;
+        file << "        endsolid catom#" << glblock->blockId << endl;
 
-		if (p0!=p1) {
-			cout << p1*10 << "%" << endl;
-		}
-	}
-	unlock();
-	file.close();
-	cout << "...done." << endl;
+        int p0 = (10*loop)/nbreLoop;
+        loop++;
+        int p1 = (10*loop)/nbreLoop;
 
-	tabAddCenter.clear();
+        if (p0!=p1) {
+            cout << p1*10 << "%" << endl;
+        }
+    }
+    unlock();
+    file.close();
+    cout << "...done." << endl;
 
-	return true;
+    tabAddCenter.clear();
+
+    return true;
 }
 
 

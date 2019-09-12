@@ -114,13 +114,15 @@ public:
      * @brief Adds block bb to cell with position p of the grid
      * @param bb The block to add to the grid
      * @param p The position of the cell on which the block will be inserted
+     * @param count indicates whether the inserted modules should be counted in nbModules
      */
-    void insert(BuildingBlock* bb, const Cell3DPosition &p);
+    void insert(BuildingBlock* bb, const Cell3DPosition &p, bool count = true);
     /**
      * @brief Removes block on cell p of the grid
      * @param p The position of the block to remove
+     * @param count indicates whether the removed modules should be counted towards nbModules
      */
-    void remove(const Cell3DPosition &p);
+    void remove(const Cell3DPosition &p, bool count = true);
     /**
      * @brief Indicates if cell at position p is inside the grid
      * @param p The position of the cell to test

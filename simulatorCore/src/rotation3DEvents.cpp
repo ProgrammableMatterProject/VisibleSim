@@ -159,7 +159,7 @@ void Rotation3DStartEvent::consume() {
         new PivotActuationStartEvent(scheduler->now(), const_cast<Catoms3DBlock*>(rot.pivot),
                                      rot.mobile, rot.conFromP, rot.conToP));
 
-    Catoms3DWorld::getWorld()->disconnectBlock(catom);
+    Catoms3DWorld::getWorld()->disconnectBlock(catom, false);
 
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DStartEvent(date+Rotations3D::COM_DELAY, catom, rot)));
 
@@ -258,7 +258,7 @@ void Rotation3DStopEvent::consume() {
     /* Transformer les coordonnées GL en coordonnées grille*/
     rot.getFinalPositionAndOrientation(position,orientation);
     catom->setPositionAndOrientation(position,orientation);
-    wrld->connectBlock(catom);
+    wrld->connectBlock(catom, false);
 
     info << " finished rotating to " << position << " on pivot #" << rot.pivot->blockId << " ("
          << rot.conFromP << " -> " << rot.conToP << ")";

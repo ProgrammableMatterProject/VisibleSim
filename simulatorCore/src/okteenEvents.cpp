@@ -39,7 +39,7 @@ OkteenMotionsStartEvent::~OkteenMotionsStartEvent() {
 void OkteenMotionsStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
-    OkteenWorld::getWorld()->disconnectBlock(motion.module);
+    OkteenWorld::getWorld()->disconnectBlock(motion.module, false);
 
     motion.module->setColor(DARKGREY);
     motion.init();
@@ -127,7 +127,7 @@ void OkteenMotionsStopEvent::consume() {
     info.str("");
     info << "connect Block " << motion.module->blockId;
     getScheduler()->trace(info.str(),motion.module->blockId,LIGHTBLUE);
-    wrld->connectBlock(motion.module);
+    wrld->connectBlock(motion.module, false);
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new OkteenMotionsEndEvent(scheduler->now() + ANIMATION_DELAY, motion.module));
 }
@@ -455,4 +455,3 @@ void OkteenMotions::getFinalPosition(Cell3DPosition &position) {
     SCLattice* lattice = (SCLattice *)((Okteen::getWorld())->lattice);
     position = lattice->worldToGridPosition(finalPos);
 }
-

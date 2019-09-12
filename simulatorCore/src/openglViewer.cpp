@@ -532,10 +532,13 @@ void GlutContext::calculateFPS(void) {
 }
 
 void GlutContext::calculateSimulationInfo(void) {
-    // Calculate time step
-    timestep = round(getScheduler()->now() / (400000)); //FIXME: PTHY
+    // Compute rotation time
+    Time motionDuration = Rotations3D::rotationDelayMultiplier * Rotations3D::ANIMATION_DELAY;
 
-    // Update number of modules
+    // Calculate time step
+    timestep = round(getScheduler()->now() / (motionDuration));
+
+    // Update number of modules (disregard deletions, compensate for moving modules)
     nbModules = BaseSimulator::getWorld()->lattice->nbModules;
 }
 

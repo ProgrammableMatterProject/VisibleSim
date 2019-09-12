@@ -345,7 +345,7 @@ void OkteenWorld::exportConfiguration() {
     exporter.exportConfiguration();
 }
 
-void OkteenWorld::disconnectBlock(BuildingBlock *block) {
+void OkteenWorld::disconnectBlock(BuildingBlock *block, bool count) {
     P2PNetworkInterface *fromBlock,*toBlock;
 
     for(int i = 0; i < block->getNbInterfaces(); i++) {
@@ -367,7 +367,7 @@ void OkteenWorld::disconnectBlock(BuildingBlock *block) {
         }
     }
 
-    lattice->remove(block->position);
+    lattice->remove(block->position, count);
 
     OUTPUT << getScheduler()->now() << " : Disconnect Block " << block->blockId <<
         " pos = " << block->position << endl;

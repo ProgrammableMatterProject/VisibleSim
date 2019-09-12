@@ -66,7 +66,7 @@ Cell3DPosition Lattice::getGridUpperBounds() const {
 }
 
 
-void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
+void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
     try {
         int index = getIndex(p);
         if (not isInGrid(p))
@@ -75,7 +75,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
             throw DoubleInsertionException(p);
         else {
             grid[index] = bb;
-            nbModules++;
+            if (count) nbModules++;
         }
     } catch (DoubleInsertionException const& e) {
         cerr << e.what();
@@ -87,9 +87,9 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
 #endif
 }
 
-void Lattice::remove(const Cell3DPosition &p) {
+void Lattice::remove(const Cell3DPosition &p, bool count) {
     grid[getIndex(p)] = NULL;
-    nbModules--;
+    if (count) nbModules--;
 }
 
 BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) const {

@@ -616,9 +616,12 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                 timeWaiting = (int)round((arrivalDate - departureDate) / getRoundDuration())
                     - timeOnTheMove;
                 verticalDisplacement = arrivalPosition[2] - departurePosition[2];
+                // int ts = round(getScheduler()->now() / getRoundDuration());
+
                 OUTPUT << "wt:\t" << wtModuleId++
                        << "\t" << verticalDisplacement
                        << "\t" << timeOnTheMove << "\t" << timeWaiting
+                       // << "\t" << ts
                        << endl;
 
                 if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
@@ -1212,14 +1215,6 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
             resourcesForCSGBranch(norm(pos), (BranchIndex)bi);
         if (catomsReqs[bi] == 0) catomsReqs[bi] = -1;
     }
-
-    bool delayOppX = catomsReqs[OppXBranch] == 5
-        and ruleMatcher->isInCSG(
-            ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position), OppXBranch));
-
-    bool delayOppY = catomsReqs[OppYBranch] == 5
-        and ruleMatcher->isInCSG(
-            ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position), OppYBranch));
 
     deque<pair<ScafComponent, ScafComponent>> deque;
 
@@ -2304,8 +2299,8 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                         )
                         continue;
 
-                    if (ruleMatcher->isInCSG(norm(pos)))
-                        lattice->highlightCell(pos, WHITE);
+                    // if (ruleMatcher->isInCSG(norm(pos)))
+                    //     lattice->highlightCell(pos, WHITE);
 
                     // if (ruleMatcher->isInCSG(norm(pos)) and
                     //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
