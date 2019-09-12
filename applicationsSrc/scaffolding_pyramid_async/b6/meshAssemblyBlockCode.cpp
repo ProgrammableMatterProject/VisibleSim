@@ -150,6 +150,8 @@ void MeshAssemblyBlockCode::startup() {
         // All other modules should be green (set by default)
             SET_GREEN_LIGHT(true);
         }
+
+        catom->setColor(GREY);
     }
 
     // Do stuff
@@ -988,7 +990,7 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
                     , catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
     } else {
         // Try matching rules again once neighborhood updates
-        catom->setColor(BLUE);
+        // catom->setColor(BLUE);
         matchingLocalRule = true;
     }
 }

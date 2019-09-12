@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="40,40,60">
+<world gridSize="26,26,60">
 
   <blockList color="128,128,128" blocksize="10,10,10">
     <block position="5,5,2" color="0,255,255" orientation="11" />
@@ -7,8 +7,11 @@
 
     <targetList>
       <target format="csg">
-        <csg boundingBox="true" translate="0,0,-8"
-             content="scale([2,2,2]); sphere(10, true);" />
+        <csg translate="5,5,2" content="union() {
+cube([18, 18, 13], true);
+translate([0,0,13])
+cube([18, 18, 13], true);
+}" />
       </target>
     </targetList>
 

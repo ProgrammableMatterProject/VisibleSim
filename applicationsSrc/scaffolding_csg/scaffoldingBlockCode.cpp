@@ -2172,13 +2172,13 @@ int ScaffoldingBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
         return 0;
     }
 
+    short count = 0; // FIXME:
     vector<ScafComponent> relevantComponents;
     // Build a vector containg all ScafComponents that must be sourced from epl in the
     //  construction queue of the module
     for (const auto& pair : buildConstructionQueue(pos))
-        if (pair.second == epl) relevantComponents.push_back(pair.first);
-
-    short count = 0;
+        if (pair.second == epl) count++;
+            // relevantComponents.push_back(pair.first);
 
     const Cell3DPosition& trTip =
         ruleMatcher->getTileRootAtEndOfBranch(norm(pos),ruleMatcher->getBranchForEPL(epl));
@@ -2229,11 +2229,11 @@ int ScaffoldingBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
         count += 1; // TileRoot to be sent through RevZBranch
     }
 
-    for (const ScafComponent& mc : relevantComponents) {
-        const Cell3DPosition& cPos = norm(pos + ruleMatcher->getPositionForComponent(mc));
-        if (ruleMatcher->isInCSG(cPos) or ruleMatcher->isSupportModule(cPos))
-            count++;
-    }
+    // for (const ScafComponent& mc : relevantComponents) {
+    //     // const Cell3DPosition& cPos = norm(pos + ruleMatcher->getPositionForComponent(mc));
+    //     // if (ruleMatcher->isInCSG(cPos) or ruleMatcher->isSupportModule(cPos))
+    //         count++;
+    // }
 
     BranchIndex bi = ruleMatcher->getBranchForEPL(epl);
     ScafComponent eplAlt = ruleMatcher->getTargetEPLComponentForBranch(bi);
