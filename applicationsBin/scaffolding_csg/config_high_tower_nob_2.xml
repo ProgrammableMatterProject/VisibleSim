@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="32,32,32">
+<world gridSize="30,30,60">
 
   <blockList color="128,128,128" blocksize="10,10,10">
     <block position="5,5,2" color="0,255,255" orientation="11" />
@@ -7,7 +7,7 @@
 
     <targetList>
       <target format="csg">
-        <csg translate="5,5,2" content="cube([17, 17, 13.5], true);" />
+        <csg translate="5,5,2" content="cube([14,14, 24], true);" />
       </target>
     </targetList>
 

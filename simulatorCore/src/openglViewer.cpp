@@ -366,7 +366,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                                const string& vidName = generateTimestampedFilename("video", "mkv");
                                int r = system(
                                    string("ffmpeg -pattern_type glob -framerate 30 -i \""
-                                          + animationDirName + "/*.ppm\" " + vidName
+                                          + animationDirName + "/*.jpg\" " + vidName
                                           + ">/dev/null 2>/dev/null").c_str());
                                if (r == 0) {
                                    system(string("rm -rf " + animationDirName).c_str());
@@ -388,9 +388,12 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             saveScreen(ssName.c_str());
 #ifndef WIN32
             (void)std::async([ssNameJpg, ssName](){
-                           system(string("convert " + ssName + " " + ssNameJpg
-                                         + " >/dev/null 2>/dev/null").c_str());
-                       });
+                int r = system(string("convert " + ssName + " " + ssNameJpg
+                                      + " >/dev/null 2>/dev/null").c_str());
+                if (r == 0)
+                    system(string("rm -rf " + ssName
+                                  + " >/dev/null 2>/dev/null").c_str());
+            });
 #endif
                 cout << "Screenshot saved to files: " << ssName
                         << " and " << ssNameJpg << endl;
@@ -495,8 +498,22 @@ void GlutContext::idleFunc(void) {
         strncat(title, "/save%04d.ppm", sizeof(title));
 
         sprintf(title,title,num++);
+
+        string titleStr = string(title);
+        string titleJpg = titleStr;
+        titleJpg.replace(titleStr.length() - 3, 3, "jpg");
+
         saveScreen(title);
+
+        (void)std::async([titleJpg, titleStr](){
+                int r = system(string("convert " + titleStr + " " + titleJpg
+                                      + " >/dev/null 2>/dev/null").c_str());
+                if (r == 0)
+                    system(string("rm -rf " + titleStr
+                                  + " >/dev/null 2>/dev/null").c_str());
+        });
     }
+
     if (lastMotionTime) {
         int tm = glutGet(GLUT_ELAPSED_TIME);
         if (tm-lastMotionTime>100) {
