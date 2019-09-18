@@ -2383,9 +2383,6 @@ void ScaffoldingBlockCode::constructionOverHandler() {
          << " including " << nbModulesInShape << " in the shape" << endl;
     cout << "main: " << ts << " " << lattice->nbModules << " "
          << nbModulesInShape << " " << nbSandboxCatoms << endl;
-
-    Catoms3DConfigExporter exporter = Catoms3DConfigExporter(world,"scaffolding_export.xml");
-    exporter.exportConfiguration();
 }
 
 void ScaffoldingBlockCode::handleTileConstructionOver() {

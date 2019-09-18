@@ -38,6 +38,8 @@ public:
     enum IDScheme {ORDERED = 0, MANUAL, RANDOM};
 
     static bool regrTesting;			//!< Indicates if this simulation instance is performing regression testing
+    inline static bool exportFinalConfiguration;
+    inline static string configFileName;
     //!< (causes configuration export before simulator termination)
 
     static Simulator* getSimulator() {

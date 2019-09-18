@@ -66,8 +66,25 @@ string toXmlAttribute(Vector3D &pos) {
 ConfigExporter::ConfigExporter(World *_world) {
     world = _world;
     config = new TiXmlDocument();
+
+    string exportedConfigNameRoot;
+    if (Simulator::configFileName.empty()) {
+        exportedConfigNameRoot = "export";
+    } else {
+        size_t config_pos = Simulator::configFileName.find("config_");
+        if (config_pos == string::npos) // no config_ pattern
+            exportedConfigNameRoot = string("export_").append(Simulator::configFileName);
+        else
+            exportedConfigNameRoot = string("export_")
+                .append(Simulator::configFileName.substr(config_pos + 7, string::npos));
+
+        // trim extension
+        exportedConfigNameRoot = exportedConfigNameRoot
+            .substr(0, exportedConfigNameRoot.size()-4);
+    }
+
     configName = Simulator::regrTesting ?
-        ".confCheck.xml" : generateTimestampedFilename("config", "xml");
+        ".confCheck.xml" : generateTimestampedFilename(exportedConfigNameRoot, "xml");
     config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
 }
 

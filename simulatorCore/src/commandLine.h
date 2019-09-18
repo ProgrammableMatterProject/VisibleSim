@@ -45,33 +45,33 @@ private:
     bool simulationSeedSet = false;
     int simulationSeed = 0;
 
-    void help();
+    void help() const;
     void read(int argc, char *argv[], BlockCodeBuilder bcb);
 public:
     CommandLine(int argc, char *argv[], BlockCodeBuilder bcb);
     ~CommandLine() {};
 
-    void print();
+    void print() const;
 
-    bool randomWorldRequested();
-    int getRandomTopology() { return topology; }
-    int getRandomTopologyParameter() { return topologyParameter; }
-    bool getTerminalOnly() { return terminalOnly; }
-    int getSchedulerMode() { return schedulerMode; }
-    bool getMeldDebugger() { return meldDebugger; }
-    string getProgramPath() { return programPath; }
-    string getVMPath() { return vmPath; }
-    int getVMPort() { return vmPort; }
-    string getConfigFile() { return configFile; }
-    bool getStats() { return stats; }
-    bool getFullScreen() { return fullScreen; }
-    // int getGridSize() { return gridSize; }
-    int getSchedulerLength() { return schedulerLength; }
-    Time getMaximumDate() { return maximumDate; }
-    bool getSchedulerAutoStop() { return schedulerAutoStop; }
+    bool randomWorldRequested() const;
+    int getRandomTopology() const { return topology; }
+    int getRandomTopologyParameter() const { return topologyParameter; }
+    bool getTerminalOnly() const { return terminalOnly; }
+    int getSchedulerMode() const { return schedulerMode; }
+    bool getMeldDebugger() const { return meldDebugger; }
+    string getProgramPath() const { return programPath; }
+    string getVMPath() const { return vmPath; }
+    int getVMPort() const { return vmPort; }
+    string getConfigFile() const { return configFile; }
+    bool getStats() const { return stats; }
+    bool getFullScreen() const { return fullScreen; }
+    // int getGridSize() const { return gridSize; }
+    int getSchedulerLength() const { return schedulerLength; }
+    Time getMaximumDate() const { return maximumDate; }
+    bool getSchedulerAutoStop() const { return schedulerAutoStop; }
 
-    bool isSimulationSeedSet() { return simulationSeedSet; }
-    int getSimulationSeed() { return simulationSeed; }
+    bool isSimulationSeedSet() const { return simulationSeedSet; }
+    int getSimulationSeed() const { return simulationSeed; }
 
     /**
      * @brief Search option -k in the command line arguments to deduce the target module type
