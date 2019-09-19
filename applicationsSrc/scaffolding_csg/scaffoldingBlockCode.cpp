@@ -2027,7 +2027,9 @@ void ScaffoldingBlockCode::setGreenLight(bool onoff, int _line_) {
     if (onoff) {
         info << "green: ";
         greenLightIsOn = true;
-        catom->setColor(GREEN);
+
+        if (catom->position[2] >= scaffoldSeedPos[2])
+            catom->setColor(GREEN);
 
         // Resume flow if needed
         if (moduleAwaitingGo) {
@@ -2047,7 +2049,9 @@ void ScaffoldingBlockCode::setGreenLight(bool onoff, int _line_) {
     } else {
         info << "red: ";
         greenLightIsOn = false;
-        catom->setColor(RED);
+
+        if (catom->position[2] >= scaffoldSeedPos[2])
+            catom->setColor(RED);
     }
 
     info << _line_;
