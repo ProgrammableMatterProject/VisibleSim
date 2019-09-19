@@ -371,6 +371,14 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         }
     } while (moduleAwoken);
 
+
+    // Check tile construction over
+    if (mabc.constructionQueue.empty() and not mabc.tileConstructionOver) {
+        mabc.tileConstructionOver = true;
+        mabc.handleTileConstructionOver();
+    }
+
+
     mabc.log_send_message();
 }
 

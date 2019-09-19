@@ -406,11 +406,6 @@ public:
     /*************************** CSG STUFF ***************************/
     /*********************************************************************/
 
-    bool isOnXCSGBorder(const Cell3DPosition& pos) const;
-    bool isOnXOppCSGBorder(const Cell3DPosition& pos) const;
-    bool isOnYCSGBorder(const Cell3DPosition& pos) const;
-    bool isOnYOppCSGBorder(const Cell3DPosition& pos) const;
-
     /**
      * @param pos position to evaluate
      * @return true if pos is part of the CSG target object

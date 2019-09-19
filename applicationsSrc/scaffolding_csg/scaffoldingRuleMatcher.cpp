@@ -1006,22 +1006,6 @@ bool ScaffoldingRuleMatcher::areOnTheSameBranch(const Cell3DPosition& pos1,
 /****************************** CSG STUFF ****************************/
 /*********************************************************************/
 
-bool ScaffoldingRuleMatcher::isOnXCSGBorder(const Cell3DPosition& pos) const {
-    return isOnXBranch(pos) and isInCSG(pos) and not isInCSG(pos - Cell3DPosition(0,B,0));
-}
-
-bool ScaffoldingRuleMatcher::isOnXOppCSGBorder(const Cell3DPosition& pos) const {
-    return isOnXBranch(pos) and isInCSG(pos) and not isInCSG(pos + Cell3DPosition(0,B,0));
-}
-
-bool ScaffoldingRuleMatcher::isOnYCSGBorder(const Cell3DPosition& pos) const {
-    return isOnYBranch(pos) and isInCSG(pos) and not isInCSG(pos - Cell3DPosition(B,0,0));
-}
-
-bool ScaffoldingRuleMatcher::isOnYOppCSGBorder(const Cell3DPosition& pos) const {
-    return isOnYBranch(pos) and isInCSG(pos) and not isInCSG(pos + Cell3DPosition(B,0,0));
-}
-
 bool ScaffoldingRuleMatcher::isInCSG(const Cell3DPosition& pos) const {
     return isInMesh(pos) and isInsideFn(pos);
 }
