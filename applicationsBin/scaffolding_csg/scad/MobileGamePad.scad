@@ -8,7 +8,7 @@ rotate([90, 0, 0]) {
             }
         }
         
-        difference() {
+       /* difference() {
             rotate([90, 0, 0]) {
                 translate([6, 0, 0]) { 
                     union(){
@@ -38,7 +38,7 @@ rotate([90, 0, 0]) {
                 cube(size = [15, 7, 2], center = true);
             }
         
-        }
+        }*/
         
         
         translate([-3.75, -1.5, 0.25]){
