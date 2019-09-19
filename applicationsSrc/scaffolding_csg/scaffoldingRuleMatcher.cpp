@@ -1058,7 +1058,7 @@ Cell3DPosition ScaffoldingRuleMatcher::getSeedForCSGLayer(int z) const {
 BranchIndex ScaffoldingRuleMatcher::
 getTileRootInsertionBranch(const Cell3DPosition& pos) const {
     if (hasIncidentBranch(pos, RevZBranch)) return RevZBranch; // default
-    else if (hasIncidentBranch(pos, ZBranch)) return ZBranch;
     else if (hasIncidentBranch(pos, LZBranch)) return LZBranch;
-    else return RZBranch;
+    else if (hasIncidentBranch(pos, RZBranch)) return RZBranch;
+    else return ZBranch;
 }

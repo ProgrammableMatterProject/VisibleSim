@@ -417,68 +417,45 @@ void CoordinatorReadyMessage::handle(BaseSimulator::BlockCode* bc) {
 void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     ScaffoldingBlockCode& mabc = *static_cast<ScaffoldingBlockCode*>(bc);
 
-    Cell3DPosition relNeighborPos;
+    Cell3DPosition nextPos;
+    P2PNetworkInterface* itf = NULL;
     if (mabc.role == ActiveBeamTip) {
-        if ((mabc.ruleMatcher->
-            getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) == 1
-            and mabc.branch < XBranch)
-            or mabc.ruleMatcher->isOnRevZBranch(mabc.norm(mabc.catom->position))) {
+        const Cell3DPosition& tr = mabc.norm(mabc.coordinatorPos);
+        BranchIndex biTr = mabc.ruleMatcher->getTileRootInsertionBranch(tr);
+        if (mabc.branch == biTr) {
+            nextPos = mabc.catom->position - mabc.ruleMatcher->getBranchUnitOffset(biTr);
+        } else {
+            for (const auto& pos :
+                     mabc.lattice->getActiveNeighborCells(mabc.catom->position)) {
+                if (mabc.ruleMatcher->isOnBranch(biTr, mabc.norm(pos))) {
+                    nextPos = pos;
+                    break;
+                }
 
-            relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
-        } else if (mabc.ruleMatcher->isOnZBranch(mabc.norm(mabc.catom->position))) {
-            if (mabc.ruleMatcher->isOnXOppCSGBorder(mabc.norm(mabc.coordinatorPos))
-                and mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos))
-                and mabc.ruleMatcher->
-                getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) < 4
-                and not mabc.ruleMatcher->
-                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RZBranch)
-                and not mabc.ruleMatcher->
-                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), LZBranch)
-                and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2])
-                relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
-            else if (mabc.ruleMatcher->
-                     hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RZBranch))
-                // Forward to incident RZ tip
-                relNeighborPos = Cell3DPosition(0,1,0);
-            else
-                // Forward to incoming LZ tip
-                relNeighborPos = Cell3DPosition(1,0,0);
-        } else if (mabc.ruleMatcher->isOnRZBranch(mabc.norm(mabc.catom->position))) {
-            if (mabc.ruleMatcher->
-                getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) < 4
-                and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2]
-                and not mabc.ruleMatcher->
-                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RevZBranch)
-                and mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos)))
-                relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
-            else if (mabc.ruleMatcher->
-                     getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) == 3
-                     and not mabc.ruleMatcher->
-                     hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
-                relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
-            else
-                relNeighborPos = Cell3DPosition(1,0,0); // forward to incoming RevZ tip
-        } else if (mabc.ruleMatcher->isOnLZBranch(mabc.norm(mabc.catom->position))) {
-            if (mabc.ruleMatcher->isOnXOppCSGBorder(mabc.norm(mabc.coordinatorPos))
-                and mabc.ruleMatcher->
-                getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) < 4
-                and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2]
-                and not mabc.ruleMatcher->
-                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RevZBranch)
-                and not mabc.ruleMatcher->
-                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RZBranch))
-                relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
-            else if (mabc.ruleMatcher->
-                     hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
-                // forward to RevZ tip
-                relNeighborPos = Cell3DPosition(0,1,0);
-            else
-                // forward to Z tip
-                relNeighborPos = Cell3DPosition(-1,0,0);
+                // If sender is horizontal branch tip, otherwise any vbranch tip is
+                //  reachable in maximum 2 hops from sender vtip, and there is an error
+                if (itf == NULL and not mabc.ruleMatcher->isVerticalBranchTip(
+                        mabc.norm(sourceInterface->hostBlock->position))) {
+
+                    for (const auto& pos:
+                             mabc.lattice->getActiveNeighborCells(mabc.catom->position)) {
+                        if (mabc.ruleMatcher->isVerticalBranchTip(mabc.norm(pos))) {
+                            nextPos = pos;
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
-        P2PNetworkInterface* itf = mabc.catom->getInterface(mabc.catom->position
-                                                            + relNeighborPos);
+        itf = mabc.catom->getInterface(nextPos);
+
+        if (itf == NULL) {
+            cerr << "TIRMessage::handle: tile with no incident vbranch: "
+                 << mabc.norm(mabc.coordinatorPos) << endl;
+            VS_ASSERT(false); // Shouldn't even be possible
+        }
+
         // VS_ASSERT(itf and itf->isConnected());
         // This is not true anymore with the cube:
         if (itf and itf->isConnected()) {
@@ -487,8 +464,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         } else {
             stringstream info;
             info << " couldn't send coordinator ready to "
-                 << mabc.ruleMatcher->component_to_string((ScafComponent)mabc.ruleMatcher->getComponentForPosition(mabc.norm(mabc.catom->position + relNeighborPos)))
-                 << " - " << mabc.catom->position + relNeighborPos;
+                 << mabc.ruleMatcher->component_to_string((ScafComponent)mabc.ruleMatcher->getComponentForPosition(mabc.norm(nextPos))) << " - " << nextPos;
             mabc.scheduler->trace(info.str(), mabc.catom->blockId, RED);
             mabc.catom->setColor(BLACK);
             return;
