@@ -52,7 +52,7 @@ public:
 
     inline static int nbMessages = 0;
     inline static Time t0 = 0;
-    inline static const bool NO_FLOODING = false;
+    inline static bool NO_FLOODING = false;
     inline static bool BUILDING_MODE = false; // const after call to parseUserCommandLineArgument
     inline static bool sandboxInitialized;
 

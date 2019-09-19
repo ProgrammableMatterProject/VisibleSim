@@ -65,6 +65,14 @@ bool ScaffoldingBlockCode::parseUserCommandLineArgument(int argc, char *argv[]) 
 
                 return true;
             } break;
+            case 'u':   {
+                NO_FLOODING = true;
+
+                argc--;
+                argv++;
+
+                return true;
+            } break;
         }
     }
 
