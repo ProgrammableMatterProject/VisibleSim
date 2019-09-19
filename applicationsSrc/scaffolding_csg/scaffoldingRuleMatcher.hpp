@@ -137,17 +137,19 @@ public:
     virtual ~ScaffoldingRuleMatcher() {};
 
     bool isOnXBranch(const Cell3DPosition& pos) const;
-    bool isOnXBorder(const Cell3DPosition& pos) const;
-    bool isOnXOppBorder(const Cell3DPosition& pos) const;
-    bool isOnOppXBranch(const Cell3DPosition& pos) const;
     bool isOnYBranch(const Cell3DPosition& pos) const;
-    bool isOnYBorder(const Cell3DPosition& pos) const;
-    bool isOnYOppBorder(const Cell3DPosition& pos) const;
-    bool isOnOppYBranch(const Cell3DPosition& pos) const;
     bool isOnZBranch(const Cell3DPosition& pos) const;
     bool isOnRevZBranch(const Cell3DPosition& pos) const;
     bool isOnRZBranch(const Cell3DPosition& pos) const;
     bool isOnLZBranch(const Cell3DPosition& pos) const;
+
+    bool isOnOppYBranch(const Cell3DPosition& pos) const;
+    bool isOnOppXBranch(const Cell3DPosition& pos) const;
+    bool isOnOppZBranch(const Cell3DPosition& pos) const;
+    bool isOnOppRevZBranch(const Cell3DPosition& pos) const;
+    bool isOnOppRZBranch(const Cell3DPosition& pos) const;
+    bool isOnOppLZBranch(const Cell3DPosition& pos) const;
+
     bool isTileRoot(const Cell3DPosition& pos) const;
     bool isVerticalBranchTip(const Cell3DPosition& pos) const;
     bool isNFromVerticalBranchTip(const Cell3DPosition& pos, int N) const;
@@ -155,22 +157,19 @@ public:
     bool isBranchModule(const Cell3DPosition& pos) const;
     bool isZBranchModule(const Cell3DPosition& pos) const;
     bool isEPLPivotModule(const Cell3DPosition& pos) const;
+
     bool isOnHorizontalEPL(const Cell3DPosition& pos) const;
 
     /**
      * Indicates how many modules are in branch bi for tile at pos
      * @param pos tile root position of reference
      * @param bi target branch
-     * @param lambda a function that acts as an additional condition on pos
-     (e.g., belongs to target shape?)
      * @return 0 if branch should not be grown, or n \in [1,B-1] otherwise
      */
     short resourcesForBranch(const Cell3DPosition& pos,
-                             BranchIndex bi,
-                             std::function<bool(const Cell3DPosition&)> lambda) const;
+                             BranchIndex bi) const;
 
-    bool shouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi,
-                          function<bool(const Cell3DPosition&)> lambda) const;
+    bool shouldGrowBranch(const Cell3DPosition& pos, BranchIndex bi) const;
 
     Cell3DPosition getBranchUnitOffset(int bi) const;
     Cell3DPosition getBranchUnitOffset(const Cell3DPosition& pos) const;
@@ -184,23 +183,6 @@ public:
     bool isInMesh(const Cell3DPosition& pos) const;
     bool isInCSGMeshOrSandbox(const Cell3DPosition& pos) const;
     bool isInSandbox(const Cell3DPosition& pos) const;
-    bool isOnPartialBorderMesh(const Cell3DPosition& pos) const;
-
-
-    bool upwardBranchRulesApply(const Cell3DPosition& own,
-                                const Cell3DPosition& other) const;
-
-    bool planarBranchRulesApply(const Cell3DPosition& own,
-                                const Cell3DPosition& other) const;
-
-    bool meshRootBranchRulesApply(const Cell3DPosition& own,
-                                  const Cell3DPosition& other) const;
-
-    bool partialBorderMeshRulesApply(const Cell3DPosition& own,
-                                 const Cell3DPosition& other) const;
-
-    bool shouldSendToNeighbor(const Cell3DPosition& own,
-                              const Cell3DPosition& other) const;
 
     void printDebugInfo(const Cell3DPosition& pos) const;
 
@@ -225,19 +207,6 @@ public:
      * @return true if pos belongs to the tile whose root is in argument
      */
     bool isInTileWithRootAt(const Cell3DPosition& root, const Cell3DPosition& pos) const;
-
-    /**
-     * @param pos position of the module to consider
-     * @return the position of the parent module in the spanning tree, or pos if module has no parent
-     */
-    const Cell3DPosition getTreeParentPosition(const Cell3DPosition& pos) const;
-
-    /**
-     * @param pos the module's position
-     * @return the number of messages that should be received from the subtree before
-     *  propagating a response up the tree
-     */
-    unsigned int getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const;
 
     /**
      * Returns the position of the nearest tile root around pos
@@ -369,8 +338,7 @@ public:
      * @param bi branch to evaluate
      * @return true if pos is a TR position and TR at lower end of branch bi exists
      */
-    bool hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
-                           function<bool(const Cell3DPosition&)> lambda) const;
+    bool hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi) const;
 
     inline const Cell3DPosition& getEntryPointRelativePos(short i) const {
         return entryPointRelativePos[i];
@@ -446,17 +414,6 @@ public:
     bool isInCSG(const Cell3DPosition& pos) const;
 
     /**
-     * Like shouldGrowBranch, but also takes into account whether branch would be outside
-     *  of the CSG
-     * @param pos
-     * @param bi
-     * @return
-     */
-    bool shouldGrowCSGBranch(const Cell3DPosition& pos, BranchIndex bi) const;
-
-    short resourcesForCSGBranch(const Cell3DPosition& pos, BranchIndex bi) const;
-
-    /**
      * Checks whether module at the tip of branch tipB relative to tile root at position pos
      *  should grow branch growthB according to csg and mesh rules.
      * @param pos position of the source tile root
@@ -476,12 +433,7 @@ public:
      * @return the number of vertical branches incident to the specified tile,
      *  or -1 if the input is invalid
      */
-    short getNbIncidentVerticalBranches(const Cell3DPosition& pos,
-                                        function<bool(const Cell3DPosition&)> lambda) const;
-
-    short getNbIncidentVerticalCSGBranches(const Cell3DPosition& pos) const;
-
-    bool hasIncidentCSGBranch(const Cell3DPosition& pos, BranchIndex bi) const;
+    short getNbIncidentVerticalBranches(const Cell3DPosition& pos) const;
 
     /**
      * Returns the coordinates of the first TR along the xy diagonal of the CSG object

@@ -311,7 +311,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         // Else redirect to EPL corresponding to that branch
         // ONLY IF BRANCH HAD TO BE GROWN!
         if (mabc.ruleMatcher->
-            resourcesForCSGBranch(mabc.norm(mabc.catom->position), bi) < (mabc.B - 1))
+            resourcesForBranch(mabc.norm(mabc.catom->position), bi) < (mabc.B - 1))
             return;
 
         tPos = mabc.catom->position + ScaffoldingRuleMatcher::getTargetEPLPositionForBranch(bi);
@@ -420,7 +420,7 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     Cell3DPosition relNeighborPos;
     if (mabc.role == ActiveBeamTip) {
         if ((mabc.ruleMatcher->
-            getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) == 1
+            getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) == 1
             and mabc.branch < XBranch)
             or mabc.ruleMatcher->isOnRevZBranch(mabc.norm(mabc.catom->position))) {
 
@@ -429,15 +429,15 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             if (mabc.ruleMatcher->isOnXOppCSGBorder(mabc.norm(mabc.coordinatorPos))
                 and mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos))
                 and mabc.ruleMatcher->
-                getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
+                getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) < 4
                 and not mabc.ruleMatcher->
-                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RZBranch)
+                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RZBranch)
                 and not mabc.ruleMatcher->
-                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), LZBranch)
+                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), LZBranch)
                 and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2])
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else if (mabc.ruleMatcher->
-                     hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RZBranch))
+                     hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RZBranch))
                 // Forward to incident RZ tip
                 relNeighborPos = Cell3DPosition(0,1,0);
             else
@@ -445,31 +445,31 @@ void TileInsertionReadyMessage::handle(BaseSimulator::BlockCode* bc) {
                 relNeighborPos = Cell3DPosition(1,0,0);
         } else if (mabc.ruleMatcher->isOnRZBranch(mabc.norm(mabc.catom->position))) {
             if (mabc.ruleMatcher->
-                getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
+                getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) < 4
                 and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2]
                 and not mabc.ruleMatcher->
-                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch)
+                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RevZBranch)
                 and mabc.ruleMatcher->isOnYOppCSGBorder(mabc.norm(mabc.coordinatorPos)))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else if (mabc.ruleMatcher->
-                     getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) == 3
+                     getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) == 3
                      and not mabc.ruleMatcher->
-                     hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
+                     hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else
                 relNeighborPos = Cell3DPosition(1,0,0); // forward to incoming RevZ tip
         } else if (mabc.ruleMatcher->isOnLZBranch(mabc.norm(mabc.catom->position))) {
             if (mabc.ruleMatcher->isOnXOppCSGBorder(mabc.norm(mabc.coordinatorPos))
                 and mabc.ruleMatcher->
-                getNbIncidentVerticalCSGBranches(mabc.norm(mabc.coordinatorPos)) < 4
+                getNbIncidentVerticalBranches(mabc.norm(mabc.coordinatorPos)) < 4
                 and mabc.coordinatorPos[2] > mabc.scaffoldSeedPos[2]
                 and not mabc.ruleMatcher->
-                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch)
+                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RevZBranch)
                 and not mabc.ruleMatcher->
-                hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RZBranch))
+                hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RZBranch))
                 relNeighborPos = -mabc.ruleMatcher->getBranchUnitOffset(mabc.branch);
             else if (mabc.ruleMatcher->
-                     hasIncidentCSGBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
+                     hasIncidentBranch(mabc.norm(mabc.coordinatorPos), RevZBranch))
                 // forward to RevZ tip
                 relNeighborPos = Cell3DPosition(0,1,0);
             else

@@ -238,11 +238,6 @@ ScafComponent ScaffoldingRuleMatcher::getTargetEPLComponentForBranch(BranchIndex
         case RZBranch: return LZ_EPL;
         case LZBranch: return RZ_EPL;
 
-        // case XBranch: ;
-        // case YBranch:
-        // case XOppBranch:
-        // case YOppBranch:
-
         default: break;
     }
 
@@ -254,14 +249,10 @@ ScafComponent ScaffoldingRuleMatcher::getTargetEPLComponentForBranch(BranchIndex
 
 void ScaffoldingRuleMatcher::printDebugInfo(const Cell3DPosition& pos) const {
   cout << "--- DEBUG INFO: " << pos << endl;
-  cout << "getTreeParentPosition(pos): " << getTreeParentPosition(pos) << endl;
   cout << "isTileRoot(pos): " << isTileRoot(pos) << endl;
-  cout << "isOnPartialBorderMesh(pos): " << isOnPartialBorderMesh(pos) << endl;
   cout << "isOnXBranch(pos): " << isOnXBranch(pos) << endl;
-  cout << "isOnXBorder(pos): " << isOnXBorder(pos) << endl;
   cout << "isOnOppXBranch(pos): " << isOnOppXBranch(pos) << endl;
   cout << "isOnYBranch(pos): " << isOnYBranch(pos) << endl;
-  cout << "isOnYBorder(pos): " << isOnYBorder(pos) << endl;
   cout << "isOnOppYBranch(pos): " << isOnOppYBranch(pos) << endl;
   cout << "isOnZBranch(pos): " << isOnZBranch(pos) << endl;
   cout << "isOnRevZBranch(pos): " << isOnRevZBranch(pos) << endl;
@@ -282,16 +273,6 @@ bool ScaffoldingRuleMatcher::isInGrid(const Cell3DPosition& pos) const {
 }
 
 bool ScaffoldingRuleMatcher::isInSandbox(const Cell3DPosition& pos) const {
-    // add -2 for new tile construction using modules below R
-    // cout << "isInMesh: " << isInMesh(pos) << endl;
-    // cout << "x: " << isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2 + 2) << endl;
-    // cout << "y: " << isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2 + 2) << endl;
-    // cout << "z: " << isInRange(pos[2], -3, 0) << endl;
-
-    // return isInMesh(pos) and isInRange(pos[0], -1 - pos[2]/ 2, X_MAX - pos[2] / 2 + 2)
-    //     and isInRange(pos[1], -1 - pos[2] / 2, Y_MAX - pos[2] / 2 + 2)
-    //     and isInRange(pos[2], -3, 0);
-
     return isInMesh(pos) and pos[2] < 0;
 }
 
@@ -313,10 +294,6 @@ bool ScaffoldingRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
 }
 
 bool ScaffoldingRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
-    // return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
-    //     and (pos[2] / B) % 2 == 1
-    //     and isInRange(pos[0], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[0], B));
-
     const Cell3DPosition& oppXTr = pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0);
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppXTr)
@@ -324,43 +301,12 @@ bool ScaffoldingRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
             );
 }
 
-bool ScaffoldingRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
-    return pos[1] == (int)(-(int)(pos[2] / B) / 2 * B) and m_mod(pos[2], B) == 0;
-}
-
-bool ScaffoldingRuleMatcher::isOnXOppBorder(const Cell3DPosition& pos) const {
-    short a = (pos[2] / B) / 2 * B;
-    short b = X_MAX - 2;
-    // cout << "pos: " << pos << endl;
-    // cout << "a: " << a << " " << "b: " << b << endl;
-    // cout << "(int)(-(int)a + b): " << (int)(-(int)a + b) << endl;
-    return pos[1] == (int)(-(int)a + b) and m_mod(pos[2], B) == 0;
-}
-
 bool ScaffoldingRuleMatcher::isOnYBranch(const Cell3DPosition& pos) const {
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
         and not isOnOppYBranch(pos);
 }
 
-bool ScaffoldingRuleMatcher::isOnYBorder(const Cell3DPosition& pos) const {
-    return pos[0] == (int)(-(int)(pos[2] / B) / 2 * B) and m_mod(pos[2], B) == 0;
-}
-
-bool ScaffoldingRuleMatcher::isOnYOppBorder(const Cell3DPosition& pos) const {
-    short a = (pos[2] / B) / 2 * B;
-    short b = Y_MAX - 2;
-    // cout << "pos: " << pos << endl;
-    // cout << "a: " << a << " " << "b: " << b << endl;
-    // cout << "(int)(-(int)a + b): " << (int)(-(int)a + b) << endl;
-    return pos[0] == (int)(-(int)a + b) and m_mod(pos[2], B) == 0;
-}
-
 bool ScaffoldingRuleMatcher::isOnOppYBranch(const Cell3DPosition& pos) const {
-    // return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
-    //     // FIXME: Make lambda below
-    //     and (pos[2] / B) % 2 == 1
-    //     and isInRange(pos[1], - pos[2] / 2, - pos[2] / 2 + m_mod(pos[1], B));
-
     const Cell3DPosition& oppYTr = pos - m_mod(pos[1], B) * Cell3DPosition(0, 1, 0);
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppYTr)
@@ -398,25 +344,6 @@ bool ScaffoldingRuleMatcher::isOnRZBranch(const Cell3DPosition& pos) const {
     return (m_mod(y, B) + m_mod(z, B) == (int)B and m_mod(x, B) == 0);
 }
 
-bool ScaffoldingRuleMatcher::isOnPartialBorderMesh(const Cell3DPosition& pos) const {
-    return (m_mod(pos[2], B) == 0 and not isTileRoot(pos)
-            and (
-                (isOnXBranch(pos)
-                 and (pos[0] - m_mod(pos[0], B)  < - (pos[2] / 2)) )
-                or (isOnYBranch(pos)
-                     and (pos[1] - m_mod(pos[1], B) < - (pos[2] / 2)) )
-                ))
-        or (m_mod(pos[2], B) != 0 and // Downward oblique case (ub)
-            // (pos[2] - pos[2] % (int)B) is expected z of tileRoot
-            ( (m_mod(pos[0], B) > 0
-               and pos[0] + (int)B - m_mod(pos[0], B) >
-               (int)X_MAX - (pos[2] - m_mod(pos[2], B)) / 2 )
-              or (m_mod(pos[1], B) > 0
-                  and pos[1] + (int)B - m_mod(pos[1], (int)B) >
-                  (int)Y_MAX - (pos[2] - m_mod(pos[2], (int)B)) / 2 )
-                )
-            );
-}
 
 bool ScaffoldingRuleMatcher::isVerticalBranchTip(const Cell3DPosition& pos) const {
     return isNFromVerticalBranchTip(pos, 0);
@@ -479,20 +406,17 @@ ScaffoldingRuleMatcher::getBranchIndexForNonRootPosition(const Cell3DPosition& p
 }
 
 bool ScaffoldingRuleMatcher::shouldGrowBranch(const Cell3DPosition& pos,
-                                       BranchIndex bi,
-                                       function<bool(const Cell3DPosition&)> lambda =
-                                       [](const Cell3DPosition& pos){ return true; }) const {
-    return resourcesForBranch(pos, bi, lambda) > 0;
+                                              BranchIndex bi) const {
+    return resourcesForBranch(pos, bi) > 0;
 }
 
-short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, BranchIndex bi,
-                                          function<bool(const Cell3DPosition&)> lambda =
-                                          [](const Cell3DPosition& pos){return true;}) const {
+short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos,
+                                                 BranchIndex bi) const {
     if (not isTileRoot(pos)) return 0;
 
     // FIXME: Do not consider a vertical branch for growth if the feeding branch does not exist
     if (bi < XBranch and pos[2] > B // NOTE: Sandbox gets counted as no incident branch
-        and not hasIncidentCSGBranch(pos, getAlternateBranchIndex(bi)))
+        and not hasIncidentBranch(pos, getAlternateBranchIndex(bi)))
         return 0;
 
     for (int i = 0; i < B - 1; i++) {
@@ -505,7 +429,7 @@ short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos, Bran
               or (bi == YBranch and isOnOppYBranch(bPos))) )
             return 0;
 
-        if (not isInMesh(bPos) or not lambda(bPos)) {
+        if (not isInMesh(bPos) or not isInCSG(bPos)) {
             // cout << branch_to_string(bi) << ": " << i << endl;
             return i;
         }
@@ -541,143 +465,7 @@ bool ScaffoldingRuleMatcher::isTileRoot(const Cell3DPosition& pos) const {
     return m_mod(pos[0], B) == 0 and m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0;
 }
 
-bool ScaffoldingRuleMatcher::upwardBranchRulesApply(const Cell3DPosition& own,
-                                                         const Cell3DPosition& other) const {
-    const int zCoeff = other[2] / B;
-
-    // Module is on branch if z is NOT a multiple of B
-    return not m_mod(own[2], B) == 0
-        and (
-            // In that case, only allow upward transmission
-            own[2] < other[2]
-            // Unless neighbor is not on branch
-            and (m_mod(other[2], B) != 0
-                 // Transmitting to the next root only along z axis from (0,0,0)
-                 or (isTileRoot(other)
-                     and (
-                         other[0] == (int)(-zCoeff / 2 * B)
-                         and other[0] == other[1]
-                         and (
-                             (IS_EVEN(zCoeff)
-                              // If o.z / B even, then we need to go up/backward
-                              and other - own == Cell3DPosition(-1, -1, 1))
-                             or
-                             (IS_ODD(zCoeff)
-                              // if o.z / B odd, then we need to go up/forward
-                              and other - own == Cell3DPosition(0, 0, 1))
-                             )
-                         )
-                     )
-                )
-            );
-}
-
-bool ScaffoldingRuleMatcher::planarBranchRulesApply(const Cell3DPosition& own,
-                                                         const Cell3DPosition& other) const {
-    // Module is on plan if z is a multiple of B
-    return m_mod(own[2], B) == 0 and own[2] == other[2]
-        and (
-            // In that case, only allow transmission to increasing x...
-            // (except if other is a root as transmission to roots occur along y axis,
-            //   and we are not on lower border)
-            (own[0] < other[0] and
-             (not isTileRoot(other) or (own[1] + own[2] / 2) < (int)B))
-            // ... or increasing y.
-            or own[1] < other[1]
-            );
-}
-
-bool ScaffoldingRuleMatcher::meshRootBranchRulesApply(const Cell3DPosition& own,
-                                                           const Cell3DPosition& other) const {
-    // Mesh root is responsible for upward propagation
-    return isTileRoot(own)
-        and (
-            // In that case, only allow transmission to increasing z, in all directions
-             own[2] < other[2]
-             );
-}
-
-bool ScaffoldingRuleMatcher::partialBorderMeshRulesApply(const Cell3DPosition& own,
-                                                              const Cell3DPosition& other) const {
-    // Gotta decide that we are on a mesh with no root using xmax, ymax, xmax;
-    return isOnPartialBorderMesh(other)
-        and (
-            // Mesh root initiates on a border initiates normally forbidden transmission
-            isTileRoot(own)
-            or
-            (isOnPartialBorderMesh(own)
-             and ((own[2] % B == 0 and own[2] == other[2] and (own[0] > other[0]
-                                                               or own[1] > other[1]))
-                  or (own[2] % B != 0 and other[2] < own[2]))
-                ));
-}
-
-bool ScaffoldingRuleMatcher::shouldSendToNeighbor(const Cell3DPosition& own,
-                                                       const Cell3DPosition& other) const {
-    return (not isOnPartialBorderMesh(own)
-            and (
-                planarBranchRulesApply(own, other)
-                or meshRootBranchRulesApply(own, other)
-                or upwardBranchRulesApply(own, other)
-                )
-        )
-        or partialBorderMeshRulesApply(own, other);
-}
-
-const Cell3DPosition
-ScaffoldingRuleMatcher::getTreeParentPosition(const Cell3DPosition& pos) const {
-    if (isTileRoot(pos)) {
-        const int zCoeff = pos[2] / B;
-        // Mesh Root
-        if (pos[0] == 0 and pos[1] == 0 and pos[2] == 0) return pos;
-        // Upward propagating branch, parent is branch predecessor
-        else if (pos[0] == (int)(-zCoeff / 2 * B) and pos[1] == pos[0]) {
-            return IS_EVEN(zCoeff) ?
-                pos + Cell3DPosition(1, 1, -1) : pos + Cell3DPosition(0, 0, -1);
-        }
-    }
-\
-    if (isOnPartialBorderMesh(pos)) {
-        // parent is either x - 1 or y - 1 if planar
-        if (isOnYBranch(pos)) return pos + Cell3DPosition(0,1,0);
-        else if (isOnXBranch(pos)) return pos + Cell3DPosition(1,0,0);
-        //  or z + 1 if on an incomplete downward branch
-        else if (isOnZBranch(pos)) return pos + Cell3DPosition(0,0,1);
-        else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(-1,-1,1);
-        else if (isOnLZBranch(pos)) return pos + Cell3DPosition(-1,0,1);
-        else if (isOnRZBranch(pos)) return pos + Cell3DPosition(0,-1,1);
-
-        assert(false);
-    }
-
-    // Planar cases X and Y
-    else if (isOnYBranch(pos) and !isOnXBorder(pos)) return pos + Cell3DPosition(0,-1,0);
-    else if (isOnXBranch(pos) and !isOnYBorder(pos)) return pos + Cell3DPosition(-1,0,0);
-    // Branch cases
-    else if (isOnZBranch(pos)) return pos + Cell3DPosition(0,0,-1);
-    else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(1,1,-1);
-    else if (isOnLZBranch(pos)) return pos + Cell3DPosition(1,0,-1);
-    else if (isOnRZBranch(pos)) return pos + Cell3DPosition(0,1,-1);
-
-    assert(false);
-}
-
-unsigned int ScaffoldingRuleMatcher::
-getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const {
-    unsigned int expectedConfirms = 0;
-    for (const Cell3DPosition& nPos :
-             Catoms3D::getWorld()->lattice->getActiveNeighborCells(pos)) {
-        if (shouldSendToNeighbor(pos, nPos)) expectedConfirms++;
-    }
-
-    // OUTPUT << "NumberExpectedConfirms for " << pos << " : " << expectedConfirms << endl;
-
-    return expectedConfirms;
-}
-
 short ScaffoldingRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) const {
-    // cout << "norm: " << pos << endl;
-    // cout << "isInCSGMeshOrSandbox: " << isInCSGMeshOrSandbox(pos) << endl;
 
     if (isInCSGMeshOrSandbox(pos) and not isTileRoot(pos)) {
         if (isOnZBranch(pos)) return ZBranch;
@@ -757,7 +545,7 @@ ScaffoldingRuleMatcher::getTileRootPositionForMeshPosition(const Cell3DPosition&
 }
 
 bool ScaffoldingRuleMatcher::isInTileWithRootAt(const Cell3DPosition& root,
-                                         const Cell3DPosition& pos) const {
+                                                const Cell3DPosition& pos) const {
     return root == getTileRootPositionForMeshPosition(pos);
 }
 
@@ -1019,11 +807,6 @@ const Cell3DPosition ScaffoldingRuleMatcher::getTargetEPLPositionForBranch(Branc
         case ZBranch: return Cell3DPosition(-1, -1, (B2 - 1));
         case LZBranch: return Cell3DPosition(-(B2 - 2), -1, (B2 - 1));
 
-        // case XBranch:
-        // case YBranch:
-        // case OppXBranch:
-        // case OppXBranch:
-
         default:
             cerr << "getTargetEPLPositionForBranch(" << bi << ")" << endl;
             VS_ASSERT_MSG(false, "getTargetEPLPositionForBranch: input is not a valid branch");
@@ -1037,16 +820,13 @@ ScaffoldingRuleMatcher::getTileRootAtEndOfBranch(const Cell3DPosition& trRef,
                                           BranchIndex bi,
                                           bool upward) const {
     if (not isInMesh(trRef)) return trRef;
-    // cout << "trRef: " << trRef << " - bi: " << bi << " - res: "
-    //      << trRef + B * getBranchUnitOffset(bi) << endl;
+
     return upward ? trRef + B * getBranchUnitOffset(bi)
         : trRef - B * getBranchUnitOffset(bi);
 }
 
 short ScaffoldingRuleMatcher::
-getNbIncidentVerticalBranches(const Cell3DPosition& pos,
-                              function<bool(const Cell3DPosition&)> lambda =
-                              [](const Cell3DPosition& pos) { return true; }) const {
+getNbIncidentVerticalBranches(const Cell3DPosition& pos) const {
     // Invalid input
     if (not isTileRoot(pos)) return -1;
 
@@ -1056,15 +836,13 @@ getNbIncidentVerticalBranches(const Cell3DPosition& pos,
     // Otherwise, count
     short count = 0;
     for (int bi = 0; bi < XBranch; bi++)
-        if (hasIncidentBranch(pos, (BranchIndex)bi, lambda)) ++count;
+        if (hasIncidentBranch(pos, (BranchIndex)bi)) ++count;
 
     return count;
 }
 
 bool ScaffoldingRuleMatcher::
-hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
-                  function<bool(const Cell3DPosition&)> lambda =
-                  [](const Cell3DPosition& pos) { return true; }) const {
+hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi) const {
     // Invalid input
     if (not isTileRoot(pos)) return false;
 
@@ -1080,7 +858,7 @@ hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi,
          or (bi == OppYBranch and not isOnOppYBranch(bPos)) )
         return false;
 
-    return lambda(trIVB) and resourcesForCSGBranch(trIVB, bi) == (B - 1);
+    return isInCSG(trIVB) and resourcesForBranch(trIVB, bi) == (B - 1);
 }
 
 const Cell3DPosition
@@ -1191,15 +969,6 @@ ScaffoldingRuleMatcher::getEntryPointForModuleOnIncidentBranch(const Cell3DPosit
     return getEntryPointPosition(cPos, epl);
 }
 
-// bool ScaffoldingRuleMatcher::hasIncidentBranch(const Cell3DPosition& cPos,
-//                                                BranchIndex bi) const {
-//     VS_ASSERT_MSG(isTileRoot(catom->position),
-//                   "hasIncidentBranch: Only coordinator caller is allowed");
-
-//     // FIXME:: CRITICAL
-//     return (not getWorld()->lattice->isFree(cPos - getBranchUnitOffset(bi)));
-// }
-
 bool ScaffoldingRuleMatcher::areOnTheSameBranch(const Cell3DPosition& pos1,
                                                 const Cell3DPosition& pos2) const {
     return (getTileRootPositionForMeshPosition(pos1)==getTileRootPositionForMeshPosition(pos2))
@@ -1228,29 +997,8 @@ bool ScaffoldingRuleMatcher::isOnYOppCSGBorder(const Cell3DPosition& pos) const 
     return isOnYBranch(pos) and isInCSG(pos) and not isInCSG(pos + Cell3DPosition(B,0,0));
 }
 
-short ScaffoldingRuleMatcher::getNbIncidentVerticalCSGBranches(const Cell3DPosition& pos) const{
-    return getNbIncidentVerticalBranches(pos, [this](const Cell3DPosition& p){
-        return isInCSG(p);
-    });
-}
-
-bool ScaffoldingRuleMatcher::hasIncidentCSGBranch(const Cell3DPosition& pos, BranchIndex bi) const{
-    return hasIncidentBranch(pos, bi, [this](const Cell3DPosition& p){return isInCSG(p);});
-}
-
 bool ScaffoldingRuleMatcher::isInCSG(const Cell3DPosition& pos) const {
     return isInMesh(pos) and isInsideFn(pos);
-}
-
-bool ScaffoldingRuleMatcher::shouldGrowCSGBranch(const Cell3DPosition& pos,
-                                           BranchIndex bi) const {
-    return shouldGrowBranch(pos, bi)
-        and isInCSG(getTileRootAtEndOfBranch(pos, bi));
-}
-
-short ScaffoldingRuleMatcher::resourcesForCSGBranch(const Cell3DPosition& pos,
-                                              BranchIndex bi) const {
-    return resourcesForBranch(pos, bi, [this](const Cell3DPosition& p){ return isInCSG(p); });
 }
 
 bool ScaffoldingRuleMatcher::CSGTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
@@ -1259,7 +1007,7 @@ bool ScaffoldingRuleMatcher::CSGTRAtBranchTipShouldGrowBranch(const Cell3DPositi
     if (not isInMesh(pos) or not isTileRoot(pos)) return false;
 
     const Cell3DPosition& tipTRPos = getTileRootAtEndOfBranch(pos, tipB);
-    return shouldGrowCSGBranch(tipTRPos, growthB);
+    return shouldGrowBranch(tipTRPos, growthB);
 }
 
 Cell3DPosition ScaffoldingRuleMatcher::getSeedForCSGLayer(int z) const {
