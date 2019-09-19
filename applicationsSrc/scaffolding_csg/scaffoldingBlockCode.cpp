@@ -661,58 +661,27 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
 
                             // Send message down branch, next module is likely
                             //  not on EPL yet, it will use TileInsertionPending = true
-                            if (bi == RevZBranch
-                                or (not ruleMatcher->hasIncidentBranch
-                                    (norm(nextPosAlongBranch), RevZBranch)
-                                    and
-                                    ((bi == RZBranch
-                                      and ruleMatcher->
-                                      isOnYOppCSGBorder(norm(nextPosAlongBranch))
-                                      and nextPosAlongBranch[2] > scaffoldSeedPos[2]
-                                      and (nextPosAlongBranch[2] / B) % 2 == 1)
-                                     or ((bi == LZBranch
-                                          and ruleMatcher->
-                                          isOnXOppCSGBorder(norm(nextPosAlongBranch)))
-                                         or ((bi == ZBranch
-                                              and ruleMatcher->
-                                              isOnXOppCSGBorder(norm(nextPosAlongBranch))
-                                              and ruleMatcher->
-                                              isOnYOppCSGBorder(norm(nextPosAlongBranch)))))
-                                     ))) {
-                                nextHopItf =
-                                    catom->getInterface(catom->position
-                                                        -ruleMatcher->getBranchUnitOffset(bi));
+                            const Cell3DPosition& nTr = norm(nextPosAlongBranch);
+                            BranchIndex biTr = ruleMatcher->getTileRootInsertionBranch(nTr);
+                            if (bi == biTr) {
+                                nextHopItf = catom->getInterface(
+                                    catom->position-ruleMatcher->getBranchUnitOffset(bi));
                             } else {
                                 for (const auto& pos :
                                          lattice->getActiveNeighborCells(catom->position)) {
-                                    if (ruleMatcher->isOnZBranch(norm(pos))
-                                        or (ruleMatcher->
-                                            isOnYCSGBorder(norm(nextPosAlongBranch))
-                                            and (nextPosAlongBranch[2] / B) % 2 == 0
-                                            and ruleMatcher->isOnLZBranch(norm(pos)))
-                                        or (ruleMatcher->
-                                            isOnXCSGBorder(norm(nextPosAlongBranch))
-                                            and (nextPosAlongBranch[2] / B) % 2 == 0
-                                            and ruleMatcher->isOnRZBranch(norm(pos)))
-                                        or (ruleMatcher->getNbIncidentVerticalBranches
-                                            (norm(nextPosAlongBranch)) == 3
-                                            and ruleMatcher->isOnRevZBranch(norm(pos)))
-                                        or (bi == XBranch
-                                            and ruleMatcher->isOnRZBranch(norm(pos)))
-                                        or (bi == YBranch
-                                            and ruleMatcher->isOnLZBranch(norm(pos)))
-                                        or ((bi == OppYBranch or bi == OppXBranch)
-                                            and ruleMatcher->isOnRevZBranch(norm(pos)))
-                                        or (ruleMatcher->getNbIncidentVerticalBranches
-                                            (norm(nextPosAlongBranch)) == 2
-                                            and ruleMatcher->hasIncidentBranch
-                                            (norm(nextPosAlongBranch), RevZBranch)
-                                            and ruleMatcher->hasIncidentBranch
-                                            (norm(nextPosAlongBranch), LZBranch)
-                                            and ruleMatcher->isOnRevZBranch(norm(pos)))
-                                        ) {
+                                    if (ruleMatcher->isOnBranch(biTr, norm(pos))) {
                                         nextHopItf = catom->getInterface(pos);
                                         break;
+                                    }
+                                }
+
+                                if (nextHopItf == NULL) { // not next to biTr, send to any vtip
+                                    for (const auto& pos:
+                                             lattice->getActiveNeighborCells(catom->position)) {
+                                        if (ruleMatcher->isVerticalBranchTip(norm(pos))) {
+                                            nextHopItf = catom->getInterface(pos);
+                                            break;
+                                        }
                                     }
                                 }
                             }

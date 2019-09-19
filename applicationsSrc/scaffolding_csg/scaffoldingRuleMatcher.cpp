@@ -288,6 +288,31 @@ bool ScaffoldingRuleMatcher::isInCSGMeshOrSandbox(const Cell3DPosition& pos) con
     return (isInCSG(pos) or isSupportModule(pos)) or isInSandbox(pos);
 }
 
+bool ScaffoldingRuleMatcher::isOnBranch(BranchIndex bi, const Cell3DPosition& pos) const {
+    switch(bi) {
+        case XBranch: return isOnXBranch(pos);
+        case YBranch: return isOnYBranch(pos);
+        case ZBranch: return isOnZBranch(pos);
+        case RevZBranch: return isOnRevZBranch(pos);
+        case RZBranch: return isOnRZBranch(pos);
+        case LZBranch: return isOnLZBranch(pos);
+
+        case OppXBranch: return isOnOppXBranch(pos);
+        case OppYBranch: return isOnOppYBranch(pos);
+        // case OppZBranch: return isOnOppZBranch(pos);
+        // case OppRevZBranch: return isOnOppRevZBranch(pos);
+        // case OppRZBranch: return isOnOppRZBranch(pos);
+        // case OppLZBranch: return isOnOppLZBranch(pos);
+
+        default: break;
+    }
+
+    cerr << "isOnBranch: invalid input: " << bi << endl;
+    VS_ASSERT(false);
+
+    return false; // unreachable
+}
+
 bool ScaffoldingRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
         and not isOnOppXBranch(pos);
@@ -1028,4 +1053,12 @@ Cell3DPosition ScaffoldingRuleMatcher::getSeedForCSGLayer(int z) const {
     }
 
     return Cell3DPosition(-1,-1,-1);
+}
+
+BranchIndex ScaffoldingRuleMatcher::
+getTileRootInsertionBranch(const Cell3DPosition& pos) const {
+    if (hasIncidentBranch(pos, RevZBranch)) return RevZBranch; // default
+    else if (hasIncidentBranch(pos, ZBranch)) return ZBranch;
+    else if (hasIncidentBranch(pos, LZBranch)) return LZBranch;
+    else return RZBranch;
 }

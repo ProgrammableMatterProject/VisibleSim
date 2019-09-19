@@ -28,7 +28,9 @@ static const uint MC_ST_B = 69;
 namespace MeshCoating {
 
 enum BranchIndex { ZBranch, RevZBranch, LZBranch,
-    RZBranch, XBranch, YBranch, OppXBranch, OppYBranch, N_BRANCHES };
+    RZBranch, XBranch, YBranch,
+    OppXBranch, OppYBranch,
+    N_BRANCHES };
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip, Support};
 enum ScafComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
 
@@ -135,6 +137,8 @@ public:
         X_MIN(_X_MIN), Y_MIN(_Y_MIN), Z_MIN(_Z_MIN),
         B(_B), isInsideFn(_fn) {};
     virtual ~ScaffoldingRuleMatcher() {};
+
+    bool isOnBranch(BranchIndex bi, const Cell3DPosition& pos) const;
 
     bool isOnXBranch(const Cell3DPosition& pos) const;
     bool isOnYBranch(const Cell3DPosition& pos) const;
@@ -443,6 +447,13 @@ public:
      * @return position of the seed for plane z
      */
     Cell3DPosition getSeedForCSGLayer(int z) const;
+
+    /**
+     * Returns, for a given tile position, which branch index should bring the tile root
+     * @param pos position of the tile
+     * @return branch index of the branch that should bring the tile root
+     */
+    BranchIndex getTileRootInsertionBranch(const Cell3DPosition& pos) const;
 };
 
 }
