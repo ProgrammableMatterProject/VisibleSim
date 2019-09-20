@@ -10,8 +10,15 @@
         <csg boundingBox="false" content="
           scale([10,10,10]) translate([8,4,0.25])
       union() {
-          cube([12, 4, 0.5], true);
-          cube([15, 4, 0.5], true);
+          difference() {
+              union() {
+                  cube([15, 4, 0.5], true);
+                  translate([-2.5,0,0.25]) cylinder(0.75,1,1,true);
+              }
+              translate([-2.5,0,0.5]) cylinder(1,0.75,0.75,true);
+          }
+          translate([-2.5,0,0.75]) cylinder(2,0.25,0.25,true);
+
           translate([6, 2, 0]) cylinder(0.5,1.5,1.5,true);
           translate([6, -2, 0]) cylinder(0.5,1.5,1.5,true);
           translate([-6, 2, 0]) cylinder(0.5,1.5,1.5,true);
@@ -32,6 +39,10 @@
                   translate([0,0,-2]) sphere(1.5);
               }
               translate([0,0,-1]) cube([15,7,2],true);
+          }
+          translate([2.5,0,0.5]) union() {
+              cube([2.5,0.75,0.5],true);
+              cube([0.75,2.5,0.5],true);
           }
       }"/>
       </target>

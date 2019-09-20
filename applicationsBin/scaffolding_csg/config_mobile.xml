@@ -1,20 +1,21 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="155,75,20">
+<world gridSize="160,80,50">
 
   <blockList color="128,128,128" blocksize="10,10,10">
     <block position="5,5,2" color="0,255,255" orientation="11" />
   </blockList>
 
     <targetList>
-      <target format="csg">
-        <csg content="
-        scale([10,10,12]) union() {
-        cube([12, 7, 0.5], true);
-        cube([15, 4, 0.5], true);
-        translate([6, 2, 0]) cylinder(0.5,1.5,1.5,true);
-        translate([6, -2, 0]) cylinder(0.5,1.5,1.5,true);
-        translate([-6, 2, 0]) cylinder(0.5,1.5,1.5,true);
-        translate([-6, -2, 0]) cylinder(0.5,1.5,1.5,true);
+      <target format="csg" >
+        <csg boundingBox="false" content="
+          scale([10,10,12]) translate([8,4,0.25])
+         union() {
+         cube([10, 7, 0.5], true);
+         cube([15, 2, 0.5], true);
+         translate([5, 1, 0]) cylinder(0.5,2.5,2.5,true);
+         translate([5, -1, 0]) cylinder(0.5,2.5,2.5,true);
+         translate([-5, 1, 0]) cylinder(0.5,2.5,2.5,true);
+         translate([-5, -1, 0]) cylinder(0.5,2.5,2.5,true);
         }"/>
       </target>
     </targetList>
