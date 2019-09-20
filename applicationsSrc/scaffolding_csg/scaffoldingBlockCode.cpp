@@ -177,8 +177,14 @@ void ScaffoldingBlockCode::onBlockSelected() {
                  << ruleMatcher->resourcesForBranch(norm(cPos), bi) << endl;
         }
 
-        cout << "isIncidentBranchTipInPlace(OppXBranch): "
-             << isIncidentBranchTipInPlace(cPos, OppXBranch) << endl;
+        vector<BranchIndex> mb;
+        cout << "incidentBranchesToRootAreComplete: "
+             << incidentBranchesToRootAreComplete(cPos, mb) << endl;
+        for (int i = 0; i < N_BRANCHES; i++) {
+            BranchIndex bi = (BranchIndex)i;
+            cout << "isIncidentBranchTipInPlace(" << ruleMatcher->branch_to_string(bi)
+             << "): " << isIncidentBranchTipInPlace(cPos, bi) << endl;
+        }
 
         for (int i = 0; i < N_BRANCHES; i++)
             cout << "hasIncidentBranch("
@@ -262,6 +268,7 @@ void ScaffoldingBlockCode::startup() {
         cout << "scaffoldSeedPos: " << scaffoldSeedPos << endl;
         if (scaffoldSeedPos == Cell3DPosition(-1,-1,-1)) {
             highlightCSGScaffold(true);
+            BUILDING_MODE = true;
             VS_ASSERT_MSG(scaffoldSeedPos != Cell3DPosition(-1,-1,-1), "Cannot find where to place scaffold seed tile. Please check CSG placement.");
         }
     }
@@ -334,9 +341,11 @@ void ScaffoldingBlockCode::startup() {
     }
 
     // Do stuff
+
     if (catom->position == denorm(ruleMatcher->getEntryPointForScafComponent(
                                       norm(coordinatorPos), ScafComponent::R))
         + Cell3DPosition(0, 1, 0)
+        and ruleMatcher->isInCSG(norm(coordinatorPos))
         and coordinatorPos[2] == scaffoldSeedPos[2]
         and lattice->isFree(coordinatorPos)) {
 
@@ -347,7 +356,8 @@ void ScaffoldingBlockCode::startup() {
         // Catom is one of the future ground tile roots waiting on R_EPL
         role = FreeAgent;
 
-        if (coordinatorPos == scaffoldSeedPos) {
+        vector<BranchIndex> mb;
+        if (incidentBranchesToRootAreComplete(coordinatorPos, mb)) {
             targetPosition = coordinatorPos;
 
             // Delay the algorithm start
@@ -2194,9 +2204,9 @@ Cell3DPosition ScaffoldingBlockCode::determineScaffoldSeedPosition() {
             // MAYBE: Only diagonal needs to be considered
             if (ix == iy) {
                 pos.set(ix, iy, sctPos[2]); // 3 is grid base over scaffold
-                lattice->highlightCell(pos, ORANGE);
+                // lattice->highlightCell(pos, ORANGE);
                 if (target->isInTarget(pos)) {
-                    lattice->highlightCell(pos, MAGENTA);
+                    // lattice->highlightCell(pos, MAGENTA);
                     return pos;
                 }
             }
@@ -2236,8 +2246,8 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                         )
                         continue;
 
-                    if (ruleMatcher->isInCSG(norm(pos)))
-                        lattice->highlightCell(pos, WHITE);
+                    // if (ruleMatcher->isInCSG(norm(pos)))
+                    //     lattice->highlightCell(pos, WHITE);
 
                     // if (ruleMatcher->isInCSG(norm(pos)) and
                     //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
