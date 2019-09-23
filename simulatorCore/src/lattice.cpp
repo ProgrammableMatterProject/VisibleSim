@@ -75,7 +75,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
             throw DoubleInsertionException(p);
         else {
             grid[index] = bb;
-            if (count and p[2] >= 3) nbModules++; // FIXME: remove 'and p[2] >= 3'
+            if (p[2] >= 3) nbModules++; // FIXME: remove 'and p[2] >= 3'
         }
     } catch (DoubleInsertionException const& e) {
         cerr << e.what();
@@ -89,7 +89,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
 
 void Lattice::remove(const Cell3DPosition &p, bool count) {
     grid[getIndex(p)] = NULL;
-    if (count and p[2] >= 3) nbModules--; // FIXME: remove and p[2] >= 3
+    if (p[2] >= 3) nbModules--; // FIXME: remove and p[2] >= 3
 }
 
 BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) const {

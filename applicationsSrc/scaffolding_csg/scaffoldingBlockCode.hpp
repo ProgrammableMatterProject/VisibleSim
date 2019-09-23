@@ -54,6 +54,7 @@ public:
     inline static Time t0 = 0;
     inline static bool NO_FLOODING = false;
     inline static bool BUILDING_MODE = false; // const after call to parseUserCommandLineArgument
+    inline static bool HIGHLIGHT_CSG = false;
     inline static bool sandboxInitialized;
 
     ScaffoldingBlockCode(Catoms3D::Catoms3DBlock *host);

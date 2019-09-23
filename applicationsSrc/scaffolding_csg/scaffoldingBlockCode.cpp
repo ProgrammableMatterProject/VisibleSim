@@ -73,6 +73,16 @@ bool ScaffoldingBlockCode::parseUserCommandLineArgument(int argc, char *argv[]) 
 
                 return true;
             } break;
+            case '-': {
+                string varg = string(argv[0] + 2); // argv[0] without "--"
+
+                if (varg == string("highlight")) HIGHLIGHT_CSG = true;
+
+                argc--;
+                argv++;
+
+                return true;
+            }
         }
     }
 
@@ -710,40 +720,24 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                                             nextHopItf, MSG_DELAY_MC, 0);
                                 log_send_message();
                             } else {
-                                // Simulate routing or wirelessly sending message to
+                                // Simulate routing or wirelessly send message to
                                 //  branch tip if not directly connected
-                                int biDest = -1;
+                                // FIXME: 'Wirelessly'
 
-                                if (ruleMatcher->hasIncidentBranch
-                                    (norm(nextPosAlongBranch), RevZBranch))
-                                    biDest = RevZBranch;
-                                else if (ruleMatcher->hasIncidentBranch
-                                         (norm(nextPosAlongBranch), LZBranch) and
-                                         ruleMatcher->getNbIncidentVerticalBranches
-                                         (norm(nextPosAlongBranch)) == 1)
-                                    biDest = LZBranch;
-                                else if (ruleMatcher->hasIncidentBranch
-                                         (norm(nextPosAlongBranch), RZBranch) and
-                                         ruleMatcher->getNbIncidentVerticalBranches
-                                         (norm(nextPosAlongBranch)) == 1)
-                                    biDest = RZBranch;
+                                Cell3DPosition dest = nextPosAlongBranch -
+                                    ruleMatcher->getBranchUnitOffset(biTr);
 
-                                if (biDest != -1) {
-                                    Cell3DPosition dest = nextPosAlongBranch -
-                                        ruleMatcher->getBranchUnitOffset(biDest);
+                                if (not catom->getInterface(dest)) { // not connected
+                                    stringstream info;
+                                    info << " sending Wireless TIR to " << dest;
+                                    scheduler->trace(info.str(),catom->blockId, ORANGE);
 
-                                    if (not catom->getInterface(dest)) { // not connected
-                                        stringstream info;
-                                        info << " sending Wireless TIR to " << dest;
-                                        scheduler->trace(info.str(),catom->blockId, ORANGE);
-
-                                        BuildingBlock* destBlk = lattice->getBlock(dest);
-                                        VS_ASSERT(destBlk);
-                                        getScheduler()->schedule
-                                            (new InterruptionEvent
-                                             (getScheduler()->now() + MSG_DELAY_MC, destBlk,
-                                              IT_MODE_WIRELESS_TIR_RECEIVED));
-                                    }
+                                    BuildingBlock* destBlk = lattice->getBlock(dest);
+                                    VS_ASSERT(destBlk);
+                                    getScheduler()->schedule
+                                        (new InterruptionEvent
+                                         (getScheduler()->now() + MSG_DELAY_MC, destBlk,
+                                          IT_MODE_WIRELESS_TIR_RECEIVED));
                                 }
                             }
                         } else{
@@ -1353,6 +1347,7 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[LZBranch] > 2) deque.push_back({ LZ_3, LZ_EPL });
         if (catomsReqs[LZBranch] > 3) deque.push_back({ LZ_4, LZ_EPL });
         if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
+
     } else if (nbIVB == 2
                and (ruleMatcher->hasIncidentBranch(norm(pos), LZBranch)
                     and ruleMatcher->hasIncidentBranch(norm(pos),ZBranch))) {
@@ -1496,6 +1491,52 @@ buildConstructionQueueWithFewerIncidentBranches(const Cell3DPosition& pos) const
         if (catomsReqs[ZBranch] > 3) deque.push_back({ Z_4, Z_EPL });
         if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
         if (catomsReqs[ZBranch] > 4) deque.push_back({ Z_5, Z_EPL });
+
+    } else if (nbIVB == 2
+               and (ruleMatcher->hasIncidentBranch(norm(pos), LZBranch)and
+                    ruleMatcher->hasIncidentBranch(norm(pos), RZBranch))) {
+
+        deque.push_back({ S_RZ, RZ_EPL });
+        deque.push_back({ S_LZ, LZ_EPL});
+
+        if (catomsReqs[YBranch] > 0) deque.push_back({ Y_1, LZ_EPL });
+        if (catomsReqs[XBranch] > 0) deque.push_back({ X_1, RZ_EPL });
+
+        if (catomsReqs[OppXBranch] > 0) deque.push_back({ OPP_X1, LZ_EPL });
+        if (catomsReqs[OppYBranch] > 0) deque.push_back({ OPP_Y1, RZ_EPL });
+
+        if (catomsReqs[OppXBranch] > 1) deque.push_back({ OPP_X2, LZ_EPL });
+        if (catomsReqs[OppYBranch] > 1) deque.push_back({ OPP_Y2, RZ_EPL });
+
+        if (catomsReqs[OppXBranch] > 2) deque.push_back({ OPP_X3, LZ_EPL });
+        if (catomsReqs[OppYBranch] > 2) deque.push_back({ OPP_Y3, RZ_EPL });
+
+        if (catomsReqs[OppXBranch] > 3) deque.push_back({ OPP_X4, LZ_EPL });
+        if (catomsReqs[OppYBranch] > 3) deque.push_back({ OPP_Y4, RZ_EPL });
+
+        if (catomsReqs[OppXBranch] > 4) deque.push_back({ OPP_X5, LZ_EPL });
+        if (catomsReqs[OppYBranch] > 4) deque.push_back({ OPP_Y5, RZ_EPL });
+
+        if (catomsReqs[YBranch] > 1) deque.push_back({ Y_2, LZ_EPL });
+        if (catomsReqs[XBranch] > 1) deque.push_back({ X_2, RZ_EPL });
+        if (catomsReqs[YBranch] > 2) deque.push_back({ Y_3, LZ_EPL });
+        if (catomsReqs[XBranch] > 2) deque.push_back({ X_3, RZ_EPL });
+        if (catomsReqs[YBranch] > 3) deque.push_back({ Y_4, LZ_EPL });
+        if (catomsReqs[XBranch] > 3) deque.push_back({ X_4, RZ_EPL });
+        if (catomsReqs[YBranch] > 4) deque.push_back({ Y_5, LZ_EPL });
+        if (catomsReqs[XBranch] > 4) deque.push_back({ X_5, RZ_EPL });
+
+        if (catomsReqs[LZBranch] > 0) deque.push_back({ LZ_1, LZ_EPL });
+        if (catomsReqs[RZBranch] > 0) deque.push_back({ RZ_1, RZ_EPL });
+        if (catomsReqs[LZBranch] > 1) deque.push_back({ LZ_2, LZ_EPL });
+        if (catomsReqs[RZBranch] > 1) deque.push_back({ RZ_2, RZ_EPL });
+        if (catomsReqs[LZBranch] > 2) deque.push_back({ LZ_3, LZ_EPL });
+        if (catomsReqs[RZBranch] > 2) deque.push_back({ RZ_3, RZ_EPL });
+        if (catomsReqs[LZBranch] > 3) deque.push_back({ LZ_4, LZ_EPL });
+        if (catomsReqs[RZBranch] > 3) deque.push_back({ RZ_4, RZ_EPL });
+        if (catomsReqs[LZBranch] > 4) deque.push_back({ LZ_5, LZ_EPL });
+        if (catomsReqs[RZBranch] > 4) deque.push_back({ RZ_5, RZ_EPL });
+
 
     } else if (nbIVB == 3
                and not ruleMatcher->hasIncidentBranch(norm(pos), RZBranch)) {
@@ -2246,8 +2287,8 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                         )
                         continue;
 
-                    // if (ruleMatcher->isInCSG(norm(pos)))
-                    //     lattice->highlightCell(pos, WHITE);
+                    if (HIGHLIGHT_CSG and ruleMatcher->isInCSG(norm(pos)))
+                        lattice->highlightCell(pos, WHITE);
 
                     // if (ruleMatcher->isInCSG(norm(pos)) and
                     //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
