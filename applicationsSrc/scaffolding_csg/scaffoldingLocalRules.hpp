@@ -50,7 +50,7 @@ enum LR_EPL {
     LR_Z_EPL_ALT = LR_Z_EPL + 100, // FIXME: TODO: This is due to a conflict with S_Z on iBorders
     LR_LZ_EPL_ALT = LR_LZ_EPL + 100, // FIXME: TODO: This is due to a conflict with S_LZ on Y OPP act
 
-    LR_RevZ_EPL_RIGHT = LR_RevZ_EPL + 200, // Used for reaching S_RevZ through the righ side of the ZBranch
+    LR_RevZ_EPL_RIGHT = LR_RevZ_EPL + 200, // Used for reaching S_RevZ or R through the righ side of the ZBranch
 };
 
 class LRKeyTuple {
@@ -686,14 +686,14 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
       Cell3DPosition(0, 0, -1) }, // S_RevZ 5
 
     // START OPPXY CORNER //
-    // R from RevZ_EPL
-    { LRKeyTuple(0x400, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 1),
+    // R from RevZ_EPL with OppX/OppY
+    { LRKeyTuple(0x400, LR_RevZ_EPL_ALT, Cell3DPosition(0, 0, 0), 1),
       Cell3DPosition(1, 0, -1) }, // R 1
-    { LRKeyTuple(0x802, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 2),
+    { LRKeyTuple(0x802, LR_RevZ_EPL_ALT, Cell3DPosition(0, 0, 0), 2),
       Cell3DPosition(1, 1, 0) }, // R 2
-    { LRKeyTuple(0x048, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 3),
+    { LRKeyTuple(0x048, LR_RevZ_EPL_ALT, Cell3DPosition(0, 0, 0), 3),
       Cell3DPosition(0, 1, 0) }, // R 3
-    { LRKeyTuple(0x010, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 4),
+    { LRKeyTuple(0x010, LR_RevZ_EPL_ALT, Cell3DPosition(0, 0, 0), 4),
       Cell3DPosition(-1, -1, 2) }, // R 4
 
     // S_RevZ from RevZ_EPL with only RevZ
@@ -1623,6 +1623,32 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
       Cell3DPosition(0, -1, 1) }, // R 2
     { LRKeyTuple(0x020, LR_LZ_EPL_ALT, Cell3DPosition(0, 0, 0), 3),
       Cell3DPosition(1, 0, 0) }, // R 3
+
+    // R from Z_EPL RIGHT
+    { LRKeyTuple(0x400, LR_RevZ_EPL_RIGHT, Cell3DPosition(0, 0, 0), 1),
+      Cell3DPosition(1, 0, 0) }, // R 1
+    { LRKeyTuple(0x802, LR_RevZ_EPL_RIGHT, Cell3DPosition(0, 0, 0), 2),
+      Cell3DPosition(0, 0, 1) }, // R 2
+    { LRKeyTuple(0x800, LR_RevZ_EPL_RIGHT, Cell3DPosition(0, 0, 0), 3),
+      Cell3DPosition(0, 1, 0) }, // R 3
+
+    // R from Z_EPL Standard
+    { LRKeyTuple(0x400, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 1),
+      Cell3DPosition(0, 1, 0) }, // R 1
+    { LRKeyTuple(0x201, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 2),
+      Cell3DPosition(0, 0, 1) }, // R 2
+    { LRKeyTuple(0x200, LR_RevZ_EPL, Cell3DPosition(0, 0, 0), 3),
+      Cell3DPosition(1, 0, 0) }, // R 3
+
+    // S_RZ from RevZ_EPLT
+    { LRKeyTuple(0x404, LR_RevZ_EPL, Cell3DPosition(1, -1, 0), 1),
+      Cell3DPosition(-1, -1, 2) }, // S_RZ 1
+    { LRKeyTuple(0x400, LR_RevZ_EPL, Cell3DPosition(1, -1, 0), 2),
+      Cell3DPosition(1, 0, 0) }, // S_RZ 2
+    { LRKeyTuple(0xe00, LR_RevZ_EPL, Cell3DPosition(1, -1, 0), 3),
+      Cell3DPosition(1, 0, 0) }, // S_RZ 3
+    { LRKeyTuple(0x900, LR_RevZ_EPL, Cell3DPosition(1, -1, 0), 4),
+      Cell3DPosition(1, 1, -1) }, // S_RZ 4
 };
 
 /**

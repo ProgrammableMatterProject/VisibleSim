@@ -1042,8 +1042,30 @@ Cell3DPosition ScaffoldingRuleMatcher::getSeedForCSGLayer(int z) const {
 
 BranchIndex ScaffoldingRuleMatcher::
 getTileRootInsertionBranch(const Cell3DPosition& pos) const {
-    if (hasIncidentBranch(pos, RevZBranch)) return RevZBranch; // default
-    else if (hasIncidentBranch(pos, LZBranch)) return LZBranch;
-    else if (hasIncidentBranch(pos, RZBranch)) return RZBranch;
-    else return ZBranch;
+    int nivb = getNbIncidentVerticalBranches(pos);
+
+// Do not use blocked EPL except if that's the only way
+
+    if (hasIncidentBranch(pos, RevZBranch)
+        and (not (hasIncidentBranch(pos, OppXBranch) and hasIncidentBranch(pos, OppYBranch))
+             or nivb == 1))
+        return RevZBranch; // default
+    else if (hasIncidentBranch(pos, LZBranch) and
+             (not (hasIncidentBranch(pos, YBranch) and hasIncidentBranch(pos, OppXBranch))
+              or nivb == 1))
+        return LZBranch;
+    else if (hasIncidentBranch(pos, RZBranch) and
+             (not (hasIncidentBranch(pos, XBranch) and hasIncidentBranch(pos, OppYBranch))
+              or nivb == 1))
+        return RZBranch;
+    else if (hasIncidentBranch(pos, ZBranch) and
+             (not (hasIncidentBranch(pos, XBranch) and hasIncidentBranch(pos, YBranch))
+              or nivb == 1))
+        return ZBranch;
+
+
+        VS_ASSERT_MSG(false,
+                       "getTileRootInsertionBranch: tile with nowhere to insert root from");
+
+    return N_BRANCHES; // unreachable
 }
