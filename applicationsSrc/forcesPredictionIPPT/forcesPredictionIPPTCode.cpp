@@ -287,6 +287,12 @@ void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 		isFixed=true;
 	}
 
+	attr = config->Attribute("centroid");
+	if (attr) {
+		cerr << "centroid =" << attr<< endl;
+		isCentroid=true; // Warning: be careful to indicate exactly ONE centroid module in the structure
+	}
+
 	attr = config->Attribute("myAttribute");
 	if (attr) {
 		cerr << "myAttribute =" << attr<< endl;
@@ -294,8 +300,15 @@ void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 }
 
 void ForcesPredictionIPPTCode::startup() {
-	addMessageEventFunc(DU_MSG,_receiveMessage);
-
+	addMessageEventFunc(TREE_MSG,_treeMessage);
+	addMessageEventFunc(TREE_CONF_MSG,_treeConfMessage);
+	addMessageEventFunc(CM_Q_MSG,_cmQMessage);
+	addMessageEventFunc(CM_R_MSG,_cmRMessage);
+	addMessageEventFunc(DU_MSG,_duMessage);
+	addMessageEventFunc(SST_Q_MSG,_sstQMessage);
+	addMessageEventFunc(SST_R_MSG,_sstRMessage);
+	addMessageEventFunc(MST_Q_MSG,_mstQMessage);
+	addMessageEventFunc(MST_R_MSG,_mstRMessage);
 
 	console << "---start " << module->blockId << "," << module->color << "----\n";
 	//set attributes from xml file
@@ -563,14 +576,24 @@ void ForcesPredictionIPPTCode::visualization() {
 }
 
 
-void ForcesPredictionIPPTCode::receiveMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
+void ForcesPredictionIPPTCode::treeMessage(P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<bool>*msg,P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
 	bID msgFrom = sender->getConnectedBlockBId();
 	vector<double> msgData = *(msg->getData());
 
-
 	if(curIteration > maxIterations)
 		return;
-
 	for(int i=0;i<6;i++){
 		if(neighbors[i][0]==msgFrom) {
 			OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
@@ -585,35 +608,39 @@ void ForcesPredictionIPPTCode::receiveMessage(const MessageOf<vector<double> >*m
 		if(neighbors[i][0]!=0 && neighbors[i][1]==0)
 			ready = false;
 	}
-
 	printNeighbors();
-
 	if(ready) {
 		OUTPUT << "Calculating du"<< endl;
 		computeDU();
-
-
 		//visualisation
 		if(curIteration%100==0) {
 			visualization();
 			cout << "Current Iteration = "<< curIteration<< endl;
 		}
-
 		if(curIteration==maxIterations) {
 			if(isSupport) {
 				module->setColor(Color(0.0f,0.0f,1.0f));
             }
             visualization();
 		}
-
 		curIteration++;
 		dup=du;
 	}
-
-
-
-
 }
+
+void ForcesPredictionIPPTCode::sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::mstQMessage(P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::mstRMessage(const MessageOf<mstData>*msg,P2PNetworkInterface *sender) {
+}
+
+
 
 void ForcesPredictionIPPTCode::clearNeighborsMessage() {
 	for(int i=0; i<6; i++) {
@@ -624,10 +651,55 @@ void ForcesPredictionIPPTCode::clearNeighborsMessage() {
 }
 
 
-void _receiveMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+void _treeMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	cb->treeMessage(sender);
+}
+
+void _treeConfMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<bool>*msgType = (MessageOf<bool>*)msg.get();
+	cb->treeConfMessage(msgType,sender);
+}
+
+void _cmQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	cb->cmQMessage(sender);
+}
+
+void _cmRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<cmData>*msgType = (MessageOf<cmData>*)msg.get();
+	cb->cmRMessage(msgType,sender);
+}
+
+void _duMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
 	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
 	MessageOf<vector<double> >*msgType = (MessageOf<vector<double> >*)msg.get();
-	cb->receiveMessage(msgType,sender);
+	cb->duMessage(msgType,sender);
+}
+
+void _sstQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<sstData>*msgType = (MessageOf<sstData>*)msg.get();
+	cb->sstQMessage(msgType,sender);
+}
+
+void _sstRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<sstData>*msgType = (MessageOf<sstData>*)msg.get();
+	cb->sstRMessage(msgType,sender);
+}
+
+void _mstQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	cb->mstQMessage(sender);
+}
+
+void _mstRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<mstData>*msgType = (MessageOf<mstData>*)msg.get();
+	cb->mstRMessage(msgType,sender);
 }
 
 

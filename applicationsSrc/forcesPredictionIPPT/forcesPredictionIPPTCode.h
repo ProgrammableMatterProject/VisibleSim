@@ -3,13 +3,22 @@
 #include "blinkyBlocksSimulator.h"
 #include "blinkyBlocksBlockCode.h"
 #include "kMatrixes.h"
-static const int DU_MSG=1001;
 
-//static const int CONFIRM_EDGE_MSG=1002;
-//static const int CUT_OFF_MSG=1003;
-//static const int AVAILABLE_MSG=1004;
-//static const int CONFIRM_PATH_MSG=1005;
-//static const int CONFIRM_STREAMLINE_MSG=1005;
+/* Message types (size of data vector in parenthesis) */
+
+static const int TREE_MSG =1001; // build spanning tree messages (0)
+static const int TREE_CONF_MSG =1002; // confirm/reject the edge of tree (1 -- True/False)
+
+static const int CM_Q_MSG =1101; // center-of-mass query (0)
+static const int CM_R_MSG =1102; // center-of-mass return (4 -- aggregated position times mass (3), aggregated mass(1) )
+
+static const int DU_MSG =1201; // du exchange messages for weighted-Jacobi iterations (6 -- 6-DOF of the current solution )
+
+static const int SST_Q_MSG =1301; // simplified stability check query (2 -- X-Y co-ordinates of the center of mass)
+static const int SST_R_MSG =1302; // simplified stability check return (2 -- safe angle range )
+
+static const int MST_Q_MSG =1401; // model-based stability check query (0)
+static const int MST_R_MSG =1402; // model-based stability check return (3+3 -- 3D co-ordinates of up to two points )
 
 
 #define vectorSize 6
@@ -17,6 +26,26 @@ static const int DU_MSG=1001;
 #define sign(v) ((v)<0?-1:((v)>0))
 
 using namespace BlinkyBlocks;
+
+
+class cmData {
+    public:
+        double mX, mY;
+        double m;
+        cmData(double mx, double my, double mass):mX(mx),mY(my),m(mass){};
+};
+
+class sstData {
+    public:
+        double X, Y;
+        sstData(double x, double y):X(x),Y(y){};
+};
+
+class mstData {
+    public:
+        vector<double> X, Y;
+        mstData(vector<double> x, vector<double> y):X(x),Y(y){};
+};
 
 //enum PathState {NONE, BFS, ConfPath, Streamline};
 
@@ -48,24 +77,20 @@ private:
 
 	bool isSupport = false;
 	bool isFixed = false;
+	bool isCentroid = false;
 
 	vector<double> orient={0,0,-1,0,0,0};
 
 	int curIteration = 0; // current iteration
 
-
 	typedef vector< vector<double> > bMatrix;
 
-	//matrix for visualization pf calculated forces and moments
+//	matrix for visualization pf calculated forces and moments
 //	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
 	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
 
-
-
 	//vector<bMatrix> K11 = decltype(K11)(6,vector<vector<double> >(3,vector <double>(3,0))); //K11 vector
 	//vector<bMatrix> K12 = decltype(K12)(6,vector<vector<double> >(3,vector <double>(3,0))); //K12 vector
-
-
 
 	vector <double> dup = decltype(dup)(vectorSize,0); // vector u from the previus iteration
 	bMatrix uq = decltype(uq)(6, vector<double>(vectorSize,0)); //vector u from 1-step neighbors
@@ -75,11 +100,8 @@ private:
 	vector <double> fp = decltype(fp)(vectorSize,0);
 	vector <double> Fp = decltype(Fp)(vectorSize,0);
 
-
-
 	bID neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row  if tehre is a message with du. If the module is virtual (to be attached), we put MMAX in the first row
-
-
+	bID tree[6]; // spanning tree: 0 - parent's ID, 1-5 - children's IDs OR NMAX in case of virtual module OR NMAX+1 if empty
 public :
 	ForcesPredictionIPPTCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) { module=host; };
 	~ForcesPredictionIPPTCode() {};
@@ -116,8 +138,15 @@ public :
 	vector< vector<double> > createD(vector< vector<double> > &A);
 	vector< vector<double> > RevD(vector< vector<double> > &A);
 
-
-	void receiveMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
+	void treeMessage(P2PNetworkInterface *sender);
+	void treeConfMessage(const MessageOf<bool>*msg,P2PNetworkInterface *sender);
+	void cmQMessage(P2PNetworkInterface *sender);
+	void cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender);
+	void duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
+	void sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
+	void sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
+	void mstQMessage(P2PNetworkInterface *sender);
+	void mstRMessage(const MessageOf<mstData>*msg,P2PNetworkInterface *sender);
 
 	void parseUserElements(TiXmlDocument* config);
 	void parseUserBlockElements(TiXmlElement* config);
@@ -131,7 +160,17 @@ public :
 };
 //OPERATORS
 
-void _receiveMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+
+
+void _treeMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _treeConfMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _cmQMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _cmRMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _duMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _sstQMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _sstRMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _mstQMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _mstRMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 
 vector<double> operator*(const vector<double> vec ,const double  scal);
 vector<double> operator*(const double  scal, const vector<double> vec);
