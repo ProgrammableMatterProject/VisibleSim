@@ -4,7 +4,7 @@ const int messageDelay=50;
 const int messageDelayError=5;
 const int messageDelayCons=1;
 
-int maxIterations = 1000; // max number of iterations
+//int maxIterations = 1000; // max number of iterations
 double globalMass = 61/1000; //mass from XML
 double globalE = 100; // E from XML // Young modulus MPa
 double globalL=40; //length from XML // arm length mm
@@ -90,14 +90,14 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 			OUTPUT << "WARNING No mass in XML file" << endl;
 	}
 
-	attr= element->Attribute("nofIterations");
-	if (attr) {
-		string str=attr;
-		maxIterations = atoi(str.c_str());
-		cerr << "maxNofIterations= " << maxIterations << endl;
-	} else {
-			OUTPUT << "WARNING No maxNofIterations in XML file" << endl;
-	}
+//	attr= element->Attribute("nofIterations");
+//	if (attr) {
+//		string str=attr;
+//		this.maxIterations = atoi(str.c_str());
+//		cerr << "maxNofIterations= " << maxIterations << endl;
+//	} else {
+//			OUTPUT << "WARNING No maxNofIterations in XML file" << endl;
+//	}
 
 	attr= element->Attribute("a");
 	if (attr) {
@@ -198,6 +198,8 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
 	for(int i=0;i<6;i++){
 		neighbors[i][0] =0;
 		neighbors[i][1] =0;
+		tree_child[i]=0;
+		tree_virt[i]=-1; 
 	}
 
 	//taking neighbors and adding them to our table
@@ -304,6 +306,7 @@ void ForcesPredictionIPPTCode::startup() {
 	addMessageEventFunc(TREE_CONF_MSG,_treeConfMessage);
 	addMessageEventFunc(CM_Q_MSG,_cmQMessage);
 	addMessageEventFunc(CM_R_MSG,_cmRMessage);
+	addMessageEventFunc(DU_INIT_MSG,_duInitMessage);
 	addMessageEventFunc(DU_MSG,_duMessage);
 	addMessageEventFunc(SST_Q_MSG,_sstQMessage);
 	addMessageEventFunc(SST_R_MSG,_sstRMessage);
@@ -345,6 +348,7 @@ void ForcesPredictionIPPTCode::startup() {
 		module->setColor(RED);
     }
 
+
 //	//check is modue support
 //	support = isSupport(module);
 
@@ -355,12 +359,26 @@ void ForcesPredictionIPPTCode::startup() {
 	Fp=orient*grav*mass;
 	//printVector(Fp);
 
-
-
-	//first step - calculate DU and sends to neighbor only in first
+/*
+	//first step - calculate DU and sends to neighbor (to initiate the procedure)
 	if(curIteration == 0) {
 		computeDU();
 		curIteration++;
+	}
+*/
+
+	if(isCentroid) {
+		module->setColor(WHITE);
+		tree_par=0;
+		for(int i=0, j=0;i<6;i++) {
+			if(neighbors[i][0]>0) {
+				P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+				if (p2p) sendMessage("TREE_MSG",new Message(TREE_MSG),p2p,messageDelay,messageDelayError);
+			} else if(neighbors[i][1]==2) { // virtual module is always a child
+				tree_virt[j]=i;
+				j++;
+			}
+		}
 	}
 }
 
@@ -588,6 +606,9 @@ void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
 void ForcesPredictionIPPTCode::cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender) {
 }
 
+void ForcesPredictionIPPTCode::duInitMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender) {
+}
+
 void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
 	bID msgFrom = sender->getConnectedBlockBId();
 	vector<double> msgData = *(msg->getData());
@@ -671,6 +692,12 @@ void _cmRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender)
 	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
 	MessageOf<cmData>*msgType = (MessageOf<cmData>*)msg.get();
 	cb->cmRMessage(msgType,sender);
+}
+
+void _duInitMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
+	cb->duInitMessage(msgType,sender);
 }
 
 void _duMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
@@ -1015,3 +1042,5 @@ vector< vector<double> > operator-(vector< vector<double> > A) {
 		}
 	return result;
 }
+
+

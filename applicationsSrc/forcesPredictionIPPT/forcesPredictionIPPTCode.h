@@ -12,7 +12,8 @@ static const int TREE_CONF_MSG =1002; // confirm/reject the edge of tree (1 -- T
 static const int CM_Q_MSG =1101; // center-of-mass query (0)
 static const int CM_R_MSG =1102; // center-of-mass return (4 -- aggregated position times mass (3), aggregated mass(1) )
 
-static const int DU_MSG =1201; // du exchange messages for weighted-Jacobi iterations (6 -- 6-DOF of the current solution )
+static const int DU_INIT_MSG =1201; // initiate weighted-Jacobi iteration procedure (1 -- how many iterations to make )
+static const int DU_MSG =1202; // du exchange messages for weighted-Jacobi iterations (6 -- 6-DOF of the current solution )
 
 static const int SST_Q_MSG =1301; // simplified stability check query (2 -- X-Y co-ordinates of the center of mass)
 static const int SST_R_MSG =1302; // simplified stability check return (2 -- safe angle range )
@@ -82,6 +83,7 @@ private:
 	vector<double> orient={0,0,-1,0,0,0};
 
 	int curIteration = 0; // current iteration
+	int maxIterations = 0; // max number of iterations
 
 	typedef vector< vector<double> > bMatrix;
 
@@ -100,8 +102,10 @@ private:
 	vector <double> fp = decltype(fp)(vectorSize,0);
 	vector <double> Fp = decltype(Fp)(vectorSize,0);
 
-	bID neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row  if tehre is a message with du. If the module is virtual (to be attached), we put MMAX in the first row
-	bID tree[6]; // spanning tree: 0 - parent's ID, 1-5 - children's IDs OR NMAX in case of virtual module OR NMAX+1 if empty
+	bID neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row: 1 if tehre is a message with du; 2 if the module is virtual (to be attached)
+	bID tree_par; // spanning tree - parent's ID
+	bID tree_child[6]; // spanning tree - children's IDs OR 0 if empty
+	int tree_virt[6]; // spanning tree - virtual modules' direction OR -1 if empty
 public :
 	ForcesPredictionIPPTCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) { module=host; };
 	~ForcesPredictionIPPTCode() {};
@@ -142,6 +146,7 @@ public :
 	void treeConfMessage(const MessageOf<bool>*msg,P2PNetworkInterface *sender);
 	void cmQMessage(P2PNetworkInterface *sender);
 	void cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender);
+	void duInitMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender);
 	void duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
 	void sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
 	void sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
@@ -167,6 +172,7 @@ void _treeConfMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _cmQMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _cmRMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _duMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _duInitMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _sstQMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _sstRMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _mstQMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
