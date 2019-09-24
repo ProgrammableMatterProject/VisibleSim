@@ -42,15 +42,15 @@ ScaffoldingBlockCode::ScaffoldingBlockCode(Catoms3DBlock *host):
 }
 
 ScaffoldingBlockCode::~ScaffoldingBlockCode() {
-    if (catom) {
-      if (ruleMatcher->isInMesh(norm(catom->position))) {
-        // OUTPUT << "bitrate:\t" << catom->blockId << "\t"
-        //        << maxBitrate.first << "\t"
-        //        << (maxBitrate.second.empty() ?
-        //            ruleMatcher->roleToString(role) : maxBitrate.second) <<
-        //            endl;
-      }
-    }
+    // if (catom) {
+    //   if (ruleMatcher->isInMesh(norm(catom->position))) {
+    //     // OUTPUT << "bitrate:\t" << catom->blockId << "\t"
+    //     //        << maxBitrate.first << "\t"
+    //     //        << (maxBitrate.second.empty() ?
+    //     //            ruleMatcher->roleToString(role) : maxBitrate.second) <<
+    //     //            endl;
+    //   }
+    // }
 }
 
 bool ScaffoldingBlockCode::parseUserCommandLineArgument(int argc, char *argv[]) {
@@ -2060,14 +2060,6 @@ void ScaffoldingBlockCode::matchRulesAndProbeGreenLight() {
                                                     (ScafComponent)finalComponent),
                     catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
 
-        // Catoms3DBlock* targetLight =
-        //     findTargetLightAroundTarget(stepTargetPos,
-        //                                 coordinatorPos + ruleMatcher->getPositionForComponent(static_cast<ScafComponent>(finalComponent)));
-        // VS_ASSERT(targetLight);
-        // sendMessage(new ProbePivotLightStateMessage(catom->position, targetLight->position,
-        //                                             stepTargetPos,
-        //                                             (ScafComponent)finalComponent),
-        //             catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
     } else {
         // Try matching rules again once neighborhood updates
         catom->setColor(BLUE);
