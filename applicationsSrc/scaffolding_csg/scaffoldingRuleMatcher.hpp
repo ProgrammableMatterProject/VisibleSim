@@ -433,6 +433,7 @@ public:
      *  or -1 if the input is invalid
      */
     short getNbIncidentVerticalBranches(const Cell3DPosition& pos) const;
+    short getNbIncidentBranches(const Cell3DPosition& pos) const;
 
     /**
      * Returns the coordinates of the first TR along the xy diagonal of the CSG object

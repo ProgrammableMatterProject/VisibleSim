@@ -48,7 +48,11 @@ public:
     inline static int nbSandboxCatoms = 0;
     inline static int nbOpenScaffoldPositions = 0;
     inline static int nbCSGCatomsInPlace = 0;
-    inline  static int nbModulesInShape = 0;
+    inline static int nbModulesInShape = 0;
+
+    inline static int nbSeedTiles = 0;
+    inline static int nbPathsOver = 0;
+    inline static Time reconfTime = 0;
 
     inline static int nbMessages = 0;
     inline static Time t0 = 0;
@@ -291,8 +295,6 @@ public:
     // NOTE: what if there is more than 1?
     Catoms3DBlock* findTargetLightAmongNeighbors(const Cell3DPosition& targetPos,
                                                  const Cell3DPosition& srcPos) const;
-    Catoms3DBlock* findTargetLightAroundTarget(const Cell3DPosition& targetPos,
-                                               const Cell3DPosition& finalPos) const;
 
     void setGreenLightAndResumeFlow();
     /**                     **/
@@ -323,16 +325,6 @@ public:
     bool constructionOver = false;
     int numExpectedTCF = 0;
     int numReceivedTCF = 0;
-
-    /**
-     * Finds the next target position that a module arriving at EPL epl should move to,
-     *  and return it
-     * @param epl entry point location to evaluate
-     * @return the next target cell that should be filled by catom at epl
-     */
-    // const Cell3DPosition getNextTargetForEPL(ScafComponent epl);
-
-    // TargetCSG *target;
 
     /**
      * Add initial sandbox modules to the lattice
@@ -447,11 +439,6 @@ public:
 
     void log_send_message() const;
     void updateMsgRate();
-
-    /**
-     * @return true if module at entry point location epl is immediately required for the construction, or false if it should wait
-     */
-    bool moduleAtEPLIsRequiredAtOnce(ScafComponent epl);
 
     /**
      * Checks for every module awaiting at an EPL, if that module is required for the next construction steps,and if so sends it a PROVIDE_TARGET_CELL message to resume the flow.

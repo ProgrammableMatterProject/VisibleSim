@@ -322,7 +322,8 @@ bool ScaffoldingRuleMatcher::isOnOppXBranch(const Cell3DPosition& pos) const {
     const Cell3DPosition& oppXTr = pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0);
     return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppXTr)
-             or (oppXTr[0] < getSeedForCSGLayer(pos[2] / B)[0]));
+             // or (oppXTr[0] < getSeedForCSGLayer(pos[2] / B)[0])
+            );
 }
 
 bool ScaffoldingRuleMatcher::isOnYBranch(const Cell3DPosition& pos) const {
@@ -336,7 +337,8 @@ bool ScaffoldingRuleMatcher::isOnOppYBranch(const Cell3DPosition& pos) const {
 
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
         and (not isInsideFn(oppYTr)
-             or (oppYTr[1] < getSeedForCSGLayer(pos[2] / B)[1]));
+             // or (oppYTr[1] < getSeedForCSGLayer(pos[2] / B)[1])
+            );
 }
 
 bool ScaffoldingRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
@@ -863,6 +865,24 @@ getNbIncidentVerticalBranches(const Cell3DPosition& pos) const {
     short count = 0;
     for (int bi = 0; bi < XBranch; bi++)
         if (hasIncidentBranch(pos, (BranchIndex)bi)) ++count;
+
+    return count;
+}
+
+
+short ScaffoldingRuleMatcher::
+getNbIncidentBranches(const Cell3DPosition& pos) const {
+    // Invalid input
+    if (not isTileRoot(pos)) return -1;
+
+    // Otherwise, count
+    short count = 0;
+    for (int bi = 0; bi < N_BRANCHES; bi++) {
+        // ignore sandbox
+        if (pos[2] == 0 and bi < XBranch) continue;
+
+        if (hasIncidentBranch(pos, (BranchIndex)bi)) ++count;
+    }
 
     return count;
 }
