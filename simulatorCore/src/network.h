@@ -69,7 +69,7 @@ class MessageOf:public Message {
 	~MessageOf() { delete ptrData; };
     T* getData() const { return ptrData; };
     virtual MessageOf<T>* clone() {
-		OUTPUT << "clone(" << (*ptrData).size() << "/" << sizeof(double) << ")"<<endl;
+//		OUTPUT << "clone(" << (*ptrData).size() << "/" << sizeof(double) << ")"<<endl;
 		MessageOf<T> *ptr = new MessageOf<T>(type,*ptrData);
 		ptr->sourceInterface = sourceInterface;
 		ptr->destinationInterface = destinationInterface;

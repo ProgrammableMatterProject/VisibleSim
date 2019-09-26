@@ -199,8 +199,9 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
 		neighbors[i][0] =0;
 		neighbors[i][1] =0;
 		tree_child[i]=0;
-		tree_virt[i]=-1; 
+		aggregationCompleted[i]=true;
 	}
+	tree_par=0;
 
 	//taking neighbors and adding them to our table
 
@@ -368,16 +369,25 @@ void ForcesPredictionIPPTCode::startup() {
 */
 
 	if(isCentroid) {
+		bool anyMsgSent=false;
 		module->setColor(WHITE);
-		tree_par=0;
-		for(int i=0, j=0;i<6;i++) {
+		for(int i=0;i<6;i++) {
 			if(neighbors[i][0]>0) {
+				// after sending the messages to neighbors, we wait for confirmations before accepting a neighbor as a child
 				P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
-				if (p2p) sendMessage("TREE_MSG",new Message(TREE_MSG),p2p,messageDelay,messageDelayError);
-			} else if(neighbors[i][1]==2) { // virtual module is always a child
-				tree_virt[j]=i;
-				j++;
+				if (p2p) {
+					sendMessage("TREE_MSG",new Message(TREE_MSG),p2p,messageDelay,messageDelayError);
+					anyMsgSent=true;
+					aggregationCompleted[i]=false;
+					tree_child[i]=1; // provisionally accepted as a child (but waiting for a confirmation)
+				}
+			} else if(neighbors[i][1]==2) { 
+				// virtual module is always a child
+				tree_child[i]=1; 
 			}
+		}
+		if(!anyMsgSent) { // the trivial situation in which the centroid has only virtual children
+			// !!!!!! we skip that trivial situation -- to be implemented in future
 		}
 	}
 }
@@ -594,10 +604,69 @@ void ForcesPredictionIPPTCode::visualization() {
 }
 
 
+////////////////////////////////////////////////////
+///////////////// MESSAGES /////////////////////////
+////////////////////////////////////////////////////
+
+
+// build a tree
 void ForcesPredictionIPPTCode::treeMessage(P2PNetworkInterface *sender) {
+	if(tree_par!=0 || isCentroid) { // module is already a child (has a parrent) or is a centroid
+		sendMessage("TREE_CONF_MSG",new MessageOf<int >(TREE_CONF_MSG,0),sender,messageDelay,messageDelayError);
+	} else { // there were no earlier requests to be a child
+		tree_par=sender->getConnectedBlockId();
+		bool anyMsgSent=false;
+		for(int i=0;i<6;i++) {
+			if(neighbors[i][0]>0 && neighbors[i][0]!=tree_par) {
+				P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+				if (p2p) {
+					sendMessage("TREE_MSG",new Message(TREE_MSG),p2p,messageDelay,messageDelayError);
+					aggregationCompleted[i]=false;
+					anyMsgSent=true;
+					tree_child[i]=1; // the node is provisionally accepted as a child
+				}
+				// after sending the messages to neighbors, we wait for confirmations before accepting a neighbor as a child
+			} else if(neighbors[i][1]==2) { // virtual module is always a child
+				tree_child[i]=1;
+				// virtual neighbor is always a child
+			}
+		}
+		if(!anyMsgSent) { // if there are no neighbors except the parent and virtual modules then return the confirmation
+			sendMessage("TREE_CONF_MSG",new MessageOf<int>(TREE_CONF_MSG,1),sender,messageDelay,messageDelayError);
+		}
+	}
+
 }
 
-void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<bool>*msg,P2PNetworkInterface *sender) {
+// confirm parent-child connection
+void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender) {
+	bID msgFrom = sender->getConnectedBlockBId();
+	int childConfirmed = *msg->getData();
+	
+	bool aggrCompl=true;
+	for(int i=0;i<6;i++) {
+		if(neighbors[i][0]==msgFrom) {
+			aggregationCompleted[i]=true;
+			tree_child[i]=childConfirmed;
+		}
+		if(!aggregationCompleted[i]) aggrCompl=false;
+	}
+	if(aggrCompl) {
+		if(!isCentroid) {
+			P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(tree_par);
+			if(p2p) sendMessage("TREE_CONF_MSG",new MessageOf<int>(TREE_CONF_MSG,1),p2p,messageDelay,messageDelayError);
+		} else { // initiate center of mass query for all non-virtual children (!!!the case in which there are no real children is not supported!!!)
+			for(int i=0; i<6; i++) {
+				if(tree_child[i] && neighbors[i][0]>0 ) { // if non-virtual child
+					P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+					if(p2p) {
+						sendMessage("CM_Q_MSG",new Message(CM_Q_MSG),p2p,messageDelay,messageDelayError);
+						aggregationCompleted[i]=false;
+					}
+				}
+			}
+		}
+	}
 }
 
 void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
@@ -679,7 +748,7 @@ void _treeMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender
 
 void _treeConfMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
 	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	MessageOf<bool>*msgType = (MessageOf<bool>*)msg.get();
+	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
 	cb->treeConfMessage(msgType,sender);
 }
 

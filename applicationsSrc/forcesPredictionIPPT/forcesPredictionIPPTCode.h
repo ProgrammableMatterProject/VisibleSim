@@ -103,9 +103,9 @@ private:
 	vector <double> Fp = decltype(Fp)(vectorSize,0);
 
 	bID neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row: 1 if tehre is a message with du; 2 if the module is virtual (to be attached)
-	bID tree_par; // spanning tree - parent's ID
-	bID tree_child[6]; // spanning tree - children's IDs OR 0 if empty
-	int tree_virt[6]; // spanning tree - virtual modules' direction OR -1 if empty
+	bID tree_par=0; // spanning tree - parent's ID
+	int tree_child[6]; // spanning tree: 0 - is not a child, 1 - is a child
+	bool aggregationCompleted[6]; // checks if data aggregation is completed for all children (must be true for all children)
 public :
 	ForcesPredictionIPPTCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) { module=host; };
 	~ForcesPredictionIPPTCode() {};
@@ -143,10 +143,10 @@ public :
 	vector< vector<double> > RevD(vector< vector<double> > &A);
 
 	void treeMessage(P2PNetworkInterface *sender);
-	void treeConfMessage(const MessageOf<bool>*msg,P2PNetworkInterface *sender);
+	void treeConfMessage(const MessageOf<int >*msg,P2PNetworkInterface *sender);
 	void cmQMessage(P2PNetworkInterface *sender);
 	void cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender);
-	void duInitMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+	void duInitMessage(const MessageOf<int >*msg,P2PNetworkInterface *sender);
 	void duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
 	void sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
 	void sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
