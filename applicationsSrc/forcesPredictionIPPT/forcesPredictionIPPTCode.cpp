@@ -283,6 +283,7 @@ void ForcesPredictionIPPTCode::printNeighbors() {
 
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 	cerr << "blockId=" << module->blockId << endl;
+	console << "blockId=" << module->blockId << "\n";
 
 	const char *attr = config->Attribute("fixed");
 	if (attr) {
@@ -294,7 +295,7 @@ void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 	if (attr) {
 		cerr << "centroid =" << attr<< endl;
 		isCentroid=true; // Warning: be careful to indicate exactly ONE centroid module in the structure
-	}
+	} else isCentroid=false;
 
 	attr = config->Attribute("myAttribute");
 	if (attr) {
@@ -368,6 +369,7 @@ void ForcesPredictionIPPTCode::startup() {
 	}
 */
 
+	console << "isCentroid=" << (int)(isCentroid) << "\n";
 	if(isCentroid) {
 		bool anyMsgSent=false;
 		module->setColor(WHITE);
@@ -611,10 +613,12 @@ void ForcesPredictionIPPTCode::visualization() {
 
 // build a tree
 void ForcesPredictionIPPTCode::treeMessage(P2PNetworkInterface *sender) {
+	bID msgFrom = sender->getConnectedBlockBId();
+	console << "treeMessage " << msgFrom << "->" << module->blockId << "\n";
 	if(tree_par!=0 || isCentroid) { // module is already a child (has a parrent) or is a centroid
 		sendMessage("TREE_CONF_MSG",new MessageOf<int >(TREE_CONF_MSG,0),sender,messageDelay,messageDelayError);
 	} else { // there were no earlier requests to be a child
-		tree_par=sender->getConnectedBlockId();
+		tree_par=msgFrom;
 		bool anyMsgSent=false;
 		for(int i=0;i<6;i++) {
 			if(neighbors[i][0]>0 && neighbors[i][0]!=tree_par) {
@@ -643,6 +647,7 @@ void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<int>*msg,P2PNetwo
 	bID msgFrom = sender->getConnectedBlockBId();
 	int childConfirmed = *msg->getData();
 	
+	console << "treeConfMessage(" << childConfirmed <<") " << msgFrom << "->" << module->blockId << "\n";
 	bool aggrCompl=true;
 	for(int i=0;i<6;i++) {
 		if(neighbors[i][0]==msgFrom) {
