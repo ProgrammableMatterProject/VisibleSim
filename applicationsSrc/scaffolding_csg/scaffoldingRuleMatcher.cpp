@@ -76,6 +76,30 @@ std::array<Cell3DPosition, N_COMPONENTS> ScaffoldingRuleMatcher::componentPositi
     Cell3DPosition(0, -4, 0), // OPP_Y4
     Cell3DPosition(0, -5, 0), // OPP_Y5
 
+    Cell3DPosition(0, 0, -1), // OPP_Z1
+    Cell3DPosition(0, 0, -2), // OPP_Z2
+    Cell3DPosition(0, 0, -3), // OPP_Z3
+    Cell3DPosition(0, 0, -4), // OPP_Z4
+    Cell3DPosition(0, 0, -5), // OPP_Z5
+
+    Cell3DPosition(1, 1, -1), // OPP_RevZ1
+    Cell3DPosition(2, 2, -2), // OPP_RevZ2
+    Cell3DPosition(3, 3, -3), // OPP_RevZ3
+    Cell3DPosition(4, 4, -4), // OPP_RevZ4
+    Cell3DPosition(5, 5, -5), // OPP_RevZ5
+
+    Cell3DPosition(1, 0, -1), // OPP_LZ1
+    Cell3DPosition(2, 0, -2), // OPP_LZ2
+    Cell3DPosition(3, 0, -3), // OPP_LZ3
+    Cell3DPosition(4, 0, -4), // OPP_LZ4
+    Cell3DPosition(5, 0, -5), // OPP_LZ5
+
+    Cell3DPosition(0, 1, -1), // OPP_RZ1
+    Cell3DPosition(0, 2, -2), // OPP_RZ2
+    Cell3DPosition(0, 3, -3), // OPP_RZ3
+    Cell3DPosition(0, 4, -4), // OPP_RZ4
+    Cell3DPosition(0, 5, -5), // OPP_RZ5
+
     // NEXT POSITIONS ARE __IN NEIGHBOR TILES__ BUT RELATIVE TO CURRENT TILE
 
     Cell3DPosition(-1, -1, B2 - 1), // RevZ_EPL

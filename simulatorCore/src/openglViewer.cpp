@@ -363,26 +363,30 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                 // Add a script for converting into a video, asynchronously
 #ifndef WIN32
                 (void)std::async([](const std::string& animDir){
-                               const string& vidName = generateTimestampedFilename("video", "mkv");
-                               int r = system(
-                                   string("ffmpeg -pattern_type glob -framerate 30 -i \""
-                                          + animationDirName + "/*.jpg\" " + vidName
-                                          + ">/dev/null 2>/dev/null").c_str());
-                               if (r == 0) {
-                                   system(string("rm -rf " + animationDirName).c_str());
-                                   cerr << "Animation video exported to "
-                                        << vidName << endl;
-                               } else {
-                                   cerr << animationDirName.c_str()
-                                        << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
-                               }
-                           }, animationDirName);
+                    const string& vidName =
+                        generateTimestampedFilename("video_" + Simulator::configFileName.substr(0, Simulator::configFileName.size()-4), "mkv");
+                    // cout << vidName << endl;
+                    cerr << "running: `ffmpeg -pattern_type glob -framerate 30 -i \""
+                        + animationDirName + "/*.jpg\" " + vidName << "`" << endl;
+                    int r = system(
+                        string("ffmpeg -pattern_type glob -framerate 30 -i \""
+                               + animationDirName + "/*.jpg\" " + vidName
+                               + ">/dev/null 2>/dev/null").c_str());
+                    if (r == 0) {
+                        system(string("rm -rf " + animationDirName).c_str());
+                        cerr << "Animation video exported to "
+                             << vidName << endl;
+                    } else {
+                        cerr << animationDirName.c_str()
+                             << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
+                    }
+                }, animationDirName);
 #endif
             }
             saveScreenMode=!saveScreenMode;
         } break;
         case 's' : {
-            const string& ssName = generateTimestampedFilename("capture", "ppm");
+            const string& ssName = generateTimestampedFilename("capture_" + Simulator::configFileName.substr(0, Simulator::configFileName.size()-4), "ppm");
             string ssNameJpg = ssName;
             ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
             saveScreen(ssName.c_str());

@@ -347,6 +347,8 @@ void Rotations3D::exportMatrix(const Matrix& m) {
 
         OUTPUT << catomId << "|";
 
+        OUTPUT << block->color << "|";
+
         OUTPUT << "(matrix3 "
                << "[" << m.m[0] << "," << m.m[4] << "," << m.m[8] << "] "
                << "[" << m.m[1] << "," << m.m[5] << "," << m.m[9] << "] "

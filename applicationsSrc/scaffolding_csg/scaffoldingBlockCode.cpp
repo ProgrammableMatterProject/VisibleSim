@@ -76,7 +76,9 @@ bool ScaffoldingBlockCode::parseUserCommandLineArgument(int argc, char *argv[]) 
             case '-': {
                 string varg = string(argv[0] + 2); // argv[0] without "--"
 
-                if (varg == string("highlight")) HIGHLIGHT_CSG = true;
+                if (varg == string("highlight")) HIGHLIGHT_SCAFFOLD = true;
+                if (varg == string("csg")) HIGHLIGHT_CSG = true;
+                else return false;
 
                 argc--;
                 argv++;
@@ -248,11 +250,11 @@ void ScaffoldingBlockCode::onBlockSelected() {
     // cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
     // cout << "--- END " << *catom << "---" << endl;
 #else
-    int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
-    VS_ASSERT(mc != -1);
-    OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
-    OUTPUT << ruleMatcher->component_to_string(static_cast<ScafComponent>(mc)) << "|";
-    OUTPUT << ((targetPosition == motionDest) and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) << "|";
+    // int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
+    // VS_ASSERT(mc != -1);
+    // OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
+    // OUTPUT << ruleMatcher->component_to_string(static_cast<ScafComponent>(mc)) << "|";
+    // OUTPUT << ((targetPosition == motionDest) and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) << "|";
 #endif
 }
 
@@ -1836,7 +1838,7 @@ void ScaffoldingBlockCode::initializeSandbox() {
                 Cell3DPosition futureTRPos = trPos
                     + ruleMatcher->getEntryPointRelativePos(Z_EPL);
 
-                if (lattice->isInGrid(futureTRPos))
+                if (lattice->isInGrid(futureTRPos) and ruleMatcher->isInCSG(norm(trPos)))
                     world->addBlock(0, buildNewBlockCode, futureTRPos, YELLOW);
             }
         }
@@ -2277,7 +2279,10 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                         )
                         continue;
 
-                    if (HIGHLIGHT_CSG and ruleMatcher->isInCSG(norm(pos)))
+                    if (HIGHLIGHT_CSG and target->isInTarget(pos))
+                        lattice->highlightCell(pos, RED);
+
+                    if (HIGHLIGHT_SCAFFOLD and ruleMatcher->isInCSG(norm(pos)))
                         lattice->highlightCell(pos, WHITE);
 
                     // if (ruleMatcher->isInCSG(norm(pos)) and
