@@ -372,12 +372,12 @@ void ForcesPredictionIPPTCode::startup() {
 	console << "isCentroid=" << (int)(isCentroid) << "\n";
 	if(isCentroid) {
 		bool anyMsgSent=false;
-		module->setColor(WHITE);
+		module->setColor(YELLOW);
 		for(int i=0;i<6;i++) {
 			if(neighbors[i][0]>0) {
 				// after sending the messages to neighbors, we wait for confirmations before accepting a neighbor as a child
 				P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
-				if (p2p) {
+				if(p2p) {
 					sendMessage("TREE_MSG",new Message(TREE_MSG),p2p,messageDelay,messageDelayError);
 					anyMsgSent=true;
 					aggregationCompleted[i]=false;
@@ -393,6 +393,232 @@ void ForcesPredictionIPPTCode::startup() {
 		}
 	}
 }
+
+
+////////////////////////////////////////////////////
+///////////////// MESSAGES /////////////////////////
+////////////////////////////////////////////////////
+
+
+// build a tree
+void ForcesPredictionIPPTCode::treeMessage(P2PNetworkInterface *sender) {
+	bID msgFrom = sender->getConnectedBlockBId();
+	console << "treeMessage " << msgFrom << "->" << module->blockId << "\n";
+//	return;
+	if(tree_par!=0 || isCentroid) { // module is already a child (has a parrent) or is a centroid
+		sendMessage("TREE_CONF_MSG",new MessageOf<int >(TREE_CONF_MSG,0),sender,messageDelay,messageDelayError);
+	} else { // there were no earlier requests to be a child
+		tree_par=msgFrom;
+		bool anyMsgSent=false;
+		for(int i=0;i<6;i++) {
+			if(neighbors[i][0]>0 && neighbors[i][0]!=tree_par) {
+				P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+				if (p2p) {
+					sendMessage("TREE_MSG",new Message(TREE_MSG),p2p,messageDelay,messageDelayError);
+					aggregationCompleted[i]=false;
+					anyMsgSent=true;
+					tree_child[i]=1; // the node is provisionally accepted as a child
+				}
+				// after sending the messages to neighbors, we wait for confirmations before accepting a neighbor as a child
+			} else if(neighbors[i][1]==2) { // virtual module is always a child
+				tree_child[i]=1;
+				// virtual neighbor is always a child
+			}
+		}
+		if(!anyMsgSent) { // if there are no neighbors except the parent and virtual modules then return the confirmation
+			sendMessage("TREE_CONF_MSG",new MessageOf<int>(TREE_CONF_MSG,1),sender,messageDelay,messageDelayError);
+		}
+	}
+
+}
+
+// confirm parent-child connection
+void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender) {
+	bID msgFrom = sender->getConnectedBlockBId();
+	int childConfirmed = *msg->getData();
+	
+	console << "treeConfMessage(" << childConfirmed <<") " << msgFrom << "->" << module->blockId << "\n";
+	bool aggrCompl=true;
+	for(int i=0;i<6;i++) {
+		if(neighbors[i][0]==msgFrom) {
+			aggregationCompleted[i]=true;
+			tree_child[i]=childConfirmed;
+		}
+		if(!aggregationCompleted[i]) aggrCompl=false;
+	}
+	if(aggrCompl) {
+		if(!isCentroid) {
+			P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(tree_par);
+			if(p2p) sendMessage("TREE_CONF_MSG",new MessageOf<int>(TREE_CONF_MSG,1),p2p,messageDelay,messageDelayError);
+		} else { // initiate center of mass query for all non-virtual children (!!!the case in which there are no real children is not supported!!!)
+			for(int i=0; i<6; i++) {
+				if(tree_child[i] && neighbors[i][0]>0 ) { // if non-virtual child
+					P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+					if(p2p) {
+						sendMessage("CM_Q_MSG",new Message(CM_Q_MSG),p2p,messageDelay,messageDelayError);
+						aggregationCompleted[i]=false;
+					}
+				}
+			}
+		}
+	}
+}
+
+void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::duInitMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
+	bID msgFrom = sender->getConnectedBlockBId();
+	vector<double> msgData = *(msg->getData());
+
+	if(curIteration > maxIterations)
+		return;
+	for(int i=0;i<6;i++){
+		if(neighbors[i][0]==msgFrom) {
+			OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
+			printVector(msgData,6,"msgData from "+to_string(msgFrom)+" to "+ to_string(module->blockId));
+			neighbors[i][1]=1;
+			uq[i]=msgData;
+		}
+	}
+	//checking if there are all messages
+	bool ready = true;
+	for(int i = 0;i<6;i++ ) {
+		if(neighbors[i][0]!=0 && neighbors[i][1]==0)
+			ready = false;
+	}
+	printNeighbors();
+	if(ready) {
+		OUTPUT << "Calculating du"<< endl;
+		computeDU();
+		//visualisation
+		if(curIteration%100==0) {
+			visualization();
+			cout << "Current Iteration = "<< curIteration<< endl;
+		}
+		if(curIteration==maxIterations) {
+			if(isSupport) {
+				module->setColor(Color(0.0f,0.0f,1.0f));
+            }
+            visualization();
+		}
+		curIteration++;
+		dup=du;
+	}
+}
+
+void ForcesPredictionIPPTCode::sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::mstQMessage(P2PNetworkInterface *sender) {
+}
+
+void ForcesPredictionIPPTCode::mstRMessage(const MessageOf<mstData>*msg,P2PNetworkInterface *sender) {
+}
+
+
+
+void ForcesPredictionIPPTCode::clearNeighborsMessage() {
+	for(int i=0; i<6; i++) {
+        if(neighbors[i][1]==1) {
+            neighbors[i][1]=0;
+		}
+	}
+}
+
+
+void _treeMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	cb->treeMessage(sender);
+}
+
+void _treeConfMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
+	cb->treeConfMessage(msgType,sender);
+}
+
+void _cmQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	cb->cmQMessage(sender);
+}
+
+void _cmRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<cmData>*msgType = (MessageOf<cmData>*)msg.get();
+	cb->cmRMessage(msgType,sender);
+}
+
+void _duInitMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
+	cb->duInitMessage(msgType,sender);
+}
+
+void _duMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<vector<double> >*msgType = (MessageOf<vector<double> >*)msg.get();
+	cb->duMessage(msgType,sender);
+}
+
+void _sstQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<sstData>*msgType = (MessageOf<sstData>*)msg.get();
+	cb->sstQMessage(msgType,sender);
+}
+
+void _sstRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<sstData>*msgType = (MessageOf<sstData>*)msg.get();
+	cb->sstRMessage(msgType,sender);
+}
+
+void _mstQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	cb->mstQMessage(sender);
+}
+
+void _mstRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+	MessageOf<mstData>*msgType = (MessageOf<mstData>*)msg.get();
+	cb->mstRMessage(msgType,sender);
+}
+
+
+/*
+bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
+	if(target->isInTarget(modR->position)){
+		modR->setColor(Color(0.8f,0.8f,0.6f));
+		return true;
+	}else
+		return false;
+
+}
+*/
+
+
+/*
+bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
+	if(modR->position[2]==supportZ){
+		return true;
+	}
+	return false;
+}
+*/
+
+
+/////////////////////////////////////////////////////////////////////////////
+////////// Weighted-Jacobi iterations and visualization /////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 vector< vector<double> > ForcesPredictionIPPTCode::contactStiffnessMatrix(vector<double> &dup) {
     vector< vector<double> > K11d = createK11(1); // stiffness matrix for DOWN direction
@@ -606,224 +832,6 @@ void ForcesPredictionIPPTCode::visualization() {
 }
 
 
-////////////////////////////////////////////////////
-///////////////// MESSAGES /////////////////////////
-////////////////////////////////////////////////////
-
-
-// build a tree
-void ForcesPredictionIPPTCode::treeMessage(P2PNetworkInterface *sender) {
-	bID msgFrom = sender->getConnectedBlockBId();
-	console << "treeMessage " << msgFrom << "->" << module->blockId << "\n";
-	if(tree_par!=0 || isCentroid) { // module is already a child (has a parrent) or is a centroid
-		sendMessage("TREE_CONF_MSG",new MessageOf<int >(TREE_CONF_MSG,0),sender,messageDelay,messageDelayError);
-	} else { // there were no earlier requests to be a child
-		tree_par=msgFrom;
-		bool anyMsgSent=false;
-		for(int i=0;i<6;i++) {
-			if(neighbors[i][0]>0 && neighbors[i][0]!=tree_par) {
-				P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
-				if (p2p) {
-					sendMessage("TREE_MSG",new Message(TREE_MSG),p2p,messageDelay,messageDelayError);
-					aggregationCompleted[i]=false;
-					anyMsgSent=true;
-					tree_child[i]=1; // the node is provisionally accepted as a child
-				}
-				// after sending the messages to neighbors, we wait for confirmations before accepting a neighbor as a child
-			} else if(neighbors[i][1]==2) { // virtual module is always a child
-				tree_child[i]=1;
-				// virtual neighbor is always a child
-			}
-		}
-		if(!anyMsgSent) { // if there are no neighbors except the parent and virtual modules then return the confirmation
-			sendMessage("TREE_CONF_MSG",new MessageOf<int>(TREE_CONF_MSG,1),sender,messageDelay,messageDelayError);
-		}
-	}
-
-}
-
-// confirm parent-child connection
-void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender) {
-	bID msgFrom = sender->getConnectedBlockBId();
-	int childConfirmed = *msg->getData();
-	
-	console << "treeConfMessage(" << childConfirmed <<") " << msgFrom << "->" << module->blockId << "\n";
-	bool aggrCompl=true;
-	for(int i=0;i<6;i++) {
-		if(neighbors[i][0]==msgFrom) {
-			aggregationCompleted[i]=true;
-			tree_child[i]=childConfirmed;
-		}
-		if(!aggregationCompleted[i]) aggrCompl=false;
-	}
-	if(aggrCompl) {
-		if(!isCentroid) {
-			P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(tree_par);
-			if(p2p) sendMessage("TREE_CONF_MSG",new MessageOf<int>(TREE_CONF_MSG,1),p2p,messageDelay,messageDelayError);
-		} else { // initiate center of mass query for all non-virtual children (!!!the case in which there are no real children is not supported!!!)
-			for(int i=0; i<6; i++) {
-				if(tree_child[i] && neighbors[i][0]>0 ) { // if non-virtual child
-					P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
-					if(p2p) {
-						sendMessage("CM_Q_MSG",new Message(CM_Q_MSG),p2p,messageDelay,messageDelayError);
-						aggregationCompleted[i]=false;
-					}
-				}
-			}
-		}
-	}
-}
-
-void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
-}
-
-void ForcesPredictionIPPTCode::cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender) {
-}
-
-void ForcesPredictionIPPTCode::duInitMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender) {
-}
-
-void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
-	bID msgFrom = sender->getConnectedBlockBId();
-	vector<double> msgData = *(msg->getData());
-
-	if(curIteration > maxIterations)
-		return;
-	for(int i=0;i<6;i++){
-		if(neighbors[i][0]==msgFrom) {
-			OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
-			printVector(msgData,6,"msgData from "+to_string(msgFrom)+" to "+ to_string(module->blockId));
-			neighbors[i][1]=1;
-			uq[i]=msgData;
-		}
-	}
-	//checking if there are all messages
-	bool ready = true;
-	for(int i = 0;i<6;i++ ) {
-		if(neighbors[i][0]!=0 && neighbors[i][1]==0)
-			ready = false;
-	}
-	printNeighbors();
-	if(ready) {
-		OUTPUT << "Calculating du"<< endl;
-		computeDU();
-		//visualisation
-		if(curIteration%100==0) {
-			visualization();
-			cout << "Current Iteration = "<< curIteration<< endl;
-		}
-		if(curIteration==maxIterations) {
-			if(isSupport) {
-				module->setColor(Color(0.0f,0.0f,1.0f));
-            }
-            visualization();
-		}
-		curIteration++;
-		dup=du;
-	}
-}
-
-void ForcesPredictionIPPTCode::sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender) {
-}
-
-void ForcesPredictionIPPTCode::sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender) {
-}
-
-void ForcesPredictionIPPTCode::mstQMessage(P2PNetworkInterface *sender) {
-}
-
-void ForcesPredictionIPPTCode::mstRMessage(const MessageOf<mstData>*msg,P2PNetworkInterface *sender) {
-}
-
-
-
-void ForcesPredictionIPPTCode::clearNeighborsMessage() {
-	for(int i=0; i<6; i++) {
-        if(neighbors[i][1]==1) {
-            neighbors[i][1]=0;
-		}
-	}
-}
-
-
-void _treeMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	cb->treeMessage(sender);
-}
-
-void _treeConfMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
-	cb->treeConfMessage(msgType,sender);
-}
-
-void _cmQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	cb->cmQMessage(sender);
-}
-
-void _cmRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	MessageOf<cmData>*msgType = (MessageOf<cmData>*)msg.get();
-	cb->cmRMessage(msgType,sender);
-}
-
-void _duInitMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
-	cb->duInitMessage(msgType,sender);
-}
-
-void _duMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	MessageOf<vector<double> >*msgType = (MessageOf<vector<double> >*)msg.get();
-	cb->duMessage(msgType,sender);
-}
-
-void _sstQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	MessageOf<sstData>*msgType = (MessageOf<sstData>*)msg.get();
-	cb->sstQMessage(msgType,sender);
-}
-
-void _sstRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	MessageOf<sstData>*msgType = (MessageOf<sstData>*)msg.get();
-	cb->sstRMessage(msgType,sender);
-}
-
-void _mstQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	cb->mstQMessage(sender);
-}
-
-void _mstRMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
-	MessageOf<mstData>*msgType = (MessageOf<mstData>*)msg.get();
-	cb->mstRMessage(msgType,sender);
-}
-
-
-/*
-bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
-	if(target->isInTarget(modR->position)){
-		modR->setColor(Color(0.8f,0.8f,0.6f));
-		return true;
-	}else
-		return false;
-
-}
-*/
-
-
-/*
-bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
-	if(modR->position[2]==supportZ){
-		return true;
-	}
-	return false;
-}
-*/
 
 
 // Auxiliary functions
