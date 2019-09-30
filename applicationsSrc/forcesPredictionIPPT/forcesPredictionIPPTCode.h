@@ -54,113 +54,113 @@ class ForcesPredictionIPPTCode : public BlinkyBlocksBlockCode {
 
 
 private:
-	BlinkyBlocksBlock *module;
+    BlinkyBlocksBlock *module;
 
-	double E; // elastic modulus
- 	double L; //length
-	double a; // width of the cross-section of the square arm
-	double A; //cross sectional area
-	double I; //area
-	double Iz; //second moment of area
-	double Iy; //second moment of area
-	double nu; //Poisson ratio
-	double J; //torsion constant
+    double E; // elastic modulus
+    double L; //length
+    double a; // width of the cross-section of the square arm
+    double A; //cross sectional area
+    double I; //area
+    double Iz; //second moment of area
+    double Iy; //second moment of area
+    double nu; //Poisson ratio
+    double J; //torsion constant
 
-	double mass; //mass
-	double grav; //gravity
-	double beta; //beta
+    double mass; //mass
+    double grav; //gravity
+    double beta; //beta
 
-	double Omega; // weight of Jacobi method
-	double Mu; //friction coefficient
-	double Eps; // //tolerance
-	double Gamma; //stiffness reduction multiplier (for unilateral contact)
+    double Omega; // weight of Jacobi method
+    double Mu; //friction coefficient
+    double Eps; // //tolerance
+    double Gamma; //stiffness reduction multiplier (for unilateral contact)
 //	double supportZ; //Z coordinate of the bottom modules (contacting with the support)
 
-	bool isSupport = false;
-	bool isFixed = false;
-	bool isCentroid = false;
+    bool isSupport = false;
+    bool isFixed = false;
+    bool isCentroid = false;
 
-	vector<double> orient={0,0,-1,0,0,0};
+    vector<double> orient={0,0,-1,0,0,0};
 
-	int curIteration = 0; // current iteration
-	int maxIterations = 0; // max number of iterations
+    int curIteration = 0; // current iteration
+    int maxIterations = 0; // max number of iterations
 
-	typedef vector< vector<double> > bMatrix;
+    typedef vector< vector<double> > bMatrix;
 
 //	matrix for visualization pf calculated forces and moments
 //	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
-	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
+    bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
 
-	//vector<bMatrix> K11 = decltype(K11)(6,vector<vector<double> >(3,vector <double>(3,0))); //K11 vector
-	//vector<bMatrix> K12 = decltype(K12)(6,vector<vector<double> >(3,vector <double>(3,0))); //K12 vector
+    //vector<bMatrix> K11 = decltype(K11)(6,vector<vector<double> >(3,vector <double>(3,0))); //K11 vector
+    //vector<bMatrix> K12 = decltype(K12)(6,vector<vector<double> >(3,vector <double>(3,0))); //K12 vector
 
-	vector <double> dup = decltype(dup)(vectorSize,0); // vector u from the previus iteration
-	bMatrix uq = decltype(uq)(6, vector<double>(vectorSize,0)); //vector u from 1-step neighbors
+    vector <double> dup = decltype(dup)(vectorSize,0); // vector u from the previus iteration
+    bMatrix uq = decltype(uq)(6, vector<double>(vectorSize,0)); //vector u from 1-step neighbors
 
-	vector <double> du = decltype(du)(vectorSize,0); // vector u from the current iteration
+    vector <double> du = decltype(du)(vectorSize,0); // vector u from the current iteration
 
-	vector <double> fp = decltype(fp)(vectorSize,0);
-	vector <double> Fp = decltype(Fp)(vectorSize,0);
+    vector <double> fp = decltype(fp)(vectorSize,0);
+    vector <double> Fp = decltype(Fp)(vectorSize,0);
 
-	bID neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row: 1 if tehre is a message with du; 2 if the module is virtual (to be attached)
-	bID tree_par=0; // spanning tree - parent's ID
-	int tree_child[6]; // spanning tree: 0 - is not a child, 1 - is a child
-	bool aggregationCompleted[6]; // checks if data aggregation is completed for all children (must be true for all children)
+    bID neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row: 1 if tehre is a message with du; 2 if the module is virtual (to be attached)
+    bID tree_par=0; // spanning tree - parent's ID
+    int tree_child[6]; // spanning tree: 0 - is not a child, 1 - is a child
+    bool aggregationCompleted[6]; // checks if data aggregation is completed for all children (must be true for all children)
 public :
-	ForcesPredictionIPPTCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) { module=host; };
-	~ForcesPredictionIPPTCode() {};
+    ForcesPredictionIPPTCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) { module=host; };
+    ~ForcesPredictionIPPTCode() {};
 
-	void startup();
+    void startup();
 
-	void SetNeighbors();
+    void SetNeighbors();
 
-	vector< vector<double> > contactStiffnessMatrix(vector<double> &dup); // stiffness matrix for contact with the floor
-	void computeDU();
-	void computeNeighborDU(int i);
-	void visualization();
+    vector< vector<double> > contactStiffnessMatrix(vector<double> &dup); // stiffness matrix for contact with the floor
+    void computeDU();
+    void computeNeighborDU(int i);
+    void visualization();
 
 //	bool isFixed(BlinkyBlocksBlock *modR);
 
 //	bool isSupport(BlinkyBlocksBlock *modR);
 
-	void printNeighbors();
-	void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize, string desc="");
-	void printVector(vector<double> &vec, int row=3,string desc="");
-	void clearNeighborsMessage(); //function to clear messages when calculated u
+    void printNeighbors();
+    void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize, string desc="");
+    void printVector(vector<double> &vec, int row=3,string desc="");
+    void clearNeighborsMessage(); //function to clear messages when calculated u
 
-	vector< vector<double> > createK11(int i);
-	vector< vector<double> > createK12(int i);
-	vector< vector<double> > createTfr(double Txx, double Txy, double Txz,double Tyx, double Tyy, double Tyz);
-	vector< vector<double> > createTmx(double Txz);
-	vector< vector<double> > createTmy(double Txz);
-	vector< vector<double> > createTmz(double Txz);
+    vector< vector<double> > createK11(int i);
+    vector< vector<double> > createK12(int i);
+    vector< vector<double> > createTfr(double Txx, double Txy, double Txz,double Tyx, double Tyy, double Tyz);
+    vector< vector<double> > createTmx(double Txz);
+    vector< vector<double> > createTmy(double Txz);
+    vector< vector<double> > createTmz(double Txz);
 
-	vector< vector<double> > createRot(int i);
+    vector< vector<double> > createRot(int i);
 
-	vector< vector<double> > IdentityMatrix6();
-	vector< vector<double> > createR(vector< vector<double> > &A);
-	vector< vector<double> > createD(vector< vector<double> > &A);
-	vector< vector<double> > RevD(vector< vector<double> > &A);
+    vector< vector<double> > IdentityMatrix6();
+    vector< vector<double> > createR(vector< vector<double> > &A);
+    vector< vector<double> > createD(vector< vector<double> > &A);
+    vector< vector<double> > RevD(vector< vector<double> > &A);
 
-	void treeMessage(P2PNetworkInterface *sender);
-	void treeConfMessage(const MessageOf<int >*msg,P2PNetworkInterface *sender);
-	void cmQMessage(P2PNetworkInterface *sender);
-	void cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender);
-	void duInitMessage(const MessageOf<int >*msg,P2PNetworkInterface *sender);
-	void duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
-	void sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
-	void sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
-	void mstQMessage(P2PNetworkInterface *sender);
-	void mstRMessage(const MessageOf<mstData>*msg,P2PNetworkInterface *sender);
+    void treeMessage(P2PNetworkInterface *sender);
+    void treeConfMessage(const MessageOf<int >*msg,P2PNetworkInterface *sender);
+    void cmQMessage(P2PNetworkInterface *sender);
+    void cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender);
+    void duInitMessage(const MessageOf<int >*msg,P2PNetworkInterface *sender);
+    void duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
+    void sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
+    void sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
+    void mstQMessage(P2PNetworkInterface *sender);
+    void mstRMessage(const MessageOf<mstData>*msg,P2PNetworkInterface *sender);
 
-	void parseUserElements(TiXmlDocument* config);
-	void parseUserBlockElements(TiXmlElement* config);
+    void parseUserElements(TiXmlDocument* config);
+    void parseUserBlockElements(TiXmlElement* config);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-	    return(new ForcesPredictionIPPTCode((BlinkyBlocksBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return(new ForcesPredictionIPPTCode((BlinkyBlocksBlock*)host));
+    };
 /*****************************************************************************/
 };
 //OPERATORS

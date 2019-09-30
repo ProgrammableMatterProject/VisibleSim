@@ -7,12 +7,25 @@ using namespace std;
 using namespace BlinkyBlocks;
 
 int main(int argc, char **argv) {
-	createSimulator(argc, argv, ForcesPredictionIPPTCode::buildNewBlockCode);
-	Scheduler *scheduler = getScheduler();
+    try
+    {
+    createSimulator(argc, argv, ForcesPredictionIPPTCode::buildNewBlockCode);
+        getSimulator()->printInfo();
+        BaseSimulator::getWorld()->printInfo();
+        deleteSimulator();
+    }
+    catch(BaseSimulator::VisibleSimException const& e1)
+    {
+        cerr << "error: " << e1.what();
+    }
+    catch(std::exception const& e)
+    {
+        cerr << e.what();
+    }
+    catch (char const* msg)
+    {
+        cerr << msg;
+    }
 
-	getSimulator()->printInfo();
-	scheduler->printInfo();
-	BaseSimulator::getWorld()->printInfo();
-	deleteSimulator();
-	return(0);
+    return 0;
 }
