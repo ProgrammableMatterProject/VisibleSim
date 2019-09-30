@@ -366,8 +366,10 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                     const string& vidName =
                         generateTimestampedFilename("video_" + Simulator::configFileName.substr(0, Simulator::configFileName.size()-4), "mkv");
                     // cout << vidName << endl;
-                    cerr << "running: `ffmpeg -pattern_type glob -framerate 30 -i \""
-                        + animationDirName + "/*.jpg\" " + vidName << "`" << endl;
+                    cerr << TermColor::BWhite << "running:"
+                         << TermColor::BYellow << "`ffmpeg -pattern_type glob -framerate 30 -i \""
+                        + animationDirName + "/*.jpg\" " + vidName << "`"
+                         << TermColor::Reset << endl;
                     int r = system(
                         string("ffmpeg -pattern_type glob -framerate 30 -i \""
                                + animationDirName + "/*.jpg\" " + vidName
