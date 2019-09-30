@@ -25,18 +25,18 @@ protected:
 
 public:
 
-    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);   
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
 
     static MultiRobotsSimulator* getSimulator() {
-	assert(simulator != NULL);
-	return((MultiRobotsSimulator*)simulator);
+    assert(simulator != NULL);
+    return((MultiRobotsSimulator*)simulator);
     }
 
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-		   int argc, char *argv[]);
+           int argc, char *argv[]) override;
     virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                           const Cell3DPosition &pos, const Color &color, bool master);
-    virtual void printInfo() { OUTPUT << "I'm a MultiRobotsSimulator" << endl; }
+                           const Cell3DPosition &pos, const Color &color, bool master) override;
+    virtual void printInfo() override { OUTPUT << "I'm a MultiRobotsSimulator" << endl; }
 };
 
 inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {

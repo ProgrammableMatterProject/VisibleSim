@@ -1,5 +1,7 @@
 #include <queue>
 #include <climits>
+#include <unistd.h>
+
 #include "C3DRotateCode.h"
 
 void C3DRotateCode::initDistances() {
@@ -31,10 +33,11 @@ void C3DRotateCode::initDistances() {
                 }
             }
         }
+        
         OUTPUT << "Target: " << ngoal-nwp << "/" << ngoal << " cells" << endl;
         vector<Cell3DPosition> neighborhood;
         vector <Catoms3DMotionRulesLink*>vml;
-        Catoms3DMotionRules *motionRules = Catoms3D::getWorld()->getMotionRules();
+        Catoms3DMotionRules *motionRules = (Catoms3D::getWorld())->getMotionRules();
         int currentLevel;
         while (!stkCells.empty()) {
             pos = stkCells.front();
@@ -47,7 +50,7 @@ void C3DRotateCode::initDistances() {
                 //OUTPUT << "neighbor " << (*ci) << endl;
                 Catoms3DBlock *pivot = (Catoms3DBlock*)lattice->getBlock(*ci);
                 if (pivot) {
-                    OUTPUT << "catom #" << pivot->blockId <<  endl;
+                    OUTPUT << "Pivot is catom #" << pivot->blockId <<  endl;
                     for (int i=0; i<12; i++) {
                         //OUTPUT << "connector #" << i << endl;
                         vml.clear();
@@ -95,7 +98,7 @@ void C3DRotateCode::startup() {
     FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
     lattice->initTabDistances();
     initDistances();
-	//tryToMove();
+    tryToMove();
 }
 
 bool C3DRotateCode::tryToMove() {
@@ -140,14 +143,17 @@ bool C3DRotateCode::tryToMove() {
             }
         }
     }
+    
     if (bestMRL && bestDistance<moduleDistance) {
         console << "Best Orig." << bestOri << " ->" << bestMRL->getConToID() << ":" << bestDistance << "\n";
         p2p=module->getInterface(bestOri);
         currentMotion = new Motions(module,(Catoms3DBlock *)p2p->connectedInterface->hostBlock,bestMRL);
         console << "send LOCK() to " << p2p->connectedInterface->hostBlock->blockId << "\n";
         sendMessage(new MessageOf<Motions>(LOCK_MSG,*currentMotion),p2p,100,200);
+
         return true;
     }
+    
     return false;
 }
 

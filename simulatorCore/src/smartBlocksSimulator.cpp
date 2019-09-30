@@ -14,34 +14,38 @@ using namespace std;
 namespace SmartBlocks {
 
 SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
-	: BaseSimulator::Simulator(argc, argv, bcb) {
-    cout << "\033[1;34m" << "SmartBlocksSimulator constructor" << "\033[0m" << endl;
+    : BaseSimulator::Simulator(argc, argv, bcb) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
+    cout << TermColor::LifecycleColor << "SmartBlocksSimulator constructor" << TermColor::Reset << endl;
+#endif
 }
 
 SmartBlocksSimulator::~SmartBlocksSimulator() {
     //MODIF NICO : deleteScheduler() est déjà appellée par BaseSimulator::~Simulator()
     //~ deleteScheduler();
-    cout << "\033[1;34m" << "SmartBlocksSimulator destructor" << "\033[0m" <<endl;
+#ifdef DEBUG_OBJECT_LIFECYCLE
+    cout << TermColor::LifecycleColor << "SmartBlocksSimulator destructor" << TermColor::Reset <<endl;
+#endif
 }
 
 void SmartBlocksSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
     simulator =  new SmartBlocksSimulator(argc, argv, bcb);
-	simulator->parseConfiguration(argc, argv);
-	simulator->startSimulation();
+    simulator->parseConfiguration(argc, argv);
+    simulator->startSimulation();
 }
 
 void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-									 int argc, char *argv[]) {
+                                     int argc, char *argv[]) {
     world = new SmartBlocksWorld(gridSize, gridScale, argc,argv);
 
-	if (GlutContext::GUIisEnabled)
-		world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
-	
+    if (GlutContext::GUIisEnabled)
+        world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
+
     World::setWorld(world);
 }
 
 void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-									 const Cell3DPosition &pos, const Color &color, bool master) {
+                                     const Cell3DPosition &pos, const Color &color, bool master) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
     //  here, using the blockElt TiXmlElement.

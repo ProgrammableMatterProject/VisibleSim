@@ -31,9 +31,10 @@ class GlutContext {
 public :
     static bool GUIisEnabled; //!< Enable / Disable GLUT graphical simulation, enabled by default
     static GlutSlidingMainWindow *mainWindow;
-    static GlutSlidingDebugWindow *debugWindow;
+    // static GlutSlidingDebugWindow *debugWindow;
     static GlutPopupWindow *popup;
     static GlutPopupMenuWindow *popupMenu;
+    static GlutPopupMenuWindow *popupSubMenu;
     static GlutHelpWindow *helpWindow;
     static int screenWidth, screenHeight;
     static int initialScreenWidth, initialScreenHeight;
@@ -46,6 +47,8 @@ public :
     static int frameCount;
     static int previousTime;
     static float fps;
+    static unsigned int nbModules;
+    static long unsigned int timestep;
 //	bool showLinks;
 
     static void init(int argc, char **argv);
@@ -59,14 +62,17 @@ private :
     static void motionFunc(int x,int y);
     static void mouseFunc(int button,int state,int x,int y);
     static void keyboardFunc(unsigned char c, int x, int y);
+    static void specialFunc(int key, int x, int y);
     static void drawFunc(void);
     static void idleFunc(void);
     static int selectFunc(int x,int y);
     static int selectFaceFunc(int x,int y);
     static int processHits(GLint hits, GLuint *buffer);
-    static bool saveScreen(char *title);
+    static bool saveScreen(const char *title);
     static void *lanceScheduler(void *param);
     static void calculateFPS(void);
+    static void calculateSimulationInfo(void);
     static void showFPS(void);
+    static void showSimulationInfo(void);
 };
 #endif

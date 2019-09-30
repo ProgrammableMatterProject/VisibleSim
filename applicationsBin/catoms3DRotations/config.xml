@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="35, 35, 35">
+  <camera target="50,50,10" directionSpherical="-20,30,100"
+          angle="45" near="0.1" far="2000.0" />
+
+  <blockList color="128,128,128" blocksize="10,10,10">
+    <block position="1,1,1" color="0,255,0"/>
+    <block position="1,2,1" color="0,255,0" orientation="13"/>
+  </blockList>
+
+</world>

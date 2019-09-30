@@ -9,8 +9,11 @@
 // Version: 1.6 Windows
 /////////////////////////////////////////////////////////////////////////////
 
+#include <limits.h>
+#include <assert.h>
 #include "objLoader.h"
 #include "trace.h"
+#include "vector3D.h"
 //#define DEBUG	1
 
 using namespace std;
@@ -58,6 +61,8 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	vector <Point3> tabNormal;
 	vector <Point2> tabTexture;
 	char txt[256];
+	GLuint currentObjectNumber=0;
+
 #ifdef WIN32
 	sprintf_s(txt,256,"%s\\%s",rep,titre);
 #else
@@ -68,7 +73,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 		cerr << "File error : " << txt << endl;
 		exit(EXIT_FAILURE);
 	}
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
    OUTPUT << "Open " << txt  << " file..."<< endl;
 #endif
 	mtls=NULL;
@@ -83,7 +88,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	int i,numVert[4],numTex[4],numNorm[4];
 	Sommet S1,S2,S3,S4;
 	do {
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
 		OUTPUT << "Début de lecture" << endl;
 #endif
 	// headline
@@ -92,7 +97,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     	// delete spaces and tabs in the beginning of the lines
 	  if (fin.gcount()>0) {
 		  switch (ligne[0]) {
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
 		  	case '#' : // comment
 		  		OUTPUT << ligne << endl;
         	break;
@@ -116,14 +121,14 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     		if (fin.gcount()>1) {
     			switch (ligne[0]) {
     				case ' ' : break;
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     				case '#' :
     					OUTPUT << ligne << endl;
     				break; // comment
 #endif
     				case 'g' :
     					extraire(ligne+2,nom,63); // object name
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     					OUTPUT << "object : " << nom << endl;
 #endif
     					g_trouve = true;
@@ -140,21 +145,23 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     						tabVertex.push_back(p3);
     					}
     				break;
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     				default :
     					OUTPUT << "code '" << ligne[0] << " unknown :" << ligne << endl;
 #endif
     			}
     		}
     	} while (!fin.eof() && !g_trouve);
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     	OUTPUT <<"Fin de lecture des coordonnées"<< endl;
 #endif
 
     	if (g_trouve) {
     		objCourant = new ObjData(nom);
-#ifdef DEBUG
-    		OUTPUT << "new object :" << nom << endl;
+
+			objCourant->objectNumber=++currentObjectNumber;
+#ifdef DEBUG_GRAPHICS
+			OUTPUT << "new object :" << nom << " num= " << objCourant->objectNumber << endl;
 #endif
     		tabObj.push_back(objCourant);
     		objCourant->objMtl = NULL;
@@ -165,7 +172,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     			if (fin.gcount()>1) {
     				switch (ligne[0]) {
     					case '#' :
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     						OUTPUT << ligne<< endl;
 #endif
     						g_trouve = true;
@@ -191,7 +198,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
                                 numeroPoint(str_pt4,numVert[3],numNorm[3],numTex[3]);
     						}
 /*
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     						OUTPUT << "Face : (" << numVert[0] << "," << numNorm[0] << "," << numTex[0] << ")";
     						OUTPUT << "(" << numVert[1] << "," << numNorm[1] << "," << numTex[1] << ")";
     						OUTPUT << "(" << numVert[2] << "," << numNorm[2] << "," << numTex[2] << ")" << endl;
@@ -212,7 +219,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     					break;
     					case 'u' : // usemtl 09_-_Default
     						if (strncmp(ligne,"usemtl",6)==0) {
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     							OUTPUT << ligne << endl;
 #endif
     							extraire(ligne+7,str_pt1,64);
@@ -224,7 +231,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 #else
     								sprintf(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->name);
 #endif
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     								OUTPUT << "associe l'objet " << objCourant->nom << endl;
 #endif
     							} else { // on fait un objet par texture
@@ -236,7 +243,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     								}
     								if (po!=tabObj.end()) {
     									objCourant = (*po);
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     									OUTPUT << "complete l'objet " << objCourant->nom << endl;
 #endif
     								} else {
@@ -247,6 +254,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     									sprintf(nom2,"%s_%s",nom,ptrMtl->name);
 #endif
     									objCourant = new ObjData(objCourant->nomOriginal);
+										objCourant->objectNumber=currentObjectNumber;
     									tabObj.push_back(objCourant);
     									objCourant->objMtl = ptrMtl;
 #ifdef WIN32
@@ -254,17 +262,19 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 #else
     									sprintf(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->name);
 #endif
-#ifdef DEBUG
-					  					OUTPUT << "nouvel objet :" << objCourant->nom << endl;
+#ifdef DEBUG_GRAPHICS
+					  					OUTPUT << "nouvel objet :" << objCourant->nom << "num=" << objCourant->objectNumber<< endl;
 #endif
     								}
     							}
     						}
     					break;
     					case 's' : // gestion des groupes de lissage
-    						ERRPUT << "Smoothing groups not managed !" << endl;
+#ifdef DEBUG_GRAPHICS
+                            ERRPUT << "warning: Smoothing groups not managed !" << endl;
+#endif
     					break;
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     					default :
     						OUTPUT << "symbole '" << ligne[0] << " inconnu de :" << ligne << endl;
 #endif
@@ -279,7 +289,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     tabVertex.clear();
     tabTexture.clear();
 	tabNormal.clear();
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     OUTPUT << "fin de la lecture" << endl;
 #endif
 	} while (!fin.eof());
@@ -289,48 +299,53 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	// find 'lighted' texture
 	ptrMtlLighted = mtls->getMtlByName("lighted");
 	if (!ptrMtlLighted) {
-		ERRPUT << "No 'lighted' texture in obj file :" << titre << endl;
+#ifdef DEBUG_GRAPHICS
+		ERRPUT << "warning: No 'lighted' texture in obj file :" << titre << endl;
+#endif
 		ptrMtlLighted = mtls->getMtlById(1);
 	}
 }
 
 void ObjLoader::glDraw(void) {
-	vector <ObjData*>::const_iterator ci = tabObj.begin();
-
-	while (ci!=tabObj.end()) {
-		(*ci)->glDraw();
-		ci++;
+	for (const auto& obj:tabObj) {
+		obj->glDraw();
 	}
 }
 
-void ObjLoader::glDrawId(int &n) {
-	vector <ObjData*>::const_iterator ci = tabObj.begin();
+void ObjLoader::glDraw(GLuint n) {
+	for (const auto& obj:tabObj) {
+		if (obj->objectNumber==n) obj->glDraw();
+	}
+}
 
-	glLoadName(n++);
-	while (ci!=tabObj.end()) {
-		(*ci)->glDrawId();
-		ci++;
+void ObjLoader::glDrawId(int n) {
+	glLoadName(n);
+	for (const auto &obj:tabObj) {
+		obj->glDrawId();
 	}
 }
 
 void ObjLoader::glDrawIdByMaterial(int &n) {
-	vector <ObjData*>::const_iterator ci = tabObj.begin();
-
-	while (ci!=tabObj.end()) {
+	for (const auto &obj:tabObj) {
 		glLoadName(n++);
-		(*ci)->glDrawId();
-		ci++;
+		obj->glDrawId();
 	}
 }
 
 void ObjLoader::setLightedColor(GLfloat *color) {
 //	memcpy(ptrMtlLighted->Ka,color,4*sizeof(GLfloat));
 	memcpy(ptrMtlLighted->Kd,color,4*sizeof(GLfloat));
-    ptrMtlLighted->Ka[0] = color[0]*0.3f;
-    ptrMtlLighted->Ka[1] = color[1]*0.3f;
-    ptrMtlLighted->Ka[2] = color[2]*0.3f;
+	ptrMtlLighted->Ka[0] = color[0]*0.3f;
+	ptrMtlLighted->Ka[1] = color[1]*0.3f;
+	ptrMtlLighted->Ka[2] = color[2]*0.3f;
 }
 
+ObjData* ObjLoader::getObjDataByName(const string &name) const {
+	for (const auto &obj:tabObj) {
+		if (obj->nomOriginal==name) return obj;
+	}
+	return NULL;
+}
 
 ObjLoader::~ObjLoader(void) {
 	vector <ObjData*>::const_iterator ci = tabObj.begin();
@@ -353,15 +368,15 @@ void ObjLoader::numeroPoint(char* str,int &vert,int &norm,int &tex) {
 	str[pos1]=0;
 
 #ifdef WIN32
-  if (sscanf_s(str,"%d",&vert)<=0) vert=0;
-  str[pos2]=0;
-  if (sscanf_s(str+pos1+1,"%d",&tex)<=0) tex=0;
-  if (sscanf_s(str+pos2+1,"%d",&norm)<=0) norm=0;
+	if (sscanf_s(str,"%d",&vert)<=0) vert=0;
+	str[pos2]=0;
+	if (sscanf_s(str+pos1+1,"%d",&tex)<=0) tex=0;
+	if (sscanf_s(str+pos2+1,"%d",&norm)<=0) norm=0;
 #else
-  if (sscanf(str,"%d",&vert)<=0) vert=0;
-  str[pos2]=0;
-  if (sscanf(str+pos1+1,"%d",&tex)<=0) tex=0;
-  if (sscanf(str+pos2+1,"%d",&norm)<=0) norm=0;
+	if (sscanf(str,"%d",&vert)<=0) vert=0;
+	str[pos2]=0;
+	if (sscanf(str+pos1+1,"%d",&tex)<=0) tex=0;
+	if (sscanf(str+pos2+1,"%d",&norm)<=0) norm=0;
 #endif
 }
 
@@ -374,14 +389,20 @@ void ObjLoader::createVertexArrays() {
 	}
 }
 
+void ObjLoader::saveSTLfacets(ofstream &fout,const Vector3D &v, int ind0,int ind1) const {
+	for (const ObjData *obj:tabObj) {
+		obj->saveSTLfacets(fout,v,ind0,ind1);
+	}
+}
 
 /////////////////////////////////////////////////////////////////////////////
-// class objData
+// class ObjData
 ObjData::ObjData(const char *str) {
 	objMtl=NULL;
 	nbreIndices=0;
 	tabVertices=NULL;
-	tabIndices=NULL,
+	tabIndices=NULL;
+	center=NULL;
 #ifdef WIN32
   strncpy_s(nomOriginal,str,64);
 #else
@@ -392,6 +413,7 @@ ObjData::ObjData(const char *str) {
 ObjData::~ObjData() {
 	delete [] tabVertices;
 	delete [] tabIndices;
+	delete center;
 }
 
 void ObjData::glDraw(void) {
@@ -452,6 +474,56 @@ void ObjData::glDrawId(void) {
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+void ObjData::saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1,bool invNormal) const {
+	vertexPosNrmTx* pv;
+	Vector3D p0,p1,p2,normal,v1,v2;
+	GLuint *ptrInd = tabIndices+ind0*3;
+	int i=(ind1==-1)?(nbreIndices/3-ind0):(ind1-ind0);
+	while(i--) {
+		pv =  tabVertices + *ptrInd++;
+		p0.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
+		pv =  tabVertices + *ptrInd++;
+		v1.set(pv->x,pv->y,pv->z,1.0);
+		p1.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
+		pv =  tabVertices + *ptrInd++;
+		p2.set(pv->x+p[0],pv->y+p[1],pv->z+p[2],1.0);
+
+		v1 = p1-p0;
+		v2 = p2-p0;
+		if (v1.norme2()!=0 && v2.norme2()!=0) {
+			normal = v1^v2;
+			normal.normer_interne();
+			char buf[25];
+			if (invNormal) {
+				normal = -1.0*normal;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", normal[0], normal[1], normal[2]);
+				file << "          facet normal " << buf << endl;
+				file << "            outer loop" << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p2[0], p2[1], p2[2]);
+				file << "              vertex " << buf << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p1[0], p1[1], p1[2]);
+				file << "              vertex " << buf << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p0[0], p0[1], p0[2]);
+				file << "              vertex " << buf << endl;
+				file << "            endloop" << endl;
+				file << "          endfacet" << endl;
+			} else {
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", normal[0], normal[1], normal[2]);
+				file << "          facet normal " << buf << endl;
+				file << "            outer loop" << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p0[0], p0[1], p0[2]);
+				file << "              vertex " << buf << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p1[0], p1[1], p1[2]);
+				file << "              vertex " << buf << endl;
+				snprintf(buf,25,"%5.3f %5.3f %5.3f", p2[0], p2[1], p2[2]);
+				file << "              vertex " << buf << endl;
+				file << "            endloop" << endl;
+				file << "          endfacet" << endl;
+			}
+		}
+	}
+}
+
 void ObjData::addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3) {
 	GLuint idS[3]; // indice des 3 sommets dans le tableau;
 	//static int num=0;
@@ -477,15 +549,20 @@ GLuint ObjData::addVertex(const Sommet &s) {
 }
 
 void ObjData::createVertexArray() {
-	int sizeVert = tabVertex.size();
+	GLuint sizeVert = tabVertex.size();
 	tabVertices = new vertexPosNrmTx[sizeVert];
 	vertexPosNrmTx *ptrV = tabVertices;
 
+	center = new Point3(0,0,0);
 	vector<Sommet*>::const_iterator pv = tabVertex.begin();
+	int n=0;
 	while(pv!=tabVertex.end()) {
 		ptrV->x = (*pv)->v[0];
 		ptrV->y = (*pv)->v[1];
 		ptrV->z = (*pv)->v[2];
+		center->v[0]+=ptrV->x;
+		center->v[1]+=ptrV->y;
+		center->v[2]+=ptrV->z;
 		ptrV->nx = (*pv)->n[0];
 		ptrV->ny = (*pv)->n[1];
 		ptrV->nz = (*pv)->n[2];
@@ -493,8 +570,12 @@ void ObjData::createVertexArray() {
 		ptrV->t = (*pv)->t[1];
 		ptrV++;
 		pv++;
-    }
-
+		n++;
+	}
+	center->v[0]/=n;
+	center->v[1]/=n;
+	center->v[2]/=n;
+	
 	nbreIndices = 3*tabFaces.size();
 	tabIndices = new GLuint[nbreIndices];
 	GLuint *ptrI = tabIndices;
@@ -568,7 +649,7 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 		if (fin.gcount()>i) {
 			switch (ligne[i]) {
 				case '#' : // commentaire
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
 				OUTPUT << ligne << endl;
 #endif
 				break;
@@ -663,7 +744,7 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 #endif
 					}
 				break;
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
 				default : OUTPUT << "Inconnu : " << ligne << endl;
 #endif
 			}
@@ -779,6 +860,13 @@ bool Sommet::operator==(const Sommet &s) {
 	return (v[0]==s.v[0] && v[1]==s.v[1] && v[2]==s.v[2] &&
           n[0]==s.n[0] && n[1]==s.n[1] && n[2]==s.n[2] &&
 		  t[0]==s.t[0] && t[1]==s.t[1]);
+}
+
+bool Sommet::isCloseTo(const Sommet &s,float threshold2) {
+	float dx = v[0]-s.v[0],dy = v[1]-s.v[1],dz = v[2]-s.v[2];
+	float d2 = dx*dx+dy*dy+dz*dz;
+	//cout << d2 << endl;
+	return d2<threshold2;
 }
 
 }

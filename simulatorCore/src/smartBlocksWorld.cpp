@@ -20,7 +20,7 @@ namespace SmartBlocks {
 
 SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                                    int argc, char *argv[]):World(argc, argv) {
-    cout << "\033[1;31mSmartBlocksWorld constructor\033[0m" << endl;
+    cout << TermColor::LifecycleColor << "SmartBlocksWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
@@ -35,7 +35,7 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 }
 
 SmartBlocksWorld::~SmartBlocksWorld() {
-    cout << "\033[1;31mSmartBlocksWorld destructor\033[0m" << endl;
+    cout << TermColor::LifecycleColor << "SmartBlocksWorld destructor" << TermColor::Reset << endl;
 }
 
 void SmartBlocksWorld::deleteWorld() {
@@ -46,10 +46,10 @@ void SmartBlocksWorld::deleteWorld() {
 void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
                                 const Cell3DPosition &pos, const Color &col,
                                 short orientation, bool master) {
-	if (blockId > maxBlockId)
-		maxBlockId = blockId;
-	else if (blockId == 0)
-		blockId = incrementBlockId();
+    if (blockId > maxBlockId)
+        maxBlockId = blockId;
+    else if (blockId == 0)
+        blockId = incrementBlockId();
 
     SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId, bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
@@ -57,7 +57,7 @@ void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), smartBlock));
 
     SmartBlocksGlBlock *glBlock = new SmartBlocksGlBlock(blockId);
-    tabGlBlocks.push_back(glBlock);
+    mapGlBlocks.insert(make_pair(blockId, glBlock));
     smartBlock->setGlBlock(glBlock);
     smartBlock->setPosition(pos);
     smartBlock->setColor(col);
@@ -85,8 +85,10 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
                 connect(ptrNeighbor->getInterface(SLattice::Direction(
                                                       lattice->getOppositeDirection(i))));
 
+#ifdef DEBUG_NEIGHBORHOOD
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
+#endif
         } else {
             (ptrBlock)->getInterface(SLattice::Direction(i))->connect(NULL);
         }
@@ -94,42 +96,12 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 }
 
 void SmartBlocksWorld::glDraw() {
-    static const GLfloat white[]={1.0,1.0,1.0,1.0},
-        gray[]={0.2,0.2,0.2,1.0};
-
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-        glPushMatrix();
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D,idTextureFloor);
-        glNormal3f(0,0,1.0f);
-        glScalef(lattice->gridSize[0]*lattice->gridScale[0],
-                 lattice->gridSize[1]*lattice->gridScale[1],1.0f);
-        glBegin(GL_QUADS);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,0.0f);
-        glTexCoord2f(0,lattice->gridSize[1]);
-        glVertex3f(0.0,1.0,0.0f);
-        glEnd();
-        glPopMatrix();
-        // draw the axes
-        objRepere->glDraw();
-
-        glPushMatrix();
         /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
           -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
         glDisable(GL_TEXTURE_2D);
-        vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
         lock();
-        while (ic!=tabGlBlocks.end()) {
-            ((SmartBlocksGlBlock*)(*ic))->glDraw(objBlock);
-            ic++;
+        for (const auto& pair : mapGlBlocks) {
+            ((SmartBlocksGlBlock*)pair.second)->glDraw(objBlock);
         }
         unlock();
 
@@ -137,18 +109,21 @@ void SmartBlocksWorld::glDraw() {
           Physics::glDraw();
         */
         glPopMatrix();
+
+        BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+        if (bb) bb->blockCode->onGlDraw();
+
+        glDrawBackground();
 }
 
 void SmartBlocksWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
 
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
     lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((SmartBlocksGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking, n);
-        ic++;
+    for (const auto& pair : mapGlBlocks) {
+        ((SmartBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
     glPopMatrix();
@@ -157,16 +132,43 @@ void SmartBlocksWorld::glDrawIdByMaterial() {
 void SmartBlocksWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    int n=1;
     lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((SmartBlocksGlBlock*)(*ic))->glDrawId(objBlock,n);
-        ic++;
+    for (const auto& pair : mapGlBlocks) {
+        ((SmartBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
     }
     unlock();
     glPopMatrix();
+}
+
+void SmartBlocksWorld::glDrawSpecificBg() {
+    static const GLfloat white[]={1.0,1.0,1.0,1.0},
+        gray[]={0.2,0.2,0.2,1.0};
+
+    glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+    glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+    glPushMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,idTextureFloor);
+    glNormal3f(0,0,1.0f);
+    glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+             lattice->gridSize[1]*lattice->gridScale[1],1.0f);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0],0);
+    glVertex3f(1.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+    glVertex3f(1.0,1.0,0.0f);
+    glTexCoord2f(0,lattice->gridSize[1]);
+    glVertex3f(0.0,1.0,0.0f);
+    glEnd();
+    glPopMatrix();
+    // draw the axes
+    objRepere->glDraw();
+
+    glPushMatrix();
 }
 
 void SmartBlocksWorld::loadTextures(const string &str) {
@@ -190,17 +192,17 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     else if (name == "Material__71") numSelectedFace = SLattice::West;
     else if (name == "Material__68") numSelectedFace = SLattice::North;
     else {
-		cerr << "warning: Unrecognized picking face" << endl;
-		numSelectedFace = 4;	// UNDEFINED
+        numSelectedFace = 4;	// Top
+        return;
     }
 
-    cerr << "SET " << name << " = " << numSelectedFace << " = "
-         << lattice->getDirectionString(numSelectedFace) << endl;
+    // cerr << "SET " << name << " = " << numSelectedFace << " = "
+    //      << lattice->getDirectionString(numSelectedFace) << endl;
 }
 
 void SmartBlocksWorld::exportConfiguration() {
-	SmartBlocksConfigExporter exporter = SmartBlocksConfigExporter(this);
-	exporter.exportConfiguration();
+    SmartBlocksConfigExporter exporter = SmartBlocksConfigExporter(this);
+    exporter.exportConfiguration();
 }
 
 

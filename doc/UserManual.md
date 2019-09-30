@@ -194,7 +194,7 @@ If `-l` option is not found, nothing will be printed to the file.
 ##### Detailed Simulation Statistics (`-i`)
 Prints more detailed statistics at the end of the simulation. It prints the minimum, the mean, the maximum and the standard-deviation values of the number of messages sent/received per module, the maximum message queue size reached and the number of motions per module. Be aware that collecting these statistics requires O(number of modules) memory space.
 ##### Simulation Seed (`-a`)
-The randomness of the simulation (variability in the communication rate, variability in the motion duration (not fully supported yet), clock randomness) depends on the simulation seed. Using the same simulation seed on the same configuration produces the same simulation. By default, the simulation seed is equal to 50. If  `-a < seed < 0 >` is used, a randomly generated seed is set.
+The randomness of the simulation (variability in the communication rate, variability in the motion duration (not fully supported yet), clock randomness) depends on the simulation seed. Using the same simulation seed on the same configuration produces the same simulation. By default, the simulation seed is equal to 50. If  `-a < seed < 0 >` is used, a randomly generated seed is set. Providing a negative seed (e.g., `-3`) lets the simulator randomly select a seed by itself.
 ##### Help (`-h`)
 Displays the usage message in the terminal.
 
@@ -548,7 +548,7 @@ __N.B.:__ NOT necessary if using  _terminal mode_.
 #### !`blockList` 
 
 The `blockList` element describes the starting physical position and color of modules (+ extra attributes depending on module type) in the simulated world, as well as their logical identifier for simulation. 
-There are two types of children elements that can be used to describe the ensemble, and that can be combined, `block` and `blocksLine`.
+There are several types of children elements that can be used to describe the ensemble, and that can be combined: `block`, `blocksLine`, and `blocksBox`.
 
 ```xml
 <blockList color="r,g,b" ids="[MANUAL|ORDERED|RANDOM]" step="sp" seed="sd">
@@ -557,6 +557,7 @@ There are two types of children elements that can be used to describe the ensemb
 	<!-- ... -->
 	<blocksLine plane="p" line="l" color="r,g,b" values="00101...1110"/>
 	<!-- ... -->
+    <blockBox boxOrigin="x,y,z" boxSize="L, l, h" color="r,g,b" />
 </blockList>
 ```
 Attributes: 
@@ -632,6 +633,21 @@ Both description methods are subject to a number of constraints:
 - Two modules cannot be placed on the same lattice cell. (i.e. No `block` or `blocksLine` elements should overlap)
 - Every described module needs to have a position. 
 - Two modules cannot have the same ID. 
+
+#### Behavioral Customization
+Some of VisibleSim's behaviors can be customized so as to let the user tweak some variables of the simulation. 
+
+##### Description
+The list of customizations to apply falls under the `customization` XML tag, where each child is a customization groupe that tweaks one specific behavior.
+
+```xml
+<customization>
+  <rotationDelay multiplier="0.5" />
+  <...>
+</customization>
+```
+##### Rotation Speed Tweaking
+For now, the only customizable property is the rotation speed of catoms. This is done in the `rotationDelay` element of the `customization` group. The editable attribute is `multiplier`, which takes a float value that will be used as a multiplier to the default rotation **delay** - i.e., a multiplier of 0.5 will result in a rotation twice as fast as normal, and 2.0 twice as slow.
 
 #### <a name="target"></a>Reconfiguration Targets
 As mentioned earlier, a VisibleSim configuration can also be used to describe one or multiple reconfiguration `targets` (_i.e._ an objective configuration in term of module positions and colors). 
@@ -741,15 +757,20 @@ When running VisibleSim in graphical mode (enabled by default), the user is give
 
 ### Base Interactions
 
-- <kbd>ctrl</kbd> + `left-click`: __Block Selection__
+- <kbd>ctrl</kbd> + <kbd>Left-Click</kbd>: __Block Selection__
 	- When performed on a block, selects the clicked block (Show its information and messages on the left interface panel. Selected block is _blinking_).
 	- When performed elsewhere, unselect previously selected block.
-- <kbd>ctrl</kbd> + `right-click`: __Display Contextual Menu__
+- <kbd>ctrl</kbd> + <kbd>Right-Click</kbd>: __Display Contextual Menu__
 	- Makes the contextual menu appear when on a block.
 	- Does nothing otherwise.
 - <kbd>r</kbd> / <kbd>R</kbd>: __Simulation Start__
 	- <kbd>r</kbd> starts the simulation in realtime mode.
 	- <kbd>R</kbd> starts the simulation in fastest mode.
+- <kbd>s</kbd>: __Export Screenshot__ (both _.ppm_ and _.jpeg_).
+- <kbd>S</kbd>: __Start/End Video Capture__ (_.mkv_, package `ffmpeg` must be installed! `sudo apt-get install ffmpeg`).
+- <kbd>Page-Up</kbd>: __Increase Rotation Speed__ (only _Catoms3D_ supported).
+- <kbd>Page-Down</kbd>: __Decrease Rotation Speed__ (only _Catoms3D_ supported).
+- <kbd>Space</kbd>: __Pause/Resume Simulation__
 - <kbd>z</kbd>: __Camera Centering__
 	- Centers the camera on the selected block if there is one.
 - <kbd>w</kbd> / <kbd>W</kbd>: __Toggle Full Screen__

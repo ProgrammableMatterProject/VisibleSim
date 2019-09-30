@@ -18,10 +18,10 @@ namespace RobotBlocks {
 class RobotBlocksBlock;
 
 class RobotBlocksBlockCode : public BaseSimulator::BlockCode {
-public:	
-	RobotBlocksBlockCode(RobotBlocksBlock *host);
-	virtual ~RobotBlocksBlockCode();
-	virtual void processLocalEvent(EventPtr pev);
+public:
+    RobotBlocksBlockCode(RobotBlocksBlock *host);
+    virtual ~RobotBlocksBlockCode();
+    virtual void processLocalEvent(EventPtr pev) override;
 };
 
 }

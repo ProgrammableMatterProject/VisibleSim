@@ -21,11 +21,11 @@ class SmartBlocksBlock;
 
 class SmartBlocksBlockCode : public BlockCode {
 public:
-	SmartBlocksBlockCode(SmartBlocksBlock *host);
-	virtual ~SmartBlocksBlockCode();
+    SmartBlocksBlockCode(SmartBlocksBlock *host);
+    virtual ~SmartBlocksBlockCode();
 
-	virtual void processLocalEvent(EventPtr pev);
-	virtual void onMotionEnd() {};
+    virtual void processLocalEvent(EventPtr pev) override;
+    virtual void onMotionEnd() {};
 };
 
 }

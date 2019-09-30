@@ -16,7 +16,7 @@
 using namespace BaseSimulator::utils;
 
 const int ANIMATION_DELAY=40000;
-const int COM_DELAY=2000;
+const int COM_DELAY=0; //
 
 namespace BaseSimulator {
 
@@ -26,10 +26,6 @@ namespace BaseSimulator {
 //
 //===========================================================================================================
 
-// TeleportationStartEvent::TeleportationStartEvent(Time t,
-//                                                  BuildingBlock *block,
-//                                                  BuildingBlock *pivot,
-//                                                  MovementDirection mDir): BlockEvent(t,block) {
 TeleportationStartEvent::TeleportationStartEvent(Time t,
                                                  BuildingBlock *block,
                                                  const Cell3DPosition &fpos): BlockEvent(t,block) {
@@ -50,10 +46,12 @@ void TeleportationStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     BuildingBlock *bb = concernedBlock;
-    World::getWorld()->disconnectBlock(bb);
+    World::getWorld()->disconnectBlock(bb, false);
 
     Time t = scheduler->now() + ANIMATION_DELAY;
     if (getWorld()->lattice->isInGrid(finalPosition)) {
+        bb->blockCode->console << " starting Teleportation to " << finalPosition
+                               << " at " << t << "\n";
         scheduler->schedule(new TeleportationStopEvent(t, bb, finalPosition));
     } else {
         OUTPUT << "ERROR: trying to teleport module to a position outside of lattice"
@@ -94,9 +92,9 @@ void TeleportationStopEvent::consume() {
 #endif
 
     OUTPUT << "connect Block " << bb->blockId << "\n";
-    wrld->connectBlock(bb);
+    wrld->connectBlock(bb, false);
     Scheduler *scheduler = getScheduler();
-    scheduler->schedule(new TeleportationEndEvent(scheduler->now() + ANIMATION_DELAY, bb));
+    scheduler->schedule(new TeleportationEndEvent(scheduler->now(), bb));
 }
 
 const string TeleportationStopEvent::getEventName() {
@@ -125,10 +123,11 @@ TeleportationEndEvent::~TeleportationEndEvent() {
 void TeleportationEndEvent::consume() {
     EVENT_CONSUME_INFO();
     BuildingBlock *bb = concernedBlock;
+    bb->blockCode->console << " finished Teleportation to " << bb->position
+                           << " at " << date + COM_DELAY << "\n";
     concernedBlock->blockCode->processLocalEvent(
         EventPtr(new TeleportationEndEvent(date + COM_DELAY,bb))
         );
-
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(bb->stats);
 }

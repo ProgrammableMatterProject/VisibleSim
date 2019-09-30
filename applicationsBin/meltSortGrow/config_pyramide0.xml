@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="10,10,6">
+  <camera target="50,50,10" directionSpherical="-20,30,100" angle="45" near="0.01" far="250.0" />
+  <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="30" near="80.0" far="250.0"/>
+
+  <blockList color="128,128,128" blockSize="10,10,10">
+    <block position="4,4,0" orientation="0"/>
+    <block position="5,4,0" orientation="0"/>
+    <block position="5,5,0" orientation="0"/>
+    <block position="4,5,0" orientation="0"/>
+  </blockList>
+
+  <targetList>
+    <target format="relativeGrid">
+      <cell position="0,0,0" />
+      <cell position="1,0,0" />
+      <cell position="2,0,0" />
+      <cell position="3,0,0" />
+      <cell position="4,0,0" />
+      <cell position="5,0,0" />
+      <cell position="6,0,0" />
+      <cell position="7,0,0" />
+    </target>
+  </targetList>
+</world>
+
+
+

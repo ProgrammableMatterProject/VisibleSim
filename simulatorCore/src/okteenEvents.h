@@ -72,12 +72,12 @@ protected :
 class OkteenMotionsStartEvent : public BlockEvent {
     OkteenMotions motion;
 public:
-	OkteenMotionsStartEvent(Time, const OkteenMotions& om);
-	OkteenMotionsStartEvent(OkteenMotionsStartEvent *ev);
-	~OkteenMotionsStartEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    OkteenMotionsStartEvent(Time, const OkteenMotions& om);
+    OkteenMotionsStartEvent(OkteenMotionsStartEvent *ev);
+    ~OkteenMotionsStartEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -89,12 +89,12 @@ public:
 class OkteenMotionsStepEvent : public BlockEvent {
     OkteenMotions motion;
 public:
-	OkteenMotionsStepEvent(Time, const OkteenMotions& om);
-	OkteenMotionsStepEvent(OkteenMotionsStepEvent *ev);
-	~OkteenMotionsStepEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    OkteenMotionsStepEvent(Time, const OkteenMotions& om);
+    OkteenMotionsStepEvent(OkteenMotionsStepEvent *ev);
+    ~OkteenMotionsStepEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -106,12 +106,12 @@ public:
 class OkteenMotionsStopEvent : public BlockEvent {
     OkteenMotions motion;
 public:
-	OkteenMotionsStopEvent(Time, const OkteenMotions& om);
-	OkteenMotionsStopEvent(OkteenMotionsStepEvent *ev);
-	~OkteenMotionsStopEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    OkteenMotionsStopEvent(Time, const OkteenMotions& om);
+    OkteenMotionsStopEvent(OkteenMotionsStepEvent *ev);
+    ~OkteenMotionsStopEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -122,12 +122,12 @@ public:
 
 class OkteenMotionsEndEvent : public BlockEvent {
 public:
-	OkteenMotionsEndEvent(Time, BuildingBlock* module);
-	OkteenMotionsEndEvent(OkteenMotionsEndEvent *ev);
-	~OkteenMotionsEndEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    OkteenMotionsEndEvent(Time, BuildingBlock* module);
+    OkteenMotionsEndEvent(OkteenMotionsEndEvent *ev);
+    ~OkteenMotionsEndEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 #endif /* OKTEENMOTIONSEVENTS_H_ */

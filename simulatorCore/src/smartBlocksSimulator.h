@@ -19,26 +19,26 @@ namespace SmartBlocks {
 
 class SmartBlocksSimulator : public BaseSimulator::Simulator {
 protected:
-	SmartBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
-	virtual ~SmartBlocksSimulator();
+    SmartBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
+    virtual ~SmartBlocksSimulator();
 
 public:
-	static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);   
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
 
-	static SmartBlocksSimulator* getSimulator() {
-		assert(simulator != NULL);
-		return((SmartBlocksSimulator*)simulator);
-	}
+    static SmartBlocksSimulator* getSimulator() {
+        assert(simulator != NULL);
+        return((SmartBlocksSimulator*)simulator);
+    }
 
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-						   int argc, char *argv[]);
-	virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-						   const Cell3DPosition &pos, const Color &color, bool master);
-	virtual void printInfo() { cout << "I'm a SmartBlocksSimulator" << endl; }
+                           int argc, char *argv[]) override;
+    virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
+                           const Cell3DPosition &pos, const Color &color, bool master) override;
+    virtual void printInfo() override { cout << "I'm a SmartBlocksSimulator" << endl; }
 };
 
 inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
-	SmartBlocksSimulator::createSimulator(argc, argv, bcb);
+    SmartBlocksSimulator::createSimulator(argc, argv, bcb);
 }
 
 inline SmartBlocksSimulator* getSimulator() { return(SmartBlocksSimulator::getSimulator()); }

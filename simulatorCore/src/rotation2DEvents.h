@@ -53,9 +53,9 @@ public:
     Rotation2DStartEvent(Time, Catoms2DBlock *block, Rotation2DMove &m);
     Rotation2DStartEvent(Rotation2DStartEvent *ev);
     ~Rotation2DStartEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -74,9 +74,9 @@ public:
     Rotation2DStepEvent(Time, Catoms2DBlock *block,const Vector3D &pivot,double angle2goal,int s, Time d);
     Rotation2DStepEvent(Rotation2DStepEvent *ev);
     ~Rotation2DStepEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -92,9 +92,9 @@ public:
     Rotation2DStopEvent(Time, Catoms2DBlock *block, Time d);
     Rotation2DStopEvent(Rotation2DStopEvent *ev);
     ~Rotation2DStopEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -108,9 +108,9 @@ public:
     Rotation2DEndEvent(Time, Catoms2DBlock *block);
     Rotation2DEndEvent(Rotation2DEndEvent *ev);
     ~Rotation2DEndEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 #endif

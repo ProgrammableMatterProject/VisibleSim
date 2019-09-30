@@ -58,15 +58,17 @@ Catoms2DBlock* Rotation2DMove::getPivot() {
 Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, Rotation2DMove &m): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_START;
-    
+
     pivot.set(m.getPivot()->ptrGlBlock->position[0],m.getPivot()->ptrGlBlock->position[1],m.getPivot()->ptrGlBlock->position[2]);
     angle = ANGLE;
     sens = m.getDirection();
     Distance r = defaultBlockSize[0]/2.0; // radius
     Distance d =  r*M_PI/3.0;
-    //cerr << "Distance: " << d << endl;
     duration = block->motionEngine->getDuration(d);
-    //cerr << "Motion duration (us): " << duration << endl;
+#ifdef DURATION_MOTION_DEBUG
+    cerr << "Total motion duration (us): " << duration << endl;
+    cerr << "Total motion distance (mm): " << d << endl;
+#endif
 }
 
 Rotation2DStartEvent::Rotation2DStartEvent(Rotation2DStartEvent *ev) : BlockEvent(ev) {
@@ -85,7 +87,7 @@ void Rotation2DStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
-    Catoms2DWorld::getWorld()->disconnectBlock(rb);
+    Catoms2DWorld::getWorld()->disconnectBlock(rb, false);
 #ifdef COLOR_MOTION_DEBUG
     rb->setColor(DARKGREY);
 #endif
@@ -93,15 +95,13 @@ void Rotation2DStartEvent::consume() {
     Time stepDuration = (long double)duration/(long double)steps;
     Time remaining = duration - stepDuration;
 #ifdef DURATION_MOTION_DEBUG
-    if (concernedBlock->blockId == 7) {
-      cerr << "----------" << endl;
-      cerr << "@" << concernedBlock->blockId << endl;
-      cerr << "Duration: " << duration << endl;
-      cerr << "Step duration: " << stepDuration << endl;
-      cerr << "Motion start at " << getScheduler()->now() << endl;
-      cerr << "Motion should end at " << getScheduler()->now()+duration << endl; 
-      cerr << "----------" << endl;
-    }
+    cerr << "----------" << endl;
+    cerr << "@" << concernedBlock->blockId << endl;
+    cerr << "Duration: " << duration << endl;
+    cerr << "Step duration: " << stepDuration << endl;
+    cerr << "Motion start at " << getScheduler()->now() << endl;
+    cerr << "Motion should end at " << getScheduler()->now()+duration << endl;
+    cerr << "----------" << endl;
 #endif
     scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + stepDuration, rb,pivot,angle,sens,remaining));
 }
@@ -143,16 +143,14 @@ void Rotation2DStepEvent::consume() {
 
     Scheduler *scheduler = getScheduler();
 #ifdef DURATION_MOTION_DEBUG
-    if (concernedBlock->blockId == 7) {
-      cerr << "@" << rb->blockId << " motion step, angle " << angle << " at " << getScheduler()->now() << " (" << date << ")" << endl; 
-    }
+    cerr << "@" << rb->blockId << " motion step, angle " << angle << " at " << getScheduler()->now() << " (" << date << ")" << endl;
 #endif
     Matrix roty;
 
     unsigned int steps = REMAINING_STEPS;
     Time stepDuration = (long double)duration/(long double)steps;
     Time remaining = duration - stepDuration;
-    
+
     if (angle < ANGULAR_STEP) {
         scheduler->schedule(new Rotation2DStopEvent(scheduler->now() + duration,rb,duration));
     } else {
@@ -166,7 +164,7 @@ void Rotation2DStepEvent::consume() {
         Catoms2DWorld::getWorld()->updateGlData(rb,pos,
                                                 ((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+ANGULAR_STEP*sens);
         scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + stepDuration,rb,
-						    pivot,angle-ANGULAR_STEP,sens,remaining));
+                            pivot,angle-ANGULAR_STEP,sens,remaining));
     }
 }
 
@@ -215,27 +213,26 @@ void Rotation2DStopEvent::consume() {
 #endif
 
     rb->setPosition(gridPos);
-    
+
+    rb->angle = rb->angle%360;
 #ifdef COLOR_MOTION_DEBUG
     rb->setColor(YELLOW);
 #endif
 
 #ifdef DURATION_MOTION_DEBUG
-    if (concernedBlock->blockId == 7) {
-      cerr << "----------" << endl;
-      cerr << "@" << concernedBlock->blockId << endl;
-      cerr << "Now: " << getScheduler()->now() << endl;
-      cerr << "Motion end at " << date << endl;
-      cerr << "Communication should be re-established at " << date + COM_DELAY << endl;
-      cerr << "----------" << endl;
-    }
+    cerr << "----------" << endl;
+    cerr << "@" << concernedBlock->blockId << endl;
+    cerr << "Now: " << getScheduler()->now() << endl;
+    cerr << "Motion end at " << date << endl;
+    cerr << "Communication should be re-established at " << date + COM_DELAY << endl;
+    cerr << "----------" << endl;
 #endif
-    
+
     stringstream info;
     info.str("");
     info << "connect Block " << rb->blockId;
     getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
-    wrld->connectBlock(rb);
+    wrld->connectBlock(rb, false);
 
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(rb->stats);

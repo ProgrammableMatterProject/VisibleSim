@@ -17,13 +17,13 @@ class MultiRobotsBlock;
 
 class MultiRobotsBlockCode : public BaseSimulator::BlockCode {
 public:
-	
-	MultiRobotsBlockCode(MultiRobotsBlock *host);
-	virtual ~MultiRobotsBlockCode();
 
-	virtual void init() {};
-	
-	virtual void processLocalEvent(EventPtr pev) = 0;
+    MultiRobotsBlockCode(MultiRobotsBlock *host);
+    virtual ~MultiRobotsBlockCode();
+
+    virtual void init() override {}
+
+    virtual void processLocalEvent(EventPtr pev) override = 0;
 };
 
 }

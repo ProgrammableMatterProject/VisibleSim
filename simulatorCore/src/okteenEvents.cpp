@@ -39,7 +39,7 @@ OkteenMotionsStartEvent::~OkteenMotionsStartEvent() {
 void OkteenMotionsStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
-    OkteenWorld::getWorld()->disconnectBlock(motion.module);
+    OkteenWorld::getWorld()->disconnectBlock(motion.module, false);
 
     motion.module->setColor(DARKGREY);
     motion.init();
@@ -112,7 +112,9 @@ OkteenMotionsStopEvent::~OkteenMotionsStopEvent() {
 
 void OkteenMotionsStopEvent::consume() {
     EVENT_CONSUME_INFO();
+#ifdef COLOR_MOTION_DEBUG
     motion.module->setColor(YELLOW);
+#endif
 
     Cell3DPosition position;
 /* Transformer les coordonnées GL en coordonnées grille*/
@@ -125,7 +127,7 @@ void OkteenMotionsStopEvent::consume() {
     info.str("");
     info << "connect Block " << motion.module->blockId;
     getScheduler()->trace(info.str(),motion.module->blockId,LIGHTBLUE);
-    wrld->connectBlock(motion.module);
+    wrld->connectBlock(motion.module, false);
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new OkteenMotionsEndEvent(scheduler->now() + ANIMATION_DELAY, motion.module));
 }
@@ -215,9 +217,9 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
-        break;
+            break;
         case SCLattice::Right:
             switch (axisDir) {
                 case SCLattice::Top:
@@ -254,9 +256,9 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
-        break;
+            break;
         case SCLattice::Front:
             switch (axisDir) {
                 case SCLattice::Top:
@@ -293,9 +295,9 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
-        break;
+            break;
         case SCLattice::Back:
             OUTPUT << "BACK" <<endl;
             initConnectorDir.set(0,-2.828427,0);
@@ -337,7 +339,7 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
         case SCLattice::Top:
             switch (axisDir) {
@@ -375,7 +377,7 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
         case SCLattice::Bottom:
             switch (axisDir) {
@@ -413,14 +415,17 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
-            }
+                    break;
+            } break;
+        default:
+            OUTPUT << "Error: invalid motion" << endl;
+            break;
     }
 /*    translation = lattice->getNeighborRelativePos(connector);
-    translation.pt[0]*=lattice->gridScale[0];
-    translation.pt[1]*=lattice->gridScale[1];
-    translation.pt[2]*=lattice->gridScale[2];
-    axis=lattice->getNeighborRelativePos(axisDir);*/
+      translation.pt[0]*=lattice->gridScale[0];
+      translation.pt[1]*=lattice->gridScale[1];
+      translation.pt[2]*=lattice->gridScale[2];
+      axis=lattice->getNeighborRelativePos(axisDir);*/
 }
 
 bool OkteenMotions::nextStep(Matrix &m) {
@@ -450,4 +455,3 @@ void OkteenMotions::getFinalPosition(Cell3DPosition &position) {
     SCLattice* lattice = (SCLattice *)((Okteen::getWorld())->lattice);
     position = lattice->worldToGridPosition(finalPos);
 }
-

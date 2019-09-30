@@ -47,7 +47,9 @@ MeldProcessVM::MeldProcessVM(BuildingBlock* bb){
 		
 	vmLogFile << "VM" << hostBlock->blockId << ".log";
    
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "VM "<< hostBlock->blockId << " constructor" << endl;
+#endif
 	// Start the VM
 	pid = 0;
 	memset(inBuffer,0,VM_COMMAND_MAX_LENGHT*sizeof(commandType));

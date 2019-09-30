@@ -27,9 +27,9 @@ public:
     TranslationStartEvent(Time, BuildingBlock *block,const Vector3D &fpos);
     TranslationStartEvent(TranslationStartEvent *ev);
     ~TranslationStartEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -45,12 +45,12 @@ class TranslationStepEvent : public BlockEvent {
 public:
     TranslationStepEvent(Time, BuildingBlock *block,const Vector3D &fpos);
     TranslationStepEvent(Time, BuildingBlock *block,const Vector3D &fpos,
-		    const Vector3D &step, const Vector3D &mpos);
+            const Vector3D &step, const Vector3D &mpos);
     TranslationStepEvent(TranslationStepEvent *ev);
     ~TranslationStepEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -65,9 +65,9 @@ public:
     TranslationStopEvent(Time, BuildingBlock *block,const Vector3D &fpos);
     TranslationStopEvent(TranslationStepEvent *ev);
     ~TranslationStopEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -81,9 +81,9 @@ public:
     TranslationEndEvent(Time, BuildingBlock *block);
     TranslationEndEvent(TranslationEndEvent *ev);
     ~TranslationEndEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 }

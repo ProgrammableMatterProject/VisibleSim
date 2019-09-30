@@ -47,38 +47,38 @@ public:
         OUTPUT << "I'm a OkteenWorld" << endl;
     }
 
-    virtual OkteenBlock* getBlockById(int bId) {
+    virtual OkteenBlock* getBlockById(int bId) override {
         return((OkteenBlock*)World::getBlockById(bId));
     }
 
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation, bool master);
+                          short orientation, bool master) override;
 
     /**
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
      */
-    virtual void linkBlock(const Cell3DPosition &pos);
+    virtual void linkBlock(const Cell3DPosition &pos) override;
 
-    virtual void glDraw();
-    virtual void glDrawId();
-    virtual void glDrawIdByMaterial();
-    void updateGlData(BuildingBlock *bb);
+    virtual void glDraw() override;
+    virtual void glDrawId() override;
+    virtual void glDrawIdByMaterial() override;
+    void updateGlData(BuildingBlock *bb) override;
     void updateGlData(OkteenBlock*blc,const Color &color);
     void updateGlData(OkteenBlock*blc, bool visible);
     void updateGlData(OkteenBlock*blc, const Cell3DPosition &position);
     void updateGlData(OkteenBlock*blc, const Vector3D &position);
     void updateGlData(OkteenBlock*blc, const Matrix &mat);
     void updateGlData(OkteenBlock*blc, short id, float length);
-    virtual void setSelectedFace(int n);
-    virtual void exportConfiguration();
+    virtual void setSelectedFace(int n) override;
+    virtual void exportConfiguration() override;
 
-    virtual void disconnectBlock(BuildingBlock *block);
+    virtual void disconnectBlock(BuildingBlock *block, bool count = false);
 
 /**
  * \brief load the background textures (internal)
  */
-    void loadTextures(const string &str);
+    void loadTextures(const string &str) override;
 
 };
 

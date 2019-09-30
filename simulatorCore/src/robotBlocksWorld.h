@@ -41,35 +41,39 @@ public:
         OUTPUT << "I'm a RobotBlocksWorld" << endl;
     }
 
-    virtual RobotBlocksBlock* getBlockById(int bId) {
+    virtual RobotBlocksBlock* getBlockById(int bId) override {
         return((RobotBlocksBlock*)World::getBlockById(bId));
     }
-    
+
     /**
      * @copydoc World::addBlock
      */
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation = 0, bool master = false);
+                          short orientation = 0, bool master = false) override;
     /**
      * \copydoc World::linkBlock
      */
-    virtual void linkBlock(const Cell3DPosition &pos);
+    virtual void linkBlock(const Cell3DPosition &pos) override;
     /**
      * \copydoc World::loadTextures
      */
-    virtual void loadTextures(const string &str);
+    virtual void loadTextures(const string &str) override;
     /**
      * @copydoc World::glDraw
      */
-    virtual void glDraw();
+    virtual void glDraw() override;
     /**
      * @copydoc World::glDrawId
      */
-    virtual void glDrawId();
+    virtual void glDrawId() override;
     /**
      * @copydoc World::glDrawIdByMaterial
      */
-    virtual void glDrawIdByMaterial();
+    virtual void glDrawIdByMaterial() override;
+    /**
+     * @copydoc World::glDrawSpecificBg
+     */
+    virtual void glDrawSpecificBg() override;
     /**
      * @copydoc World::updateGlData
      */
@@ -77,11 +81,11 @@ public:
     /**
      * @copydoc World::setSelectedFace
      */
-    virtual void setSelectedFace(int n);
+    virtual void setSelectedFace(int n) override;
     /**
      * @copydoc World::exportConfiguration
      */
-    virtual void exportConfiguration();
+    virtual void exportConfiguration() override;
 };
 
 inline void deleteWorld() {

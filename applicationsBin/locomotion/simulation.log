@@ -1,0 +1,297 @@
+[1;34mSimulator constructor[0m
+[1;34m  config15a_2.xml successfully loaded [0m
+[1;34mRobotBlocksSimulator constructor[0m
+grid size : 11 x 10 x 4
+blocksize =10,10,10
+World constructor
+initShaders
+Compilation of the Vertex Program
+compilation OK
+Compilation of the Fragment Program
+compilation OK
+Shaders initialized.
+loading ../../simulatorCore/resources/textures/UITextures/fenetre_onglet.tga
+loading ../../simulatorCore/resources/textures/UITextures/boutons_fg.tga
+loading ../../simulatorCore/resources/textures/UITextures/boutons_fd.tga
+loading ../../simulatorCore/resources/textures/UITextures/boutons_zoom.tga
+loading ../../simulatorCore/resources/textures/UITextures/slider.tga
+loading ../../simulatorCore/resources/textures/UITextures/fenetre_ongletDBG.tga
+loading ../../simulatorCore/resources/textures/UITextures/boutons_fg.tga
+loading ../../simulatorCore/resources/textures/UITextures/boutons_fd.tga
+loading ../../simulatorCore/resources/textures/UITextures/slider.tga
+[1;31mRobotBlocksWorld constructor[0m
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+No 'lighted' texture in obj file :robotBlockPicking.obj
+No 'lighted' texture in obj file :repere25.obj
+loading ../../simulatorCore/resources/textures/latticeTextures/texture_plane.tga
+Scheduler constructor
+CPPScheduler constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+add target (2,2,1),(0.501961,0.501961,0.501961,1)
+add target (2,5,1),(0.501961,0.501961,0.501961,1)
+add target (2,6,1),(0.501961,0.501961,0.501961,1)
+add target (3,2,1),(0.501961,0.501961,0.501961,1)
+add target (3,5,1),(0.501961,0.501961,0.501961,1)
+add target (3,6,1),(0.501961,0.501961,0.501961,1)
+add target (4,2,1),(0.501961,0.501961,0.501961,1)
+add target (4,5,1),(0.501961,0.501961,0.501961,1)
+add target (4,6,1),(0.501961,0.501961,0.501961,1)
+add target (5,2,1),(0.501961,0.501961,0.501961,1)
+add target (5,3,1),(0.501961,0.501961,0.501961,1)
+add target (5,4,1),(0.501961,0.501961,0.501961,1)
+add target (5,5,1),(0.501961,0.501961,0.501961,1)
+add target (5,6,1),(0.501961,0.501961,0.501961,1)
+add target (6,2,1),(0.501961,0.501961,0.501961,1)
+add target (6,3,1),(0.501961,0.501961,0.501961,1)
+add target (6,6,1),(0.501961,0.501961,0.501961,1)
+add target (7,2,1),(0.501961,0.501961,0.501961,1)
+add target (7,3,1),(0.501961,0.501961,0.501961,1)
+add target (7,6,1),(0.501961,0.501961,0.501961,1)
+add target (8,2,1),(0.501961,0.501961,0.501961,1)
+add target (8,3,1),(0.501961,0.501961,0.501961,1)
+add target (8,6,1),(0.501961,0.501961,0.501961,1)
+cell:(1,2,1)

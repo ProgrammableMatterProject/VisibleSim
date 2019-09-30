@@ -28,7 +28,7 @@ namespace Catoms2D {
 
 Catoms2DWorld::Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                              int argc, char *argv[]):World(argc, argv) {
-    OUTPUT << "\033[1;31mCatoms2DWorld constructor\033[0m" << endl;
+    OUTPUT << TermColor::LifecycleColor << "Catoms2DWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms2DTextures",
@@ -42,7 +42,9 @@ Catoms2DWorld::Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 }
 
 Catoms2DWorld::~Catoms2DWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms2DWorld destructor" << endl;
+#endif
     /*	block linked are deleted by world::~world() */
 }
 
@@ -52,10 +54,10 @@ void Catoms2DWorld::deleteWorld() {
 void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
                              const Cell3DPosition &pos, const Color &col,
                              short orientation, bool master) {
-	if (blockId > maxBlockId)
-		maxBlockId = blockId;
-	else if (blockId == 0)
-		blockId = incrementBlockId();
+    if (blockId > maxBlockId)
+        maxBlockId = blockId;
+    else if (blockId == 0)
+        blockId = incrementBlockId();
 
     Catoms2DBlock *catom2D = new Catoms2DBlock(blockId,bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
@@ -64,7 +66,7 @@ void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom2D));
 
     Catoms2DGlBlock *glBlock = new Catoms2DGlBlock(blockId);
-    tabGlBlocks.push_back(glBlock);
+    mapGlBlocks.insert(make_pair(blockId, glBlock));
     catom2D->setGlBlock(glBlock);
 
     catom2D->setPosition(pos);
@@ -96,8 +98,10 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
                 connect(ptrNeighbor->getInterface(HLattice::Direction(
                                                       lattice->getOppositeDirection(i))));
 
-            // OUTPUT << "connection #" << (ptrBlock)->blockId <<
-            //     " to #" << ptrNeighbor->blockId << endl;
+#ifdef DEBUG_NEIGHBORHOOD
+            OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                " to #" << ptrNeighbor->blockId << endl;
+#endif
         } else {
             (ptrBlock)->getInterface(HLattice::Direction(i))->connect(NULL);
         }
@@ -108,15 +112,48 @@ void Catoms2DWorld::glDraw() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
     glDisable(GL_TEXTURE_2D);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((Catoms2DGlBlock*)(*ic))->glDraw(objBlock);
-        ic++;
+    for (const auto& pair : mapGlBlocks) {
+        ((Catoms2DGlBlock*)pair.second)->glDraw(objBlock);
     }
     unlock();
     glPopMatrix();
 
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
+
+    glDrawBackground();
+}
+
+
+void Catoms2DWorld::glDrawId() {
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
+
+    glDisable(GL_TEXTURE_2D);
+    lock();
+    for (const auto& pair : mapGlBlocks) {
+        ((Catoms2DGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
+    }
+    unlock();
+    glPopMatrix();
+}
+
+void Catoms2DWorld::glDrawIdByMaterial() {
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
+
+    glDisable(GL_TEXTURE_2D);
+    int n=1;
+    lock();
+    for (const auto& pair : mapGlBlocks) {
+        ((Catoms2DGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
+    }
+    unlock();
+    glPopMatrix();
+}
+
+void Catoms2DWorld::glDrawSpecificBg() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},gray[]={0.2f,0.2f,0.2f,1.0f};
 
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
@@ -209,39 +246,6 @@ void Catoms2DWorld::glDraw() {
     glPopMatrix();
 }
 
-void Catoms2DWorld::glDrawId() {
-    glPushMatrix();
-    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
-
-    glDisable(GL_TEXTURE_2D);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    int n=1;
-    lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((Catoms2DGlBlock*)(*ic))->glDrawId(objBlock,n);
-        ic++;
-    }
-    unlock();
-    glPopMatrix();
-}
-
-void Catoms2DWorld::glDrawIdByMaterial() {
-    glPushMatrix();
-    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
-
-    glDisable(GL_TEXTURE_2D);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    int n=1;
-    lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((Catoms2DGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
-        ic++;
-    }
-    unlock();
-    glPopMatrix();
-}
-
-
 void Catoms2DWorld::loadTextures(const string &str) {
     string path = str+"//hexa.tga";
     int lx,ly;
@@ -292,7 +296,7 @@ bool Catoms2DWorld::areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &po
 }
 
 void Catoms2DWorld::menuChoice(int n) {
-    Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
+    Catoms2DBlock *bb = (Catoms2DBlock *)getSelectedBuildingBlock();
     switch (n) {
     case 5: {                 // Move Left
         // Identify pivot
@@ -350,7 +354,7 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
     // cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
     //      << " selected" << endl;
 
-    Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
+    Catoms2DBlock *bb = (Catoms2DBlock *)getSelectedBuildingBlock();
 
     GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
     GlutContext::popupMenu->activate(5, bb->getCCWMovePivotId() != -1);
@@ -360,8 +364,8 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
 }
 
 void Catoms2DWorld::exportConfiguration() {
-	Catoms2DConfigExporter exporter = Catoms2DConfigExporter(this);
-	exporter.exportConfiguration();
+    Catoms2DConfigExporter exporter = Catoms2DConfigExporter(this);
+    exporter.exportConfiguration();
 }
 
 } // Catoms2D namespace
