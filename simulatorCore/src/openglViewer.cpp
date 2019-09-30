@@ -586,16 +586,16 @@ void GlutContext::showFPS(void) {
 }
 
 void GlutContext::showSimulationInfo(void) {
-    // auto font = GLUT_BITMAP_HELVETICA_18;
-    // char str[32];
+    auto font = GLUT_BITMAP_HELVETICA_18;
+    char str[32];
 
-    //     glColor4f(1.0,1.0,1.0,0.75);
+        glColor4f(1.0,1.0,1.0,0.75);
 
-    // sprintf(str,"Timestep: %lu", timestep);
-    // GlutWindow::drawString(50, 50, str, font);
+    sprintf(str,"Timestep: %lu", timestep);
+    GlutWindow::drawString(50, 50, str, font);
 
-    // sprintf(str,"Nb modules: %u", nbModules);
-    // GlutWindow::drawString(50, 25, str, font);
+    sprintf(str,"Nb modules: %u", nbModules);
+    GlutWindow::drawString(50, 25, str, font);
 }
 
 void GlutContext::drawFunc(void) {

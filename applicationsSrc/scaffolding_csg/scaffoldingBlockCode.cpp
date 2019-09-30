@@ -97,165 +97,169 @@ void ScaffoldingBlockCode::onAssertTriggered() {
 }
 
 void ScaffoldingBlockCode::onBlockSelected() {
-#ifndef ROTATION_STEP_MATRIX_EXPORT
+// #ifndef ROTATION_STEP_MATRIX_EXPORT
 
-    if (BUILDING_MODE) {
-        cout << "localNeighborhood: " << int_to_hex_str((int)getLocalNeighborhoodState().to_ulong(), 3) << " (";
-        for (int i = 0; i < 12; i++)
-            cout << getLocalNeighborhoodState()[i];
-        cout << ")" << endl;
-        return;
+//     if (BUILDING_MODE) {
+//         cout << "localNeighborhood: " << int_to_hex_str((int)getLocalNeighborhoodState().to_ulong(), 3) << " (";
+//         for (int i = 0; i < 12; i++)
+//             cout << getLocalNeighborhoodState()[i];
+//         cout << ")" << endl;
+//         return;
+//     }
+
+//     // const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+//     // const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+//     // Cell3DPosition pos;
+//     // for (short iz = glb[2]; iz < ulb[2]; iz++) {
+//     //     for (short iy = glb[1]; iy < ulb[1]; iy++) {
+//     //         for (short ix = glb[0]; ix < ulb[0]; ix++) {
+//     //             pos.set(ix, iy, iz);
+//     //             if (target->isInTarget(pos)) lattice->highlightCell(pos, YELLOW);
+//     //         }
+//     //     }
+//     // }
+
+
+//     // Debug:
+//     // (1) Print details of branch growth plan and previous round
+//     cout << endl << "--- PRINT MODULE " << *catom << "---" << endl;
+//     if (role == Coordinator) {
+//         // cout << "Growth Plan: [ ";
+//         // for (int i = 0; i < 6; i++)
+//         //     cout << catomsReqByBranch[i] << ", ";
+//         // cout << " ]" << endl;
+
+//         cout << "Construction Queue: [ " << endl;
+//         cout << "|   Component   |   EPL  |" << endl << endl;
+//         for (const auto& pair : constructionQueue) {
+//             cout << "\t{ " << ruleMatcher->component_to_string(pair.first) << ", "
+//                  << ruleMatcher->component_to_string(pair.second) << " }" << endl;
+//         }
+//         cout << "]" << endl;
+
+//         // cout << "sandboxResourcesRequirement: " << endl;
+//         // for (int bi = 0; bi < XBranch; bi++)
+//         //     cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
+//         //         sandboxResourcesRequirement.find(
+//         //             ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))->second
+//         //          << endl;
+
+//         // cout << "ResourcesForTileThrough: " << endl;
+//         // for (int bi = 0; bi < XBranch; bi++)
+//         //     cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
+//         //         resourcesForTileThrough(catom->position, ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))
+//         //          << endl;
+
+
+//         cout << "NbIncidentVerticalCSGBranches: " << ruleMatcher->getNbIncidentVerticalBranches(norm(catom->position)) << endl;
+//         cout << "NbIncidentBranches: " << ruleMatcher->getNbIncidentBranches(norm(catom->position)) << endl;
+//     }
+
+//     if (ruleMatcher->isTileRoot(norm(catom->position))) {
+//         for (int i = 0; i < N_BRANCHES; i++)
+//             cout << "hasIncidentBranch("
+//                  << ruleMatcher->branch_to_string((BranchIndex)i) << "): "
+//                  << ruleMatcher->hasIncidentBranch(norm(catom->position), (BranchIndex)i)
+//                  << endl;
+//         cout << "numIncidentVerticalBranches: " << numIncidentVerticalBranches << endl;
+
+//         if (not constructionQueue.empty())
+//             cout << "nextPos: "
+//                  << ruleMatcher->component_to_string(constructionQueue.front().first)
+//                  << endl;
+//         else
+//             cout << "nextPos: " << "NULL" << endl;
+
+//         for (int i = 0; i < N_BRANCHES; i++) {
+//             BranchIndex bi = (BranchIndex)i;
+//             cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
+//                  << ruleMatcher->resourcesForBranch(norm(catom->position), bi) << endl;
+//         }
+
+//         cout << "numExpectedTCF: " << numExpectedTCF << endl;
+//         cout << "numReceivedTCF: " << numReceivedTCF << endl;
+//     }
+
+//     if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
+//         const Cell3DPosition& cPos = catom->position+ruleMatcher->getBranchUnitOffset(branch);
+
+//         cout << "Next to coordinator: " << cPos << endl;
+//         for (int i = 0; i < N_BRANCHES; i++) {
+//             BranchIndex bi = (BranchIndex)i;
+//             cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
+//                  << ruleMatcher->resourcesForBranch(norm(cPos), bi) << endl;
+//         }
+
+//         vector<BranchIndex> mb;
+//         cout << "incidentBranchesToRootAreComplete: "
+//              << incidentBranchesToRootAreComplete(cPos, mb) << endl;
+//         for (int i = 0; i < N_BRANCHES; i++) {
+//             BranchIndex bi = (BranchIndex)i;
+//             cout << "isIncidentBranchTipInPlace(" << ruleMatcher->branch_to_string(bi)
+//              << "): " << isIncidentBranchTipInPlace(cPos, bi) << endl;
+//         }
+
+//         for (int i = 0; i < N_BRANCHES; i++)
+//             cout << "hasIncidentBranch("
+//                  << ruleMatcher->branch_to_string((BranchIndex)i) << "): "
+//                  << ruleMatcher->hasIncidentBranch(norm(cPos), (BranchIndex)i)
+//                  << endl;
+//     }
+
+//     // if (ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position))) {
+//     //     if (not ruleMatcher->isTileRoot(norm(catom->position))) {
+//     //         cout << "branch: " << ruleMatcher->branch_to_string(branch)
+//     //              << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
+//     //     }
+
+//     //     cout << "coordinatorPos: " << coordinatorPos << endl;
+//     //     cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(coordinatorPos) << endl;
+//     //     cout << "isSupportModule: " << ruleMatcher->isSupportModule(sbnorm(catom->position)) << endl;
+//     //     cout << "tileRootPosForMeshPos: " << getTileRootPosition(catom->position) << endl;
+//     // } else {
+//     //     cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)))) << endl;
+//     // }
+
+//     // cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
+//     // cout << "role: " << ScaffoldingRuleMatcher::roleToString(role) << endl;
+//     cout << "localNeighborhood: " << int_to_hex_str((int)getMeshLocalNeighborhoodState().to_ulong(), 3) << " (";
+//     for (int i = 0; i < 12; i++)
+//         cout << getMeshLocalNeighborhoodState()[i];
+//     cout << ")" << endl;
+
+//     cout << "targetPosition: " << targetPosition;
+//     if (targetPosition != Cell3DPosition(0,0,0)
+//         and ruleMatcher->isInMesh(norm(targetPosition))
+//         and ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
+//         cout << "[" << ScaffoldingRuleMatcher::component_to_string(
+//             static_cast<ScafComponent>(ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
+//     cout << endl;
+
+//     Cell3DPosition nextHop;
+//     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
+//                     targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
+//     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
+//     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
+//     cout << "isInCSGMeshOrSandbox: "<<ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position)) <<endl;
+
+//     cout << "seedForCSGLayer: " << denorm(ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B)) << endl;
+
+//     // cout << "matchingLocalRule: " << matchingLocalRule << endl;
+//     // cout << "greenLightIsOn: " << greenLightIsOn << endl;
+//     // cout << "pivotPosition: " << pivotPosition << endl;
+//     // cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
+//     // cout << "--- END " << *catom << "---" << endl;
+// #else
+    int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
+    if (coordinatorPos == Cell3DPosition(9,9,3)
+        and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) {
+        OUTPUT << "here|";
+        VS_ASSERT(mc != -1);
+        OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
+        OUTPUT << ruleMatcher->component_to_string(static_cast<ScafComponent>(mc)) << "|";
+        OUTPUT << ((targetPosition == motionDest) and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) << "|";
     }
-
-    // const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
-    // const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-    // Cell3DPosition pos;
-    // for (short iz = glb[2]; iz < ulb[2]; iz++) {
-    //     for (short iy = glb[1]; iy < ulb[1]; iy++) {
-    //         for (short ix = glb[0]; ix < ulb[0]; ix++) {
-    //             pos.set(ix, iy, iz);
-    //             if (target->isInTarget(pos)) lattice->highlightCell(pos, YELLOW);
-    //         }
-    //     }
-    // }
-
-
-    // Debug:
-    // (1) Print details of branch growth plan and previous round
-    cout << endl << "--- PRINT MODULE " << *catom << "---" << endl;
-    if (role == Coordinator) {
-        // cout << "Growth Plan: [ ";
-        // for (int i = 0; i < 6; i++)
-        //     cout << catomsReqByBranch[i] << ", ";
-        // cout << " ]" << endl;
-
-        cout << "Construction Queue: [ " << endl;
-        cout << "|   Component   |   EPL  |" << endl << endl;
-        for (const auto& pair : constructionQueue) {
-            cout << "\t{ " << ruleMatcher->component_to_string(pair.first) << ", "
-                 << ruleMatcher->component_to_string(pair.second) << " }" << endl;
-        }
-        cout << "]" << endl;
-
-        // cout << "sandboxResourcesRequirement: " << endl;
-        // for (int bi = 0; bi < XBranch; bi++)
-        //     cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
-        //         sandboxResourcesRequirement.find(
-        //             ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))->second
-        //          << endl;
-
-        // cout << "ResourcesForTileThrough: " << endl;
-        // for (int bi = 0; bi < XBranch; bi++)
-        //     cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
-        //         resourcesForTileThrough(catom->position, ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))
-        //          << endl;
-
-
-        cout << "NbIncidentVerticalCSGBranches: " << ruleMatcher->getNbIncidentVerticalBranches(norm(catom->position)) << endl;
-        cout << "NbIncidentBranches: " << ruleMatcher->getNbIncidentBranches(norm(catom->position)) << endl;
-    }
-
-    if (ruleMatcher->isTileRoot(norm(catom->position))) {
-        for (int i = 0; i < N_BRANCHES; i++)
-            cout << "hasIncidentBranch("
-                 << ruleMatcher->branch_to_string((BranchIndex)i) << "): "
-                 << ruleMatcher->hasIncidentBranch(norm(catom->position), (BranchIndex)i)
-                 << endl;
-        cout << "numIncidentVerticalBranches: " << numIncidentVerticalBranches << endl;
-
-        if (not constructionQueue.empty())
-            cout << "nextPos: "
-                 << ruleMatcher->component_to_string(constructionQueue.front().first)
-                 << endl;
-        else
-            cout << "nextPos: " << "NULL" << endl;
-
-        for (int i = 0; i < N_BRANCHES; i++) {
-            BranchIndex bi = (BranchIndex)i;
-            cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
-                 << ruleMatcher->resourcesForBranch(norm(catom->position), bi) << endl;
-        }
-
-        cout << "numExpectedTCF: " << numExpectedTCF << endl;
-        cout << "numReceivedTCF: " << numReceivedTCF << endl;
-    }
-
-    if (ruleMatcher->isVerticalBranchTip(norm(catom->position))) {
-        const Cell3DPosition& cPos = catom->position+ruleMatcher->getBranchUnitOffset(branch);
-
-        cout << "Next to coordinator: " << cPos << endl;
-        for (int i = 0; i < N_BRANCHES; i++) {
-            BranchIndex bi = (BranchIndex)i;
-            cout << "Res4branch: " << ruleMatcher->branch_to_string(bi) << ": "
-                 << ruleMatcher->resourcesForBranch(norm(cPos), bi) << endl;
-        }
-
-        vector<BranchIndex> mb;
-        cout << "incidentBranchesToRootAreComplete: "
-             << incidentBranchesToRootAreComplete(cPos, mb) << endl;
-        for (int i = 0; i < N_BRANCHES; i++) {
-            BranchIndex bi = (BranchIndex)i;
-            cout << "isIncidentBranchTipInPlace(" << ruleMatcher->branch_to_string(bi)
-             << "): " << isIncidentBranchTipInPlace(cPos, bi) << endl;
-        }
-
-        for (int i = 0; i < N_BRANCHES; i++)
-            cout << "hasIncidentBranch("
-                 << ruleMatcher->branch_to_string((BranchIndex)i) << "): "
-                 << ruleMatcher->hasIncidentBranch(norm(cPos), (BranchIndex)i)
-                 << endl;
-    }
-
-    // if (ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position))) {
-    //     if (not ruleMatcher->isTileRoot(norm(catom->position))) {
-    //         cout << "branch: " << ruleMatcher->branch_to_string(branch)
-    //              << " -> " << ruleMatcher->getBranchUnitOffset(branch) << endl;
-    //     }
-
-    //     cout << "coordinatorPos: " << coordinatorPos << endl;
-    //     cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(coordinatorPos) << endl;
-    //     cout << "isSupportModule: " << ruleMatcher->isSupportModule(sbnorm(catom->position)) << endl;
-    //     cout << "tileRootPosForMeshPos: " << getTileRootPosition(catom->position) << endl;
-    // } else {
-    //     cout << "incidentBranchesToRootAreComplete: " << incidentBranchesToRootAreComplete(denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position)))) << endl;
-    // }
-
-    // cout << "nearestCoordinatorPos: " << denorm(ruleMatcher->getNearestTileRootPosition(norm(catom->position))) << endl;
-    // cout << "role: " << ScaffoldingRuleMatcher::roleToString(role) << endl;
-    cout << "localNeighborhood: " << int_to_hex_str((int)getMeshLocalNeighborhoodState().to_ulong(), 3) << " (";
-    for (int i = 0; i < 12; i++)
-        cout << getMeshLocalNeighborhoodState()[i];
-    cout << ")" << endl;
-
-    cout << "targetPosition: " << targetPosition;
-    if (targetPosition != Cell3DPosition(0,0,0)
-        and ruleMatcher->isInMesh(norm(targetPosition))
-        and ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos) != -1)
-        cout << "[" << ScaffoldingRuleMatcher::component_to_string(
-            static_cast<ScafComponent>(ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
-    cout << endl;
-
-    Cell3DPosition nextHop;
-    matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
-                    targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
-    cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
-    cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
-    cout << "isInCSGMeshOrSandbox: "<<ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position)) <<endl;
-
-    cout << "seedForCSGLayer: " << denorm(ruleMatcher->getSeedForCSGLayer(coordinatorPos[2] / B)) << endl;
-
-    // cout << "matchingLocalRule: " << matchingLocalRule << endl;
-    // cout << "greenLightIsOn: " << greenLightIsOn << endl;
-    // cout << "pivotPosition: " << pivotPosition << endl;
-    // cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
-    // cout << "--- END " << *catom << "---" << endl;
-#else
-    // int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
-    // VS_ASSERT(mc != -1);
-    // OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
-    // OUTPUT << ruleMatcher->component_to_string(static_cast<ScafComponent>(mc)) << "|";
-    // OUTPUT << ((targetPosition == motionDest) and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) << "|";
-#endif
+// #endif
 }
 
 void ScaffoldingBlockCode::startup() {
