@@ -110,7 +110,7 @@ public :
     ForcesPredictionIPPTCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) { module=host; };
     ~ForcesPredictionIPPTCode() {};
 
-    void startup();
+    void startup() override;
 
     void SetNeighbors();
 
