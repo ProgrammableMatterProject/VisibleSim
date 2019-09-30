@@ -314,8 +314,6 @@ void ForcesPredictionIPPTCode::printNeighbors() {
 
 
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
-        cout <<"hello" << endl;
-
     cerr << "blockId=" << module->blockId << endl;
     console << "blockId=" << module->blockId << "\n";
 

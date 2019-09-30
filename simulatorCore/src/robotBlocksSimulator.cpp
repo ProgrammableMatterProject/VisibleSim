@@ -60,6 +60,7 @@ void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockC
 
     // Finally, add block to the world
     ((RobotBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
+    world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
 } // RobotBlocks namespace
