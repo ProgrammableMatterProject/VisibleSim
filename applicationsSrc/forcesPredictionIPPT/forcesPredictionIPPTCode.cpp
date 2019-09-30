@@ -25,6 +25,38 @@ double globalEps = pow(10,-8); // //tolerance
 double globalGamma = pow(10,-6); //stiffness reduction multiplier (for unilateral contact)
 double globalSupportZ = 0; //Z coordinate of the bottom modules (contacting with the support)
 
+bool ForcesPredictionIPPTCode::parseUserCommandLineArgument(int argc, char *argv[]) {
+    /* Reading the command line, make sure that options do not overlap with the
+     *  ones from the simulator itself (check with -h)
+     */
+    if ((argc > 0) && (argv[0][0] == '-')) {
+        switch(argv[0][1]) {
+            case 'b':
+                argc--;
+                argv++;
+
+                // example
+                cout << "Custom CLI option B enabled" << endl;
+
+                return true;
+        }
+    }
+
+    return false;
+}
+
+void ForcesPredictionIPPTCode::onBlockSelected() {
+    // Do something when ctrl->clicking a module from the GUI
+    cout << "Module #" << module->blockId << " was clicked at t = "
+         << scheduler->now() << endl;
+}
+
+void ForcesPredictionIPPTCode::onAssertTriggered() {
+    // see VS_ASSERT and VS_ASSERT_MSG in simulatorCore/src/utils.h
+    cout << "Module #" << module->blockId << " triggered a VisibleSim assertion at t = "
+         << scheduler->now() << endl;
+}
+
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {

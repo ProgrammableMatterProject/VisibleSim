@@ -153,8 +153,12 @@ public :
     void mstQMessage(P2PNetworkInterface *sender);
     void mstRMessage(const MessageOf<mstData>*msg,P2PNetworkInterface *sender);
 
-    void parseUserElements(TiXmlDocument* config);
-    void parseUserBlockElements(TiXmlElement* config);
+    void parseUserElements(TiXmlDocument* config) override;
+    void parseUserBlockElements(TiXmlElement* config) override;
+    bool parseUserCommandLineArgument(int argc, char *argv[]) override;
+
+    void onBlockSelected() override;
+    void onAssertTriggered() override;
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
