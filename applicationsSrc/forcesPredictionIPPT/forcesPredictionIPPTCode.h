@@ -14,6 +14,7 @@ static const int CM_R_MSG =1102; // center-of-mass return (4 -- aggregated posit
 
 static const int DU_INIT_MSG =1201; // initiate weighted-Jacobi iteration procedure (1 -- how many iterations to make )
 static const int DU_MSG =1202; // du exchange messages for weighted-Jacobi iterations (6 -- 6-DOF of the current solution )
+static const int DU_COMPLETE_MSG =1203; // information about completion of weighted-Jacobi iterations in the structure (0)
 
 static const int SST_Q_MSG =1301; // simplified stability check query (2 -- X-Y co-ordinates of the center of mass)
 static const int SST_R_MSG =1302; // simplified stability check return (2 -- safe angle range )
@@ -31,14 +32,15 @@ using namespace BlinkyBlocks;
 
 class cmData {
     public:
-        double mX, mY;
-        double m;
+        double mX=0, mY=0; // we assume that the floor is at Z=0 and that the gravity acts along Z direction
+        double m=0;
         cmData(double mx, double my, double mass):mX(mx),mY(my),m(mass){};
+        cmData() {};
 };
 
 class sstData {
     public:
-        double X, Y;
+        double X, Y; // we assume that the floor is at Z=0 and that the gravity acts along Z direction
         sstData(double x, double y):X(x),Y(y){};
 };
 
@@ -51,7 +53,6 @@ class mstData {
 //enum PathState {NONE, BFS, ConfPath, Streamline};
 
 class ForcesPredictionIPPTCode : public BlinkyBlocksBlockCode {
-
 
 private:
     BlinkyBlocksBlock *module;
@@ -106,6 +107,7 @@ private:
     bID tree_par=0; // spanning tree - parent's ID
     int tree_child[6]; // spanning tree: 0 - is not a child, 1 - is a child
     bool aggregationCompleted[6]; // checks if data aggregation is completed for all children (must be true for all children)
+    cmData cmd;
 public :
     ForcesPredictionIPPTCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) { module=host; };
     ~ForcesPredictionIPPTCode() {};
@@ -134,9 +136,7 @@ public :
     vector< vector<double> > createTmx(double Txz);
     vector< vector<double> > createTmy(double Txz);
     vector< vector<double> > createTmz(double Txz);
-
     vector< vector<double> > createRot(int i);
-
     vector< vector<double> > IdentityMatrix6();
     vector< vector<double> > createR(vector< vector<double> > &A);
     vector< vector<double> > createD(vector< vector<double> > &A);
@@ -148,6 +148,7 @@ public :
     void cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender);
     void duInitMessage(const MessageOf<int >*msg,P2PNetworkInterface *sender);
     void duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
+    void duCompleteMessage(P2PNetworkInterface *sender);
     void sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
     void sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
     void mstQMessage(P2PNetworkInterface *sender);
@@ -175,8 +176,9 @@ void _treeMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _treeConfMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _cmQMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _cmRMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
-void _duMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _duInitMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _duMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+void _duCompleteMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _sstQMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _sstRMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 void _mstQMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
