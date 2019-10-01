@@ -503,7 +503,6 @@ void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "CM_Q_Message " << msgFrom << "->" << module->blockId << "\n";
 
-    tree_par=msgFrom;
     bool anyMsgSent=false;
     for(int i=0;i<6;i++) {
         if(tree_child[i]==1) { // if non-virtual child
@@ -567,11 +566,54 @@ void ForcesPredictionIPPTCode::cmRMessage(const MessageOf<cmData>*msg,P2PNetwork
 }
 
 void ForcesPredictionIPPTCode::duInitMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender) {
+    bID msgFrom = sender->getConnectedBlockBId();
+    maxIterations = *msg->getData();
+    console << "DU_INIT_Message(" << maxIterations << ") " << msgFrom << "->" << module->blockId << "\n";
+
+    for(int i=0;i<6;i++) {
+        if(tree_child[i]==1) { // if non-virtual child
+            P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+            if (p2p) {
+                sendMessage("DU_INIT_MSG",new MessageOf<int >(DU_INIT_MSG, maxIterations),p2p,messageDelay,messageDelayError);
+                aggregationCompleted[i]=false;
+            }
+        }
+    }
+    computeDU();
+    curIteration++;
+    dup=du;
 }
 
 void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
     bID msgFrom = sender->getConnectedBlockBId();
-    vector<double> msgData = *(msg->getData());
+    vector<double> msgData = *msg->getData();
+
+    if(curIteration > maxIterations)
+        return;
+    for(int i=0;i<6;i++){
+        if(neighbors[i][0]==msgFrom) {
+            OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
+            printVector(msgData,6,"msgData from "+to_string(msgFrom)+" to "+ to_string(module->blockId));
+            neighbors[i][1]=1;
+            uq[i]=msgData;
+        }
+    }
+    //checking if there are all messages
+    bool ready = true;
+    for(int i = 0;i<6;i++ ) {
+        if(neighbors[i][0]!=0 && neighbors[i][1]==0)
+            ready = false;
+    }
+    if(ready) {
+        computeDU();
+        curIteration++;
+        dup=du;
+    }
+}
+
+void ForcesPredictionIPPTCode::duMessageU(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
+    bID msgFrom = sender->getConnectedBlockBId();
+    vector<double> msgData = *msg->getData();
 
     if(curIteration > maxIterations)
         return;
@@ -807,23 +849,21 @@ void ForcesPredictionIPPTCode::computeNeighborDU(int i) {
 }
 
 
-void ForcesPredictionIPPTCode::computeDU() {
-
+void ForcesPredictionIPPTCode::computeDUu() {
+    console << "computeDU, module="<< module->blockId <<", iter=" << curIteration << ", maxIter=" << maxIterations << "\n";
     //temporary Matrixes
     vector< vector<double> > sumK11 = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
     vector< double > Fpq = decltype(Fpq)(vectorSize,0);
-vector< vector<double> > mtmp = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
+    vector< vector<double> > mtmp = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
     if(!isFixed) {
         //checking neighbors and creating K11 and K12 matrixes
         for(int i=0;i<6;i++){
-            if(neighbors[i][1]!=0) { // messages received or a virtual module present
-                if(neighbors[i][1]==2) computeNeighborDU(i); // compute uq[i] for a virtual module
-                sumK11=sumK11+createK11(i);
-                Fpq = Fpq+(createK12(i)*uq[i]);
-                mtmp = createK12(i);
+            if(neighbors[i][1]==2) computeNeighborDU(i); // compute uq[i] for a virtual module
+            sumK11=sumK11+createK11(i);
+            Fpq = Fpq+(createK12(i)*uq[i]);
+            mtmp = createK12(i);
 //				printMatrix(mtmp,6,6,"CreateK12("+to_string(i)+")");
 //				printVector(uq[i],6,"uq["+to_string(i)+"]");
-            }
         }
 //		printVector(Fpq,6,"Fpq");
         if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
@@ -846,10 +886,15 @@ vector< vector<double> > mtmp = decltype(sumK11)(vectorSize, vector<double>(vect
 
     //sending message to neighbors with du
     OUTPUT << "size=" << du.size() << endl;
-    sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double>>(DU_MSG,du),messageDelay,messageDelayError,0);
+    sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
     //clearing info about du from neighbors
     clearNeighborsMessage();
+}
 
+void ForcesPredictionIPPTCode::computeDU() {
+    console << "computeDU, module="<< module->blockId <<", iter=" << curIteration << ", maxIter=" << maxIterations << "\n";
+    sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
+    clearNeighborsMessage();
 }
 
 void ForcesPredictionIPPTCode::visualization() {
