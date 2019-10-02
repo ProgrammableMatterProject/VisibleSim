@@ -117,8 +117,8 @@ public :
     void SetNeighbors();
 
     vector< vector<double> > contactStiffnessMatrix(vector<double> &dup); // stiffness matrix for contact with the floor
-    void computeDU();
-    void computeDUu();
+    void computeDU(bool isInit=false);
+    void computeDUu(bool isInit=false);
     void computeNeighborDU(int i);
     void visualization();
 

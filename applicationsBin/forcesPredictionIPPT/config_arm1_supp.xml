@@ -8,7 +8,7 @@
 	<block position="2,1,0" color="0,255,0" />
 
 	<block position="1,1,1" color="0,255,0" />
-	<block position="2,1,1" color="0,255,0" myAttribute="5"/>
+	<block position="2,1,1" color="0,255,0" myAttribute="5" centroid="1"/>
 
 	<block position="1,1,2" color="0,255,0" />
 	<block position="2,1,2" color="0,255,0" />

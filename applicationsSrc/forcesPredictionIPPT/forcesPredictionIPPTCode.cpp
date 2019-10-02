@@ -5,7 +5,7 @@ const int messageDelayError=5;
 const int messageDelayCons=1;
 
 int nofIterations = 1000; // max number of iterations
-double globalMass = 61/1000; //mass from XML
+double globalMass = 61.106/1000; //mass from XML
 double globalE = 100; // E from XML // Young modulus MPa
 double globalL=40; //length from XML // arm length mm
 double globala = 40; //width of the square-cross-section arm  mm //
@@ -242,7 +242,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[0][0]=p2p->getConnectedBlockBId();
-        neighbors[0][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(0,0,1))) {
         neighbors[0][1]=2; // virtual module
     }
@@ -252,7 +251,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[1][0]=p2p->getConnectedBlockBId();
-        neighbors[1][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(0,0,-1))) {
         neighbors[1][1]=2; // virtual module
     }
@@ -262,7 +260,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[2][0]=p2p->getConnectedBlockBId();
-        neighbors[2][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(-1,0,0))) {
         neighbors[2][1]=2; // virtual module
     }
@@ -272,7 +269,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[3][0]=p2p->getConnectedBlockBId();
-        neighbors[3][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(1,0,0))) {
         neighbors[3][1]=2; // virtual module
     }
@@ -282,7 +278,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[4][0]=p2p->getConnectedBlockBId();
-        neighbors[4][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(0,-1,0))) {
         neighbors[4][1]=2; // virtual module
     }
@@ -292,7 +287,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[5][0]=p2p->getConnectedBlockBId();
-        neighbors[5][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(0,1,0))) {
         neighbors[5][1]=2; // virtual module
     }
@@ -399,7 +393,7 @@ void ForcesPredictionIPPTCode::startup() {
 /*
     //first step - calculate DU and sends to neighbor (to initiate the procedure)
     if(curIteration == 0) {
-        computeDU();
+        computeDU(true);
         curIteration++;
     }
 */
@@ -579,12 +573,11 @@ void ForcesPredictionIPPTCode::duInitMessage(const MessageOf<int>*msg,P2PNetwork
             }
         }
     }
-    computeDU();
+    computeDU(true); // initializing call of computeDU
     curIteration++;
-    dup=du;
 }
 
-void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
+void ForcesPredictionIPPTCode::duMessageU(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     vector<double> msgData = *msg->getData();
 
@@ -611,7 +604,7 @@ void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2
     }
 }
 
-void ForcesPredictionIPPTCode::duMessageU(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
+void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     vector<double> msgData = *msg->getData();
 
@@ -836,7 +829,7 @@ vector< vector<double> > ForcesPredictionIPPTCode::contactStiffnessMatrix(vector
 
 void ForcesPredictionIPPTCode::computeNeighborDU(int i) {
 
-    int di=1-2*(i%2);
+    int di=1-2*(i%2); // switches the sides (up<->down, left<->right, front<->back)
     vector< vector<double> > sumK11 = createK11(i+di);
     vector< double > Fpq = createK12(i+di)*dup;
 
@@ -849,8 +842,13 @@ void ForcesPredictionIPPTCode::computeNeighborDU(int i) {
 }
 
 
-void ForcesPredictionIPPTCode::computeDUu() {
+void ForcesPredictionIPPTCode::computeDU(bool isInit) {
+    if(module->blockId == 8) console << "------ module 8 -----\n";
     console << "computeDU, module="<< module->blockId <<", iter=" << curIteration << ", maxIter=" << maxIterations << "\n";
+    if(isInit) { // initialization call 
+        sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
+        return;
+    }
     //temporary Matrixes
     vector< vector<double> > sumK11 = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
     vector< double > Fpq = decltype(Fpq)(vectorSize,0);
@@ -859,15 +857,22 @@ void ForcesPredictionIPPTCode::computeDUu() {
         //checking neighbors and creating K11 and K12 matrixes
         for(int i=0;i<6;i++){
             if(neighbors[i][1]==2) computeNeighborDU(i); // compute uq[i] for a virtual module
-            sumK11=sumK11+createK11(i);
-            Fpq = Fpq+(createK12(i)*uq[i]);
-            mtmp = createK12(i);
-//				printMatrix(mtmp,6,6,"CreateK12("+to_string(i)+")");
-//				printVector(uq[i],6,"uq["+to_string(i)+"]");
+            if(neighbors[i][1]>0) {
+                sumK11=sumK11+createK11(i);
+                Fpq = Fpq+(createK12(i)*uq[i]);
+                if(module->blockId == 8) {
+		    mtmp = createK12(i);
+		    printMatrix(mtmp,6,6,"CreateK12("+to_string(i)+")");
+		    printVector(uq[i],6,"uq["+to_string(i)+"]");
+                }
+            }
         }
 //		printVector(Fpq,6,"Fpq");
         if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
             sumK11=sumK11+contactStiffnessMatrix(dup);
+        }
+        if(module->blockId == 8) {
+            printMatrix(sumK11,6,6,"SumK11");
         }
 //		printMatrix(sumK11,6,6,"SumK11");
         du = RevD(sumK11)*beta*(Fp-createR(sumK11)*dup-Fpq)+(dup*(1-beta));
@@ -891,7 +896,7 @@ void ForcesPredictionIPPTCode::computeDUu() {
     clearNeighborsMessage();
 }
 
-void ForcesPredictionIPPTCode::computeDU() {
+void ForcesPredictionIPPTCode::computeDUu(bool isInit) {
     console << "computeDU, module="<< module->blockId <<", iter=" << curIteration << ", maxIter=" << maxIterations << "\n";
     sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
     clearNeighborsMessage();
@@ -903,8 +908,10 @@ void ForcesPredictionIPPTCode::visualization() {
     if(isFixed)
         return;
 
-    double fxMaxV = 20.5*grav*mass; // max force in N (for up and down direction)
-    double fxMaxL = 25.5*grav*mass; // max force in N (for lateral directions)
+//    double fxMaxV = 20.5*grav*mass; // max force in N (for up and down direction)
+//    double fxMaxL = 25.5*grav*mass; // max force in N (for lateral directions)
+    double fxMaxV = 11.98; // max force in N (for up and down direction)
+    double fxMaxL = 14.97; // max force in N (for lateral directions)
 
     bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
     bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
