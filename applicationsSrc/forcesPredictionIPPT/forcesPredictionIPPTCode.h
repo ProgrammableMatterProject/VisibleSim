@@ -118,7 +118,6 @@ public :
 
     vector< vector<double> > contactStiffnessMatrix(vector<double> &dup); // stiffness matrix for contact with the floor
     void computeDU(bool isInit=false);
-    void computeDUu(bool isInit=false);
     void computeNeighborDU(int i);
     void visualization();
 
@@ -149,7 +148,6 @@ public :
     void cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender);
     void duInitMessage(const MessageOf<int >*msg,P2PNetworkInterface *sender);
     void duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
-    void duMessageU(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
     void duCompleteMessage(P2PNetworkInterface *sender);
     void sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);
     void sstRMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender);

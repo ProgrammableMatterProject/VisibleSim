@@ -480,13 +480,18 @@ void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<int>*msg,P2PNetwo
             cmd.mX=module->position[0] * mass;
             cmd.mY=module->position[1] * mass;
             cmd.m=mass;
+            const double dir[6][3]={{0,0,1},{0,0,-1},{-1,0,0},{1,0,0},{0,-1,0},{0,1,0}}; // 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 
             for(int i=0; i<6; i++) {
-                if(tree_child[i]) { // if non-virtual child
+                if(tree_child[i]==1) { // if non-virtual child
                     P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
                     if(p2p) {
                         sendMessage("CM_Q_MSG",new Message(CM_Q_MSG),p2p,messageDelay,messageDelayError);
                         aggregationCompleted[i]=false;
                     }
+                } else if(neighbors[i][1]==2) {
+                    cmd.mX=cmd.mX+(module->position[0]+dir[i][0])*mass;
+                    cmd.mY=cmd.mY+(module->position[1]+dir[i][1])*mass;
+                    cmd.m=cmd.m+mass;
                 }
             }
         }
@@ -498,6 +503,10 @@ void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
     console << "CM_Q_Message " << msgFrom << "->" << module->blockId << "\n";
 
     bool anyMsgSent=false;
+    cmd.mX=module->position[0] * mass;
+    cmd.mY=module->position[1] * mass;
+    cmd.m=mass;
+    const double dir[6][3]={{0,0,1},{0,0,-1},{-1,0,0},{1,0,0},{0,-1,0},{0,1,0}}; // 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 
     for(int i=0;i<6;i++) {
         if(tree_child[i]==1) { // if non-virtual child
             P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
@@ -507,14 +516,7 @@ void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
                 anyMsgSent=true;
             }
             // after sending the messages to neighbors, we wait for confirmations before aggregating the info
-        }
-    }
-    cmd.mX=module->position[0] * mass;
-    cmd.mY=module->position[1] * mass;
-    cmd.m=mass;
-    const double dir[6][3]={{0,0,1},{0,0,-1},{-1,0,0},{1,0,0},{0,-1,0},{0,1,0}}; // 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 
-    for(int i=0;i<6;i++) { // collect the data from virtual neighbors
-        if(neighbors[i][1]==2) {
+        } else if(neighbors[i][1]==2) {
             cmd.mX=cmd.mX+(module->position[0]+dir[i][0])*mass;
             cmd.mY=cmd.mY+(module->position[1]+dir[i][1])*mass;
             cmd.m=cmd.m+mass;
@@ -531,7 +533,7 @@ void ForcesPredictionIPPTCode::cmRMessage(const MessageOf<cmData>*msg,P2PNetwork
 
     console << "CM_R_Message(" << cmdL.mX << ", " << cmdL.mY << ", " << cmdL.m <<") " << msgFrom << "->" << module->blockId << "\n";
     bool aggrCompl=true;
-    const double dir[6][3]={{0,0,1},{0,0,-1},{-1,0,0},{1,0,0},{0,-1,0},{0,1,0}}; // 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 
+//    const double dir[6][3]={{0,0,1},{0,0,-1},{-1,0,0},{1,0,0},{0,-1,0},{0,1,0}}; // 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 
     for(int i=0;i<6;i++) { // aggregation of info from the child
         if(neighbors[i][0]==msgFrom) {
             aggregationCompleted[i]=true;
@@ -577,32 +579,6 @@ void ForcesPredictionIPPTCode::duInitMessage(const MessageOf<int>*msg,P2PNetwork
     curIteration++;
 }
 
-void ForcesPredictionIPPTCode::duMessageU(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
-    bID msgFrom = sender->getConnectedBlockBId();
-    vector<double> msgData = *msg->getData();
-
-    if(curIteration > maxIterations)
-        return;
-    for(int i=0;i<6;i++){
-        if(neighbors[i][0]==msgFrom) {
-            OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
-            printVector(msgData,6,"msgData from "+to_string(msgFrom)+" to "+ to_string(module->blockId));
-            neighbors[i][1]=1;
-            uq[i]=msgData;
-        }
-    }
-    //checking if there are all messages
-    bool ready = true;
-    for(int i = 0;i<6;i++ ) {
-        if(neighbors[i][0]!=0 && neighbors[i][1]==0)
-            ready = false;
-    }
-    if(ready) {
-        computeDU();
-        curIteration++;
-        dup=du;
-    }
-}
 
 void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
     bID msgFrom = sender->getConnectedBlockBId();
@@ -641,10 +617,58 @@ void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2
         }
         curIteration++;
         dup=du;
+        if(curIteration > maxIterations) {
+            bool aggrCompl=true;
+            for(int i=0;i<6;i++) { // aggregation of info from the child
+                if(!aggregationCompleted[i]) aggrCompl=false;
+            }
+            if(aggrCompl) {
+                if(!isCentroid) {
+                    P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(tree_par);
+                    if(p2p) sendMessage("DU_COMPLETE_MSG",new Message(DU_COMPLETE_MSG),p2p,messageDelay,messageDelayError);
+                } else { // centroid initiates the module-based stability check
+                    for(int i=0; i<6; i++) {
+                        if(tree_child[i]) { // if non-virtual child
+                            P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+                            if(p2p) {
+                                sendMessage("MST_Q_MSG",new Message(MST_Q_MSG),p2p,messageDelay,messageDelayError);
+                                aggregationCompleted[i]=false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 void ForcesPredictionIPPTCode::duCompleteMessage(P2PNetworkInterface *sender) {
+    bID msgFrom = sender->getConnectedBlockBId();
+
+    console << "DU_COMPLETE_Message " << msgFrom << "->" << module->blockId << "\n";
+    bool aggrCompl=true;
+    for(int i=0;i<6;i++) { // aggregation of info from the child
+        if(neighbors[i][0]==msgFrom) {
+            aggregationCompleted[i]=true;
+        }
+        if(!aggregationCompleted[i]) aggrCompl=false;
+    }
+    if(aggrCompl && curIteration > maxIterations) {
+        if(!isCentroid) {
+            P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(tree_par);
+            if(p2p) sendMessage("DU_COMPLETE_MSG",new Message(DU_COMPLETE_MSG),p2p,messageDelay,messageDelayError);
+        } else { // centroid initiates the module-based stability check
+            for(int i=0; i<6; i++) {
+                if(tree_child[i]) { // if non-virtual child
+                    P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+                    if(p2p) {
+                        sendMessage("MST_Q_MSG",new Message(MST_Q_MSG),p2p,messageDelay,messageDelayError);
+                        aggregationCompleted[i]=false;
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -843,7 +867,7 @@ void ForcesPredictionIPPTCode::computeNeighborDU(int i) {
 
 
 void ForcesPredictionIPPTCode::computeDU(bool isInit) {
-    if(module->blockId == 8) console << "------ module 8 -----\n";
+//    if(module->blockId == 8) console << "------ module 8 -----\n";
     console << "computeDU, module="<< module->blockId <<", iter=" << curIteration << ", maxIter=" << maxIterations << "\n";
     if(isInit) { // initialization call 
         sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
@@ -871,9 +895,9 @@ void ForcesPredictionIPPTCode::computeDU(bool isInit) {
         if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
             sumK11=sumK11+contactStiffnessMatrix(dup);
         }
-        if(module->blockId == 8) {
+/*        if(module->blockId == 8) {
             printMatrix(sumK11,6,6,"SumK11");
-        }
+        }*/
 //		printMatrix(sumK11,6,6,"SumK11");
         du = RevD(sumK11)*beta*(Fp-createR(sumK11)*dup-Fpq)+(dup*(1-beta));
 /*		vector<double> vtmp = (dup*(1-beta));
@@ -890,15 +914,9 @@ void ForcesPredictionIPPTCode::computeDU(bool isInit) {
     }
 
     //sending message to neighbors with du
-    OUTPUT << "size=" << du.size() << endl;
+//    OUTPUT << "size=" << du.size() << endl;
     sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
     //clearing info about du from neighbors
-    clearNeighborsMessage();
-}
-
-void ForcesPredictionIPPTCode::computeDUu(bool isInit) {
-    console << "computeDU, module="<< module->blockId <<", iter=" << curIteration << ", maxIter=" << maxIterations << "\n";
-    sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
     clearNeighborsMessage();
 }
 
