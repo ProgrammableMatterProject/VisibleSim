@@ -4,8 +4,8 @@ const int messageDelay=50;
 const int messageDelayError=5;
 const int messageDelayCons=1;
 
-//int maxIterations = 1000; // max number of iterations
-double globalMass = 61/1000; //mass from XML
+int nofIterations = 1000; // max number of iterations
+double globalMass = 61.106/1000; //mass from XML
 double globalE = 100; // E from XML // Young modulus MPa
 double globalL=40; //length from XML // arm length mm
 double globala = 40; //width of the square-cross-section arm  mm //
@@ -122,14 +122,14 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
             OUTPUT << "WARNING No mass in XML file" << endl;
     }
 
-//	attr= element->Attribute("nofIterations");
-//	if (attr) {
-//		string str=attr;
-//		this.maxIterations = atoi(str.c_str());
-//		cerr << "maxNofIterations= " << maxIterations << endl;
-//	} else {
-//			OUTPUT << "WARNING No maxNofIterations in XML file" << endl;
-//	}
+    attr= element->Attribute("nofIterations");
+    if (attr) {
+	string str=attr;
+	nofIterations = atoi(str.c_str());
+	cerr << "maxNofIterations= " << nofIterations << endl;
+    } else {
+	OUTPUT << "WARNING No maxNofIterations in XML file" << endl;
+    }
 
     attr= element->Attribute("a");
     if (attr) {
@@ -242,7 +242,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[0][0]=p2p->getConnectedBlockBId();
-        neighbors[0][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(0,0,1))) {
         neighbors[0][1]=2; // virtual module
     }
@@ -252,7 +251,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[1][0]=p2p->getConnectedBlockBId();
-        neighbors[1][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(0,0,-1))) {
         neighbors[1][1]=2; // virtual module
     }
@@ -262,7 +260,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[2][0]=p2p->getConnectedBlockBId();
-        neighbors[2][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(-1,0,0))) {
         neighbors[2][1]=2; // virtual module
     }
@@ -272,7 +269,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[3][0]=p2p->getConnectedBlockBId();
-        neighbors[3][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(1,0,0))) {
         neighbors[3][1]=2; // virtual module
     }
@@ -282,7 +278,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[4][0]=p2p->getConnectedBlockBId();
-        neighbors[4][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(0,-1,0))) {
         neighbors[4][1]=2; // virtual module
     }
@@ -292,7 +287,6 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
     //if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
     if(p2p->getConnectedBlockBId()) {
         neighbors[5][0]=p2p->getConnectedBlockBId();
-        neighbors[5][1]=1;
     } else if(target->isInTarget(module->position+Cell3DPosition(0,1,0))) {
         neighbors[5][1]=2; // virtual module
     }
@@ -342,6 +336,7 @@ void ForcesPredictionIPPTCode::startup() {
     addMessageEventFunc(CM_R_MSG,_cmRMessage);
     addMessageEventFunc(DU_INIT_MSG,_duInitMessage);
     addMessageEventFunc(DU_MSG,_duMessage);
+    addMessageEventFunc(DU_COMPLETE_MSG,_duCompleteMessage);
     addMessageEventFunc(SST_Q_MSG,_sstQMessage);
     addMessageEventFunc(SST_R_MSG,_sstRMessage);
     addMessageEventFunc(MST_Q_MSG,_mstQMessage);
@@ -370,6 +365,8 @@ void ForcesPredictionIPPTCode::startup() {
     Eps = globalEps; // //tolerance
     Gamma = globalGamma; //stiffness reduction multiplier (for unilateral contact)
 //	supportZ = globalSupportZ; //Z coordinate of the bottom modules (contacting with the support)
+
+//    cmd = new cmData;
     if(module->position[2]==globalSupportZ) isSupport=true;
 
 
@@ -396,7 +393,7 @@ void ForcesPredictionIPPTCode::startup() {
 /*
     //first step - calculate DU and sends to neighbor (to initiate the procedure)
     if(curIteration == 0) {
-        computeDU();
+        computeDU(true);
         curIteration++;
     }
 */
@@ -405,6 +402,7 @@ void ForcesPredictionIPPTCode::startup() {
     if(isCentroid) {
         bool anyMsgSent=false;
         module->setColor(YELLOW);
+        maxIterations=nofIterations;
         for(int i=0;i<6;i++) {
             if(neighbors[i][0]>0) {
                 // after sending the messages to neighbors, we wait for confirmations before accepting a neighbor as a child
@@ -436,14 +434,14 @@ void ForcesPredictionIPPTCode::startup() {
 void ForcesPredictionIPPTCode::treeMessage(P2PNetworkInterface *sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "treeMessage " << msgFrom << "->" << module->blockId << "\n";
-//	return;
+
     if(tree_par!=0 || isCentroid) { // module is already a child (has a parrent) or is a centroid
         sendMessage("TREE_CONF_MSG",new MessageOf<int >(TREE_CONF_MSG,0),sender,messageDelay,messageDelayError);
     } else { // there were no earlier requests to be a child
         tree_par=msgFrom;
         bool anyMsgSent=false;
         for(int i=0;i<6;i++) {
-            if(neighbors[i][0]>0 && neighbors[i][0]!=tree_par) {
+            if(neighbors[i][0]>0 && neighbors[i][0]!=tree_par) { // virtual modules are not counted here. They are children by definition.
                 P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
                 if (p2p) {
                     sendMessage("TREE_MSG",new Message(TREE_MSG),p2p,messageDelay,messageDelayError);
@@ -452,19 +450,15 @@ void ForcesPredictionIPPTCode::treeMessage(P2PNetworkInterface *sender) {
                     tree_child[i]=1; // the node is provisionally accepted as a child
                 }
                 // after sending the messages to neighbors, we wait for confirmations before accepting a neighbor as a child
-            } else if(neighbors[i][1]==2) { // virtual module is always a child
-                tree_child[i]=1;
-                // virtual neighbor is always a child
             }
         }
         if(!anyMsgSent) { // if there are no neighbors except the parent and virtual modules then return the confirmation
             sendMessage("TREE_CONF_MSG",new MessageOf<int>(TREE_CONF_MSG,1),sender,messageDelay,messageDelayError);
         }
     }
-
 }
 
-// confirm parent-child connection
+// confirm/reject parent-child connection
 void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     int childConfirmed = *msg->getData();
@@ -482,12 +476,83 @@ void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<int>*msg,P2PNetwo
         if(!isCentroid) {
             P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(tree_par);
             if(p2p) sendMessage("TREE_CONF_MSG",new MessageOf<int>(TREE_CONF_MSG,1),p2p,messageDelay,messageDelayError);
-        } else { // initiate center of mass query for all non-virtual children (!!!the case in which there are no real children is not supported!!!)
+        } else { // centroid initiates the center of mass query for all non-virtual children (!!!the case in which there are no real children is not supported!!!)
+            cmd.mX=module->position[0] * mass;
+            cmd.mY=module->position[1] * mass;
+            cmd.m=mass;
+            const double dir[6][3]={{0,0,1},{0,0,-1},{-1,0,0},{1,0,0},{0,-1,0},{0,1,0}}; // 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 
             for(int i=0; i<6; i++) {
-                if(tree_child[i] && neighbors[i][0]>0 ) { // if non-virtual child
+                if(tree_child[i]==1) { // if non-virtual child
                     P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
                     if(p2p) {
                         sendMessage("CM_Q_MSG",new Message(CM_Q_MSG),p2p,messageDelay,messageDelayError);
+                        aggregationCompleted[i]=false;
+                    }
+                } else if(neighbors[i][1]==2) {
+                    cmd.mX=cmd.mX+(module->position[0]+dir[i][0])*mass;
+                    cmd.mY=cmd.mY+(module->position[1]+dir[i][1])*mass;
+                    cmd.m=cmd.m+mass;
+                }
+            }
+        }
+    }
+}
+
+void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
+    bID msgFrom = sender->getConnectedBlockBId();
+    console << "CM_Q_Message " << msgFrom << "->" << module->blockId << "\n";
+
+    bool anyMsgSent=false;
+    cmd.mX=module->position[0] * mass;
+    cmd.mY=module->position[1] * mass;
+    cmd.m=mass;
+    const double dir[6][3]={{0,0,1},{0,0,-1},{-1,0,0},{1,0,0},{0,-1,0},{0,1,0}}; // 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 
+    for(int i=0;i<6;i++) {
+        if(tree_child[i]==1) { // if non-virtual child
+            P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+            if (p2p) {
+                sendMessage("CM_Q_MSG",new Message(CM_Q_MSG),p2p,messageDelay,messageDelayError);
+                aggregationCompleted[i]=false;
+                anyMsgSent=true;
+            }
+            // after sending the messages to neighbors, we wait for confirmations before aggregating the info
+        } else if(neighbors[i][1]==2) {
+            cmd.mX=cmd.mX+(module->position[0]+dir[i][0])*mass;
+            cmd.mY=cmd.mY+(module->position[1]+dir[i][1])*mass;
+            cmd.m=cmd.m+mass;
+        }
+    }
+    if(!anyMsgSent) { // if there are no neighbors except the parent and virtual modules then aggregate the data and return the confirmation
+        sendMessage("CM_R_MSG",new MessageOf<cmData >(CM_R_MSG,cmd),sender,messageDelay,messageDelayError);
+    }
+}
+
+void ForcesPredictionIPPTCode::cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender) {
+    bID msgFrom = sender->getConnectedBlockBId();
+    cmData cmdL = *msg->getData();
+
+    console << "CM_R_Message(" << cmdL.mX << ", " << cmdL.mY << ", " << cmdL.m <<") " << msgFrom << "->" << module->blockId << "\n";
+    bool aggrCompl=true;
+//    const double dir[6][3]={{0,0,1},{0,0,-1},{-1,0,0},{1,0,0},{0,-1,0},{0,1,0}}; // 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 
+    for(int i=0;i<6;i++) { // aggregation of info from the child
+        if(neighbors[i][0]==msgFrom) {
+            aggregationCompleted[i]=true;
+            cmd.mX=cmd.mX+cmdL.mX;
+            cmd.mY=cmd.mY+cmdL.mY;
+            cmd.m=cmd.m+cmdL.m;
+        }
+        if(!aggregationCompleted[i]) aggrCompl=false;
+    }
+    if(aggrCompl) {
+        if(!isCentroid) {
+            P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(tree_par);
+            if(p2p) sendMessage("cM_R_MSG",new MessageOf<cmData >(CM_R_MSG,cmd),p2p,messageDelay,messageDelayError);
+        } else { // centroid initiates the weighted-Jacobi iterations
+            for(int i=0; i<6; i++) {
+                if(tree_child[i]) { // if non-virtual child
+                    P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+                    if(p2p) {
+                        sendMessage("DU_INIT_MSG",new MessageOf<int >(DU_INIT_MSG,maxIterations),p2p,messageDelay,messageDelayError);
                         aggregationCompleted[i]=false;
                     }
                 }
@@ -496,18 +561,28 @@ void ForcesPredictionIPPTCode::treeConfMessage(const MessageOf<int>*msg,P2PNetwo
     }
 }
 
-void ForcesPredictionIPPTCode::cmQMessage(P2PNetworkInterface *sender) {
-}
-
-void ForcesPredictionIPPTCode::cmRMessage(const MessageOf<cmData>*msg,P2PNetworkInterface *sender) {
-}
-
 void ForcesPredictionIPPTCode::duInitMessage(const MessageOf<int>*msg,P2PNetworkInterface *sender) {
+    bID msgFrom = sender->getConnectedBlockBId();
+    maxIterations = *msg->getData();
+    console << "DU_INIT_Message(" << maxIterations << ") " << msgFrom << "->" << module->blockId << "\n";
+
+    for(int i=0;i<6;i++) {
+        if(tree_child[i]==1) { // if non-virtual child
+            P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+            if (p2p) {
+                sendMessage("DU_INIT_MSG",new MessageOf<int >(DU_INIT_MSG, maxIterations),p2p,messageDelay,messageDelayError);
+                aggregationCompleted[i]=false;
+            }
+        }
+    }
+    computeDU(true); // initializing call of computeDU
+    curIteration++;
 }
+
 
 void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
     bID msgFrom = sender->getConnectedBlockBId();
-    vector<double> msgData = *(msg->getData());
+    vector<double> msgData = *msg->getData();
 
     if(curIteration > maxIterations)
         return;
@@ -542,8 +617,60 @@ void ForcesPredictionIPPTCode::duMessage(const MessageOf<vector<double> >*msg,P2
         }
         curIteration++;
         dup=du;
+        if(curIteration > maxIterations) {
+            bool aggrCompl=true;
+            for(int i=0;i<6;i++) { // aggregation of info from the child
+                if(!aggregationCompleted[i]) aggrCompl=false;
+            }
+            if(aggrCompl) {
+                if(!isCentroid) {
+                    P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(tree_par);
+                    if(p2p) sendMessage("DU_COMPLETE_MSG",new Message(DU_COMPLETE_MSG),p2p,messageDelay,messageDelayError);
+                } else { // centroid initiates the module-based stability check
+                    for(int i=0; i<6; i++) {
+                        if(tree_child[i]) { // if non-virtual child
+                            P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+                            if(p2p) {
+                                sendMessage("MST_Q_MSG",new Message(MST_Q_MSG),p2p,messageDelay,messageDelayError);
+                                aggregationCompleted[i]=false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
+
+void ForcesPredictionIPPTCode::duCompleteMessage(P2PNetworkInterface *sender) {
+    bID msgFrom = sender->getConnectedBlockBId();
+
+    console << "DU_COMPLETE_Message " << msgFrom << "->" << module->blockId << "\n";
+    bool aggrCompl=true;
+    for(int i=0;i<6;i++) { // aggregation of info from the child
+        if(neighbors[i][0]==msgFrom) {
+            aggregationCompleted[i]=true;
+        }
+        if(!aggregationCompleted[i]) aggrCompl=false;
+    }
+    if(aggrCompl && curIteration > maxIterations) {
+        if(!isCentroid) {
+            P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(tree_par);
+            if(p2p) sendMessage("DU_COMPLETE_MSG",new Message(DU_COMPLETE_MSG),p2p,messageDelay,messageDelayError);
+        } else { // centroid initiates the module-based stability check
+            for(int i=0; i<6; i++) {
+                if(tree_child[i]) { // if non-virtual child
+                    P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(neighbors[i][0]);
+                    if(p2p) {
+                        sendMessage("MST_Q_MSG",new Message(MST_Q_MSG),p2p,messageDelay,messageDelayError);
+                        aggregationCompleted[i]=false;
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 void ForcesPredictionIPPTCode::sstQMessage(const MessageOf<sstData>*msg,P2PNetworkInterface *sender) {
 }
@@ -600,6 +727,11 @@ void _duMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) 
     ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
     MessageOf<vector<double> >*msgType = (MessageOf<vector<double> >*)msg.get();
     cb->duMessage(msgType,sender);
+}
+
+void _duCompleteMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+    ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
+    cb->duCompleteMessage(sender);
 }
 
 void _sstQMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
@@ -721,7 +853,7 @@ vector< vector<double> > ForcesPredictionIPPTCode::contactStiffnessMatrix(vector
 
 void ForcesPredictionIPPTCode::computeNeighborDU(int i) {
 
-    int di=1-2*(i%2);
+    int di=1-2*(i%2); // switches the sides (up<->down, left<->right, front<->back)
     vector< vector<double> > sumK11 = createK11(i+di);
     vector< double > Fpq = createK12(i+di)*dup;
 
@@ -734,28 +866,38 @@ void ForcesPredictionIPPTCode::computeNeighborDU(int i) {
 }
 
 
-void ForcesPredictionIPPTCode::computeDU() {
-
+void ForcesPredictionIPPTCode::computeDU(bool isInit) {
+//    if(module->blockId == 8) console << "------ module 8 -----\n";
+    console << "computeDU, module="<< module->blockId <<", iter=" << curIteration << ", maxIter=" << maxIterations << "\n";
+    if(isInit) { // initialization call 
+        sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
+        return;
+    }
     //temporary Matrixes
     vector< vector<double> > sumK11 = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
     vector< double > Fpq = decltype(Fpq)(vectorSize,0);
-vector< vector<double> > mtmp = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
+    vector< vector<double> > mtmp = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
     if(!isFixed) {
         //checking neighbors and creating K11 and K12 matrixes
         for(int i=0;i<6;i++){
-            if(neighbors[i][1]!=0) { // messages received or a virtual module present
-                if(neighbors[i][1]==2) computeNeighborDU(i); // compute uq[i] for a virtual module
+            if(neighbors[i][1]==2) computeNeighborDU(i); // compute uq[i] for a virtual module
+            if(neighbors[i][1]>0) {
                 sumK11=sumK11+createK11(i);
                 Fpq = Fpq+(createK12(i)*uq[i]);
-                mtmp = createK12(i);
-//				printMatrix(mtmp,6,6,"CreateK12("+to_string(i)+")");
-//				printVector(uq[i],6,"uq["+to_string(i)+"]");
+                if(module->blockId == 8) {
+		    mtmp = createK12(i);
+		    printMatrix(mtmp,6,6,"CreateK12("+to_string(i)+")");
+		    printVector(uq[i],6,"uq["+to_string(i)+"]");
+                }
             }
         }
 //		printVector(Fpq,6,"Fpq");
         if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
             sumK11=sumK11+contactStiffnessMatrix(dup);
         }
+/*        if(module->blockId == 8) {
+            printMatrix(sumK11,6,6,"SumK11");
+        }*/
 //		printMatrix(sumK11,6,6,"SumK11");
         du = RevD(sumK11)*beta*(Fp-createR(sumK11)*dup-Fpq)+(dup*(1-beta));
 /*		vector<double> vtmp = (dup*(1-beta));
@@ -772,11 +914,10 @@ vector< vector<double> > mtmp = decltype(sumK11)(vectorSize, vector<double>(vect
     }
 
     //sending message to neighbors with du
-    OUTPUT << "size=" << du.size() << endl;
-    sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double>>(DU_MSG,du),messageDelay,messageDelayError,0);
+//    OUTPUT << "size=" << du.size() << endl;
+    sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
     //clearing info about du from neighbors
     clearNeighborsMessage();
-
 }
 
 void ForcesPredictionIPPTCode::visualization() {
@@ -785,8 +926,10 @@ void ForcesPredictionIPPTCode::visualization() {
     if(isFixed)
         return;
 
-    double fxMaxV = 20.5*grav*mass; // max force in N (for up and down direction)
-    double fxMaxL = 25.5*grav*mass; // max force in N (for lateral directions)
+//    double fxMaxV = 20.5*grav*mass; // max force in N (for up and down direction)
+//    double fxMaxL = 25.5*grav*mass; // max force in N (for lateral directions)
+    double fxMaxV = 11.98; // max force in N (for up and down direction)
+    double fxMaxL = 14.97; // max force in N (for lateral directions)
 
     bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
     bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
