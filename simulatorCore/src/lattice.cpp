@@ -79,7 +79,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
         }
     } catch (DoubleInsertionException const& e) {
         cerr << e.what();
-        VS_ASSERT(false);//FIXME: should be handled by thes user, but catch clauses in main are not catching the exceptions for some reason.
+        VS_ASSERT(false);//FIXME: should be handled by the user, but catch clauses in main are not catching the exceptions for some reason.
     }
 
 #ifdef LATTICE_LOG

@@ -69,37 +69,37 @@ void MeshAssemblyBlockCode::onAssertTriggered() {
 }
 
 void MeshAssemblyBlockCode::onBlockSelected() {
-    // Debug:
-    // (1) Print details of branch growth plan and previous round
-    cout << endl << "--- PRINT MODULE " << *catom << "---" << endl;
-    if (role == Coordinator) {
-        // cout << "Growth Plan: [ ";
-        // for (int i = 0; i < 6; i++)
-        //     cout << catomsReqByBranch[i] << ", ";
-        // cout << " ]" << endl;
+    // // Debug:
+    // // (1) Print details of branch growth plan and previous round
+    // cout << endl << "--- PRINT MODULE " << *catom << "---" << endl;
+    // if (role == Coordinator) {
+    //     // cout << "Growth Plan: [ ";
+    //     // for (int i = 0; i < 6; i++)
+    //     //     cout << catomsReqByBranch[i] << ", ";
+    //     // cout << " ]" << endl;
 
-        cout << "Construction Queue: [ " << endl;
-        cout << "|   Component   |   EPL  |" << endl << endl;
-        for (const auto& pair : constructionQueue) {
-            cout << "\t{ " << ruleMatcher->component_to_string(pair.first) << ", "
-                 << ruleMatcher->component_to_string(pair.second) << " }" << endl;
-        }
-        cout << "]" << endl;
+    //     cout << "Construction Queue: [ " << endl;
+    //     cout << "|   Component   |   EPL  |" << endl << endl;
+    //     for (const auto& pair : constructionQueue) {
+    //         cout << "\t{ " << ruleMatcher->component_to_string(pair.first) << ", "
+    //              << ruleMatcher->component_to_string(pair.second) << " }" << endl;
+    //     }
+    //     cout << "]" << endl;
 
-        cout << "sandboxResourcesRequirement: " << endl;
-        for (int bi = 0; bi < XBranch; bi++)
-            cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
-                sandboxResourcesRequirement.find(
-                    ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))->second
-                 << endl;
+    //     cout << "sandboxResourcesRequirement: " << endl;
+    //     for (int bi = 0; bi < XBranch; bi++)
+    //         cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
+    //             sandboxResourcesRequirement.find(
+    //                 ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))->second
+    //              << endl;
 
-        cout << "ResourcesForTileThrough: " << endl;
-        for (int bi = 0; bi < XBranch; bi++)
-            cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
-                resourcesForTileThrough(catom->position, ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))
-                 << endl;
+    //     cout << "ResourcesForTileThrough: " << endl;
+    //     for (int bi = 0; bi < XBranch; bi++)
+    //         cout << ruleMatcher->branch_to_string((BranchIndex)bi) << ": " <<
+    //             resourcesForTileThrough(catom->position, ruleMatcher->getDefaultEPLComponentForBranch((BranchIndex)bi))
+    //              << endl;
 
-    }
+    // }
 
     // cout << "branch: " << ruleMatcher->branch_to_string(branch) << endl;
     // cout << "coordinatorPos: " << coordinatorPos << endl;
@@ -126,18 +126,28 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     // cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
     // cout << "--- END " << *catom << "---" << endl;
 
-        // Initialize Target Object Preview
-    const Cell3DPosition& gs = world->lattice->gridSize;
-    Cell3DPosition pos;
-    for (short iz = 0; iz < gs[2]; iz++) {
-        for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
-            for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
-                pos.set(ix, iy, iz);
+    //     // Initialize Target Object Preview
+    // const Cell3DPosition& gs = world->lattice->gridSize;
+    // Cell3DPosition pos;
+    // for (short iz = 0; iz < gs[2]; iz++) {
+    //     for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
+    //         for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
+    //             pos.set(ix, iy, iz);
 
-                if (ruleMatcher->isInPyramid(norm(pos)))
-                    lattice->highlightCell(pos, WHITE);
-            }
-        }
+    //             if (ruleMatcher->isInPyramid(norm(pos)))
+    //                 lattice->highlightCell(pos, WHITE);
+    //         }
+    //     }
+    // }
+
+    int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
+    if (coordinatorPos == Cell3DPosition(9,9,3)
+        and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) {
+        OUTPUT << "here|";
+        VS_ASSERT(mc != -1);
+        OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
+        OUTPUT << ruleMatcher->component_to_string(static_cast<MeshComponent>(mc)) << "|";
+        OUTPUT << ((targetPosition == motionDest) and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) << "|";
     }
 
 }
@@ -1148,7 +1158,7 @@ int MeshAssemblyBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
     const Cell3DPosition& trTip =
         ruleMatcher->getTileRootAtEndOfBranch(norm(pos),bi);
 
-    cout << denorm(trTip) << endl;
+    // cout << denorm(trTip) << endl;
     if (ruleMatcher->isInPyramid(trTip) and epl == RevZ_EPL) {
         // cout << ruleMatcher->branch_to_string(biTr) << endl;
         // cout << ruleMatcher->component_to_string(eplTr) << endl;
