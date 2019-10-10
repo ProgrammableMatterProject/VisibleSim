@@ -28,6 +28,8 @@
 
 #define IT_MODULE_INSERTION 1
 
+enum CWDir {FrontLeft, Front, FrontRight, Right, RearRight, Rear, RearLeft, Left };
+
 class CoatingBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
     inline static const int B = 6;
@@ -106,16 +108,35 @@ public:
         return duration;
     }
 
-    // Coating
-    enum CWDirs {FrontLeft, Front, FrontRight, Right, RearRight, Rear, RearLeft, Left };
-    inline static const NumCWDirs = 8;
-    inline static CWDirs {FrontLeft, Front, FrontRight, Right, RearRight, Rear, RearLeft };
+    ///  Coating
+    inline static const int NumCWDirs = 8;
+    inline static constexpr Cell3DPosition CWDPos[NumCWDirs] = {
+        Cell3DPosition(-1, -1, 0), // FrontLeft
+        Cell3DPosition(0, -1, 0), // Front
+        Cell3DPosition(1, -1, 0), // FrontRight
+        Cell3DPosition(1, 0, 0), // Right
+        Cell3DPosition(1, 1, 0), // RearRight
+        Cell3DPosition(0, 1, 0), // Rear
+        Cell3DPosition(-1, 1, 0), // RearLeft
+        Cell3DPosition(-1, 0, 0), // Left
+    };
+
     inline static constexpr Cell3DPosition diagNeighbors[4] = { Cell3DPosition(-1,-1,0),
         Cell3DPosition(1,-1,0), Cell3DPosition(-1,1,0), Cell3DPosition(1,1,0), };
+
     // static inline constexpr vector<const Cell3DPosition> xset_CWRelNbh;
     inline static Cell3DPosition spawnLoc;
+    inline static Cell3DPosition closingCorner;
+
+    CWDir lastCWDir = FrontLeft;
+
     inline bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); };
-    bool isInCoatingLayer(const int layer) const;
+    bool isInCoatingLayer(const Cell3DPosition& pos, const int layer) const;
+    int getCoatingLayer(const Cell3DPosition& pos) const;
+    bool hasOpenCoatingSlotNeighbor(const int layer, Cell3DPosition &openSlot) const;
+    const vector<CWDir> getCWDirectionsFrom(const CWDir cwd) const;
+
+    string CWDir_to_string(const CWDir d) const;
 };
 
 #endif /* COATING_BLOCKCODE_H_ */

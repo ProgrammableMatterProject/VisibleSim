@@ -178,8 +178,11 @@ void CoatingBlockCode::startup() {
 // }
 
     if (catom->position == scaffoldSeedPos) {
-        spawnLoc = catom->position - Cell3DPosition(1,1,1);
+        spawnLoc = catom->position + Cell3DPosition(-1, -1, -1);
+        closingCorner = scaffoldSeedPos + Cell3DPosition(-1, -1, 0);
+
         lattice->highlightCell(spawnLoc, MAGENTA);
+        lattice->highlightCell(closingCorner, CYAN);
 
         scheduler->schedule(new InterruptionEvent(getScheduler()->now() + getRoundDuration(),
                                                   catom, IT_MODULE_INSERTION));
@@ -232,7 +235,7 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
         } break;
 
         case EVENT_ADD_NEIGHBOR: {
-            getScheduler()->trace(" ADD_NEIGHBOR ", catom->blockId, MAGENTA);
+            // getScheduler()->trace(" ADD_NEIGHBOR ", catom->blockId, MAGENTA);
             break;
         }
 
@@ -253,19 +256,52 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
                     scheduleRotationTo(catom->position + Cell3DPosition(-1,-1,2));
                 }
             } else {
-                if (isInCoatingLayer(0)) {
+                if (isInCoatingLayer(catom->position, 0)) {
                     catom->setColor(ORANGE);
                 } else {
                     // Move around border until encountering a coating position
-                    const Cell3DPosition& nextCoatingPos =
-                        catom->position + Cell3DPosition(1, 1, -1);
 
-                    // if (not isInCSG(nextCoatingPos)
-                        // and isInCSG(nextCoatingPos + )) {}
+                    Cell3DPosition potentialOpenSlot;
+                    if (hasOpenCoatingSlotNeighbor(0, potentialOpenSlot)) {
+                        stringstream info;
+                        info << " moving to open coating slot at " << potentialOpenSlot;
+                        scheduler->trace(info.str(),catom->blockId,BLUE);
 
-                    if (lattice->isFree(nextCoatingPos))
-                        scheduleRotationTo(nextCoatingPos);
-                    else scheduleRotationTo(catom->position + Cell3DPosition(1, 0, 0));
+                        scheduleRotationTo(potentialOpenSlot);
+                    } else {
+                        vector<CWDir> cwdPosCustom = getCWDirectionsFrom(lastCWDir);
+                        for (int i = 0; i < NumCWDirs; i++) {
+                            const Cell3DPosition& cwdPos = CWDPos[cwdPosCustom[i]];
+                            const Cell3DPosition& tPos = cwdPos + catom->position;
+
+                            stringstream info;
+                            info << " considering " << tPos
+                                 << "(" << CWDir_to_string(cwdPosCustom[i]) << ")";
+                            scheduler->trace(info.str(),catom->blockId,ORANGE);
+
+                            if (Catoms3DMotionEngine::canMoveTo(catom, tPos)) {
+                                lastCWDir = cwdPosCustom[i];
+
+                                stringstream info;
+                                info << " moving to next position around border: "
+                                     << tPos << "(" << CWDir_to_string(lastCWDir) << ")";
+                                scheduler->trace(info.str(),catom->blockId,WHITE);
+
+                                scheduleRotationTo(tPos);
+                                break;
+                            }
+                        }
+                    }
+
+                    // const Cell3DPosition& nextCoatingPos =
+                    //     catom->position + Cell3DPosition(1, 1, -1);
+
+                    // // if (not isInCSG(nextCoatingPos)
+                    //     // and isInCSG(nextCoatingPos + )) {}
+
+                    // if (lattice->isFree(nextCoatingPos))
+                    //     scheduleRotationTo(nextCoatingPos);
+                    // else scheduleRotationTo(catom->position + Cell3DPosition(1, 0, 0));
                 }
             }
         } break;
@@ -408,8 +444,10 @@ CoatingBlockCode::scheduleRotationTo(const Cell3DPosition& pos, Catoms3DBlock* p
         awaitKeyPressed();
 #endif
     } catch (const NoAvailableRotationPivotException& e_piv) {
-        cerr << e_piv.what();
-        cerr << "target position: " << pos << endl;
+        // cerr << e_piv.what();
+        // cerr << "target position: " << pos << endl;
+        cerr << "Couldn't find pivot for moving module at " << catom->position
+             << " to " << pos << endl;
         catom->setColor(BLUE);
     } catch (std::exception const& e) {
         cerr << "exception: " << e.what() << endl;
@@ -417,21 +455,69 @@ CoatingBlockCode::scheduleRotationTo(const Cell3DPosition& pos, Catoms3DBlock* p
 
 }
 
-bool CoatingBlockCode::isInCoatingLayer(const int layer) const {
-    if (catom->position[2] != scaffoldSeedPos[2] + layer)
-        return false;
+int CoatingBlockCode::getCoatingLayer(const Cell3DPosition& pos) const {
+    return pos[2] - scaffoldSeedPos[2];
+}
 
-    for (const Cell3DPosition& p : lattice->getNeighborhood(catom->position)) {
-        if (p[2] == catom->position[2] and isInCSG(p)) return true;
-    }
 
-    for (const Cell3DPosition& pRel : diagNeighbors) {
-        if (isInCSG(pRel + catom->position)) return true;
+bool CoatingBlockCode::hasOpenCoatingSlotNeighbor(const int layer,
+                                                  Cell3DPosition &openSlot) const {
+    for (const Cell3DPosition& p : lattice->getFreeNeighborCells(catom->position)) {
+        if (getCoatingLayer(p) == layer and isInCoatingLayer(p, layer)
+            and not (p == closingCorner)) {
+            openSlot = p;
+            return true;
+        }
     }
 
     return false;
 }
 
-const Cell3DPosition getNextOpenCoatingSlot() const {
+bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, const int layer) const {
+    if (layer != getCoatingLayer(pos))
+        return false;
 
+    for (const Cell3DPosition& p : lattice->getNeighborhood(pos)) {
+        if (p[2] == pos[2] and isInCSG(p)) return true;
+    }
+
+    for (const Cell3DPosition& pRel : diagNeighbors) {
+        if (isInCSG(pRel + pos)) return true;
+    }
+
+    return false;
+}
+
+const vector<CWDir> CoatingBlockCode::getCWDirectionsFrom(const CWDir cwd) const {
+    vector<CWDir> cwDirs;
+
+    // cout << CWDir_to_string(cwd) << endl;
+
+    for (int cwi = cwd; cwi < NumCWDirs; cwi++)
+        cwDirs.push_back((CWDir)cwi);
+    for (int cwi = 0; cwi < cwd; cwi++)
+        cwDirs.push_back((CWDir)cwi);
+
+    stringstream info;
+    for (int i = 0; i < NumCWDirs; i++)
+        info << CWDir_to_string(cwDirs[i]) << " " ;
+    scheduler->trace(info.str(),catom->blockId,BLUE);
+
+
+    return cwDirs;
+}
+
+string CoatingBlockCode::CWDir_to_string(const CWDir d) const {
+    switch(d) {
+        case FrontLeft: return "FrontLeft";
+        case Front: return "Front";
+        case FrontRight: return "FrontRight";
+        case Right: return "Right";
+        case RearRight: return "RearRight";
+        case Rear: return "Rear";
+        case RearLeft: return "RearLeft";
+        case Left: return "Left";
+    }
+
+    return "err";
 }
