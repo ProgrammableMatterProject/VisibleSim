@@ -308,8 +308,8 @@ bool CoatingRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
         or isSupportModule(pos);
 }
 
-bool CoatingRuleMatcher::isInCSGMeshOrSandbox(const Cell3DPosition& pos) const {
-    return (isInCSG(pos) or isSupportModule(pos)) or isInSandbox(pos);
+bool CoatingRuleMatcher::isInCSGScaffoldMeshOrSandbox(const Cell3DPosition& pos) const {
+    return (isInCSGScaffold(pos) or isSupportModule(pos)) or isInSandbox(pos);
 }
 
 bool CoatingRuleMatcher::isOnBranch(BranchIndex bi, const Cell3DPosition& pos) const {
@@ -481,7 +481,7 @@ short CoatingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos,
               or (bi == YBranch and isOnOppYBranch(bPos))) )
             return 0;
 
-        if (not isInMesh(bPos) or not isInCSG(bPos)) {
+        if (not isInMesh(bPos) or not isInCSGScaffold(bPos)) {
             // cout << branch_to_string(bi) << ": " << i << endl;
             return i;
         }
@@ -519,7 +519,7 @@ bool CoatingRuleMatcher::isTileRoot(const Cell3DPosition& pos) const {
 
 short CoatingRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) const {
 
-    if (isInCSGMeshOrSandbox(pos) and not isTileRoot(pos)) {
+    if (isInCSGScaffoldMeshOrSandbox(pos) and not isTileRoot(pos)) {
         if (isOnZBranch(pos)) return ZBranch;
         if (isOnRevZBranch(pos)) return RevZBranch;
         if (isOnLZBranch(pos)) return LZBranch;
@@ -928,7 +928,7 @@ hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi) const {
          or (bi == OppYBranch and not isOnOppYBranch(bPos)) )
         return false;
 
-    return isInCSG(trIVB) and resourcesForBranch(trIVB, bi) == (B - 1);
+    return isInCSGScaffold(trIVB) and resourcesForBranch(trIVB, bi) == (B - 1);
 }
 
 const Cell3DPosition
@@ -1051,7 +1051,7 @@ bool CoatingRuleMatcher::areOnTheSameBranch(const Cell3DPosition& pos1,
 /****************************** CSG STUFF ****************************/
 /*********************************************************************/
 
-bool CoatingRuleMatcher::isInCSG(const Cell3DPosition& pos) const {
+bool CoatingRuleMatcher::isInCSGScaffold(const Cell3DPosition& pos) const {
     return isInMesh(pos) and isInsideFn(pos);
 }
 

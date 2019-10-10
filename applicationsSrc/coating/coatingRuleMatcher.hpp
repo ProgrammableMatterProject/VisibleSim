@@ -184,7 +184,7 @@ public:
 
     bool isInGrid(const Cell3DPosition& pos) const;
     bool isInMesh(const Cell3DPosition& pos) const;
-    bool isInCSGMeshOrSandbox(const Cell3DPosition& pos) const;
+    bool isInCSGScaffoldMeshOrSandbox(const Cell3DPosition& pos) const;
     bool isInSandbox(const Cell3DPosition& pos) const;
 
     void printDebugInfo(const Cell3DPosition& pos) const;
@@ -409,7 +409,7 @@ public:
      * @param pos position to evaluate
      * @return true if pos is part of the CSG target object
      */
-    bool isInCSG(const Cell3DPosition& pos) const;
+    bool isInCSGScaffold(const Cell3DPosition& pos) const;
 
     /**
      * Checks whether module at the tip of branch tipB relative to tile root at position pos

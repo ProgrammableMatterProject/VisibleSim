@@ -26,8 +26,7 @@
 #include "coatingMessages.hpp"
 #include "coatingRuleMatcher.hpp"
 
-#define IT_MODE_TILEROOT_ACTIVATION 1
-#define IT_MODE_ALGORITHM_START 2
+#define IT_MODULE_INSERTION 1
 
 class CoatingBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
@@ -41,22 +40,18 @@ public:
     inline static Cell3DPosition scaffoldSeedPos = Cell3DPosition(-1, -1, -1);
     inline static const Cell3DPosition& sbSeedPos = Cell3DPosition(3, 3, 3);
 
-    inline static int nbSandboxCatoms = 0;
-    inline static int nbOpenScaffoldPositions = 0;
-    inline static int nbCSGCatomsInPlace = 0;
-    inline static int nbModulesInShape = 0;
-
-    inline static int nbSeedTiles = 0;
-    inline static int nbPathsOver = 0;
-    inline static Time reconfTime = 0;
-
-    inline static int nbMessages = 0;
     inline static Time t0 = 0;
-    inline static bool NO_FLOODING = true;
     inline static bool BUILDING_MODE = false; // const after call to parseUserCommandLineArgument
     inline static bool HIGHLIGHT_CSG = false;
     inline static bool HIGHLIGHT_SCAFFOLD = false;
     inline static bool sandboxInitialized;
+
+    // BlockCode
+    Scheduler *scheduler;
+    World *world;
+    Lattice *lattice;
+    Catoms3D::Catoms3DBlock *catom;
+    CoatingRuleMatcher *rm;
 
     CoatingBlockCode(Catoms3D::Catoms3DBlock *host);
     ~CoatingBlockCode();
@@ -79,6 +74,27 @@ public:
         return (new CoatingBlockCode((Catoms3DBlock*)host));
     }
 
+    // Scaffolding
+    BranchIndex branch;
+    AgentRole role;
+    Cell3DPosition coordinatorPos;
+    Cell3DPosition targetPosition;
+    bool rotating = false;
+    bool initialized = false; //!< Indicates whether this module has called startup() yet
+
+    static const Cell3DPosition norm(const Cell3DPosition& pos);
+    static const Cell3DPosition denorm(const Cell3DPosition& pos);
+    void initializeSandbox();
+    bool isInsideCSGFn(const Cell3DPosition& pos) const;
+    void scheduleRotationTo(const Cell3DPosition& pos, Catoms3DBlock* pivot = NULL);
+    void highlightCSGScaffold(bool force = false);
+    Cell3DPosition determineScaffoldSeedPosition();
+    Cell3DPosition getTileRootPosition(const Cell3DPosition& pos) const;
+
+    // Motion coordination
+#define SET_GREEN_LIGHT(x) setGreenLight(x, __LINE__)
+    void setGreenLight(bool onoff, int _line_);
+    bool isAdjacentToPosition(const Cell3DPosition& pos) const;
     inline static Time getRoundDuration() {
         Time duration = 0;
 
@@ -90,52 +106,16 @@ public:
         return duration;
     }
 
-    /**
-     * @return the position of the tile root module of the tile to which this module belongs
-     */
-    Cell3DPosition getTileRootPosition(const Cell3DPosition& pos) const;
-
-    Scheduler *scheduler;
-    World *world;
-    Lattice *lattice;
-    Catoms3D::Catoms3DBlock *catom;
-    CoatingRuleMatcher *ruleMatcher;
-
-    BranchIndex branch;
-    AgentRole role;
-    Cell3DPosition coordinatorPos;
-    Cell3DPosition targetPosition;
-    bool rotating = false;
-
-#define SET_GREEN_LIGHT(x) setGreenLight(x, __LINE__)
-
-    /**
-     * Changes the light state of a pivot and take the appriopriate action
-     */
-    void setGreenLight(bool onoff, int _line_);
-    bool isAdjacentToPosition(const Cell3DPosition& pos) const;
-
-    /**
-     * Transforms a shifted grid position into a mesh absolute position.
-     * @note This has to be used due to the mesh seed being offsetted in order to leave space
-     *  for spawning modules
-     * @param pos position to normalize
-     * @return the corresponding position of pos in the coordinate system of the mesh
-     */
-    static const Cell3DPosition norm(const Cell3DPosition& pos);
-    static const Cell3DPosition denorm(const Cell3DPosition& pos);
-
-
-    /**
-     * Add initial sandbox modules to the lattice
-     */
-    void initializeSandbox();
-
-    bool isInsideCSGFn(const Cell3DPosition& pos) const;
-
-    void scheduleRotationTo(const Cell3DPosition& pos, Catoms3DBlock* pivot);
-
-    void highlightCSGScaffold(bool force = false);
+    // Coating
+    enum CWDirs {FrontLeft, Front, FrontRight, Right, RearRight, Rear, RearLeft, Left };
+    inline static const NumCWDirs = 8;
+    inline static CWDirs {FrontLeft, Front, FrontRight, Right, RearRight, Rear, RearLeft };
+    inline static constexpr Cell3DPosition diagNeighbors[4] = { Cell3DPosition(-1,-1,0),
+        Cell3DPosition(1,-1,0), Cell3DPosition(-1,1,0), Cell3DPosition(1,1,0), };
+    // static inline constexpr vector<const Cell3DPosition> xset_CWRelNbh;
+    inline static Cell3DPosition spawnLoc;
+    inline bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); };
+    bool isInCoatingLayer(const int layer) const;
 };
 
 #endif /* COATING_BLOCKCODE_H_ */
