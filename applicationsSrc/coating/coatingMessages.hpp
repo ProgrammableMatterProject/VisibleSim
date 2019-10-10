@@ -19,6 +19,39 @@ static const uint MSG_DELAY = 0;
 
 using namespace MeshCoating;
 
+class CoaTrainRequest : public HandleableMessage {
+public:
+    CoaTrainRequest() : HandleableMessage() {};
+    virtual ~CoaTrainRequest() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new CoaTrainRequest(*this); }
+    virtual string getName() const override { return "CoaTrainRequest";
+    }
+};
+
+class GetOnBoard : public HandleableMessage {
+    int layer;
+public:
+    GetOnBoard(int _layer) : HandleableMessage(), layer(_layer) {};
+    virtual ~GetOnBoard() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new GetOnBoard(*this); }
+    virtual string getName() const override { return "GetOnBoard(" + to_string(layer) +")";}
+};
+
+class CoaTrainIsFull : public HandleableMessage {
+public:
+    CoaTrainIsFull() : HandleableMessage() {};
+    virtual ~CoaTrainIsFull() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new CoaTrainIsFull(*this); }
+    virtual string getName() const override { return "CoaTrainIsFull";
+    }
+};
+
 class ProbePivotLightStateMessage : public HandleableMessage {
     const Cell3DPosition srcPos;
     const Cell3DPosition targetPos; // Next position the module is seeking to reach

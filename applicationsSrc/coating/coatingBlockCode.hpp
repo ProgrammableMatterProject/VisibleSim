@@ -127,15 +127,18 @@ public:
     // static inline constexpr vector<const Cell3DPosition> xset_CWRelNbh;
     inline static Cell3DPosition spawnLoc;
     inline static Cell3DPosition closingCorner;
+    inline static Cell3DPosition spawnPivot;
 
     CWDir lastCWDir = FrontLeft;
+    int spawnCount = 0;
+    int currentLayer = 0;
 
     inline bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); };
     bool isInCoatingLayer(const Cell3DPosition& pos, const int layer) const;
     int getCoatingLayer(const Cell3DPosition& pos) const;
     bool hasOpenCoatingSlotNeighbor(const int layer, Cell3DPosition &openSlot) const;
     const vector<CWDir> getCWDirectionsFrom(const CWDir cwd) const;
-
+    int getResourcesForCoatingLayer(const int currentLayer);
     string CWDir_to_string(const CWDir d) const;
 };
 
