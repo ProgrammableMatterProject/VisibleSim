@@ -53,15 +53,15 @@ ScaffoldingBlockCode::~ScaffoldingBlockCode() {
     // }
 }
 
-bool ScaffoldingBlockCode::parseUserCommandLineArgument(int argc, char *argv[]) {
+bool ScaffoldingBlockCode::parseUserCommandLineArgument(int& argc, char **argv[]) {
     /* Reading the command line */
-    if ((argc > 0) && (argv[0][0] == '-')) {
-        switch(argv[0][1]) {
+    if ((argc > 0) && ((*argv)[0][0] == '-')) {
+        switch((*argv)[0][1]) {
             case 'b':   {
                 BUILDING_MODE = true;
 
                 argc--;
-                argv++;
+                (*argv)++;
 
                 return true;
             } break;
@@ -69,19 +69,15 @@ bool ScaffoldingBlockCode::parseUserCommandLineArgument(int argc, char *argv[]) 
                 NO_FLOODING = false;
 
                 argc--;
-                argv++;
+                (*argv)++;
 
                 return true;
             } break;
             case '-': {
-                string varg = string(argv[0] + 2); // argv[0] without "--"
-
+                string varg = string((*argv)[0] + 2); // (*argv)[0] without "--"
                 if (varg == string("highlight")) HIGHLIGHT_SCAFFOLD = true;
-                if (varg == string("csg")) HIGHLIGHT_CSG = true;
+                else if (varg == string("csg")) HIGHLIGHT_CSG = true;
                 else return false;
-
-                argc--;
-                argv++;
 
                 return true;
             }
@@ -2277,14 +2273,14 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                     //     (ruleMatcher->getNearestTileRootPosition(norm(pos))))
                     //     lattice->highlightCell(pos, BLUE);
 
+                    if (HIGHLIGHT_CSG and target->isInTarget(pos))
+                        lattice->highlightCell(pos, RED);
+
                     if (not ruleMatcher->isInCSG(norm(pos))
                         // or (ruleMatcher->isInCSG(norm(pos)) and not ruleMatcher->isInCSG
                         //     (ruleMatcher->getTileRootPositionForMeshPosition(norm(pos)))))
                         )
                         continue;
-
-                    if (HIGHLIGHT_CSG and target->isInTarget(pos))
-                        lattice->highlightCell(pos, RED);
 
                     if (HIGHLIGHT_SCAFFOLD and ruleMatcher->isInCSG(norm(pos)))
                         lattice->highlightCell(pos, WHITE);

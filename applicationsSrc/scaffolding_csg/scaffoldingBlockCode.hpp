@@ -77,7 +77,7 @@ public:
     void onBlockSelected() override;
     void onAssertTriggered() override;
 
-    bool parseUserCommandLineArgument(int argc, char *argv[]) override;
+    bool parseUserCommandLineArgument(int& argc, char **argv[]) override;
 
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
         return (new ScaffoldingBlockCode((Catoms3DBlock*)host));
