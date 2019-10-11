@@ -39,6 +39,8 @@ public:
     virtual void handle(BaseSimulator::BlockCode*) override;
     virtual Message* clone() const override { return new GetOnBoard(*this); }
     virtual string getName() const override { return "GetOnBoard(" + to_string(layer) +")";}
+
+    static inline const Cell3DPosition& defaultDst = Cell3DPosition(-1, -1, 1);
 };
 
 class CoaTrainIsFull : public HandleableMessage {
@@ -49,6 +51,17 @@ public:
     virtual void handle(BaseSimulator::BlockCode*) override;
     virtual Message* clone() const override { return new CoaTrainIsFull(*this); }
     virtual string getName() const override { return "CoaTrainIsFull";
+    }
+};
+
+class ProceedToNextLayer : public HandleableMessage {
+public:
+    ProceedToNextLayer() : HandleableMessage() {};
+    virtual ~ProceedToNextLayer() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new ProceedToNextLayer(*this); }
+    virtual string getName() const override { return "ProceedToNextLayer";
     }
 };
 

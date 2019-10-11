@@ -45,30 +45,36 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host):
 CoatingBlockCode::~CoatingBlockCode() {
 }
 
-bool CoatingBlockCode::parseUserCommandLineArgument(int argc, char *argv[]) {
+bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
     /* Reading the command line */
-    if ((argc > 0) && (argv[0][0] == '-')) {
-        switch(argv[0][1]) {
+    if ((argc > 0) && ((*argv)[0][0] == '-')) {
+        switch((*argv)[0][1]) {
+
             // case 'b':   {
             //     BUILDING_MODE = true;
-
-            //     argc--;
-            //     argv++;
-
             //     return true;
             // } break;
+
             case '-': {
-                string varg = string(argv[0] + 2); // argv[0] without "--"
-
+                string varg = string((*argv)[0] + 2); // argv[0] without "--"
                 if (varg == string("highlight")) HIGHLIGHT_SCAFFOLD = true;
-                if (varg == string("csg")) HIGHLIGHT_CSG = true;
-                else return false;
+                else if (varg == string("csg")) HIGHLIGHT_CSG = true;
+                else if (varg == string("coating")) {
+                    try {
+                        HIGHLIGHT_layer = stoi((*argv)[1]);
+                        argc--;
+                        (*argv)++;
+                    } catch(std::logic_error&) {}
 
-                argc--;
-                argv++;
+                    HIGHLIGHT_COATING = true;
+                } else if (varg == string("resources")) HIGHLIGHT_RES = true;
+                else return false;
 
                 return true;
             }
+
+            default:
+                cerr << "Unrecognized command line argument: " << (*argv)[0] << endl;
         }
     }
 
@@ -163,9 +169,11 @@ void CoatingBlockCode::startup() {
 
         sendMessage(new CoaTrainRequest(), spawnPivotItf, MSG_DELAY_MC, 0);
     } else if (catom->position == scaffoldSeedPos) {
+        highlightCSGScaffold();
         spawnLoc = catom->position + Cell3DPosition(-1, -1, -1);
         closingCorner = scaffoldSeedPos + Cell3DPosition(-1, -1, 0);
         spawnPivot = scaffoldSeedPos + Cell3DPosition(0, 0, -2);
+        spawnBTip = scaffoldSeedPos + Cell3DPosition(0, 0, -1);
 
         lattice->highlightCell(spawnLoc, MAGENTA);
         lattice->highlightCell(closingCorner, CYAN);
@@ -236,51 +244,46 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
         case EVENT_ROTATION3D_END: {
             getScheduler()->trace(" ROTATION3D_END ", catom->blockId, MAGENTA);
 
-            if (catom->position[2] < scaffoldSeedPos[2]) {
-                if (lattice->isFree(catom->position + Cell3DPosition(0,0,1))) {
-                    scheduleRotationTo(catom->position + Cell3DPosition(0,0,1));
+            if (catom->position[2] < closingCorner[2]) {
+                if (currentLayer == 0) {
+                    if (lattice->isFree(catom->position + Cell3DPosition(0,0,1)))
+                        scheduleRotationTo(catom->position + Cell3DPosition(0,0,1));
+                    else scheduleRotationTo(catom->position + Cell3DPosition(-1,-1,2));
                 } else {
-                    scheduleRotationTo(catom->position + Cell3DPosition(-1,-1,2));
+                    if (IS_ODD(currentLayer))
+                        scheduleRotationTo(catom->position + Cell3DPosition(-1,-1,2));
+                    else
+                        scheduleRotationTo(catom->position); // TODO:
+                }
+            } else if (catom->position[2] == closingCorner[2]) {
+                bool isClosingCorner = catom->position == closingCorner;
+                if (isInCoatingLayer(catom->position, currentLayer)
+                    and (not isClosingCorner
+                         or (isClosingCorner and not
+                             (lattice->isFree(closingCorner + Cell3DPosition(1,0,0))  // FIXME:
+                              or lattice->isFree(closingCorner + Cell3DPosition(0, 1, 0)))))){
+                    if (isClosingCorner) {
+                        catom->setColor(CYAN);
+                        lattice->unhighlightCell(catom->position);
+
+                        closingCorner += Cell3DPosition(-1, -1, 1);
+                        lattice->highlightCell(closingCorner, CYAN);
+
+                        P2PNetworkInterface* PTNL_itf = catom->getInterface(spawnBTip);
+                        // TODO: if (PTNL_itf == NULL)
+                        sendMessage(new ProceedToNextLayer(), PTNL_itf, MSG_DELAY_MC, 0);
+                    } else {
+                        catom->setColor(ORANGE);
+                    }
+                } else { // Need to move up to border motion layer
+                    if (isClosingCorner
+                        and lattice->isFree(catom->position + Cell3DPosition(1,0,0)))
+                        scheduleRotationTo(catom->position + Cell3DPosition(1,0,0));
+                    else
+                        scheduleRotationTo(catom->position + Cell3DPosition(0,0,1));
                 }
             } else {
-                if (isInCoatingLayer(catom->position, 0)) {
-                    catom->setColor(ORANGE);
-                } else {
-                    // Move around border until encountering a coating position
-
-                    Cell3DPosition potentialOpenSlot;
-                    if (hasOpenCoatingSlotNeighbor(0, potentialOpenSlot)) {
-                        stringstream info;
-                        info << " moving to open coating slot at " << potentialOpenSlot;
-                        scheduler->trace(info.str(),catom->blockId,BLUE);
-
-                        scheduleRotationTo(potentialOpenSlot);
-                    } else {
-                        vector<CWDir> cwdPosCustom = getCWDirectionsFrom(lastCWDir);
-                        for (int i = 0; i < NumCWDirs; i++) {
-                            const Cell3DPosition& cwdPos = CWDPos[cwdPosCustom[i]];
-                            const Cell3DPosition& tPos = cwdPos + catom->position;
-
-                            stringstream info;
-                            info << " considering " << tPos
-                                 << "(" << CWDir_to_string(cwdPosCustom[i]) << ")";
-                            scheduler->trace(info.str(),catom->blockId,ORANGE);
-
-                            if (Catoms3DMotionEngine::canMoveTo(catom, tPos)) {
-                                lastCWDir = cwdPosCustom[i];
-
-                                stringstream info;
-                                info << " moving to next position around border: "
-                                     << tPos << "(" << CWDir_to_string(lastCWDir) << ")";
-                                scheduler->trace(info.str(),catom->blockId,WHITE);
-
-                                scheduleRotationTo(tPos);
-                                break;
-                            }
-                        }
-                    }
-
-                }
+                scheduleNextBorderMotion();
             }
         } break;
 
@@ -375,39 +378,6 @@ Cell3DPosition CoatingBlockCode::determineScaffoldSeedPosition() {
     return Cell3DPosition(-1, -1, -1);
 }
 
-void CoatingBlockCode::highlightCSGScaffold(bool debug) {
-    // target->highlight();
-
-    // Initialize Target Object Preview
-    const Cell3DPosition& gs = world->lattice->gridSize;
-    Cell3DPosition pos;
-    for (short iz = 0; iz < gs[2]; iz++) {
-        for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
-            for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
-                pos.set(ix, iy, iz);
-
-                if (debug) {
-                    if (isInCSG(pos))
-                        lattice->highlightCell(pos, RED);
-                } else {
-
-                    if (not rm->isInCSGScaffold(norm(pos))
-                        // or (rm->isInCSGScaffold(norm(pos)) and not rm->isInCSGScaffold
-                        //     (rm->getTileRootPositionForMeshPosition(norm(pos)))))
-                        )
-                        continue;
-
-                    if (HIGHLIGHT_CSG and isInCSG(pos))
-                        lattice->highlightCell(pos, RED);
-
-                    if (HIGHLIGHT_SCAFFOLD and rm->isInCSGScaffold(norm(pos)))
-                        lattice->highlightCell(pos, WHITE);
-                }
-            }
-        }
-    }
-}
-
 void
 CoatingBlockCode::scheduleRotationTo(const Cell3DPosition& pos, Catoms3DBlock* pivot) {
     try {
@@ -453,10 +423,29 @@ bool CoatingBlockCode::hasOpenCoatingSlotNeighbor(const int layer,
     return false;
 }
 
+bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) const {
+    return isInCoatingLayer(pos, getCoatingLayer(pos));
+}
+
 bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, const int layer) const {
-    if (layer != getCoatingLayer(pos))
+    if (layer != getCoatingLayer(pos) or isInCSG(pos))
         return false;
 
+    // if (pos == Cell3DPosition(1, 10, 4)) {
+    //     lattice->highlightCell(pos, RED);
+    //     cout << (IS_EVEN(layer) and hasNeighborInCSG(pos)) << endl;
+    //     cout << (IS_ODD(layer) and not hasNeighborInCSG(pos)
+    //              and has2ndOrderNeighborInCSG(pos)) << endl;
+    //     cout << IS_ODD(layer) << endl;
+    //     cout << not hasNeighborInCSG(pos) << endl;
+    //     cout << has2ndOrderNeighborInCSG(pos) << endl;
+    // }
+
+    return (IS_EVEN(layer) and hasNeighborInCSG(pos))
+        or (IS_ODD(layer) and not hasNeighborInCSG(pos) and has2ndOrderNeighborInCSG(pos));
+}
+
+bool CoatingBlockCode::hasNeighborInCSG(const Cell3DPosition& pos) const {
     for (const Cell3DPosition& p : lattice->getNeighborhood(pos)) {
         if (p[2] == pos[2] and isInCSG(p)) return true;
     }
@@ -468,26 +457,34 @@ bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, const int lay
     return false;
 }
 
-const vector<CWDir> CoatingBlockCode::getCWDirectionsFrom(const CWDir cwd) const {
-    vector<CWDir> cwDirs;
+bool CoatingBlockCode::has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const {
+    for (const Cell3DPosition& pRel : _2ndOrderNeighbors) {
+        if (isInCSG(pRel + pos)) return true;
+    }
 
-    // cout << CWDir_to_string(cwd) << endl;
+    return false;
+}
 
-    for (int cwi = cwd; cwi < NumCWDirs; cwi++)
-        cwDirs.push_back((CWDir)cwi);
+const vector<CCWDir> CoatingBlockCode::getCCWDirectionsFrom(const CCWDir cwd) const {
+    vector<CCWDir> cwDirs;
+
+    // cout << CCWDir_to_string(cwd) << endl;
+
+    for (int cwi = cwd; cwi < NumCCWDirs; cwi++)
+        cwDirs.push_back((CCWDir)cwi);
     for (int cwi = 0; cwi < cwd; cwi++)
-        cwDirs.push_back((CWDir)cwi);
+        cwDirs.push_back((CCWDir)cwi);
 
-    stringstream info;
-    for (int i = 0; i < NumCWDirs; i++)
-        info << CWDir_to_string(cwDirs[i]) << " " ;
-    scheduler->trace(info.str(),catom->blockId,BLUE);
+    // stringstream info;
+    // for (int i = 0; i < NumCCWDirs; i++)
+    //     info << CCWDir_to_string(cwDirs[i]) << " " ;
+    // scheduler->trace(info.str(),catom->blockId,BLUE);
 
 
     return cwDirs;
 }
 
-string CoatingBlockCode::CWDir_to_string(const CWDir d) const {
+string CoatingBlockCode::CCWDir_to_string(const CCWDir d) const {
     switch(d) {
         case FrontLeft: return "FrontLeft";
         case Front: return "Front";
@@ -503,20 +500,26 @@ string CoatingBlockCode::CWDir_to_string(const CWDir d) const {
 }
 
 int CoatingBlockCode::getResourcesForCoatingLayer(const int currentLayer) {
+    // Check cache
+    if ((int)resourcesForCoatingLayer.size() > currentLayer)
+        return resourcesForCoatingLayer[currentLayer];
+
     // Virtually navigate around the object to count necessary resources
     int count = 0;
     Cell3DPosition currentPos = closingCorner;
-    CWDir lastCwd = FrontLeft;
+    CCWDir lastCwd = FrontLeft;
 
     do {
-        // cout << currentPos << endl;
-        // lattice->highlightCell(currentPos, RED);
-        // usleep(1000000);
-        // lattice->unhighlightCell(currentPos, RED);
+        if (HIGHLIGHT_RES) {
+            // cout << currentPos << endl;
+            lattice->highlightCell(currentPos, RED);
+            usleep(50000);
+            lattice->unhighlightCell(currentPos);
+        }
 
-        vector<CWDir> cwdPosCustom = getCWDirectionsFrom(lastCwd);
-        for (int i = 0; i < NumCWDirs; i++) {
-            const Cell3DPosition& cwdPos = CWDPos[cwdPosCustom[i]];
+        vector<CCWDir> cwdPosCustom = getCCWDirectionsFrom(lastCwd);
+        for (int i = 0; i < NumCCWDirs; i++) {
+            const Cell3DPosition& cwdPos = CCWDPos[cwdPosCustom[i]];
             // cout << "cwd:" << cwdPos << endl;
             const Cell3DPosition& vPos = cwdPos + currentPos;
 
@@ -529,6 +532,81 @@ int CoatingBlockCode::getResourcesForCoatingLayer(const int currentLayer) {
         }
     } while (currentPos != closingCorner);
 
+    // Add to cache
+    resourcesForCoatingLayer.push_back(count);
 
     return count;
+}
+
+void CoatingBlockCode::scheduleNextBorderMotion() {
+    // Move around border until encountering a coating position
+    Cell3DPosition potentialOpenSlot;
+    if (hasOpenCoatingSlotNeighbor(0, potentialOpenSlot)) {
+        stringstream info;
+        info << " moving to open coating slot at " << potentialOpenSlot;
+        scheduler->trace(info.str(),catom->blockId,CYAN);
+
+        scheduleRotationTo(potentialOpenSlot);
+    } else {
+        vector<CCWDir> cwdPosCustom = getCCWDirectionsFrom(lastCCWDir);
+        for (int i = 0; i < NumCCWDirs; i++) {
+            const Cell3DPosition& cwdPos = CCWDPos[cwdPosCustom[i]];
+            const Cell3DPosition& tPos = cwdPos + catom->position;
+
+            stringstream info;
+            info << " considering " << tPos
+                 << "(" << CCWDir_to_string(cwdPosCustom[i]) << ")";
+            scheduler->trace(info.str(),catom->blockId,ORANGE);
+
+            if (Catoms3DMotionEngine::canMoveTo(catom, tPos)) {
+                lastCCWDir = cwdPosCustom[i];
+
+                stringstream info;
+                info << " moving to next position around border: "
+                     << tPos << "(" << CCWDir_to_string(lastCCWDir) << ")";
+                scheduler->trace(info.str(),catom->blockId,WHITE);
+
+                scheduleRotationTo(tPos);
+                break;
+            }
+        }
+    }
+
+}
+
+void CoatingBlockCode::highlightCSGScaffold(bool debug) {
+    // target->highlight();
+
+    if (not HIGHLIGHT_CSG and not HIGHLIGHT_SCAFFOLD and not HIGHLIGHT_COATING)
+        return;
+
+    // Initialize Target Object Preview
+    const Cell3DPosition& gs = world->lattice->gridSize;
+    Cell3DPosition pos;
+    for (short iz = 0; iz < gs[2]; iz++) {
+        for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
+            for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
+                pos.set(ix, iy, iz);
+
+                if (debug) {
+                    if (isInCSG(pos))
+                        lattice->highlightCell(pos, RED);
+                } else {
+                    if (HIGHLIGHT_CSG and isInCSG(pos))
+                        lattice->highlightCell(pos, WHITE);
+
+                    if (HIGHLIGHT_COATING and HIGHLIGHT_layer == -1 and isInCoating(pos))
+                        lattice->highlightCell(pos, ORANGE);
+
+                    if (HIGHLIGHT_COATING and HIGHLIGHT_layer != -1
+                        and isInCoatingLayer(pos, HIGHLIGHT_layer))
+                        lattice->highlightCell(pos, ORANGE);
+
+
+                    if (HIGHLIGHT_SCAFFOLD and rm->isInCSGScaffold(norm(pos)))
+                        lattice->highlightCell(pos, WHITE);
+                }
+            }
+        }
+    }
 }

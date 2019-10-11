@@ -35,7 +35,11 @@ void CoaTrainRequest::handle(BaseSimulator::BlockCode* bc) {
 void GetOnBoard::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& mabc = *static_cast<CoatingBlockCode*>(bc);
 
-    mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(1,0,0));
+    mabc.currentLayer = layer;
+
+    if (layer == 0)
+        mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(1,0,0));
+    else mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(-1,-1,2));
 }
 
 void CoaTrainIsFull::handle(BaseSimulator::BlockCode* bc) {
@@ -43,6 +47,23 @@ void CoaTrainIsFull::handle(BaseSimulator::BlockCode* bc) {
 
     // Do nothing, just wait.
     (void)mabc;
+}
+
+void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
+    CoatingBlockCode& mabc = *static_cast<CoatingBlockCode*>(bc);
+
+    if (mabc.catom->position != mabc.spawnPivot) {
+        P2PNetworkInterface* PTNL_itf = mabc.catom->getInterface(mabc.spawnPivot);
+        // TODO: if (PTNL_itf == NULL)
+        mabc.sendMessage(new ProceedToNextLayer(), PTNL_itf, MSG_DELAY_MC, 0);
+    } else {
+        mabc.currentLayer++;
+        mabc.spawnCount = 1;
+        mabc.catom->setColor(GREEN);
+        mabc.sendMessage(new GetOnBoard(mabc.currentLayer),
+                         mabc.catom->getInterface(mabc.catom->position+GetOnBoard::defaultDst),
+                         MSG_DELAY_MC, 0);
+    }
 }
 
 void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {

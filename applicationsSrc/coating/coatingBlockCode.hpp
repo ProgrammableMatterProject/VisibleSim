@@ -25,10 +25,10 @@
 
 #include "coatingMessages.hpp"
 #include "coatingRuleMatcher.hpp"
+#include "coatingUtils.hpp"
 
 #define IT_MODULE_INSERTION 1
 
-enum CWDir {FrontLeft, Front, FrontRight, Right, RearRight, Rear, RearLeft, Left };
 
 class CoatingBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
@@ -46,6 +46,9 @@ public:
     inline static bool BUILDING_MODE = false; // const after call to parseUserCommandLineArgument
     inline static bool HIGHLIGHT_CSG = false;
     inline static bool HIGHLIGHT_SCAFFOLD = false;
+    inline static bool HIGHLIGHT_COATING = false;
+    inline static bool HIGHLIGHT_RES = false;
+    inline static int HIGHLIGHT_layer = -1;
     inline static bool sandboxInitialized;
 
     // BlockCode
@@ -70,7 +73,7 @@ public:
     void onBlockSelected() override;
     void onAssertTriggered() override;
 
-    bool parseUserCommandLineArgument(int argc, char *argv[]) override;
+    bool parseUserCommandLineArgument(int& argc, char **argv[]) override;
 
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
         return (new CoatingBlockCode((Catoms3DBlock*)host));
@@ -109,37 +112,30 @@ public:
     }
 
     ///  Coating
-    inline static const int NumCWDirs = 8;
-    inline static constexpr Cell3DPosition CWDPos[NumCWDirs] = {
-        Cell3DPosition(-1, -1, 0), // FrontLeft
-        Cell3DPosition(0, -1, 0), // Front
-        Cell3DPosition(1, -1, 0), // FrontRight
-        Cell3DPosition(1, 0, 0), // Right
-        Cell3DPosition(1, 1, 0), // RearRight
-        Cell3DPosition(0, 1, 0), // Rear
-        Cell3DPosition(-1, 1, 0), // RearLeft
-        Cell3DPosition(-1, 0, 0), // Left
-    };
-
-    inline static constexpr Cell3DPosition diagNeighbors[4] = { Cell3DPosition(-1,-1,0),
-        Cell3DPosition(1,-1,0), Cell3DPosition(-1,1,0), Cell3DPosition(1,1,0), };
-
-    // static inline constexpr vector<const Cell3DPosition> xset_CWRelNbh;
+    // static inline constexpr vector<const Cell3DPosition> xset_CCWRelNbh;
     inline static Cell3DPosition spawnLoc;
     inline static Cell3DPosition closingCorner;
     inline static Cell3DPosition spawnPivot;
+    inline static Cell3DPosition spawnBTip;
 
-    CWDir lastCWDir = FrontLeft;
+    CCWDir lastCCWDir = FrontLeft;
     int spawnCount = 0;
     int currentLayer = 0;
+    vector<int> resourcesForCoatingLayer;
 
     inline bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); };
+    bool isInCoating(const Cell3DPosition& pos) const;
     bool isInCoatingLayer(const Cell3DPosition& pos, const int layer) const;
     int getCoatingLayer(const Cell3DPosition& pos) const;
     bool hasOpenCoatingSlotNeighbor(const int layer, Cell3DPosition &openSlot) const;
-    const vector<CWDir> getCWDirectionsFrom(const CWDir cwd) const;
+    const vector<CCWDir> getCCWDirectionsFrom(const CCWDir cwd) const;
     int getResourcesForCoatingLayer(const int currentLayer);
-    string CWDir_to_string(const CWDir d) const;
+    void scheduleNextBorderMotion();
+    string CCWDir_to_string(const CCWDir d) const;
+
+    bool hasNeighborInCSG(const Cell3DPosition& pos) const;
+    bool has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const;
+
 };
 
 #endif /* COATING_BLOCKCODE_H_ */
