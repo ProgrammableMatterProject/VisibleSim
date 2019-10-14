@@ -51,6 +51,8 @@ public:
     inline static int HIGHLIGHT_layer = -1;
     inline static bool sandboxInitialized;
 
+    bool highlightedReachablePos = false;
+
     // BlockCode
     Scheduler *scheduler;
     World *world;
@@ -113,29 +115,39 @@ public:
 
     ///  Coating
     // static inline constexpr vector<const Cell3DPosition> xset_CCWRelNbh;
+    // FIXME: Make non-static
     inline static Cell3DPosition spawnLoc;
     inline static Cell3DPosition closingCorner;
     inline static Cell3DPosition spawnPivot;
     inline static Cell3DPosition spawnBTip;
+    inline static Cell3DPosition trainStart;
 
+    size_t topCoatingLayer; //!< Height of the top layer coating. FIXME: planar case only.
+
+    bool isOnTheCoatrain = false;
     CCWDir lastCCWDir = FrontLeft;
-    int spawnCount = 0;
-    int currentLayer = 0;
-    vector<int> resourcesForCoatingLayer;
+    size_t spawnCount = 0;
+    unsigned int currentLayer = 0;
+    vector<size_t> resourcesForCoatingLayer;
 
     inline bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); };
     bool isInCoating(const Cell3DPosition& pos) const;
-    bool isInCoatingLayer(const Cell3DPosition& pos, const int layer) const;
-    int getCoatingLayer(const Cell3DPosition& pos) const;
-    bool hasOpenCoatingSlotNeighbor(const int layer, Cell3DPosition &openSlot) const;
+    bool isInCoatingLayer(const Cell3DPosition& pos, const unsigned int layer) const;
+    unsigned int getCoatingLayer(const Cell3DPosition& pos) const;
+    bool hasOpenCoatingSlotNeighbor(const unsigned int layer, Cell3DPosition &openSlot) const;
     const vector<CCWDir> getCCWDirectionsFrom(const CCWDir cwd) const;
-    int getResourcesForCoatingLayer(const int currentLayer);
+    size_t getResourcesForCoatingLayer(const unsigned int layer);
     void scheduleNextBorderMotion();
     string CCWDir_to_string(const CCWDir d) const;
+    size_t determineTopCoatingHeight() const;
 
     bool hasNeighborInCSG(const Cell3DPosition& pos) const;
     bool has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const;
+    Cell3DPosition nextRotationTowards(const Cell3DPosition& dest,
+                                       bool allowDirectMotion = true) const;
 
+    void handleClosingCornerInsertion();
+    void forwardPTNLToSpawnPivot();
 };
 
 #endif /* COATING_BLOCKCODE_H_ */

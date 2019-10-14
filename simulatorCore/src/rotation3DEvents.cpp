@@ -141,6 +141,7 @@ void Rotation3DStartEvent::consume() {
     rot.getFinalPositionAndOrientation(position,orientation);
 
     catom->pivot = rot.pivot;
+    catom->isRotating = true;
 
     // Trace module rotation
     stringstream info;
@@ -254,6 +255,7 @@ void Rotation3DStopEvent::consume() {
 
     // Reset pivot
     catom->pivot = NULL;
+    catom->isRotating = false;
 
     /* Transformer les coordonnées GL en coordonnées grille*/
     rot.getFinalPositionAndOrientation(position,orientation);

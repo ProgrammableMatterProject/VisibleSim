@@ -18,6 +18,37 @@
 
 namespace Catoms3D {
 
+inline constexpr Cell3DPosition relReachablePosition[18] = {
+    // -2
+    Cell3DPosition(1,1,-2),
+
+    // -1
+    Cell3DPosition(0,0,-1),
+    Cell3DPosition(0,1,-1),
+    Cell3DPosition(1,0,-1),
+    Cell3DPosition(1,1,-1),
+
+    // 0
+    Cell3DPosition(-1, -1, 0), // FrontLeft
+    Cell3DPosition(0, -1, 0), // Front
+    Cell3DPosition(1, -1, 0), // FrontRight
+    Cell3DPosition(1, 0, 0), // Right
+    Cell3DPosition(1, 1, 0), // RearRight
+    Cell3DPosition(0, 1, 0), // Rear
+    Cell3DPosition(-1, 1, 0), // RearLeft
+    Cell3DPosition(-1, 0, 0), // Left
+
+    // 1
+    Cell3DPosition(0,0,1),
+    Cell3DPosition(0,-1,1),
+    Cell3DPosition(-1,0,1),
+    Cell3DPosition(-1,-1,1),
+
+    // 2
+    Cell3DPosition(-1, -1, 2),
+};
+
+
 class Catoms3DMotionEngine {
     // FIXME: World is a poor container for this
     static inline Catoms3DMotionRules* getMotionRules() {
@@ -124,6 +155,16 @@ public:
      */
     static bool canMoveTo(const Catoms3DBlock* m, const Cell3DPosition& tPos,
                           RotationLinkType faceReq = RotationLinkType::Any);
+
+    /**
+     * Returns a list of all positions that a given module can reach in a single rotation
+     * @param m module to evaluate
+     * @param faceReq
+     * @return a list of all positions that a given module can reach in a single rotation
+     */
+    static const vector<Cell3DPosition>
+    getAllReachablePositions(const Catoms3DBlock* m,
+                             RotationLinkType faceReq = RotationLinkType::Any);
 };
 
 };

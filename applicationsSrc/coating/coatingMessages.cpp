@@ -39,7 +39,10 @@ void GetOnBoard::handle(BaseSimulator::BlockCode* bc) {
 
     if (layer == 0)
         mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(1,0,0));
-    else mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(-1,-1,2));
+    else if (layer == 1)
+        mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(-1,-1,2));
+    else
+        mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(0,-1,1));
 }
 
 void CoaTrainIsFull::handle(BaseSimulator::BlockCode* bc) {
@@ -53,9 +56,7 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& mabc = *static_cast<CoatingBlockCode*>(bc);
 
     if (mabc.catom->position != mabc.spawnPivot) {
-        P2PNetworkInterface* PTNL_itf = mabc.catom->getInterface(mabc.spawnPivot);
-        // TODO: if (PTNL_itf == NULL)
-        mabc.sendMessage(new ProceedToNextLayer(), PTNL_itf, MSG_DELAY_MC, 0);
+        mabc.forwardPTNLToSpawnPivot();
     } else {
         mabc.currentLayer++;
         mabc.spawnCount = 1;
