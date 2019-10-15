@@ -37,12 +37,8 @@ void GetOnBoard::handle(BaseSimulator::BlockCode* bc) {
 
     mabc.currentLayer = layer;
 
-    if (layer == 0)
-        mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(1,0,0));
-    else if (layer == 1)
-        mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(-1,-1,2));
-    else
-        mabc.scheduleRotationTo(mabc.catom->position + Cell3DPosition(0,-1,1));
+    mabc.scheduleRotationTo(mabc.nextRotationTowards(mabc.trainStart // Prioritize right
+                                                     + Cell3DPosition(3,0,0)));
 }
 
 void CoaTrainIsFull::handle(BaseSimulator::BlockCode* bc) {
@@ -57,13 +53,25 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
 
     if (mabc.catom->position != mabc.spawnPivot) {
         mabc.forwardPTNLToSpawnPivot();
+        mabc.passNextSpawnRound = true;
     } else {
         mabc.currentLayer++;
-        mabc.spawnCount = 1;
+        mabc.spawnCount = 0;
         mabc.catom->setColor(GREEN);
-        mabc.sendMessage(new GetOnBoard(mabc.currentLayer),
-                         mabc.catom->getInterface(mabc.catom->position+GetOnBoard::defaultDst),
-                         MSG_DELAY_MC, 0);
+        if (mabc.getResourcesForCoatingLayer(mabc.currentLayer) > 0) {
+            mabc.sendMessage(new GetOnBoard(mabc.currentLayer),
+                             mabc.catom->getInterface(mabc.catom->position
+                                                      + GetOnBoard::defaultDst),
+                             MSG_DELAY_MC, 0);
+            mabc.spawnCount++;
+        } else {
+            mabc.sendMessage(new CoaTrainIsFull(),
+                             mabc.catom->getInterface(mabc.catom->position
+                                                      + GetOnBoard::defaultDst),
+                             MSG_DELAY_MC, 0);
+            mabc.catom->setColor(RED);
+            mabc.coatingIsOver = true;
+        }
     }
 }
 

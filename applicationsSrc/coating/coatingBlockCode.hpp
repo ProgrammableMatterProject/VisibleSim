@@ -49,6 +49,7 @@ public:
     inline static bool HIGHLIGHT_COATING = false;
     inline static bool HIGHLIGHT_RES = false;
     inline static int HIGHLIGHT_layer = -1;
+    inline static bool PYRAMID_MODE = false;
     inline static bool sandboxInitialized;
 
     bool highlightedReachablePos = false;
@@ -130,6 +131,14 @@ public:
     unsigned int currentLayer = 0;
     vector<size_t> resourcesForCoatingLayer;
 
+    // Pre motion coordination
+    CoatingBlockCode* lastSpawnedModuleBc = NULL;
+    int step = 0; // current rotation
+    bool passNextSpawnRound = true;
+
+    // Cheating convergence:
+    inline static bool coatingIsOver = false;
+
     inline bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); };
     bool isInCoating(const Cell3DPosition& pos) const;
     bool isInCoatingLayer(const Cell3DPosition& pos, const unsigned int layer) const;
@@ -148,6 +157,9 @@ public:
 
     void handleClosingCornerInsertion();
     void forwardPTNLToSpawnPivot();
+
+    bool isCoatingCorner(const Cell3DPosition& pos) const;
+    Cell3DPosition locateAboveClosingCorner() const;
 };
 
 #endif /* COATING_BLOCKCODE_H_ */
