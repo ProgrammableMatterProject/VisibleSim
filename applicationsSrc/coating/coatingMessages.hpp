@@ -32,13 +32,16 @@ public:
 
 class GetOnBoard : public HandleableMessage {
     int layer;
+    bool useExtCoating;
 public:
-    GetOnBoard(int _layer) : HandleableMessage(), layer(_layer) {};
+    GetOnBoard(int _layer, bool _uec) : HandleableMessage(), layer(_layer),
+                                        useExtCoating(_uec) {};
     virtual ~GetOnBoard() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
     virtual Message* clone() const override { return new GetOnBoard(*this); }
-    virtual string getName() const override { return "GetOnBoard(" + to_string(layer) +")";}
+    virtual string getName() const override { return "GetOnBoard(" + to_string(layer)
+            + "," + to_string(useExtCoating) +")";}
 
     static inline const Cell3DPosition& defaultDst = Cell3DPosition(-1, -1, 1);
 };

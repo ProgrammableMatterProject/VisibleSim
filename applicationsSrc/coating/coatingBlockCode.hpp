@@ -49,7 +49,7 @@ public:
     inline static bool HIGHLIGHT_COATING = false;
     inline static bool HIGHLIGHT_RES = false;
     inline static int HIGHLIGHT_layer = -1;
-    inline static bool PYRAMID_MODE = false;
+    // inline static bool PYRAMID_MODE = false;
     inline static bool sandboxInitialized;
 
     bool highlightedReachablePos = false;
@@ -118,7 +118,7 @@ public:
     // static inline constexpr vector<const Cell3DPosition> xset_CCWRelNbh;
     // FIXME: Make non-static
     inline static Cell3DPosition spawnLoc;
-    inline static Cell3DPosition closingCorner;
+    // inline static Cell3DPosition closingCorner;
     inline static Cell3DPosition spawnPivot;
     inline static Cell3DPosition spawnBTip;
     inline static Cell3DPosition trainStart;
@@ -129,7 +129,11 @@ public:
     CCWDir lastCCWDir = FrontLeft;
     size_t spawnCount = 0;
     unsigned int currentLayer = 0;
+    bool useExternalCoatingOnOddLayers = false;
+
+    vector<Cell3DPosition> closingCorner;
     vector<size_t> resourcesForCoatingLayer;
+    inline static map<unsigned int, bool> verticalLayerShouldOffsetCache;
 
     // Pre motion coordination
     CoatingBlockCode* lastSpawnedModuleBc = NULL;
@@ -142,6 +146,8 @@ public:
     inline bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); };
     bool isInCoating(const Cell3DPosition& pos) const;
     bool isInCoatingLayer(const Cell3DPosition& pos, const unsigned int layer) const;
+    bool isInRegularCoatingLayer(const Cell3DPosition& pos, const unsigned int layer) const;
+    bool isInOffsetCoatingLayer(const Cell3DPosition& pos, const unsigned int layer) const;
     unsigned int getCoatingLayer(const Cell3DPosition& pos) const;
     bool hasOpenCoatingSlotNeighbor(const unsigned int layer, Cell3DPosition &openSlot) const;
     const vector<CCWDir> getCCWDirectionsFrom(const CCWDir cwd) const;
@@ -158,8 +164,30 @@ public:
     void handleClosingCornerInsertion();
     void forwardPTNLToSpawnPivot();
 
+    P2PNetworkInterface* getInterfaceToClosingCornerBelow() const;
+    bool coatingPositionUnreachable(const Cell3DPosition& pos,
+                                    const Cell3DPosition& blkr) const;
+    bool verticalLayerShouldOffset(const unsigned int layer) const;
+    bool shouldUseExternalCoatingOnOddLayers() const;
+
     bool isCoatingCorner(const Cell3DPosition& pos) const;
-    Cell3DPosition locateAboveClosingCorner() const;
+    Cell3DPosition locateNextClosingCornerFrom(const Cell3DPosition& cc,
+                                               bool forceReg = false) const;
+    void initializeClosingCornerLocations(vector<Cell3DPosition>& cc,
+                                          bool forceReg = false) const;
+
+    /**
+     * Indicates whether cells p1 and p2 are opposite, relative to ref
+     *
+     * @param p1 first cell
+     * @param p2 second cell
+     * @param ref reference cell
+     *
+     * @return true if p1 and p2 are opposite relative to ref, false otherwise
+     */
+    bool cellsAreOpposite(const Cell3DPosition& p1, const Cell3DPosition& p2,
+                          const Cell3DPosition& ref) const;
+
 };
 
 #endif /* COATING_BLOCKCODE_H_ */

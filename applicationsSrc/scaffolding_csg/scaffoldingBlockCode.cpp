@@ -77,6 +77,7 @@ bool ScaffoldingBlockCode::parseUserCommandLineArgument(int& argc, char **argv[]
                 string varg = string((*argv)[0] + 2); // (*argv)[0] without "--"
                 if (varg == string("highlight")) HIGHLIGHT_SCAFFOLD = true;
                 else if (varg == string("csg")) HIGHLIGHT_CSG = true;
+                else if (varg == string("coating")) COATING_EXPORT = true;
                 else return false;
 
                 return true;
@@ -2355,6 +2356,32 @@ void ScaffoldingBlockCode::constructionOverHandler() {
              << " including " << nbModulesInShape << " in the shape" << endl;
         cout << "main: " << ts << " " << lattice->nbModules << " "
              << nbModulesInShape << " " << nbSandboxCatoms << endl;
+    }
+
+    if (COATING_EXPORT) {
+        // Remove all support and non structural modules and export grid
+        const Cell3DPosition& gs = world->lattice->gridSize;
+        Cell3DPosition pos;
+        for (short iz = 0; iz < gs[2]; iz++) {
+            for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
+                for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
+                    pos.set(ix, iy, iz);
+
+                    if (lattice->getBlock(pos)
+                        and ruleMatcher->isSupportModule(norm(pos))
+                        and not target->isInTarget(pos)) {
+                        world->deleteBlock(lattice->getBlock(pos));
+                        lattice->highlightCell(pos, RED);
+                    }
+                }
+            }
+        }
+
+        BuildingBlock* unusedTrFA;
+        if ((unusedTrFA = lattice->getBlock(Cell3DPosition(5,5,2)))) {
+            world->deleteBlock(unusedTrFA);
+            lattice->highlightCell(Cell3DPosition(5,5,2), CYAN);
+        }
     }
 }
 

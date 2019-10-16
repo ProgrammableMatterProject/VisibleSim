@@ -27,7 +27,7 @@ void CoaTrainRequest::handle(BaseSimulator::BlockCode* bc) {
         mabc.sendMessage(new CoaTrainIsFull(), destinationInterface, MSG_DELAY_MC, 0);
         mabc.catom->setColor(RED);
     } else {
-        mabc.sendMessage(new GetOnBoard(mabc.currentLayer),
+        mabc.sendMessage(new GetOnBoard(mabc.currentLayer, mabc.useExternalCoatingOnOddLayers),
                          destinationInterface, MSG_DELAY_MC, 0);
     }
 }
@@ -36,9 +36,12 @@ void GetOnBoard::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& mabc = *static_cast<CoatingBlockCode*>(bc);
 
     mabc.currentLayer = layer;
+    mabc.useExternalCoatingOnOddLayers = useExtCoating;
+
+    mabc.initializeClosingCornerLocations(mabc.closingCorner);
 
     mabc.scheduleRotationTo(mabc.nextRotationTowards(mabc.trainStart // Prioritize right
-                                                     + Cell3DPosition(3,0,0)));
+                                                     + Cell3DPosition(10,0,0)));
 }
 
 void CoaTrainIsFull::handle(BaseSimulator::BlockCode* bc) {
@@ -59,7 +62,8 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
         mabc.spawnCount = 0;
         mabc.catom->setColor(GREEN);
         if (mabc.getResourcesForCoatingLayer(mabc.currentLayer) > 0) {
-            mabc.sendMessage(new GetOnBoard(mabc.currentLayer),
+            mabc.sendMessage(new GetOnBoard(mabc.currentLayer,
+                                            mabc.useExternalCoatingOnOddLayers),
                              mabc.catom->getInterface(mabc.catom->position
                                                       + GetOnBoard::defaultDst),
                              MSG_DELAY_MC, 0);
