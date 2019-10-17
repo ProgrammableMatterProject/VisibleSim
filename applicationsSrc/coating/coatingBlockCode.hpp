@@ -162,7 +162,7 @@ public:
     bool hasOpenCoatingSlotNeighbor(const unsigned int layer, Cell3DPosition &openSlot) const;
     const vector<CCWDir> getCCWDirectionsFrom(const CCWDir cwd) const;
     size_t getResourcesForCoatingLayer(const unsigned int layer);
-    void scheduleNextBorderMotion();
+    void scheduleNextBorderMotion(bool useInnerBorder = false);
     string CCWDir_to_string(const CCWDir d) const;
     size_t determineTopCoatingHeight() const;
 
@@ -204,6 +204,8 @@ public:
     bool coatingSlotInsertionReady(const Cell3DPosition& pos) const;
     CCWDir getCCWDirectionForEdgeBetween(const Cell3DPosition& p1,
                                          const Cell3DPosition& p2) const;
+
+    bool isOnInnerBorderCoating(const Cell3DPosition& pos) const;
 };
 
 #endif /* COATING_BLOCKCODE_H_ */

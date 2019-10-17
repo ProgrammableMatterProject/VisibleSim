@@ -96,7 +96,7 @@ Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(const Catoms3DBlock* m,
 
             // Do no allow rotating modules to actuate for others
             if (pivot->getState() == BuildingBlock::State::MOVING) {
-                cout << pPos << " is rotating" << endl;
+                // cout << pPos << " is rotating" << endl;
                 continue;
             }
 
