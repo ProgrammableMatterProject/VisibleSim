@@ -57,7 +57,6 @@ public :
     short orientationCode; //!< number of the connector that is along the x axis.
     int distanceToBorder; // for printing optimisation
     const Catoms3DBlock *pivot; //!< if currently rotating, pivot a pointer to its motion pivot
-    bool isRotating = false; //!< Indicates whether the module is currently performing a motion
 public:
     /**
        @brief Constructor

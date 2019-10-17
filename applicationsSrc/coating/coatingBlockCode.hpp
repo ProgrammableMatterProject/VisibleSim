@@ -117,15 +117,20 @@ public:
     ///  Coating
     // static inline constexpr vector<const Cell3DPosition> xset_CCWRelNbh;
     // FIXME: Make non-static
+    inline static Cell3DPosition coatingSeed;
     inline static Cell3DPosition spawnLoc;
     // inline static Cell3DPosition closingCorner;
     inline static Cell3DPosition spawnPivot;
     inline static Cell3DPosition spawnBTip;
     inline static Cell3DPosition trainStart;
 
+    inline static const Cell3DPosition zHelperSpawnLoc = Cell3DPosition(5, 5, 2);
+    inline static const Cell3DPosition cornerTilePos = Cell3DPosition(3,3,3);
+
     size_t topCoatingLayer; //!< Height of the top layer coating. FIXME: planar case only.
 
     bool isOnTheCoatrain = false;
+    bool passedThroughCC = false;
     CCWDir lastCCWDir = FrontLeft;
     size_t spawnCount = 0;
     unsigned int currentLayer = 0;
@@ -133,16 +138,21 @@ public:
 
     vector<Cell3DPosition> closingCorner;
     vector<size_t> resourcesForCoatingLayer;
-    inline static map<unsigned int, bool> verticalLayerShouldOffsetCache;
 
     // Pre motion coordination
     CoatingBlockCode* lastSpawnedModuleBc = NULL;
     int step = 0; // current rotation
     bool passNextSpawnRound = true;
 
+    // Pending planning
+    bool pendingPlanning = false;
+    bool pendingPlanningAllowsDirectMotion = true;
+    Cell3DPosition pendingPlanningDest;
+
     // Cheating convergence:
     inline static bool coatingIsOver = false;
 
+    Cell3DPosition determineCoatingSeedPosition() const;
     inline bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); };
     bool isInCoating(const Cell3DPosition& pos) const;
     bool isInCoatingLayer(const Cell3DPosition& pos, const unsigned int layer) const;
@@ -159,7 +169,7 @@ public:
     bool hasNeighborInCSG(const Cell3DPosition& pos) const;
     bool has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const;
     Cell3DPosition nextRotationTowards(const Cell3DPosition& dest,
-                                       bool allowDirectMotion = true) const;
+                                       bool allowDirectMotion = true);
 
     void handleClosingCornerInsertion();
     void forwardPTNLToSpawnPivot();
@@ -171,6 +181,7 @@ public:
     bool shouldUseExternalCoatingOnOddLayers() const;
 
     bool isCoatingCorner(const Cell3DPosition& pos) const;
+    bool closingCornerInsertionReady(const Cell3DPosition& cc) const;
     Cell3DPosition locateNextClosingCornerFrom(const Cell3DPosition& cc,
                                                bool forceReg = false) const;
     void initializeClosingCornerLocations(vector<Cell3DPosition>& cc,
@@ -188,6 +199,11 @@ public:
     bool cellsAreOpposite(const Cell3DPosition& p1, const Cell3DPosition& p2,
                           const Cell3DPosition& ref) const;
 
+    Cell3DPosition locateFeedingTileRoot() const;
+    size_t countBorderCoatingNeighborsInPlace(const Cell3DPosition& pos) const;
+    bool coatingSlotInsertionReady(const Cell3DPosition& pos) const;
+    CCWDir getCCWDirectionForEdgeBetween(const Cell3DPosition& p1,
+                                         const Cell3DPosition& p2) const;
 };
 
 #endif /* COATING_BLOCKCODE_H_ */

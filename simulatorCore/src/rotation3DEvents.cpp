@@ -141,7 +141,6 @@ void Rotation3DStartEvent::consume() {
     rot.getFinalPositionAndOrientation(position,orientation);
 
     catom->pivot = rot.pivot;
-    catom->isRotating = true;
 
     // Trace module rotation
     stringstream info;
@@ -199,7 +198,6 @@ Rotation3DStepEvent::~Rotation3DStepEvent() {
 void Rotation3DStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
-    catom->setState(BuildingBlock::State::ALIVE);
 
     Scheduler *scheduler = getScheduler();
     // cout << "[t-" << scheduler->now() << "] rotation step" << endl;
@@ -255,7 +253,6 @@ void Rotation3DStopEvent::consume() {
 
     // Reset pivot
     catom->pivot = NULL;
-    catom->isRotating = false;
 
     /* Transformer les coordonnées GL en coordonnées grille*/
     rot.getFinalPositionAndOrientation(position,orientation);
@@ -304,6 +301,7 @@ Rotation3DEndEvent::~Rotation3DEndEvent() {
 void Rotation3DEndEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
+    rb->setState(BuildingBlock::State::ALIVE);
     // cout << "[t-" << getScheduler()->now() << "] rotation ended" << endl;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DEndEvent(date+Rotations3D::COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
