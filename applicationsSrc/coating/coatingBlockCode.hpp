@@ -137,6 +137,7 @@ public:
     bool useExternalCoatingOnOddLayers = false;
 
     vector<Cell3DPosition> closingCorner;
+    vector<Cell3DPosition> firstBorderPos;
     vector<size_t> resourcesForCoatingLayer;
 
     // Pre motion coordination
@@ -148,6 +149,9 @@ public:
     bool pendingPlanning = false;
     bool pendingPlanningAllowsDirectMotion = true;
     Cell3DPosition pendingPlanningDest;
+
+    // Motion Smoothing
+    Cell3DPosition lastPos;
 
     // Cheating convergence:
     inline static bool coatingIsOver = false;
@@ -184,8 +188,9 @@ public:
     bool closingCornerInsertionReady(const Cell3DPosition& cc) const;
     Cell3DPosition locateNextClosingCornerFrom(const Cell3DPosition& cc,
                                                bool forceReg = false) const;
-    void initializeClosingCornerLocations(vector<Cell3DPosition>& cc,
-                                          bool forceReg = false) const;
+    void initializeClosingCornerAndFBPLocations(vector<Cell3DPosition>& cc,
+                                                vector<Cell3DPosition>& fbp,
+                                                bool forceReg = false) const;
 
     /**
      * Indicates whether cells p1 and p2 are opposite, relative to ref
@@ -206,6 +211,12 @@ public:
                                          const Cell3DPosition& p2) const;
 
     bool isOnInnerBorderCoating(const Cell3DPosition& pos) const;
+    Cell3DPosition findNextBorderLocationFrom(const Cell3DPosition& pos, CCWDir &lastCCWD,
+                                              bool ignoreDiag,
+                                              function<bool(const Cell3DPosition&)>cond =
+                                              [](const Cell3DPosition&pos) {
+                                                  return true; }) const;
+    vector<Cell3DPosition> getNeighborsOnLayer(const uint layer) const;
 };
 
 #endif /* COATING_BLOCKCODE_H_ */

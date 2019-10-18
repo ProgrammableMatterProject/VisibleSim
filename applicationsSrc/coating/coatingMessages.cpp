@@ -38,7 +38,7 @@ void GetOnBoard::handle(BaseSimulator::BlockCode* bc) {
     mabc.currentLayer = layer;
     mabc.useExternalCoatingOnOddLayers = useExtCoating;
 
-    mabc.initializeClosingCornerLocations(mabc.closingCorner);
+    mabc.initializeClosingCornerAndFBPLocations(mabc.closingCorner, mabc.firstBorderPos);
 
     mabc.scheduleRotationTo(mabc.nextRotationTowards(mabc.trainStart // Prioritize right
                                                      + Cell3DPosition(10,0,0)));
