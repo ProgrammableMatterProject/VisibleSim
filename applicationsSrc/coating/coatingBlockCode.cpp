@@ -295,6 +295,14 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
             step++;
             // getScheduler()->trace(" ROTATION3D_END ", catom->blockId, MAGENTA);
 
+            if (calledInToSupportLocation) {
+                if (catom->position != supportLocation)
+                    scheduleRotationTo(nextRotationTowards(supportLocation));
+                else catom->setColor(LIGHTBLUE);
+
+                return;
+            }
+
             if (catom->position == trainStart
                 // or (not isInCSG(cornerTilePos)
                 //     and catom->position == closingCorner[currentLayer]))
@@ -304,6 +312,7 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
 
                 isOnTheCoatrain = true;
             } else if (not isInCSG(cornerTilePos)
+                       and currentLayer == 0
                        and not passedThroughCC
                        and catom->position == closingCorner[currentLayer]) {
                 passedThroughCC = true;
@@ -363,7 +372,9 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
                                 scheduleRotationTo(nextRotationTowards(
                                                        closingCorner[currentLayer]));
                             } else if (isInCSG(cornerTilePos)
-                                       or (not isInCSG(cornerTilePos) and passedThroughCC)) {
+                                       or (not isInCSG(cornerTilePos) and
+                                           (currentLayer != 0 or
+                                            (currentLayer == 0 and passedThroughCC)))) {
                                 scheduleRotationTo(nextRotationTowards(trainStart));
                             } else {
                                 scheduleRotationTo(nextRotationTowards(
@@ -845,12 +856,11 @@ void CoatingBlockCode::handleClosingCornerInsertion() {
     if (currentLayer < topCoatingLayer) {
         forwardPTNLToSpawnPivot();
 
+        trainStart = firstBorderPos[currentLayer + 1] + Cell3DPosition(0, -1, 1);
+
         // trainStart = isInCSG(cornerTilePos) ?
-        //     closingCorner[currentLayer + 1] + Cell3DPosition(1, -1, 1)
-        //     : closingCorner[currentLayer + 1] + Cell3DPosition(0, -1, 1);
-        trainStart = isInCSG(cornerTilePos) ?
-            firstBorderPos[currentLayer + 1] + Cell3DPosition(0, -1, 1)
-            : firstBorderPos[currentLayer + 1] + Cell3DPosition(0, 0, 1);
+        //     firstBorderPos[currentLayer + 1] + Cell3DPosition(0, -1, 1)
+        //     : firstBorderPos[currentLayer + 1] + Cell3DPosition(0, 0, 1);
 
         lattice->highlightCell(closingCorner[currentLayer + 1], CYAN);
 

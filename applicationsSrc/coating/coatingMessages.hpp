@@ -68,6 +68,19 @@ public:
     }
 };
 
+class HeadToSupportLocation : public HandleableMessage {
+    const Cell3DPosition& tPos;
+public:
+    HeadToSupportLocation(const Cell3DPosition& _tPos) : HandleableMessage(), tPos(_tPos) {};
+    virtual ~HeadToSupportLocation() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new HeadToSupportLocation(*this); }
+    virtual string getName() const override { return "HeadToSupportLocation("
+            + tPos.to_string() + ")";
+    }
+};
+
 class ProbePivotLightStateMessage : public HandleableMessage {
     const Cell3DPosition srcPos;
     const Cell3DPosition targetPos; // Next position the module is seeking to reach

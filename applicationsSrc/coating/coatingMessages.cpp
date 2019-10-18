@@ -24,6 +24,9 @@ void CoaTrainRequest::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& mabc = *static_cast<CoatingBlockCode*>(bc);
 
     if (++mabc.spawnCount > mabc.getResourcesForCoatingLayer(mabc.currentLayer)) {
+        // if (mabc.shapeRequiresL1Support and mabc.spawnCount == 1)
+        //     mabc.spawnCount--; // FIXME: regularize
+
         mabc.sendMessage(new CoaTrainIsFull(), destinationInterface, MSG_DELAY_MC, 0);
         mabc.catom->setColor(RED);
     } else {
@@ -62,12 +65,26 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
         mabc.spawnCount = 0;
         mabc.catom->setColor(GREEN);
         if (mabc.getResourcesForCoatingLayer(mabc.currentLayer) > 0) {
-            mabc.sendMessage(new GetOnBoard(mabc.currentLayer,
-                                            mabc.useExternalCoatingOnOddLayers),
-                             mabc.catom->getInterface(mabc.catom->position
-                                                      + GetOnBoard::defaultDst),
-                             MSG_DELAY_MC, 0);
-            mabc.spawnCount++;
+            if (mabc.currentLayer == 1
+                and mabc.useExternalCoatingOnOddLayers
+                and not mabc.isInCSG(mabc.cornerTilePos)) {
+                mabc.shapeRequiresL1Support = true;
+                // introduce a support catom for accessing layer offset odd layer #1,
+                //  which would be impossible without it
+                static const Cell3DPosition& l1oSupport = Cell3DPosition(4,2,3);
+                mabc.sendMessage(new HeadToSupportLocation(l1oSupport),
+                                 mabc.catom->getInterface(mabc.catom->position
+                                                     + GetOnBoard::defaultDst),
+                                 MSG_DELAY_MC, 0);
+            } else {
+                mabc.sendMessage(new GetOnBoard(mabc.currentLayer,
+                                                mabc.useExternalCoatingOnOddLayers),
+                                 mabc.catom->getInterface(mabc.catom->position
+                                                          + GetOnBoard::defaultDst),
+                                 MSG_DELAY_MC, 0);
+                mabc.spawnCount++;
+            }
+
         } else {
             mabc.sendMessage(new CoaTrainIsFull(),
                              mabc.catom->getInterface(mabc.catom->position
@@ -77,6 +94,14 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
             mabc.coatingIsOver = true;
         }
     }
+}
+
+void HeadToSupportLocation::handle(BaseSimulator::BlockCode* bc) {
+    CoatingBlockCode& mabc = *static_cast<CoatingBlockCode*>(bc);
+
+    mabc.calledInToSupportLocation = true;
+    mabc.supportLocation = tPos;
+    mabc.scheduleRotationTo(mabc.nextRotationTowards(mabc.supportLocation));
 }
 
 void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {

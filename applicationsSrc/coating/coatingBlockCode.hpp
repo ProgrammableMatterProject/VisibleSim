@@ -156,6 +156,11 @@ public:
     // Cheating convergence:
     inline static bool coatingIsOver = false;
 
+    // Support works
+    bool calledInToSupportLocation = false;
+    Cell3DPosition supportLocation;
+    bool shapeRequiresL1Support = false;
+
     Cell3DPosition determineCoatingSeedPosition() const;
     inline bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); };
     bool isInCoating(const Cell3DPosition& pos) const;
