@@ -58,10 +58,21 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& mabc = *static_cast<CoatingBlockCode*>(bc);
 
     if (mabc.catom->position != mabc.spawnPivot) {
+        mabc.currentLayer++;
+
+        if (IS_ODD(mabc.currentLayer)
+            and mabc.catom->getInterface(mabc.ZHelperPos)
+            and mabc.lattice->getBlock(mabc.ZHelperPos))
+            mabc.introduceEvenSupportAndAssignPosition(mabc.ZHelperPos);
+
         mabc.forwardPTNLToSpawnPivot();
         mabc.passNextSpawnRound = true;
     } else {
         mabc.currentLayer++;
+
+        if (IS_ODD(mabc.currentLayer) and mabc.currentLayer > 2)
+            mabc.instructSupportRelocationIfRequired(mabc.RZHelperPos);
+
         mabc.spawnCount = 0;
         mabc.catom->setColor(GREEN);
         if (mabc.getResourcesForCoatingLayer(mabc.currentLayer) > 0) {
@@ -71,10 +82,11 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
                 mabc.shapeRequiresL1Support = true;
                 // introduce a support catom for accessing layer offset odd layer #1,
                 //  which would be impossible without it
-                static const Cell3DPosition& l1oSupport = Cell3DPosition(4,2,3);
+                // static const Cell3DPosition& l1oSupport = Cell3DPosition(4,2,3);
+                static const Cell3DPosition& l1oSupport = mabc.RZHelperPos;
                 mabc.sendMessage(new HeadToSupportLocation(l1oSupport),
                                  mabc.catom->getInterface(mabc.catom->position
-                                                     + GetOnBoard::defaultDst),
+                                                          + GetOnBoard::defaultDst),
                                  MSG_DELAY_MC, 0);
             } else {
                 mabc.sendMessage(new GetOnBoard(mabc.currentLayer,

@@ -69,7 +69,7 @@ public:
 };
 
 class HeadToSupportLocation : public HandleableMessage {
-    const Cell3DPosition& tPos;
+    const Cell3DPosition tPos;
 public:
     HeadToSupportLocation(const Cell3DPosition& _tPos) : HandleableMessage(), tPos(_tPos) {};
     virtual ~HeadToSupportLocation() {};

@@ -124,7 +124,9 @@ public:
     inline static Cell3DPosition spawnBTip;
     inline static Cell3DPosition trainStart;
 
-    inline static const Cell3DPosition zHelperSpawnLoc = Cell3DPosition(5, 5, 2);
+    inline static const Cell3DPosition ZHelperSpawnLoc = Cell3DPosition(5, 5, 2);
+    inline static Cell3DPosition ZHelperPos = Cell3DPosition(5, 5, 2); // FIXME: non-local
+    inline static Cell3DPosition RZHelperPos = Cell3DPosition(4, 2, 3); // FIXME: non-local
     inline static const Cell3DPosition cornerTilePos = Cell3DPosition(3,3,3);
 
     size_t topCoatingLayer; //!< Height of the top layer coating. FIXME: planar case only.
@@ -222,6 +224,9 @@ public:
                                               [](const Cell3DPosition&pos) {
                                                   return true; }) const;
     vector<Cell3DPosition> getNeighborsOnLayer(const uint layer) const;
+
+    bool instructSupportRelocationIfRequired(Cell3DPosition& support);
+    bool introduceEvenSupportAndAssignPosition(Cell3DPosition& support);
 };
 
 #endif /* COATING_BLOCKCODE_H_ */
