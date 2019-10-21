@@ -59,6 +59,9 @@ class Catoms3DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
     Catoms3DMotionRules *motionRules;
+    inline static const int numPickingTextures = 13; /* The number of picking textures defined
+                                                        for this type of catom,
+                                                        used to deduce selected Block / face */
 //Nurbs surface
 /*	GLfloat sknots[S_NUMKNOTS] =
     {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};

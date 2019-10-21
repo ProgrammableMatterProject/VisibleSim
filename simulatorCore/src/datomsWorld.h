@@ -33,7 +33,9 @@ class DatomsWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
     DatomsMotionRules *motionRules;
-
+    inline static const int numPickingTextures = 13; /* The number of picking textures defined
+                                                        for this type of catom,
+                                                        used to deduce selected Block / face */
     virtual ~DatomsWorld();
 public:
     DatomsWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,

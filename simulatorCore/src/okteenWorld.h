@@ -28,6 +28,9 @@ static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
  * \class OkteenWorld okteenWorld.h
  */
 class OkteenWorld : public BaseSimulator::World {
+    inline static const int numPickingTextures = 6; /* The number of picking textures defined
+                                                       for this type of catom,
+                                                       used to deduce selected Block / face */
 protected:
     GLuint idTextureWall;
     ObjLoader::ObjLoader *objConnector = NULL;           //!< Object loader for a block

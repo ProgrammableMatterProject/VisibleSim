@@ -25,8 +25,8 @@ class Catoms2DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureLines;
     static const int numPickingTextures = 7; /* The number of picking textures defined for
-                        this type of catom,
-                        used to deduce selected Block / face */
+                                                this type of catom,
+                                                used to deduce selected Block / face */
 
     virtual ~Catoms2DWorld();
 public:

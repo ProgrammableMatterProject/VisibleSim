@@ -274,7 +274,7 @@ void DatomsWorld::glDrawIdByMaterial() {
     int n;
     lock();
     for (const auto& pair : mapGlBlocks) {
-        n = pair.first*13;
+        n = pair.first*numPickingTextures;
         ((DatomsGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
@@ -435,8 +435,8 @@ void DatomsWorld::updateGlData(DatomsBlock*blc, const Matrix &mat) {
 }
 
 void DatomsWorld::setSelectedFace(int n) {
-    numSelectedGlBlock = n / 13;
-    string name = objBlockForPicking->getObjMtlName(n%13);
+    numSelectedGlBlock = n / numPickingTextures;
+    string name = objBlockForPicking->getObjMtlName(n%numPickingTextures);
 
     if (name == "Material__186") numSelectedFace = 0;
     else if (name == "connector1") numSelectedFace = 1;
@@ -452,7 +452,7 @@ void DatomsWorld::setSelectedFace(int n) {
     else if (name == "connector11") numSelectedFace = 11;
     else {
         cerr << "warning: Unrecognized picking face" << endl;
-        numSelectedFace = 13;	// UNDEFINED
+        numSelectedFace = numPickingTextures;	// UNDEFINED
     }
 
     cerr << name << " = " << numSelectedFace << " = " << endl;

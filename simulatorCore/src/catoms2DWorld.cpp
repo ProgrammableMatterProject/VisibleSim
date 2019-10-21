@@ -145,9 +145,10 @@ void Catoms2DWorld::glDrawIdByMaterial() {
     glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
 
     glDisable(GL_TEXTURE_2D);
-    int n=1;
+    int n;
     lock();
     for (const auto& pair : mapGlBlocks) {
+        n = pair.first * numPickingTextures;
         ((Catoms2DGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
