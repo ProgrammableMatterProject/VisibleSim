@@ -215,9 +215,10 @@ void RobotBlocksWorld::glDrawIdByMaterial() {
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 
     glDisable(GL_TEXTURE_2D);
-    int n=1;
+    int n;
     lock();
     for (const auto& pair : mapGlBlocks) {
+        n = pair.first * numPickingTextures;
         ((RobotBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
@@ -325,8 +326,8 @@ void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
 }
 
 void RobotBlocksWorld::setSelectedFace(int n) {
-    numSelectedGlBlock=n/6;
-    string name = objBlockForPicking->getObjMtlName(n%6);
+    numSelectedGlBlock=n/numPickingTextures;
+    string name = objBlockForPicking->getObjMtlName(n%numPickingTextures);
     if (name=="face_top") numSelectedFace=SCLattice::Top;
     else if (name=="face_bottom") numSelectedFace=SCLattice::Bottom;
     else if (name=="face_right") numSelectedFace=SCLattice::Right;

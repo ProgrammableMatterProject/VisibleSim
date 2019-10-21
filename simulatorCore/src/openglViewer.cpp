@@ -501,7 +501,7 @@ void GlutContext::idleFunc(void) {
         static int num=0;
         char title[32];
         strncpy(title, animationDirName.c_str(), sizeof(title));
-        strncat(title, "/save%04d.ppm", sizeof(title));
+        strncat(title, "/save%04d.ppm", sizeof(title) - strlen(title) - 1);
 
         sprintf(title,title,num++);
 

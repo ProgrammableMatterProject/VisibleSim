@@ -53,14 +53,20 @@ public:
     ConsoleStream console;  //!< pointer to the single instance of ConsoleStream of the simulation
     static Target *target; //!< pointer shared by all blockCodes to the current target configuration
 
+<<<<<<< HEAD
     Cell3DPosition motionDest; //!< Only used for motion export for animations
 
+=======
+>>>>>>> 7cf68f7a2f74da87c186df0222faf3c1d4eab214
 /**
  * @brief BlockCode constructor
  * @para, host The block on which this instance of the blockCode will be executed
  */
     BlockCode(BuildingBlock *host);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7cf68f7a2f74da87c186df0222faf3c1d4eab214
 /**
  * @brief BlockCode destructor
  */

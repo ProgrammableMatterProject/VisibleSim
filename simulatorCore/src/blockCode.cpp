@@ -152,6 +152,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
             }
         }
     }
+
     delete msg;
     return n;
 }

@@ -60,6 +60,7 @@ public:
    \param pos: position of the cell (if in the grid)
    \return return true if the cell is in the grid, false otherwise. */
     bool getNeighborPos(SCLattice::Direction connectorDir,Cell3DPosition &pos) const;
+    using BuildingBlock::getNeighborPos; // Suppresses hiding warning
 /**
    \brief Get the direction id for the corresponding interface
    \param p2p: pointer to the interface

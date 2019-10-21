@@ -130,8 +130,19 @@ public:
     std::array<int, 6> targetLevel = {0};
 
     //!< @attention index t[i][7] is for tile root feeding requirement
-    std::array<std::array<bool, 7>, 6> feedBranchRequires = { false, false, false,
-                                                              false, false, false };
+    std::array<std::array<bool, 7>, 6> feedBranchRequires = {{ {{false, false, false,
+                    false, false, false}},
+                                                               {{false, false, false,
+                                                                    false, false, false}},
+                                                               {{false, false, false,
+                                                                    false, false, false}},
+                                                               {{false, false, false,
+                                                                    false, false, false}},
+                                                               {{false, false, false,
+                                                                    false, false, false}},
+                                                               {{false, false, false,
+                                                                    false, false, false}}
+        }};
 
     std::queue<Cell3DPosition> targetQueueForEPL[12] = {
         queue<Cell3DPosition>({

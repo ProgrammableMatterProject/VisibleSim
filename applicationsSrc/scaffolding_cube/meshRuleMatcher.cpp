@@ -473,7 +473,7 @@ bool MeshRuleMatcher::upwardBranchRulesApply(const Cell3DPosition& own,
     const int zCoeff = other[2] / B;
 
     // Module is on branch if z is NOT a multiple of B
-    return not m_mod(own[2], B) == 0
+    return not (m_mod(own[2], B) == 0)
         and (
             // In that case, only allow upward transmission
             own[2] < other[2]

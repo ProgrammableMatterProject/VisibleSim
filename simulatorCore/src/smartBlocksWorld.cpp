@@ -120,9 +120,10 @@ void SmartBlocksWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
 
-    int n=1;
+    int n;
     lock();
     for (const auto& pair : mapGlBlocks) {
+        n = pair.first * numPickingTextures;
         ((SmartBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
@@ -184,8 +185,8 @@ void SmartBlocksWorld::loadTextures(const string &str) {
 }
 
 void SmartBlocksWorld::setSelectedFace(int n) {
-    numSelectedGlBlock = n / 5;
-    string name = objBlockForPicking->getObjMtlName(n % 5);
+    numSelectedGlBlock = n / numPickingTextures;
+    string name = objBlockForPicking->getObjMtlName(n % numPickingTextures);
 
     if (name == "Material__72") numSelectedFace = SLattice::South;
     else if (name == "Material__66") numSelectedFace = SLattice::East;
