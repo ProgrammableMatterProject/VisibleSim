@@ -52,6 +52,8 @@ public:
     // inline static bool PYRAMID_MODE = false;
     inline static bool sandboxInitialized;
 
+    inline static bool DO_IT = false;
+
     bool highlightedReachablePos = false;
 
     // BlockCode
@@ -227,6 +229,8 @@ public:
 
     bool instructSupportRelocationIfRequired(Cell3DPosition& support);
     bool introduceEvenSupportAndAssignPosition(Cell3DPosition& support);
+    bool sourceTileIsShapeCorner() const;
+    bool isReachable(const Cell3DPosition& p, bool ignoreSelf = false) const;
 };
 
 #endif /* COATING_BLOCKCODE_H_ */

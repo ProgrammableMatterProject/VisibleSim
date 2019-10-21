@@ -60,7 +60,7 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
     if (mabc.catom->position != mabc.spawnPivot) {
         mabc.currentLayer++;
 
-        if (IS_ODD(mabc.currentLayer)
+        if (not mabc.sourceTileIsShapeCorner() and IS_ODD(mabc.currentLayer)
             and mabc.catom->getInterface(mabc.ZHelperPos)
             and mabc.lattice->getBlock(mabc.ZHelperPos))
             mabc.introduceEvenSupportAndAssignPosition(mabc.ZHelperPos);
@@ -70,7 +70,8 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
     } else {
         mabc.currentLayer++;
 
-        if (IS_ODD(mabc.currentLayer) and mabc.currentLayer > 2)
+        if (not mabc.sourceTileIsShapeCorner()
+            and IS_ODD(mabc.currentLayer) and mabc.currentLayer > 2)
             mabc.instructSupportRelocationIfRequired(mabc.RZHelperPos);
 
         mabc.spawnCount = 0;
@@ -78,7 +79,7 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
         if (mabc.getResourcesForCoatingLayer(mabc.currentLayer) > 0) {
             if (mabc.currentLayer == 1
                 and mabc.useExternalCoatingOnOddLayers
-                and not mabc.isInCSG(mabc.cornerTilePos)) {
+                and not mabc.sourceTileIsShapeCorner()) {
                 mabc.shapeRequiresL1Support = true;
                 // introduce a support catom for accessing layer offset odd layer #1,
                 //  which would be impossible without it

@@ -92,6 +92,9 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug:
     cerr << endl << "--- PRINT MODULE " << *catom << "---" << endl;
 
+    DO_IT = not DO_IT;
+    cerr << "isReachable: " << isReachable(catom->position, true) << endl;
+
     if (catom->position == spawnPivot) {
         cerr << "currentLayer: " << currentLayer << endl;
         cerr << "topCoatingLayer: " << topCoatingLayer << endl;
@@ -212,11 +215,11 @@ void CoatingBlockCode::startup() {
         highlightCSGScaffold();
         initializeClosingCornerAndFBPLocations(closingCorner, firstBorderPos);
 
-        // trainStart = isInCSG(cornerTilePos) ?
+        // trainStart = sourceTileIsShapeCorner() ?
         //     closingCorner[0] + Cell3DPosition(1, -1, 1)
         //     : closingCorner[0] + Cell3DPosition(1, -2, 1);
 
-        trainStart = isInCSG(cornerTilePos) ?
+        trainStart = sourceTileIsShapeCorner() ?
             firstBorderPos[0] + Cell3DPosition(0, -1, 1)
             : firstBorderPos[0] + Cell3DPosition(0, 0, 1);
 
@@ -225,7 +228,7 @@ void CoatingBlockCode::startup() {
         lattice->highlightCell(trainStart, GREEN);
         // lattice->highlightCell(spawnPivot, YELLOW);
 
-        if (not isInCSG(cornerTilePos)) {
+        if (not sourceTileIsShapeCorner()) {
             // an additional module might be needed along the daigonal of the seed tile,
             //  for modules to reach the first navigable border position. Call in this module
             world->addBlock(0, buildNewBlockCode, ZHelperPos, LIGHTBLUE);
@@ -312,14 +315,14 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
             }
 
             if (catom->position == trainStart
-                // or (not isInCSG(cornerTilePos)
+                // or (not sourceTileIsShapeCorner()
                 //     and catom->position == closingCorner[currentLayer]))
                 ) {
                 info << " got onboard the coatrain!";
                 scheduler->trace(info.str(),catom->blockId, PINK);
 
                 isOnTheCoatrain = true;
-            } else if (not isInCSG(cornerTilePos)
+            } else if (not sourceTileIsShapeCorner()
                        and IS_EVEN(currentLayer)
                        and not passedThroughCC
                        and catom->position == closingCorner[currentLayer]) {
@@ -356,6 +359,12 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
                             handleClosingCornerInsertion();
                         } else {
                             catom->setColor(ORANGE);
+
+                            // if (not isReachable(trainStart)) {
+                            //     lattice->unhighlightCell(trainStart);
+                            //     trainStart += Cell3DPosition(0, -1, 0); // FIXME:
+                            //     lattice->highlightCell(trainStart, GREEN);
+                            // }
                         }
 
                     } else {
@@ -380,8 +389,8 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
                             } else if (getResourcesForCoatingLayer(currentLayer) == 1) {
                                 scheduleRotationTo(nextRotationTowards(
                                                        closingCorner[currentLayer]));
-                            } else if (isInCSG(cornerTilePos)
-                                       or (not isInCSG(cornerTilePos) and
+                            } else if (sourceTileIsShapeCorner()
+                                       or (not sourceTileIsShapeCorner() and
                                            ((IS_ODD(currentLayer)) or
                                             (IS_EVEN(currentLayer) and passedThroughCC)))) {
                                 scheduleRotationTo(nextRotationTowards(trainStart));
@@ -622,9 +631,11 @@ bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) const {
 
 bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos,
                                         const unsigned int layer) const {
-    return IS_EVEN(layer) ? isInRegularCoatingLayer(pos, layer) :
-        (useExternalCoatingOnOddLayers ?
-         isInOffsetCoatingLayer(pos, layer) : isInRegularCoatingLayer(pos, layer));
+    // return IS_EVEN(layer) ? isInRegularCoatingLayer(pos, layer) :
+    //     (useExternalCoatingOnOddLayers ?
+    //      isInOffsetCoatingLayer(pos, layer) : isInRegularCoatingLayer(pos, layer));
+
+    return isInOffsetCoatingLayer(pos, layer);
 }
 
 bool CoatingBlockCode::isInRegularCoatingLayer(const Cell3DPosition& pos,
@@ -815,7 +826,7 @@ void CoatingBlockCode::scheduleNextBorderMotion(bool useInnerBorder) {
 
         scheduleRotationTo(potentialOpenSlot);
     } else {
-        if (not isInCSG(cornerTilePos)
+        if (not sourceTileIsShapeCorner()
             and (catom->position == trainStart
                  or catom->position == trainStart + Cell3DPosition(0, -1, 0)
                  or catom->position == trainStart + Cell3DPosition(0, -2, 0)))
@@ -828,6 +839,7 @@ void CoatingBlockCode::scheduleNextBorderMotion(bool useInnerBorder) {
                                        [this](const Cell3DPosition& p){
                                            return Catoms3DMotionEngine::canMoveTo(catom, p)
                                                and p != lastPos;
+                                               // and isReachable(p, true);
                                        });
 
         stringstream info;
@@ -868,7 +880,7 @@ void CoatingBlockCode::handleClosingCornerInsertion() {
 
         trainStart = firstBorderPos[currentLayer + 1] + Cell3DPosition(0, -1, 1);
 
-        // trainStart = isInCSG(cornerTilePos) ?
+        // trainStart = sourceTileIsShapeCorner() ?
         //     firstBorderPos[currentLayer + 1] + Cell3DPosition(0, -1, 1)
         //     : firstBorderPos[currentLayer + 1] + Cell3DPosition(0, 0, 1);
 
@@ -890,7 +902,7 @@ void CoatingBlockCode::forwardPTNLToSpawnPivot() {
     }
 
     if (PTNL_itf == NULL) {
-        VS_ASSERT(not isInCSG(cornerTilePos)); // locate vertical branch tip from corner tile
+        VS_ASSERT(not sourceTileIsShapeCorner()); // locate vertical branch tip from corner tile
         if (catom->position == cornerTilePos + Cell3DPosition(1, 1, 0)) // FIXME:
             PTNL_itf = catom->getInterface(cornerTilePos + Cell3DPosition(1, 1, -1));
         else if (catom->position == ZHelperPos)
@@ -946,6 +958,16 @@ Cell3DPosition CoatingBlockCode::nextRotationTowards(const Cell3DPosition& dest,
     // for (const Cell3DPosition& p : reachablePositions) {
     //     cout << p << endl;
     // }
+
+    // Reduce to actually reachable position according to the opposing rule
+    // WARNING: NON LOCAL!
+    // FIXME:
+    // reachablePositions.erase(remove_if(reachablePositions.begin(), reachablePositions.end(),
+    //                                    [this](const Cell3DPosition& p) -> bool
+    //                                        {
+    //                                            return not isReachable(p, true);
+    //                                        }),
+    //                          reachablePositions.end());
 
     // Reduce to just closest z results
     int zOp = (reachablePositions[0])[2]; // cout << zOp << endl;
@@ -1375,6 +1397,42 @@ bool CoatingBlockCode::introduceEvenSupportAndAssignPosition(Cell3DPosition& sup
     spawnPivotBC->sendMessage(new HeadToSupportLocation(support),
                               spawnPivotBC->catom->getInterface(ZHelperSpawnLoc),
                               MSG_DELAY_MC, 0);
+
+    return true;
+}
+
+
+bool CoatingBlockCode::sourceTileIsShapeCorner() const {
+    return isInCSG(cornerTilePos);
+}
+
+bool CoatingBlockCode::isReachable(const Cell3DPosition& p,
+                                   bool ignoreSelf) const {
+    // FIXME: localize
+    // A position is reachable if it has no two opposite neighbors around it
+    // NOTE: can be optimized
+    for (const Cell3DPosition& np1 : lattice->getActiveNeighborCells(p)) {
+        if (ignoreSelf and np1 == catom->position) continue;
+
+        for (const Cell3DPosition& np2 : lattice->getActiveNeighborCells(p)) {
+
+            if (np1 == np2 or (ignoreSelf and np2 == catom->position)) continue;
+
+            if (DO_IT) {
+                lattice->highlightCell(np1, GREEN);
+                lattice->highlightCell(np2, RED);
+                cout << np1 << ", " << np2 << endl;
+                usleep(500000);
+            }
+
+            if (cellsAreOpposite(np1, np2, p)) {
+                return false;
+            }
+
+            lattice->unhighlightCell(np1);
+            lattice->unhighlightCell(np2);
+        }
+    }
 
     return true;
 }
