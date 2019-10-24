@@ -22,6 +22,10 @@ class SmartBlocksWorld : public BaseSimulator::World {
 protected:
     virtual ~SmartBlocksWorld();
 public:
+    inline static const int numPickingTextures = 5; /* The number of picking textures defined
+                                                       for this type of catom,
+                                                       used to deduce selected Block / face */
+
     SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                      int argc, char *argv[]);
 

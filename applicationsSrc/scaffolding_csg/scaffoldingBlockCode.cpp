@@ -53,35 +53,32 @@ ScaffoldingBlockCode::~ScaffoldingBlockCode() {
     // }
 }
 
-bool ScaffoldingBlockCode::parseUserCommandLineArgument(int argc, char *argv[]) {
+bool ScaffoldingBlockCode::parseUserCommandLineArgument(int& argc, char **argv[]) {
     /* Reading the command line */
-    if ((argc > 0) && (argv[0][0] == '-')) {
-        switch(argv[0][1]) {
+    if ((argc > 0) && ((*argv)[0][0] == '-')) {
+        switch((*argv)[0][1]) {
             case 'b':   {
                 BUILDING_MODE = true;
 
                 argc--;
-                argv++;
+                (*argv)++;
 
                 return true;
             } break;
             case 'u':   {
-                NO_FLOODING = true;
+                NO_FLOODING = false;
 
                 argc--;
-                argv++;
+                (*argv)++;
 
                 return true;
             } break;
             case '-': {
-                string varg = string(argv[0] + 2); // argv[0] without "--"
-
+                string varg = string((*argv)[0] + 2); // (*argv)[0] without "--"
                 if (varg == string("highlight")) HIGHLIGHT_SCAFFOLD = true;
-                if (varg == string("csg")) HIGHLIGHT_CSG = true;
+                else if (varg == string("csg")) HIGHLIGHT_CSG = true;
+                else if (varg == string("coating")) COATING_EXPORT = true;
                 else return false;
-
-                argc--;
-                argv++;
 
                 return true;
             }
@@ -250,15 +247,15 @@ void ScaffoldingBlockCode::onBlockSelected() {
 //     // cout << "RModuleRequestedMotion: " << RModuleRequestedMotion << endl;
 //     // cout << "--- END " << *catom << "---" << endl;
 // #else
-    int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
-    if (coordinatorPos == Cell3DPosition(9,9,3)
-        and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) {
-        OUTPUT << "here|";
-        VS_ASSERT(mc != -1);
-        OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
-        OUTPUT << ruleMatcher->component_to_string(static_cast<ScafComponent>(mc)) << "|";
-        OUTPUT << ((targetPosition == motionDest) and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) << "|";
-    }
+//     int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
+//     if (coordinatorPos == Cell3DPosition(9,9,3)
+//         and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) {
+//         OUTPUT << "here|";
+//         VS_ASSERT(mc != -1);
+//         OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
+//         OUTPUT << ruleMatcher->component_to_string(static_cast<ScafComponent>(mc)) << "|";
+//         OUTPUT << ((targetPosition == motionDest) and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) << "|";
+//     }
 // #endif
 }
 
@@ -2277,14 +2274,14 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                     //     (ruleMatcher->getNearestTileRootPosition(norm(pos))))
                     //     lattice->highlightCell(pos, BLUE);
 
+                    if (HIGHLIGHT_CSG and target->isInTarget(pos))
+                        lattice->highlightCell(pos, RED);
+
                     if (not ruleMatcher->isInCSG(norm(pos))
                         // or (ruleMatcher->isInCSG(norm(pos)) and not ruleMatcher->isInCSG
                         //     (ruleMatcher->getTileRootPositionForMeshPosition(norm(pos)))))
                         )
                         continue;
-
-                    if (HIGHLIGHT_CSG and target->isInTarget(pos))
-                        lattice->highlightCell(pos, RED);
 
                     if (HIGHLIGHT_SCAFFOLD and ruleMatcher->isInCSG(norm(pos)))
                         lattice->highlightCell(pos, WHITE);
@@ -2359,6 +2356,32 @@ void ScaffoldingBlockCode::constructionOverHandler() {
              << " including " << nbModulesInShape << " in the shape" << endl;
         cout << "main: " << ts << " " << lattice->nbModules << " "
              << nbModulesInShape << " " << nbSandboxCatoms << endl;
+    }
+
+    if (COATING_EXPORT) {
+        // Remove all support and non structural modules and export grid
+        const Cell3DPosition& gs = world->lattice->gridSize;
+        Cell3DPosition pos;
+        for (short iz = 0; iz < gs[2]; iz++) {
+            for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
+                for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
+                    pos.set(ix, iy, iz);
+
+                    if (lattice->getBlock(pos)
+                        and ruleMatcher->isSupportModule(norm(pos))
+                        and not target->isInTarget(pos)) {
+                        world->deleteBlock(lattice->getBlock(pos));
+                        lattice->highlightCell(pos, RED);
+                    }
+                }
+            }
+        }
+
+        BuildingBlock* unusedTrFA;
+        if ((unusedTrFA = lattice->getBlock(Cell3DPosition(5,5,2)))) {
+            world->deleteBlock(unusedTrFA);
+            lattice->highlightCell(Cell3DPosition(5,5,2), CYAN);
+        }
     }
 }
 

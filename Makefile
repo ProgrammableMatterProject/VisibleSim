@@ -13,8 +13,16 @@ OS = $(shell uname -s)
 VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen -lsimDatoms
 
 #for debug version
+<<<<<<< HEAD
 TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -Wsuggest-override -fno-stack-protector
+=======
+TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL
+>>>>>>> 7cf68f7a2f74da87c186df0222faf3c1d4eab214
 # TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
+
+ifeq ($(CXX),g++)
+  TEMP_CCFLAGS += -Wsuggest-override
+endif
 
 # ADDITIONAL CCFLAGS
 # ================
@@ -61,7 +69,7 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono
 endif
 
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lmuparser -lglut -lGL -lGLEW -lGLU -lpthread -ldl -export-dynamic $(INC_BOOST_IF_NEEDED)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lmuparser -lglut -lGL -lGLEW -lGLU -lpthread -ldl -lstdc++ -lm $(INC_BOOST_IF_NEEDED)"
 
 endif
 

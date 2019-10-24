@@ -28,6 +28,9 @@ static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
  * \class OkteenWorld okteenWorld.h
  */
 class OkteenWorld : public BaseSimulator::World {
+    inline static const int numPickingTextures = 6; /* The number of picking textures defined
+                                                       for this type of catom,
+                                                       used to deduce selected Block / face */
 protected:
     GLuint idTextureWall;
     ObjLoader::ObjLoader *objConnector = NULL;           //!< Object loader for a block
@@ -63,6 +66,7 @@ public:
     virtual void glDraw() override;
     virtual void glDrawId() override;
     virtual void glDrawIdByMaterial() override;
+    using World::updateGlData; // Suppresses hiding warning
     void updateGlData(BuildingBlock *bb) override;
     void updateGlData(OkteenBlock*blc,const Color &color);
     void updateGlData(OkteenBlock*blc, bool visible);

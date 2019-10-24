@@ -434,7 +434,7 @@ void Catoms3DWorld::glDrawIdByMaterial() {
     lock();
     int n;
     for (const auto& pair : mapGlBlocks) {
-        n = pair.first*13;
+        n = pair.first*numPickingTextures;
         ((Catoms3DGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
@@ -595,8 +595,8 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrix &mat) {
 }
 
 void Catoms3DWorld::setSelectedFace(int n) {
-    numSelectedGlBlock = n/13;
-    string name = objBlockForPicking->getObjMtlName(n%13);
+    numSelectedGlBlock = n/numPickingTextures;
+    string name = objBlockForPicking->getObjMtlName(n%numPickingTextures);
 
     if (name == "Material__66") numSelectedFace = 0;
     else if (name == "Material__68") numSelectedFace = 1;

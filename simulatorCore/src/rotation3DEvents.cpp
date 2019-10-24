@@ -198,7 +198,6 @@ Rotation3DStepEvent::~Rotation3DStepEvent() {
 void Rotation3DStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
-    catom->setState(BuildingBlock::State::ALIVE);
 
     Scheduler *scheduler = getScheduler();
     // cout << "[t-" << scheduler->now() << "] rotation step" << endl;
@@ -302,6 +301,7 @@ Rotation3DEndEvent::~Rotation3DEndEvent() {
 void Rotation3DEndEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
+    rb->setState(BuildingBlock::State::ALIVE);
     // cout << "[t-" << getScheduler()->now() << "] rotation ended" << endl;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DEndEvent(date+Rotations3D::COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
@@ -347,7 +347,7 @@ void Rotations3D::exportMatrix(const Matrix& m) {
 
         OUTPUT << catomId << "|";
 
-        OUTPUT << block->color << "|";
+        // OUTPUT << block->color << "|";
 
         OUTPUT << "(matrix3 "
                << "[" << m.m[0] << "," << m.m[4] << "," << m.m[8] << "] "

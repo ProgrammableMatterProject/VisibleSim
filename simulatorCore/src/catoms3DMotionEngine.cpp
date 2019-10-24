@@ -1,4 +1,3 @@
-
 #include "catoms3DMotionEngine.h"
 
 #include "utils.h"
@@ -10,9 +9,9 @@ Catoms3DMotionEngine::findConnectorLink(const Catoms3DBlock *module,
                                         RotationLinkType ft) {
     vector<Catoms3DMotionRulesLink*> motionRulesLinksFrom;
     getMotionRules()->getValidMotionList(module, conFrom, motionRulesLinksFrom);
-    
+
     for (const Catoms3DMotionRulesLink* link : motionRulesLinksFrom) {
-        if (link->getConToID() == conTo) {            
+        if (link->getConToID() == conTo) {
             switch (ft) {
                 case Any: return link;
                 case HexaFace: if (link->isOctaFace() == HexaFace) return link; break;
@@ -22,7 +21,7 @@ Catoms3DMotionEngine::findConnectorLink(const Catoms3DBlock *module,
             }
         }
     }
-    
+
     return NULL;
 }
 
@@ -32,7 +31,7 @@ Catoms3DMotionEngine::findPivotConnectorLink(const Catoms3DBlock *pivot,
                                              RotationLinkType ft) {
     vector<Catoms3DMotionRulesLink*> motionRulesLinks;
     getMotionRules()->getValidSurfaceLinksOnCatom(pivot, motionRulesLinks);
-    
+
     for (Catoms3DMotionRulesLink* link : motionRulesLinks) {
         if (link->getConFromID() == conFrom and link->getConToID() == conTo) {
             // TODO:
@@ -40,7 +39,7 @@ Catoms3DMotionEngine::findPivotConnectorLink(const Catoms3DBlock *pivot,
             // if (static_cast<FCCLattice*>(getWorld()->lattice)->
             //     isPositionBlocked(fPos, pivot->position)) return NULL;
             // END TODO
-            
+
             switch (ft) {
                 case Any: return link;
                 case HexaFace: if (link->isOctaFace() == HexaFace) return link; break;
@@ -50,7 +49,7 @@ Catoms3DMotionEngine::findPivotConnectorLink(const Catoms3DBlock *pivot,
             }
         }
     }
-    
+
     return NULL;
 }
 
@@ -77,13 +76,13 @@ Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(const Catoms3DBlock* m,
                                                       const Cell3DPosition& tPos,
                                                       RotationLinkType faceReq) {
     std::vector<std::pair<Catoms3DBlock*, const Catoms3DMotionRulesLink*>> allLinkPairs;
-    
-    if (m) {    
+
+    if (m) {
         // A pivot module is necessarily one which is both adjacent to m and the target position
         /// (1) Get all occupied positions that qualify
         Catoms3DWorld* world = Catoms3D::getWorld();
         Lattice* lattice = world->lattice;
-    
+
         vector<Cell3DPosition> mActiveCells = lattice->getActiveNeighborCells(m->position);
         vector<Cell3DPosition> tPosActiveCells = lattice->getActiveNeighborCells(tPos);
 
@@ -95,7 +94,13 @@ Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(const Catoms3DBlock* m,
         for (const Cell3DPosition& pPos : adjacentCells) {
             pivot = static_cast<Catoms3DBlock*>(lattice->getBlock(pPos));
 
-            // Determine pivot connectors and check if a possible path exists 
+            // Do no allow rotating modules to actuate for others
+            if (pivot->getState() == BuildingBlock::State::MOVING) {
+                // cout << pPos << " is rotating" << endl;
+                continue;
+            }
+
+            // Determine pivot connectors and check if a possible path exists
             short conFrom = pivot->getConnectorId(m->position);
             short conTo = pivot->getConnectorId(tPos);
 
@@ -107,7 +112,7 @@ Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(const Catoms3DBlock* m,
                 //  but also that this module can actually use that path
                 const Catoms3DMotionRulesLink *matchingModuleLink =
                     getMotionRules()->getMobileModuleLinkMatchingPivotLink(link, m, pivot);
-            
+
                 // Mark pivot
                 if (link and matchingModuleLink)
                     allLinkPairs.push_back(std::make_pair(pivot, matchingModuleLink));
@@ -121,14 +126,14 @@ Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(const Catoms3DBlock* m,
                 //  but also that this module can actually use that path
                 const Catoms3DMotionRulesLink *matchingModuleLink =
                     getMotionRules()->getMobileModuleLinkMatchingPivotLink(link, m, pivot);
-            
+
                 // Mark pivot
                 if (link and matchingModuleLink)
                     allLinkPairs.push_back(std::make_pair(pivot, matchingModuleLink));
             }
         }
     }
-    
+
     return allLinkPairs;
 }
 
@@ -138,12 +143,14 @@ Catoms3DBlock* Catoms3DMotionEngine::findMotionPivot(const Catoms3DBlock* m,
                                                      RotationLinkType faceReq) {
     const auto &allLinkPairs = findPivotLinkPairsForTargetCell(m, tPos, faceReq);
 
+    // cout << "size: " << allLinkPairs.size() << endl;
+
     for (const auto& pair : allLinkPairs) {
         // cout << "{ " << *pair.first << ", " << *pair.second << " }" << endl;
         if (pair.second->getMRLT() == faceReq or faceReq == RotationLinkType::Any)
             return pair.first;
     }
-    
+
     return NULL;
 }
 
@@ -156,7 +163,7 @@ Catoms3DMotionEngine::getAllRotationsForModule(const Catoms3DBlock* m) {
                  getFreeNeighborCells(m->position)) {
             const vector<std::pair<Catoms3DBlock*, const Catoms3DMotionRulesLink*>>
                 pivotLinkPairs = findPivotLinkPairsForTargetCell(m, nPos);
-            
+
             for (const auto& pair : pivotLinkPairs) {
                 if (pair.first and pair.second) {
                     Rotations3D r = pair.second->getRotations(m, pair.first);
@@ -165,6 +172,24 @@ Catoms3DMotionEngine::getAllRotationsForModule(const Catoms3DBlock* m) {
             }
         }
     }
-    
+
     return allRotations;
+}
+
+bool Catoms3DMotionEngine::canMoveTo(const Catoms3DBlock* m, const Cell3DPosition& tPos,
+                                     RotationLinkType faceReq) {
+    return findMotionPivot(m, tPos, faceReq) != NULL;
+}
+
+const vector<Cell3DPosition>
+Catoms3DMotionEngine::getAllReachablePositions(const Catoms3DBlock* m,
+                                               RotationLinkType faceReq) {
+    vector<Cell3DPosition> reachablePositions;
+    for (const Cell3DPosition& rPos : relReachablePosition) {
+        const Cell3DPosition& pos = rPos + m->position;
+        if (canMoveTo(m, pos)) {
+            reachablePositions.push_back(pos);
+        }
+    }
+    return reachablePositions;
 }

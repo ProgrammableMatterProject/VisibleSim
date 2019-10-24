@@ -245,12 +245,13 @@ void OkteenWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-    int n=1,m;
+    int n,m;
     lock();
     // 6 objects per module
     for (const auto& pair : mapGlBlocks) {
         // FIXME: Check that this is working properly after glBlock hash map container change
         m=0;
+        n = pair.first * numPickingTextures;
         ((OkteenGlBlock*)pair.second)->glDrawId(objBlockForPicking,m); // structure
         ((OkteenGlBlock*)pair.second)->glDrawIdByMaterial(objConnector,n); // connectors
     }
@@ -336,8 +337,8 @@ void OkteenWorld::updateGlData(OkteenBlock*blc, short id, float length) {
 }
 
 void OkteenWorld::setSelectedFace(int n) {
-    numSelectedGlBlock=n/6;
-    numSelectedFace = n%6;
+    numSelectedGlBlock=n/numPickingTextures;
+    numSelectedFace = n%numPickingTextures;
 }
 
 void OkteenWorld::exportConfiguration() {

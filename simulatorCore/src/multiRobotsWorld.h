@@ -21,6 +21,9 @@ namespace MultiRobots {
 static const Vector3D defaultBlockSize{71.0, 71.0, 65.0};
 
 class MultiRobotsWorld : public BaseSimulator::World {
+    inline static const int numPickingTextures = 0; /* The number of picking textures defined
+                                                       for this type of catom,
+                                                       used to deduce selected Block / face */
 protected:
     GLuint idTextureWall;
 

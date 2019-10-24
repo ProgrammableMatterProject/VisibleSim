@@ -56,10 +56,11 @@ public:
 
     inline static int nbMessages = 0;
     inline static Time t0 = 0;
-    inline static bool NO_FLOODING = false;
+    inline static bool NO_FLOODING = true;
     inline static bool BUILDING_MODE = false; // const after call to parseUserCommandLineArgument
     inline static bool HIGHLIGHT_CSG = false;
     inline static bool HIGHLIGHT_SCAFFOLD = false;
+    inline static bool COATING_EXPORT = false;
     inline static bool sandboxInitialized;
 
     ScaffoldingBlockCode(Catoms3D::Catoms3DBlock *host);
@@ -77,7 +78,7 @@ public:
     void onBlockSelected() override;
     void onAssertTriggered() override;
 
-    bool parseUserCommandLineArgument(int argc, char *argv[]) override;
+    bool parseUserCommandLineArgument(int& argc, char **argv[]) override;
 
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
         return (new ScaffoldingBlockCode((Catoms3DBlock*)host));

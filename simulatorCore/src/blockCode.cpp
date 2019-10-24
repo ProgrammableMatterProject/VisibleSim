@@ -79,7 +79,8 @@ int BlockCode::sendMessage(HandleableMessage*msg,
            << " sends " << msg->type << " to "
            << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
 #endif
-    assert(dest->getConnectedBlockId() > 0);
+
+    VS_ASSERT(dest->getConnectedBlockId() > 0);
 
     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
     return 0;
@@ -151,6 +152,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
             }
         }
     }
+
     delete msg;
     return n;
 }
