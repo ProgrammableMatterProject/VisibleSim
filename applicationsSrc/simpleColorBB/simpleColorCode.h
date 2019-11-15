@@ -13,7 +13,7 @@ public :
     SimpleColorCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) {};
     ~SimpleColorCode() {};
 
-    void startup();
+    void startup() override;
     void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/
