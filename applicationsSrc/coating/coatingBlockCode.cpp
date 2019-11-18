@@ -137,8 +137,9 @@ void CoatingBlockCode::startup() {
         scaffoldSeedPos = determineScaffoldSeedPosition();
 
         // useExternalCoatingOnOddLayers = shouldUseExternalCoatingOnOddLayers();
-        // highlightCSGScaffold();
+        highlightCSGScaffold();
         coatingSeed = determineCoatingSeedPosition();
+        lattice->highlightCell(coatingSeed, MAGENTA);
 
         spawnLoc = cornerTilePos + Cell3DPosition(-1, -1, -1);
         spawnPivot = cornerTilePos + Cell3DPosition(0, 0, -2);
@@ -205,13 +206,13 @@ void CoatingBlockCode::startup() {
 
         sendMessage(new CoaTrainRequest(), spawnPivotItf, MSG_DELAY_MC, 0);
     } else if (catom->position == scaffoldSeedPos) {
-        scheduler->schedule(new InterruptionEvent(getScheduler()->now() + getRoundDuration(),
+        scheduler->schedule(new InterruptionEvent(getScheduler()->now()
+                                                  + getRoundDuration(),
                                                   catom, IT_MODULE_INSERTION));
     } else if (catom->position == spawnPivot) {
         catom->setColor(GREEN);
-
-        useExternalCoatingOnOddLayers = shouldUseExternalCoatingOnOddLayers();
-        cout << "useExternalCoatingOnOddLayers: " << useExternalCoatingOnOddLayers << endl;
+        // useExternalCoatingOnOddLayers = shouldUseExternalCoatingOnOddLayers();
+        // cout << "useExternalCoatingOnOddLayers: " << useExternalCoatingOnOddLayers << endl;
         highlightCSGScaffold();
         initializeClosingCornerAndFBPLocations(closingCorner, firstBorderPos);
 
@@ -389,15 +390,20 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
                             } else if (getResourcesForCoatingLayer(currentLayer) == 1) {
                                 scheduleRotationTo(nextRotationTowards(
                                                        closingCorner[currentLayer]));
-                            } else if (sourceTileIsShapeCorner()
-                                       or (not sourceTileIsShapeCorner() and
-                                           ((IS_ODD(currentLayer)) or
-                                            (IS_EVEN(currentLayer) and passedThroughCC)))) {
-                                scheduleRotationTo(nextRotationTowards(trainStart));
+                            // } else if (sourceTileIsShapeCorner()
+                            //            or (not sourceTileIsShapeCorner() and
+                            //                ((IS_ODD(currentLayer)) or
+                            //               (IS_EVEN(currentLayer) and passedThroughCC)))) {
+                            } else if (isFirstModuleForCoatingLayer) {
+                                scheduleRotationTo
+                                    (nextRotationTowards(firstBorderPos[currentLayer]));
                             } else {
-                                scheduleRotationTo(nextRotationTowards(
-                                                       closingCorner[currentLayer]));
+                                scheduleRotationTo(nextRotationTowards(trainStart));
                             }
+                            // } else {
+                            //     scheduleRotationTo(nextRotationTowards(
+                            //                            closingCorner[currentLayer]));
+                            // }
 
                         } else {
                             bool allowDirectMotion =
@@ -528,6 +534,8 @@ Cell3DPosition CoatingBlockCode::determineCoatingSeedPosition() const {
     Cell3DPosition curPos = seedTr;
     if (isInCSG(seedTr)) {
         curPos += Cell3DPosition(-1, -1, 0);
+    } else if (isInCoatingLayer(seedTr, 0)) {
+        return seedTr;
     } else {
         do {
             curPos += Cell3DPosition(1, 1, 0);
@@ -610,7 +618,7 @@ bool CoatingBlockCode::hasOpenCoatingSlotNeighbor(const unsigned int layer,
         info << " - l: " << layer;
         info << " - cl: " << getCoatingLayer(p);
         info << " - isICL: " << isInCoatingLayer(p, layer);
-        info << " - u: " << useExternalCoatingOnOddLayers;
+        // info << " - u: " << useExternalCoatingOnOddLayers;
         if (isInCoatingLayer(p, layer)) info << " - r: " << coatingSlotInsertionReady(p);
         scheduler->trace(info.str(),catom->blockId,WHITE);
 
@@ -1172,7 +1180,7 @@ bool CoatingBlockCode::verticalLayerShouldOffset(const unsigned int layer) const
     //  reachable
     vector<Cell3DPosition> noExtCoatingClosingCorner;
     vector<Cell3DPosition> fbp;
-    VS_ASSERT(not useExternalCoatingOnOddLayers);
+    // VS_ASSERT(not useExternalCoatingOnOddLayers);
     initializeClosingCornerAndFBPLocations(noExtCoatingClosingCorner, fbp);
 
     Cell3DPosition currentPos = noExtCoatingClosingCorner[layer];

@@ -141,14 +141,14 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     // }
 
     int mc = ruleMatcher->getComponentForPosition(targetPosition - coordinatorPos);
-    if (coordinatorPos == Cell3DPosition(9,9,3)
-        and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) {
-        OUTPUT << "here|";
+    // if (coordinatorPos == Cell3DPosition(9,9,3)
+    //     and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) {
+    //     OUTPUT << "here|";
         VS_ASSERT(mc != -1);
         OUTPUT << world->lattice->gridToWorldPosition(catom->position) << "|";
         OUTPUT << ruleMatcher->component_to_string(static_cast<MeshComponent>(mc)) << "|";
         OUTPUT << ((targetPosition == motionDest) and not isInRange(mc, RevZ_EPL, RevZ_L_EPL)) << "|";
-    }
+    // }
 
 }
 

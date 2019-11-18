@@ -30,7 +30,8 @@ void CoaTrainRequest::handle(BaseSimulator::BlockCode* bc) {
         mabc.sendMessage(new CoaTrainIsFull(), destinationInterface, MSG_DELAY_MC, 0);
         mabc.catom->setColor(RED);
     } else {
-        mabc.sendMessage(new GetOnBoard(mabc.currentLayer, mabc.useExternalCoatingOnOddLayers),
+        mabc.sendMessage(new GetOnBoard(mabc.currentLayer,
+                                        mabc.useExternalCoatingOnOddLayers, false),
                          destinationInterface, MSG_DELAY_MC, 0);
     }
 }
@@ -40,6 +41,7 @@ void GetOnBoard::handle(BaseSimulator::BlockCode* bc) {
 
     mabc.currentLayer = layer;
     mabc.useExternalCoatingOnOddLayers = useExtCoating;
+    mabc.isFirstModuleForCoatingLayer = isFirst;
 
     mabc.initializeClosingCornerAndFBPLocations(mabc.closingCorner, mabc.firstBorderPos);
 
@@ -60,19 +62,19 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
     if (mabc.catom->position != mabc.spawnPivot) {
         mabc.currentLayer++;
 
-        if (not mabc.sourceTileIsShapeCorner() and IS_ODD(mabc.currentLayer)
-            and mabc.catom->getInterface(mabc.ZHelperPos)
-            and mabc.lattice->getBlock(mabc.ZHelperPos))
-            mabc.introduceEvenSupportAndAssignPosition(mabc.ZHelperPos);
+        // if (not mabc.sourceTileIsShapeCorner() and IS_ODD(mabc.currentLayer)
+        //     and mabc.catom->getInterface(mabc.ZHelperPos)
+        //     and mabc.lattice->getBlock(mabc.ZHelperPos))
+        //     mabc.introduceEvenSupportAndAssignPosition(mabc.ZHelperPos);
 
         mabc.forwardPTNLToSpawnPivot();
         mabc.passNextSpawnRound = true;
     } else {
         mabc.currentLayer++;
 
-        if (not mabc.sourceTileIsShapeCorner()
-            and IS_ODD(mabc.currentLayer) and mabc.currentLayer > 2)
-            mabc.instructSupportRelocationIfRequired(mabc.RZHelperPos);
+        // if (not mabc.sourceTileIsShapeCorner()
+        //     and IS_ODD(mabc.currentLayer) and mabc.currentLayer > 2)
+        //     mabc.instructSupportRelocationIfRequired(mabc.RZHelperPos);
 
         mabc.spawnCount = 0;
         mabc.catom->setColor(GREEN);
@@ -91,7 +93,7 @@ void ProceedToNextLayer::handle(BaseSimulator::BlockCode* bc) {
                                  MSG_DELAY_MC, 0);
             } else {
                 mabc.sendMessage(new GetOnBoard(mabc.currentLayer,
-                                                mabc.useExternalCoatingOnOddLayers),
+                                                mabc.useExternalCoatingOnOddLayers, true),
                                  mabc.catom->getInterface(mabc.catom->position
                                                           + GetOnBoard::defaultDst),
                                  MSG_DELAY_MC, 0);

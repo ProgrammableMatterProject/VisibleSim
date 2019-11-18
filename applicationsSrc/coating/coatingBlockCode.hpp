@@ -159,6 +159,7 @@ public:
 
     // Cheating convergence:
     inline static bool coatingIsOver = false;
+    bool isFirstModuleForCoatingLayer = false;
 
     // Support works
     bool calledInToSupportLocation = false;
