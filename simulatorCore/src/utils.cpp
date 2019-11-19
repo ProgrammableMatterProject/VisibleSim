@@ -134,6 +134,16 @@ void utils::swap(int* a, int* b) {
     *b = temp;
 }
 
+string utils::myBasename(const string& path) {
+    return string(myBasename(path.c_str()));
+}
+
+char *utils::myBasename(char const *path) {
+    char *s = strrchr(const_cast<char*>(path), '/');
+    if (!s) return strdup(path);
+    else return strdup(s + 1);
+}
+
 /*
  * Copyright (c) 2009-2017, Farooq Mela
  * All rights reserved.

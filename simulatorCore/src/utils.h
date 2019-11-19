@@ -120,6 +120,9 @@ std::string int_to_hex_str( T i, int width)
   return stream.str();
 }
 
+char *myBasename(char const *path);
+std::string myBasename(const std::string& path);
+
 } // namespace utils
 
 } // namespace BaseSimulator

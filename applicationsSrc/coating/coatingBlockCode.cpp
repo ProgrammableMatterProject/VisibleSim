@@ -545,6 +545,7 @@ Cell3DPosition CoatingBlockCode::determineCoatingSeedPosition() const {
 
     // Assumption: This should be a corner
     VS_ASSERT(isCoatingCorner(curPos));
+    lattice->highlightCell(curPos, BLACK);
 
     return curPos;
 }
@@ -1135,7 +1136,6 @@ bool CoatingBlockCode::shouldUseExternalCoatingOnOddLayers() const {
             return true;
         }
     }
-
     return false;
 }
 

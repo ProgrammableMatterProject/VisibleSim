@@ -363,8 +363,9 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                 // Add a script for converting into a video, asynchronously
 #ifndef WIN32
                 (void)std::async([](const std::string& animDir){
+                    const string& bsname = myBasename(Simulator::configFileName);
                     const string& vidName =
-                        generateTimestampedFilename("video_" + Simulator::configFileName.substr(0, Simulator::configFileName.size()-4), "mkv");
+                        generateTimestampedFilename("video_" + bsname.substr(0, bsname.size()-4), "mkv");
                     // cout << vidName << endl;
                     cerr << TermColor::BWhite << "running:"
                          << TermColor::BYellow << "`ffmpeg -pattern_type glob -framerate 30 -i \""
@@ -388,7 +389,8 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             saveScreenMode=!saveScreenMode;
         } break;
         case 's' : {
-            const string& ssName = generateTimestampedFilename("capture_" + Simulator::configFileName.substr(0, Simulator::configFileName.size()-4), "ppm");
+            const string& bsname = myBasename(Simulator::configFileName);
+            const string& ssName = generateTimestampedFilename("capture_" + bsname.substr(0, bsname.size()-4), "ppm");
             string ssNameJpg = ssName;
             ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
             saveScreen(ssName.c_str());
