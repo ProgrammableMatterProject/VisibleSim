@@ -112,7 +112,9 @@ public:
     /**
      * @brief Add a new message handler to the block code, for message with message type type
      * @param type ID of the message for which a handler needs to be registered
-     * @param eventFunc the message handling function as a std::function */
+     * @param eventFunc the message handling function as a std::function
+     * @note see https://en.cppreference.com/w/cpp/utility/functional/function#Member_functions
+     * example: addMessageEventFunc2(BROADCAST_MSG, std::bind(&SimpleColorCode::myBroadcastFunc, this, std::placeholders::_1, std::placeholders::_2)); */
     void addMessageEventFunc2(int type,eventFunc2);
 
     /**
