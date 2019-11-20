@@ -28,9 +28,10 @@ void RoutableScaffoldMessage::route(BaseSimulator::BlockCode *bc) {
 
     // Routing catom must be part of the scaffold
     // VS_ASSERT(mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(mabc.catom->position)));
-    if (not mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(mabc.catom->position)));
+    if (not mabc.ruleMatcher->isInMeshOrSandbox(mabc.norm(mabc.catom->position)))
+        ;
 
-    // Attempt direct delivery
+    // attempt direct delivery
     P2PNetworkInterface *nextHopItf = mabc.catom->getInterface(dstPos);
     if (nextHopItf and nextHopItf->isConnected()) {
         mabc.sendMessage(this->clone(), nextHopItf, MSG_DELAY_MC, 0);

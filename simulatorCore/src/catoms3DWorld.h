@@ -59,6 +59,9 @@ class Catoms3DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
     Catoms3DMotionRules *motionRules;
+    inline static const int numPickingTextures = 13; /* The number of picking textures defined
+                                                        for this type of catom,
+                                                        used to deduce selected Block / face */
 //Nurbs surface
 /*	GLfloat sknots[S_NUMKNOTS] =
     {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
@@ -171,12 +174,15 @@ public:
     virtual void glDrawId() override;
     virtual void glDrawIdByMaterial() override;
     virtual void glDrawSpecificBg() override;
-    void updateGlData(BuildingBlock *bb) override;
+    virtual void updateGlData(BuildingBlock *bb) override;
+
+    using World::updateGlData; // Suppresses hiding warning
+    void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
+    void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
     void updateGlData(Catoms3DBlock*blc,const Color &color);
     void updateGlData(Catoms3DBlock*blc, bool visible);
     void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
-    void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
-    void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
+
     virtual void setSelectedFace(int n) override;
     virtual void exportConfiguration() override;
 

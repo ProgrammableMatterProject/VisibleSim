@@ -136,9 +136,10 @@ void BlinkyBlocksWorld::glDrawIdByMaterial() {
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
 
     glDisable(GL_TEXTURE_2D);
-    int n=1;
+    int n;
     lock();
     for (const auto& pair : mapGlBlocks) {
+        n = pair.first * numPickingTextures;
         ((BlinkyBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
@@ -233,8 +234,8 @@ void BlinkyBlocksWorld::loadTextures(const string &str) {
 }
 
 void BlinkyBlocksWorld::setSelectedFace(int n) {
-    numSelectedGlBlock=n/6;
-    string name = objBlockForPicking->getObjMtlName(n%6);
+    numSelectedGlBlock=n/numPickingTextures;
+    string name = objBlockForPicking->getObjMtlName(n%numPickingTextures);
 
     if (name=="_blinkyBlockPickingface_top") numSelectedFace=SCLattice::Top;
     else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=SCLattice::Bottom;
