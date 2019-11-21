@@ -42,7 +42,7 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
     if (GlutContext::GUIisEnabled) {
 /* Toggle to use catoms3D with max connector size (no rotation) but very simple models*/
 #define CATOMS3D_TEXTURE_ID 0
-#define UseC3DSkewFCC 1
+#define UseC3DSkewFCC 0
 
 #if CATOMS3D_TEXTURE_ID == 1 // Standard, no conID
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2.obj");

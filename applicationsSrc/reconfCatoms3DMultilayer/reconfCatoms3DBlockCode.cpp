@@ -2,7 +2,7 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 0
+#define CONSTRUCT_WAIT_TIME 50
 #define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
@@ -12,8 +12,13 @@ using namespace std;
 using namespace Catoms3D;
 
 ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
+    if (host == NULL) return;
+
     scheduler = getScheduler();
-	catom = (Catoms3DBlock*)hostBlock;
+    catom = (Catoms3DBlock*)hostBlock;
+
+    world = Catoms3DWorld::getWorld();
+    lattice = world->lattice;
 
     reconf = new Reconf(catom);
 
@@ -31,9 +36,24 @@ ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
 }
 
 void ReconfCatoms3DBlockCode::startup() {
+    if (not target->isInTarget(catom->position)) return;
+
     if (catom->blockId == 1) {
+        highlightCSG();
+
         //srand(time(NULL));
         reconf->floor = 0;
+
+        // const Cell3DPosition& gs = BaseSimulator::getWorld()->lattice->gridSize;
+        // Cell3DPosition pos;
+        // short iz = 2;
+        // for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
+        //     for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
+        //         pos.set(ix, iy, iz);
+
+        //         lattice->highlightCell(pos, BLACK);
+        //     }
+        // }
     }
 
     //planningRun();
@@ -69,10 +89,10 @@ void ReconfCatoms3DBlockCode::stochasticRun() {
     }
 }
 void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
-	MessagePtr message;
-	stringstream info;
+    MessagePtr message;
+    stringstream info;
 
-	switch (pev->eventType) {
+    switch (pev->eventType) {
     case EVENT_NI_RECEIVE: {
       message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
         switch(message->id) {
@@ -358,7 +378,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         neighborhood->addNeighbors();
         break;
     }
-	}
+    }
 }
 
 void ReconfCatoms3DBlockCode::getStats() {
@@ -367,7 +387,7 @@ void ReconfCatoms3DBlockCode::getStats() {
     count += Scheduler::getScheduler()->getNbEventsById(ADDRIGHTBLOCK_EVENT_ID);
     count += Scheduler::getScheduler()->getNbEventsById(ADDNEXTLINE_EVENT_ID);
     count += Scheduler::getScheduler()->getNbEventsById(ADDPREVIOUSLINE_EVENT_ID);
-    int nbBlocks = World::getWorld()->getNbBlocks();
+    // int nbBlocks = World::getWorld()->getNbBlocks();
     int nMessages = 0;
     nMessages += NeighborMessages::nMessagesGetInfo;
     nMessages += Neighborhood::numberMessagesToAddBlock;
@@ -440,3 +460,78 @@ void ReconfCatoms3DBlockCode::syncResponse(shared_ptr<Sync_response_message> rec
 BlockCode* ReconfCatoms3DBlockCode::buildNewBlockCode(BuildingBlock *host) {
     return (new ReconfCatoms3DBlockCode((Catoms3DBlock*)host));
 }
+
+bool ReconfCatoms3DBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
+    /* Reading the command line */
+    if ((argc > 0) && ((*argv)[0][0] == '-')) {
+        switch((*argv)[0][1]) {
+
+            // case 'b':   {
+            //     BUILDING_MODE = true;
+            //     return true;
+            // } break;
+
+            case '-': {
+                string varg = string((*argv)[0] + 2); // argv[0] without "--"
+                if (varg == string("csg")) HIGHLIGHT_CSG = true;
+                else return false;
+
+                return true;
+            }
+
+            default:
+                cerr << "Unrecognized command line argument: " << (*argv)[0] << endl;
+        }
+    }
+
+    return false;
+}
+
+void ReconfCatoms3DBlockCode::highlightCSG() {
+    if (not HIGHLIGHT_CSG)
+        return;
+
+    // Initialize Target Object Preview
+    const Cell3DPosition& gs = world->lattice->gridSize;
+    Cell3DPosition pos;
+    for (short iz = 0; iz < gs[2]; iz++) {
+        for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
+            for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
+                pos.set(ix, iy, iz);
+
+                if (HIGHLIGHT_CSG and target->isInTarget(pos))
+                    lattice->highlightCell(pos, WHITE);
+            }
+        }
+    }
+}
+
+// void ReconfCatoms3DBlockCode::initializeSandbox() {
+//     const Cell3DPosition& ulb = lattice->getGridUpperBounds();
+//     const Cell3DPosition sbSeedPos = Cell3DPosition(3, 3, 3);
+
+//     for (int x = sbSeedPos[0]; x < ulb[0]; x+=B) {
+//         for (int y = sbSeedPos[1]; y < ulb[1]; y+=B) {
+//             const Cell3DPosition& trPos = Cell3DPosition(x, y, sbSeedPos[2]);
+
+//             for (int i = 0; i < XBranch; i++) {
+//                 Cell3DPosition pos = trPos;
+//                 for (int j = 0; j < 3; j++) {
+//                     pos += rm->getIncidentTipRelativePos((BranchIndex)i);
+
+//                     if (lattice->isInGrid(pos)) {
+//                         world->addBlock(0, buildNewBlockCode, pos, GREY);
+//                     }
+//                 }
+//             }
+
+//             if (trPos != sbSeedPos) { // or i != ZBranch)
+//                 Cell3DPosition futureTRPos = trPos
+//                     + rm->getEntryPointRelativePos(Z_EPL);
+
+//                 if (lattice->isInGrid(futureTRPos) and rm->isInCSGScaffold(norm(trPos)))
+//                     world->addBlock(0, buildNewBlockCode, futureTRPos, YELLOW);
+//             }
+//         }
+//     }
+// }

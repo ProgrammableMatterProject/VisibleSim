@@ -14,14 +14,14 @@ using namespace std;
 using namespace Catoms3D;
 
 int main(int argc, char **argv) {
-	cout << "\033[1;33m" << "Starting Catoms3D simulation (main) ..." << "\033[0m" << endl;
+    cout << "\033[1;33m" << "Starting Catoms3D simulation (main) ..." << "\033[0m" << endl;
 
-	createSimulator(argc, argv, ReconfCatoms3DBlockCode::buildNewBlockCode);
-	getSimulator()->printInfo();
-	BaseSimulator::getWorld()->printInfo();
+    createSimulator(argc, argv, ReconfCatoms3DBlockCode::buildNewBlockCode);
+    getSimulator()->printInfo();
+    BaseSimulator::getWorld()->printInfo();
 
-	deleteSimulator();
-	return(0);
+    deleteSimulator();
+    return(0);
 }
 
 void info()

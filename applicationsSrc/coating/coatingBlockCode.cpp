@@ -1032,6 +1032,7 @@ size_t CoatingBlockCode::determineTopCoatingHeight() const {
 bool CoatingBlockCode::isAdjacentToPosition(const Cell3DPosition& pos) const {
     return lattice->cellsAreAdjacent(catom->position, pos);
 }
+
 void CoatingBlockCode::highlightCSGScaffold(bool debug) {
     // target->highlight();
 
