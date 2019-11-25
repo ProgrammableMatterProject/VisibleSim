@@ -88,7 +88,7 @@ void Neighborhood::addNeighborToPreviousPlane()
 bool Neighborhood::isFirstCatomOfLine()
 {
     if (!catom->getInterface(catom->position.addX(-1))->isConnected() &&
-            !catom->getInterface(catom->position.addX(1))->isConnected())
+        !catom->getInterface(catom->position.addX(1))->isConnected())
         return true;
     return false;
 }

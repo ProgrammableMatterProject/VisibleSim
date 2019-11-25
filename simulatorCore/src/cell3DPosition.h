@@ -21,7 +21,7 @@ public:
     Cell3DPosition();
     constexpr Cell3DPosition(short x,short y,short z) : pt{x,y,z} { }
     Cell3DPosition(const Vector3D& v);
-    constexpr Cell3DPosition(const Cell3DPosition& c):pt{ c.pt[0], c.pt[1], c.pt[2] } {};
+    Cell3DPosition(const Cell3DPosition& c):pt{ c.pt[0], c.pt[1], c.pt[2] } {};
 
     void set(short x,short y,short z);
     double dist_euclid(const Cell3DPosition& p) const;
@@ -29,9 +29,9 @@ public:
     string to_string() const;
     string config_print() const;
 
-    Cell3DPosition& addX(short x);
-    Cell3DPosition& addY(short y);
-    Cell3DPosition& addZ(short z);
+    Cell3DPosition addX(short x) const;
+    Cell3DPosition addY(short y) const;
+    Cell3DPosition addZ(short z) const;
 
     inline const short operator[](const int i) const { return pt[i]; };
     bool operator<(const Cell3DPosition &o) const;

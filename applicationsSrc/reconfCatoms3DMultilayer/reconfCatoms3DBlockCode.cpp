@@ -2,7 +2,7 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 10
+#define CONSTRUCT_WAIT_TIME 0
 #define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
@@ -36,9 +36,8 @@ ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
 }
 
 void ReconfCatoms3DBlockCode::startup() {
-    if (not target->isInTarget(catom->position)) return;
-
     if (catom->blockId == 1) {
+        cout << "HIGHLIGHT_CSG: " << HIGHLIGHT_CSG << endl;
         highlightCSG();
 
         //srand(time(NULL));
@@ -56,9 +55,11 @@ void ReconfCatoms3DBlockCode::startup() {
         // }
     }
 
-    //planningRun();
+    if (not target->isInTarget(catom->position)) return;
+
+    planningRun();
     //stochasticRun();
-    neighborhood->addAllNeighbors();
+    // neighborhood->addAllNeighbors();
 
     std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }
@@ -495,8 +496,11 @@ void ReconfCatoms3DBlockCode::highlightCSG() {
     const Cell3DPosition& gs = world->lattice->gridSize;
     Cell3DPosition pos;
     for (short iz = 0; iz < gs[2]; iz++) {
-        for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
-            for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
+        for (short iy = 0; iy < gs[1]; iy++) {
+            for (short ix = 0; ix < gs[0]; ix++) {
+
+        // for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
+        //     for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
                 pos.set(ix, iy, iz);
 
                 if (HIGHLIGHT_CSG and target->isInTarget(pos))
