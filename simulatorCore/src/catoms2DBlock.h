@@ -61,11 +61,14 @@ public:
 
     // Motion
     bool isBlocked() const;
-    bool canMove(Rotation2DMove &m) const;
+    bool canMove(const Rotation2DMove &m) const;
     int getCCWMovePivotId() const;
     int getCWMovePivotId() const;
     void startMove(Rotation2DMove &m, Time t);
     void startMove(Rotation2DMove &m);
+
+    bool canRotate(RelativeDirection::Direction d) const;
+    void rotate(RelativeDirection::Direction d, Time t = 0);
 
     // MeldInterpreter
     /**

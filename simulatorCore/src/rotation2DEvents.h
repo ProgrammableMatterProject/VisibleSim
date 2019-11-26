@@ -31,8 +31,8 @@ public:
     Rotation2DMove(const Rotation2DMove &m);
     ~Rotation2DMove();
 
-    RelativeDirection::Direction getDirection();
-    Catoms2DBlock* getPivot();
+    RelativeDirection::Direction getDirection() const;
+    Catoms2DBlock* getPivot() const;
 
 };
 
@@ -50,7 +50,7 @@ protected:
   int sens;
   Time duration;
 public:
-    Rotation2DStartEvent(Time, Catoms2DBlock *block, Rotation2DMove &m);
+    Rotation2DStartEvent(Time, Catoms2DBlock *block, const Rotation2DMove &m);
     Rotation2DStartEvent(Rotation2DStartEvent *ev);
     ~Rotation2DStartEvent();
     void consumeBlockEvent() override {}
