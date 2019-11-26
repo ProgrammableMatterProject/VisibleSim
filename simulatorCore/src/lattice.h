@@ -408,10 +408,6 @@ public:
      */
     virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
     /**
-     * @copydoc Lattice::getMaxNumNeighbors
-     */
-    virtual Cell3DPosition getGridUpperBounds() const override;
-    /**
      * @copydoc Lattice::getCellInDirection
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
@@ -490,10 +486,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
-    /**
-     * @copydoc Lattice::getMaxNumNeighbors
-     */
-    virtual Cell3DPosition getGridUpperBounds() const override;
     /**
      * @copydoc Lattice::getCellInDirection
      */
@@ -719,11 +711,6 @@ public:
      * @copydoc Lattice::getGridLowerBounds
      */
     virtual Cell3DPosition getGridLowerBounds() const override;
-
-    /**
-     * @copydoc Lattice::getGridUpperBounds
-     */
-    virtual Cell3DPosition getGridUpperBounds() const override;
 
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition

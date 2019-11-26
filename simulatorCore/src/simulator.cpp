@@ -181,11 +181,11 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
     // Instantiate and configure the Scheduler
     loadScheduler(schedulerMaxDate);
 
-	// Parse and configure the remaining items
-	parseBlockList();
-	parseCameraAndSpotlight();
-	parseObstacles();
-	parseTarget();
+    // Parse and configure the remaining items
+    parseBlockList();
+    parseCameraAndSpotlight();
+    parseObstacles();
+    parseTarget();
     parseCustomizations();
 }
 
@@ -560,116 +560,116 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 }
 
 void Simulator::parseCameraAndSpotlight() {
-	if (GlutContext::GUIisEnabled) {
-		Lattice *lattice = getWorld()->lattice;
-		// calculate the position of the camera from the lattice size
-		Vector3D target(0.5*lattice->gridSize[0]*lattice->gridScale[0],
-										0.5*lattice->gridSize[1]*lattice->gridScale[1],
-										0.25*lattice->gridSize[2]*lattice->gridScale[2]); // usual target point (midx,miy,quarterz)
-		world->getCamera()->setTarget(target);
-		double d=target.norme();
-		world->getCamera()->setDistance(3.0*d);
-		world->getCamera()->setDirection(45.0,30.0);
-		world->getCamera()->setNearFar(0.25*d,5.0*d);
-		world->getCamera()->setAngle(35.0);
-		world->getCamera()->setLightParameters(target,-30.0,30.0,3.0*d,30.0,0.25*d,4.0*d);
-		// loading the camera parameters
-		TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");
-		if (nodeConfig) {
-			TiXmlElement* cameraElement = nodeConfig->ToElement();
-			const char *attr=cameraElement->Attribute("target");
-			double def_near=1,def_far=1500;
-			float angle=45.0;
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				Vector3D target;
-				target.pt[0] = atof(str.substr(0,pos1).c_str());
-				target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-				target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-				world->getCamera()->setTarget(target);
-			}
+    if (GlutContext::GUIisEnabled) {
+        Lattice *lattice = getWorld()->lattice;
+        // calculate the position of the camera from the lattice size
+        Vector3D target(0.5*lattice->gridSize[0]*lattice->gridScale[0],
+                                        0.5*lattice->gridSize[1]*lattice->gridScale[1],
+                                        0.25*lattice->gridSize[2]*lattice->gridScale[2]); // usual target point (midx,miy,quarterz)
+        world->getCamera()->setTarget(target);
+        double d=target.norme();
+        world->getCamera()->setDistance(3.0*d);
+        world->getCamera()->setDirection(45.0,30.0);
+        world->getCamera()->setNearFar(0.25*d,5.0*d);
+        world->getCamera()->setAngle(35.0);
+        world->getCamera()->setLightParameters(target,-30.0,30.0,3.0*d,30.0,0.25*d,4.0*d);
+        // loading the camera parameters
+        TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");
+        if (nodeConfig) {
+            TiXmlElement* cameraElement = nodeConfig->ToElement();
+            const char *attr=cameraElement->Attribute("target");
+            double def_near=1,def_far=1500;
+            float angle=45.0;
+            if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+                    pos2 = str.find_last_of(',');
+                Vector3D target;
+                target.pt[0] = atof(str.substr(0,pos1).c_str());
+                target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+                target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                world->getCamera()->setTarget(target);
+            }
 
-			attr=cameraElement->Attribute("angle");
-			if (attr) {
-				angle = atof(attr);
-				world->getCamera()->setAngle(angle);
-			}
+            attr=cameraElement->Attribute("angle");
+            if (attr) {
+                angle = atof(attr);
+                world->getCamera()->setAngle(angle);
+            }
 
-			attr=cameraElement->Attribute("directionSpherical");
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				float az,ele,dist;
-				az = -90.0+atof(str.substr(0,pos1).c_str());
-				ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-				dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-				world->getCamera()->setDirection(az,ele);
-				world->getCamera()->setDistance(dist);
-				// az = dist*sin(angle*M_PI/180.0);
-				// def_near = dist-az;
-				// def_far = dist+az;
-			}
+            attr=cameraElement->Attribute("directionSpherical");
+            if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+                    pos2 = str.find_last_of(',');
+                float az,ele,dist;
+                az = -90.0+atof(str.substr(0,pos1).c_str());
+                ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+                dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                world->getCamera()->setDirection(az,ele);
+                world->getCamera()->setDistance(dist);
+                // az = dist*sin(angle*M_PI/180.0);
+                // def_near = dist-az;
+                // def_far = dist+az;
+            }
 
-			attr=cameraElement->Attribute("near");
-			if (attr) {
-				def_near = atof(attr);
-			}
+            attr=cameraElement->Attribute("near");
+            if (attr) {
+                def_near = atof(attr);
+            }
 
-			attr=cameraElement->Attribute("far");
-			if (attr) {
-				def_far = atof(attr);
-			}
-			world->getCamera()->setNearFar(def_near,def_far);
-		}
+            attr=cameraElement->Attribute("far");
+            if (attr) {
+                def_far = atof(attr);
+            }
+            world->getCamera()->setNearFar(def_near,def_far);
+        }
 
-		// loading the spotlight parameters
-		nodeConfig = xmlWorldNode->FirstChild("spotlight");
-		if (nodeConfig) {
-			Vector3D target;
-			float az=0,ele=60,dist=1000,angle=50;
-			double nearPlane=10,farPlane=2000;
-			TiXmlElement* lightElement = nodeConfig->ToElement();
-			const char *attr=lightElement->Attribute("target");
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				target.pt[0] = atof(str.substr(0,pos1).c_str());
-				target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-				target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-			}
+        // loading the spotlight parameters
+        nodeConfig = xmlWorldNode->FirstChild("spotlight");
+        if (nodeConfig) {
+            Vector3D target;
+            float az=0,ele=60,dist=1000,angle=50;
+            double nearPlane=10,farPlane=2000;
+            TiXmlElement* lightElement = nodeConfig->ToElement();
+            const char *attr=lightElement->Attribute("target");
+            if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+                    pos2 = str.find_last_of(',');
+                target.pt[0] = atof(str.substr(0,pos1).c_str());
+                target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+                target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            }
 
-			attr=lightElement->Attribute("directionSpherical");
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				az = -90.0+atof(str.substr(0,pos1).c_str());
-				ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-				dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-			}
+            attr=lightElement->Attribute("directionSpherical");
+            if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+                    pos2 = str.find_last_of(',');
+                az = -90.0+atof(str.substr(0,pos1).c_str());
+                ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+                dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            }
 
-			attr=lightElement->Attribute("angle");
-			if (attr) {
-				angle = atof(attr);
-			}
+            attr=lightElement->Attribute("angle");
+            if (attr) {
+                angle = atof(attr);
+            }
 
-			world->getCamera()->getNearFar(nearPlane,farPlane);
-			attr=lightElement->Attribute("near");
-			if (attr) {
-				nearPlane = atof(attr);
-			}
+            world->getCamera()->getNearFar(nearPlane,farPlane);
+            attr=lightElement->Attribute("near");
+            if (attr) {
+                nearPlane = atof(attr);
+            }
 
-			attr=lightElement->Attribute("far");
-			if (attr) {
-				farPlane = atof(attr);
-			}
-			world->getCamera()->setLightParameters(target,az,ele,dist,angle,nearPlane,farPlane);
-		}
-	}
+            attr=lightElement->Attribute("far");
+            if (attr) {
+                farPlane = atof(attr);
+            }
+            world->getCamera()->setLightParameters(target,az,ele,dist,angle,nearPlane,farPlane);
+        }
+    }
 }
 
 void Simulator::parseBlockList() {
@@ -893,9 +893,9 @@ void Simulator::parseBlockList() {
             Vector3D csgPos;
             const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
             const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-            for (short iz = glb[2]; iz < ulb[2]; iz++) {
-                for (short iy = glb[1]; iy < ulb[1]; iy++) {
-                    for (short ix = glb[0]; ix < ulb[0]; ix++) {
+            for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+                for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                    for (short ix = glb[0]; ix <= ulb[0]; ix++) {
                         position.set(ix,iy,iz);
                         csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
