@@ -18,9 +18,11 @@ class Catoms2DBlock;
 
 class Catoms2DBlockCode : public BaseSimulator::BlockCode {
 public:
-	
-	Catoms2DBlockCode(Catoms2DBlock *host);
-	virtual ~Catoms2DBlockCode();
+
+    Catoms2DBlockCode(Catoms2DBlock *host);
+    virtual ~Catoms2DBlockCode();
+
+    virtual void processLocalEvent(EventPtr pev) override;
 };
 
 }

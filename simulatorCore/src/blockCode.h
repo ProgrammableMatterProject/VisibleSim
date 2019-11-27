@@ -159,6 +159,11 @@ public:
                      Time t0,Time dt);
 
     /**
+     * Callback function called at the end of the motion of a module
+     */
+    virtual void onMotionEnd() {};
+
+    /**
      * User-implemented debug function that gets called when a module is selected in the GUI
      * @note call is made from GlBlock::getInfo() as it is convenient there. Adding an actual GUI button could more convenient and less "hacky"
      */

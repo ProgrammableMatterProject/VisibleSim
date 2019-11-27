@@ -228,17 +228,17 @@ void Rotation2DStopEvent::consume() {
     cerr << "----------" << endl;
 #endif
 
-    stringstream info;
-    info.str("");
-    info << "connect Block " << rb->blockId;
-    getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
+    // stringstream info;
+    // info.str("");
+    // info << "connect Block " << rb->blockId;
+    // getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
     wrld->connectBlock(rb);
 
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(rb->stats);
 
     Scheduler *scheduler = getScheduler();
-    concernedBlock->scheduleLocalEvent(EventPtr(new Rotation2DEndEvent(scheduler->now()+COM_DELAY,rb)));
+    scheduler->schedule(new Rotation2DEndEvent(scheduler->now(), rb));
     //concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(scheduler->now()+COM_DELAY,rb)));
 }
 
@@ -267,6 +267,7 @@ Rotation2DEndEvent::~Rotation2DEndEvent() {
 
 void Rotation2DEndEvent::consume() {
     EVENT_CONSUME_INFO();
+    concernedBlock->scheduleLocalEvent(EventPtr(new Rotation2DEndEvent(getScheduler()->now()+COM_DELAY,(Catoms2DBlock*)concernedBlock)));
 }
 
 const string Rotation2DEndEvent::getEventName() {

@@ -31,7 +31,6 @@ public:
 
     void addDebugAttributes(Scheduler* scheduler) override;
     virtual void processLocalEvent(EventPtr pev) override;
-    virtual void onMotionEnd() { cout << "onMotionEnd must be overloaded!" << endl; };
 
 };
 

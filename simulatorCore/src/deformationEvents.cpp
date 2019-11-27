@@ -41,8 +41,8 @@ void DeformationStartEvent::consume() {
     DatomsBlock *datom = (DatomsBlock *)concernedBlock;
     DatomsWorld::getWorld()->disconnectBlock(datom);
 
-	datom->getGlBlock()->currentModel=deform.modelId;
-	cout << "Model="<< (int)deform.modelId << endl;
+    datom->getGlBlock()->currentModel=deform.modelId;
+    cout << "Model="<< (int)deform.modelId << endl;
 //    datom->setColor(DARKGREY);
     deform.init(((DatomsGlBlock*)datom->ptrGlBlock)->mat);
     scheduler->schedule(new DeformationStepEvent(scheduler->now() + ANIMATION_DELAY,datom, deform));
@@ -161,7 +161,7 @@ DeformationEndEvent::~DeformationEndEvent() {
 void DeformationEndEvent::consume() {
     EVENT_CONSUME_INFO();
     DatomsBlock *rb = (DatomsBlock*)concernedBlock;
-	rb->getGlBlock()->currentModel=1;
+    rb->getGlBlock()->currentModel=1;
     // Bizarre !
     concernedBlock->blockCode->processLocalEvent(EventPtr(new DeformationEndEvent(date+COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
@@ -179,13 +179,13 @@ const string DeformationEndEvent::getEventName() {
 //===========================================================================================================
 
 Deformation::Deformation(const DatomsBlock *mobile,const DatomsBlock *fixe,const Vector3D &ax1,const Vector3D &ax2,uint8_t id) {
-	static const double cmax_2 = 1.0/(3*sqrt(2)-1);
+    static const double cmax_2 = 1.0/(3*sqrt(2)-1);
     Matrix MA = ((DatomsGlBlock*)mobile->getGlBlock())->mat;
     Matrix MB = ((DatomsGlBlock*)fixe->getGlBlock())->mat;
     Matrix MA_1;
 
-	modelId = id;
-	
+    modelId = id;
+
     // we calculate AB translation in A referentiel
     MA.inverse(MA_1);
     Matrix m = MA_1*MB;
@@ -203,7 +203,7 @@ Deformation::Deformation(const DatomsBlock *mobile,const DatomsBlock *fixe,const
     V.normer_interne();
 
     A0P0 = 0.5*AB+shift*V;
-    
+
     Matrix mr;
     mr.setRotation(45.0,axe1);
     finalMatrix = matTAB*(mr*(matTBA*mr));
@@ -235,9 +235,9 @@ Deformation::Deformation(const DatomsBlock *mobile,const DatomsBlock *fixe,const
 }
 
 bool Deformation::nextStep(Matrix &m) {
-	++step;
-	if (step<nbSteps_4) {
-		double angle=90.0*step/nbSteps_4;
+    ++step;
+    if (step<nbSteps_4) {
+        double angle=90.0*step/nbSteps_4;
         //OUTPUT << "step=" << step << "   angle=" << angle << endl;
         Matrix mr;
         mr.setRotation(angle,axe1);
@@ -247,9 +247,9 @@ bool Deformation::nextStep(Matrix &m) {
         matTAP.setTranslation(A0P0);
         m = matTAP*(mr*matTPA);
         m = initialMatrix * m;
-		return false;
-	} else if (step<3*nbSteps_4) {
-		Matrix mr;
+        return false;
+    } else if (step<3*nbSteps_4) {
+        Matrix mr;
         mr.setRotation(90,axe1);
 
         Matrix matTPA,matTAP;
@@ -257,11 +257,11 @@ bool Deformation::nextStep(Matrix &m) {
         matTAP.setTranslation(A0P0);
         m = matTAP*(mr*matTPA);
         m = initialMatrix * m;
-		return false;		
-	} else if (step<4*nbSteps_4) {
-		double angle=-90+90.0*(step-3*nbSteps_4)/nbSteps_4;
-        
-		Matrix mr;
+        return false;
+    } else if (step<4*nbSteps_4) {
+        double angle=-90+90.0*(step-3*nbSteps_4)/nbSteps_4;
+
+        Matrix mr;
         mr.setRotation(angle,axe2);
 
         Matrix matTPA,matTAP;
@@ -269,9 +269,9 @@ bool Deformation::nextStep(Matrix &m) {
         matTAP.setTranslation(A1P1);
         m = matTAP*(mr*matTPA);
         m = finalMatrix * m;
-		return false;
-	}
-	return true;	
+        return false;
+    }
+    return true;
 }
 
 void Deformation::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
@@ -282,4 +282,3 @@ void Deformation::getFinalPositionAndOrientation(Cell3DPosition &position, short
 //    OUTPUT << "final grid=" << position << endl;
     orientation=DatomsBlock::getOrientationFromMatrix(finalMatrix);
 }
-

@@ -17,26 +17,6 @@ void SimpleReconfC2DCode::startup() {
     verticalLineToHorizontalLineStartup();
 }
 
-void SimpleReconfC2DCode::processLocalEvent(EventPtr pev) {
-    MessagePtr message;
-    stringstream info;
-
-    // call super handler first
-    BlockCode::processLocalEvent(pev);
-
-    switch (pev->eventType) {
-        // case EVENT_RECEIVE_MESSAGE: {
-        // } break;
-
-        case EVENT_ROTATION2D_END: {
-            onMotionEnd();
-        } break;
-
-        case EVENT_TAP: {
-        } break;
-    }
-}
-
 void SimpleReconfC2DCode::onMotionEnd() {
     if (catom->position[2] > 0)
         rotateCWAfterCheck();
@@ -54,7 +34,7 @@ void SimpleReconfC2DCode::sendGoMessageToNextModule(int msgLayer) {
     // Send to left neighbor until reaching the right tip of the growing horizontal line
     //  then send messages up the vertical line
     P2PNetworkInterface *itf;
-    stringstream info; info << "Go " << msgLayer;
+    stringstream info; info << "Go(" << msgLayer << ")";
     if (catom->hasANeighbor(HLattice::Left)) {
         itf = catom->getInterface(HLattice::Left);
         sendMessage(info.str().c_str(),

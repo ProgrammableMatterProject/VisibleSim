@@ -17,8 +17,7 @@ public :
     ~SimpleReconfC2DCode() {};
 
     void startup() override;
-    void processLocalEvent(EventPtr pev) override;
-    void onMotionEnd();
+    void onMotionEnd() override;
 
     void handleGoMessage(MessagePtr anonMsg, P2PNetworkInterface *sender);
 
