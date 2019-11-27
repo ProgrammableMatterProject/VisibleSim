@@ -1,4 +1,4 @@
-import os, sys, getopt
+import os, sys, argparse
 
 def makeDir(path):
     try:
@@ -34,50 +34,27 @@ moduleOptions = ["Catoms3D", "Catoms2D", "CatomsR", "Datoms", "BlinkyBlocks",
                  "SmartBlocks", "RobotBlocks", "Okteens", "MultiRobots"]
 
 # Parse arguments
-unixOptions = "a:m:hv"
-gnuOptions = ["app=", "module=", "verbose", "help"]
-verbose = False
+text = 'This program creates a sample application in the applicationsSrc directory for a given module type. It takes an application name and a module type.'
+parser = argparse.ArgumentParser(description = text)
+parser.add_argument("-V", "--version", help="show program version", action="store_true")
+parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
+parser.add_argument("-a", "--app", type=str, required=True,
+                    help="the name of the desired application")
+parser.add_argument("-m", "--module", type=str, required=True, choices=moduleOptions,
+                    help="the module type")
+args = parser.parse_args()
 
-# read commandline arguments, first
-fullCmdArguments = sys.argv
+if args.verbose:
+    verbose = True
 
-# - further arguments
-argumentList = fullCmdArguments[1:]
+appName = args.app[0].upper() + args.app[1:] # correct for uppercase
+print (("Supplied AppName: (%s)") % (appName))
 
-try:
-    arguments, values = getopt.getopt(argumentList, unixOptions, gnuOptions)
-except getopt.error as err:
-    # output error, and return with an error code
-    print (str(err))
-    sys.exit(2)
+module = args.module
+if module in moduleOptions:
+    print (("Supplied ModuleName: (%s)") % (module))
 
-# evaluate given options
-for currentArgument, currentValue in arguments:
-    if currentArgument in ("-h", "--help"):
-        print_usage()
-        sys.exit(0)
-    elif currentArgument in ("-v", "--verbose"):
-        verbose = True
-        print ("enabling verbose mode")
-    elif currentArgument in ("-a", "--app"):
-        appName = currentValue
-        # correct for uppercase
-        appName = appName[0].upper() + appName[1:]
-
-        print (("Supplied AppName: (%s)") % (appName))
-    elif currentArgument in ("-m", "--module"):
-        module = currentValue
-        if module in moduleOptions:
-            print (("Supplied ModuleName: (%s)") % (module))
-        else:
-            print (("error: invalid module option: (%s)") % (module))
-            module = None
-
-# Ensure arguments are correctly initialized
-if appName is None or module is None:
-    print ("error: Please provide --app and --module arguments")
-    print_usage()
-    sys.exit(2)
+print('')
 
 # Set tag variables
 appNameLc = appName[0].lower() + appName[1:]
@@ -99,7 +76,7 @@ appMakefile = os.path.join(srcPath, "Makefile")
 
 # Create target directories
 makeDir(srcPath)
-makeDir(binPath)
+#makeDir(binPath)
 
 # Create app sources
 createSourceFile("sample/sample.cpp", appCpp)
@@ -108,3 +85,5 @@ createSourceFile("sample/sampleBlockCode.hpp", appBlockCodeHpp)
 
 # Create Makefile
 createSourceFile("sample/Makefile", appMakefile)
+
+print ("\nApplication generated successfully. Do not forget to add your application to the Makefile in the applicationsSrc/ directory before running `make`.")
