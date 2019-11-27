@@ -62,7 +62,7 @@ void SimpleReconfC2DCode::sendGoMessageToNextModule(int msgLayer) {
     } else {
         if (not catom->hasANeighbor(HLattice::TopRight)
             and not catom->hasANeighbor(HLattice::TopLeft))
-            return; // terminate
+            return; // terminate1
 
         if (catom->hasANeighbor(HLattice::TopRight)) {
             itf = catom->getInterface(HLattice::TopRight);
