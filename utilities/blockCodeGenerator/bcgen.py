@@ -1,5 +1,4 @@
-import os
-import sys
+import os, sys, getopt
 
 def makeDir(path):
     try:
@@ -23,21 +22,66 @@ def createSourceFile(tagsFile, outFile):
                            .replace('<<appNameLc>>', appNameLc)) # lowercase
     print ("Successfully created file %s " % outFile)
 
-appName = "TestC3D"
+def print_usage():
+    print ("\nusage:\tpython bcgen.py --app <APPNAME> --module <MODULENAME>")
+    print ("\tpython bcgen.py -a <APPNAME> -m <MODULENAME>")
+    print ("\nModule options: Catoms3D, Catoms2D, CatomsR, Datoms, BlinkyBlocks, SmartBlocks, RobotBlocks, Okteens, MultiRobots")
+
+# Main variables
+appName = None
+module = None
+moduleOptions = ["Catoms3D", "Catoms2D", "CatomsR", "Datoms", "BlinkyBlocks",
+                 "SmartBlocks", "RobotBlocks", "Okteens", "MultiRobots"]
+
+# Parse arguments
+unixOptions = "a:m:hv"
+gnuOptions = ["app=", "module=", "verbose", "help"]
+verbose = False
+
+# read commandline arguments, first
+fullCmdArguments = sys.argv
+
+# - further arguments
+argumentList = fullCmdArguments[1:]
+
+try:
+    arguments, values = getopt.getopt(argumentList, unixOptions, gnuOptions)
+except getopt.error as err:
+    # output error, and return with an error code
+    print (str(err))
+    sys.exit(2)
+
+# evaluate given options
+for currentArgument, currentValue in arguments:
+    if currentArgument in ("-h", "--help"):
+        print_usage()
+        sys.exit(0)
+    elif currentArgument in ("-v", "--verbose"):
+        verbose = True
+        print ("enabling verbose mode")
+    elif currentArgument in ("-a", "--app"):
+        appName = currentValue
+        # correct for uppercase
+        appName = appName[0].upper() + appName[1:]
+
+        print (("Supplied AppName: (%s)") % (appName))
+    elif currentArgument in ("-m", "--module"):
+        module = currentValue
+        if module in moduleOptions:
+            print (("Supplied ModuleName: (%s)") % (module))
+        else:
+            print (("error: invalid module option: (%s)") % (module))
+            module = None
+
+# Ensure arguments are correctly initialized
+if appName is None or module is None:
+    print ("error: Please provide --app and --module arguments")
+    print_usage()
+    sys.exit(2)
+
+# Set tag variables
 appNameLc = appName[0].lower() + appName[1:]
-module = "Catoms3D"
 moduleNameLc = module[0].lower() + module[1:]
-# modulesDict = {
-#     "Catoms3D": "catoms3D",
-#     "Catoms2D": "catoms2D",
-#     "CatomsR": "catomsR",
-#     "Datoms": "datoms",
-#     "BlinkyBlocks": "blinkyBlocks",
-#     "SmartBlocks": "smartBlocks",
-#     "RobotBlocks": "robotBlocks",
-#     "Okteens": "okteens",
-#     "MultiRobots": "multiRobots",
-# }
 
 # Set working paths
 path = os.getcwd()
