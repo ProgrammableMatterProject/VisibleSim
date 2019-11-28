@@ -19,6 +19,18 @@ public:
     }
 };
 
+//<! @brief Exception thrown if an error as occured during parsing
+class ParsingException : VisibleSimException {
+public:
+    ParsingException() : VisibleSimException(std::string("An unknown error occured during configuration file parsing\n.")) {}
+    ParsingException(const std::string &reason)
+        : VisibleSimException(std::string("error (config): ") + reason) {}
+
+    virtual const char* what() const throw() override {
+        return m_msg.c_str();
+    }
+};
+
 
 //!< An exception for marking functions as not implemented
 class NotImplementedException : public VisibleSimException {
