@@ -63,7 +63,7 @@ void <<appName>>BlockCode::processLocalEvent(EventPtr pev) {
     stringstream info;
 
     // Do not remove line below
-    BlockCode::processLocalEvent(pev);
+    <<moduleName>>BlockCode::processLocalEvent(pev);
 
     switch (pev->eventType) {
         case EVENT_ADD_NEIGHBOR: {
