@@ -15,8 +15,10 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = coating.cpp coatingBlockCode.cpp
-#
+SRCS =  coating.cpp \
+	coatingBlockCode.cpp \
+	coatingMessages.cpp \
+	coatingRuleMatcher.cpp #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/coating
 #
