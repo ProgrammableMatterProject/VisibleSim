@@ -23,7 +23,10 @@ public:
 
     virtual void init() override {}
 
-    virtual void processLocalEvent(EventPtr pev) override = 0;
+    virtual void processLocalEvent(EventPtr pev) override {
+        // Do not remove, used by sample blockcode
+        BlockCode::processLocalEvent(pev);
+    }
 };
 
 }

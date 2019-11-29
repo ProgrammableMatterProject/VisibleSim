@@ -171,22 +171,27 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 }
 
 void Simulator::parseConfiguration(int argc, char*argv[]) {
-    // Identify the type of the simulation (CPP / Meld Process / MeldInterpret)
-    readSimulationType(argc, argv);
+    try {
+        // Identify the type of the simulation (CPP / Meld Process / MeldInterpret)
+        readSimulationType(argc, argv);
 
-    // Configure the simulation world
-    parseWorld(argc, argv);
-    initializeIDPool();
+        // Configure the simulation world
+        parseWorld(argc, argv);
+        initializeIDPool();
 
-    // Instantiate and configure the Scheduler
-    loadScheduler(schedulerMaxDate);
+        // Instantiate and configure the Scheduler
+        loadScheduler(schedulerMaxDate);
 
-    // Parse and configure the remaining items
-    parseBlockList();
-    parseCameraAndSpotlight();
-    parseObstacles();
-    parseTarget();
-    parseCustomizations();
+        // Parse and configure the remaining items
+        parseBlockList();
+        parseCameraAndSpotlight();
+        parseObstacles();
+        parseTarget();
+        parseCustomizations();
+    } catch(ParsingException const& e) {
+        cerr << e.what();
+        exit(EXIT_FAILURE);
+    }
 }
 
 Simulator::IDScheme Simulator::determineIDScheme() {
@@ -202,9 +207,11 @@ Simulator::IDScheme Simulator::determineIDScheme() {
         else if (str.compare("RANDOM") == 0)
             return RANDOM;
         else {
-            cerr << "error:  unknown ID distribution scheme in configuration file: " << str << endl;
-            cerr << "\texpected values: [ORDERED, MANUAL, RANDOM]" << endl;
-            throw ParsingException();
+            stringstream error;
+            error << "unknown ID distribution scheme in configuration file: "
+                  << str << "\n";
+            error << "\texpected values: [ORDERED, MANUAL, RANDOM]" << "\n";
+            throw ParsingException(error.str());
         }
     }
 
@@ -219,8 +226,9 @@ int Simulator::parseRandomIdSeed() {
             string str(attr);
             return stoi(str);
         } catch (const std::invalid_argument& e) {
-            cerr << "error: invalid seed attribute value in configuration file" << endl;
-            throw ParsingException();
+            stringstream error;
+            error << "invalid seed attribute value in configuration file: " << attr << "\n";
+            throw ParsingException(error.str());
         }
     } else { // No seed, generate distribution with random seed or cmd line seed
         return cmdLine.isSimulationSeedSet() ? cmdLine.getSimulationSeed() : -1;
@@ -235,8 +243,9 @@ bID Simulator::parseRandomStep() {
             string str(attr);
             return stol(str);
         } catch (const std::invalid_argument& e) {
-            cerr << "error: invalid step attribute value in configuration file" << endl;
-            throw ParsingException();
+            stringstream error;
+            error << "invalid step attribute value in configuration file: " << attr << "\n";
+            throw ParsingException(error.str());
         }
     } else {				// No step, generate distribution with step of one
         return 1;
@@ -390,15 +399,20 @@ void Simulator::initializeIDPool() {
                         string str(attr);
                         id =  stoull(str); // id in range [0, 2^64 - 1]
                     } catch (const std::invalid_argument& e) {
-                        cerr << "error: invalid id attribute value in configuration file" << endl;
-                        throw ParsingException();
+                        stringstream error;
+                        error << "invalid id attribute value in configuration file: "
+                              << attr << "\n";
+                        throw ParsingException(error.str());
                     } catch (const std::out_of_range& e) {
-                        cerr << "error: out of range id attribute value in configuration file" << endl;
-                        throw ParsingException();
+                        stringstream error;
+                        error << "out of range id attribute value in configuration file: "
+                              << attr << "\n";
+                        throw ParsingException(error.str());
                     }
                 } else {
-                    cerr << "error: missing id attribute for block node in configuration file while in MANUAL mode" << endl;
-                    throw ParsingException();
+                    stringstream error;
+                    error << "missing id attribute for block node in configuration file while in MANUAL mode" << "\n";
+                    throw ParsingException(error.str());
                 }
 
                 // Ensure unicity of the ID, by inserting id to the set and checking that insertion took place
@@ -406,9 +420,9 @@ void Simulator::initializeIDPool() {
                 if (dupCheck.insert(id).second)
                     IDPool.push_back(id);
                 else {
-                    cerr << "error: duplicate id attribute " << id << " for block node in configuration file while in MANUAL mode"
-                         << endl;
-                    throw ParsingException();
+                    stringstream error;
+                    error << "duplicate id attribute " << id << " for block node in configuration file while in MANUAL mode" << "\n";
+                    throw ParsingException(error.str());
                 }
             }
 
@@ -546,16 +560,18 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 #endif
             }
         } else {
-            cerr << "error: No blockList element in XML configuration file" << endl;
-            throw ParsingException();
+            stringstream error;
+            error << "No blockList element in XML configuration file" << "\n";
+            throw ParsingException(error.str());
         }
 
         // Create the simulation world and lattice
         loadWorld(Cell3DPosition(lx,ly,lz),
                   Vector3D(blockSize[0], blockSize[1], blockSize[2]), argc, argv);
     } else {
-        ERRPUT << "ERROR : No world in XML configuration file" << endl;
-        throw ParsingException();
+        stringstream error;
+        error << "No world in XML configuration file" << "\n";
+        throw ParsingException(error.str());
     }
 }
 
@@ -738,6 +754,12 @@ void Simulator::parseBlockList() {
 #endif
             }
 
+            if (not getWorld()->lattice->isInGrid(position)) {
+                stringstream error;
+                error << "module at " << position << " is out of grid" << "\n";
+                throw ParsingException(error.str());
+            }
+
             // cerr << "addBlock(" << currentID << ") pos = " << position << endl;
             loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++],
                       bcb, position, color, master);
@@ -750,8 +772,9 @@ void Simulator::parseBlockList() {
         int line = 0, plane = 0;
         while (block) {
             if (ids == MANUAL) {
-                cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
-                throw ParsingException();
+                stringstream error;
+                error << "blocksLine element cannot be used in MANUAL identifier assignment mode" << "\n";
+                throw ParsingException(error.str());
             }
 
             line = 0;
@@ -799,8 +822,9 @@ void Simulator::parseBlockList() {
         block = xmlBlockListNode->FirstChild("blockBox");
         while (block) {
             if (ids == MANUAL) {
-                cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
-                throw ParsingException();
+                stringstream error;
+                error << "blocksLine element cannot be used in MANUAL identifier assignment mode" << "\n";
+                throw ParsingException(error.str());
             }
 
             element = block->ToElement();
@@ -909,9 +933,9 @@ void Simulator::parseBlockList() {
             Vector3D csgPos;
             const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
             const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-            for (short iz = glb[2]; iz < ulb[2]; iz++) {
-                for (short iy = glb[1]; iy < ulb[1]; iy++) {
-                    for (short ix = glb[0]; ix < ulb[0]; ix++) {
+            for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+                for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                    for (short ix = glb[0]; ix <= ulb[0]; ix++) {
                         position.set(ix,iy,iz);
                         csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 

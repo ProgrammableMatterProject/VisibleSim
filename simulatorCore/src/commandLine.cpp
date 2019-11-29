@@ -29,7 +29,6 @@ void CommandLine::help() const {
     cerr << "\t -a <seed>\t\tSet simulation seed" << endl;
     cerr << "\t -e export configuration when simulation finishes" << endl;
     cerr << "\t -h \t\t\thelp" << endl;
-    exit(EXIT_SUCCESS);
 }
 
 CommandLine::CommandLine(int argc, char *argv[], BlockCodeBuilder bcb) {
@@ -48,6 +47,7 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                 if (argc < 1) {
                     cerr << "error: No meld program provided after -p" << endl;
                     help();
+                    exit(EXIT_SUCCESS);
                 }
                 programPath = argv[1];
                 argc--;
@@ -64,7 +64,7 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                 } catch(std::invalid_argument&) {
                     cerr << "error: MeldVM port must be a number!" << endl;
                     help();
-                    exit(EXIT_FAILURE);
+                    exit(2);
                 }
                 argc--;
                 argv++;
@@ -170,6 +170,8 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
             default:
                 // Simulate static virtual function call, through a (actually static)
                 //  class member function
+                // @warning this is a very hacky method as it requires the user blockcode
+                //  to check whether or not the constructor's argument is NULL
                 BlockCode *bc = bcb(NULL);
                 bool parsed = bc->parseUserCommandLineArgument(argc, &argv);
                 delete bc;

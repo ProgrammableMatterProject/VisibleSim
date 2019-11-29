@@ -281,7 +281,6 @@ Cell3DPosition HLattice::getCellInDirection(const Cell3DPosition &pRef, int dire
     return pRef + getRelativeConnectivity(pRef)[direction];
 }
 
-
 /************************************************************
  *   HLattice::NeighborDirections
  ************************************************************/
@@ -336,7 +335,6 @@ Vector3D SLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
 Cell3DPosition SLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
     return Cell3DPosition(pos[0], pos[1], 0);
 }
-
 
 Cell3DPosition SLattice::worldToGridPosition(const Vector3D &pos) {
     return Cell3DPosition(pos[0] / gridScale[0],
@@ -770,10 +768,6 @@ Cell3DPosition SkewFCCLattice::getGridLowerBounds() const {
     return Cell3DPosition(-gridSize.pt[2] / 2,
                           -gridSize.pt[2] / 2,
                           0);
-}
-
-Cell3DPosition SkewFCCLattice::getGridUpperBounds() const {
-    return gridSize - Cell3DPosition(1, 1, 1);
 }
 
 vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosition &p) {

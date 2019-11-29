@@ -15,6 +15,17 @@ public :
     GLfloat rgba[4];
     Color();
     Color(float r,float g,float b,float a=1.0);
+
+    /**
+     * Special constructor to build a Color object using standard rgb integer values
+     * @param integers dummy parameter to remove ambiguity between constructors
+     * @param r
+     * @param g
+     * @param b
+     * @param a intensity
+     */
+    Color(unsigned short r, unsigned short g,unsigned short b, unsigned short a,bool integers);
+
     Color(const Color& c):rgba{ c.rgba[0], c.rgba[1], c.rgba[2], c.rgba[3] } {};
 
     void set(float r,float g,float b,float a=1.0);
@@ -43,6 +54,7 @@ inline static const Color DARKGREY(0.25,0.25,0.25);
 inline static const Color ORANGE(1.0,0.64706,0.0);
 inline static const Color DARKORANGE(1.0,0.549,0.0);
 inline static const Color BLACK(0.0,0.0,0.0);
+inline static const Color BROWN(102, 51, 0, 255, true);
 
 static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},
                                          {0.0,1.0,0.0,1.0},{0.0,0.0,1.0,1.0},

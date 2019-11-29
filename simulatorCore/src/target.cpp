@@ -87,8 +87,9 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
             position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
             position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
         } else {
-            cerr << "error: position attribute missing for target cell" << endl;
-            throw TargetParsingException();
+            stringstream error;
+            error << "position attribute missing for target cell" << "\n";
+            throw ParsingException(error.str());
         }
         attr = element->Attribute("color");
         if (attr) {
@@ -492,8 +493,9 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                     position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
                     position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
                 } else {
-                    cerr << "error: position attribute missing for target cell" << endl;
-                    throw TargetParsingException();
+                    stringstream error;
+                    error << "position attribute missing for target cell" << "\n";
+                    throw ParsingException(error.str());
                 }
                 attr = element->Attribute("color");
                 if (attr) {

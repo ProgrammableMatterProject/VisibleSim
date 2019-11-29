@@ -22,7 +22,11 @@ public:
 
     BlinkyBlocksBlockCode(BlinkyBlocksBlock *host);
     virtual ~BlinkyBlocksBlockCode() override;
-    virtual void processLocalEvent(EventPtr pev) override;
+
+    virtual void processLocalEvent(EventPtr pev) override {
+        // Do not remove, used by sample blockcode
+        BlockCode::processLocalEvent(pev);
+    }
 };
 
 }

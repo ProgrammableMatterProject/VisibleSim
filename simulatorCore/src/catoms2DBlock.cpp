@@ -267,8 +267,9 @@ int Catoms2DBlock::getCWMovePivotId() const {
 }
 
 
+
 // Motion
-bool Catoms2DBlock::canMove(Rotation2DMove &m) const {
+bool Catoms2DBlock::canMove(const Rotation2DMove &m) const {
     // physical moving condition
     // pivot is a neighbor (physically connected)
     // move CW around i connector: i+1, i+2 and i+3 should be free
@@ -345,6 +346,31 @@ void Catoms2DBlock::removeNeighbor(P2PNetworkInterface *ni) {
     getScheduler()->schedule(
         new RemoveNeighborEvent(getScheduler()->now(), this,
                                 getWorld()->lattice->getOppositeDirection(getDirection(ni))));
+}
+
+bool Catoms2DBlock::canRotate(RelativeDirection::Direction d) const {
+    int pivotId = d == RelativeDirection::Direction::CW ?
+        getCWMovePivotId() : getCCWMovePivotId();
+
+    if (pivotId == -1) return false;
+
+    Catoms2DBlock *piv = static_cast<Catoms2DBlock*>(getWorld()->getBlockById(pivotId));
+    const Rotation2DMove& rot = Rotation2DMove(piv, d);
+    return canMove(rot);
+}
+
+void Catoms2DBlock::rotate(RelativeDirection::Direction d, Time t) {
+    if (t == 0) t = getScheduler()->now();
+
+    int pivotId = d == RelativeDirection::Direction::CW ?
+        getCWMovePivotId() : getCCWMovePivotId();
+
+    if (pivotId != -1) {
+        Catoms2DBlock *piv = static_cast<Catoms2DBlock*>(getWorld()->getBlockById(pivotId));
+        getScheduler()->schedule(new Rotation2DStartEvent(t, this, Rotation2DMove(piv, d)));
+    } else {
+        cerr << "#" << blockId << " cannot rotate: no pivot available" << endl;
+    }
 }
 
 }

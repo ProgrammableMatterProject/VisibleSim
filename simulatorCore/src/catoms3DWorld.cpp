@@ -44,7 +44,7 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 #define CATOMS3D_TEXTURE_ID 0
 #define UseC3DSkewFCC 0
 
-#if CATOMS3D_TEXTURE_ID == 1 // Standard, no conID
+#if CATOMS3D_TEXTURE_ID == 1 // Standard, but w/o conID
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2.obj");
         objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");
 #elif CATOMS3D_TEXTURE_ID == 2 // w/ coordinates

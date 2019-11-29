@@ -30,6 +30,7 @@ class BuildingBlock;
 class BlockCode;
 
 typedef std::function<void (BlockCode*,std::shared_ptr<Message>,P2PNetworkInterface*)> eventFunc;
+typedef std::function<void (std::shared_ptr<Message>,P2PNetworkInterface*)> eventFunc2;
 
 /**
  * @brief A distributed user program, will be executed by each module
@@ -48,6 +49,8 @@ public:
     BuildingBlock *hostBlock;   //!< The block to which this instance of the user program belongs
     Time availabilityDate = 0; //!< If the host is busy, the date at which it will be available
     std::multimap<int,eventFunc> eventFuncMap; //!< container of function pointers to message handlers, indexed by message typeID
+    std::multimap<int,eventFunc2> eventFuncMap2; //!< container of function pointers to message handlers, indexed by message typeID
+
     Scheduler *scheduler; //!< pointer to the single instance of scheduler of the simulation
     Lattice *lattice;  //!< pointer to the single instance of lattice of the simulation
     ConsoleStream console;  //!< pointer to the single instance of ConsoleStream of the simulation
@@ -123,7 +126,16 @@ public:
      * @brief Add a new message handler to the block code, for message with message type type
      * @param type ID of the message for which a handler needs to be registered
      * @param eventFunc the message handling function as a std::function */
-    void addMessageEventFunc(int type,eventFunc);
+    [[deprecated]] void addMessageEventFunc (int type,eventFunc);
+
+    /**
+     * @brief Add a new message handler to the block code, for message with message type type
+     * @param type ID of the message for which a handler needs to be registered
+     * @param eventFunc the message handling function as a std::function
+     * @note see https://en.cppreference.com/w/cpp/utility/functional/function#Member_functions
+     * example: addMessageEventFunc2(BROADCAST_MSG, std::bind(&SimpleColorCode::myBroadcastFunc, this, std::placeholders::_1, std::placeholders::_2)); */
+    void addMessageEventFunc2(int type,eventFunc2);
+
     /**
      * @brief Send message to all connected interface interfaces, except those in the variadic parameters ignore list.
      *        Sending time randomly drawn as follow: tt = now + t0 + (rand * dt), where rand is either {0, 1}
@@ -164,6 +176,11 @@ public:
      * @param msgString string to be printed to the console upon sending */
     int sendMessage(const char *msgString,Message *msg,P2PNetworkInterface *dest,
                      Time t0,Time dt);
+
+    /**
+     * Callback function called at the end of the motion of a module
+     */
+    virtual void onMotionEnd() {};
 
     /**
      * User-implemented debug function that gets called when a module is selected in the GUI

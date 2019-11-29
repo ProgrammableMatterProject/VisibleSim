@@ -30,7 +30,6 @@ public:
     virtual ~Catoms3DBlockCode();
 
     virtual void processLocalEvent(EventPtr pev) override;
-    virtual void onMotionEnd() {};
 
     void addDebugAttributes(Scheduler* scheduler) override;
 };

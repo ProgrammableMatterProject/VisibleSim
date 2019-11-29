@@ -41,11 +41,11 @@ Rotation2DMove::Rotation2DMove(const Rotation2DMove &m) {
 
 Rotation2DMove::~Rotation2DMove() { }
 
-RelativeDirection::Direction Rotation2DMove::getDirection() {
+RelativeDirection::Direction Rotation2DMove::getDirection() const {
     return direction;
 }
 
-Catoms2DBlock* Rotation2DMove::getPivot() {
+Catoms2DBlock* Rotation2DMove::getPivot() const {
     return pivot;
 }
 
@@ -55,7 +55,7 @@ Catoms2DBlock* Rotation2DMove::getPivot() {
 //
 //===========================================================================================================
 
-Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, Rotation2DMove &m): BlockEvent(t,block) {
+Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, const Rotation2DMove &m): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_START;
 
@@ -228,18 +228,17 @@ void Rotation2DStopEvent::consume() {
     cerr << "----------" << endl;
 #endif
 
-    stringstream info;
-    info.str("");
-    info << "connect Block " << rb->blockId;
-    getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
+    // stringstream info;
+    // info.str("");
+    // info << "connect Block " << rb->blockId;
+    // getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
     wrld->connectBlock(rb, false);
 
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(rb->stats);
 
     Scheduler *scheduler = getScheduler();
-    concernedBlock->scheduleLocalEvent(EventPtr(new Rotation2DEndEvent(scheduler->now()+COM_DELAY,rb)));
-    //concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(scheduler->now()+COM_DELAY,rb)));
+    scheduler->schedule(new Rotation2DEndEvent(scheduler->now(), rb));
 }
 
 const string Rotation2DStopEvent::getEventName() {
@@ -267,6 +266,11 @@ Rotation2DEndEvent::~Rotation2DEndEvent() {
 
 void Rotation2DEndEvent::consume() {
     EVENT_CONSUME_INFO();
+
+    Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(date+COM_DELAY,rb)));
+    StatsCollector::getInstance().incMotionCount();
+    StatsIndividual::incMotionCount(rb->stats);
 }
 
 const string Rotation2DEndEvent::getEventName() {
