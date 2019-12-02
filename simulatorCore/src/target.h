@@ -132,10 +132,17 @@ public:
      */
     virtual void glDraw();
 
-    friend ostream& operator<<(ostream& out,const Target *t);
+    /**
+     * Highlights the target with semi-transparent colored cells
+     */
+    virtual void highlight() const = 0;
 
-    virtual void highlight() const {};
-    virtual void unhighlight() const {};
+    /**
+     * Cancels out Target::highlight
+     */
+    virtual void unhighlight() const = 0;
+
+    friend ostream& operator<<(ostream& out,const Target *t);
 };  // class Target
 
 //<! @brief A target modeled as a container of unique positions and colors.c
@@ -201,7 +208,7 @@ public:
         delete targetCellsInConstructionOrder;
     };
 
-    //!< @copydoc Target::getTargetColor
+    //!< @copydoc Target::iInTargetColor
     //!< a cell is in the target grid if and only if it is present in the target cells container
      //!< @warning Can only be used once origin has been set, and expects a relative position as input
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
@@ -276,9 +283,9 @@ public:
      * @brief Draw geometry of the target in the interfaces
      */
     virtual void glDraw() override;
-
     virtual void highlight() const override;
     virtual void unhighlight() const override;
+
 };  // class TargetCSG
 
 //<! @brief A target modeling a surface by a point cloud
@@ -332,6 +339,14 @@ public:
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
     virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
+
+    void highlight() const override {
+        throw NotImplementedException("TargetSurface::highlight");
+    }
+
+    void unhighlight() const override {
+        throw NotImplementedException("TargetSurface::unhighlight");
+    }
 
     virtual void glDraw() override;
 };  // class TargetSurface

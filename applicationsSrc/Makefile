@@ -1,6 +1,5 @@
 # GENERIC BlockCodes
-SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB simpleColorBB
-SUBDIRS = simpleCatoms3D simpleColorSB simpleColorC2D simpleMotion simpleReconfC2D
+SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB simpleColorBB simpleMotion simpleReconfC2D
 # simpleColorOkteen simpleMotionOkteen simpleCatoms3D
 
 # MELD BlockCodes

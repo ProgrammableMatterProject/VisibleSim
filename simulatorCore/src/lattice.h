@@ -806,6 +806,10 @@ public:
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
                                               int direction) override;
+    /**
+     * @copydoc Lattice::glDraw
+     */
+    virtual void glDraw() override;
 };
 
 /*! @brief 3D Broadcast Lattice

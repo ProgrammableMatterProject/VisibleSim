@@ -24,16 +24,11 @@ def createSourceFile(tagsFile, outFile):
                            .replace('<<appNameLc>>', appNameLc)) # lowercase
     print ("Successfully created file %s " % outFile)
 
-def print_usage():
-    print ("\nusage:\tpython bcgen.py --app <APPNAME> --module <MODULENAME>")
-    print ("\tpython bcgen.py -a <APPNAME> -m <MODULENAME>")
-    print ("\nModule options: Catoms3D, Catoms2D, CatomsR, Datoms, BlinkyBlocks, SmartBlocks, RobotBlocks, Okteens, MultiRobots")
-
 # Main variables
 appName = None
 module = None
 moduleOptions = ["Catoms3D", "Catoms2D", "CatomsR", "Datoms", "BlinkyBlocks",
-                 "SmartBlocks", "RobotBlocks", "Okteens", "MultiRobots"]
+                 "SmartBlocks", "RobotBlocks", "Okteen", "MultiRobots"]
 
 # Parse arguments
 text = 'This program creates a sample application in the applicationsSrc directory for a given module type. It takes an application name and a module type.'

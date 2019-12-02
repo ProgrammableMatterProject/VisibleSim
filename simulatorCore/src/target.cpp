@@ -160,7 +160,7 @@ const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) const {
         throw InvalidPositionException(pos);
     }
 
-    return tCells.at(pos);
+    return tCells.find(pos)->second;
 }
 
 void TargetGrid::addTargetCell(const Cell3DPosition &pos, const Color c) {
@@ -172,14 +172,13 @@ void TargetGrid::print(ostream& where) const {
         where << "<cell position=" << pair.first << " color=" << pair.second << " />" << endl;
     }
 }
-
 void TargetGrid::highlight() const {
     for (const auto& pair : tCells) {
         getWorld()->lattice->highlightCell(pair.first, pair.second);
     }
 }
 
-void TargetGrid::unhighlight() const  {
+void TargetGrid::unhighlight() const {
     for (const auto& pair : tCells) {
         getWorld()->lattice->unhighlightCell(pair.first);
     }
@@ -403,35 +402,60 @@ void TargetCSG::boundingBox(BoundingBox &bb) {
 }
 
 void TargetCSG::highlight() const {
-    // glTranslatef(bb.P1[0] + 1, bb.P1[1] + 1, bb.P1[2] + 1);
-    // csgRoot->glDraw();
+    Lattice *lattice = BaseSimulator::getWorld()->lattice;
 
-    Lattice *lattice = BaseSimulator::getWorld()->lattice;;
     const Cell3DPosition& glb = lattice->getGridLowerBounds();
     const Cell3DPosition& ulb = lattice->getGridUpperBounds();
-    Cell3DPosition pos;
-    for (short iz = glb[2]; iz < ulb[2]; iz++) {
-        for (short iy = glb[1]; iy < ulb[1]; iy++) {
-            for (short ix = glb[0]; ix < ulb[0]; ix++) {
-                pos.set(ix, iy, iz);
 
-                if (isInTarget(pos)) lattice->highlightCell(pos, getTargetColor(pos));
+    Cell3DPosition p;
+    if (typeid(lattice) == typeid(SkewFCCLattice)) {
+        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
+                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
+                    p.set(ix,iy,iz);
+                    if (isInTarget(p))
+                        lattice->highlightCell(p, getTargetColor(p));
+                }
+            }
+        }
+    } else {
+        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                    p.set(ix,iy,iz);
+                    if (isInTarget(p))
+                        lattice->highlightCell(p, getTargetColor(p));
+                }
             }
         }
     }
 }
 
 void TargetCSG::unhighlight() const {
-    Lattice *lattice = BaseSimulator::getWorld()->lattice;;
+    Lattice *lattice = BaseSimulator::getWorld()->lattice;
+
     const Cell3DPosition& glb = lattice->getGridLowerBounds();
     const Cell3DPosition& ulb = lattice->getGridUpperBounds();
-    Cell3DPosition pos;
-    for (short iz = glb[2]; iz < ulb[2]; iz++) {
-        for (short iy = glb[1]; iy < ulb[1]; iy++) {
-            for (short ix = glb[0]; ix < ulb[0]; ix++) {
-                pos.set(ix, iy, iz);
 
-                if (isInTarget(pos)) lattice->unhighlightCell(pos);
+    Cell3DPosition p;
+    if (typeid(lattice) == typeid(SkewFCCLattice)) {
+        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
+                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
+                    p.set(ix,iy,iz);
+                    if (isInTarget(p))
+                        lattice->unhighlightCell(p);
+                }
+            }
+        }
+    } else {
+        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                    p.set(ix,iy,iz);
+                    if (isInTarget(p))
+                        lattice->highlightCell(p);
+                }
             }
         }
     }
@@ -439,10 +463,12 @@ void TargetCSG::unhighlight() const {
 
 const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) const {
     Color color = WHITE;
+
     if (!csgRoot->isInside(gridToCSGPosition(pos), color)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException(pos);
     }
+
     return color;
 }
 

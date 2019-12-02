@@ -933,31 +933,55 @@ void Simulator::parseBlockList() {
             Vector3D csgPos;
             const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
             const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-            for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-                for (short iy = glb[1]; iy <= ulb[1]; iy++) {
-                    for (short ix = glb[0]; ix <= ulb[0]; ix++) {
-                        position.set(ix,iy,iz);
-                        csgPos = world->lattice->gridToUnscaledWorldPosition(position);
+            if (typeid(world->lattice) != typeid(SkewFCCLattice)) {
+                for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+                    for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                        for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                            position.set(ix,iy,iz);
+                            csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
 #ifdef OFFSET_BOUNDINGBOX
-                        csgPos.pt[0] += bb.P0[0] - 1.0;
-                        csgPos.pt[1] += bb.P0[1] - 1.0;
-                        csgPos.pt[2] += bb.P0[2] - 1.0;
+                            csgPos.pt[0] += bb.P0[0] - 1.0;
+                            csgPos.pt[1] += bb.P0[1] - 1.0;
+                            csgPos.pt[2] += bb.P0[2] - 1.0;
 #else
-                        csgPos.pt[0] += bb.P0[0];
-                        csgPos.pt[1] += bb.P0[1];
-                        csgPos.pt[2] += bb.P0[2];
+                            csgPos.pt[0] += bb.P0[0];
+                            csgPos.pt[1] += bb.P0[1];
+                            csgPos.pt[2] += bb.P0[2];
 #endif
 
-                        csgPos.pt[0] +=  - translate.pt[0];
-                        csgPos.pt[1] +=  - translate.pt[1];
-                        csgPos.pt[2] +=  - translate.pt[2];
+                            if (world->lattice->isInGrid(position)
+                                and csgRoot->isInside(csgPos, color)) {
+                                loadBlock(element,
+                                          ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
+                                          bcb, position, color, false);
+                            }
+                        }
+                    }
+                }
+            } else {
+                for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+                    for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
+                        for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
+                            position.set(ix,iy,iz);
+                            csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
-                        if (world->lattice->isInGrid(position)
-                            and csgRoot->isInside(csgPos, color)) {
-                            loadBlock(element,
-                                      ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                      bcb, position, color, false);
+#ifdef OFFSET_BOUNDINGBOX
+                            csgPos.pt[0] += bb.P0[0] - 1.0;
+                            csgPos.pt[1] += bb.P0[1] - 1.0;
+                            csgPos.pt[2] += bb.P0[2] - 1.0;
+#else
+                            csgPos.pt[0] += bb.P0[0];
+                            csgPos.pt[1] += bb.P0[1];
+                            csgPos.pt[2] += bb.P0[2];
+#endif
+
+                            if (world->lattice->isInGrid(position)
+                                and csgRoot->isInside(csgPos, color)) {
+                                loadBlock(element,
+                                          ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
+                                          bcb, position, color, false);
+                            }
                         }
                     }
                 }
