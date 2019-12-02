@@ -10,7 +10,13 @@ using namespace Catoms3D;
 
 class CoatingBlockCode : public Catoms3DBlockCode {
 private:
-    int distance;
+    // App-wide Parameters
+    static inline bool HIGHLIGHT_COATING = false;
+    static inline bool HIGHLIGHT_CSG = false;
+    static inline int HIGHLIGHT_COATING_LAYER = -1;
+    static inline Cell3DPosition COATING_SEED_POS = Cell3DPosition(0, 0, 3);
+
+    // DApp Variables
     Catoms3DBlock *module;
 public :
     CoatingBlockCode(Catoms3DBlock *host);
@@ -39,6 +45,50 @@ public :
      * @param msgPtr Pointer to the message received by the module
      * @param sender Connector of the module that has received the message and that is connected to the sender */
     void handleSampleMessage(MessagePtr msgPtr, P2PNetworkInterface *sender);
+
+    /**
+     * Highlights the CSG elements or coating as requested by the user
+     */
+    void highlight() const;
+
+    /**
+     * Indicates whether position pos is in the coating or not
+     * @param pos position to evaluate
+     * @return true if pos is in the coating of the current shape, false otherwise
+     */
+    bool isInCoating(const Cell3DPosition& pos) const;
+
+    /**
+     * Indicates whether position pos is in the coating at a given layer or not
+     * @param pos position to evaluate
+     * @param layer layer to evaluate, starts from 0 (i.e., coating seed layer)
+     * @return true if pos is in the coating of the shape at the given layer, false otherwise
+     */
+    bool isInCoatingLayer(const Cell3DPosition& pos, int layer) const;
+
+    /**
+     * @param pos position to evaluate
+     * @return the coating layer to which pos belongs
+     */
+    int getCoatingLayer(const Cell3DPosition& pos) const;
+
+    /**
+     * @param pos position to evaluate
+     * @return true if pos is inside the current CSG description, false otherwise
+     */
+    bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); }
+
+    /**
+     * @param pos position to evaluate
+     * @return true if pos has a neighbor position that is inside the CSG description
+     */
+    bool hasNeighborInCSG(const Cell3DPosition& pos) const;
+
+    /**
+     * @param pos position to evaluate
+     * @return true if pos has a second order neighbor position inside the CSG description
+     */
+    bool has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const;
 
     /// Advanced blockcode handlers below
 
@@ -84,8 +134,7 @@ public :
      * @param face face that has been tapped */
     void onTap(int face) override {}
 
-    // NOT YET IMPLEMENTED ON GIT/DEV
-    // bool parseUserCommandLineArgument(int& argc, char **argv[]) override;
+    bool parseUserCommandLineArgument(int& argc, char **argv[]) override;
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/

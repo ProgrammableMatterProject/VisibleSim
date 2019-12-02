@@ -1,5 +1,7 @@
 #include "coatingBlockCode.hpp"
 
+#include "coatingUtils.hpp"
+
 using namespace Catoms3D;
 
 CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host) {
@@ -19,36 +21,15 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
 void CoatingBlockCode::startup() {
     console << "start";
 
-    // Sample distance coloring algorithm below
-    if (module->blockId==1) { // Master ID is 1
-        module->setColor(RED);
-        distance = 0;
-        sendMessageToAllNeighbors("Sample Broadcast",
-                                  new MessageOf<int>(SAMPLE_MSG_ID,distance),100,200,0);
-    } else {
-        distance = -1; // Unknown distance
-        hostBlock->setColor(LIGHTGREY);
+    if (HIGHLIGHT_COATING or HIGHLIGHT_CSG) {
+        highlight();
+        HIGHLIGHT_COATING = false;
+        HIGHLIGHT_CSG = false;
     }
-
-    // Additional initialization and algorithm start below
-    // ...
 }
 
 void CoatingBlockCode::handleSampleMessage(MessagePtr msgPtr, P2PNetworkInterface* sender) {
     MessageOf<int>* msg = static_cast<MessageOf<int>*>(msgPtr.get());
-
-    int d = *msg->getData() + 1;
-    console << " received d =" << d << " from " << sender->getConnectedBlockId() << "\n";
-
-    if (distance == -1 || distance > d) {
-        console << " updated distance = " << d << "\n";
-        distance = d;
-        module->setColor(Colors[distance % NB_COLORS]);
-
-        // Broadcast to all neighbors but ignore sender
-        sendMessageToAllNeighbors("Sample Broadcast",
-                                  new MessageOf<int>(SAMPLE_MSG_ID,distance),100,200,1,sender);
-    }
 }
 
 void CoatingBlockCode::onMotionEnd() {
@@ -92,36 +73,100 @@ void CoatingBlockCode::onAssertTriggered() {
     // ...
 }
 
-// bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
-//     /* Reading the command line */
-//     if ((argc > 0) && ((*argv)[0][0] == '-')) {
-//         switch((*argv)[0][1]) {
+bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
+    /* Reading the command line */
+    if ((argc > 0) && ((*argv)[0][0] == '-')) {
+        switch((*argv)[0][1]) {
 
-//             // Single character example: -b
-//             case 'b':   {
-//                 cout << "-b option provided" << endl;
-//                 return true;
-//             } break;
+            // Single character example: -b
+            case 'b':   {
+                cout << "-b option provided" << endl;
+                return true;
+            } break;
 
-//             // Composite argument example: --foo 13
-//             case '-': {
-//                 string varg = string((*argv)[0] + 2); // argv[0] without "--"
-//                 if (varg == string("foo")) { //
-//                     try {
-//                         int fooArg = stoi((*argv)[1]);
-//                         argc--;
-//                         (*argv)++;
-//                     } catch(std::logic_error&) {}
+            // Composite argument example: --foo 13
+            case '-': {
+                string varg = string((*argv)[0] + 2); // argv[0] without "--"
+                if (varg == string("coating")) { //
+                    try {
+                        HIGHLIGHT_COATING_LAYER = stoi((*argv)[1]);
+                        argc--;
+                        (*argv)++;
+                    } catch(std::logic_error&) {}
 
-//                     cout << "--foo option provided with value: " << fooArg << endl;
-//                 } else return false;
+                    cout << "--coating option provided with value: "
+                         << HIGHLIGHT_COATING_LAYER << endl;
+                } else if (varg == string("csg")) {
+                    HIGHLIGHT_CSG = true;
+                    argc--;
+                    (*argv)++;
 
-//                 return true;
-//             }
+                    cout << "--csg option provided" << endl;
+                } else {
+                    return false;
+                }
 
-//             default: cerr << "Unrecognized command line argument: " << (*argv)[0] << endl;
-//         }
-//     }
+                return true;
+            }
+        }
+    }
 
-//     return false;
-// }
+    return false;
+}
+
+int CoatingBlockCode::getCoatingLayer(const Cell3DPosition& pos) const {
+    return pos[2] - COATING_SEED_POS[2];
+}
+
+bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) const {
+    return pos[2] >= COATING_SEED_POS[2] and isInCoatingLayer(pos, getCoatingLayer(pos));
+}
+
+bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) const {
+    int pLayer = getCoatingLayer(pos);
+
+    if (isInCSG(pos)) return false;
+
+    return (layer == -1 or pLayer == layer)
+        and not hasNeighborInCSG(pos) and has2ndOrderNeighborInCSG(pos);
+}
+
+bool CoatingBlockCode::hasNeighborInCSG(const Cell3DPosition& pos) const {
+    for (const Cell3DPosition& p : lattice->getNeighborhood(pos)) {
+        if (isInCSG(p)) return true;
+    }
+
+    for (const Cell3DPosition& pRel : diagNeighbors) {
+        if (isInCSG(pRel + pos)) return true;
+    }
+
+    return false;
+}
+
+bool CoatingBlockCode::has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const {
+    for (const Cell3DPosition& pRel : _2ndOrderNeighbors) {
+        if (isInCSG(pRel + pos)) return true;
+    }
+
+   return false;
+}
+
+void CoatingBlockCode::highlight() const {
+    if (HIGHLIGHT_CSG) target->highlight();
+
+    if (HIGHLIGHT_COATING) {
+        Cell3DPosition pos;
+        const Cell3DPosition& glb = lattice->getGridLowerBounds();
+        const Cell3DPosition& ulb = lattice->getGridUpperBounds();
+        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
+                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
+                    pos.set(ix,iy,iz);
+
+                    if (isInCoatingLayer(pos, HIGHLIGHT_COATING_LAYER))
+                        lattice->highlightCell(pos);
+                }
+            }
+        }
+    }
+}

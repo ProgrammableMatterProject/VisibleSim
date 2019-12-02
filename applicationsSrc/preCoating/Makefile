@@ -15,17 +15,17 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS =  coating.cpp \
-	coatingBlockCode.cpp \
-	coatingMessages.cpp \
-	coatingRuleMatcher.cpp #
+SRCS =  precoating.cpp \
+	precoatingBlockCode.cpp \
+	precoatingMessages.cpp \
+	precoatingRuleMatcher.cpp #
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/coating
+OUT = $(APPDIR)/precoating
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimCatoms3D
 # TESTS contains the commands that will be executed when `make test` is called
-TESTS = ../../utilities/blockCodeTest.sh coating $(OUT)
+TESTS = ../../utilities/blockCodeTest.sh precoating $(OUT)
 #
 # End of Makefile section requiring input by user
 #####################################################################
