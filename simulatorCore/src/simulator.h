@@ -82,13 +82,6 @@ public:
     //inline void setSeed(int s) { seed = s; }
 
 protected:
-    //<! @brief Exception thrown if an error as occured during parsing
-    struct ParsingException : std::exception {
-        const char* what() const noexcept override {
-            return "An error occured during configuration file parsing\n";
-        }
-    };
-
     static Type type;			//!< Type of simulation, i.e. language of the user program
 
     int seed = DEFAULT_SIMULATION_SEED; //!< Simulation seed, used for every randomized operation

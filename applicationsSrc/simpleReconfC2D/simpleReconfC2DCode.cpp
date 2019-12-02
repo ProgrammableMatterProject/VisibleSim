@@ -20,7 +20,10 @@ void SimpleReconfC2DCode::startup() {
 void SimpleReconfC2DCode::onMotionEnd() {
     if (catom->position[2] > 0)
         rotateCWAfterCheck();
-    else sendGoMessageToNextModule(layer - 1);
+    else {
+        catom->setColor(GREEN);
+        sendGoMessageToNextModule(layer - 1);
+    }
 }
 
 void SimpleReconfC2DCode::verticalLineToHorizontalLineStartup() {
@@ -56,11 +59,12 @@ void SimpleReconfC2DCode::sendGoMessageToNextModule(int msgLayer) {
 }
 
 void SimpleReconfC2DCode::rotateCWAfterCheck() {
-    if (catom->canRotate(RelativeDirection::Direction::CW))
-        catom->setColor(GREEN);
-    else
-        catom->setColor(RED);
+    // if (catom->canRotate(RelativeDirection::Direction::CW))
+    //     catom->setColor(GREEN);
+    // else
+    //     catom->setColor(RED);
 
+    catom->setColor(YELLOW);
     catom->rotate(RelativeDirection::Direction::CW);
 }
 
@@ -73,7 +77,8 @@ void SimpleReconfC2DCode::handleGoMessage(MessagePtr anonMsg, P2PNetworkInterfac
     if (not catom->hasANeighbor(HLattice::TopRight)
         and not catom->hasANeighbor(HLattice::TopLeft)
         and layer == rcvd_layer) {
-        rotateCWAfterCheck();
+        if (catom->position[2] > 0)
+            rotateCWAfterCheck();
     } else {
         sendGoMessageToNextModule(rcvd_layer);
     }

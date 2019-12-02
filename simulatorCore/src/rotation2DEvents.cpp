@@ -239,7 +239,6 @@ void Rotation2DStopEvent::consume() {
 
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new Rotation2DEndEvent(scheduler->now(), rb));
-    //concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(scheduler->now()+COM_DELAY,rb)));
 }
 
 const string Rotation2DStopEvent::getEventName() {
@@ -267,7 +266,11 @@ Rotation2DEndEvent::~Rotation2DEndEvent() {
 
 void Rotation2DEndEvent::consume() {
     EVENT_CONSUME_INFO();
-    concernedBlock->scheduleLocalEvent(EventPtr(new Rotation2DEndEvent(getScheduler()->now()+COM_DELAY,(Catoms2DBlock*)concernedBlock)));
+
+    Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(date+COM_DELAY,rb)));
+    StatsCollector::getInstance().incMotionCount();
+    StatsIndividual::incMotionCount(rb->stats);
 }
 
 const string Rotation2DEndEvent::getEventName() {
