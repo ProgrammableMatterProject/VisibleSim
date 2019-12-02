@@ -153,13 +153,13 @@ bool TargetGrid::isInTarget(const Cell3DPosition &pos) const {
     return tCells.count(pos);
 }
 
-const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) {
+const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) const {
     if (!isInTarget(pos)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException(pos);
     }
 
-    return tCells[pos];
+    return tCells.find(pos)->second;
 }
 
 void TargetGrid::addTargetCell(const Cell3DPosition &pos, const Color c) {
@@ -176,13 +176,13 @@ void TargetGrid::boundingBox(BoundingBox &bb) {
     throw BaseSimulator::NotImplementedException("TargetGrid::boundingBox");
 }
 
-void TargetGrid::highlight() {
+void TargetGrid::highlight() const {
     for (const auto& pair : tCells) {
         getWorld()->lattice->highlightCell(pair.first, pair.second);
     }
 }
 
-void TargetGrid::unhighlight() {
+void TargetGrid::unhighlight() const {
     for (const auto& pair : tCells) {
         getWorld()->lattice->unhighlightCell(pair.first);
     }
@@ -393,12 +393,67 @@ void TargetCSG::boundingBox(BoundingBox &bb) {
     csgRoot->boundingBox(bb);
 }
 
-void TargetCSG::highlight() {
-    glTranslatef(bb.P1[0] + 1, bb.P1[1] + 1, bb.P1[2] + 1);
-    csgRoot->glDraw();
+void TargetCSG::highlight() const {
+    Lattice *lattice = BaseSimulator::getWorld()->lattice;
+
+    const Cell3DPosition& glb = lattice->getGridLowerBounds();
+    const Cell3DPosition& ulb = lattice->getGridUpperBounds();
+
+    Cell3DPosition p;
+    if (typeid(lattice) == typeid(SkewFCCLattice)) {
+        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
+                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
+                    p.set(ix,iy,iz);
+                    if (isInTarget(p))
+                        lattice->highlightCell(p, getTargetColor(p));
+                }
+            }
+        }
+    } else {
+        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                    p.set(ix,iy,iz);
+                    if (isInTarget(p))
+                        lattice->highlightCell(p, getTargetColor(p));
+                }
+            }
+        }
+    }
 }
 
-const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
+void TargetCSG::unhighlight() const {
+    Lattice *lattice = BaseSimulator::getWorld()->lattice;
+
+    const Cell3DPosition& glb = lattice->getGridLowerBounds();
+    const Cell3DPosition& ulb = lattice->getGridUpperBounds();
+
+    Cell3DPosition p;
+    if (typeid(lattice) == typeid(SkewFCCLattice)) {
+        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
+                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
+                    p.set(ix,iy,iz);
+                    if (isInTarget(p))
+                        lattice->unhighlightCell(p);
+                }
+            }
+        }
+    } else {
+        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                    p.set(ix,iy,iz);
+                    if (isInTarget(p))
+                        lattice->highlightCell(p);
+                }
+            }
+        }
+    }
+}
+
+const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) const {
     Color color;
     if (!csgRoot->isInside(gridToCSGPosition(pos), color)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
@@ -936,7 +991,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) const {
     }
 }
 
-const Color TargetSurface::getTargetColor(const Cell3DPosition &pos) {
+const Color TargetSurface::getTargetColor(const Cell3DPosition &pos) const {
     throw BaseSimulator::NotImplementedException("TargetSurface::getTargetColor");
 }
 

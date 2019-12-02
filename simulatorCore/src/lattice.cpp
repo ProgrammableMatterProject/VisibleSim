@@ -875,6 +875,22 @@ Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int dir
     return pRef + nCells[direction];
 }
 
+void SCLattice::glDraw() {
+    if (!mapHighlightedCells.empty()) {
+        Vector3D v;
+        Color c;
+        for (const auto& pair : mapHighlightedCells) {
+            glPushMatrix();
+            v = gridToWorldPosition(pair.first);
+            glTranslatef(v.pt[0] + 20.0f,v.pt[1] + 20.0f,v.pt[2] + 20.0f);
+            c.set(pair.second.rgba[0],pair.second.rgba[1],pair.second.rgba[2],0.5f);
+            glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c.rgba);
+            glutSolidCube(40);
+            glPopMatrix();
+        }
+    }
+}
+
 /********************* BCLattice *********************/
 BCLattice::BCLattice() : Lattice3D() {}
 BCLattice::BCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
