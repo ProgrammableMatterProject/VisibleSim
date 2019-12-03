@@ -4,9 +4,11 @@
 namespace Hexanode {
 	
 HexanodeMotionEngine::HexanodeMotionEngine() {
-		//tabHexanodeMotions.push_back(new HexanodeMotion(HHLattice::South,Cell3DPosition(0,-1,0),CCW,Cell3DPosition(-1,-1,0),true,Cell3DPosition(-1,0,0))); // South, translation
-		
+	for (int i=0; i<6; i++) {
+		tabHexanodeMotions.push_back(new HexanodeMotion((HHLattice::Direction)i,CCW,{(HHLattice::Direction)((i+5)%6),(HHLattice::Direction)((i+4)%6)})); 
+		tabHexanodeMotions.push_back(new HexanodeMotion((HHLattice::Direction)i,CW,{(HHLattice::Direction)((i+1)%6),(HHLattice::Direction)((i+2)%6)})); 
 	}
+}
 
 HexanodeMotionEngine::~HexanodeMotionEngine() {
 	for (HexanodeMotion*nm:tabHexanodeMotions) {
@@ -16,21 +18,25 @@ HexanodeMotionEngine::~HexanodeMotionEngine() {
 }
 
 vector<HexanodeMotion*> HexanodeMotionEngine::getAllMotionsForModule(BuildingBlock *nb,const HHLattice*sl) {
-	Cell3DPosition pos;
-	bool hasObs,hasPivot,hasFreeDest;
+	Cell3DPosition pos,neighborPos;
 	vector<HexanodeMotion*>res;
 	
-	for (HexanodeMotion*nm:tabHexanodeMotions) {
-		hasObs=!sl->isFree(nm->obstaclePos+nb->position);
-		pos = nm->pivotPos+nb->position;
-		hasPivot=!sl->isFree(pos) && sl->isInGrid(pos);
-		pos = nm->finalPos+nb->position;
-		hasFreeDest=sl->isFree(pos) && sl->isInGrid(pos) && (sl->isFree(nm->pathPos+nb->position) || !nm->isRotation);
-		//cout << "motion:" << nm->fromConId << "->" << nm->toConId << " hasPivot=" << hasPivot << " hasFreeDest=" << hasFreeDest << " hasObs=" << hasObs << "/" << nm->hasObstacle <<endl;
-		if (hasPivot && hasFreeDest && hasObs==nm->hasObstacle) {
-			res.push_back(nm);
+	//cout << "Get All Motions:=========================" << endl;
+	for (HexanodeMotion *nm:tabHexanodeMotions) {
+		neighborPos = sl->getCellInDirection(nb->position,nm->fromConId);
+		//cout << "neighborPos=" << neighborPos << " (" << sl->isFree(neighborPos) << ")" << endl;
+		if (!sl->isFree(neighborPos)) {
+			auto obsIt = nm->obstacleDirs.begin();
+			while (obsIt!=nm->obstacleDirs.end() && sl->isFree(sl->getCellInDirection(nb->position,*obsIt))) {
+				obsIt++;
+			}
+			if (obsIt==nm->obstacleDirs.end()) {
+				//cout << "ok: " << nm->direction << "/" << nm->fromConId << endl;
+				res.push_back(nm);
+			}
 		}
 	}
+	cout << "Get All Motions:--------------------------" << endl;
 	return res;
 }
 

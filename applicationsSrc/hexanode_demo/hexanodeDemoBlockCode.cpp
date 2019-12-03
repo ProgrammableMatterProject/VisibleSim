@@ -35,14 +35,15 @@ void HexanodeDemoBlockCode::startup() {
 	if (node->blockId == 1) {
 		// turn clockwise if possible !
 		vector<HexanodeMotion*> tab = wrl->getAllMotionsForModule(node);
+		console << "#motion=" << tab.size() << "\n";
 		vector<HexanodeMotion*>::const_iterator ci=tab.begin();
 		while (ci!=tab.end() && (*ci)->direction!=motionDirection::CW) {
 				ci++;
 		}
 		if (ci!=tab.end()) {
-			Cell3DPosition destination = node->position + (*ci)->finalPos;
-			previousPivot = (*ci)->toConId;
-			cout << "previousPivot=" << (*ci)->toConId << "   md=" << (*ci)->direction << endl;
+			Cell3DPosition destination = (*ci)->getFinalPos(node->position);
+			previousPivot = (*ci)->getToConId();
+			cout << "previousPivot=" << (*ci)->getToConId() << "   md=" << (*ci)->direction << endl;
 			//scheduler->schedule(new NodeMotionStartEvent(scheduler->now()+1000000, node,destination,(*ci)->toConId));
 		}
 		
@@ -58,9 +59,9 @@ void HexanodeDemoBlockCode::onMotionEnd() {
 		ci++;
 	}
 	if (ci!=tab.end()) {
-		Cell3DPosition destination = node->position + (*ci)->finalPos;
-		previousPivot = (*ci)->toConId;
-		cout << "previousPivot=" << (*ci)->toConId << "   md=" << (*ci)->direction << endl;
+		Cell3DPosition destination = (*ci)->getFinalPos(node->position);
+		previousPivot = (*ci)->getToConId();
+		cout << "previousPivot=" << (*ci)->getToConId() << "   md=" << (*ci)->direction << endl;
 		//scheduler->schedule(new HexanodeMotionStartEvent(scheduler->now()+1000000, node,destination,(*ci)->toConId));
 	}
 }

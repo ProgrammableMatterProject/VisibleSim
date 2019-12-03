@@ -114,8 +114,6 @@ public :
 	void glDraw() override;
 };
 
-
-
 //
 class BlockDebugData {
 public :

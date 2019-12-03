@@ -95,10 +95,12 @@ void HexanodeWorld::createPopupMenu(int ix, int iy) {
 		short orient;
 		Cell3DPosition finalPos;
 		for(auto &motion:tab) {
-			orient=motion->isRotation?(bb->orientationCode+(motion->direction==CW?1:5))%6:bb->orientationCode;
-			finalPos = motion->finalPos + bb->position;
-			cout << finalPos << "," << orient << endl;
-			rotateBlockSubMenu->addButton(new GlutRotation2DButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link_node.tga", motion->isRotation,motion->fromConId,motion->direction+4,finalPos,orient,0.083333333));
+			orient=bb->orientationCode+(motion->direction==motionDirection::CW?2:4)%6;
+			finalPos = motion->getFinalPos(bb->position);
+			lattice->getCellInDirection(bb->position,(motion->direction==motionDirection::CW?(motion->fromConId+1)%6:(motion->fromConId+5)%6));
+			uint8_t idDest = (motion->fromConId+(motion->direction==motionDirection::CW?5:1))%6;
+			//cout << motion->direction << "/" << motion->fromConId << "finalPos="<< finalPos << "," << orient << "(" << (motion->direction==motionDirection::CCW?(motion->fromConId+1)%6:(motion->fromConId+5)%6) << ")" << endl;
+			rotateBlockSubMenu->addButton(new GlutRotation2DButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link_node.tga", motion->direction==CCW,motion->fromConId,idDest,finalPos,orient,0.083333333));
 		}
 	}
 	

@@ -25,20 +25,18 @@ namespace Hexanode {
 	
 class HexanodeMotion {
 public:
-	HHLattice::Direction fromConId,toConId;
-	Cell3DPosition pivotPos;
+	HHLattice::Direction fromConId;
 	motionDirection direction;
-	Cell3DPosition obstaclePos;
-	bool hasObstacle;
-	Cell3DPosition finalPos;
-	bool isRotation;
-	Cell3DPosition pathPos;
+	vector<HHLattice::Direction>obstacleDirs;
 	
-	HexanodeMotion(HHLattice::Direction fId,Cell3DPosition pivot,motionDirection md,Cell3DPosition obsPos, bool present,Cell3DPosition fp_or_pp)
-	:fromConId(fId),pivotPos(pivot),direction(md),obstaclePos(obsPos),hasObstacle(present),finalPos(hasObstacle?fp_or_pp:obsPos),isRotation(!present),pathPos(fp_or_pp) {
-		toConId=isRotation?HHLattice::Direction((fId+(md==CW?1:3))%4):fId;
-	};
-	
+	HexanodeMotion(HHLattice::Direction fId,motionDirection dir,vector<HHLattice::Direction> obs)
+	:fromConId(fId),direction(dir),obstacleDirs(obs) {};
+	inline Cell3DPosition getFinalPos(const Cell3DPosition &nodePos) {
+		return getWorld()->lattice->getCellInDirection(nodePos,(direction==CW?(fromConId+1)%6:(fromConId+5)%6));
+	}
+	inline HHLattice::Direction getToConId() {
+		return (HHLattice::Direction )((fromConId+(direction==CW?5:1))%6);
+	}
 };
 
 class HexanodeMotionEngine {

@@ -269,11 +269,11 @@ Cell3DPosition HLattice::worldToGridPosition(const Vector3D &pos) {
     return res;
 }
 
-vector<Cell3DPosition> HLattice::getRelativeConnectivity(const Cell3DPosition &p) {
+vector<Cell3DPosition> HLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
     return IS_EVEN(p[2]) ? nCellsEven : nCellsOdd;
 }
 
-Cell3DPosition HLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
+Cell3DPosition HLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const
 {
     return pRef + getRelativeConnectivity(pRef)[direction];
 }
@@ -355,11 +355,11 @@ Cell3DPosition HHLattice::worldToGridPosition(const Vector3D &pos) {
 	return res;
 }
 
-vector<Cell3DPosition> HHLattice::getRelativeConnectivity(const Cell3DPosition &p) {
+vector<Cell3DPosition> HHLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
 	return nCells;
 }
 
-Cell3DPosition HHLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) {
+Cell3DPosition HHLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
 	return pRef + getRelativeConnectivity(pRef)[direction];
 }
 
@@ -384,7 +384,7 @@ SLattice::SLattice() : Lattice2D() {}
 SLattice::SLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice2D(gsz,gsc) {}
 SLattice::~SLattice() {}
 
-vector<Cell3DPosition> SLattice::getRelativeConnectivity(const Cell3DPosition &p) {
+vector<Cell3DPosition> SLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
     return nCells;
 }
 
@@ -403,8 +403,7 @@ Cell3DPosition SLattice::worldToGridPosition(const Vector3D &pos) {
                           0);
 }
 
-Cell3DPosition SLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
-{
+Cell3DPosition SLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
     return pRef + nCells[direction];
 }
 
@@ -465,7 +464,7 @@ FCCLattice::~FCCLattice() {
     delete [] tabDistances;
 }
 
-vector<Cell3DPosition> FCCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
+vector<Cell3DPosition> FCCLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
     return IS_EVEN(p[2]) ? nCellsEven : nCellsOdd;
 }
 
@@ -564,8 +563,7 @@ string FCCLattice::getDirectionString(short d) {
     return directionName[d];
 }
 
-Cell3DPosition FCCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
-{
+Cell3DPosition FCCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
     return pRef + getRelativeConnectivity(pRef)[direction];
 }
 
@@ -835,7 +833,7 @@ Cell3DPosition SkewFCCLattice::getGridUpperBounds() const {
     return gridSize - Cell3DPosition(1, 1, 1);
 }
 
-vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
+vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
     return nCells;
 }
 
@@ -889,8 +887,7 @@ SkewFCCLattice::getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &
  *   SkewFCCLattice::NeighborDirections
  ************************************************************/
 
-Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
-{
+Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
     return pRef + getRelativeConnectivity(pRef)[direction];
 }
 
@@ -899,7 +896,7 @@ SCLattice::SCLattice() : Lattice3D() {}
 SCLattice::SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
 SCLattice::~SCLattice() {}
 
-vector<Cell3DPosition> SCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
+vector<Cell3DPosition> SCLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
     return nCells;
 }
 
@@ -938,8 +935,7 @@ string SCLattice::getDirectionString(short d) {
     return directionName[d];
 }
 
-Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
-{
+Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
     return pRef + nCells[direction];
 }
 
@@ -948,7 +944,7 @@ BCLattice::BCLattice() : Lattice3D() {}
 BCLattice::BCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
 BCLattice::~BCLattice() {}
 
-vector<Cell3DPosition> BCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
+vector<Cell3DPosition> BCLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
     return vector<Cell3DPosition>();
 }
 
