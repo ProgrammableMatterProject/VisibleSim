@@ -30,7 +30,7 @@ void CoatingBlockCode::startup() {
     }
 
     if (catom->position == COATING_SEED_POS) {
-        (void)catom;
+        attract();
     }
 }
 
@@ -122,6 +122,26 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
     return false;
 }
 
+void CoatingBlockCode::highlight() const {
+    if (HIGHLIGHT_CSG) target->highlight();
+
+    if (HIGHLIGHT_COATING) {
+        Cell3DPosition pos;
+        for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
+            const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
+            const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
+            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                    pos.set(ix,iy,iz);
+
+                    if (isInCoatingLayer(pos, HIGHLIGHT_COATING_LAYER))
+                        lattice->highlightCell(pos);
+                }
+            }
+        }
+    }
+}
+
 int CoatingBlockCode::getCoatingLayer(const Cell3DPosition& pos) const {
     return pos[2] - COATING_SEED_POS[2];
 }
@@ -137,17 +157,19 @@ bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) co
 
     return (layer == -1 or pLayer == layer)
         // and hasNeighborInCSG(pos);  // Coating at distance 1
-        and not hasNeighborInCSG(pos) and has2ndOrderNeighborInCSG(pos); // Coating distance 2
+        and not hasHorizontalNeighborInCSG(pos) and has2ndOrderNeighborInCSG(pos); // Coating distance 2
 }
 
-bool CoatingBlockCode::hasNeighborInCSG(const Cell3DPosition& pos) const {
+bool CoatingBlockCode::hasHorizontalNeighborInCSG(const Cell3DPosition& pos) const {
     for (const Cell3DPosition& p : lattice->getNeighborhood(pos)) {
+        if (p[2] < pos[2]) continue;
+
         if (isInCSG(p)) return true;
     }
 
-    for (const Cell3DPosition& pRel : diagNeighbors) {
-        if (isInCSG(pRel + pos)) return true;
-    }
+    // for (const Cell3DPosition& pRel : diagNeighbors) {
+    //     if (isInCSG(pRel + pos)) return true;
+    // }
 
     return false;
 }
@@ -160,22 +182,11 @@ bool CoatingBlockCode::has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const
    return false;
 }
 
-void CoatingBlockCode::highlight() const {
-    if (HIGHLIGHT_CSG) target->highlight();
-
-    if (HIGHLIGHT_COATING) {
-        Cell3DPosition pos;
-        const Cell3DPosition& glb = lattice->getGridLowerBounds();
-        const Cell3DPosition& ulb = lattice->getGridUpperBounds();
-        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
-                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
-                    pos.set(ix,iy,iz);
-
-                    if (isInCoatingLayer(pos, HIGHLIGHT_COATING_LAYER))
-                        lattice->highlightCell(pos);
-                }
-            }
-        }
+void CoatingBlockCode::attract() {
+    // North attraction
+    if (neighborhood->isNorthSeed()) {
+        // sendAttractSignalTo( );
     }
+
+
 }

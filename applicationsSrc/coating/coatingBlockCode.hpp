@@ -87,13 +87,18 @@ public :
      * @param pos position to evaluate
      * @return true if pos has a neighbor position that is inside the CSG description
      */
-    bool hasNeighborInCSG(const Cell3DPosition& pos) const;
+    bool hasHorizontalNeighborInCSG(const Cell3DPosition& pos) const;
 
     /**
      * @param pos position to evaluate
      * @return true if pos has a second order neighbor position inside the CSG description
      */
     bool has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const;
+
+    /**
+     * Attract modules as enabled by the self-assembly rules
+     */
+    void attract();
 
     /// Advanced blockcode handlers below
 
