@@ -4,6 +4,8 @@
 #include "catoms3DWorld.h"
 #include "catoms3DBlockCode.h"
 
+#include "coatingNeighborhood.hpp"
+
 static const int SAMPLE_MSG_ID = 1000;
 
 using namespace Catoms3D;
@@ -14,13 +16,16 @@ private:
     static inline bool HIGHLIGHT_COATING = false;
     static inline bool HIGHLIGHT_CSG = false;
     static inline int HIGHLIGHT_COATING_LAYER = -1;
-    static inline Cell3DPosition COATING_SEED_POS = Cell3DPosition(0, 0, 3);
+    static inline Cell3DPosition COATING_SEED_POS = Cell3DPosition(2, 2, 2);
 
     // DApp Variables
-    Catoms3DBlock *module;
+    Catoms3DBlock *catom;
+    Neighborhood *neighborhood;
 public :
     CoatingBlockCode(Catoms3DBlock *host);
-    ~CoatingBlockCode() {};
+    ~CoatingBlockCode() {
+        delete neighborhood;
+    };
 
     /**
      * This function is called on startup of the blockCode, it can be used to perform initial
@@ -76,7 +81,7 @@ public :
      * @param pos position to evaluate
      * @return true if pos is inside the current CSG description, false otherwise
      */
-    bool isInCSG(const Cell3DPosition& pos) const { return target->isInTarget(pos); }
+    static bool isInCSG(const Cell3DPosition& pos) { return target->isInTarget(pos); }
 
     /**
      * @param pos position to evaluate

@@ -15,7 +15,9 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
     //                                std::placeholders::_1, std::placeholders::_2));
 
     // set the module pointer
-    module = static_cast<Catoms3DBlock*>(hostBlock);
+    catom = static_cast<Catoms3DBlock*>(hostBlock);
+
+    neighborhood = new Neighborhood(catom, isInCSG);
   }
 
 void CoatingBlockCode::startup() {
@@ -25,6 +27,10 @@ void CoatingBlockCode::startup() {
         highlight();
         HIGHLIGHT_COATING = false;
         HIGHLIGHT_CSG = false;
+    }
+
+    if (catom->position == COATING_SEED_POS) {
+        (void)catom;
     }
 }
 
@@ -48,12 +54,12 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
 
     switch (pev->eventType) {
         case EVENT_ADD_NEIGHBOR: {
-            // Do something when a neighbor is added to an interface of the module
+            // Do something when a neighbor is added to an interface of the catom
             break;
         }
 
         case EVENT_REMOVE_NEIGHBOR: {
-            // Do something when a neighbor is removed from an interface of the module
+            // Do something when a neighbor is removed from an interface of the catom
             break;
         }
     }
@@ -63,7 +69,7 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
 
 void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
-    cerr << endl << "--- PRINT MODULE " << *module << "---" << endl;
+    cerr << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 }
 
 void CoatingBlockCode::onAssertTriggered() {
@@ -88,6 +94,8 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
             case '-': {
                 string varg = string((*argv)[0] + 2); // argv[0] without "--"
                 if (varg == string("coating")) { //
+                    HIGHLIGHT_COATING = true;
+
                     try {
                         HIGHLIGHT_COATING_LAYER = stoi((*argv)[1]);
                         argc--;
@@ -128,7 +136,8 @@ bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) co
     if (isInCSG(pos)) return false;
 
     return (layer == -1 or pLayer == layer)
-        and not hasNeighborInCSG(pos) and has2ndOrderNeighborInCSG(pos);
+        // and hasNeighborInCSG(pos);  // Coating at distance 1
+        and not hasNeighborInCSG(pos) and has2ndOrderNeighborInCSG(pos); // Coating distance 2
 }
 
 bool CoatingBlockCode::hasNeighborInCSG(const Cell3DPosition& pos) const {
