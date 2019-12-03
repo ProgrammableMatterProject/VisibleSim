@@ -57,11 +57,11 @@ unsigned int Lattice::getIndex(const Cell3DPosition &p) const {
     return index;
 }
 
-Cell3DPosition Lattice::getGridLowerBounds() const {
+Cell3DPosition Lattice::getGridLowerBounds(int z) const {
     return Cell3DPosition(0,0,0);
 }
 
-Cell3DPosition Lattice::getGridUpperBounds() const {
+Cell3DPosition Lattice::getGridUpperBounds(int z) const {
     return gridSize - Cell3DPosition(1,1,1);
 }
 
@@ -112,8 +112,8 @@ bool Lattice::cellHasBlock(const Cell3DPosition &p) const {
 }
 
 bool Lattice::isInGrid(const Cell3DPosition &p) const {
-    const Cell3DPosition& lb = getGridLowerBounds();
-    const Cell3DPosition& ub = getGridUpperBounds();
+    const Cell3DPosition& lb = getGridLowerBounds(p[2]);
+    const Cell3DPosition& ub = getGridUpperBounds(p[2]);
 
     return isInRange(p[0], lb.pt[0], ub.pt[0])
         && isInRange(p[1], lb.pt[1], ub.pt[1])
@@ -748,27 +748,16 @@ unsigned int SkewFCCLattice::getIndex(const Cell3DPosition &p) const {
     return index;
 }
 
-bool SkewFCCLattice::isInGrid(const Cell3DPosition &p) const {
-    // cout << gridSize << endl;
-    // cout << isInRange(p[0], 1 - gridSize[2] / 2, gridSize[0] - gridSize[2] / 2) << endl;
-    // cout << isInRange(p[1], 1 - gridSize[2] / 2, gridSize[1] - gridSize[2] / 2) << endl;
-    // cout << isInRange(p[2], 0, gridSize[2] - 1) << endl;
+Cell3DPosition SkewFCCLattice::getGridLowerBounds(int z) const {
+    if (z == -1) return Cell3DPosition(-gridSize[2]/2,-gridSize[2]/2,gridSize[2]);
 
-    // if (IS_EVEN((int)gridScale[2]))
-        return isInRange(p[0], 0 - p[2]/ 2, gridSize[0] - p[2] / 2 - 1)
-            && isInRange(p[1], 0 - p[2] / 2, gridSize[1] - p[2] / 2 - 1)
-            && isInRange(p[2], 0, gridSize[2] - 1);
-    // else
-    //     return isInRange(p[0], 0 - p[2]/ 2, gridSize[0] - ceil(p[2] / 2) - 1)
-    //         && isInRange(p[1], 0 - p[2] / 2, gridSize[1] - ceil(p[2] / 2) - 1)
-    //         && isInRange(p[2], 0, gridSize[2] - 1);
+    return Cell3DPosition(-z/2,-z/2,0);
 }
 
-Cell3DPosition SkewFCCLattice::getGridLowerBounds() const {
-    return Cell3DPosition(-gridSize.pt[2] / 2,
-                          -gridSize.pt[2] / 2,
-                          0);
+Cell3DPosition SkewFCCLattice::getGridUpperBounds(int z) const {
+    return gridSize - Cell3DPosition(z/2, z/2, 0) - Cell3DPosition(1,1,1);
 }
+
 
 vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
     return nCells;

@@ -611,10 +611,10 @@ void Catoms3DWorld::setSelectedFace(int n) {
     else if (name == "Material__69") numSelectedFace = 10;
     else if (name == "Material__70") numSelectedFace = 11;
     else {
-        cerr << "warning: Unrecognized picking face" << endl;
+        // cerr << "warning: Unrecognized picking face" << endl;
         numSelectedFace = 13;	// UNDEFINED
     }
-    cerr << name << " => " << numSelectedFace << endl;
+    // cerr << name << " => " << numSelectedFace << endl;
 }
 
 void Catoms3DWorld::exportConfiguration() {

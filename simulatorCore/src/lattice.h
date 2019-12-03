@@ -86,14 +86,18 @@ public:
     unsigned int nbModules = 0; //!< The number of modules currently part of the lattice
 
     /**
+     * @param z if z != -1, returns the bounds for the grid at height z
+     * @note Applies only to non orthogonal coordinate systems such as SkewFCCLattice
      * @return the coordinates of the start of the grid
      */
-    virtual Cell3DPosition getGridLowerBounds() const;
+    virtual Cell3DPosition getGridLowerBounds(int z = -1) const;
 
     /**
+     * @param z if z != -1, returns the bounds for the grid at height z
+     * @note Applies only to non orthogonal coordinate systems such as SkewFCCLattice
      * @return the coordinates of the end of the grid
      */
-    virtual Cell3DPosition getGridUpperBounds() const;
+    virtual Cell3DPosition getGridUpperBounds(int z = -1) const;
 
     /**
      * @brief Abstract Lattice constructor.
@@ -705,14 +709,14 @@ public:
     virtual unsigned int getIndex(const Cell3DPosition &p) const override;
 
     /**
-     * @copydoc Lattice::isInGrid
-     */
-    virtual bool isInGrid(const Cell3DPosition &p) const override;
-
-    /**
      * @copydoc Lattice::getGridLowerBounds
      */
-    virtual Cell3DPosition getGridLowerBounds() const override;
+    virtual Cell3DPosition getGridLowerBounds(int z = -1) const override;
+
+    /**
+     * @copydoc Lattice::getGridUpperBounds
+     */
+    virtual Cell3DPosition getGridUpperBounds(int z = -1) const override;
 
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition

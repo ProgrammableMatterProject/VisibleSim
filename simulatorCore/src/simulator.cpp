@@ -755,6 +755,10 @@ void Simulator::parseBlockList() {
             }
 
             if (not getWorld()->lattice->isInGrid(position)) {
+                cerr << "GridLowerBounds: "
+                     << getWorld()->lattice->getGridLowerBounds(position[2]) << endl;
+                cerr << "GridUpperBounds: "
+                     << getWorld()->lattice->getGridUpperBounds(position[2])<< endl;
                 stringstream error;
                 error << "module at " << position << " is out of grid" << "\n";
                 throw ParsingException(error.str());
