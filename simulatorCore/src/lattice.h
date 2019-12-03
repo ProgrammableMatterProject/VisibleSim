@@ -600,8 +600,15 @@ class FCCLattice : public Lattice3D {
     bool isPositionUnblocked(const Cell3DPosition &pos, const Cell3DPosition &ignore,
                              BlockingPositionPlane plane);
 public:
-    enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
-                    Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    enum Direction {
+        C0East, C1North, C2TopNE, C3TopNW,
+        C4TopSW, C5TopSE, C6West, C7South,
+        C8BottomSW,C9BottomSE, C10BottomNE, C11BottomNW,
+        MAX_NB_NEIGHBORS
+    };//!< @copydoc Lattice::Direction
+
+    // enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
+    //                 Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
     virtual short getOppositeDirection(short d) override;
     //!< @copydoc Lattice::getDirectionString

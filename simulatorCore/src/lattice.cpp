@@ -472,26 +472,28 @@ Cell3DPosition FCCLattice::worldToGridPosition(const Vector3D &pos) {
 /************************************************************
  *   FCCLattice::NeighborDirections
  ************************************************************/
-
-const string FCCLattice::directionName[] = {"Con0", "Con1", "Con2",
-                                            "Con3", "Con4", "Con5",
-                                            "Con6", "Con7", "Con8",
-                                            "Con9", "Con10", "Con11"};
+const string FCCLattice::directionName[] =
+{
+    "C0East", "C1North", "C2TopNE",
+    "C3TopNW", "C4TopSW", "C5TopSE",
+    "C6West", "C7South", "C8BottomSW",
+    "C9BottomSE", "C10BottomNE", "C11BottomNW"
+};
 
 short FCCLattice::getOppositeDirection(short d) {
     switch (Direction(d)) {
-    case Con0:	return Con6; break;
-    case Con1:	return Con7; break;
-    case Con2:	return Con8; break;
-    case Con3:	return Con9; break;
-    case Con4:	return Con10; break;
-    case Con5:	return Con11; break;
-    case Con6:	return Con0; break;
-    case Con7:	return Con1; break;
-    case Con8:	return Con2; break;
-    case Con9:	return Con3; break;
-    case Con10:	return Con4; break;
-    case Con11:	return Con5; break;
+    case C0East:	return C6West; break;
+    case C1North:	return C7South; break;
+    case C2TopNE:	return C8BottomSW; break;
+    case C3TopNW:	return C9BottomSE; break;
+    case C4TopSW:	return C10BottomNE; break;
+    case C5TopSE:	return C11BottomNW; break;
+    case C6West:	return C0East; break;
+    case C7South:	return C1North; break;
+    case C8BottomSW:	return C2TopNE; break;
+    case C9BottomSE:	return C3TopNW; break;
+    case C10BottomNE:	return C4TopSW; break;
+    case C11BottomNW:	return C5TopSE; break;
     default:
         ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
         return -1;

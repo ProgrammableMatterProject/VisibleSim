@@ -21,6 +21,7 @@ private:
     // DApp Variables
     Catoms3DBlock *catom;
     Neighborhood *neighborhood;
+    BaseSimulator::World *world;
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode() {
@@ -99,6 +100,33 @@ public :
      * Attract modules as enabled by the self-assembly rules
      */
     void attract();
+
+    /**
+     * Sends an attract signal to add a module to position pos of the target shape
+     * @param pos target position
+     */
+    void sendAttractSignalTo(const Cell3DPosition& pos);
+
+    /**
+     * @param dir
+     * @return true if module has a neighbor in lattice direction dir
+     */
+    bool hasNeighborInDirection(SkewFCCLattice::Direction dir) const;
+
+    /**
+     * Requests to be notified when position pos is ready to be filled
+     * @param pos
+     * @return true if the position is already ready to be filled, false otherwise
+     */
+    bool getAuthorizationToAttractTo(const Cell3DPosition& pos);
+
+    /**
+     * Same as CoatingBlockCode::getAuthorizationToAttractTo, but using border following
+     *  to reach the destination authorizer
+     * @param pos
+     * @return true if the position is already ready to be filled, false otherwise
+     */
+    bool borderFollowingAttractRequestTo(const Cell3DPosition& pos);
 
     /// Advanced blockcode handlers below
 

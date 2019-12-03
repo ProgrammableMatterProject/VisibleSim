@@ -14,6 +14,7 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
     //                      std::bind(&CoatingBlockCode::handleSampleMessage, this,
     //                                std::placeholders::_1, std::placeholders::_2));
 
+    world = BaseSimulator::getWorld();
     // set the module pointer
     catom = static_cast<Catoms3DBlock*>(hostBlock);
 
@@ -185,8 +186,61 @@ bool CoatingBlockCode::has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const
 void CoatingBlockCode::attract() {
     // North attraction
     if (neighborhood->isNorthSeed()) {
-        // sendAttractSignalTo( );
+        sendAttractSignalTo(catom->position.addY(1));
     }
 
+    // North attraction
+    if (neighborhood->isSouthSeed()) {
+        sendAttractSignalTo(catom->position.addY(-1));
+    }
 
+    // West attraction
+    if (neighborhood->directionIsInCSG(West)) {
+        const Cell3DPosition& wPos = neighborhood->cellInDirection(West);
+        if (neighborhood->directionIsInCSG(SouthWest)
+            and hasNeighborInDirection(SkewFCCLattice::Direction::C7South)) {
+            if (getAuthorizationToAttractTo(wPos)) {
+                sendAttractSignalTo(wPos);
+            }
+        } else if (neighborhood->isOnInternalHole()) {
+            borderFollowingAttractRequestTo(wPos);
+        } else {
+            sendAttractSignalTo(wPos);
+        }
+    }
+
+    // East attraction
+    if (neighborhood->directionIsInCSG(East)) {
+        const Cell3DPosition& ePos = neighborhood->cellInDirection(East);
+        if (neighborhood->directionIsInCSG(NorthEast)
+            and hasNeighborInDirection(SkewFCCLattice::Direction::C1North)) {
+            if (getAuthorizationToAttractTo(ePos)) {
+                sendAttractSignalTo(ePos);
+            }
+        } else if (neighborhood->isOnInternalHole()) {
+            borderFollowingAttractRequestTo(ePos);
+        } else {
+            sendAttractSignalTo(ePos);
+        }
+    }
+}
+
+bool CoatingBlockCode::hasNeighborInDirection(SkewFCCLattice::Direction dir) const {
+    return lattice->cellHasBlock(lattice->getCellInDirection(catom->position, dir));
+}
+
+void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
+    world->addBlock(0, buildNewBlockCode, pos, YELLOW);
+}
+
+bool CoatingBlockCode::getAuthorizationToAttractTo(const Cell3DPosition& pos) {
+    // do nothing
+
+    return true;
+}
+
+bool CoatingBlockCode::borderFollowingAttractRequestTo(const Cell3DPosition& pos) {
+    // do nothing yet
+
+    return true;
 }
