@@ -207,6 +207,40 @@ void Lattice::resetCellHighlights() {
     mapHighlightedCells.clear();
 }
 
+void Lattice::highlightAllCellsThatVerify(std::function<bool(const Cell3DPosition&)> predicate,
+                                          Color color) {
+    Cell3DPosition pos;
+    for (short iz = 0; iz <= getGridUpperBounds()[2]; iz++){
+        const Cell3DPosition& glb = getGridLowerBounds(iz);
+        const Cell3DPosition& ulb = getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                pos.set(ix,iy,iz);
+
+                if (predicate(pos))
+                    highlightCell(pos, color);
+            }
+        }
+    }
+}
+
+void Lattice::
+unhighlightAllCellsThatVerify(std::function<bool(const Cell3DPosition&)> predicate) {
+    Cell3DPosition pos;
+    for (short iz = 0; iz <= getGridUpperBounds()[2]; iz++){
+        const Cell3DPosition& glb = getGridLowerBounds(iz);
+        const Cell3DPosition& ulb = getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                pos.set(ix,iy,iz);
+
+                if (predicate(pos))
+                    unhighlightCell(pos);
+            }
+        }
+    }
+}
+
 /********************* Lattice2D *********************/
 Lattice2D::Lattice2D() : Lattice() {}
 Lattice2D::Lattice2D(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice(gsz,gsc) {}

@@ -247,9 +247,37 @@ public:
 
     virtual void glDraw() {};
 
+    /**
+     * Draws a transparent shape that fills the cell at location pos, with the given color
+     * @param pos position of the cell to highlight
+     * @param color highlight color, YELLOW by default
+     */
     virtual void highlightCell(const Cell3DPosition& pos, const Color &color = YELLOW);
+
+    /**
+     * Cancels out Lattice::highlightCell for a given cell
+     * @param pos position of the cell to unhighlight
+     */
     virtual void unhighlightCell(const Cell3DPosition& pos);
+
+    /**
+     * Unhighlights all highlighted cells
+     */
     virtual void resetCellHighlights(); // Unhighlight all highlighted cells
+
+    /**
+     * Iterates over all cells in the lattice and highlights all verify the predicate
+     * @param predicate condition to verify
+     * @param color highlight color
+     */
+    void highlightAllCellsThatVerify(std::function<bool (const Cell3DPosition&)> predicate,
+                                     Color color = YELLOW);
+
+    /**
+     * Cancels out utils::highlightAllCellsThatVerify
+     * @param predicate condition to verify
+     */
+    void unhighlightAllCellsThatVerify(std::function<bool(const Cell3DPosition&)> predicate);
 };
 
 /*! @brief 2-Dimensional Lattice abstract class
