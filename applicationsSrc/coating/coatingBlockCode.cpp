@@ -18,19 +18,34 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
     // set the module pointer
     catom = static_cast<Catoms3DBlock*>(hostBlock);
 
-    neighborhood = new Neighborhood(catom, isInCSG);
+    isInG = CoatingBlockCode::isInCSG;
+    if (not neighborhood) neighborhood = new Neighborhood(isInG);
   }
 
 void CoatingBlockCode::startup() {
-    console << "start";
+    if (catom->blockId == 1) COATING_SEED_POS = catom->position; // FIXME:
 
-    if (HIGHLIGHT_COATING or HIGHLIGHT_CSG) {
+    if (HIGHLIGHT_COATING or HIGHLIGHT_CSG or HIGHLIGHT_SEEDS) {
         highlight();
         HIGHLIGHT_COATING = false;
         HIGHLIGHT_CSG = false;
+        HIGHLIGHT_SEEDS = false;
     }
 
-    if (catom->position == COATING_SEED_POS) {
+    // Simulate authorizations
+    if (watchlist.find(catom->position) != watchlist.end()) {
+        auto const& it = watchlist.find(catom->position);
+
+        stringstream info;
+        info << " provides attract authorization to " << it->first;
+        scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
+
+        const auto& callback = it->second;
+        callback(catom->position);
+        watchlist.erase(it);
+    }
+
+    if (catom->position == COATING_SEED_POS or isInG(catom->position)) {
         attract();
     }
 }
@@ -40,7 +55,7 @@ void CoatingBlockCode::handleSampleMessage(MessagePtr msgPtr, P2PNetworkInterfac
 }
 
 void CoatingBlockCode::onMotionEnd() {
-    console << " has reached its destination" << "\n";
+    console << " has reached " << catom->position << "\n";
 
     // do stuff
     // ...
@@ -107,10 +122,12 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
                          << HIGHLIGHT_COATING_LAYER << endl;
                 } else if (varg == string("csg")) {
                     HIGHLIGHT_CSG = true;
-                    argc--;
-                    (*argv)++;
 
                     cout << "--csg option provided" << endl;
+                } else if (varg == string("seeds")) {
+                    HIGHLIGHT_SEEDS = true;
+
+                    cout << "--seeds option provided" << endl;
                 } else {
                     return false;
                 }
@@ -141,17 +158,29 @@ void CoatingBlockCode::highlight() const {
             }
         }
     }
+
+    if (HIGHLIGHT_SEEDS) {
+        lattice->highlightAllCellsThatVerify(
+            [this](const Cell3DPosition& p) { return neighborhood->isNorthSeed(p); }, GREEN);
+        lattice->highlightAllCellsThatVerify(
+            [this](const Cell3DPosition& p) { return neighborhood->isSouthSeed(p); }, ORANGE);
+        lattice->highlightAllCellsThatVerify( [this](const Cell3DPosition& p) {
+            return neighborhood->isNorthLineOnMerge(p); }, RED);
+        lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+            return neighborhood->isSouthLineOnMerge(p); }, BLUE);
+    }
 }
 
-int CoatingBlockCode::getCoatingLayer(const Cell3DPosition& pos) const {
+int CoatingBlockCode::getCoatingLayer(const Cell3DPosition& pos) {
     return pos[2] - COATING_SEED_POS[2];
 }
 
-bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) const {
-    return pos[2] >= COATING_SEED_POS[2] and isInCoatingLayer(pos, getCoatingLayer(pos));
+bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) {
+    return BaseSimulator::getWorld()->lattice->isInGrid(pos)
+        and pos[2] >= COATING_SEED_POS[2] and isInCoatingLayer(pos, getCoatingLayer(pos));
 }
 
-bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) const {
+bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) {
     int pLayer = getCoatingLayer(pos);
 
     if (isInCSG(pos)) return false;
@@ -161,8 +190,8 @@ bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) co
         and not hasHorizontalNeighborInCSG(pos) and has2ndOrderNeighborInCSG(pos); // Coating distance 2
 }
 
-bool CoatingBlockCode::hasHorizontalNeighborInCSG(const Cell3DPosition& pos) const {
-    for (const Cell3DPosition& p : lattice->getNeighborhood(pos)) {
+bool CoatingBlockCode::hasHorizontalNeighborInCSG(const Cell3DPosition& pos) {
+    for (const Cell3DPosition& p : BaseSimulator::getWorld()->lattice->getNeighborhood(pos)) {
         if (p[2] < pos[2]) continue;
 
         if (isInCSG(p)) return true;
@@ -175,7 +204,7 @@ bool CoatingBlockCode::hasHorizontalNeighborInCSG(const Cell3DPosition& pos) con
     return false;
 }
 
-bool CoatingBlockCode::has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const {
+bool CoatingBlockCode::has2ndOrderNeighborInCSG(const Cell3DPosition& pos) {
     for (const Cell3DPosition& pRel : _2ndOrderNeighbors) {
         if (isInCSG(pRel + pos)) return true;
     }
@@ -184,25 +213,31 @@ bool CoatingBlockCode::has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const
 }
 
 void CoatingBlockCode::attract() {
+    stringstream info;
+
     // North attraction
-    if (neighborhood->isNorthSeed()) {
+    if (neighborhood->isNorthSeed(catom->position)) {
         sendAttractSignalTo(catom->position.addY(1));
     }
 
-    // North attraction
-    if (neighborhood->isSouthSeed()) {
+    // South attraction
+    if (neighborhood->isSouthSeed(catom->position)) {
         sendAttractSignalTo(catom->position.addY(-1));
     }
 
     // West attraction
-    if (neighborhood->directionIsInCSG(West)) {
-        const Cell3DPosition& wPos = neighborhood->cellInDirection(West);
-        if (neighborhood->directionIsInCSG(SouthWest)
+    if (neighborhood->directionIsInCSG(catom->position, West)
+        and not hasNeighborInDirection(SkewFCCLattice::Direction::C6West)) {
+        const Cell3DPosition& wPos = neighborhood->cellInDirection(catom->position, West);
+        if (neighborhood->directionIsInCSG(catom->position, SouthWest)
             and hasNeighborInDirection(SkewFCCLattice::Direction::C7South)) {
-            if (getAuthorizationToAttractTo(wPos)) {
+            if (getAuthorizationToAttract(wPos, West)) {
                 sendAttractSignalTo(wPos);
             }
-        } else if (neighborhood->isOnInternalHole()) {
+        } else if (neighborhood->isOnInternalHole(catom->position)) {
+            info << " sends a WEST border following request for " << wPos;
+            scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
+
             borderFollowingAttractRequestTo(wPos);
         } else {
             sendAttractSignalTo(wPos);
@@ -210,14 +245,15 @@ void CoatingBlockCode::attract() {
     }
 
     // East attraction
-    if (neighborhood->directionIsInCSG(East)) {
-        const Cell3DPosition& ePos = neighborhood->cellInDirection(East);
-        if (neighborhood->directionIsInCSG(NorthEast)
+    if (neighborhood->directionIsInCSG(catom->position, East)
+        and not hasNeighborInDirection(SkewFCCLattice::Direction::C0East)) {
+        const Cell3DPosition& ePos = neighborhood->cellInDirection(catom->position, East);
+        if (neighborhood->directionIsInCSG(catom->position, NorthEast)
             and hasNeighborInDirection(SkewFCCLattice::Direction::C1North)) {
-            if (getAuthorizationToAttractTo(ePos)) {
+            if (getAuthorizationToAttract(ePos, East)) {
                 sendAttractSignalTo(ePos);
             }
-        } else if (neighborhood->isOnInternalHole()) {
+        } else if (neighborhood->isOnInternalHole(catom->position)) {
             borderFollowingAttractRequestTo(ePos);
         } else {
             sendAttractSignalTo(ePos);
@@ -230,17 +266,41 @@ bool CoatingBlockCode::hasNeighborInDirection(SkewFCCLattice::Direction dir) con
 }
 
 void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
+    stringstream info;
+    info << " attracts to " << CCWDirectionStringForPosition(catom->position - pos)
+         << " position " << pos;
+    scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
+
     world->addBlock(0, buildNewBlockCode, pos, YELLOW);
 }
 
-bool CoatingBlockCode::getAuthorizationToAttractTo(const Cell3DPosition& pos) {
-    // do nothing
+bool CoatingBlockCode::getAuthorizationToAttract(const Cell3DPosition& requester,
+                                                 CCWDir d) {
+    stringstream info;
+    info << " requests authorization to attract " << CCWDirectionStringForDirectionIndex(d)
+         << " from " << requester;
+    scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
 
-    return true;
+    const Cell3DPosition& target = requester + CCWDPos[d];
+    if (lattice->getBlock(target)) {
+        stringstream info;
+        info << " modules in place, self-granting authorization from " << requester;
+        scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
+
+        return true;
+    }
+
+    // Else. Add to watchlist and get notified when module is added
+    VS_ASSERT(watchlist.find(target) == watchlist.end());
+    watchlist.emplace(requester, std::bind(&CoatingBlockCode::sendAttractSignalTo, this,
+                                           std::placeholders::_1));
+    return false;
 }
 
 bool CoatingBlockCode::borderFollowingAttractRequestTo(const Cell3DPosition& pos) {
-    // do nothing yet
+    stringstream info;
+    info << " requests BORDER authorization for " << pos;
+    scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
 
     return true;
 }

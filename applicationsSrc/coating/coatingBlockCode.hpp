@@ -16,12 +16,17 @@ private:
     static inline bool HIGHLIGHT_COATING = false;
     static inline bool HIGHLIGHT_CSG = false;
     static inline int HIGHLIGHT_COATING_LAYER = -1;
-    static inline Cell3DPosition COATING_SEED_POS = Cell3DPosition(2, 2, 2);
+    static inline int HIGHLIGHT_SEEDS = false;
+    static inline Cell3DPosition COATING_SEED_POS;
+    static inline const Color ATTRACT_DEBUG_COLOR = CYAN;
+    static inline const Color AUTH_DEBUG_COLOR = ORANGE;
 
     // DApp Variables
     Catoms3DBlock *catom;
-    Neighborhood *neighborhood;
     BaseSimulator::World *world;
+    static inline Neighborhood *neighborhood;
+    static inline std::function<bool (const Cell3DPosition&)> isInG;
+    static inline multimap<Cell3DPosition, function<void (const Cell3DPosition&)>> watchlist;
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode() {
@@ -62,7 +67,7 @@ public :
      * @param pos position to evaluate
      * @return true if pos is in the coating of the current shape, false otherwise
      */
-    bool isInCoating(const Cell3DPosition& pos) const;
+    static bool isInCoating(const Cell3DPosition& pos);
 
     /**
      * Indicates whether position pos is in the coating at a given layer or not
@@ -70,31 +75,33 @@ public :
      * @param layer layer to evaluate, starts from 0 (i.e., coating seed layer)
      * @return true if pos is in the coating of the shape at the given layer, false otherwise
      */
-    bool isInCoatingLayer(const Cell3DPosition& pos, int layer) const;
+    static bool isInCoatingLayer(const Cell3DPosition& pos, int layer);
 
     /**
      * @param pos position to evaluate
      * @return the coating layer to which pos belongs
      */
-    int getCoatingLayer(const Cell3DPosition& pos) const;
+    static int getCoatingLayer(const Cell3DPosition& pos);
 
     /**
      * @param pos position to evaluate
      * @return true if pos is inside the current CSG description, false otherwise
      */
-    static bool isInCSG(const Cell3DPosition& pos) { return target->isInTarget(pos); }
+    static bool isInCSG(const Cell3DPosition& pos) {
+        return BaseSimulator::getWorld()->lattice->isInGrid(pos) and target->isInTarget(pos);
+    }
 
     /**
      * @param pos position to evaluate
      * @return true if pos has a neighbor position that is inside the CSG description
      */
-    bool hasHorizontalNeighborInCSG(const Cell3DPosition& pos) const;
+    static bool hasHorizontalNeighborInCSG(const Cell3DPosition& pos);
 
     /**
      * @param pos position to evaluate
      * @return true if pos has a second order neighbor position inside the CSG description
      */
-    bool has2ndOrderNeighborInCSG(const Cell3DPosition& pos) const;
+    static bool has2ndOrderNeighborInCSG(const Cell3DPosition& pos);
 
     /**
      * Attract modules as enabled by the self-assembly rules
@@ -115,10 +122,11 @@ public :
 
     /**
      * Requests to be notified when position pos is ready to be filled
-     * @param pos
+     * @param requester module to which the request will be sent
+     * @param d the direction of the target position relative to requester
      * @return true if the position is already ready to be filled, false otherwise
      */
-    bool getAuthorizationToAttractTo(const Cell3DPosition& pos);
+    bool getAuthorizationToAttract(const Cell3DPosition& requester, CCWDir d);
 
     /**
      * Same as CoatingBlockCode::getAuthorizationToAttractTo, but using border following
