@@ -404,28 +404,17 @@ void TargetCSG::boundingBox(BoundingBox &bb) {
 void TargetCSG::highlight() const {
     Lattice *lattice = BaseSimulator::getWorld()->lattice;
 
-    const Cell3DPosition& glb = lattice->getGridLowerBounds();
-    const Cell3DPosition& ulb = lattice->getGridUpperBounds();
-
     Cell3DPosition p;
-    if (typeid(lattice) == typeid(SkewFCCLattice)) {
-        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
-                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
-                    p.set(ix,iy,iz);
-                    if (isInTarget(p))
-                        lattice->highlightCell(p, getTargetColor(p));
-                }
-            }
-        }
-    } else {
-        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
-                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
-                    p.set(ix,iy,iz);
-                    if (isInTarget(p))
-                        lattice->highlightCell(p, getTargetColor(p));
-                }
+    for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
+        const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
+        const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                p.set(ix,iy,iz);
+
+                Color color = WHITE;
+                if (csgRoot->isInside(gridToCSGPosition(p), color))
+                    lattice->highlightCell(p, color);
             }
         }
     }
@@ -434,28 +423,17 @@ void TargetCSG::highlight() const {
 void TargetCSG::unhighlight() const {
     Lattice *lattice = BaseSimulator::getWorld()->lattice;
 
-    const Cell3DPosition& glb = lattice->getGridLowerBounds();
-    const Cell3DPosition& ulb = lattice->getGridUpperBounds();
-
     Cell3DPosition p;
-    if (typeid(lattice) == typeid(SkewFCCLattice)) {
-        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
-                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
-                    p.set(ix,iy,iz);
-                    if (isInTarget(p))
-                        lattice->unhighlightCell(p);
-                }
-            }
-        }
-    } else {
-        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
-                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
-                    p.set(ix,iy,iz);
-                    if (isInTarget(p))
-                        lattice->highlightCell(p);
-                }
+    for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
+        const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
+        const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                p.set(ix,iy,iz);
+
+                Color c;
+                if (csgRoot->isInside(gridToCSGPosition(p), c))
+                    lattice->unhighlightCell(p);
             }
         }
     }
