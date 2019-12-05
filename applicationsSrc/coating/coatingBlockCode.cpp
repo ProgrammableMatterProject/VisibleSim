@@ -1,5 +1,7 @@
 #include "coatingBlockCode.hpp"
 
+#include <unistd.h>
+
 #include "coatingUtils.hpp"
 
 using namespace Catoms3D;
@@ -219,12 +221,14 @@ void CoatingBlockCode::attract() {
     stringstream info;
 
     // North attraction
-    if (neighborhood->isNorthSeed(catom->position)) {
+    if (neighborhood->isNorthSeed(catom->position)
+        and not hasNeighborInDirection(SkewFCCLattice::Direction::C1North)) {
         sendAttractSignalTo(catom->position.addY(1));
     }
 
     // South attraction
-    if (neighborhood->isSouthSeed(catom->position)) {
+    if (neighborhood->isSouthSeed(catom->position)
+        and not hasNeighborInDirection(SkewFCCLattice::Direction::C7South)) {
         sendAttractSignalTo(catom->position.addY(-1));
     }
 
@@ -234,7 +238,9 @@ void CoatingBlockCode::attract() {
         const Cell3DPosition& wPos = neighborhood->cellInDirection(catom->position, West);
         if (neighborhood->directionIsInCSG(catom->position, SouthWest)
             and hasNeighborInDirection(SkewFCCLattice::Direction::C7South)) {
-            if (getAuthorizationToAttract(wPos, West)) {
+            const Cell3DPosition& sPos =
+                neighborhood->cellInDirection(catom->position, South);
+            if (getAuthorizationToAttract(sPos, West)) {
                 sendAttractSignalTo(wPos);
             }
         } else if (neighborhood->isOnInternalHole(catom->position)) {
@@ -274,6 +280,8 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
          << " position " << pos;
     scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
+    usleep(50000);
+
     world->addBlock(0, buildNewBlockCode, pos, YELLOW);
 }
 
@@ -284,7 +292,11 @@ bool CoatingBlockCode::getAuthorizationToAttract(const Cell3DPosition& requester
          << " from " << requester;
     scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
 
+    stringstream info2;
     const Cell3DPosition& target = requester + CCWDPos[d];
+    info2 << " target: " << target;
+    scheduler->trace(info2.str(), catom->blockId, AUTH_DEBUG_COLOR);
+
     if (lattice->getBlock(target)) {
         stringstream info;
         info << " modules in place, self-granting authorization from " << requester;

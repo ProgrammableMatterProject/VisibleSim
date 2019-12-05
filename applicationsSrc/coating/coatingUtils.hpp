@@ -16,13 +16,13 @@ enum CCWDir {NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, Wes
 
 inline const int NumCCWDirs = 8;
 inline constexpr Cell3DPosition CCWDPos[NumCCWDirs] = {
-    Cell3DPosition(-1, -1, 0), // FrontLeft
-    Cell3DPosition(0, -1, 0), // Front
-    Cell3DPosition(1, -1, 0), // FrontRight
+    Cell3DPosition(-1, 1, 0), // FrontLeft
+    Cell3DPosition(0, 1, 0), // Front
+    Cell3DPosition(1, 1, 0), // FrontRight
     Cell3DPosition(1, 0, 0), // Right
-    Cell3DPosition(1, 1, 0), // RearRight
-    Cell3DPosition(0, 1, 0), // Rear
-    Cell3DPosition(-1, 1, 0), // RearLeft
+    Cell3DPosition(1,-1, 0), // RearRight
+    Cell3DPosition(0, -1, 0), // Rear
+    Cell3DPosition(-1, -1, 0), // RearLeft
     Cell3DPosition(-1, 0, 0), // Left
 };
 
