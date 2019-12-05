@@ -1,6 +1,7 @@
 #include "coatingNeighborhood.hpp"
 
 #include "world.h"
+#include <unistd.h>
 
 Neighborhood::Neighborhood(std::function<bool(const Cell3DPosition&)> _isInG)
     : isInG(_isInG) {
@@ -9,22 +10,22 @@ Neighborhood::Neighborhood(std::function<bool(const Cell3DPosition&)> _isInG)
 }
 
 Cell3DPosition Neighborhood::cellInDirection(const Cell3DPosition& ref,
-                                             CCWDir d) const {
-    return ref + CCWDPos[d];
+                                             PlanarDir d) const {
+    return ref + PlanarPos[d];
 }
 
-bool Neighborhood::directionIsInCSG(const Cell3DPosition& ref, CCWDir d) const {
-    const Cell3DPosition& pos = ref + CCWDPos[d];
+bool Neighborhood::directionIsInCSG(const Cell3DPosition& ref, PlanarDir d) const {
+    const Cell3DPosition& pos = ref + PlanarPos[d];
     return isInG(pos);
 }
 
 bool Neighborhood::isNorthSeed(const Cell3DPosition& pos) const {
-    cout << "isInG(" << pos << "): " << isInG(pos) << endl;
-    cout << "isNorthLineOnMerge(" << pos << "): " << isNorthLineOnMerge(pos) << endl;
-    cout << "isInG(" << pos.addY(1) << "): " << isInG(pos.addY(1)) << endl;
-    cout << "isInG(" << pos.addX(1).addY(1) << "): "
-         << isInG(pos.addX(1).addY(1)) << endl;
-    cout << "isInG(" << pos.addX(1) << "): " << isInG(pos.addX(1)) << endl;
+    // cout << "isInG(" << pos << "): " << isInG(pos) << endl;
+    // cout << "isNorthLineOnMerge(" << pos << "): " << isNorthLineOnMerge(pos) << endl;
+    // cout << "isInG(" << pos.addY(1) << "): " << isInG(pos.addY(1)) << endl;
+    // cout << "isInG(" << pos.addX(1).addY(1) << "): "
+    //      << isInG(pos.addX(1).addY(1)) << endl;
+    // cout << "isInG(" << pos.addX(1) << "): " << isInG(pos.addX(1)) << endl;
 
     return isInG(pos) and
         not isNorthLineOnMerge(pos) and isInG(pos.addY(1))
@@ -95,6 +96,74 @@ bool Neighborhood::isSouthLineOnMerge(const Cell3DPosition& pos) const {
     return true;
 }
 
-bool Neighborhood::isOnInternalHole(const Cell3DPosition& pos) const {
-    return false; // TODO
+int Neighborhood::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) const {
+    int newIdx;
+    vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
+    vector<pair<int, int>> cw_order = {{0,-1}, {-1,0}, {0,1}, {1,0}};
+
+    for (int i = 0; i < 4; i++) {
+        newIdx = (((idx+i-1)%4)+4)%4;
+
+        Cell3DPosition nextPos = currentPos
+            .addX(cw_order[newIdx].first)
+            .addY(cw_order[newIdx].second);
+
+        if (isInG(nextPos)) {
+            idx = newIdx;
+            currentPos = nextPos;
+            switch (i) {
+                case 0: return 1;
+                case 2: return -1;
+                case 3: return -2;
+                default: return 0;
+            }
+        }
+    }
+
+    return 0;
+}
+
+bool Neighborhood::isOnInternalHole(const Cell3DPosition& pos, PlanarDir d) const {
+    // From Thadeu's Sync/sync.cpp
+    int nTurns = 0;
+    int idx;
+
+    if (directionIsInCSG(pos, North) and directionIsInCSG(pos, South)
+        and directionIsInCSG(pos, East) and directionIsInCSG(pos, West))
+        return false;
+
+
+    if (d == West) {
+        if (not directionIsInCSG(pos, West) or not directionIsInCSG(pos, SouthWest))
+            return false;
+
+        idx = 0;
+    } else if (d == East) {
+        if (not directionIsInCSG(pos, East) or not directionIsInCSG(pos, NorthEast))
+            return false;
+
+        idx = 2;
+    } else {
+        stringstream err;
+        err << "isOnInternalHole(" << pos << ", " << planarDirectionIndexToString(d) << endl;
+        throw NotImplementedException(err.str());
+    }
+
+    // lattice->highlightCell(pos, BLACK);
+
+    Cell3DPosition currentPos = pos;
+    nTurns += getNextBorderNeighbor(idx, currentPos);
+
+    // lattice->highlightCell(currentPos,YELLOW);
+
+    while(currentPos != pos) {
+        // lattice->unhighlightCell(currentPos);
+        nTurns += getNextBorderNeighbor(idx, currentPos);
+        // lattice->highlightCell(currentPos,YELLOW);
+        // usleep(20000);
+    }
+
+    if (nTurns > 0) return true;
+
+    return nTurns > 0;
 }

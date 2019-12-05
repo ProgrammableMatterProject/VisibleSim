@@ -19,13 +19,13 @@ public :
      * @param d CCWDir direction to evaluate
      * @return cell in direction d from the current module
      */
-    Cell3DPosition cellInDirection(const Cell3DPosition& pos, CCWDir d) const;
+    Cell3DPosition cellInDirection(const Cell3DPosition& pos, PlanarDir d) const;
 
     /**
      * @param d direction to evaluate
      * @return true if cell in direction d from the current module is in the CSG object
      */
-    bool directionIsInCSG(const Cell3DPosition& pos, CCWDir d) const;
+    bool directionIsInCSG(const Cell3DPosition& pos, PlanarDir d) const;
 
     /**
      * @return true if catom is a north seed and should attract modules to its north column
@@ -50,10 +50,20 @@ public :
     bool isSouthLineOnMerge(const Cell3DPosition& pos) const;
 
     /**
+     * @param pos position to evaluate
+     * @param d direction of border following, depends on where the caller
+     *  wanted to check for a neighbor
      * @return true if catom is on the inner border of an internal hole in the shape,
      *  false otherwise
      */
-    bool isOnInternalHole(const Cell3DPosition& pos) const;
+    bool isOnInternalHole(const Cell3DPosition& pos, PlanarDir d) const;
+
+    /**
+     * @param idx current rotation index
+     * @param currentPos current search position
+     * @return the position of the next neighbor along the internal border
+     */
+    int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) const;
 };
 
 #endif /* CoatingNeighborhood_H_ */

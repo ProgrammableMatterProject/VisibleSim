@@ -12,10 +12,10 @@
 #define COATING_UTILS__H_
 
 //!< CounterClockwise Directions for navigating around a structure
-enum CCWDir {NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West };
+enum PlanarDir {NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West };
 
-inline const int NumCCWDirs = 8;
-inline constexpr Cell3DPosition CCWDPos[NumCCWDirs] = {
+inline const int NumPlanarDirs = 8;
+inline constexpr Cell3DPosition PlanarPos[NumPlanarDirs] = {
     Cell3DPosition(-1, 1, 0), // FrontLeft
     Cell3DPosition(0, 1, 0), // Front
     Cell3DPosition(1, 1, 0), // FrontRight
@@ -27,14 +27,14 @@ inline constexpr Cell3DPosition CCWDPos[NumCCWDirs] = {
 };
 
 inline int getDirectionIndexForPosition(const Cell3DPosition& pos) {
-    for (int i = 0; i < NumCCWDirs; i++) {
-        if (CCWDPos[i] == pos) return i;
+    for (int i = 0; i < NumPlanarDirs; i++) {
+        if (PlanarPos[i] == pos) return i;
     }
 
     return -1;
 }
 
-inline string CCWDirectionStringForDirectionIndex(CCWDir d) {
+inline string planarDirectionIndexToString(PlanarDir d) {
     switch(d) {
         case NorthWest: return "NorthWest";
         case North: return "North";
@@ -50,7 +50,7 @@ inline string CCWDirectionStringForDirectionIndex(CCWDir d) {
     return ""; // Unreachable
 }
 
-inline string CCWDirectionStringForPosition(const Cell3DPosition& pos) {
+inline string planarDirectionPositionToString(const Cell3DPosition& pos) {
     switch(getDirectionIndexForPosition(pos)) {
         case 0: return "NorthWest";
         case 1: return "North";

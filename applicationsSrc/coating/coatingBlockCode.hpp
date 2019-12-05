@@ -30,7 +30,10 @@ private:
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode() {
-        delete neighborhood;
+        if (neighborhood) {
+            delete neighborhood;
+            neighborhood = NULL;
+        }
     };
 
     /**
@@ -126,7 +129,7 @@ public :
      * @param d the direction of the target position relative to requester
      * @return true if the position is already ready to be filled, false otherwise
      */
-    bool getAuthorizationToAttract(const Cell3DPosition& requester, CCWDir d);
+    bool getAuthorizationToAttract(const Cell3DPosition& requester, PlanarDir d);
 
     /**
      * Same as CoatingBlockCode::getAuthorizationToAttractTo, but using border following

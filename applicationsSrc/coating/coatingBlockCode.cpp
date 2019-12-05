@@ -173,6 +173,10 @@ void CoatingBlockCode::highlight() const {
             return neighborhood->isNorthLineOnMerge(p); }, RED);
         lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
             return neighborhood->isSouthLineOnMerge(p); }, BLUE);
+        // lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+        //     return isInG(p) and neighborhood->isOnInternalHole(p, West); }, MAGENTA);
+        // lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+        //     return isInG(p) and neighborhood->isOnInternalHole(p, East); }, BLACK);
     }
 }
 
@@ -243,7 +247,7 @@ void CoatingBlockCode::attract() {
             if (getAuthorizationToAttract(sPos, West)) {
                 sendAttractSignalTo(wPos);
             }
-        } else if (neighborhood->isOnInternalHole(catom->position)) {
+        } else if (neighborhood->isOnInternalHole(catom->position, West)) {
             info << " sends a WEST border following request for " << wPos;
             scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
 
@@ -262,7 +266,7 @@ void CoatingBlockCode::attract() {
             if (getAuthorizationToAttract(ePos, East)) {
                 sendAttractSignalTo(ePos);
             }
-        } else if (neighborhood->isOnInternalHole(catom->position)) {
+        } else if (neighborhood->isOnInternalHole(catom->position, East)) {
             borderFollowingAttractRequestTo(ePos);
         } else {
             sendAttractSignalTo(ePos);
@@ -276,7 +280,7 @@ bool CoatingBlockCode::hasNeighborInDirection(SkewFCCLattice::Direction dir) con
 
 void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
     stringstream info;
-    info << " attracts to " << CCWDirectionStringForPosition(catom->position - pos)
+    info << " attracts to " << planarDirectionPositionToString(catom->position - pos)
          << " position " << pos;
     scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
@@ -286,14 +290,14 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
 }
 
 bool CoatingBlockCode::getAuthorizationToAttract(const Cell3DPosition& requester,
-                                                 CCWDir d) {
+                                                 PlanarDir d) {
     stringstream info;
-    info << " requests authorization to attract " << CCWDirectionStringForDirectionIndex(d)
+    info << " requests authorization to attract " << planarDirectionIndexToString(d)
          << " from " << requester;
     scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
 
     stringstream info2;
-    const Cell3DPosition& target = requester + CCWDPos[d];
+    const Cell3DPosition& target = requester + PlanarPos[d];
     info2 << " target: " << target;
     scheduler->trace(info2.str(), catom->blockId, AUTH_DEBUG_COLOR);
 
