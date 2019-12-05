@@ -85,7 +85,10 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
 
 void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
-    cerr << endl << "--- PRINT CATOM " << *catom << "---" << endl;
+    cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
+
+    cout << "isNorthSeed(" << catom->position << "): "
+         << neighborhood->isNorthSeed(catom->position) << endl;
 }
 
 void CoatingBlockCode::onAssertTriggered() {
