@@ -28,7 +28,7 @@ namespace BaseSimulator {
 
 HexanodeMotionStartEvent::HexanodeMotionStartEvent(Time t,
 																					 BuildingBlock *block,
-																					 const Cell3DPosition &fpos, SLattice::Direction forient): BlockEvent(t,block) {
+																					 const Cell3DPosition &fpos, HHLattice::Direction forient): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_NODEMOTION_START;
     finalPosition = fpos;
@@ -70,7 +70,7 @@ const string HexanodeMotionStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-HexanodeMotionStopEvent::HexanodeMotionStopEvent(Time t, BuildingBlock *block,const Cell3DPosition &fpos, SLattice::Direction forient): BlockEvent(t,block) {
+HexanodeMotionStopEvent::HexanodeMotionStopEvent(Time t, BuildingBlock *block,const Cell3DPosition &fpos, HHLattice::Direction forient): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_NODEMOTION_STOP;
 	finalPosition = fpos;

@@ -43,11 +43,10 @@ void HexanodeDemoBlockCode::startup() {
 		if (ci!=tab.end()) {
 			Cell3DPosition destination = (*ci)->getFinalPos(node->position);
 			previousPivot = (*ci)->getToConId();
-			cout << "previousPivot=" << (*ci)->getToConId() << "   md=" << (*ci)->direction << endl;
-			//scheduler->schedule(new NodeMotionStartEvent(scheduler->now()+1000000, node,destination,(*ci)->toConId));
+			cout << "previousPivot=" << previousPivot << " md=" << (*ci)->direction << endl;
+			scheduler->schedule(new HexanodeMotionStartEvent(scheduler->now()+1000000, node,destination,previousPivot));
 		}
-		
-	} 
+	}
 }
 
 void HexanodeDemoBlockCode::onMotionEnd() {
@@ -61,7 +60,7 @@ void HexanodeDemoBlockCode::onMotionEnd() {
 	if (ci!=tab.end()) {
 		Cell3DPosition destination = (*ci)->getFinalPos(node->position);
 		previousPivot = (*ci)->getToConId();
-		cout << "previousPivot=" << (*ci)->getToConId() << "   md=" << (*ci)->direction << endl;
-		//scheduler->schedule(new HexanodeMotionStartEvent(scheduler->now()+1000000, node,destination,(*ci)->toConId));
+		cout << "previousPivot=" << previousPivot << " md=" << (*ci)->direction << endl;
+		scheduler->schedule(new HexanodeMotionStartEvent(scheduler->now()+1000000, node,destination,previousPivot));
 	}
 }

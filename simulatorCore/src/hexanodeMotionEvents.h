@@ -25,9 +25,9 @@ namespace BaseSimulator {
 
 	class HexanodeMotionStartEvent : public BlockEvent {
 		Cell3DPosition finalPosition;
-		SLattice::Direction finalOrientation;
+		HHLattice::Direction finalOrientation;
 	public:
-		HexanodeMotionStartEvent(Time, BuildingBlock*, const Cell3DPosition &fpos, SLattice::Direction forient);
+		HexanodeMotionStartEvent(Time, BuildingBlock*, const Cell3DPosition &fpos, HHLattice::Direction forient);
 		HexanodeMotionStartEvent(HexanodeMotionStartEvent *ev);
 		~HexanodeMotionStartEvent();
 		void consumeBlockEvent() override {}
@@ -43,9 +43,9 @@ namespace BaseSimulator {
 
 	class HexanodeMotionStopEvent : public BlockEvent {
 		Cell3DPosition finalPosition;
-		SLattice::Direction finalOrientation;
+		HHLattice::Direction finalOrientation;
 	public:
-		HexanodeMotionStopEvent(Time, BuildingBlock *block,const Cell3DPosition &fpos, SLattice::Direction forient);
+		HexanodeMotionStopEvent(Time, BuildingBlock *block,const Cell3DPosition &fpos, HHLattice::Direction forient);
 		~HexanodeMotionStopEvent();
 		void consumeBlockEvent() override {}
 		void consume() override;
