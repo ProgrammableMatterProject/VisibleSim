@@ -43,7 +43,7 @@ void CoatingBlockCode::startup() {
         scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
 
         const auto& callback = it->second;
-        callback(catom->position);
+        callback();
         watchlist.erase(it);
     }
 
@@ -173,10 +173,10 @@ void CoatingBlockCode::highlight() const {
             return neighborhood->isNorthLineOnMerge(p); }, RED);
         lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
             return neighborhood->isSouthLineOnMerge(p); }, BLUE);
-        // lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-        //     return isInG(p) and neighborhood->isOnInternalHole(p, West); }, MAGENTA);
-        // lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-        //     return isInG(p) and neighborhood->isOnInternalHole(p, East); }, BLACK);
+        lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+            return isInG(p) and neighborhood->isOnInternalHole(p, West); }, MAGENTA);
+        lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+            return isInG(p) and neighborhood->isOnInternalHole(p, East); }, BLACK);
     }
 }
 
@@ -242,16 +242,13 @@ void CoatingBlockCode::attract() {
         const Cell3DPosition& wPos = neighborhood->cellInDirection(catom->position, West);
         if (neighborhood->directionIsInCSG(catom->position, SouthWest)
             and hasNeighborInDirection(SkewFCCLattice::Direction::C7South)) {
-            const Cell3DPosition& sPos =
-                neighborhood->cellInDirection(catom->position, South);
-            if (getAuthorizationToAttract(sPos, West)) {
-                sendAttractSignalTo(wPos);
-            }
+            getAuthorizationToAttract(neighborhood->
+                                      cellInDirection(catom->position, South), West);
         } else if (neighborhood->isOnInternalHole(catom->position, West)) {
             info << " sends a WEST border following request for " << wPos;
             scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
 
-            borderFollowingAttractRequestTo(wPos);
+            borderFollowingAttractRequest(neighborhood->cellInDirection(wPos, South), West);
         } else {
             sendAttractSignalTo(wPos);
         }
@@ -263,11 +260,10 @@ void CoatingBlockCode::attract() {
         const Cell3DPosition& ePos = neighborhood->cellInDirection(catom->position, East);
         if (neighborhood->directionIsInCSG(catom->position, NorthEast)
             and hasNeighborInDirection(SkewFCCLattice::Direction::C1North)) {
-            if (getAuthorizationToAttract(ePos, East)) {
-                sendAttractSignalTo(ePos);
-            }
-        } else if (neighborhood->isOnInternalHole(catom->position, East)) {
-            borderFollowingAttractRequestTo(ePos);
+            getAuthorizationToAttract(neighborhood->
+                                      cellInDirection(catom->position, North),East);
+            // } else if (neighborhood->isOnInternalHole(catom->position, East)) {
+        //     borderFollowingAttractRequestFrom(ePos);
         } else {
             sendAttractSignalTo(ePos);
         }
@@ -284,42 +280,66 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
          << " position " << pos;
     scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
+    catom->setColor(AttractedColor);
     usleep(50000);
 
-    world->addBlock(0, buildNewBlockCode, pos, YELLOW);
+    world->addBlock(0, buildNewBlockCode, pos, DefaultColor);
 }
 
-bool CoatingBlockCode::getAuthorizationToAttract(const Cell3DPosition& requester,
+bool CoatingBlockCode::getAuthorizationToAttract(const Cell3DPosition& requestee,
                                                  PlanarDir d) {
     stringstream info;
-    info << " requests authorization to attract " << planarDirectionIndexToString(d)
-         << " from " << requester;
+    const Cell3DPosition& pos = catom->position + planarPos[d];
+    info << " requests authorization to attract " << pos << "("
+         << planarDirectionIndexToString(d) << ") from " << requestee;
     scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
 
-    stringstream info2;
-    const Cell3DPosition& target = requester + PlanarPos[d];
-    info2 << " target: " << target;
-    scheduler->trace(info2.str(), catom->blockId, AUTH_DEBUG_COLOR);
+    // stringstream info2;
+    const Cell3DPosition& checkPos = requestee + planarPos[d];
+    // info2 << " checkPos: " << checkPos;
+    // scheduler->trace(info2.str(), catom->blockId, AUTH_DEBUG_COLOR);
 
-    if (lattice->getBlock(target)) {
+    if (lattice->getBlock(checkPos)) {
         stringstream info;
-        info << " modules in place, self-granting authorization from " << requester;
+        info << checkPos << " module in place, self-granting authorization from " << requestee;
         scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
+
+        sendAttractSignalTo(pos);
 
         return true;
     }
 
     // Else. Add to watchlist and get notified when module is added
-    VS_ASSERT(watchlist.find(target) == watchlist.end());
-    watchlist.emplace(requester, std::bind(&CoatingBlockCode::sendAttractSignalTo, this,
-                                           std::placeholders::_1));
+    VS_ASSERT(watchlist.find(checkPos) == watchlist.end());
+    watchlist.emplace(checkPos, std::bind(&CoatingBlockCode::sendAttractSignalTo, this, pos));
+    catom->setColor(WaitingColor);
+
     return false;
 }
 
-bool CoatingBlockCode::borderFollowingAttractRequestTo(const Cell3DPosition& pos) {
+bool CoatingBlockCode::borderFollowingAttractRequest(const Cell3DPosition& requestee,
+                                                     PlanarDir d) {
     stringstream info;
-    info << " requests BORDER authorization for " << pos;
+    const Cell3DPosition& pos = catom->position + planarPos[d];
+    info << " requests BORDER authorization to attract " << pos << "("
+         << planarDirectionIndexToString(d) << ") from " << requestee;
     scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
 
-    return true;
+    if (lattice->getBlock(requestee)) {
+        stringstream info;
+        info << target << " module in place, self-granting BORDER authorization";
+        scheduler->trace(info.str(), catom->blockId, AUTH_DEBUG_COLOR);
+
+        sendAttractSignalTo(pos);
+
+        return true;
+    }
+
+    // Else. Add to watchlist and get notified when module is added
+    VS_ASSERT(watchlist.find(requestee) == watchlist.end());
+    watchlist.emplace(requestee, std::bind(&CoatingBlockCode::sendAttractSignalTo, this, pos));
+
+    catom->setColor(WaitingColor);
+
+    return false;
 }

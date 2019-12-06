@@ -21,12 +21,16 @@ private:
     static inline const Color ATTRACT_DEBUG_COLOR = CYAN;
     static inline const Color AUTH_DEBUG_COLOR = ORANGE;
 
+    static inline const Color WaitingColor = BLUE;
+    static inline const Color AttractedColor = GREEN;
+    static inline const Color DefaultColor = YELLOW;
+
     // DApp Variables
     Catoms3DBlock *catom;
     BaseSimulator::World *world;
     static inline Neighborhood *neighborhood;
     static inline std::function<bool (const Cell3DPosition&)> isInG;
-    static inline multimap<Cell3DPosition, function<void (const Cell3DPosition&)>> watchlist;
+    static inline multimap<Cell3DPosition, function<void (void)>> watchlist;
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode() {
@@ -125,19 +129,22 @@ public :
 
     /**
      * Requests to be notified when position pos is ready to be filled
-     * @param requester module to which the request will be sent
-     * @param d the direction of the target position relative to requester
+     * @param requestee module to which the request will be sent
+     * @param d the direction of the check position relative to requester
      * @return true if the position is already ready to be filled, false otherwise
      */
-    bool getAuthorizationToAttract(const Cell3DPosition& requester, PlanarDir d);
+    bool getAuthorizationToAttract(const Cell3DPosition& requestee, PlanarDir d);
 
     /**
      * Same as CoatingBlockCode::getAuthorizationToAttractTo, but using border following
      *  to reach the destination authorizer
      * @param pos
-     * @return true if the position is already ready to be filled, false otherwise
+     * @param d the direction of the desired insertion by this module
+     * @return true if the position is already ready to be filled according to the requestee
+     *  , false otherwise
      */
-    bool borderFollowingAttractRequestTo(const Cell3DPosition& pos);
+    bool borderFollowingAttractRequest(const Cell3DPosition& requestee,
+                                       PlanarDir d);
 
     /// Advanced blockcode handlers below
 

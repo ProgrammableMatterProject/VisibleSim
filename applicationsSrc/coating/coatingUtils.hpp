@@ -15,7 +15,7 @@
 enum PlanarDir {NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West };
 
 inline const int NumPlanarDirs = 8;
-inline constexpr Cell3DPosition PlanarPos[NumPlanarDirs] = {
+inline constexpr Cell3DPosition planarPos[NumPlanarDirs] = {
     Cell3DPosition(-1, 1, 0), // FrontLeft
     Cell3DPosition(0, 1, 0), // Front
     Cell3DPosition(1, 1, 0), // FrontRight
@@ -28,7 +28,7 @@ inline constexpr Cell3DPosition PlanarPos[NumPlanarDirs] = {
 
 inline int getDirectionIndexForPosition(const Cell3DPosition& pos) {
     for (int i = 0; i < NumPlanarDirs; i++) {
-        if (PlanarPos[i] == pos) return i;
+        if (planarPos[i] == pos) return i;
     }
 
     return -1;

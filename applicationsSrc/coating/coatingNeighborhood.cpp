@@ -11,11 +11,11 @@ Neighborhood::Neighborhood(std::function<bool(const Cell3DPosition&)> _isInG)
 
 Cell3DPosition Neighborhood::cellInDirection(const Cell3DPosition& ref,
                                              PlanarDir d) const {
-    return ref + PlanarPos[d];
+    return ref + planarPos[d];
 }
 
 bool Neighborhood::directionIsInCSG(const Cell3DPosition& ref, PlanarDir d) const {
-    const Cell3DPosition& pos = ref + PlanarPos[d];
+    const Cell3DPosition& pos = ref + planarPos[d];
     return isInG(pos);
 }
 
