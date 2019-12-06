@@ -45,6 +45,7 @@ bool SyncPrevious::needSyncToRight() {
         return isInternalBorder(3);
     return false;
 }
+
 void SyncPrevious::handleMessage(shared_ptr<Message> message) {
     //catom->setColor(BLUE);
     shared_ptr<SyncPrevious_message> syncMsg = static_pointer_cast<SyncPrevious_message>(message);

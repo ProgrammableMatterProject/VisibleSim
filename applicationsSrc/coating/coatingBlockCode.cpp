@@ -27,6 +27,8 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
 void CoatingBlockCode::startup() {
     if (catom->blockId == 1) COATING_SEED_POS = catom->position; // FIXME:
 
+    if (not isInG(catom->position)) return;
+
     if (HIGHLIGHT_COATING or HIGHLIGHT_CSG or HIGHLIGHT_SEEDS) {
         highlight();
         HIGHLIGHT_COATING = false;
@@ -262,8 +264,11 @@ void CoatingBlockCode::attract() {
             and hasNeighborInDirection(SkewFCCLattice::Direction::C1North)) {
             getAuthorizationToAttract(neighborhood->
                                       cellInDirection(catom->position, North),East);
-            // } else if (neighborhood->isOnInternalHole(catom->position, East)) {
-        //     borderFollowingAttractRequestFrom(ePos);
+        } else if (neighborhood->isOnInternalHole(catom->position, East)) {
+            info << " sends a EAST border following request for " << ePos;
+            scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
+
+            borderFollowingAttractRequest(neighborhood->cellInDirection(ePos, North), East);
         } else {
             sendAttractSignalTo(ePos);
         }
@@ -343,3 +348,177 @@ bool CoatingBlockCode::borderFollowingAttractRequest(const Cell3DPosition& reque
 
     return false;
 }
+
+
+// void Neighborhood::addLeft() {
+//     // Position exists and is free.
+//     if(BlockCode::target->isInTarget(catom->position.addX(-1)) &&
+//        !catom->getInterface(catom->position.addX(-1))->isConnected()) {
+//         // Check if can block previous line or not.
+//         if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1))
+//                 || !catom->getInterface(catom->position.addY(-1))->isConnected()
+//                 || reconf->canFillLeft) {
+
+//             // Do not block previous floor
+//             if (reconf->floor == 0 || reconf->canFillWest() || reconf->parentPlaneFinished) {
+//                 if (syncNext->needSyncToLeft())
+//                     syncNext->sync();
+//                 else
+//                     addNeighborToLeft();
+//             }
+//         }
+//     }
+// }
+
+// void Neighborhood::addRight() {
+//     // Position exists and is free.
+//     if(BlockCode::target->isInTarget(catom->position.addX(1)) &&
+//        !catom->getInterface(catom->position.addX(1))->isConnected()) {
+//         // Check if can block previous line or not.
+//         if (!BlockCode::target->isInTarget(catom->position.addY(1).addX(1))
+//             || !catom->getInterface(catom->position.addY(1))->isConnected()
+//             || reconf->canFillRight) {
+
+//             // Do not block previous floor
+//             if (reconf->floor == 0 || reconf->canFillEast() || reconf->parentPlaneFinished) {
+//                 if (syncPrevious->needSyncToRight()) {
+//                     syncPrevious->sync();
+//                 }
+//                 else {
+//                     addNeighborToRight();
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// void Neighborhood::addNext() {
+//     if (BlockCode::target->isInTarget(catom->position.addY(1)) &&
+//             reconf->isSeedNext() && ((reconf->confirmNorthLeft && reconf->confirmNorthRight) || reconf->floor == 0 || reconf->parentPlaneFinished) && !syncNext->needSyncToRight()) {
+//         addNextLineNeighbor();
+//     }
+// }
+// void Neighborhood::addPrevious() {
+//     if (BlockCode::target->isInTarget(catom->position.addY(-1)) &&
+//         reconf->isSeedPrevious() && ((reconf->confirmSouthLeft && reconf->confirmSouthRight) || reconf->floor == 0 || reconf->parentPlaneFinished) && !syncPrevious->needSyncToLeft()) {
+//         addPreviousLineNeighbor();
+//     }
+// }
+
+
+// bool Border::isOnBorder(Cell3DPosition pos)
+// {
+//     if (BlockCode::target->isInTarget(pos) &&
+//         (!BlockCode::target->isInTarget(pos.addX(-1)) ||
+//         !BlockCode::target->isInTarget(pos.addX(1)) ||
+//         !BlockCode::target->isInTarget(pos.addY(-1)) ||
+//         !BlockCode::target->isInTarget(pos.addY(1))))
+//         return true;
+//     return false;
+// }
+
+// int Border::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
+//     vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
+//     int newIdx;
+//     for (int i = 0; i < 4; i++) {
+//         newIdx = (((idx+i-1)%4)+4)%4;
+//         Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
+//                                           .addY(ccw_order[newIdx].second);
+//         if (BlockCode::target->isInTarget(nextPos)) {
+//             idx = newIdx;
+//             currentPos = nextPos;
+//             if (i == 0)
+//                 return 1;
+//             else if (i == 2)
+//                 return -1;
+//             else if (i == 3)
+//                 return -2;
+//             return 0;
+//         }
+//     }
+//     return 0;
+// }
+
+// int Border::getIdxForBorder(Cell3DPosition pos) {
+//     if (isOnBorder(pos)  && BlockCode::target->isInTarget(pos)) {
+//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             BlockCode::target->isInTarget(pos.addY(1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             BlockCode::target->isInTarget(pos.addX(1)))
+//             return 0;
+//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addY(1)) &&
+//             BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             BlockCode::target->isInTarget(pos.addX(1)))
+//             return 3;
+//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             BlockCode::target->isInTarget(pos.addY(1)) &&
+//             BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(1)))
+//             return 2;
+//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             BlockCode::target->isInTarget(pos.addY(1)) &&
+//             BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             BlockCode::target->isInTarget(pos.addX(1)))
+//             return 1;
+//         // 2 empty neighbors
+//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addY(1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             BlockCode::target->isInTarget(pos.addX(1)))
+//             return 3;
+//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             BlockCode::target->isInTarget(pos.addY(1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             BlockCode::target->isInTarget(pos.addX(1)))
+//             return 0;
+//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             BlockCode::target->isInTarget(pos.addY(1)) &&
+//             BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(1)))
+//             return 1;
+//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addY(1)) &&
+//             BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(1)))
+//             return 2;
+//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addY(1)) &&
+//             BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             BlockCode::target->isInTarget(pos.addX(1)))
+//             return 0;
+//         // critical case?
+//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             BlockCode::target->isInTarget(pos.addY(1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(1)))
+//             return 2;
+//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             BlockCode::target->isInTarget(pos.addY(1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             BlockCode::target->isInTarget(pos.addX(1)))
+//             return 1;
+//         // 3 empty neighbors
+//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             BlockCode::target->isInTarget(pos.addY(1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(1)))
+//             return 0;
+//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addY(1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             BlockCode::target->isInTarget(pos.addX(1)))
+//             return 3;
+//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addY(1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(1)))
+//             return 2;
+//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addY(1)) &&
+//             BlockCode::target->isInTarget(pos.addX(-1)) &&
+//             !BlockCode::target->isInTarget(pos.addX(1)))
+//             return 1;
+//     }
+//     return 0;
+// }
