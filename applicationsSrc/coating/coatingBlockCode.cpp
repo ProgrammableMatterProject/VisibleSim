@@ -22,6 +22,7 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
 
     isInG = CoatingBlockCode::isInCSG;
     if (not neighborhood) neighborhood = new Neighborhood(isInG);
+    if (not border) border = new Border(isInG, neighborhood);
   }
 
 void CoatingBlockCode::startup() {
@@ -50,6 +51,7 @@ void CoatingBlockCode::startup() {
     }
 
     if (catom->position == COATING_SEED_POS or isInG(catom->position)) {
+        initializePlaneSeeds();
         attract();
     }
 }
@@ -151,32 +153,23 @@ void CoatingBlockCode::highlight() const {
     if (HIGHLIGHT_CSG) target->highlight();
 
     if (HIGHLIGHT_COATING) {
-        Cell3DPosition pos;
-        for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
-            const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
-            const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
-            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
-                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
-                    pos.set(ix,iy,iz);
-
-                    if (isInCoatingLayer(pos, HIGHLIGHT_COATING_LAYER))
-                        lattice->highlightCell(pos);
-                }
-            }
-        }
+        lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+            return isInCoatingLayer(p, HIGHLIGHT_COATING_LAYER); });
     }
 
     if (HIGHLIGHT_SEEDS) {
-        lattice->highlightAllCellsThatVerify(
-            [this](const Cell3DPosition& p) { return neighborhood->isNorthSeed(p); }, GREEN);
-        lattice->highlightAllCellsThatVerify(
-            [this](const Cell3DPosition& p) { return neighborhood->isSouthSeed(p); }, ORANGE);
-        lattice->highlightAllCellsThatVerify( [this](const Cell3DPosition& p) {
-            return neighborhood->isNorthLineOnMerge(p); }, RED);
+        // lattice->highlightAllCellsThatVerify(
+        //     [this](const Cell3DPosition& p) { return neighborhood->isNorthSeed(p); }, GREEN);
+        // lattice->highlightAllCellsThatVerify(
+        //     [this](const Cell3DPosition& p) { return neighborhood->isSouthSeed(p); }, ORANGE);
+        // lattice->highlightAllCellsThatVerify( [this](const Cell3DPosition& p) {
+        //     return neighborhood->isNorthLineOnMerge(p); }, RED);
+        // lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+        //     return neighborhood->isSouthLineOnMerge(p); }, BLUE);
+        // lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+        //     return isInG(p) and border->isOnInternalHole(p); }, MAGENTA);
         lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-            return neighborhood->isSouthLineOnMerge(p); }, BLUE);
-        lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-            return isInG(p) and neighborhood->isOnInternalHole(p); }, MAGENTA);
+            return isInG(p) and border->isPlaneSeed(p); }, MAGENTA);
     }
 }
 
@@ -248,7 +241,7 @@ void CoatingBlockCode::attract() {
                    and not neighborhood->directionIsInCSG(catom->position, South)
                    and neighborhood->directionIsInCSG(catom->position, West)
                    and neighborhood->directionIsInCSG(catom->position, SouthWest)
-                   and neighborhood->isOnInternalHole(catom->position)) {
+                   and border->isOnInternalHole(catom->position)) {
             info << " sends a WEST border following request for " << wPos;
             scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
 
@@ -270,7 +263,7 @@ void CoatingBlockCode::attract() {
                    and not neighborhood->directionIsInCSG(catom->position, North)
                    and neighborhood->directionIsInCSG(catom->position, East)
                    and neighborhood->directionIsInCSG(catom->position, NorthEast)
-                   and neighborhood->isOnInternalHole(catom->position)) {
+                   and border->isOnInternalHole(catom->position)) {
             info << " sends a EAST border following request for " << ePos;
             scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
 
@@ -355,58 +348,35 @@ bool CoatingBlockCode::borderFollowingAttractRequest(const Cell3DPosition& reque
     return false;
 }
 
+void CoatingBlockCode::initializePlaneSeeds() {
 
-// void Neighborhood::addLeft() {
-//     // Position exists and is free.
-//     if(BlockCode::target->isInTarget(catom->position.addX(-1)) &&
-//        !catom->getInterface(catom->position.addX(-1))->isConnected()) {
-//         // Check if can block previous line or not.
-//         if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1))
-//                 || !catom->getInterface(catom->position.addY(-1))->isConnected()
-//                 || reconf->canFillLeft) {
+    int maxPlane = -1;
+    Cell3DPosition pos;
+    for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
+        const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
+        const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                pos.set(ix,iy,iz);
 
-//             // Do not block previous floor
-//             if (reconf->floor == 0 || reconf->canFillWest() || reconf->parentPlaneFinished) {
-//                 if (syncNext->needSyncToLeft())
-//                     syncNext->sync();
-//                 else
-//                     addNeighborToLeft();
-//             }
-//         }
-//     }
-// }
+                if (isInG(pos)) {
+                    int idx = iz - COATING_SEED_POS[2];
 
-// void Neighborhood::addRight() {
-//     // Position exists and is free.
-//     if(BlockCode::target->isInTarget(catom->position.addX(1)) &&
-//        !catom->getInterface(catom->position.addX(1))->isConnected()) {
-//         // Check if can block previous line or not.
-//         if (!BlockCode::target->isInTarget(catom->position.addY(1).addX(1))
-//             || !catom->getInterface(catom->position.addY(1))->isConnected()
-//             || reconf->canFillRight) {
+                    if (idx > maxPlane) {
+                        maxPlane = idx;
+                        planeRequires.push_back(0);
+                        planeAttracted.push_back(0);
+                        planeSeed.push_back(Cell3DPosition());
+                    }
 
-//             // Do not block previous floor
-//             if (reconf->floor == 0 || reconf->canFillEast() || reconf->parentPlaneFinished) {
-//                 if (syncPrevious->needSyncToRight()) {
-//                     syncPrevious->sync();
-//                 }
-//                 else {
-//                     addNeighborToRight();
-//                 }
-//             }
-//         }
-//     }
-// }
+                    if (border->isPlaneSeed(pos)) // Super costly
+                        planeSeed[idx] = pos;
 
-// void Neighborhood::addNext() {
-//     if (BlockCode::target->isInTarget(catom->position.addY(1)) &&
-//             reconf->isSeedNext() && ((reconf->confirmNorthLeft && reconf->confirmNorthRight) || reconf->floor == 0 || reconf->parentPlaneFinished) && !syncNext->needSyncToRight()) {
-//         addNextLineNeighbor();
-//     }
-// }
-// void Neighborhood::addPrevious() {
-//     if (BlockCode::target->isInTarget(catom->position.addY(-1)) &&
-//         reconf->isSeedPrevious() && ((reconf->confirmSouthLeft && reconf->confirmSouthRight) || reconf->floor == 0 || reconf->parentPlaneFinished) && !syncPrevious->needSyncToLeft()) {
-//         addPreviousLineNeighbor();
-//     }
-// }
+                    planeRequires[idx]++;
+                }
+            }
+        }
+    }
+
+    nPlanes = maxPlane + 1;
+}

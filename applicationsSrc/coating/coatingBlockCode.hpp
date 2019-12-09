@@ -5,6 +5,7 @@
 #include "catoms3DBlockCode.h"
 
 #include "coatingNeighborhood.hpp"
+#include "coatingBorder.hpp"
 
 static const int SAMPLE_MSG_ID = 1000;
 
@@ -29,8 +30,14 @@ private:
     Catoms3DBlock *catom;
     BaseSimulator::World *world;
     static inline Neighborhood *neighborhood;
+    static inline Border *border;
     static inline std::function<bool (const Cell3DPosition&)> isInG;
     static inline multimap<Cell3DPosition, function<void (void)>> watchlist;
+
+    static inline int nPlanes;
+    static inline vector<int> planeRequires; //!< Number of modules plane i needs
+    static inline vector<int> planeAttracted; //!< Number of modules plane i has attracted
+    static inline vector<Cell3DPosition> planeSeed;
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode() {
@@ -145,6 +152,12 @@ public :
      */
     bool borderFollowingAttractRequest(const Cell3DPosition& requestee,
                                        PlanarDir d);
+
+    /**
+     * Initializes the number of modules expected for each plane as well as
+     *  their respective seeds
+     */
+    void initializePlaneSeeds();
 
     /// Advanced blockcode handlers below
 
