@@ -2,8 +2,8 @@
 <world gridSize="40, 40, 10">
   <blockList color="128,128,128" blocksize="10,10,10">
 
-    <!-- <block position="17,34,1" orientation="0"/> -->
-    <block position="17,2,1" orientation="0"/>
+    <block position="17,34,1" orientation="0"/>
+    <!-- <block position="17,2,1" orientation="0"/> -->
   </blockList>
   <targetList>
     <target format="csg">

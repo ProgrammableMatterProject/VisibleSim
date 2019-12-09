@@ -176,9 +176,7 @@ void CoatingBlockCode::highlight() const {
         lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
             return neighborhood->isSouthLineOnMerge(p); }, BLUE);
         lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-            return isInG(p) and neighborhood->isOnInternalHole(p, West); }, MAGENTA);
-        lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-            return isInG(p) and neighborhood->isOnInternalHole(p, East); }, BLACK);
+            return isInG(p) and neighborhood->isOnInternalHole(p); }, MAGENTA);
     }
 }
 
@@ -246,7 +244,11 @@ void CoatingBlockCode::attract() {
             and hasNeighborInDirection(SkewFCCLattice::Direction::C7South)) {
             getAuthorizationToAttract(neighborhood->
                                       cellInDirection(catom->position, South), West);
-        } else if (neighborhood->isOnInternalHole(catom->position, West)) {
+        } else if (not hasNeighborInDirection(SkewFCCLattice::Direction::C6West)
+                   and not neighborhood->directionIsInCSG(catom->position, South)
+                   and neighborhood->directionIsInCSG(catom->position, West)
+                   and neighborhood->directionIsInCSG(catom->position, SouthWest)
+                   and neighborhood->isOnInternalHole(catom->position)) {
             info << " sends a WEST border following request for " << wPos;
             scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
 
@@ -264,7 +266,11 @@ void CoatingBlockCode::attract() {
             and hasNeighborInDirection(SkewFCCLattice::Direction::C1North)) {
             getAuthorizationToAttract(neighborhood->
                                       cellInDirection(catom->position, North),East);
-        } else if (neighborhood->isOnInternalHole(catom->position, East)) {
+        } else if (not hasNeighborInDirection(SkewFCCLattice::Direction::C0East)
+                   and not neighborhood->directionIsInCSG(catom->position, North)
+                   and neighborhood->directionIsInCSG(catom->position, East)
+                   and neighborhood->directionIsInCSG(catom->position, NorthEast)
+                   and neighborhood->isOnInternalHole(catom->position)) {
             info << " sends a EAST border following request for " << ePos;
             scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
 
@@ -403,122 +409,4 @@ bool CoatingBlockCode::borderFollowingAttractRequest(const Cell3DPosition& reque
 //         reconf->isSeedPrevious() && ((reconf->confirmSouthLeft && reconf->confirmSouthRight) || reconf->floor == 0 || reconf->parentPlaneFinished) && !syncPrevious->needSyncToLeft()) {
 //         addPreviousLineNeighbor();
 //     }
-// }
-
-
-// bool Border::isOnBorder(Cell3DPosition pos)
-// {
-//     if (BlockCode::target->isInTarget(pos) &&
-//         (!BlockCode::target->isInTarget(pos.addX(-1)) ||
-//         !BlockCode::target->isInTarget(pos.addX(1)) ||
-//         !BlockCode::target->isInTarget(pos.addY(-1)) ||
-//         !BlockCode::target->isInTarget(pos.addY(1))))
-//         return true;
-//     return false;
-// }
-
-// int Border::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
-//     vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
-//     int newIdx;
-//     for (int i = 0; i < 4; i++) {
-//         newIdx = (((idx+i-1)%4)+4)%4;
-//         Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
-//                                           .addY(ccw_order[newIdx].second);
-//         if (BlockCode::target->isInTarget(nextPos)) {
-//             idx = newIdx;
-//             currentPos = nextPos;
-//             if (i == 0)
-//                 return 1;
-//             else if (i == 2)
-//                 return -1;
-//             else if (i == 3)
-//                 return -2;
-//             return 0;
-//         }
-//     }
-//     return 0;
-// }
-
-// int Border::getIdxForBorder(Cell3DPosition pos) {
-//     if (isOnBorder(pos)  && BlockCode::target->isInTarget(pos)) {
-//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             BlockCode::target->isInTarget(pos.addY(1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             BlockCode::target->isInTarget(pos.addX(1)))
-//             return 0;
-//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addY(1)) &&
-//             BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             BlockCode::target->isInTarget(pos.addX(1)))
-//             return 3;
-//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             BlockCode::target->isInTarget(pos.addY(1)) &&
-//             BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(1)))
-//             return 2;
-//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             BlockCode::target->isInTarget(pos.addY(1)) &&
-//             BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             BlockCode::target->isInTarget(pos.addX(1)))
-//             return 1;
-//         // 2 empty neighbors
-//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addY(1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             BlockCode::target->isInTarget(pos.addX(1)))
-//             return 3;
-//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             BlockCode::target->isInTarget(pos.addY(1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             BlockCode::target->isInTarget(pos.addX(1)))
-//             return 0;
-//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             BlockCode::target->isInTarget(pos.addY(1)) &&
-//             BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(1)))
-//             return 1;
-//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addY(1)) &&
-//             BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(1)))
-//             return 2;
-//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addY(1)) &&
-//             BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             BlockCode::target->isInTarget(pos.addX(1)))
-//             return 0;
-//         // critical case?
-//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             BlockCode::target->isInTarget(pos.addY(1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(1)))
-//             return 2;
-//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             BlockCode::target->isInTarget(pos.addY(1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             BlockCode::target->isInTarget(pos.addX(1)))
-//             return 1;
-//         // 3 empty neighbors
-//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             BlockCode::target->isInTarget(pos.addY(1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(1)))
-//             return 0;
-//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addY(1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             BlockCode::target->isInTarget(pos.addX(1)))
-//             return 3;
-//         if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addY(1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(1)))
-//             return 2;
-//         if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addY(1)) &&
-//             BlockCode::target->isInTarget(pos.addX(-1)) &&
-//             !BlockCode::target->isInTarget(pos.addX(1)))
-//             return 1;
-//     }
-//     return 0;
 // }

@@ -51,12 +51,10 @@ public :
 
     /**
      * @param pos position to evaluate
-     * @param d direction of border following, depends on where the caller
-     *  wanted to check for a neighbor
      * @return true if catom is on the inner border of an internal hole in the shape,
      *  false otherwise
      */
-    bool isOnInternalHole(const Cell3DPosition& pos, PlanarDir d) const;
+    bool isOnInternalHole(const Cell3DPosition& pos) const;
 
     /**
      * @param idx current rotation index
@@ -64,6 +62,18 @@ public :
      * @return the position of the next neighbor along the internal border
      */
     int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) const;
+
+    /**
+     * @param pos
+     * @return true if pos is on an internal or external border
+     */
+    bool isOnBorder(const Cell3DPosition& pos) const;
+
+    /**
+     * @param pos
+     * @return The index corresponding to the direction of the border following for pos
+     */
+    int getIndexForBorder(const Cell3DPosition& pos) const;
 };
 
 #endif /* CoatingNeighborhood_H_ */

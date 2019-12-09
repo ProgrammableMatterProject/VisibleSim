@@ -123,31 +123,37 @@ int Neighborhood::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) co
     return 0;
 }
 
-bool Neighborhood::isOnInternalHole(const Cell3DPosition& pos, PlanarDir d) const {
+// CCW
+// int Border::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
+//     vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
+//     int newIdx;
+//     for (int i = 0; i < 4; i++) {
+//         newIdx = (((idx+i-1)%4)+4)%4;
+//         Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
+//                                           .addY(ccw_order[newIdx].second);
+//         if (BlockCode::target->isInTarget(nextPos)) {
+//             idx = newIdx;
+//             currentPos = nextPos;
+//             if (i == 0)
+//                 return 1;
+//             else if (i == 2)
+//                 return -1;
+//             else if (i == 3)
+//                 return -2;
+//             return 0;
+//         }
+//     }
+//     return 0;
+// }
+
+bool Neighborhood::isOnInternalHole(const Cell3DPosition& pos) const {
     // From Thadeu's Sync/sync.cpp
     int nTurns = 0;
-    int idx;
+    int idx = getIndexForBorder(pos);
+    if (idx == -1) return false;
 
-    if (directionIsInCSG(pos, North) and directionIsInCSG(pos, South)
-        and directionIsInCSG(pos, East) and directionIsInCSG(pos, West))
+    if (not isOnBorder(pos))
         return false;
-
-
-    if (d == West) {
-        if (not directionIsInCSG(pos, West) or not directionIsInCSG(pos, SouthWest))
-            return false;
-
-        idx = 0;
-    } else if (d == East) {
-        if (not directionIsInCSG(pos, East) or not directionIsInCSG(pos, NorthEast))
-            return false;
-
-        idx = 2;
-    } else {
-        stringstream err;
-        err << "isOnInternalHole(" << pos << ", " << planarDirectionIndexToString(d) << endl;
-        throw NotImplementedException(err.str());
-    }
 
     // lattice->highlightCell(pos, BLACK);
 
@@ -166,4 +172,66 @@ bool Neighborhood::isOnInternalHole(const Cell3DPosition& pos, PlanarDir d) cons
     if (nTurns > 0) return true;
 
     return nTurns > 0;
+}
+
+bool Neighborhood::isOnBorder(const Cell3DPosition& pos) const {
+    if (isInG(pos) and
+        (!directionIsInCSG(pos, West) or
+         !directionIsInCSG(pos, East) or
+         !directionIsInCSG(pos, North) or
+         !directionIsInCSG(pos, South)))
+        return true;
+
+    return false;
+}
+
+int Neighborhood::getIndexForBorder(const Cell3DPosition& pos) const {
+    if (isOnBorder(pos)) {
+        bool hasNorth = directionIsInCSG(pos, North);
+        bool hasSouth = directionIsInCSG(pos, South);
+        bool hasWest = directionIsInCSG(pos, West);
+        bool hasEast = directionIsInCSG(pos, East);
+        int nNeighbor = hasNorth + hasSouth + hasWest + hasEast;
+
+        if (nNeighbor == 1) {
+            if (hasNorth)
+                return 0;
+            else if ( hasEast)
+                return 3;
+            else if (hasSouth)
+                return 2;
+            else if (hasWest)
+                return 1;
+        } else if (nNeighbor == 2) {
+            if (hasSouth) {
+                if (hasWest)
+                    return 2;
+                else if (hasEast)
+                    return 3;
+                else if (hasNorth)
+                    return 2;
+            } else if (hasNorth) {
+                if (hasEast)
+                    return 0;
+                else if (hasWest)
+                    return 1;
+            } else if (hasWest and hasEast) {
+                return 0;
+            }
+        } else if (nNeighbor == 3) {
+            if (hasSouth) {
+                if (hasNorth) {
+                    if (hasEast)
+                        return 0;
+                    else return 2; // has West
+                } else if (hasWest and hasEast) {
+                    return 3;
+                }
+            } else if (hasNorth and hasWest and hasEast) {
+                return 1;
+            }
+        }
+    }
+
+    return -1;
 }
