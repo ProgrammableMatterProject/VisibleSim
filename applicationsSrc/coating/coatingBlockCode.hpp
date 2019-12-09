@@ -18,7 +18,7 @@ private:
     static inline bool HIGHLIGHT_CSG = false;
     static inline int HIGHLIGHT_COATING_LAYER = -1;
     static inline int HIGHLIGHT_SEEDS = false;
-    static inline Cell3DPosition COATING_SEED_POS;
+    static inline Cell3DPosition G_SEED_POS;
     static inline const Color ATTRACT_DEBUG_COLOR = CYAN;
     static inline const Color AUTH_DEBUG_COLOR = ORANGE;
 
@@ -95,7 +95,7 @@ public :
      * @param pos position to evaluate
      * @return the coating layer to which pos belongs
      */
-    static int getCoatingLayer(const Cell3DPosition& pos);
+    static int getGLayer(const Cell3DPosition& pos);
 
     /**
      * @param pos position to evaluate

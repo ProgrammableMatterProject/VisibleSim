@@ -26,7 +26,7 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
   }
 
 void CoatingBlockCode::startup() {
-    if (catom->blockId == 1) COATING_SEED_POS = catom->position; // FIXME:
+    if (catom->blockId == 1) G_SEED_POS = catom->position; // FIXME:
 
     if (not isInG(catom->position)) return;
 
@@ -35,6 +35,24 @@ void CoatingBlockCode::startup() {
         HIGHLIGHT_COATING = false;
         HIGHLIGHT_CSG = false;
         HIGHLIGHT_SEEDS = false;
+    }
+
+
+    if (catom->position == G_SEED_POS)
+        initializePlaneSeeds();
+
+
+    if (isInG(catom->position)) {
+        attract();
+    }
+
+    int layer = getGLayer(catom->position);
+    if (++planeAttracted[layer] == planeRequires[layer]) {
+        catom->setColor(RED);
+
+        // Start next layer if not top plane
+        if (layer < nPlanes - 1)
+            sendAttractSignalTo(plan eSeed[layer + 1]);
     }
 
     // Simulate authorizations
@@ -48,11 +66,6 @@ void CoatingBlockCode::startup() {
         const auto& callback = it->second;
         callback();
         watchlist.erase(it);
-    }
-
-    if (catom->position == COATING_SEED_POS or isInG(catom->position)) {
-        initializePlaneSeeds();
-        attract();
     }
 }
 
@@ -93,8 +106,20 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
-    cout << "isNorthSeed(" << catom->position << "): "
-         << neighborhood->isNorthSeed(catom->position) << endl;
+    cout << endl << "Plane Requires: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i << "\t" << planeRequires[i] << endl;
+    }
+
+    cout << endl << "Plane Attracted: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i << "\t" << planeAttracted[i] << endl;
+    }
+
+    cout << endl << "Plane Seed: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i << "\t" << planeSeed[i] << endl;
+    }
 }
 
 void CoatingBlockCode::onAssertTriggered() {
@@ -173,17 +198,17 @@ void CoatingBlockCode::highlight() const {
     }
 }
 
-int CoatingBlockCode::getCoatingLayer(const Cell3DPosition& pos) {
-    return pos[2] - COATING_SEED_POS[2];
+int CoatingBlockCode::getGLayer(const Cell3DPosition& pos) {
+    return pos[2] - G_SEED_POS[2];
 }
 
 bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) {
     return BaseSimulator::getWorld()->lattice->isInGrid(pos)
-        and pos[2] >= COATING_SEED_POS[2] and isInCoatingLayer(pos, getCoatingLayer(pos));
+        and pos[2] >= G_SEED_POS[2] and isInCoatingLayer(pos, getGLayer(pos));
 }
 
 bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) {
-    int pLayer = getCoatingLayer(pos);
+    int pLayer = getGLayer(pos);
 
     if (isInCSG(pos)) return false;
 
@@ -285,7 +310,7 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
     scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
     catom->setColor(AttractedColor);
-    usleep(50000);
+    usleep(5000);
 
     world->addBlock(0, buildNewBlockCode, pos, DefaultColor);
 }
@@ -360,7 +385,7 @@ void CoatingBlockCode::initializePlaneSeeds() {
                 pos.set(ix,iy,iz);
 
                 if (isInG(pos)) {
-                    int idx = iz - COATING_SEED_POS[2];
+                    int idx = iz - G_SEED_POS[2];
 
                     if (idx > maxPlane) {
                         maxPlane = idx;
