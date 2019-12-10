@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="210, 210, 210">
+<world gridSize="70, 50, 50">
     <camera target="200,150,65" directionSpherical="0,80,10" angle="45" near="0.01" far="2500.0" />
     <spotlight target="600,600,420" directionSpherical="125,30,2400" angle="30" near="80.0" far="2500.0"/>
     <blockList color="128,128,128" blocksize="1,1,1">
 
         <!--<block position="10,25,9" orientation="0"/>-->
-		<block position="20,20,2" orientation="0"/>
-	</blockList>
+        <block position="20,20,0" orientation="0"/>
+        </blockList>
   <targetList>
     <target format="csg">
         <csg content="
@@ -22,12 +22,12 @@ color([0.8,0,0]) translate([12,-5,0]) cube([16,2,10], true);
 
 
 color([0,0,0.5]) translate([-8,-6,-4]) rotate([0,0,140]) cube([10.1,1.5,2.1], true);
-color([0,0,0]) translate([-13,-6,-4]) difference() { 
+color([0,0,0]) translate([-13,-6,-4]) difference() {
     cylinder(2,5,5, true);
     cylinder(2.1,2,2, true);
 }
 color([0,0,0.5]) translate([-8,-6,4]) rotate([0,0,140]) cube([10.1,1.5,2.1], true);
-color([0,0,0]) translate([-13,-6,4]) difference() { 
+color([0,0,0]) translate([-13,-6,4]) difference() {
     cylinder(2,5,5, true);
     cylinder(2.1,2,2, true);
 }
@@ -68,7 +68,7 @@ color([0,0,0]) translate([9,-8,4]) difference() {
     cylinder(2,1,1, true);
     }
 }"
-    
+
     />
     </target>
   </targetList>

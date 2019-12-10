@@ -21,14 +21,14 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
     catom = static_cast<Catoms3DBlock*>(hostBlock);
 
     isInG = CoatingBlockCode::isInCSG;
+    // isInG = CoatingBlockCode::isInCoating;
+
     if (not neighborhood) neighborhood = new Neighborhood(isInG);
     if (not border) border = new Border(isInG, neighborhood);
   }
 
 void CoatingBlockCode::startup() {
     if (catom->blockId == 1) G_SEED_POS = catom->position; // FIXME:
-
-    if (not isInG(catom->position)) return;
 
     if (HIGHLIGHT_COATING or HIGHLIGHT_CSG or HIGHLIGHT_SEEDS) {
         highlight();
@@ -37,14 +37,11 @@ void CoatingBlockCode::startup() {
         HIGHLIGHT_SEEDS = false;
     }
 
+    if (not isInG(catom->position)) return;
 
     if (catom->position == G_SEED_POS)
         initializePlaneSeeds();
 
-
-    if (isInG(catom->position)) {
-        attract();
-    }
 
     int layer = getGLayer(catom->position);
     if (++planeAttracted[layer] == planeRequires[layer]) {
@@ -52,7 +49,7 @@ void CoatingBlockCode::startup() {
 
         // Start next layer if not top plane
         if (layer < nPlanes - 1)
-            sendAttractSignalTo(plan eSeed[layer + 1]);
+            sendAttractSignalTo(planeSeed[layer + 1]);
     }
 
     // Simulate authorizations
@@ -66,6 +63,11 @@ void CoatingBlockCode::startup() {
         const auto& callback = it->second;
         callback();
         watchlist.erase(it);
+    }
+
+
+    if (isInG(catom->position)) {
+        attract();
     }
 }
 
@@ -106,20 +108,20 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
-    cout << endl << "Plane Requires: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i << "\t" << planeRequires[i] << endl;
-    }
+    // cout << endl << "Plane Requires: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i << "\t" << planeRequires[i] << endl;
+    // }
 
-    cout << endl << "Plane Attracted: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i << "\t" << planeAttracted[i] << endl;
-    }
+    // cout << endl << "Plane Attracted: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i << "\t" << planeAttracted[i] << endl;
+    // }
 
-    cout << endl << "Plane Seed: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i << "\t" << planeSeed[i] << endl;
-    }
+    // cout << endl << "Plane Seed: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i << "\t" << planeSeed[i] << endl;
+    // }
 }
 
 void CoatingBlockCode::onAssertTriggered() {
@@ -305,7 +307,7 @@ bool CoatingBlockCode::hasNeighborInDirection(SkewFCCLattice::Direction dir) con
 
 void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
     stringstream info;
-    info << " attracts to " << planarDirectionPositionToString(catom->position - pos)
+    info << " attracts to " << planarDirectionPositionToString(pos - catom->position)
          << " position " << pos;
     scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
