@@ -42,46 +42,6 @@ public :
      * @return The index corresponding to the direction of the border following for pos
      */
     int getIndexForBorder(const Cell3DPosition& pos) const;
-
-    /**
-     * @param pos
-     * @return true is pos is the seed of its plane
-     */
-    bool isPlaneSeed(const Cell3DPosition& pos) const;
-
-    /**
-     * @param pos
-     * @return true if position pos could be a plane seed according to its neighborhood
-     */
-    bool couldBeSeed(const Cell3DPosition& pos) const;
-
-    /**
-     * When the area of the next plane is bigger than the one of the current plane.
-     * One module of the current plane border should be chosen. A border following over the current plane in G is executed and the lowest position with a module on its top is actually elected a 3D Seed.
-     * @param pos
-     * @return true if the next plane is bigger than the current one and
-     *  pos is the seed module of this next plane
-     */
-    bool isSeedBorderOnCurrentPlane(const Cell3DPosition& pos) const;
-
-    /**
-     * When the area of the next plane is smaller to that of the current plane.
-     * Executes the border following algorithm int he border of the next plane and checks if pos is the lowest module with a filled position under it.
-     * @param pos
-     * @return true if the next plane is smaller than the current one and
-     *  pos is the seed module of this next plane
-     */
-    bool isSeedBorderOnNextPlane(const Cell3DPosition& pos) const;
-
-    /**
-     * Checks if pos is the lowest module of the plane (current or next)
-     *  with a filled position under it.
-     * @param pos
-     * @param next current plane if false, next plane if true;
-     * @return true if pos is the lowest module of the plane (current or next)
-     *  with a filled position under it.
-     */
-    bool isLowestOfBorderOnPlane(const Cell3DPosition& pos, bool next = false) const;
 };
 
 #endif /* CoatingBorder_H_ */

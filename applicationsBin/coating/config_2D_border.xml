@@ -3,6 +3,7 @@
   <blockList color="128,128,128" blocksize="10,10,10">
 
     <!-- <block position="17,34,1" orientation="0"/> -->
+    <!-- <block position="20,20,1" orientation="0"/> -->
     <block position="0,0,1" orientation="0"/>
   </blockList>
   <targetList>

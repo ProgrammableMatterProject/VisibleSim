@@ -6,6 +6,7 @@
 
 #include "coatingNeighborhood.hpp"
 #include "coatingBorder.hpp"
+#include "coatingSeeding.hpp"
 
 static const int SAMPLE_MSG_ID = 1000;
 
@@ -29,8 +30,11 @@ private:
     // DApp Variables
     Catoms3DBlock *catom;
     BaseSimulator::World *world;
+
     static inline Neighborhood *neighborhood;
     static inline Border *border;
+    static inline Seeding *seeding;
+
     static inline std::function<bool (const Cell3DPosition&)> isInG;
     static inline multimap<Cell3DPosition, function<void (void)>> watchlist;
 
@@ -40,12 +44,7 @@ private:
     static inline vector<Cell3DPosition> planeSeed;
 public :
     CoatingBlockCode(Catoms3DBlock *host);
-    ~CoatingBlockCode() {
-        if (neighborhood) {
-            delete neighborhood;
-            neighborhood = NULL;
-        }
-    };
+    ~CoatingBlockCode();
 
     /**
      * This function is called on startup of the blockCode, it can be used to perform initial
@@ -127,12 +126,6 @@ public :
      * @param pos target position
      */
     void sendAttractSignalTo(const Cell3DPosition& pos);
-
-    /**
-     * @param dir
-     * @return true if module has a neighbor in lattice direction dir
-     */
-    bool hasNeighborInDirection(SkewFCCLattice::Direction dir) const;
 
     /**
      * Requests to be notified when position pos is ready to be filled

@@ -25,7 +25,25 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
 
     if (not neighborhood) neighborhood = new Neighborhood(isInG);
     if (not border) border = new Border(isInG, neighborhood);
-  }
+    if (not seeding) seeding = new Seeding(isInG, neighborhood, border);
+}
+
+CoatingBlockCode::~CoatingBlockCode() {
+    if (neighborhood) {
+        delete neighborhood;
+        neighborhood = NULL;
+    }
+
+    if (border) {
+        delete border;
+        border = NULL;
+    }
+
+    if (seeding) {
+        delete seeding;
+        seeding = NULL;
+    }
+};
 
 void CoatingBlockCode::startup() {
     if (catom->blockId == 1) G_SEED_POS = catom->position; // FIXME:
@@ -108,6 +126,9 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
+    cout << "isNorthSeed(" << catom->position << "): "
+         << seeding->isNorthSeed(catom->position) << endl;
+
     // cout << endl << "Plane Requires: " << endl;
     // for (int i = 0; i < nPlanes; i++) {
     //     cout << i << "\t" << planeRequires[i] << endl;
@@ -142,7 +163,7 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
                 return true;
             } break;
 
-            // Composite argument example: --foo 13
+                // Composite argument example: --foo 13
             case '-': {
                 string varg = string((*argv)[0] + 2); // argv[0] without "--"
                 if (varg == string("coating")) { //
@@ -186,7 +207,7 @@ void CoatingBlockCode::highlight() const {
 
     if (HIGHLIGHT_SEEDS) {
         // lattice->highlightAllCellsThatVerify(
-        //     [this](const Cell3DPosition& p) { return neighborhood->isNorthSeed(p); }, GREEN);
+        //     [this](const Cell3DPosition& p) { return seeding->isNorthSeed(p); }, GREEN);
         // lattice->highlightAllCellsThatVerify(
         //     [this](const Cell3DPosition& p) { return neighborhood->isSouthSeed(p); }, ORANGE);
         // lattice->highlightAllCellsThatVerify( [this](const Cell3DPosition& p) {
@@ -196,7 +217,7 @@ void CoatingBlockCode::highlight() const {
         // lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
         //     return isInG(p) and border->isOnInternalHole(p); }, MAGENTA);
         lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-            return isInG(p) and border->isPlaneSeed(p); }, MAGENTA);
+            return isInG(p) and seeding->isPlaneSeed(p); }, MAGENTA);
     }
 }
 
@@ -238,33 +259,38 @@ bool CoatingBlockCode::has2ndOrderNeighborInCSG(const Cell3DPosition& pos) {
         if (isInCSG(pRel + pos)) return true;
     }
 
-   return false;
+    return false;
 }
 
 void CoatingBlockCode::attract() {
     stringstream info;
 
     // North attraction
-    if (neighborhood->isNorthSeed(catom->position)
-        and not hasNeighborInDirection(SkewFCCLattice::Direction::C1North)) {
+    if (seeding->isNorthSeed(catom->position)
+        and not neighborhood->hasNeighborInDirection(catom->position,
+                                                     SkewFCCLattice::Direction::C1North)) {
         sendAttractSignalTo(catom->position.addY(1));
     }
 
     // South attraction
-    if (neighborhood->isSouthSeed(catom->position)
-        and not hasNeighborInDirection(SkewFCCLattice::Direction::C7South)) {
+    if (seeding->isSouthSeed(catom->position)
+        and not neighborhood->hasNeighborInDirection(catom->position,
+                                                     SkewFCCLattice::Direction::C7South)) {
         sendAttractSignalTo(catom->position.addY(-1));
     }
 
     // West attraction
     if (neighborhood->directionIsInCSG(catom->position, West)
-        and not hasNeighborInDirection(SkewFCCLattice::Direction::C6West)) {
+        and not neighborhood->hasNeighborInDirection(catom->position,
+                                                     SkewFCCLattice::Direction::C6West)) {
         const Cell3DPosition& wPos = neighborhood->cellInDirection(catom->position, West);
         if (neighborhood->directionIsInCSG(catom->position, SouthWest)
-            and hasNeighborInDirection(SkewFCCLattice::Direction::C7South)) {
+            and neighborhood->hasNeighborInDirection(catom->position,
+                                                     SkewFCCLattice::Direction::C7South)) {
             getAuthorizationToAttract(neighborhood->
                                       cellInDirection(catom->position, South), West);
-        } else if (not hasNeighborInDirection(SkewFCCLattice::Direction::C6West)
+        } else if (not neighborhood->hasNeighborInDirection(catom->position,
+                                                            SkewFCCLattice::Direction::C6West)
                    and not neighborhood->directionIsInCSG(catom->position, South)
                    and neighborhood->directionIsInCSG(catom->position, West)
                    and neighborhood->directionIsInCSG(catom->position, SouthWest)
@@ -280,13 +306,16 @@ void CoatingBlockCode::attract() {
 
     // East attraction
     if (neighborhood->directionIsInCSG(catom->position, East)
-        and not hasNeighborInDirection(SkewFCCLattice::Direction::C0East)) {
+        and not neighborhood->hasNeighborInDirection(catom->position,
+                                                     SkewFCCLattice::Direction::C0East)) {
         const Cell3DPosition& ePos = neighborhood->cellInDirection(catom->position, East);
         if (neighborhood->directionIsInCSG(catom->position, NorthEast)
-            and hasNeighborInDirection(SkewFCCLattice::Direction::C1North)) {
+            and neighborhood->hasNeighborInDirection(catom->position,
+                                                     SkewFCCLattice::Direction::C1North)) {
             getAuthorizationToAttract(neighborhood->
                                       cellInDirection(catom->position, North),East);
-        } else if (not hasNeighborInDirection(SkewFCCLattice::Direction::C0East)
+        } else if (not neighborhood->hasNeighborInDirection(catom->position,
+                                                            SkewFCCLattice::Direction::C0East)
                    and not neighborhood->directionIsInCSG(catom->position, North)
                    and neighborhood->directionIsInCSG(catom->position, East)
                    and neighborhood->directionIsInCSG(catom->position, NorthEast)
@@ -299,10 +328,6 @@ void CoatingBlockCode::attract() {
             sendAttractSignalTo(ePos);
         }
     }
-}
-
-bool CoatingBlockCode::hasNeighborInDirection(SkewFCCLattice::Direction dir) const {
-    return lattice->cellHasBlock(lattice->getCellInDirection(catom->position, dir));
 }
 
 void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
@@ -396,7 +421,7 @@ void CoatingBlockCode::initializePlaneSeeds() {
                         planeSeed.push_back(Cell3DPosition());
                     }
 
-                    if (border->isPlaneSeed(pos)) // Super costly
+                    if (seeding->isPlaneSeed(pos)) // Super costly
                         planeSeed[idx] = pos;
 
                     planeRequires[idx]++;

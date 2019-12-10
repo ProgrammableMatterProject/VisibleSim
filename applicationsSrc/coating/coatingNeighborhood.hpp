@@ -5,6 +5,8 @@
 
 #include "coatingUtils.hpp"
 
+#include "lattice.h"
+
 using namespace Catoms3D;
 
 class Neighborhood {
@@ -28,52 +30,12 @@ public :
     bool directionIsInCSG(const Cell3DPosition& pos, PlanarDir d) const;
 
     /**
-     * @return true if catom is a north seed and should attract modules to its north column
+     * @param pos reference position
+     * @param dir
+     * @return true if module has a neighbor in lattice direction dir
      */
-    bool isNorthSeed(const Cell3DPosition& pos) const;
-
-    /**
-     * @return true if catom is a north seed and should attract modules to its south column
-     */
-    bool isSouthSeed(const Cell3DPosition& pos) const;
-
-    /**
-     * @return true if the position at the north of the current module is a merge point
-     *  between the current column and an EAST position
-     */
-    bool isNorthLineOnMerge(const Cell3DPosition& pos) const;
-
-    /**
-     * @return true if the position at the south of the current module is a merge point
-     *  between the current column and a WEST position
-     */
-    bool isSouthLineOnMerge(const Cell3DPosition& pos) const;
-
-    /**
-     * @param pos position to evaluate
-     * @return true if catom is on the inner border of an internal hole in the shape,
-     *  false otherwise
-     */
-    bool isOnInternalHole(const Cell3DPosition& pos) const;
-
-    /**
-     * @param idx current rotation index
-     * @param currentPos current search position
-     * @return the position of the next neighbor along the internal border
-     */
-    int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) const;
-
-    /**
-     * @param pos
-     * @return true if pos is on an internal or external border
-     */
-    bool isOnBorder(const Cell3DPosition& pos) const;
-
-    /**
-     * @param pos
-     * @return The index corresponding to the direction of the border following for pos
-     */
-    int getIndexForBorder(const Cell3DPosition& pos) const;
+    bool hasNeighborInDirection(const Cell3DPosition &pos,
+                                SkewFCCLattice::Direction dir) const;
 };
 
 #endif /* CoatingNeighborhood_H_ */
