@@ -28,34 +28,7 @@ bool Seeding::isSouthSeed(const Cell3DPosition& pos) const {
 }
 
 bool Seeding::isNorthLineOnMerge(const Cell3DPosition& pos) const {
-    // if (not isInG(pos)) return false;
-
-    // // Find n, the distance to the next module along the current line
-    // unsigned int n = 0;
-    // int upperXBound = lattice->getGridUpperBounds(pos[2])[0];
-    // Cell3DPosition nPos;
-    // for (int x = pos[0] + 1; x <= upperXBound; x++) {
-    //     nPos.set(x, pos[1], pos[2]);
-
-    //     if (isInG(nPos)) {
-    //         n = nPos[0] - pos[0] - 1;
-    //         break;
-    //     }
-    // }
-
-    // if (n == 0
-    //     or not isInG(pos.addX(n + 1))
-    //     or not isInG(Cell3DPosition(pos[0] + (n + 1), pos[1] + 1, pos[2]))) return false;
-
-    // for (unsigned int j = 1; j <= n; j++) {
-    //     nPos.set(pos[0] + j, pos[1] + 1, pos[2]);
-
-    //     if (not isInG(nPos)) return false;
-    // }
-
-    // return true;
-
-    if (nbh->hasNeighborInDirection(pos, SkewFCCLattice::Direction::C1North))
+    if (not isInG(pos) or nbh->hasNeighborInDirection(pos, SkewFCCLattice::Direction::C1North))
         return false;
 
     Cell3DPosition xPos = pos.addX(1);
@@ -63,6 +36,8 @@ bool Seeding::isNorthLineOnMerge(const Cell3DPosition& pos) const {
     if (!isInG(xPos) and isInG(xyPos)) {
 
         int upperXBound = lattice->getGridUpperBounds(pos[2])[0];
+
+        // Thadeu-style weird af loop
         for (int i = 2; pos[0] + i < upperXBound; i++) {
             xPos = pos.addX(i);
             xyPos = pos + Cell3DPosition(i, 1, 0);
@@ -81,34 +56,7 @@ bool Seeding::isNorthLineOnMerge(const Cell3DPosition& pos) const {
 }
 
 bool Seeding::isSouthLineOnMerge(const Cell3DPosition& pos) const {
-    if (not isInG(pos)) return false;
-
-    // // Find n, the distance to the next module preceding this one on the current line
-    // unsigned int n = 0;
-    // int lowerXBound = lattice->getGridLowerBounds(pos[2])[0];
-    // Cell3DPosition nPos;
-    // for (int x = pos[0] - 1; x >= lowerXBound; x--) {
-    //     nPos.set(x, pos[1], pos[2]);
-
-    //     if (isInG(nPos)) {
-    //         n = pos[0] - nPos[0] - 1;
-    //         break;
-    //     }
-    // }
-
-    // if (n == 0
-    //     or not isInG(pos.addX(n - 1))
-    //     or not isInG(Cell3DPosition(pos[0] + (n - 1), pos[1] - 1, pos[2]))) return false;
-
-    // for (unsigned int j = 1; j <= n; j++) {
-    //     nPos.set(pos[0] - j, pos[1] - 1, pos[2]);
-
-    //     if (not isInG(nPos)) return false;
-    // }
-
-    // return true;
-
-    if (nbh->hasNeighborInDirection(pos, SkewFCCLattice::Direction::C7South))
+    if (not isInG(pos) or nbh->hasNeighborInDirection(pos, SkewFCCLattice::Direction::C7South))
         return false;
 
     Cell3DPosition xPos = pos.addX(-1);
@@ -116,6 +64,8 @@ bool Seeding::isSouthLineOnMerge(const Cell3DPosition& pos) const {
     if (!isInG(xPos) and isInG(xyPos)) {
 
         int lowerXBound = lattice->getGridLowerBounds(pos[2])[0];
+
+        // Thadeu-style weird af loop
         for (int i = 2; pos[0] - i < lowerXBound; i++) {
             xPos = pos.addX(-i);
             xyPos = pos + Cell3DPosition(-i, -1, 0);
