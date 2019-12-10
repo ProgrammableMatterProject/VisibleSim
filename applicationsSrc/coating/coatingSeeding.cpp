@@ -66,7 +66,7 @@ bool Seeding::isSouthLineOnMerge(const Cell3DPosition& pos) const {
         int lowerXBound = lattice->getGridLowerBounds(pos[2])[0];
 
         // Thadeu-style weird af loop
-        for (int i = 2; pos[0] - i < lowerXBound; i++) {
+        for (int i = 2; pos[0] - i > lowerXBound; i++) {
             xPos = pos.addX(-i);
             xyPos = pos + Cell3DPosition(-i, -1, 0);
 
