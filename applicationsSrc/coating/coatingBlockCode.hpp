@@ -23,6 +23,8 @@ private:
     static inline const Color ATTRACT_DEBUG_COLOR = CYAN;
     static inline const Color AUTH_DEBUG_COLOR = ORANGE;
 
+    static inline Time ATTRACT_DELAY = 10;
+
     static inline const Color WaitingColor = BLUE;
     static inline const Color AttractedColor = GREEN;
     static inline const Color DefaultColor = YELLOW;
@@ -38,10 +40,10 @@ private:
     static inline std::function<bool (const Cell3DPosition&)> isInG;
     static inline multimap<Cell3DPosition, function<void (void)>> watchlist;
 
-    static inline int nPlanes;
+    static inline int nPlanes; //!< Number of planes
     static inline vector<int> planeRequires; //!< Number of modules plane i needs
     static inline vector<int> planeAttracted; //!< Number of modules plane i has attracted
-    static inline vector<Cell3DPosition> planeSeed;
+    static inline vector<Cell3DPosition> planeSeed; //!< Modules responsible for attracting the first module of the plane above them
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode();

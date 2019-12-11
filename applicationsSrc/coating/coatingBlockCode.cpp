@@ -48,6 +48,13 @@ CoatingBlockCode::~CoatingBlockCode() {
 void CoatingBlockCode::startup() {
     if (catom->blockId == 1) G_SEED_POS = catom->position; // FIXME:
 
+    static bool delayInit = false;
+    if (not delayInit) {
+        if (scheduler->getMode() == SCHEDULER_MODE_FASTEST)
+            ATTRACT_DELAY = 0;
+        delayInit = true;
+    }
+
     if (HIGHLIGHT_COATING or HIGHLIGHT_CSG or HIGHLIGHT_SEEDS) {
         highlight();
         HIGHLIGHT_COATING = false;
@@ -66,11 +73,10 @@ void CoatingBlockCode::startup() {
         catom->setColor(RED);
 
         // Start next layer if not top plane
-        cout << "nPlanes: " << nPlanes << endl;
-        cout << "layer: " << layer << endl;
+        // cout << "nPlanes: " << nPlanes << endl;
+        // cout << "layer: " << layer << endl;
         if (layer < nPlanes - 1) {
-            cout << "wut" << endl;
-            sendAttractSignalTo(planeSeed[layer + 1]);
+            sendAttractSignalTo(planeSeed[layer] + Cell3DPosition(0, 0, 1));
         }
     }
 
@@ -133,20 +139,47 @@ void CoatingBlockCode::onBlockSelected() {
     // cout << "isNorthSeed(" << catom->position << "): "
     //      << seeding->isNorthSeed(catom->position) << endl;
 
-    cout << endl << "Plane Requires: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i << "\t" << planeRequires[i] << endl;
-    }
+    cout << "isInG(" << catom->position << "): "
+         << isInG(catom->position) << endl;
 
-    cout << endl << "Plane Attracted: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i << "\t" << planeAttracted[i] << endl;
-    }
+    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, East) << "): "
+         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, East)) << endl;
 
-    cout << endl << "Plane Seed: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i << "\t" << planeSeed[i] << endl;
-    }
+    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, South) << "): "
+         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, South)) <<endl;
+
+    cout << "isSeedBorderOnNextPlane(" << catom->position + Cell3DPosition(0,0,1) << "): "
+         << seeding->isSeedBorderOnNextPlane(catom->position + Cell3DPosition(0,0,1)) << endl;
+
+    cout << "isSeedBorderOnCurrentPlane(" << catom->position << "): "
+         << seeding->isSeedBorderOnCurrentPlane(catom->position) << endl;
+
+    cout << "isInG(" << catom->position + Cell3DPosition(0,0,-1) << "): "
+         << isInG(catom->position + Cell3DPosition(0,0,-1)) << endl;
+
+    cout << "isOnBorder(" << catom->position << "): "
+         << border->isOnBorder(catom->position) << endl;
+
+    cout << "isLowestOfBorderOnCurrentPlane(" << catom->position << "): "
+         << seeding->isLowestOfBorderOnCurrentPlane(catom->position) << endl;
+
+    cout << "isLowestOfBorderOnNextPlane(" << catom->position << "): "
+         << seeding->isLowestOfBorderOnNextPlane(catom->position) << endl;
+
+    // cout << endl << "Plane Requires: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i << "\t" << planeRequires[i] << endl;
+    // }
+
+    // cout << endl << "Plane Attracted: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i << "\t" << planeAttracted[i] << endl;
+    // }
+
+    // cout << endl << "Plane Seed: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i << "\t" << planeSeed[i] << endl;
+    // }
 }
 
 void CoatingBlockCode::onAssertTriggered() {
@@ -341,7 +374,7 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
     scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
     catom->setColor(AttractedColor);
-    usleep(5000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY));
 
     world->addBlock(0, buildNewBlockCode, pos, DefaultColor);
 }
@@ -408,16 +441,17 @@ void CoatingBlockCode::initializePlaneSeeds() {
 
     int maxPlane = -1;
     Cell3DPosition pos;
-    for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
+
+    for (short iz = G_SEED_POS[2]; iz <= lattice->getGridUpperBounds()[2]; iz++) {
         const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
         const Cell3DPosition& gub = lattice->getGridUpperBounds(iz);
+        int idx = iz - G_SEED_POS[2];
+
         for (short iy = glb[1]; iy <= gub[1]; iy++) {
             for (short ix = glb[0]; ix <= gub[0]; ix++) {
                 pos.set(ix,iy,iz);
 
                 if (isInG(pos)) {
-                    int idx = iz - G_SEED_POS[2];
-
                     if (idx > maxPlane) {
                         maxPlane = idx;
                         planeRequires.push_back(0);

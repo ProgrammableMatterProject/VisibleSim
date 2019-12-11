@@ -42,6 +42,8 @@ public :
     bool isSouthLineOnMerge(const Cell3DPosition& pos) const;
 
     /**
+     * A plane seed module is a module that is responsible for attracting the first module of
+     *  the next plane to its z + 1 coordinate
      * @param pos
      * @return true is pos is the seed of its plane
      */
@@ -72,14 +74,18 @@ public :
     bool isSeedBorderOnNextPlane(const Cell3DPosition& pos) const;
 
     /**
-     * Checks if pos is the lowest module of the plane (current or next)
-     *  with a filled position under it.
      * @param pos
-     * @param next current plane if false, next plane if true;
-     * @return true if pos is the lowest module of the plane (current or next)
-     *  with a filled position under it.
+     * @return true if pos is the module of the next plane with minimum coordinates
+     *  and a module in G under it
      */
-    bool isLowestOfBorderOnPlane(const Cell3DPosition& pos, bool next = false) const;
+    bool isLowestOfBorderOnNextPlane(const Cell3DPosition& pos) const;
+
+    /**
+     * @param pos
+     * @return true if pos is the module of the current plane with minimum coordinates
+     *  and a module in G over it
+     */
+    bool isLowestOfBorderOnCurrentPlane(const Cell3DPosition& pos) const;
 };
 
 #endif /* CoatingBorder_H_ */

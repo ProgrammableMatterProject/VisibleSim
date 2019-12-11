@@ -32,6 +32,13 @@ public :
     int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) const;
 
     /**
+     * @param idx current rotation index
+     * @param currentPos current search position
+     * @return the position of the next neighbor along the internal border
+     */
+    int getNextBorderNeighborCCW(int &idx, Cell3DPosition &currentPos) const;
+
+    /**
      * @param pos
      * @return true if pos is on an internal or external border
      */

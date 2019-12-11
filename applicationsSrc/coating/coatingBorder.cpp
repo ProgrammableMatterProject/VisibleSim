@@ -10,7 +10,6 @@ Border::Border(std::function<bool(const Cell3DPosition&)> _isInG,
 
 int Border::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) const {
     int newIdx;
-    vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
     vector<pair<int, int>> cw_order = {{0,-1}, {-1,0}, {0,1}, {1,0}};
 
     for (int i = 0; i < 4; i++) {
@@ -32,6 +31,28 @@ int Border::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) const {
         }
     }
 
+    return 0;
+}
+
+int Border::getNextBorderNeighborCCW(int &idx, Cell3DPosition &currentPos) const {
+    vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
+    int newIdx;
+    for (int i = 0; i < 4; i++) {
+        newIdx = (((idx+i-1)%4)+4)%4;
+        Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
+                                          .addY(ccw_order[newIdx].second);
+        if (BlockCode::target->isInTarget(nextPos)) {
+            idx = newIdx;
+            currentPos = nextPos;
+            if (i == 0)
+                return 1;
+            else if (i == 2)
+                return -1;
+            else if (i == 3)
+                return -2;
+            return 0;
+        }
+    }
     return 0;
 }
 
