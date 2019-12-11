@@ -76,8 +76,8 @@ void CoatingBlockCode::startup() {
         // cout << "nPlanes: " << nPlanes << endl;
         // cout << "layer: " << layer << endl;
         if (layer < nPlanes - 1) {
-            const Cell3DPosition& aPos = isInG(planeSeed[layer] + Cell3DPosition(0,0,1)) ?
-                Cell3DPosition(0,0,1) : Cell3DPosition(-1,-1,1);
+            const Cell3DPosition& aPos = isInG(planeSeed[layer] + seeding->forwardSeed) ?
+                seeding->forwardSeed : seeding->backwardSeed;
             sendAttractSignalTo(planeSeed[layer] + aPos);
         }
     }
@@ -144,20 +144,17 @@ void CoatingBlockCode::onBlockSelected() {
     cout << "isInG(" << catom->position << "): "
          << isInG(catom->position) << endl;
 
-    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, West) << "): "
-         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, West)) << endl;
+    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, East) << "): "
+         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, East)) << endl;
 
     cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, South) << "): "
          << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, South)) <<endl;
 
-    cout << "isSeedBorderOnNextPlane(" << catom->position + Cell3DPosition(-1,-1,1) << "): "
-         << seeding->isSeedBorderOnNextPlane(catom->position +Cell3DPosition(-1,-1,1)) << endl;
+    cout << "isSeedBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
+         << seeding->isSeedBorderOnNextPlane(catom->position + seeding->backwardSeed) << endl;
 
     cout << "isSeedBorderOnCurrentPlane(" << catom->position << "): "
          << seeding->isSeedBorderOnCurrentPlane(catom->position) << endl;
-
-    cout << "isInG(" << catom->position + Cell3DPosition(0,0,-1) << "): "
-         << isInG(catom->position + Cell3DPosition(0,0,-1)) << endl;
 
     cout << "isOnBorder(" << catom->position << "): "
          << border->isOnBorder(catom->position) << endl;
@@ -165,9 +162,8 @@ void CoatingBlockCode::onBlockSelected() {
     cout << "isLowestOfBorderOnCurrentPlane(" << catom->position << "): "
          << seeding->isLowestOfBorderOnCurrentPlane(catom->position) << endl;
 
-    cout << "isLowestOfBorderOnNextPlane(" << catom->position+Cell3DPosition(-1,-1,1) << "): "
-         << seeding->isLowestOfBorderOnNextPlane(catom->position+Cell3DPosition(-1,-1,1))
-         << endl;
+    cout << "isLowestOfBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
+         << seeding->isLowestOfBorderOnNextPlane(catom->position + seeding->backwardSeed)<<endl;
 
     // cout << endl << "Plane Requires: " << endl;
     // for (int i = 0; i < nPlanes; i++) {

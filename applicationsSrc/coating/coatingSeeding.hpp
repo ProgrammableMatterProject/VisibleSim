@@ -19,6 +19,9 @@ public :
            Neighborhood *_neighborhood, Border *_border);
     ~Seeding() {};
 
+    static inline const Cell3DPosition& forwardSeed = Cell3DPosition(-1, 0, 1);
+    static inline const Cell3DPosition& backwardSeed = Cell3DPosition(0, -1, 1);
+
     /**
      * @return true if catom is a north seed and should attract modules to its north column
      */

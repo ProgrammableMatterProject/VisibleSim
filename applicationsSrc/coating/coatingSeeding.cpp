@@ -84,22 +84,23 @@ bool Seeding::isSouthLineOnMerge(const Cell3DPosition& pos) const {
 }
 
 bool Seeding::isPlaneSeed(const Cell3DPosition& pos) const {
-    return not (couldBeSeed(nbh->cellInDirection(pos, West))
+    return not (couldBeSeed(nbh->cellInDirection(pos, East))
                 or couldBeSeed(nbh->cellInDirection(pos, South)))
-        and (isSeedBorderOnNextPlane(pos + Cell3DPosition(-1,-1,1))
-             or isSeedBorderOnNextPlane(pos + Cell3DPosition(0,0,1))
-             or isSeedBorderOnCurrentPlane(pos));
+        and (isSeedBorderOnNextPlane(pos + backwardSeed)
+             or isSeedBorderOnNextPlane(pos + forwardSeed)
+             or isSeedBorderOnCurrentPlane(pos)
+            );
 }
 
 bool Seeding::couldBeSeed(const Cell3DPosition& pos) const {
-    const Cell3DPosition& zPos = pos + Cell3DPosition(0, 0, 1);
-    const Cell3DPosition& zPosAlt = pos + Cell3DPosition(-1, -1, 1);
+    const Cell3DPosition& zPos = pos + forwardSeed;
+    const Cell3DPosition& zPosAlt = pos + backwardSeed;
     return isInG(pos) and (isInG(zPos) or isInG(zPosAlt)) and
         (border->isOnBorder(pos) or border->isOnBorder(zPos) or border->isOnBorder(zPosAlt));
 }
 
 bool Seeding::isSeedBorderOnCurrentPlane(const Cell3DPosition& pos) const {
-    return isInG(pos + Cell3DPosition(0,0,1)) and border->isOnBorder(pos)
+    return isInG(pos + forwardSeed) and border->isOnBorder(pos)
         and isLowestOfBorderOnCurrentPlane(pos);
 }
 
@@ -114,8 +115,8 @@ bool Seeding::isLowestOfBorderOnCurrentPlane(const Cell3DPosition& pos) const {
     Cell3DPosition currentPos = pos;
     nTurns += border->getNextBorderNeighborCCW(idx, currentPos);
     while(currentPos != pos) {
-        if ((currentPos[1] < pos[1] or (currentPos[1] == pos[1] and currentPos[0] < pos[0]))
-            and isInG(currentPos.addZ(1))) {
+        if ((currentPos[1] < pos[1] or (currentPos[1] == pos[1] and currentPos[0] > pos[0]))
+            and isInG(currentPos + forwardSeed)) {
             return false;
         }
 
@@ -133,9 +134,9 @@ bool Seeding::isLowestOfBorderOnNextPlane(const Cell3DPosition& pos) const {
     while(currentPos != pos) {
         // cout << currentPos << endl;
 
-        if ((currentPos[1] < pos[1] or (currentPos[1] == pos[1] and currentPos[0] < pos[0]))
-            and (isInG(currentPos + Cell3DPosition(1, 1, -1))
-                 or isInG(currentPos + Cell3DPosition(0, 0, -1)))) {
+        if ((currentPos[1] < pos[1] or (currentPos[1] == pos[1] and currentPos[0] > pos[0]))
+            and (isInG(currentPos + -1 * backwardSeed)
+                 or isInG(currentPos + -1 * forwardSeed))) {
             return false;
         }
 
