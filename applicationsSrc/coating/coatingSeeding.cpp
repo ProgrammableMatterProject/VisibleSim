@@ -88,8 +88,7 @@ bool Seeding::isPlaneSeed(const Cell3DPosition& pos) const {
                 or couldBeSeed(nbh->cellInDirection(pos, South)))
         and (isSeedBorderOnNextPlane(pos + backwardSeed)
              or isSeedBorderOnNextPlane(pos + forwardSeed)
-             or isSeedBorderOnCurrentPlane(pos)
-            );
+             or isSeedBorderOnCurrentPlane(pos));
 }
 
 bool Seeding::couldBeSeed(const Cell3DPosition& pos) const {

@@ -20,8 +20,8 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
     // set the module pointer
     catom = static_cast<Catoms3DBlock*>(hostBlock);
 
-    isInG = CoatingBlockCode::isInCSG;
-    // isInG = CoatingBlockCode::isInCoating;
+    // isInG = CoatingBlockCode::isInCSG;
+    isInG = CoatingBlockCode::isInCoating;
 
     if (not neighborhood) neighborhood = new Neighborhood(isInG);
     if (not border) border = new Border(isInG, neighborhood);
@@ -143,51 +143,51 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
-    // cout << "isNorthSeed(" << catom->position << "): "
-    //      << seeding->isNorthSeed(catom->position) << endl;
+    cout << "isNorthSeed(" << catom->position << "): "
+         << seeding->isNorthSeed(catom->position) << endl;
 
-    // cout << "isInG(" << catom->position << "): "
-    //      << isInG(catom->position) << endl;
+    cout << "isInG(" << catom->position << "): "
+         << isInG(catom->position) << endl;
 
-    // cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, East) << "): "
-    //      << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, East)) << endl;
+    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, East) << "): "
+         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, East)) << endl;
 
-    // cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, South) << "): "
-    //      << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, South)) <<endl;
+    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, South) << "): "
+         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, South)) <<endl;
 
-    // cout << "isSeedBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
-    //      << seeding->isSeedBorderOnNextPlane(catom->position + seeding->backwardSeed) << endl;
+    cout << "isSeedBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
+         << seeding->isSeedBorderOnNextPlane(catom->position + seeding->backwardSeed) << endl;
 
-    // cout << "isSeedBorderOnCurrentPlane(" << catom->position << "): "
-    //      << seeding->isSeedBorderOnCurrentPlane(catom->position) << endl;
+    cout << "isSeedBorderOnCurrentPlane(" << catom->position << "): "
+         << seeding->isSeedBorderOnCurrentPlane(catom->position) << endl;
 
-    // cout << "isOnBorder(" << catom->position << "): "
-    //      << border->isOnBorder(catom->position) << endl;
+    cout << "isOnBorder(" << catom->position << "): "
+         << border->isOnBorder(catom->position) << endl;
 
-    // cout << "isLowestOfBorderOnCurrentPlane(" << catom->position << "): "
-    //      << seeding->isLowestOfBorderOnCurrentPlane(catom->position) << endl;
+    cout << "isLowestOfBorderOnCurrentPlane(" << catom->position << "): "
+         << seeding->isLowestOfBorderOnCurrentPlane(catom->position) << endl;
 
-    // cout << "isLowestOfBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
-    //      <<seeding->isLowestOfBorderOnNextPlane(catom->position + seeding->backwardSeed)<<endl;
+    cout << "isLowestOfBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
+         <<seeding->isLowestOfBorderOnNextPlane(catom->position + seeding->backwardSeed)<<endl;
 
-    cout << endl << "Plane Requires: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i << "\t" << planeRequires[i] << endl;
-    }
+    // cout << endl << "Plane Requires: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i << "\t" << planeRequires[i] << endl;
+    // }
 
-    cout << endl << "Plane Attracted: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i << "\t" << planeAttracted[i] << endl;
-    }
+    // cout << endl << "Plane Attracted: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i << "\t" << planeAttracted[i] << endl;
+    // }
 
-    cout << endl << "Plane Seed: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i;
-        for (const Cell3DPosition& seed : planeSeed[i]) {
-            cout << "\t" << seed;
-        }
-        cout << endl;
-    }
+    // cout << endl << "Plane Seed: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i;
+    //     for (const Cell3DPosition& seed : planeSeed[i]) {
+    //         cout << "\t" << seed;
+    //     }
+    //     cout << endl;
+    // }
 }
 
 void CoatingBlockCode::onAssertTriggered() {
@@ -214,15 +214,17 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
                 if (varg == string("coating")) { //
                     HIGHLIGHT_COATING = true;
 
-                    try {
-                        HIGHLIGHT_COATING_LAYER = stoi((*argv)[1]);
-                        argc--;
-                        (*argv)++;
-                    } catch(std::logic_error&) {
-                        stringstream err;
-                        err << "Found invalid parameter after option --coating: "
-                            << (*argv)[1] << endl;
-                        throw CLIParsingError(err.str());
+                    if ((*argv)[1] and (*argv)[1][0] != '-') {
+                        try {
+                            HIGHLIGHT_COATING_LAYER = stoi((*argv)[1]);
+                            argc--;
+                            (*argv)++;
+                        } catch(std::logic_error&) {
+                            stringstream err;
+                            err << "Found invalid parameter after option --coating: "
+                                << (*argv)[1] << endl;
+                            throw CLIParsingError(err.str());
+                        }
                     }
 
                     cout << "--coating option provided with value: "
@@ -266,7 +268,7 @@ void CoatingBlockCode::highlight() const {
 
     if (HIGHLIGHT_COATING) {
         lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-            return isInCoatingLayer(p, HIGHLIGHT_COATING_LAYER); });
+            return isInCoatingLayer(p, HIGHLIGHT_COATING_LAYER); }, WHITE);
     }
 
     if (HIGHLIGHT_SEEDS) {

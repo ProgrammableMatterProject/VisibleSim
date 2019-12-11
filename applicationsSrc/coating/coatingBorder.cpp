@@ -41,7 +41,7 @@ int Border::getNextBorderNeighborCCW(int &idx, Cell3DPosition &currentPos) const
         newIdx = (((idx+i-1)%4)+4)%4;
         Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
                                           .addY(ccw_order[newIdx].second);
-        if (BlockCode::target->isInTarget(nextPos)) {
+        if (isInG(nextPos)) {
             idx = newIdx;
             currentPos = nextPos;
             if (i == 0)
