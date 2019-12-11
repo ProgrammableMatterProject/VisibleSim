@@ -17,13 +17,13 @@ bool Seeding::isNorthSeed(const Cell3DPosition& pos) const {
     // cout << "isInG(" << pos.addX(1) << "): " << isInG(pos.addX(1)) << endl;
 
     return isInG(pos) and
-        not isNorthLineOnMerge(pos) and isInG(pos.addY(1))
+        not isSouthLineOnMerge(pos) and isInG(pos.addY(1))
         and (not isInG(pos.addX(1).addY(1)) or not isInG(pos.addX(1)));
 }
 
 bool Seeding::isSouthSeed(const Cell3DPosition& pos) const {
     return isInG(pos) and
-        not isSouthLineOnMerge(pos) and isInG(pos.addY(-1))
+        not isNorthLineOnMerge(pos) and isInG(pos.addY(-1))
         and (not isInG(pos.addX(-1).addY(-1)) or not isInG(pos.addX(-1)));
 }
 

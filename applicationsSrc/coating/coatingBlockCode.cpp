@@ -20,8 +20,8 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
     // set the module pointer
     catom = static_cast<Catoms3DBlock*>(hostBlock);
 
-    isInG = CoatingBlockCode::isInCSG;
-    // isInG = CoatingBlockCode::isInCoating;
+    // isInG = CoatingBlockCode::isInCSG;
+    isInG = CoatingBlockCode::isInCoating;
 
     if (not neighborhood) neighborhood = new Neighborhood(isInG);
     if (not border) border = new Border(isInG, neighborhood);
@@ -66,8 +66,12 @@ void CoatingBlockCode::startup() {
         catom->setColor(RED);
 
         // Start next layer if not top plane
-        if (layer < nPlanes - 1)
+        cout << "nPlanes: " << nPlanes << endl;
+        cout << "layer: " << layer << endl;
+        if (layer < nPlanes - 1) {
+            cout << "wut" << endl;
             sendAttractSignalTo(planeSeed[layer + 1]);
+        }
     }
 
     // Simulate authorizations
@@ -126,23 +130,23 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
-    cout << "isNorthSeed(" << catom->position << "): "
-         << seeding->isNorthSeed(catom->position) << endl;
+    // cout << "isNorthSeed(" << catom->position << "): "
+    //      << seeding->isNorthSeed(catom->position) << endl;
 
-    // cout << endl << "Plane Requires: " << endl;
-    // for (int i = 0; i < nPlanes; i++) {
-    //     cout << i << "\t" << planeRequires[i] << endl;
-    // }
+    cout << endl << "Plane Requires: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i << "\t" << planeRequires[i] << endl;
+    }
 
-    // cout << endl << "Plane Attracted: " << endl;
-    // for (int i = 0; i < nPlanes; i++) {
-    //     cout << i << "\t" << planeAttracted[i] << endl;
-    // }
+    cout << endl << "Plane Attracted: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i << "\t" << planeAttracted[i] << endl;
+    }
 
-    // cout << endl << "Plane Seed: " << endl;
-    // for (int i = 0; i < nPlanes; i++) {
-    //     cout << i << "\t" << planeSeed[i] << endl;
-    // }
+    cout << endl << "Plane Seed: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i << "\t" << planeSeed[i] << endl;
+    }
 }
 
 void CoatingBlockCode::onAssertTriggered() {
@@ -269,14 +273,14 @@ void CoatingBlockCode::attract() {
     if (seeding->isNorthSeed(catom->position)
         and not neighborhood->hasNeighborInDirection(catom->position,
                                                      SkewFCCLattice::Direction::C1North)) {
-        sendAttractSignalTo(catom->position.addY(1));
+        sendAttractSignalTo(neighborhood->cellInDirection(catom->position, North));
     }
 
     // South attraction
     if (seeding->isSouthSeed(catom->position)
         and not neighborhood->hasNeighborInDirection(catom->position,
                                                      SkewFCCLattice::Direction::C7South)) {
-        sendAttractSignalTo(catom->position.addY(-1));
+        sendAttractSignalTo(neighborhood->cellInDirection(catom->position, South));
     }
 
     // West attraction
@@ -406,9 +410,9 @@ void CoatingBlockCode::initializePlaneSeeds() {
     Cell3DPosition pos;
     for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
         const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
-        const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
-        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
-            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+        const Cell3DPosition& gub = lattice->getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= gub[1]; iy++) {
+            for (short ix = glb[0]; ix <= gub[0]; ix++) {
                 pos.set(ix,iy,iz);
 
                 if (isInG(pos)) {
