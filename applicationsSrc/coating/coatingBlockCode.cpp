@@ -76,9 +76,14 @@ void CoatingBlockCode::startup() {
         // cout << "nPlanes: " << nPlanes << endl;
         // cout << "layer: " << layer << endl;
         if (layer < nPlanes - 1) {
-            const Cell3DPosition& aPos = isInG(planeSeed[layer] + seeding->forwardSeed) ?
-                seeding->forwardSeed : seeding->backwardSeed;
-            sendAttractSignalTo(planeSeed[layer] + aPos);
+            for (const Cell3DPosition& seed : planeSeed[layer]) {
+                const Cell3DPosition& aPos = isInG(seed + seeding->forwardSeed) ?
+                    seeding->forwardSeed : seeding->backwardSeed;
+
+                VS_ASSERT_MSG(isInG(seed + aPos), "seed target is not in G!");
+
+                sendAttractSignalTo(seed + aPos);
+            }
         }
     }
 
@@ -141,44 +146,48 @@ void CoatingBlockCode::onBlockSelected() {
     // cout << "isNorthSeed(" << catom->position << "): "
     //      << seeding->isNorthSeed(catom->position) << endl;
 
-    cout << "isInG(" << catom->position << "): "
-         << isInG(catom->position) << endl;
+    // cout << "isInG(" << catom->position << "): "
+    //      << isInG(catom->position) << endl;
 
-    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, East) << "): "
-         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, East)) << endl;
+    // cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, East) << "): "
+    //      << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, East)) << endl;
 
-    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, South) << "): "
-         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, South)) <<endl;
+    // cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, South) << "): "
+    //      << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, South)) <<endl;
 
-    cout << "isSeedBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
-         << seeding->isSeedBorderOnNextPlane(catom->position + seeding->backwardSeed) << endl;
+    // cout << "isSeedBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
+    //      << seeding->isSeedBorderOnNextPlane(catom->position + seeding->backwardSeed) << endl;
 
-    cout << "isSeedBorderOnCurrentPlane(" << catom->position << "): "
-         << seeding->isSeedBorderOnCurrentPlane(catom->position) << endl;
+    // cout << "isSeedBorderOnCurrentPlane(" << catom->position << "): "
+    //      << seeding->isSeedBorderOnCurrentPlane(catom->position) << endl;
 
-    cout << "isOnBorder(" << catom->position << "): "
-         << border->isOnBorder(catom->position) << endl;
+    // cout << "isOnBorder(" << catom->position << "): "
+    //      << border->isOnBorder(catom->position) << endl;
 
-    cout << "isLowestOfBorderOnCurrentPlane(" << catom->position << "): "
-         << seeding->isLowestOfBorderOnCurrentPlane(catom->position) << endl;
+    // cout << "isLowestOfBorderOnCurrentPlane(" << catom->position << "): "
+    //      << seeding->isLowestOfBorderOnCurrentPlane(catom->position) << endl;
 
-    cout << "isLowestOfBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
-         << seeding->isLowestOfBorderOnNextPlane(catom->position + seeding->backwardSeed)<<endl;
+    // cout << "isLowestOfBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
+    //      <<seeding->isLowestOfBorderOnNextPlane(catom->position + seeding->backwardSeed)<<endl;
 
-    // cout << endl << "Plane Requires: " << endl;
-    // for (int i = 0; i < nPlanes; i++) {
-    //     cout << i << "\t" << planeRequires[i] << endl;
-    // }
+    cout << endl << "Plane Requires: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i << "\t" << planeRequires[i] << endl;
+    }
 
-    // cout << endl << "Plane Attracted: " << endl;
-    // for (int i = 0; i < nPlanes; i++) {
-    //     cout << i << "\t" << planeAttracted[i] << endl;
-    // }
+    cout << endl << "Plane Attracted: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i << "\t" << planeAttracted[i] << endl;
+    }
 
-    // cout << endl << "Plane Seed: " << endl;
-    // for (int i = 0; i < nPlanes; i++) {
-    //     cout << i << "\t" << planeSeed[i] << endl;
-    // }
+    cout << endl << "Plane Seed: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i;
+        for (const Cell3DPosition& seed : planeSeed[i]) {
+            cout << "\t" << seed;
+        }
+        cout << endl;
+    }
 }
 
 void CoatingBlockCode::onAssertTriggered() {
@@ -209,7 +218,12 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
                         HIGHLIGHT_COATING_LAYER = stoi((*argv)[1]);
                         argc--;
                         (*argv)++;
-                    } catch(std::logic_error&) {}
+                    } catch(std::logic_error&) {
+                        stringstream err;
+                        err << "Found invalid parameter after option --coating: "
+                            << (*argv)[1] << endl;
+                        throw CLIParsingError(err.str());
+                    }
 
                     cout << "--coating option provided with value: "
                          << HIGHLIGHT_COATING_LAYER << endl;
@@ -221,6 +235,20 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
                     HIGHLIGHT_SEEDS = true;
 
                     cout << "--seeds option provided" << endl;
+                } else if (varg == string("delay")) { //
+                    try {
+                        ATTRACT_DELAY = stoi((*argv)[1]);
+                        argc--;
+                        (*argv)++;
+                    } catch(std::logic_error&) {
+                        stringstream err;
+                        err << "Found invalid parameter after option --delay: '"
+                            << (*argv)[1] << "' (expected integer value in ms)" << endl;
+                        throw CLIParsingError(err.str());
+                    }
+
+                    cout << "--delay option provided with value: "
+                         << ATTRACT_DELAY << " ms" << endl;
                 } else {
                     return false;
                 }
@@ -455,11 +483,11 @@ void CoatingBlockCode::initializePlaneSeeds() {
                         maxPlane = idx;
                         planeRequires.push_back(0);
                         planeAttracted.push_back(0);
-                        planeSeed.push_back(Cell3DPosition());
+                        planeSeed.push_back(list<Cell3DPosition>());
                     }
 
                     if (seeding->isPlaneSeed(pos)) // Super costly
-                        planeSeed[idx] = pos;
+                        planeSeed[idx].push_back(pos);
 
                     planeRequires[idx]++;
                 }

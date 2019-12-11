@@ -43,7 +43,7 @@ private:
     static inline int nPlanes; //!< Number of planes
     static inline vector<int> planeRequires; //!< Number of modules plane i needs
     static inline vector<int> planeAttracted; //!< Number of modules plane i has attracted
-    static inline vector<Cell3DPosition> planeSeed; //!< Modules responsible for attracting the first module of the plane above them
+    static inline vector<list<Cell3DPosition>> planeSeed; //!< Modules responsible for attracting the first module of the plane above them, one per contiguous plane, potentially multiple per layer therefore
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode();
