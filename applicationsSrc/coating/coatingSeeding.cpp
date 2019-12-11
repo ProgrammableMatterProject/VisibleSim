@@ -84,16 +84,18 @@ bool Seeding::isSouthLineOnMerge(const Cell3DPosition& pos) const {
 }
 
 bool Seeding::isPlaneSeed(const Cell3DPosition& pos) const {
-    return not (couldBeSeed(nbh->cellInDirection(pos, East))
+    return not (couldBeSeed(nbh->cellInDirection(pos, West))
                 or couldBeSeed(nbh->cellInDirection(pos, South)))
-        and (isSeedBorderOnNextPlane(pos + Cell3DPosition(0,0,1))
+        and (isSeedBorderOnNextPlane(pos + Cell3DPosition(-1,-1,1))
+             or isSeedBorderOnNextPlane(pos + Cell3DPosition(0,0,1))
              or isSeedBorderOnCurrentPlane(pos));
 }
 
 bool Seeding::couldBeSeed(const Cell3DPosition& pos) const {
     const Cell3DPosition& zPos = pos + Cell3DPosition(0, 0, 1);
-    return isInG(pos) and isInG(zPos)
-        and (border->isOnBorder(pos) or border->isOnBorder(zPos));
+    const Cell3DPosition& zPosAlt = pos + Cell3DPosition(-1, -1, 1);
+    return isInG(pos) and (isInG(zPos) or isInG(zPosAlt)) and
+        (border->isOnBorder(pos) or border->isOnBorder(zPos) or border->isOnBorder(zPosAlt));
 }
 
 bool Seeding::isSeedBorderOnCurrentPlane(const Cell3DPosition& pos) const {
@@ -112,7 +114,7 @@ bool Seeding::isLowestOfBorderOnCurrentPlane(const Cell3DPosition& pos) const {
     Cell3DPosition currentPos = pos;
     nTurns += border->getNextBorderNeighborCCW(idx, currentPos);
     while(currentPos != pos) {
-        if ((currentPos[1] < pos[1] or (currentPos[1] == pos[1] and currentPos[0] > pos[0]))
+        if ((currentPos[0] < pos[0] or (currentPos[0] == pos[0] and currentPos[1] < pos[1]))
             and isInG(currentPos.addZ(1))) {
             return false;
         }
@@ -129,8 +131,11 @@ bool Seeding::isLowestOfBorderOnNextPlane(const Cell3DPosition& pos) const {
     Cell3DPosition currentPos = pos;
     nTurns += border->getNextBorderNeighborCCW(idx, currentPos);
     while(currentPos != pos) {
-        if ((currentPos[1] < pos[1] or (currentPos[1] == pos[1] and currentPos[0] > pos[0]))
-            and isInG(currentPos.addZ(-1))) {
+        // cout << currentPos << endl;
+
+        if ((currentPos[0] < pos[0] or (currentPos[0] == pos[0] and currentPos[1] < pos[1]))
+            and (isInG(currentPos + Cell3DPosition(1, 1, -1))
+                 or isInG(currentPos + Cell3DPosition(0, 0, -1)))) {
             return false;
         }
 
