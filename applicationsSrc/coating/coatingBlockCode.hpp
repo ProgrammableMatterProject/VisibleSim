@@ -13,6 +13,11 @@ static const int SAMPLE_MSG_ID = 1000;
 
 using namespace Catoms3D;
 
+class CoatingException : public VisibleSimException {
+public:
+    CoatingException(const string& msg) : VisibleSimException(msg, std::string("Coating")) {}
+};
+
 class CoatingBlockCode : public Catoms3DBlockCode {
 private:
     // App-wide Parameters
@@ -31,6 +36,7 @@ private:
     static inline const Color AttractedColor = GREEN;
     static inline const Color SupportColor = ORANGE;
     static inline const Color DefaultColor = YELLOW;
+    static inline const Color InvalidColor = Color(156, 0, 0, 255, true);
 
     // DApp Variables
     Catoms3DBlock *catom;

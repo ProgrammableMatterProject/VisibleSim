@@ -847,12 +847,14 @@ SkewFCCLattice::getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &
 
 bool SkewFCCLattice::cellIsBlocked(const Cell3DPosition& pos) const {
     Cell3DPosition p1,p2;
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 6; i++) {
         p1 = getCellInDirection(pos, i);
         p2 = getCellInDirection(pos, getOppositeDirection(i));
 
-        if (cellHasBlock(p1) and cellHasBlock(p2))
+        if (cellHasBlock(p1) and cellHasBlock(p2)) {
+            cerr << "cells " << p1 << " and " << p2 << " are blocking " << pos << endl;
             return true;
+        }
     }
 
     return false;

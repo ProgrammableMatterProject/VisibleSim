@@ -52,7 +52,17 @@ CoatingBlockCode::~CoatingBlockCode() {
 };
 
 void CoatingBlockCode::startup() {
-    if (catom->blockId == 1) G_SEED_POS = catom->position; // FIXME:
+    if (catom->blockId == 1) {
+        G_SEED_POS = catom->position; // FIXME:
+
+        if (not isInG(G_SEED_POS)) {
+            stringstream ss;
+            ss << "Seed module at "
+               << TermColor::BWhite << G_SEED_POS << TermColor::Reset
+               << " must be in the CSG target" << endl;
+            throw CoatingException(ss.str());
+        }
+    }
 
     static bool delayInit = false;
     if (not delayInit) {
@@ -77,7 +87,7 @@ void CoatingBlockCode::startup() {
 
     int layer = getGLayer(catom->position);
     if (++planeAttracted[layer] == planeRequires[layer]) {
-        catom->setColor(RED);
+        catom->setColor(CYAN);
 
         // Start next layer if not top plane
         // cout << "nPlanes: " << nPlanes << endl;
@@ -436,9 +446,13 @@ void CoatingBlockCode::attractStructuralSupports(int layer) {
         info << " attracts layer " << layer << " structural support to " << pos;
         scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
-        VS_ASSERT(not lattice->cellIsBlocked(pos));
+        Color color = SupportColor;
+        if (lattice->cellIsBlocked(pos)) {
+            lattice->highlightCell(pos, RED);
+            color = InvalidColor;
+        }
 
-        world->addBlock(0, buildNewBlockCode, pos, SupportColor);
+        world->addBlock(0, buildNewBlockCode, pos, color);
         std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY * 4));
     }
 }
@@ -449,19 +463,23 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
          << " position " << pos;
     scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
-    catom->setColor(AttractedColor);
+    if (catom->color != InvalidColor) catom->setColor(AttractedColor); // Preserve err trace
     std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY));
 
-    VS_ASSERT(not lattice->cellIsBlocked(pos));
+    Color color = DefaultColor;
+    if (lattice->cellIsBlocked(pos)) {
+        lattice->highlightCell(pos, RED);
+        color = InvalidColor;
+    }
 
     try {
-        world->addBlock(0, buildNewBlockCode, pos, DefaultColor);
+        world->addBlock(0, buildNewBlockCode, pos, color);
     } catch (DoubleInsertionException const& e) {
         cerr << e.what();
-        catom->setColor(RED);
+        catom->setColor(InvalidColor);
         info.str("");
         info << " DoubleInsertion when attracting module to " << pos;
-        scheduler->trace(info.str(), catom->blockId, RED);
+        scheduler->trace(info.str(), catom->blockId, InvalidColor);
     }
 }
 
