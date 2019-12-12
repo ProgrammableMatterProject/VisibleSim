@@ -7,6 +7,7 @@
 #include "coatingNeighborhood.hpp"
 #include "coatingBorder.hpp"
 #include "coatingSeeding.hpp"
+#include "scaffoldManager.hpp"
 
 static const int SAMPLE_MSG_ID = 1000;
 
@@ -19,6 +20,7 @@ private:
     static inline bool HIGHLIGHT_CSG = false;
     static inline int HIGHLIGHT_COATING_LAYER = -1;
     static inline int HIGHLIGHT_SEEDS = false;
+    static inline int HIGHLIGHT_SUPPORTS = false;
     static inline Cell3DPosition G_SEED_POS;
     static inline const Color ATTRACT_DEBUG_COLOR = CYAN;
     static inline const Color AUTH_DEBUG_COLOR = ORANGE;
@@ -27,6 +29,7 @@ private:
 
     static inline const Color WaitingColor = BLUE;
     static inline const Color AttractedColor = GREEN;
+    static inline const Color SupportColor = ORANGE;
     static inline const Color DefaultColor = YELLOW;
 
     // DApp Variables
@@ -36,6 +39,9 @@ private:
     static inline Neighborhood *neighborhood;
     static inline Border *border;
     static inline Seeding *seeding;
+    static inline ScaffoldManager *scaffold;
+
+    static inline Cell3DPosition scaffoldSeed = Cell3DPosition(3,3,3);
 
     static inline std::function<bool (const Cell3DPosition&)> isInG;
     static inline multimap<Cell3DPosition, function<void (void)>> watchlist;
@@ -128,6 +134,12 @@ public :
      * @param pos target position
      */
     void sendAttractSignalTo(const Cell3DPosition& pos);
+
+    /**
+     * Attracts all structural supports for the given layer to their positions.
+     * @param layer
+     */
+    void attractStructuralSupports(int layer);
 
     /**
      * Requests to be notified when position pos is ready to be filled

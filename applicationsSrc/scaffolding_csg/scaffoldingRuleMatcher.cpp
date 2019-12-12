@@ -728,6 +728,7 @@ int ScaffoldingRuleMatcher::getBranchIndexForScafComponent(ScafComponent mc) {
 
     return -1;
 }
+
 const Cell3DPosition
 ScaffoldingRuleMatcher::getPositionForChildTileScafComponent(ScafComponent mc) const {
     switch(mc) {

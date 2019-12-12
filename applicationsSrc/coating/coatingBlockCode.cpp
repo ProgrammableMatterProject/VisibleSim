@@ -26,6 +26,7 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
     if (not neighborhood) neighborhood = new Neighborhood(isInG);
     if (not border) border = new Border(isInG, neighborhood);
     if (not seeding) seeding = new Seeding(isInG, neighborhood, border);
+    if (not scaffold) scaffold = new ScaffoldManager(scaffoldSeed, CoatingBlockCode::isInCSG);
 }
 
 CoatingBlockCode::~CoatingBlockCode() {
@@ -42,6 +43,11 @@ CoatingBlockCode::~CoatingBlockCode() {
     if (seeding) {
         delete seeding;
         seeding = NULL;
+    }
+
+    if (scaffold) {
+        delete scaffold;
+        scaffold = NULL;
     }
 };
 
@@ -64,8 +70,10 @@ void CoatingBlockCode::startup() {
 
     if (not isInG(catom->position)) return;
 
-    if (catom->position == G_SEED_POS)
+    if (catom->position == G_SEED_POS) {
         initializePlaneSeeds();
+        attractStructuralSupports(0); // first layer supports only
+    }
 
 
     int layer = getGLayer(catom->position);
@@ -76,6 +84,10 @@ void CoatingBlockCode::startup() {
         // cout << "nPlanes: " << nPlanes << endl;
         // cout << "layer: " << layer << endl;
         if (layer < nPlanes - 1) {
+            // Attract structural supports
+            attractStructuralSupports(layer + 1);
+
+            // Attract first modules of next plane
             for (const Cell3DPosition& seed : planeSeed[layer]) {
                 const Cell3DPosition& aPos = isInG(seed + seeding->forwardSeed) ?
                     seeding->forwardSeed : seeding->backwardSeed;
@@ -143,32 +155,32 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
-    cout << "isNorthSeed(" << catom->position << "): "
-         << seeding->isNorthSeed(catom->position) << endl;
+    // cout << "isNorthSeed(" << catom->position << "): "
+    //      << seeding->isNorthSeed(catom->position) << endl;
 
-    cout << "isInG(" << catom->position << "): "
-         << isInG(catom->position) << endl;
+    // cout << "isInG(" << catom->position << "): "
+    //      << isInG(catom->position) << endl;
 
-    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, East) << "): "
-         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, East)) << endl;
+    // cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, East) << "): "
+    //      << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, East)) << endl;
 
-    cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, South) << "): "
-         << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, South)) <<endl;
+    // cout << "couldBeSeed(" << neighborhood->cellInDirection(catom->position, South) << "): "
+    //      << seeding->couldBeSeed(neighborhood->cellInDirection(catom->position, South)) <<endl;
 
-    cout << "isSeedBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
-         << seeding->isSeedBorderOnNextPlane(catom->position + seeding->backwardSeed) << endl;
+    // cout << "isSeedBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
+    //      << seeding->isSeedBorderOnNextPlane(catom->position + seeding->backwardSeed) << endl;
 
-    cout << "isSeedBorderOnCurrentPlane(" << catom->position << "): "
-         << seeding->isSeedBorderOnCurrentPlane(catom->position) << endl;
+    // cout << "isSeedBorderOnCurrentPlane(" << catom->position << "): "
+    //      << seeding->isSeedBorderOnCurrentPlane(catom->position) << endl;
 
-    cout << "isOnBorder(" << catom->position << "): "
-         << border->isOnBorder(catom->position) << endl;
+    // cout << "isOnBorder(" << catom->position << "): "
+    //      << border->isOnBorder(catom->position) << endl;
 
-    cout << "isLowestOfBorderOnCurrentPlane(" << catom->position << "): "
-         << seeding->isLowestOfBorderOnCurrentPlane(catom->position) << endl;
+    // cout << "isLowestOfBorderOnCurrentPlane(" << catom->position << "): "
+    //      << seeding->isLowestOfBorderOnCurrentPlane(catom->position) << endl;
 
-    cout << "isLowestOfBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
-         <<seeding->isLowestOfBorderOnNextPlane(catom->position + seeding->backwardSeed)<<endl;
+    // cout << "isLowestOfBorderOnNextPlane(" << catom->position + seeding->backwardSeed << "): "
+    //      <<seeding->isLowestOfBorderOnNextPlane(catom->position + seeding->backwardSeed)<<endl;
 
     // cout << endl << "Plane Requires: " << endl;
     // for (int i = 0; i < nPlanes; i++) {
@@ -188,6 +200,13 @@ void CoatingBlockCode::onBlockSelected() {
     //     }
     //     cout << endl;
     // }
+
+    cout << endl << "Plane Structural Supports: " << endl;
+    cout << catom->position[2] << "\t[";
+    for(const Cell3DPosition&pos:scaffold->getAllSupportPositionsForPlane(catom->position[2])){
+        cout << pos << ", ";
+    }
+    cout << "]" << endl;
 }
 
 void CoatingBlockCode::onAssertTriggered() {
@@ -237,6 +256,10 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
                     HIGHLIGHT_SEEDS = true;
 
                     cout << "--seeds option provided" << endl;
+                } else if (varg == string("supports")) {
+                    HIGHLIGHT_SUPPORTS = true;
+
+                    cout << "--supports option provided" << endl;
                 } else if (varg == string("delay")) { //
                     try {
                         ATTRACT_DELAY = stoi((*argv)[1]);
@@ -284,6 +307,15 @@ void CoatingBlockCode::highlight() const {
         //     return isInG(p) and border->isOnInternalHole(p); }, MAGENTA);
         lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
             return isInG(p) and seeding->isPlaneSeed(p); }, MAGENTA);
+    }
+
+    if (HIGHLIGHT_SUPPORTS) {
+        int zmax = lattice->getGridUpperBounds()[2];
+        for (int z = 0; z <= zmax; z++) {
+            for (const Cell3DPosition& pos : scaffold->getAllSupportPositionsForPlane(z)) {
+                lattice->highlightCell(pos, SupportColor);
+            }
+        }
     }
 }
 
@@ -393,6 +425,19 @@ void CoatingBlockCode::attract() {
         } else {
             sendAttractSignalTo(ePos);
         }
+    }
+}
+
+void CoatingBlockCode::attractStructuralSupports(int layer) {
+    int z = G_SEED_POS[2] + layer;
+
+    for (const Cell3DPosition& pos : scaffold->getAllSupportPositionsForPlane(z)) {
+        stringstream info;
+        info << " attracts layer " << layer << " structural support to " << pos;
+        scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
+
+        world->addBlock(0, buildNewBlockCode, pos, SupportColor);
+        std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY * 4));
     }
 }
 

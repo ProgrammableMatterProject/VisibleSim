@@ -18,7 +18,8 @@ public:
         : m_msg(msg) {}
 
     virtual const char* what() const throw() override {
-        return (m_msg + std::string("\n") + std::string(utils::Backtrace(6))).c_str();
+        return (m_msg.c_str());
+        // + std::string("\n") + std::string(utils::Backtrace(6))).c_str();
     }
 };
 
@@ -52,20 +53,32 @@ public:
 class NotImplementedException : public VisibleSimException {
 public:
     NotImplementedException()
-        : VisibleSimException(std::string("Feature not yet implemented.")) {}
+        : VisibleSimException(TermColor::BRed + std::string("error (VisibleSim): ")
+                              + TermColor::Reset
+                              + std::string("Feature not yet implemented.")) {}
     NotImplementedException(const std::string &featureName)
-        : VisibleSimException(std::string("Feature not yet implemented: ")) {}
+        : VisibleSimException(TermColor::BRed + std::string("error (VisibleSim): ")
+                              + TermColor::Reset
+                              + std::string("Feature not yet implemented: " + featureName)) {}
 };
 
 //!< An exception for notifying invalid uses of functions
 class InvalidArgumentException : public VisibleSimException {
 public:
     InvalidArgumentException()
-        : VisibleSimException(std::string("Invalid argument supplied to function")) {}
+        : VisibleSimException(TermColor::BRed + std::string("error (VisibleSim): ")
+                              + TermColor::Reset
+                              + std::string("Invalid argument supplied to function")) {}
     InvalidArgumentException(const std::string &function_name)
-        : VisibleSimException(std::string("Invalid argument supplied to function: ") + function_name) {}
+        : VisibleSimException(TermColor::BRed + std::string("error (VisibleSim): ")
+                              + TermColor::Reset
+                              + std::string("Invalid argument supplied to function: ")
+                              + function_name) {}
     InvalidArgumentException(const std::string &function_name, const std::string &arg_name)
-        : VisibleSimException(std::string("Invalid argument supplied to function: ") + function_name + std::string(" -- arg: ") + arg_name) {}
+        : VisibleSimException(TermColor::BRed + std::string("error (VisibleSim): ")
+                              + TermColor::Reset
+                              + std::string("Invalid argument supplied to function: ")
+                              + function_name + std::string(" -- arg: ") + arg_name) {}
 
 };
 
