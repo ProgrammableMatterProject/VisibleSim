@@ -75,7 +75,6 @@ void CoatingBlockCode::startup() {
         attractStructuralSupports(0); // first layer supports only
     }
 
-
     int layer = getGLayer(catom->position);
     if (++planeAttracted[layer] == planeRequires[layer]) {
         catom->setColor(RED);
@@ -418,6 +417,7 @@ void CoatingBlockCode::attract() {
                    and neighborhood->directionIsInCSG(catom->position, East)
                    and neighborhood->directionIsInCSG(catom->position, NorthEast)
                    and border->isOnInternalHole(catom->position)) {
+            info.str("");
             info << " sends a EAST border following request for " << ePos;
             scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
 
@@ -436,6 +436,8 @@ void CoatingBlockCode::attractStructuralSupports(int layer) {
         info << " attracts layer " << layer << " structural support to " << pos;
         scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
+        VS_ASSERT(not lattice->cellIsBlocked(pos));
+
         world->addBlock(0, buildNewBlockCode, pos, SupportColor);
         std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY * 4));
     }
@@ -450,7 +452,17 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
     catom->setColor(AttractedColor);
     std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY));
 
-    world->addBlock(0, buildNewBlockCode, pos, DefaultColor);
+    VS_ASSERT(not lattice->cellIsBlocked(pos));
+
+    try {
+        world->addBlock(0, buildNewBlockCode, pos, DefaultColor);
+    } catch (DoubleInsertionException const& e) {
+        cerr << e.what();
+        catom->setColor(RED);
+        info.str("");
+        info << " DoubleInsertion when attracting module to " << pos;
+        scheduler->trace(info.str(), catom->blockId, RED);
+    }
 }
 
 bool CoatingBlockCode::getAuthorizationToAttract(const Cell3DPosition& requestee,
