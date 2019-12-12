@@ -114,7 +114,6 @@ public:
     inline static const string BG_BCyan = "\033[1;46m";
     inline static const string BG_BWhite = "\033[1;47m";
 
-
     //!< Reset Tag
     inline static const string Reset = "\033[0m";
 

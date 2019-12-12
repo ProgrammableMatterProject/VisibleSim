@@ -25,36 +25,6 @@ namespace BaseSimulator {
  */
 class Lattice {
 public:
-    class OutOfLatticeInsertionException : public VisibleSimException {
-    public:
-        OutOfLatticeInsertionException(const Cell3DPosition& p)
-            {
-                stringstream ss;
-                ss <<  "Trying to insert a block out of the grid at " << p << endl;
-                m_msg = ss.str();
-            }
-    };
-
-    class DoubleInsertionException : public VisibleSimException {
-    public:
-        DoubleInsertionException(const Cell3DPosition& p) {
-            stringstream ss;
-            ss << "Trying to insert a block on non-empty cell at " << p << endl;
-            m_msg = ss.str();
-        }
-    };
-
-    class InvalidDimensionsException : public VisibleSimException {
-    public:
-        InvalidDimensionsException(const Cell3DPosition& size) {
-            stringstream ss;
-            ss << "Lattice size in any direction cannot be negative or null: "
-                << size << endl;
-            m_msg = ss.str();
-        }
-    };
-
-protected:
     static const string directionName[];
 
     map<const Cell3DPosition, Color> mapHighlightedCells;

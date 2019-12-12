@@ -67,7 +67,7 @@ Cell3DPosition Lattice::getGridUpperBounds(int z) const {
 
 
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
-    try {
+    // try {
         int index = getIndex(p);
         if (not isInGrid(p))
             throw OutOfLatticeInsertionException(p);
@@ -77,10 +77,10 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
             grid[index] = bb;
             if (p[2] >= 3) nbModules++; // FIXME: remove 'and p[2] >= 3'
         }
-    } catch (DoubleInsertionException const& e) {
-        cerr << e.what();
-        VS_ASSERT(false);//FIXME: should be handled by the user, but catch clauses in main are not catching the exceptions for some reason.
-    }
+    // } catch (DoubleInsertionException const& e) {
+    //     cerr << e.what();
+    //     VS_ASSERT(false);//FIXME: should be handled by the user, but catch clauses in main are not catching the exceptions for some reason.
+    // }
 
 #ifdef LATTICE_LOG
     cerr << "l.insert(" << bb->blockId << ") on " << p << " = i:" << getIndex(p) << endl;
