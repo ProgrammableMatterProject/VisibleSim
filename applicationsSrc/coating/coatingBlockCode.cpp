@@ -52,6 +52,8 @@ CoatingBlockCode::~CoatingBlockCode() {
 };
 
 void CoatingBlockCode::startup() {
+    if (not sandboxInitialized) initializeSandbox();
+
     if (catom->blockId == 1) {
         G_SEED_POS = catom->position; // FIXME:
 
@@ -573,4 +575,28 @@ void CoatingBlockCode::initializePlaneSeeds() {
     }
 
     nPlanes = maxPlane + 1;
+}
+
+void CoatingBlockCode::initializeSandbox() {
+    sandboxInitialized = true;
+
+    static const int B = 6;
+    const Cell3DPosition& gub = lattice->getGridUpperBounds(scaffoldSeed[2]);
+    for (int x = scaffoldSeed[0]; x < gub[0]; x += B) {
+        for (int y = scaffoldSeed[1]; y < gub[1]; y += B) {
+            const Cell3DPosition& trPos = Cell3DPosition(x, y, scaffoldSeed[2]);
+
+            for (int i = 0; i < XBranch; i++) {
+                Cell3DPosition pos = trPos;
+                for (int j = 0; j < 3; j++) {
+                    pos += scaffold->getIncidentTipRelativePos((BranchIndex)i);
+
+                    if (lattice->isInGrid(pos) and not lattice->getBlock(pos)) {
+                        world->addBlock(0, buildNewBlockCode, pos, GREY);
+                        // nbSandboxCatoms++;
+                    }
+                }
+            }
+        }
+    }
 }

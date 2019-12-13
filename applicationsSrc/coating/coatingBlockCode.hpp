@@ -42,6 +42,8 @@ private:
     Catoms3DBlock *catom;
     BaseSimulator::World *world;
 
+    static inline bool sandboxInitialized = false;
+
     static inline Neighborhood *neighborhood;
     static inline Border *border;
     static inline Seeding *seeding;
@@ -171,6 +173,12 @@ public :
      *  their respective seeds
      */
     void initializePlaneSeeds();
+
+    /**
+     * If sandbox tiles are missing, initialize them by adding them to the reconfiguration
+     *  scene across the entire ground
+     */
+    void initializeSandbox();
 
     /// Advanced blockcode handlers below
 

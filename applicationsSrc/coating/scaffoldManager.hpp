@@ -51,6 +51,10 @@ public :
         Cell3DPosition(0,1,0) // YOppBranch
     };
 
+    inline const Cell3DPosition& getIncidentTipRelativePos(BranchIndex bi) const {
+        return incidentTipRelativePos[bi];
+    }
+
     /**
      * The scaffold manager uses a coodinate system whereby the origin is at the position of
      *  the scaffold seed. This function normalizes a real position into a scaffold one.

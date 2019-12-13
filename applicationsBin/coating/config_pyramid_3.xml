@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="25,25,25" windowSize="1920,1080">
+<world gridSize="30,30,30" windowSize="1920,1080">
   <blockList blockSize="10,10,10">
     <block position="1,1,3" color="0,255,0" orientation="2" />
         <block position="3,3,3" color="0,255,0" orientation="2" />
