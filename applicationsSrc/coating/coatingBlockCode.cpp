@@ -63,6 +63,15 @@ void CoatingBlockCode::startup() {
             ss << "Seed module at "
                << TermColor::BWhite << G_SEED_POS << TermColor::Reset
                << " must be in the CSG target" << endl;
+
+            if (COATING_MODE)
+                lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+                    return isInCoatingLayer(p, HIGHLIGHT_COATING_LAYER); }, RED);
+            else
+                target->highlight();
+
+            awaitKeyPressed();
+
             throw CoatingException(ss.str());
         }
     }

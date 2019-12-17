@@ -77,6 +77,7 @@ enum ScafComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
 };
 
 class ScaffoldingRuleMatcher {
+public:
     const int X_MAX, Y_MAX, Z_MAX;
     const int X_MIN, Y_MIN, Z_MIN;
     const int B;

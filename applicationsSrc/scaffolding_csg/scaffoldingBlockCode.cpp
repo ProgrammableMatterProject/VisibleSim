@@ -232,10 +232,10 @@ void ScaffoldingBlockCode::onBlockSelected() {
 //             static_cast<ScafComponent>(ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
 //     cout << endl;
 
-//     Cell3DPosition nextHop;
-//     matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
-//                     targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
-//     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
+    Cell3DPosition nextHop;
+    matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
+                    targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
+    cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
 //     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
 //     cout << "isInCSGMeshOrSandbox: "<<ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position)) <<endl;
 
@@ -360,7 +360,7 @@ void ScaffoldingBlockCode::startup() {
     if (catom->position == denorm(ruleMatcher->getEntryPointForScafComponent(
                                       norm(coordinatorPos), ScafComponent::R))
         + Cell3DPosition(0, 1, 0)
-        and ruleMatcher->isInCSG(norm(coordinatorPos))
+        and ruleMatcher->isInCSGFn(norm(coordinatorPos))
         and coordinatorPos[2] == scaffoldSeedPos[2]
         and lattice->isFree(coordinatorPos)) {
 
@@ -597,7 +597,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
             step++;
             if (catom->position == targetPosition
                 and not ruleMatcher->isOnEntryPoint(norm(catom->position))) {
-                if (ruleMatcher->isInCSG(norm(catom->position))) nbCSGCatomsInPlace++;
+                if (ruleMatcher->isInCSGFn(norm(catom->position))) nbCSGCatomsInPlace++;
                 nbModulesInShape++;
 
                 role = ruleMatcher->getRoleForPosition(norm(catom->position));
@@ -685,7 +685,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                     vector<BranchIndex> missingIncidentBranches;
                     // Coordinate to let the last arrived branch continue the construction
                     if (ruleMatcher->isTileRoot(norm(nextPosAlongBranch))
-                        and ruleMatcher->isInCSG(norm(nextPosAlongBranch))) {
+                        and ruleMatcher->isInCSGFn(norm(nextPosAlongBranch))) {
                         if (incidentBranchesToRootAreComplete(nextPosAlongBranch,
                                                               missingIncidentBranches)) {
                             // lattice->highlightCell(nextPosAlongBranch, BLUE);
@@ -910,7 +910,7 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& crdOpp = crd - B * ruleMatcher->getBranchUnitOffset(bi);
 
     // if (bi >= OppXBranch) {
-    //     cout << "csg: " << (not ruleMatcher->isInCSG(norm(crdOpp))) << endl;
+    //     cout << "csg: " << (not ruleMatcher->isInCSGFn(norm(crdOpp))) << endl;
     //     cout << "trp: " << trp << endl;
     //     cout << "tipp: " << tipp << endl;
     //     cout << "crd: " << (ruleMatcher->resourcesForBranch(norm(crd),
@@ -927,10 +927,10 @@ isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
 
     return (lattice->cellHasBlock(tipp) // branch must be drawn and is present
             or ((bi < OppXBranch) and
-                (not ruleMatcher->isInCSG(norm(crd))
+                (not ruleMatcher->isInCSGFn(norm(crd))
                  or ruleMatcher->resourcesForBranch(norm(crd), bi) < (B - 1)))
             or ((bi >= OppXBranch) and
-                (not ruleMatcher->isInCSG(norm(crdOpp))
+                (not ruleMatcher->isInCSGFn(norm(crdOpp))
                  or (ruleMatcher->resourcesForBranch(norm(crd),
                                                         (BranchIndex)(bi - 2)) == (B - 1))
                  or (ruleMatcher->resourcesForBranch(norm(crdOpp),
@@ -1840,7 +1840,7 @@ void ScaffoldingBlockCode::initializeSandbox() {
                 Cell3DPosition futureTRPos = trPos
                     + ruleMatcher->getEntryPointRelativePos(Z_EPL);
 
-                if (lattice->isInGrid(futureTRPos) and ruleMatcher->isInCSG(norm(trPos)))
+                if (lattice->isInGrid(futureTRPos) and ruleMatcher->isInCSGFn(norm(trPos)))
                     world->addBlock(0, buildNewBlockCode, futureTRPos, YELLOW);
             }
         }
@@ -2186,7 +2186,7 @@ int ScaffoldingBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
                                                    ScafComponent epl) const {
     // cout << "resourcesForTileThrough(" << pos
     //      << ", " << ruleMatcher->component_to_string(epl) << "): " << endl;
-    if (not ruleMatcher->isInCSG(norm(pos))) {
+    if (not ruleMatcher->isInCSGFn(norm(pos))) {
         // cout << "\tnot in shape" << endl;
         return 0;
     }
@@ -2205,7 +2205,7 @@ int ScaffoldingBlockCode::resourcesForTileThrough(const Cell3DPosition& pos,
     const Cell3DPosition& trTip =
         ruleMatcher->getTileRootAtEndOfBranch(norm(pos),ruleMatcher->getBranchForEPL(epl));
 
-    if (ruleMatcher->isInCSG(trTip)) {
+    if (ruleMatcher->isInCSGFn(trTip)) {
         BranchIndex biTr = ruleMatcher->getTileRootInsertionBranch(trTip);
         ScafComponent eplTr = ruleMatcher->getDefaultEPLComponentForBranch(biTr);
         // cout << denorm(trTip) << endl;
@@ -2278,18 +2278,18 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                     if (HIGHLIGHT_CSG and target->isInTarget(pos))
                         lattice->highlightCell(pos, RED);
 
-                    if (not ruleMatcher->isInCSG(norm(pos))
-                        // or (ruleMatcher->isInCSG(norm(pos)) and not ruleMatcher->isInCSG
+                    if (not ruleMatcher->isInCSGFn(norm(pos))
+                        // or (ruleMatcher->isInCSGFn(norm(pos)) and not ruleMatcher->isInCSG
                         //     (ruleMatcher->getTileRootPositionForMeshPosition(norm(pos)))))
                         )
                         continue;
 
                     if (HIGHLIGHT_SCAFFOLD
                         and ruleMatcher->isInMesh(norm(pos))
-                        and ruleMatcher->isInCSG(norm(pos)))
+                        and ruleMatcher->isInCSGFn(norm(pos)))
                         lattice->highlightCell(pos, WHITE);
 
-                    // if (ruleMatcher->isInCSG(norm(pos)) and
+                    // if (ruleMatcher->isInCSGFn(norm(pos)) and
                     //     not ruleMatcher->isInGrid(norm(pos)))lattice->highlightCell(pos, RED);
 
                     // if (ruleMatcher->isInMesh(norm(pos))) lattice->highlightCell(pos, RED);
@@ -2324,7 +2324,7 @@ void ScaffoldingBlockCode::countCSGScaffoldOpenPositions() {
         for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
             for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
                 pos.set(ix, iy, iz);
-                if (ruleMatcher->isInCSG(norm(pos)))
+                if (ruleMatcher->isInCSGFn(norm(pos)))
                     nbOpenScaffoldPositions++;
             }
         }
@@ -2338,7 +2338,7 @@ int ScaffoldingBlockCode::computeNumberOfChildrenTiles() {
         BranchIndex bi = (BranchIndex)i;
 
         Cell3DPosition trEnd = ruleMatcher->getTileRootAtEndOfBranch(norm(catom->position),bi);
-        if (ruleMatcher->isInCSG(trEnd)
+        if (ruleMatcher->isInCSGFn(trEnd)
             and ruleMatcher->resourcesForBranch(norm(catom->position), bi) == B-1) {
 
             numChildrenTiles++;
@@ -2375,7 +2375,7 @@ void ScaffoldingBlockCode::constructionOverHandler() {
 
                     if (lattice->isInGrid(pos) and lattice->getBlock(pos)
                         and ruleMatcher->isSupportModule(norm(pos))
-                        and not ruleMatcher->isInCSG(norm(pos))) {
+                        and not ruleMatcher->isInCSGFn(norm(pos))) {
                         world->deleteBlock(lattice->getBlock(pos));
                         lattice->highlightCell(pos, RED);
                     }

@@ -787,7 +787,7 @@ unsigned int SkewFCCLattice::getIndex(const Cell3DPosition &p) const {
 Cell3DPosition SkewFCCLattice::getGridLowerBounds(int z) const {
     if (z == -1) return Cell3DPosition(-gridSize[2]/2,-gridSize[2]/2,gridSize[2]);
 
-    return Cell3DPosition(-z/2,-z/2,0);
+    return Cell3DPosition(-z/2,-z/2,z);
 }
 
 Cell3DPosition SkewFCCLattice::getGridUpperBounds(int z) const {

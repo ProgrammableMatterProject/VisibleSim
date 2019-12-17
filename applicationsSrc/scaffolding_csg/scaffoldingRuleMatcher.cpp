@@ -309,7 +309,7 @@ bool ScaffoldingRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
 }
 
 bool ScaffoldingRuleMatcher::isInCSGMeshOrSandbox(const Cell3DPosition& pos) const {
-    return (isInCSG(pos) or isSupportModule(pos)) or isInSandbox(pos);
+    return (isInCSGFn(pos) and isInMesh(pos)) or isInSandbox(pos);
 }
 
 bool ScaffoldingRuleMatcher::isOnBranch(BranchIndex bi, const Cell3DPosition& pos) const {
@@ -481,7 +481,7 @@ short ScaffoldingRuleMatcher::resourcesForBranch(const Cell3DPosition& pos,
               or (bi == YBranch and isOnOppYBranch(bPos))) )
             return 0;
 
-        if (not isInMesh(bPos) or not isInCSG(bPos)) {
+        if (not isInMesh(bPos) or not isInCSGFn(bPos)) {
             // cout << branch_to_string(bi) << ": " << i << endl;
             return i;
         }
@@ -929,7 +929,7 @@ hasIncidentBranch(const Cell3DPosition& pos, BranchIndex bi) const {
          or (bi == OppYBranch and not isOnOppYBranch(bPos)) )
         return false;
 
-    return isInCSG(trIVB) and resourcesForBranch(trIVB, bi) == (B - 1);
+    return isInCSGFn(trIVB) and resourcesForBranch(trIVB, bi) == (B - 1);
 }
 
 const Cell3DPosition
@@ -1092,7 +1092,7 @@ Cell3DPosition ScaffoldingRuleMatcher::getSeedForCSGLayer(int z) const {
     Cell3DPosition pos;
     for (int a = 0 - zReal / 2; a < bound - zReal / 2; a++) {
         pos.set(a, a, zReal);
-        if (isInCSG(pos - seed) and isTileRoot(pos)) {
+        if (isInCSGFn(pos - seed) and isTileRoot(pos)) {
             seedForCSGLayerCache.insert(make_pair(z, pos));
             return pos;
         }
