@@ -36,6 +36,12 @@ public :
      */
     bool hasNeighborInDirection(const Cell3DPosition &pos,
                                 SkewFCCLattice::Direction dir) const;
+
+    /**
+     * @param pos
+     * @return true if pos has no horizontal neighbor in position
+     */
+    bool hasNoHorizontalNeighbor(const Cell3DPosition &pos) const;
 };
 
 #endif /* CoatingNeighborhood_H_ */

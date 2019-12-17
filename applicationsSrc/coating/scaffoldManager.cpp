@@ -9,6 +9,8 @@ ScaffoldManager::ScaffoldManager(const Cell3DPosition& _seed,
     : seed(_seed), isInCSG(_isInCSG) {
 
     lattice = BaseSimulator::getWorld()->lattice;
+    isInsideFn = std::bind(&ScaffoldManager::isWithinCSGMinus2, this,
+                           std::placeholders::_1);
 }
 
 Cell3DPosition ScaffoldManager::normalize(const Cell3DPosition& pos) const {
@@ -81,14 +83,14 @@ bool ScaffoldManager::isOnBranch(BranchIndex bi, const Cell3DPosition& pos) cons
         case OppXBranch: {
             const Cell3DPosition& oppXTr = pos - m_mod(pos[0], B) * Cell3DPosition(1, 0, 0);
             return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0
-                and (not isInCSG(denormalize(oppXTr)));
+                and (not isInsideFn(denormalize(oppXTr)));
         }
 
         case OppYBranch: {
             const Cell3DPosition& oppYTr = pos - m_mod(pos[1], B) * Cell3DPosition(0, 1, 0);
 
             return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0
-                and (not isInCSG(denormalize(oppYTr)));
+                and (not isInsideFn(denormalize(oppYTr)));
         }
 
         default: break;
@@ -148,7 +150,7 @@ hasIngoingBranch(const Cell3DPosition& pos, BranchIndex bi) const {
          or (bi == OppYBranch and not isOnBranch(OppYBranch, bPos)) )
         return false;
 
-    return isInCSG(denormalize(trIVB)) and resourcesForBranch(trIVB, bi) == (B - 1);
+    return isInsideFn(denormalize(trIVB)) and resourcesForBranch(trIVB, bi) == (B - 1);
 }
 
 BranchIndex ScaffoldManager::getAlternateBranchIndex(BranchIndex bi) const {
@@ -189,7 +191,7 @@ short ScaffoldManager::resourcesForBranch(const Cell3DPosition& pos, BranchIndex
               or (bi == YBranch and isOnBranch(OppYBranch, bPos))) )
             return 0;
 
-        if (not isInScaffold(bPos) or not isInCSG(denormalize(bPos))) {
+        if (not isInScaffold(bPos) or not isInsideFn(denormalize(bPos))) {
             return i;
         }
     }
@@ -229,7 +231,7 @@ list<Cell3DPosition> ScaffoldManager::getAllSupportPositionsForPlane(int z) cons
                 pos.set(ix, iy, z);
                 Cell3DPosition tPos = normalize(pos);
 
-                if (isTileRoot(tPos) and isInCSG(pos)) {
+                if (isTileRoot(tPos) and isInsideFn(pos)) {
 
                     // cout << "pos: " << pos << endl;
                     // cout << "tPos: " << tPos << endl;
@@ -240,12 +242,12 @@ list<Cell3DPosition> ScaffoldManager::getAllSupportPositionsForPlane(int z) cons
                         Cell3DPosition sPos = pos + (res + 1) * getBranchUnitOffset(bi);
 
                         // cout << branch_to_string(bi) << "\t" << res << endl;
-                        // cout << sPos << " : " << isInCSG(sPos) << endl;
+                        // cout << sPos << " : " << isInsideFn(sPos) << endl;
 
                         // Elongate all border horizontal branches by one module
                         //  branch is on the border if the next module along it is not in
                         //  the scaffold
-                        if (not isInCSG(sPos)) {
+                        if (not isInsideFn(sPos)) {
                             supports.push_back(sPos);
                             // lattice->highlightCell(sPos, CYAN);
                         }
@@ -256,4 +258,20 @@ list<Cell3DPosition> ScaffoldManager::getAllSupportPositionsForPlane(int z) cons
     }
 
     return supports;
+}
+
+bool ScaffoldManager::isWithinCSGMinus2(const Cell3DPosition& pos) const {
+    if (not isInCSG(pos)) return false;
+
+    // This is used to work with scaffolds that are smaller than the CSG they represent by
+    //  two modules.
+
+    for (int i = 0; i < N_BRANCHES; i++) {
+        const Cell3DPosition &pn = pos + 2*getBranchUnitOffset((BranchIndex)i);
+        if (not isInCSG(pn)) {
+            return false;
+        }
+    }
+
+    return true;
 }

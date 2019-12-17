@@ -82,6 +82,10 @@ class ScaffoldingRuleMatcher {
     const int B;
     const Cell3DPosition seed; // Position of the CSG seed tile coordinator
     const std::function<bool(const Cell3DPosition)> isInsideFn;
+    /** Used to distinguish between building a scaffold for coating at distance 2 from
+     * the CSG border (--coating CLI option), and regular CSG filling of the scaffold **/
+    std::function<bool(const Cell3DPosition)> isInCSGFn;
+    const bool coatingExportMode;
 
     /**
      * Contains the position of each ScafComponent, indexed by their id
@@ -132,10 +136,17 @@ public:
     ScaffoldingRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _Z_MAX,
                            const uint _X_MIN, const uint _Y_MIN, const uint _Z_MIN,
                            const uint _B,
-                           const std::function<bool(const Cell3DPosition&)>_fn):
+                           const std::function<bool(const Cell3DPosition&)>_fn,
+                           const bool _coatingExportMode):
         X_MAX(_X_MAX), Y_MAX(_Y_MAX), Z_MAX(_Z_MAX),
         X_MIN(_X_MIN), Y_MIN(_Y_MIN), Z_MIN(_Z_MIN),
-        B(_B), isInsideFn(_fn) {};
+        B(_B), isInsideFn(_fn), coatingExportMode(_coatingExportMode) {
+        isInCSGFn = _coatingExportMode ?
+            std::bind(&ScaffoldingRuleMatcher::isWithinCSGMinus2, this,
+                      std::placeholders::_1) :
+            std::bind(&ScaffoldingRuleMatcher::isInCSG, this,
+                      std::placeholders::_1);
+    };
     virtual ~ScaffoldingRuleMatcher() {};
 
     bool isOnBranch(BranchIndex bi, const Cell3DPosition& pos) const;
@@ -411,6 +422,15 @@ public:
      * @return true if pos is part of the CSG target object
      */
     bool isInCSG(const Cell3DPosition& pos) const;
+
+    /**
+     * This is used to work with scaffolds that are smaller than the CSG they represent by
+     *  two modules.
+     * @param pos
+     * @return true if position pos is within the CSG and at a distance of at least two modules
+     *  from the border
+     */
+    bool isWithinCSGMinus2(const Cell3DPosition& pos) const;
 
     /**
      * Checks whether module at the tip of branch tipB relative to tile root at position pos

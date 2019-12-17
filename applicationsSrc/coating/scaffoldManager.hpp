@@ -31,6 +31,7 @@ private:
     inline static const int B = 6;
     Lattice *lattice;
     const std::function<bool(const Cell3DPosition&)> isInCSG;
+    std::function<bool(const Cell3DPosition&)> isInsideFn;
 public :
     ScaffoldManager(const Cell3DPosition& _seed,
                     std::function<bool(const Cell3DPosition&)> _isInCSG);
@@ -147,6 +148,15 @@ public :
      *  positions for that plane otherwise.
      */
     list<Cell3DPosition> getAllSupportPositionsForPlane(int z) const;
+
+    /**
+     * This is used to work with scaffolds that are smaller than the CSG they represent by
+     *  two modules.
+     * @param pos
+     * @return true if position pos is within the CSG and at a distance of at least two modules
+     *  from the border
+     */
+    bool isWithinCSGMinus2(const Cell3DPosition& pos) const;
 
     static string branch_to_string(BranchIndex bi);
 };

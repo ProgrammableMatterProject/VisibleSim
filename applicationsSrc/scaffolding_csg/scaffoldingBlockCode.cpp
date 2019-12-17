@@ -324,7 +324,8 @@ void ScaffoldingBlockCode::startup() {
                                              B,
                                              [this](const Cell3DPosition& pos) {
                                                  return isInsideCSGFn(pos);
-                                             });
+                                             },
+                                             COATING_EXPORT);
 
     initialized = true;
     startTime = scheduler->now();
@@ -2283,7 +2284,9 @@ void ScaffoldingBlockCode::highlightCSGScaffold(bool debug) {
                         )
                         continue;
 
-                    if (HIGHLIGHT_SCAFFOLD and ruleMatcher->isInCSG(norm(pos)))
+                    if (HIGHLIGHT_SCAFFOLD
+                        and ruleMatcher->isInMesh(norm(pos))
+                        and ruleMatcher->isInCSG(norm(pos)))
                         lattice->highlightCell(pos, WHITE);
 
                     // if (ruleMatcher->isInCSG(norm(pos)) and
@@ -2359,17 +2362,20 @@ void ScaffoldingBlockCode::constructionOverHandler() {
     }
 
     if (COATING_EXPORT) {
+        cout << "removing supports " << endl;
         // Remove all support and non structural modules and export grid
-        const Cell3DPosition& gs = world->lattice->gridSize;
         Cell3DPosition pos;
-        for (short iz = 0; iz < gs[2]; iz++) {
-            for (short iy = - iz / 2; iy < gs[1] - iz / 2; iy++) {
-                for (short ix = - iz / 2; ix < gs[0] - iz / 2; ix++) {
-                    pos.set(ix, iy, iz);
+        int zmax = lattice->getGridUpperBounds()[2];
+        for (int z = 0; z <= zmax; z++) {
+            const Cell3DPosition& glb = lattice->getGridLowerBounds(z);
+            const Cell3DPosition& gub = lattice->getGridUpperBounds(z);
+            for (int y = glb[1]; y <= gub[1]; y++) {
+                for (int x = glb[0]; x <= gub[0]; x++) {
+                    pos.set(x, y, z);
 
-                    if (lattice->getBlock(pos)
+                    if (lattice->isInGrid(pos) and lattice->getBlock(pos)
                         and ruleMatcher->isSupportModule(norm(pos))
-                        and not target->isInTarget(pos)) {
+                        and not ruleMatcher->isInCSG(norm(pos))) {
                         world->deleteBlock(lattice->getBlock(pos));
                         lattice->highlightCell(pos, RED);
                     }

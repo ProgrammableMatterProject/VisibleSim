@@ -1056,6 +1056,22 @@ bool ScaffoldingRuleMatcher::isInCSG(const Cell3DPosition& pos) const {
     return isInMesh(pos) and isInsideFn(pos);
 }
 
+bool ScaffoldingRuleMatcher::isWithinCSGMinus2(const Cell3DPosition& pos) const {
+    if (not isInsideFn(pos)) return false;
+
+    // This is used to work with scaffolds that are smaller than the CSG they represent by
+    //  two modules.
+
+    for (int i = 0; i < N_BRANCHES; i++) {
+        const Cell3DPosition &pn = pos + 2*getBranchUnitOffset((BranchIndex)i);
+        if (not isInsideFn(pn)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool ScaffoldingRuleMatcher::CSGTRAtBranchTipShouldGrowBranch(const Cell3DPosition& pos,
                                                               BranchIndex tipB,
                                                               BranchIndex growthB) const {
@@ -1076,7 +1092,7 @@ Cell3DPosition ScaffoldingRuleMatcher::getSeedForCSGLayer(int z) const {
     Cell3DPosition pos;
     for (int a = 0 - zReal / 2; a < bound - zReal / 2; a++) {
         pos.set(a, a, zReal);
-        if (isInsideFn(pos) and isTileRoot(pos)) {
+        if (isInCSG(pos - seed) and isTileRoot(pos)) {
             seedForCSGLayerCache.insert(make_pair(z, pos));
             return pos;
         }

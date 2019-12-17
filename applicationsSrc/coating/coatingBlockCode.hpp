@@ -26,7 +26,11 @@ private:
     static inline int HIGHLIGHT_COATING_LAYER = -1;
     static inline int HIGHLIGHT_SEEDS = false;
     static inline int HIGHLIGHT_SUPPORTS = false;
+
+    static inline bool COATING_MODE = false;
+
     static inline Cell3DPosition G_SEED_POS;
+
     static inline const Color ATTRACT_DEBUG_COLOR = CYAN;
     static inline const Color AUTH_DEBUG_COLOR = ORANGE;
 
@@ -119,6 +123,8 @@ public :
     static bool isInCSG(const Cell3DPosition& pos) {
         return BaseSimulator::getWorld()->lattice->isInGrid(pos) and target->isInTarget(pos);
     }
+
+    static bool isOnCSGBorder(const Cell3DPosition& pos);
 
     /**
      * @param pos position to evaluate

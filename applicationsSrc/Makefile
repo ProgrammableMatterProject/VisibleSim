@@ -12,7 +12,7 @@
 # SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB
 
 SUBDIRS += reconfCatoms3DMultilayer
-SUBDIRS += coating #scaffolding_csg scaffolding_cube scaffolding_pyramid_async scaffolding_pyramid_sync
+SUBDIRS += coating scaffolding_csg #scaffolding_cube scaffolding_pyramid_async scaffolding_pyramid_sync
 #SUBDIRS += forcesPredictionIPPT
 
 .PHONY: subdirs $(SUBDIRS) test

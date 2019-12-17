@@ -17,11 +17,12 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
     //                                std::placeholders::_1, std::placeholders::_2));
 
     world = BaseSimulator::getWorld();
+
     // set the module pointer
     catom = static_cast<Catoms3DBlock*>(hostBlock);
 
-    // isInG = CoatingBlockCode::isInCSG;
-    isInG = CoatingBlockCode::isInCoating;
+    if (COATING_MODE) isInG = CoatingBlockCode::isInCoating;
+    else isInG = CoatingBlockCode::isInCSG;
 
     if (not neighborhood) neighborhood = new Neighborhood(isInG);
     if (not border) border = new Border(isInG, neighborhood);
@@ -52,7 +53,7 @@ CoatingBlockCode::~CoatingBlockCode() {
 };
 
 void CoatingBlockCode::startup() {
-    if (not sandboxInitialized) initializeSandbox();
+    if (COATING_MODE and not sandboxInitialized) initializeSandbox();
 
     if (catom->blockId == 1) {
         G_SEED_POS = catom->position; // FIXME:
@@ -84,7 +85,8 @@ void CoatingBlockCode::startup() {
 
     if (catom->position == G_SEED_POS) {
         initializePlaneSeeds();
-        attractStructuralSupports(0); // first layer supports only
+
+        if (COATING_MODE) attractStructuralSupports(0); // first layer supports only
     }
 
     int layer = getGLayer(catom->position);
@@ -95,8 +97,10 @@ void CoatingBlockCode::startup() {
         // cout << "nPlanes: " << nPlanes << endl;
         // cout << "layer: " << layer << endl;
         if (layer < nPlanes - 1) {
-            // Attract structural supports
-            attractStructuralSupports(layer + 1);
+            if (COATING_MODE) {
+                // Attract structural supports
+                attractStructuralSupports(layer + 1);
+            }
 
             // Attract first modules of next plane
             for (const Cell3DPosition& seed : planeSeed[layer]) {
@@ -232,9 +236,9 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
     if ((argc > 0) && ((*argv)[0][0] == '-')) {
         switch((*argv)[0][1]) {
 
-            // Single character example: -b
-            case 'b':   {
-                cout << "-b option provided" << endl;
+            // Single character example: -u
+            case 'u':   {
+                COATING_MODE = true;
                 return true;
             } break;
 
@@ -303,6 +307,11 @@ void CoatingBlockCode::highlight() const {
     if (HIGHLIGHT_COATING) {
         lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
             return isInCoatingLayer(p, HIGHLIGHT_COATING_LAYER); }, WHITE);
+
+        // Scaffold:
+        // lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
+        //     return scaffold->isWithinCSGMinus2(p)
+        //         and scaffold->isInScaffold(p - scaffoldSeed); }, YELLOW);
     }
 
     if (HIGHLIGHT_SEEDS) {
@@ -334,6 +343,16 @@ int CoatingBlockCode::getGLayer(const Cell3DPosition& pos) {
     return pos[2] - G_SEED_POS[2];
 }
 
+bool CoatingBlockCode::isOnCSGBorder(const Cell3DPosition& pos) {
+    for (const Cell3DPosition& neighbor :
+             BaseSimulator::getWorld()->lattice->getNeighborhood(pos)) {
+        if (neighbor[2] >= G_SEED_POS[2]
+            and not target->isInTarget(neighbor)) return true;
+    }
+
+    return false;
+}
+
 bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) {
     return BaseSimulator::getWorld()->lattice->isInGrid(pos)
         and pos[2] >= G_SEED_POS[2] and isInCoatingLayer(pos, getGLayer(pos));
@@ -342,11 +361,15 @@ bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) {
 bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) {
     int pLayer = getGLayer(pos);
 
-    if (isInCSG(pos)) return false;
+    TargetCSG *csg = static_cast<TargetCSG*>(target);
 
-    return (layer == -1 or pLayer == layer)
-        // and hasNeighborInCSG(pos);  // Coating at distance 1
-        and not hasHorizontalNeighborInCSG(pos) and has2ndOrderNeighborInCSG(pos); // Coating distance 2
+    if (not isInCSG(pos) or (layer != -1 and pLayer != layer)) return false;
+
+    return isOnCSGBorder(pos);
+
+    // return (layer == -1 or pLayer == layer)
+    //     // and hasNeighborInCSG(pos);  // Coating at distance 1
+    //     and not hasHorizontalNeighborInCSG(pos) and has2ndOrderNeighborInCSG(pos); // Coating distance 2
 }
 
 bool CoatingBlockCode::hasHorizontalNeighborInCSG(const Cell3DPosition& pos) {
@@ -393,7 +416,9 @@ void CoatingBlockCode::attract() {
         and not neighborhood->hasNeighborInDirection(catom->position,
                                                      SkewFCCLattice::Direction::C6West)) {
         const Cell3DPosition& wPos = neighborhood->cellInDirection(catom->position, West);
-        if (neighborhood->directionIsInCSG(catom->position, SouthWest)
+        if (neighborhood->hasNoHorizontalNeighbor(catom->position))
+            sendAttractSignalTo(wPos);
+        else if (neighborhood->directionIsInCSG(catom->position, SouthWest)
             and neighborhood->hasNeighborInDirection(catom->position,
                                                      SkewFCCLattice::Direction::C7South)) {
             getAuthorizationToAttract(neighborhood->
@@ -418,7 +443,9 @@ void CoatingBlockCode::attract() {
         and not neighborhood->hasNeighborInDirection(catom->position,
                                                      SkewFCCLattice::Direction::C0East)) {
         const Cell3DPosition& ePos = neighborhood->cellInDirection(catom->position, East);
-        if (neighborhood->directionIsInCSG(catom->position, NorthEast)
+        if (neighborhood->hasNoHorizontalNeighbor(catom->position))
+            sendAttractSignalTo(ePos);
+        else if (neighborhood->directionIsInCSG(catom->position, NorthEast)
             and neighborhood->hasNeighborInDirection(catom->position,
                                                      SkewFCCLattice::Direction::C1North)) {
             getAuthorizationToAttract(neighborhood->
@@ -454,7 +481,13 @@ void CoatingBlockCode::attractStructuralSupports(int layer) {
             color = InvalidColor;
         }
 
-        world->addBlock(0, buildNewBlockCode, pos, color);
+        try {
+            world->addBlock(0, buildNewBlockCode, pos, color);
+        } catch (DoubleInsertionException const& e) {
+            cerr << e.what() << endl;
+            lattice->highlightCell(pos, color);
+        }
+
         std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY * 4));
     }
 }
@@ -477,7 +510,7 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
     try {
         world->addBlock(0, buildNewBlockCode, pos, color);
     } catch (DoubleInsertionException const& e) {
-        cerr << e.what();
+        cerr << e.what() << endl;
         catom->setColor(InvalidColor);
         info.str("");
         info << " DoubleInsertion when attracting module to " << pos;
@@ -582,8 +615,8 @@ void CoatingBlockCode::initializeSandbox() {
 
     static const int B = 6;
     const Cell3DPosition& gub = lattice->getGridUpperBounds(scaffoldSeed[2]);
-    for (int x = scaffoldSeed[0]; x < gub[0]; x += B) {
-        for (int y = scaffoldSeed[1]; y < gub[1]; y += B) {
+    for (int x = scaffoldSeed[0]; x <= gub[0]; x += B) {
+        for (int y = scaffoldSeed[1]; y <= gub[1]; y += B) {
             const Cell3DPosition& trPos = Cell3DPosition(x, y, scaffoldSeed[2]);
 
             for (int i = 0; i < XBranch; i++) {
@@ -592,7 +625,11 @@ void CoatingBlockCode::initializeSandbox() {
                     pos += scaffold->getIncidentTipRelativePos((BranchIndex)i);
 
                     if (lattice->isInGrid(pos) and not lattice->getBlock(pos)) {
-                        world->addBlock(0, buildNewBlockCode, pos, GREY);
+                        try {
+                            world->addBlock(0, buildNewBlockCode, pos, GREY);
+                        } catch (DoubleInsertionException const& e) {
+                            cerr << e.what() << endl;
+                        }
                         // nbSandboxCatoms++;
                     }
                 }
