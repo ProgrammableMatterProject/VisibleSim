@@ -34,6 +34,32 @@ int Border::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) const {
     return 0;
 }
 
+int Border::getNextBorderNeighborInPlace(int &idx, Cell3DPosition &currentPos) const {
+    int newIdx;
+    vector<pair<int, int>> cw_order = {{0,-1}, {-1,0}, {0,1}, {1,0}};
+
+    for (int i = 0; i < 4; i++) {
+        newIdx = (((idx+i-1)%4)+4)%4;
+
+        Cell3DPosition nextPos = currentPos
+            .addX(cw_order[newIdx].first)
+            .addY(cw_order[newIdx].second);
+
+        if (isInG(nextPos) and lattice->getBlock(nextPos)) {
+            idx = newIdx;
+            currentPos = nextPos;
+            switch (i) {
+                case 0: return 1;
+                case 2: return -1;
+                case 3: return -2;
+                default: return 0;
+            }
+        }
+    }
+
+    return 0;
+}
+
 int Border::getNextBorderNeighborCCW(int &idx, Cell3DPosition &currentPos) const {
     vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
     int newIdx;

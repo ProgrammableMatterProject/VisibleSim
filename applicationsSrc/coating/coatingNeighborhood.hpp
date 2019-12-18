@@ -34,14 +34,22 @@ public :
      * @param dir
      * @return true if module has a neighbor in lattice direction dir
      */
-    bool hasNeighborInDirection(const Cell3DPosition &pos,
+    bool hasNeighborInDirection(const Cell3DPosition& pos,
                                 SkewFCCLattice::Direction dir) const;
 
     /**
      * @param pos
      * @return true if pos has no horizontal neighbor in position
      */
-    bool hasNoHorizontalNeighbor(const Cell3DPosition &pos) const;
+    bool hasNoHorizontalNeighbor(const Cell3DPosition& pos) const;
+
+    /**
+     * Returns the same plane directions orthogonal to direction d in the FCC Lattice,
+     *  (therefore the square lattice formed by a single layer of FCC)
+     * @param d direction to evaluate
+     * @return the pair of directions orthogonal to d in the FCC lattice
+     */
+    static pair<short, short> getOrthogonalDirections(short d);
 };
 
 #endif /* CoatingNeighborhood_H_ */

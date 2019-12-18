@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no" ?>
 <world gridSize="30,30,30" windowSize="1024,800">
   <blockList blockSize="10,10,10">
-    <block position="5,5,3" color="0,255,0" orientation="2" /> <!--seed-->
+    <block position="6,6,3" color="0,255,0" orientation="2" /> <!--seed-->
 
     <block position="3,3,2" color="127.5,127.5,127.5" orientation="0" />
     <block position="3,3,1" color="127.5,127.5,127.5" orientation="0" />
@@ -665,6 +665,18 @@
     <block position="15,7,9" color="0,255,0" orientation="0" />
     <block position="15,6,9" color="0,255,0" orientation="0" />
     <block position="15,5,9" color="0,255,0" orientation="0" />
+    <block position="4,3,20" color="0,255,0" orientation="0" />
+    <block position="4,4,20" color="0,255,0" orientation="0" />
+    <block position="9,3,20" color="0,255,0" orientation="0" />
+    <block position="4,-2,20" color="0,255,0" orientation="0" />
+    <block position="4,9,20" color="0,255,0" orientation="0" />
+    <block position="3,9,20" color="0,255,0" orientation="0" />
+    <block position="3,3,20" color="0,255,0" orientation="0" />
+    <block position="3,4,20" color="0,255,0" orientation="0" />
+    <block position="-2,4,20" color="0,255,0" orientation="0" />
+    <block position="-2,3,20" color="0,255,0" orientation="0" />
+    <block position="3,-2,20" color="0,255,0" orientation="0" />
+    <block position="9,4,20" color="0,255,0" orientation="0" />
 
   </blockList>
 

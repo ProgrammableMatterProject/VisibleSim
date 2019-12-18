@@ -1063,7 +1063,11 @@ bool ScaffoldingRuleMatcher::isWithinCSGMinus2(const Cell3DPosition& pos) const 
     //  two modules.
 
     for (int i = 0; i < N_BRANCHES; i++) {
-        const Cell3DPosition &pn = pos + 2*getBranchUnitOffset((BranchIndex)i);
+        BranchIndex bi = (BranchIndex)i;
+        // We do not need a distance 2 for vertical positions since that would leave too much
+        // space at the top of the structure and prevent the attachment of the coating to
+        // the scaffold
+        const Cell3DPosition &pn = pos + (i < XBranch ? 1 : 2)*getBranchUnitOffset(bi);
         if (not isInsideFn(pn)) {
             return false;
         }

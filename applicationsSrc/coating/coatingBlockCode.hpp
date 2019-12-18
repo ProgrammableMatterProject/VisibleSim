@@ -9,6 +9,8 @@
 #include "coatingSeeding.hpp"
 #include "scaffoldManager.hpp"
 
+#include <set>
+
 static const int SAMPLE_MSG_ID = 1000;
 
 using namespace Catoms3D;
@@ -57,6 +59,7 @@ private:
 
     static inline std::function<bool (const Cell3DPosition&)> isInG;
     static inline multimap<Cell3DPosition, function<void (void)>> watchlist;
+    static inline set<Cell3DPosition> waitingModules;
 
     static inline int nPlanes; //!< Number of planes
     static inline vector<int> planeRequires; //!< Number of modules plane i needs
@@ -185,6 +188,15 @@ public :
      *  scene across the entire ground
      */
     void initializeSandbox();
+
+    bool borderHasWaitingModule(int startIdx) const;
+
+    /**
+     * @param pos
+     * @return true if position pos has two horizontal neighbor position that are both
+     *  orthogoal and in G
+     */
+    static bool hasOrthogonalNeighborsInCSG(const Cell3DPosition& pos);
 
     /// Advanced blockcode handlers below
 

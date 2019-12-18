@@ -66,8 +66,14 @@ inline string planarDirectionPositionToString(const Cell3DPosition& pos) {
     return ""; // Unreachable
 }
 
+inline constexpr Cell3DPosition horizontalNeighbors[4] = { Cell3DPosition(0,1,0),
+    Cell3DPosition(1,0,0), Cell3DPosition(0,-1,0), Cell3DPosition(-1,0,0), };
+
 inline constexpr Cell3DPosition diagNeighbors[4] = { Cell3DPosition(-1,-1,0),
     Cell3DPosition(1,-1,0), Cell3DPosition(-1,1,0), Cell3DPosition(1,1,0), };
+
+inline constexpr Cell3DPosition diag2Neighbors[4] = { Cell3DPosition(-2,-2,0),
+    Cell3DPosition(2,-2,0), Cell3DPosition(-2,2,0), Cell3DPosition(2,2,0), };
 
 inline constexpr Cell3DPosition _2ndOrderNeighbors[40] = {
     Cell3DPosition(-2,-2,0), // Bottom-Left corner

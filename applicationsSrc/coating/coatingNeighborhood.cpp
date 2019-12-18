@@ -33,3 +33,33 @@ bool Neighborhood::hasNoHorizontalNeighbor(const Cell3DPosition& pos) const {
         and (not directionIsInCSG(pos, West)
              or not hasNeighborInDirection(pos, SkewFCCLattice::Direction::C6West));
 }
+
+pair<short, short> Neighborhood::getOrthogonalDirections(short d) {
+    switch (SkewFCCLattice::Direction(d)) {
+
+        case SkewFCCLattice::Direction::C0East:
+            return make_pair(SkewFCCLattice::Direction::C1North,
+                             SkewFCCLattice::Direction::C7South);
+            break;
+
+        case SkewFCCLattice::Direction::C1North:
+            return make_pair(SkewFCCLattice::Direction::C6West,
+                             SkewFCCLattice::Direction::C0East);
+            break;
+
+        case SkewFCCLattice::Direction::C6West:
+            return make_pair(SkewFCCLattice::Direction::C1North,
+                             SkewFCCLattice::Direction::C7South);
+            break;
+
+        case SkewFCCLattice::Direction::C7South:
+            return make_pair(SkewFCCLattice::Direction::C6West,
+                             SkewFCCLattice::Direction::C0East);
+            break;
+
+        default:
+            stringstream err;
+            err << "Neighborhood::getOrthogonalDirections(" << d << ")";
+            throw NotImplementedException(err.str());
+    }
+}

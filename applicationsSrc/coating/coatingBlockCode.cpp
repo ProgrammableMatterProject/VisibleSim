@@ -352,11 +352,30 @@ int CoatingBlockCode::getGLayer(const Cell3DPosition& pos) {
     return pos[2] - G_SEED_POS[2];
 }
 
+
 bool CoatingBlockCode::isOnCSGBorder(const Cell3DPosition& pos) {
-    for (const Cell3DPosition& neighbor :
-             BaseSimulator::getWorld()->lattice->getNeighborhood(pos)) {
-        if (neighbor[2] >= G_SEED_POS[2]
-            and not target->isInTarget(neighbor)) return true;
+    if (target->isInTarget(pos)) {
+        for (const Cell3DPosition& neighbor :
+                 BaseSimulator::getWorld()->lattice->getNeighborhood(pos)) {
+            if (neighbor[2] >= G_SEED_POS[2]
+                and not target->isInTarget(neighbor)) return true;
+        }
+    } else {
+        // Try to include outer corners but exclude inner corners
+        bool hasOrthoNeighborsInCSG = hasOrthogonalNeighborsInCSG(pos);
+        // for (const Cell3DPosition& neighbor :
+        //          BaseSimulator::getWorld()->lattice->getNeighborhood(pos)) {
+        //     if (neighbor[2] == pos[2] and target->isInTarget(neighbor)) {
+        //         hasNeighborInCSG = true;
+        //         break;
+        //     }
+        // }
+
+        if (not hasOrthoNeighborsInCSG) return false;
+
+        for (const Cell3DPosition& pRel : diagNeighbors) {
+            if (target->isInTarget(pRel + pos)) return true;
+        }
     }
 
     return false;
@@ -372,7 +391,8 @@ bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) {
 
     TargetCSG *csg = static_cast<TargetCSG*>(target);
 
-    if (not isInCSG(pos) or (layer != -1 and pLayer != layer)) return false;
+    if (// not isInCSG(pos) or
+        (layer != -1 and pLayer != layer)) return false;
 
     return isOnCSGBorder(pos);
 
@@ -437,7 +457,8 @@ void CoatingBlockCode::attract() {
                    and not neighborhood->directionIsInCSG(catom->position, South)
                    and neighborhood->directionIsInCSG(catom->position, West)
                    and neighborhood->directionIsInCSG(catom->position, SouthWest)
-                   and border->isOnInternalHole(catom->position)) {
+                   and border->isOnInternalHole(catom->position)
+                   and not borderHasWaitingModule(East)) {
             info << " sends a WEST border following request for " << wPos;
             scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
 
@@ -464,7 +485,8 @@ void CoatingBlockCode::attract() {
                    and not neighborhood->directionIsInCSG(catom->position, North)
                    and neighborhood->directionIsInCSG(catom->position, East)
                    and neighborhood->directionIsInCSG(catom->position, NorthEast)
-                   and border->isOnInternalHole(catom->position)) {
+                   and border->isOnInternalHole(catom->position)
+                   and not borderHasWaitingModule(West)) {
             info.str("");
             info << " sends a EAST border following request for " << ePos;
             scheduler->trace(info.str(),catom->blockId, ATTRACT_DEBUG_COLOR);
@@ -509,6 +531,9 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
 
     if (catom->color != InvalidColor) catom->setColor(AttractedColor); // Preserve err trace
     std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY));
+
+    if (waitingModules.find(pos) != waitingModules.end())
+        waitingModules.erase(catom->position);
 
     Color color = DefaultColor;
     if (lattice->cellIsBlocked(pos)) {
@@ -581,6 +606,7 @@ bool CoatingBlockCode::borderFollowingAttractRequest(const Cell3DPosition& reque
     watchlist.emplace(requestee, std::bind(&CoatingBlockCode::sendAttractSignalTo, this, pos));
 
     catom->setColor(WaitingColor);
+    waitingModules.insert(catom->position);
 
     return false;
 }
@@ -645,4 +671,57 @@ void CoatingBlockCode::initializeSandbox() {
             }
         }
     }
+}
+
+bool CoatingBlockCode::borderHasWaitingModule(int startIdx) const {
+    // From Thadeu's Sync/sync.cpp
+    int nTurns = 0;
+    int idx = startIdx;
+    if (idx == -1) return false;
+
+    if (not border->isOnBorder(catom->position))
+        return false;
+
+    // lattice->highlightCell(catom->position, BLACK);
+
+    Cell3DPosition currentPos = catom->position;
+    nTurns += border->getNextBorderNeighborInPlace(idx, currentPos);
+
+    // lattice->highlightCell(currentPos,YELLOW);
+
+    while(currentPos != catom->position) {
+        // lattice->unhighlightCell(currentPos);
+
+        if (waitingModules.find(currentPos) != waitingModules.end()) return true;
+
+        nTurns += border->getNextBorderNeighborInPlace(idx, currentPos);
+
+        // lattice->highlightCell(currentPos,YELLOW);
+        // usleep(200000);
+    }
+
+    return false;
+}
+
+bool CoatingBlockCode::hasOrthogonalNeighborsInCSG(const Cell3DPosition& pos) {
+    SkewFCCLattice::Direction dirs[] = {
+        SkewFCCLattice::Direction::C0East, SkewFCCLattice::Direction::C1North,
+        SkewFCCLattice::Direction::C6West, SkewFCCLattice::Direction::C7South
+    };
+
+    Lattice *lattice = BaseSimulator::getWorld()->lattice;
+
+    for (const SkewFCCLattice::Direction& d : dirs) {
+
+        const pair<short, short> pair = Neighborhood::getOrthogonalDirections(d);
+        const Cell3DPosition& pRef = lattice->getCellInDirection(pos, d);
+        const Cell3DPosition& p1 = lattice->getCellInDirection(pos, pair.first);
+        const Cell3DPosition& p2 = lattice->getCellInDirection(pos, pair.second);
+
+        if ((target->isInTarget(pRef) and target->isInTarget(p1))
+            or (target->isInTarget(pRef) and target->isInTarget(p2)))
+            return true;
+    }
+
+    return false;
 }

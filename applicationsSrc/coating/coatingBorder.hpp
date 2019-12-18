@@ -34,6 +34,14 @@ public :
     /**
      * @param idx current rotation index
      * @param currentPos current search position
+     * @return the position of the next neighbor along the internal border that is already in
+     *          place
+     */
+    int getNextBorderNeighborInPlace(int &idx, Cell3DPosition &currentPos) const;
+
+    /**
+     * @param idx current rotation index
+     * @param currentPos current search position
      * @return the position of the next neighbor along the internal border
      */
     int getNextBorderNeighborCCW(int &idx, Cell3DPosition &currentPos) const;
