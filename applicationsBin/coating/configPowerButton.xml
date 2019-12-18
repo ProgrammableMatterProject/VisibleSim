@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="40, 40, 40">
+  <blockList color="128,128,128" blocksize="1,1,1">
+    <block position="9,1,1" orientation="0"/>
+  </blockList>
+  <targetList>
+    <target format="csg">
+      <csg translate="1,1,1" content="
+scale([1.0,1.0,1.0])
+union() {
+    difference() {
+        cylinder(20,10,10, true);
+        cylinder(20,5,5, true);
+    }
+    translate([0,-2,0]) cube([3,8,20], true);
+}
+            "/>
+    </target>
+  </targetList>
+</world>
