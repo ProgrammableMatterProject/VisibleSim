@@ -28,6 +28,7 @@ private:
     static inline int HIGHLIGHT_COATING_LAYER = -1;
     static inline int HIGHLIGHT_SEEDS = false;
     static inline int HIGHLIGHT_SUPPORTS = false;
+    static inline int HIGHLIGHT_SCAFFOLD = false;
 
     static inline bool COATING_MODE = false;
 

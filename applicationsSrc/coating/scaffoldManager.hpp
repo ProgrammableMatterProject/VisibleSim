@@ -31,11 +31,12 @@ private:
     inline static const int B = 6;
     Lattice *lattice;
     const std::function<bool(const Cell3DPosition&)> isInCSG;
-    std::function<bool(const Cell3DPosition&)> isInsideFn;
 public :
     ScaffoldManager(const Cell3DPosition& _seed,
                     std::function<bool(const Cell3DPosition&)> _isInCSG);
     ~ScaffoldManager() {};
+
+    std::function<bool(const Cell3DPosition&)> isInsideFn;
 
     /**
      * Position of all the tips of the incoming branches to a tile relative to its tile root

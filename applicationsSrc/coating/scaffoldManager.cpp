@@ -231,6 +231,13 @@ list<Cell3DPosition> ScaffoldManager::getAllSupportPositionsForPlane(int z) cons
                 pos.set(ix, iy, z);
                 Cell3DPosition tPos = normalize(pos);
 
+
+                // cout << "pos: " << pos << endl;
+                // cout << "tPos: " << tPos << endl;
+                // cout << "isTileRoot(tpos): " << isTileRoot(tPos) << endl;
+                // cout << "isInsideFn(pos): " << isInsideFn(pos) << endl;
+
+
                 if (isTileRoot(tPos) and isInsideFn(pos)) {
 
                     // cout << "pos: " << pos << endl;
@@ -272,7 +279,7 @@ bool ScaffoldManager::isWithinCSGMinus2(const Cell3DPosition& pos) const {
         // space at the top of the structure and prevent the attachment of the coating to
         // the scaffold
         const Cell3DPosition &pn = pos + (i < XBranch ? 1 : 2)*getBranchUnitOffset(bi);
-        if (not isInsideFn(pn)) {
+        if (not isInCSG(pn)) {
             return false;
         }
     }

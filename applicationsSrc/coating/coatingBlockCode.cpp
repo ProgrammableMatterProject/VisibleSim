@@ -284,6 +284,10 @@ bool CoatingBlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
                     HIGHLIGHT_SUPPORTS = true;
 
                     cout << "--supports option provided" << endl;
+                } else if (varg == string("scaffold")) {
+                    HIGHLIGHT_SCAFFOLD = true;
+
+                    cout << "--scaffold option provided" << endl;
                 } else if (varg == string("delay")) { //
                     try {
                         ATTRACT_DELAY = stoi((*argv)[1]);
@@ -338,6 +342,15 @@ void CoatingBlockCode::highlight() const {
             return isInG(p) and seeding->isPlaneSeed(p); }, MAGENTA);
     }
 
+    if (HIGHLIGHT_SCAFFOLD) {
+        // Scaffold
+        lattice->highlightAllCellsThatVerify(
+            [this](const Cell3DPosition& p){
+                return scaffold->isInsideFn(p)
+                    and scaffold->isInScaffold(scaffold->normalize(p));
+            }, GREEN);
+    }
+
     if (HIGHLIGHT_SUPPORTS) {
         int zmax = lattice->getGridUpperBounds()[2];
         for (int z = 0; z <= zmax; z++) {
@@ -363,13 +376,6 @@ bool CoatingBlockCode::isOnCSGBorder(const Cell3DPosition& pos) {
     } else {
         // Try to include outer corners but exclude inner corners
         bool hasOrthoNeighborsInCSG = hasOrthogonalNeighborsInCSG(pos);
-        // for (const Cell3DPosition& neighbor :
-        //          BaseSimulator::getWorld()->lattice->getNeighborhood(pos)) {
-        //     if (neighbor[2] == pos[2] and target->isInTarget(neighbor)) {
-        //         hasNeighborInCSG = true;
-        //         break;
-        //     }
-        // }
 
         if (not hasOrthoNeighborsInCSG) return false;
 
