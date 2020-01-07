@@ -63,6 +63,8 @@ private:
     static inline set<Cell3DPosition> waitingModules;
 
     static inline int nPlanes; //!< Number of planes
+    static inline vector<set<Cell3DPosition>> planeSupports; //!< Support positions for plane
+
     static inline vector<int> planeRequires; //!< Number of modules plane i needs
     static inline vector<int> planeAttracted; //!< Number of modules plane i has attracted
     static inline vector<list<Cell3DPosition>> planeSeed; //!< Modules responsible for attracting the first module of the plane above them, one per contiguous plane, potentially multiple per layer therefore
@@ -198,6 +200,12 @@ public :
      *  orthogoal and in G
      */
     static bool hasOrthogonalNeighborsInCSG(const Cell3DPosition& pos);
+
+    /**
+     * @param pos position to evaluate
+     * @return true if pos is a support position that glues the scaffold to the coating
+     */
+    static bool isSupportPosition(const Cell3DPosition& pos);
 
     /// Advanced blockcode handlers below
 

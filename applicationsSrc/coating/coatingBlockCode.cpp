@@ -7,7 +7,7 @@
 using namespace Catoms3D;
 
 CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host) {
-    // @warning Do not remove block below, as a blockcode with a NULL host might be created
+    // @warning Do not remove block below, as a blockcode with a nullptr host might be created
     //  for command line parsing
     if (not host) return;
 
@@ -33,22 +33,22 @@ CoatingBlockCode::CoatingBlockCode(Catoms3DBlock *host) : Catoms3DBlockCode(host
 CoatingBlockCode::~CoatingBlockCode() {
     if (neighborhood) {
         delete neighborhood;
-        neighborhood = NULL;
+        neighborhood = nullptr;
     }
 
     if (border) {
         delete border;
-        border = NULL;
+        border = nullptr;
     }
 
     if (seeding) {
         delete seeding;
-        seeding = NULL;
+        seeding = nullptr;
     }
 
     if (scaffold) {
         delete scaffold;
-        scaffold = NULL;
+        scaffold = nullptr;
     }
 };
 
@@ -88,6 +88,14 @@ void CoatingBlockCode::startup() {
         HIGHLIGHT_COATING = false;
         HIGHLIGHT_CSG = false;
         HIGHLIGHT_SEEDS = false;
+    }
+
+    if (isSupportPosition(catom->position)) {
+        // For each free neighbor position
+        // If one of the neighbor positions is a blocked coating position
+        // Ensure that it has no other support position in its neighborhood
+        //  or that this support is already in place, and then:
+        //     Attract neighbors to that position until the next corner along the border
     }
 
     if (not isInG(catom->position)) return;
@@ -507,10 +515,17 @@ void CoatingBlockCode::attract() {
 void CoatingBlockCode::attractStructuralSupports(int layer) {
     int z = G_SEED_POS[2] + layer;
 
+    if (planeSupports.size() <= (unsigned int)layer) {
+        planeSupports.push_back(set<Cell3DPosition>());
+        VS_ASSERT(planeSupports.size() > (unsigned int)layer);
+    }
+
     for (const Cell3DPosition& pos : scaffold->getAllSupportPositionsForPlane(z)) {
         stringstream info;
         info << " attracts layer " << layer << " structural support to " << pos;
         scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
+
+        planeSupports[layer].insert(pos);
 
         Color color = SupportColor;
         if (lattice->cellIsBlocked(pos)) {
@@ -730,4 +745,12 @@ bool CoatingBlockCode::hasOrthogonalNeighborsInCSG(const Cell3DPosition& pos) {
     }
 
     return false;
+}
+
+bool CoatingBlockCode::isSupportPosition(const Cell3DPosition& pos) {
+    unsigned int layer = pos[2] - G_SEED_POS[2];
+
+    if (planeSupports.size() <= layer) return false;
+
+    return planeSupports[layer].find(pos) != planeSupports[layer].end();
 }
