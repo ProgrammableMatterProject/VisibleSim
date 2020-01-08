@@ -68,6 +68,8 @@ private:
     static inline vector<int> planeRequires; //!< Number of modules plane i needs
     static inline vector<int> planeAttracted; //!< Number of modules plane i has attracted
     static inline vector<list<Cell3DPosition>> planeSeed; //!< Modules responsible for attracting the first module of the plane above them, one per contiguous plane, potentially multiple per layer therefore
+
+    static inline set<Cell3DPosition> attractedBySupport; //!< Set of all modules that have been attracted by a support rather than through the regular road. It fakes a gradient signal that would contain whether or not this is a regular gradient or a support gradient
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode();
@@ -206,6 +208,30 @@ public :
      * @return true if pos is a support position that glues the scaffold to the coating
      */
     static bool isSupportPosition(const Cell3DPosition& pos);
+
+    /**
+     * @param a
+     * @param b
+     * @return true if cell a is part of the coating and would be blocked by cell b as
+     *  it may have a neighbor opposite to its connector attached to b
+     */
+    bool coatingCellWillBeBlockedBy(const Cell3DPosition& a, const Cell3DPosition& b) const;
+
+    /**
+     * Called by a module that has just been attracted by a support module, or one which
+     *  belongs to one of the modules of the segment grown by this support so as to avoid
+     *  leaving blocked positions on the border.
+     * This function evaluates whether the current segment should be extended by one module
+     *  (depending wether the next module along the segment is a corner or not), and attracts
+     *  it if needed.
+     */
+    void attractNextModuleAlongSegment();
+
+    /**
+     * @param pos position to evaluate
+     * @return true if pos is on a segment that is to be built by a support module
+     */
+    bool isOnSupportSegment(const Cell3DPosition& pos) const;
 
     /// Advanced blockcode handlers below
 

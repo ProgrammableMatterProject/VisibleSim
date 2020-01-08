@@ -92,13 +92,34 @@ void CoatingBlockCode::startup() {
 
     if (isSupportPosition(catom->position)) {
         // For each free neighbor position
-        // If one of the neighbor positions is a blocked coating position
-        // Ensure that it has no other support position in its neighborhood
-        //  or that this support is already in place, and then:
-        //     Attract neighbors to that position until the next corner along the border
+        for (const Cell3DPosition& p : lattice->getFreeNeighborCells(catom->position)) {
+            // If it is a blocked coating position
+            if (p[2] == catom->position[2]
+                and coatingCellWillBeBlockedBy(p, catom->position)) {
+                // Ensure that it has no other support position in its neighborhood
+                //  or that this support is already in place, and then:
+                for (const Cell3DPosition& pn : lattice->getFreeNeighborCells(p)){
+                    if (isSupportPosition(pn))
+                        goto nextNeighbor;
+                }
+
+                // Attract neighbors to that position until the next corner along the border
+                attractedBySupport.insert(p);
+                sendAttractSignalTo(p);
+            }
+
+        nextNeighbor: ;
+        }
     }
 
-    if (not isInG(catom->position)) return;
+    if (not isInG(catom->position))
+        return;
+
+    if (attractedBySupport.count(catom->position)) {
+        catom->setColor(MAGENTA);
+        attractNextModuleAlongSegment();
+        return;
+    }
 
     if (catom->position == G_SEED_POS) {
         initializePlaneSeeds();
@@ -126,7 +147,10 @@ void CoatingBlockCode::startup() {
 
                 VS_ASSERT_MSG(isInG(seed + aPos), "seed target is not in G!");
 
-                sendAttractSignalTo(seed + aPos);
+                // If first module of next plane has already been attracted by a support module
+                //  Message it to start attracting remaining modules?
+                if (not isOnSupportSegment(seed + aPos))
+                    sendAttractSignalTo(seed + aPos);
             }
         }
     }
@@ -151,7 +175,7 @@ void CoatingBlockCode::startup() {
 }
 
 void CoatingBlockCode::handleSampleMessage(MessagePtr msgPtr, P2PNetworkInterface* sender) {
-    MessageOf<int>* msg = static_cast<MessageOf<int>*>(msgPtr.get());
+    // MessageOf<int>* msg = static_cast<MessageOf<int>*>(msgPtr.get());
 }
 
 void CoatingBlockCode::onMotionEnd() {
@@ -403,8 +427,6 @@ bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) {
 bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) {
     int pLayer = getGLayer(pos);
 
-    TargetCSG *csg = static_cast<TargetCSG*>(target);
-
     if (// not isInCSG(pos) or
         (layer != -1 and pLayer != layer)) return false;
 
@@ -550,7 +572,11 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
          << " position " << pos;
     scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
-    if (catom->color != InvalidColor) catom->setColor(AttractedColor); // Preserve err trace
+    if (catom->color != InvalidColor // Preserve err trace
+        and not isSupportPosition(catom->position)
+        and not attractedBySupport.count(catom->position))
+        catom->setColor(AttractedColor);
+
     std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY));
 
     if (waitingModules.find(pos) != waitingModules.end())
@@ -748,9 +774,122 @@ bool CoatingBlockCode::hasOrthogonalNeighborsInCSG(const Cell3DPosition& pos) {
 }
 
 bool CoatingBlockCode::isSupportPosition(const Cell3DPosition& pos) {
-    unsigned int layer = pos[2] - G_SEED_POS[2];
+    unsigned int layer = getGLayer(pos);
 
     if (planeSupports.size() <= layer) return false;
 
-    return planeSupports[layer].find(pos) != planeSupports[layer].end();
+    return planeSupports[layer].count(pos);
+}
+
+bool CoatingBlockCode::isOnSupportSegment(const Cell3DPosition& pos) const {
+    unsigned int layer = getGLayer(pos);
+
+    if (planeSupports.size() <= layer) return false;
+
+    // Find coating neighbor
+    Cell3DPosition cn = Cell3DPosition(-1,-1,-1);
+    for (const Cell3DPosition& p : lattice->getNeighborhood(pos)) {
+        if (isInG(p)) {
+            cn = p;
+            break;
+        }
+    }
+
+    VS_ASSERT(cn != Cell3DPosition(-1,-1,-1));
+
+    // Find opposite opposition
+    const Cell3DPosition& copp = lattice->getOppositeCell(pos, cn);
+
+    // Search for support neighbor
+    bool hasSupportNeighbor = false;
+    Cell3DPosition suppN;
+    for (const Cell3DPosition& p : lattice->getNeighborhood(pos)) {
+        if (isSupportPosition(p)) {
+            hasSupportNeighbor = true;
+            suppN = p;
+            break;
+        }
+    }
+
+    if ( (hasSupportNeighbor and not isInG(lattice->getOppositeCell(pos, suppN)))
+         or not isInG(copp) ) // module is on a corner
+        return false;
+
+    // Otherwise, check cn and copp directions and see if the first
+    //  out of coating position is a support in one of these directions
+
+    short d = lattice->getDirection(pos, cn);
+    short dOpp = lattice->getDirection(pos, copp);
+
+    Cell3DPosition cur;
+    const auto& reachEndOfSegmentInDirection = [this, &pos, &cur](short dir) {
+        cur = pos;
+
+        do {
+            // lattice->highlightCell(cur, BLUE);
+            cur = lattice->getCellInDirection(cur, dir);
+            // usleep(50000);
+            // lattice->unhighlightCell(cur);
+        } while (isInG(cur));
+    };
+
+    reachEndOfSegmentInDirection(d);
+    if (isSupportPosition(cur)) return true;
+
+    reachEndOfSegmentInDirection(dOpp);
+    if (isSupportPosition(cur)) return true;
+
+    return false;
+}
+
+bool CoatingBlockCode::coatingCellWillBeBlockedBy(const Cell3DPosition& a,
+                                                  const Cell3DPosition& b) const {
+    // Topology:
+    // b - a - c
+    // a is only blocked by b is c is part of the coating
+    return isInG(a) and isInG(lattice->getOppositeCell(a, b));
+}
+
+void CoatingBlockCode::attractNextModuleAlongSegment() {
+    // Find the attracter of this module
+    //  either a support for first module of segment, or a neighbor coating position
+    Cell3DPosition attracter = Cell3DPosition(-1,-1,-1);
+    for (const Cell3DPosition& p : lattice->getActiveNeighborCells(catom->position)) {
+        if (p[2] == catom->position[2]
+            and (isInG(p) or isSupportPosition(p))) {
+            attracter = p;
+            break;
+        }
+    }
+
+    VS_ASSERT(attracter != Cell3DPosition(-1,-1,-1));
+
+    // Deduce its direction relative to self
+    short dirAtt = lattice->getDirection(catom->position, attracter);
+
+    // Infer direction and position of next module along segment
+    short dirNext = lattice->getOppositeDirection(dirAtt);
+    Cell3DPosition next = lattice->getCellInDirection(catom->position, dirNext);
+
+    // // FIXME: Ensure that module is not a plane seed
+    // bool nextIsSeed = false;
+    // unsigned int layer = getGLayer(next);
+    // if (layer > 0) {
+    //     for (const Cell3DPosition& seed : planeSeed[layer - 1]) {
+    //         const Cell3DPosition& aPos = isInG(seed + seeding->forwardSeed) ?
+    //             seeding->forwardSeed : seeding->backwardSeed;
+
+    //         if (aPos == next) {
+    //             nextIsSeed = true;
+    //             break;
+    //         }
+    //     }
+    // }
+
+    // Check if next module is a corner --> Not a corner if cell will be blocked by self
+    // End segment if corner, or attract the next module otherwise
+    if (coatingCellWillBeBlockedBy(next, catom->position)) {
+        attractedBySupport.insert(next);
+        sendAttractSignalTo(next);
+    }
 }
