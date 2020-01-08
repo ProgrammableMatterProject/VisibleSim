@@ -254,6 +254,23 @@ public:
      * @return true if pos is blocked from insertion/removal due to motion constraints
      */
     virtual bool cellIsBlocked(const Cell3DPosition& pos) const { return false; }
+
+    /**
+     * @brief Returns the cell in the direction opposite to pDir relative to pRef
+     * @param d cell from which we want the opposite
+     * @param pRef cell of reference
+     * @return the cell in the direction opposite to d relative pRef
+     */
+    Cell3DPosition getOppositeCell(const Cell3DPosition& pRef,
+                                   const Cell3DPosition& pDir) const;
+
+    /**
+     * @brief Returns the cell in the direction opposite to d relative to pRef
+     * @param d id of the direction from which we want the opposite cell
+     * @param pRef cell of reference
+     * @return the cell in the direction opposite to d relative pRef
+     */
+    Cell3DPosition getOppositeCell(const Cell3DPosition& pRef, short d) const;
 };
 
 /*! @brief 2-Dimensional Lattice abstract class

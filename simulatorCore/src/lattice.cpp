@@ -241,6 +241,17 @@ unhighlightAllCellsThatVerify(std::function<bool(const Cell3DPosition&)> predica
     }
 }
 
+Cell3DPosition Lattice::getOppositeCell(const Cell3DPosition& pRef,
+                                        const Cell3DPosition& pDir) const {
+    short d = getDirection(pRef, pDir);
+    return getOppositeCell(pRef, d);
+}
+
+Cell3DPosition Lattice::getOppositeCell(const Cell3DPosition& pRef, short d) const {
+    short oppD = getOppositeDirection(d);
+    return getCellInDirection(pRef, oppD);
+}
+
 /********************* Lattice2D *********************/
 Lattice2D::Lattice2D() : Lattice() {}
 Lattice2D::Lattice2D(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice(gsz,gsc) {}
