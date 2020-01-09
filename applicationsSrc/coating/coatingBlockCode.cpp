@@ -117,8 +117,11 @@ void CoatingBlockCode::startup() {
     if (not isInG(catom->position))
         return;
 
+    int layer = getGLayer(catom->position);
+
     if (attractedBySupport.count(catom->position)) {
         catom->setColor(MAGENTA);
+        ++planeAttracted[layer];
         attractNextModuleAlongSegment();
         return;
     }
@@ -129,7 +132,6 @@ void CoatingBlockCode::startup() {
         if (COATING_MODE) attractStructuralSupports(0); // first layer supports only
     }
 
-    int layer = getGLayer(catom->position);
     if (++planeAttracted[layer] == planeRequires[layer]) {
         catom->setColor(CYAN);
 
@@ -142,8 +144,7 @@ void CoatingBlockCode::startup() {
                 attractStructuralSupports(layer + 1);
             }
 
-            if (planeSupports[layer + 1].size() == 0)
-                attractPlane(layer + 1);
+            attractPlane(layer + 1);
         }
     }
 
@@ -202,6 +203,18 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
 
         case EVENT_ADD_NEIGHBOR: {
             // Do something when a neighbor is added to an interface of the catom
+            uint64_t face = Catoms3DWorld::getWorld()->lattice->
+                getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))
+                                     ->face);
+            const Cell3DPosition& pos = catom->getNeighborBlock(face)->position;
+
+            if (pos == completionNeighborPos) {
+                // Send Completion message to attracted neighbor
+                expectingCompletionNeighbor = false;
+                P2PNetworkInterface* nextItf = catom->getInterface(pos);
+                sendMessage(new BorderCompletionMessage, nextItf, MSG_DELAY, 0);
+            }
+
             break;
         }
 
@@ -936,12 +949,62 @@ void CoatingBlockCode::attractPlane(unsigned int layer) {
 
         // If first module of next plane has already been attracted by a support module
         //  Message it to start attracting remaining modules?
-        if (not isOnSupportSegment(firstPos))
+
+        if (m_mod(layer, 6) != 0) {
             sendAttractSignalTo(firstPos);
-        else startBorderCompletionAlgorithm();
+        } else {
+            if (not isOnSupportSegment(firstPos)) {
+                sendAttractSignalTo(firstPos);
+            } else {
+                // FIXME: THIS SHOULD BE DONE FROM THE SEED MODULE, MIGHT CAUSE ERRORS
+                // check for neighbor segment positions
+                bool hasSegmentNeighbor = false;
+                for (const Cell3DPosition& p : lattice->getNeighborhood(seed)) {
+                    if (p[2] == catom->position[2] and isOnSupportSegment(p)) {
+                        hasSegmentNeighbor = true;
+                        break;
+                    }
+                }
+
+                // Completion is guaranteed
+                if (hasSegmentNeighbor) {
+                    startBorderCompletionAlgorithmFromSeed(seed);
+                } else { // Check if completion is necessary before attracting First
+                    // Find next coating position on own layer and send it a detection message
+                    Cell3DPosition next =
+                        findNextCoatingPositionOnLayer(Cell3DPosition(-1,-1,-1));
+                    VS_ASSERT(next != Cell3DPosition(-1,-1,-1));
+
+                    P2PNetworkInterface* nextItf = catom->getInterface(next);
+                    sendMessage(new NextPlaneSegmentDetectionMessage(false),
+                                nextItf, MSG_DELAY, 0);
+                }
+            }
+        }
     }
 }
 
-void CoatingBlockCode::startBorderCompletionAlgorithm() {
-    console << "Nothing to be done yet" << "\n";
+void CoatingBlockCode::startBorderCompletionAlgorithmFromSeed(const Cell3DPosition& seed) {
+    // FIXME: This should not be done by manually getting the module from Lattice!
+    Catoms3DBlock *seedCatom = static_cast<Catoms3DBlock*>(lattice->getBlock(seed));
+    VS_ASSERT(seedCatom != nullptr);
+
+    const Cell3DPosition& aPos = isInG(seed + seeding->forwardSeed) ?
+        seeding->forwardSeed : seeding->backwardSeed;
+
+    const Cell3DPosition& firstPos = seed + aPos;
+
+    P2PNetworkInterface* nextItf = seedCatom->getInterface(firstPos);
+    sendMessage(new BorderCompletionMessage, nextItf, MSG_DELAY, 0);
+}
+
+Cell3DPosition CoatingBlockCode::
+findNextCoatingPositionOnLayer(const Cell3DPosition& previous) const {
+    for (const Cell3DPosition& p : lattice->getNeighborhood(catom->position)) {
+        if (p[2] == catom->position[2] and isInG(p) and p != previous) {
+            return p;
+        }
+    }
+
+    return Cell3DPosition(-1,-1,-1);
 }

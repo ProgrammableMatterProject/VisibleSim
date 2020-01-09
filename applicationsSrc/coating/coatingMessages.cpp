@@ -44,3 +44,35 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
         }
     }
 }
+
+void BorderCompletionMessage::handle(BaseSimulator::BlockCode* bc) {
+    CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
+
+    if (cb.handledBorderCompletion) return; // Algorithm over for border, we went full circle
+
+    const Cell3DPosition& sender = sourceInterface->hostBlock->position;
+
+    // Get the next border position
+    // FIXME: There should be only one for now but this won't last with planar cases
+    Cell3DPosition next = cb.findNextCoatingPositionOnLayer(sender);
+    VS_ASSERT(next != Cell3DPosition(-1,-1,-1));
+
+    if (cb.lattice->isFree(next)) {
+        // Module has to be attracted, do it and start monitoring its location
+        //  so as to be ready to send it the message when it connects
+        cb.expectingCompletionNeighbor = true;
+        cb.completionNeighborPos = next;
+        cb.sendAttractSignalTo(next);
+    } else {
+        // Forward message further along the border
+        P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
+        VS_ASSERT(nextItf != nullptr);
+        cb.sendMessage(this->clone(), nextItf, MSG_DELAY, 0);
+    }
+
+    cb.handledBorderCompletion = true;
+}
+
+void NextPlaneSegmentDetectionMessage::handle(BaseSimulator::BlockCode* bc) {
+    CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
+}

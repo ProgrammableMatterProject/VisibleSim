@@ -75,6 +75,10 @@ public :
 
     set<Cell3DPosition> expectedSegments; //!< Roots of segments grown from a support module
     unsigned short numCompletedSegments = 0; //!< Number of completion ACK rcvd from segments
+
+    bool handledBorderCompletion = false; //!< True if module has already attracted its neighbor during the border completion algorithm
+    bool expectingCompletionNeighbor = false; //!< indicates that the modules has a attracted a module to a neighbor spot for border completion and is waiting to send it a message
+    Cell3DPosition completionNeighborPos; //!< the position that the module has attracted and is monitoring
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode();
@@ -250,7 +254,7 @@ public :
     /**
      * Initiates the algorithm that fills the missing holes between support segments
      */
-    void startBorderCompletionAlgorithm();
+    void startBorderCompletionAlgorithmFromSeed(const Cell3DPosition& seed);
 
     /**
      * Attracts the first modules of the next plane, or if some of those are on a support
@@ -258,6 +262,13 @@ public :
      * @param layer plane layer to attract
      */
     void attractPlane(unsigned int layer);
+
+    /**
+     * @param previous module on the border
+     * @return the next coating position along the border in the direction
+     *  previous->catom->next for the current layer
+     */
+    Cell3DPosition findNextCoatingPositionOnLayer(const Cell3DPosition& previous) const;
 
     /// Advanced blockcode handlers below
 
