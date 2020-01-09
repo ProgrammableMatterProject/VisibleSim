@@ -20,6 +20,7 @@ SRCS =  coating.cpp \
 	coatingNeighborhood.cpp \
 	coatingBorder.cpp \
 	coatingSeeding.cpp \
+	coatingMessages.cpp \
 	scaffoldManager.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory

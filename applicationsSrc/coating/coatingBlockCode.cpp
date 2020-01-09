@@ -3,6 +3,7 @@
 #include <unistd.h>
 
 #include "coatingUtils.hpp"
+#include "coatingMessages.hpp"
 
 using namespace Catoms3D;
 
@@ -104,6 +105,7 @@ void CoatingBlockCode::startup() {
                 }
 
                 // Attract neighbors to that position until the next corner along the border
+                expectedSegments.insert(p);
                 attractedBySupport.insert(p);
                 sendAttractSignalTo(p);
             }
@@ -140,18 +142,8 @@ void CoatingBlockCode::startup() {
                 attractStructuralSupports(layer + 1);
             }
 
-            // Attract first modules of next plane
-            for (const Cell3DPosition& seed : planeSeed[layer]) {
-                const Cell3DPosition& aPos = isInG(seed + seeding->forwardSeed) ?
-                    seeding->forwardSeed : seeding->backwardSeed;
-
-                VS_ASSERT_MSG(isInG(seed + aPos), "seed target is not in G!");
-
-                // If first module of next plane has already been attracted by a support module
-                //  Message it to start attracting remaining modules?
-                if (not isOnSupportSegment(seed + aPos))
-                    sendAttractSignalTo(seed + aPos);
-            }
+            if (planeSupports[layer + 1].size() == 0)
+                attractPlane(layer + 1);
         }
     }
 
@@ -193,6 +185,21 @@ void CoatingBlockCode::processLocalEvent(EventPtr pev) {
     BlockCode::processLocalEvent(pev);
 
     switch (pev->eventType) {
+        case EVENT_RECEIVE_MESSAGE: {
+            message =
+                (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+
+            if (message->isMessageHandleable()) {
+                std::shared_ptr<HandleableMessage> hMsg =
+                    (std::static_pointer_cast<HandleableMessage>(message));
+
+                console << " received " << hMsg->getName() << " from "
+                        << message->sourceInterface->hostBlock->blockId
+                        << " at " << getScheduler()->now() << "\n";
+                hMsg->handle(this);
+            }
+        } break;
+
         case EVENT_ADD_NEIGHBOR: {
             // Do something when a neighbor is added to an interface of the catom
             break;
@@ -539,6 +546,7 @@ void CoatingBlockCode::attractStructuralSupports(int layer) {
 
     if (planeSupports.size() <= (unsigned int)layer) {
         planeSupports.push_back(set<Cell3DPosition>());
+        planeSupportsReady.push_back(0);
         VS_ASSERT(planeSupports.size() > (unsigned int)layer);
     }
 
@@ -822,25 +830,28 @@ bool CoatingBlockCode::isOnSupportSegment(const Cell3DPosition& pos) const {
     short dOpp = lattice->getDirection(pos, copp);
 
     Cell3DPosition cur;
-    const auto& reachEndOfSegmentInDirection = [this, &pos, &cur](short dir) {
-        cur = pos;
 
-        do {
-            // lattice->highlightCell(cur, BLUE);
-            cur = lattice->getCellInDirection(cur, dir);
-            // usleep(50000);
-            // lattice->unhighlightCell(cur);
-        } while (isInG(cur));
-    };
-
-    reachEndOfSegmentInDirection(d);
+    reachEndOfSegmentInDirection(d, cur, pos);
     if (isSupportPosition(cur)) return true;
 
-    reachEndOfSegmentInDirection(dOpp);
+    reachEndOfSegmentInDirection(dOpp, cur, pos);
     if (isSupportPosition(cur)) return true;
 
     return false;
 }
+
+void CoatingBlockCode::reachEndOfSegmentInDirection(short dir, Cell3DPosition& cur,
+                                                    const Cell3DPosition& from) const {
+    cur = from;
+
+    do {
+        // lattice->highlightCell(cur, BLUE);
+        cur = lattice->getCellInDirection(cur, dir);
+        // usleep(50000);
+        // lattice->unhighlightCell(cur);
+    } while (isInG(cur));
+}
+
 
 bool CoatingBlockCode::coatingCellWillBeBlockedBy(const Cell3DPosition& a,
                                                   const Cell3DPosition& b) const {
@@ -854,11 +865,13 @@ void CoatingBlockCode::attractNextModuleAlongSegment() {
     // Find the attracter of this module
     //  either a support for first module of segment, or a neighbor coating position
     Cell3DPosition attracter = Cell3DPosition(-1,-1,-1);
+    short int numSupportNeighbors = 0;
     for (const Cell3DPosition& p : lattice->getActiveNeighborCells(catom->position)) {
         if (p[2] == catom->position[2]
             and (isInG(p) or isSupportPosition(p))) {
             attracter = p;
-            break;
+            if (isSupportPosition(p)) ++numSupportNeighbors;
+            // break;
         }
     }
 
@@ -891,5 +904,44 @@ void CoatingBlockCode::attractNextModuleAlongSegment() {
     if (coatingCellWillBeBlockedBy(next, catom->position)) {
         attractedBySupport.insert(next);
         sendAttractSignalTo(next);
+    } else {
+        // segment is complete, notify parent support
+
+        // corner modules might have more than one support neighbors if the segment length
+        //  is 1. However, only one of them has attracted it, thus, notify both as it is
+        //  unknown which one is the actual parent
+        if (numSupportNeighbors == 2) {
+            for (const Cell3DPosition& p : lattice->getActiveNeighborCells(catom->position)){
+                if (p[2] == catom->position[2] and isSupportPosition(p)) {
+                    P2PNetworkInterface* supportItf = catom->getInterface(p);
+                    sendMessage(new SupportSegmentCompleteMessage(), supportItf, MSG_DELAY, 0);
+                }
+            }
+        } else {
+            P2PNetworkInterface* prevItf = catom->getInterface(dirAtt);
+            sendMessage(new SupportSegmentCompleteMessage(), prevItf, MSG_DELAY, 0);
+        }
     }
+}
+
+void CoatingBlockCode::attractPlane(unsigned int layer) {
+    // Attract first modules of next plane
+    for (const Cell3DPosition& seed : planeSeed[layer - 1]) {
+        const Cell3DPosition& aPos = isInG(seed + seeding->forwardSeed) ?
+            seeding->forwardSeed : seeding->backwardSeed;
+
+        const Cell3DPosition& firstPos = seed + aPos;
+
+        VS_ASSERT_MSG(isInG(firstPos), "seed target is not in G!");
+
+        // If first module of next plane has already been attracted by a support module
+        //  Message it to start attracting remaining modules?
+        if (not isOnSupportSegment(firstPos))
+            sendAttractSignalTo(firstPos);
+        else startBorderCompletionAlgorithm();
+    }
+}
+
+void CoatingBlockCode::startBorderCompletionAlgorithm() {
+    console << "Nothing to be done yet" << "\n";
 }
