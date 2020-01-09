@@ -14,6 +14,7 @@ SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB simpleColorBB
 
 SUBDIRS += scaffolding_cube scaffolding_pyramid_async scaffolding_pyramid_sync
 SUBDIRS += c2d_demo simpleReconfC2D #c2srCatoms2D
+SUBDIRS += simplePathRB
 
 .PHONY: subdirs $(SUBDIRS) test
 

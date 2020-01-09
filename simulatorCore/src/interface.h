@@ -83,20 +83,52 @@ public :
 };
 
 class GlutRotationButton : public GlutWindow {
-    bool isHighlighted;
-    bool isBlue;
-    uint8_t id0,id1;
+	bool isHighlighted;
+	bool isBlue;
+	uint8_t id0,id1;
+	float characterWidth;
 public :
-    Cell3DPosition finalPosition;
-    short finalOrientation;
-
-    GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation);
-  virtual ~GlutRotationButton() {};
-    int mouseFunc(int button,int state,int x,int y) override;
-    bool passiveMotionFunc(int mx,int my) override;
-    void glDraw() override;
+	Cell3DPosition finalPosition;
+	short finalOrientation;
+	
+	GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw=0.0625);
+	virtual ~GlutRotationButton() {};
+	int mouseFunc(int button,int state,int x,int y) override;
+	bool passiveMotionFunc(int mx,int my) override;
+	void glDraw() override;
 };
 
+class GlutRBMotionButton : public GlutWindow {
+	bool isHighlighted;
+	bool isBlue;
+	uint8_t directionID,actionID;
+	float characterWidth;
+public :
+	Cell3DPosition finalPosition;
+	
+	GlutRBMotionButton (GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool isRotation,uint8_t idDest,Cell3DPosition &pos,float cw=0.125);
+	virtual ~GlutRBMotionButton () {};
+	int mouseFunc(int button,int state,int x,int y) override;
+	bool passiveMotionFunc(int mx,int my) override;
+	void glDraw() override;
+};
+
+
+class GlutRotation2DButton : public GlutWindow {
+	bool isHighlighted;
+	bool isBlue;
+	uint8_t id0,id1;
+	float characterWidth;
+public :
+	Cell3DPosition finalPosition;
+	short finalOrientation;
+	
+	GlutRotation2DButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw=0.0625);
+	virtual ~GlutRotation2DButton() {};
+	int mouseFunc(int button,int state,int x,int y) override;
+	bool passiveMotionFunc(int mx,int my) override;
+	void glDraw() override;
+};
 
 //
 class BlockDebugData {

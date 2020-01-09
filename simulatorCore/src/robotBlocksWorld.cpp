@@ -26,15 +26,14 @@ RobotBlocksWorld::RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3
     OUTPUT << TermColor::LifecycleColor << "RobotBlocksWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures",
-                                            "robotBlock.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures",
-                                                      "robotBlockPicking.obj");
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
-                                             "repere25.obj");
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures","robotBlock.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures","robotBlockPicking.obj");
+        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
     }
 
     lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+
+		motionRules = new RobotBlocksMotionRules();
 }
 
 RobotBlocksWorld::~RobotBlocksWorld() {
@@ -42,10 +41,115 @@ RobotBlocksWorld::~RobotBlocksWorld() {
     OUTPUT << "RobotBlocksWorld destructor" << endl;
 #endif
     /*	block linked are deleted by world::~world() */
+		delete motionRules;
 }
 
 void RobotBlocksWorld::deleteWorld() {
     delete((RobotBlocksWorld*)world);
+}
+
+void RobotBlocksWorld::createPopupMenu(int ix, int iy) {
+	if (!GlutContext::popupMenu) {
+		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,202,215);
+		// create submenu "Add"
+		GlutContext::popupMenu->addButton(1,"../../simulatorCore/resources/textures/menuTextures/menu_add.tga");
+		// create submenu "Rotate"
+		GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,116,40);
+		rotateBlockSubMenu->id=51;
+
+		GlutContext::popupMenu->addButton(2,"../../simulatorCore/resources/textures/menuTextures/menu_del.tga");
+
+		GlutContext::popupMenu->addButton(6,"../../simulatorCore/resources/textures/menuTextures/menu_rotate_sub.tga",rotateBlockSubMenu);
+		GlutContext::popupMenu->addButton(3,"../../simulatorCore/resources/textures/menuTextures/menu_tap.tga");
+		GlutContext::popupMenu->addButton(4,"../../simulatorCore/resources/textures/menuTextures/menu_save.tga");
+		GlutContext::popupMenu->addButton(5,"../../simulatorCore/resources/textures/menuTextures/menu_cancel.tga");
+	}
+
+	// update rotateSubMenu depending on rotation catoms3DCapabilities
+	RobotBlocksBlock *rb = (RobotBlocksBlock*)getSelectedBuildingBlock();
+	vector<RobotBlocksMotionRule*> tab = motionRules->getValidMotionList(rb);
+	// remove element pointing in the same motion
+	/*if (tab.size()>1) {
+		auto ci=tab.begin()+1;
+		auto ci2=ci;
+		Cell3DPosition finalPos;
+		while (ci<tab.end()) {
+			// search for previous motion with the same goal finalPosition
+			finalPos = (*ci)->getFinalPosition(rb);
+			cout << (*ci)->isRotation() << ":" << (*ci)->getToID() << "," << finalPos << endl;
+			ci2 = tab.begin();
+			while (ci2!=ci && (*ci2)->getFinalPosition(rb)!=finalPos) {
+				ci2++;
+			}
+			if (ci2==ci) {
+				ci2=ci-1gridToUnscaledWorldPosition;
+				tab.erase(ci);
+				ci=ci2;
+			}
+			ci++;
+		}
+	}*/
+
+	int nbreMenus=tab.size();
+	if (nbreMenus==0) {
+		((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(false);
+	} else {
+		((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(true);
+		GlutPopupMenuWindow *rotateBlockSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(6)->getChild(0);
+		rotateBlockSubMenu->h = nbreMenus*35+10;
+		rotateBlockSubMenu->clearChildren();
+		int i=100;
+		Cell3DPosition finalPos;
+		auto ci=tab.begin();
+		while (ci<tab.end()) {
+			finalPos = (*ci)->getFinalPosition(rb);
+			//cout << "printed: " << (*ci)->isRotation() << ":" << (*ci)->getToID() << "," << finalPos << endl;
+			rotateBlockSubMenu->addButton(new GlutRBMotionButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_move_rb.tga", (*ci)->isRotation(),(*ci)->getToID(),finalPos));
+			ci++;
+		}
+	}
+
+	if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
+	cout << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
+	<< " selected" << endl;
+	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
+	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
+	GlutContext::popupMenu->show(true);
+	if (GlutContext::popupSubMenu) GlutContext::popupSubMenu->show(false);
+}
+
+void RobotBlocksWorld::menuChoice(int n) {
+	RobotBlocksBlock *rb = (RobotBlocksBlock *)getSelectedBuildingBlock();
+	Cell3DPosition nPos;
+	switch (n) {
+		case 6:
+			GlutContext::popupMenu->show(true);
+			GlutContext::popupSubMenu = (GlutPopupMenuWindow*)GlutContext::popupMenu->getButton(n)->getChild(0);
+			GlutContext::popupSubMenu->show(true);
+			GlutContext::popupSubMenu->x=GlutContext::popupMenu->x+GlutContext::popupMenu->w+5;
+			GlutContext::popupSubMenu->y=GlutContext::popupMenu->y+GlutContext::popupMenu->getButton(n)->y-GlutContext::popupSubMenu->h/2;
+			// avoid placing submenu over the top of the window
+			if (GlutContext::popupSubMenu->y+GlutContext::popupSubMenu->h > GlutContext::screenHeight) {
+				GlutContext::popupSubMenu->y = GlutContext::screenHeight-GlutContext::popupSubMenu->h;
+			}
+			break;
+		default:
+			if (n>=100) {
+				GlutContext::popupSubMenu->show(false);
+				GlutContext::popupMenu->show(false);
+
+				Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
+				RobotBlocksWorld *wrld = getWorld();
+				wrld->disconnectBlock(rb);
+				rb->setPosition(pos);
+				wrld->connectBlock(rb);
+				//}
+			} else {
+				cout << "menu world:" << n << endl;
+				World::menuChoice(n); // For all non-catoms2D-specific cases
+			}
+			break;
+	}
 }
 
 void RobotBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos,
@@ -196,6 +300,7 @@ void RobotBlocksWorld::glDraw() {
 
         BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
         if (bb) bb->blockCode->onGlDraw();
+				lattice->glDraw();
 }
 
 void RobotBlocksWorld::glDrawId() {
@@ -328,7 +433,7 @@ void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
 void RobotBlocksWorld::setSelectedFace(int n) {
     numSelectedGlBlock=n/numPickingTextures;
     string name = objBlockForPicking->getObjMtlName(n%numPickingTextures);
-    if (name=="face_top") numSelectedFace=SCLattice::Top;
+		if (name=="face_top") numSelectedFace=SCLattice::Top;
     else if (name=="face_bottom") numSelectedFace=SCLattice::Bottom;
     else if (name=="face_right") numSelectedFace=SCLattice::Right;
     else if (name=="face_left") numSelectedFace=SCLattice::Left;
