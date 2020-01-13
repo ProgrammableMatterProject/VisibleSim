@@ -25,7 +25,7 @@ bool ScaffoldManager::isInScaffold(const Cell3DPosition& pos) const {
     return isOnBranch(XBranch, pos) or isOnBranch(YBranch, pos) or isOnBranch(ZBranch, pos)
         or (isOnBranch(OppXBranch, pos) or isOnBranch(OppYBranch, pos))
         or isOnBranch(RevZBranch, pos) or isOnBranch(RevZBranch, pos)
-        or isOnBranch(LZBranch, pos)
+        or isOnBranch(LZBranch, pos) or isOnBranch(RZBranch, pos)
         or isHelperModule(pos);
 }
 
