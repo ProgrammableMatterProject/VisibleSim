@@ -79,6 +79,8 @@ public :
     bool handledBorderCompletion = false; //!< True if module has already attracted its neighbor during the border completion algorithm
     bool expectingCompletionNeighbor = false; //!< indicates that the modules has a attracted a module to a neighbor spot for border completion and is waiting to send it a message
     Cell3DPosition completionNeighborPos; //!< the position that the module has attracted and is monitoring
+
+    bool builtScaffold = false; //!< Indicates if module has attempted to attract scaffold neighbors
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode();
@@ -269,6 +271,11 @@ public :
      *  previous->catom->next for the current layer
      */
     Cell3DPosition findNextCoatingPositionOnLayer(const Cell3DPosition& previous) const;
+
+    /**
+     * Attracts scaffold neighbors if scaffold had not been initialized
+     */
+    void assembleInternalScaffoldNeighbors();
 
     /// Advanced blockcode handlers below
 

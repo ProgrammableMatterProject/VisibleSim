@@ -114,8 +114,10 @@ void CoatingBlockCode::startup() {
         }
     }
 
-    if (not isInG(catom->position))
+    if (not isInG(catom->position)) {
+        assembleInternalScaffoldNeighbors();
         return;
+    }
 
     int layer = getGLayer(catom->position);
 
@@ -1007,4 +1009,20 @@ findNextCoatingPositionOnLayer(const Cell3DPosition& previous) const {
     }
 
     return Cell3DPosition(-1,-1,-1);
+}
+
+void CoatingBlockCode::assembleInternalScaffoldNeighbors() {
+    for (const Cell3DPosition& pos : lattice->getNeighborhood(catom->position)) {
+        if (scaffold->isInScaffold(scaffold->normalize(pos)) and scaffold->isInsideFn(pos)
+            and lattice->isFree(pos)) {
+            try {
+                world->addBlock(0, buildNewBlockCode, pos, GREY);
+            } catch (DoubleInsertionException const& e) {
+                cerr << e.what() << endl;
+                lattice->highlightCell(pos, InvalidColor);
+            }
+        }
+    }
+
+    builtScaffold = true;
 }
