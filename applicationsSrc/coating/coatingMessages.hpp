@@ -40,15 +40,49 @@ public:
     virtual string getName() const override { return "BorderCompletionMessage"; }
 };
 
-class NextPlaneSegmentDetectionMessage : public HandleableMessage {
-    bool segmentDetected;
+/**
+ * This message is sent from a seed around the border of the object.
+ *  It stops under each support module and waits until that support has arrived, and finished
+ *  building it segments. Once the message gets back to the sender, it means that the modules
+ *  are all initialized, and the seed can then decide on normal assembly or border completion
+ */
+class NextPlaneSupportsReadyMessage : public HandleableMessage {
+    bool segmentsDetected;
 public:
-    NextPlaneSegmentDetectionMessage(bool _det) : segmentDetected(_det) {};
-    virtual ~NextPlaneSegmentDetectionMessage() {};
+    NextPlaneSupportsReadyMessage(bool _det) : segmentsDetected(_det) {};
+    virtual ~NextPlaneSupportsReadyMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
+
     virtual Message* clone() const override {
-        return new NextPlaneSegmentDetectionMessage(*this);
+        return new NextPlaneSupportsReadyMessage(*this);
     }
-    virtual string getName() const override { return "NextPlaneSegmentDetectionMessage"; }
+
+    virtual string getName() const override {
+        return "NextPlaneSupportsReadyMessage("
+            + string(segmentsDetected ? "true" : "false") + ")";
+    }
+};
+
+class SupportReadyRequest : public HandleableMessage {
+public:
+    SupportReadyRequest() {};
+    virtual ~SupportReadyRequest() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+
+    virtual Message* clone() const override { return new SupportReadyRequest(*this); }
+    virtual string getName() const override { return "SupportReadyRequest"; }
+};
+
+class SupportReadyResponse : public HandleableMessage {
+    bool hasSegments;
+public:
+    SupportReadyResponse(bool _hasSegments) : hasSegments(_hasSegments) {};
+    virtual ~SupportReadyResponse() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+
+    virtual Message* clone() const override { return new SupportReadyResponse(*this); }
+    virtual string getName() const override { return "SupportReadyResponse"; }
 };

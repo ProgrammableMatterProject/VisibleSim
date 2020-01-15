@@ -51,6 +51,68 @@ void BorderCompletionMessage::handle(BaseSimulator::BlockCode* bc) {
     cb.handleBorderCompletion(sender);
 }
 
-void NextPlaneSegmentDetectionMessage::handle(BaseSimulator::BlockCode* bc) {
+void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
+
+    if (cb.isSeedPosition(cb.catom->position)) {
+        // Attract module above seed, or start border following depending on segmentsDetected
+        // TODO
+    }
+
+    // Border module, keep forwarding along the border
+    // It is assumed that a module can only have one support neighbor
+    bool hasSupportNeighborAbove = false;
+    P2PNetworkInterface *supportItf = nullptr;
+    for (const Cell3DPosition& nPos : cb.lattice->getNeighborhood(cb.catom->position)) {
+        if (nPos[2] > cb.catom->position[2] and cb.isSupportPosition(nPos)) {
+            hasSupportNeighborAbove = true;
+            supportItf = cb.catom->getInterface(nPos);
+        }
+    }
+
+    if (not hasSupportNeighborAbove) {
+        // Forward message further along the border
+        const Cell3DPosition& sender = sourceInterface->hostBlock->position;
+        Cell3DPosition next = cb.findNextCoatingPositionOnLayer(sender);
+
+        P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
+        VS_ASSERT(nextItf != nullptr and nextItf->isConnected());
+        cb.sendMessage(new NextPlaneSupportsReadyMessage(segmentsDetected),
+                       nextItf, MSG_DELAY, 0);
+    } else {
+        cb.lastBorderFollowingItf = destinationInterface;
+        VS_ASSERT(supportItf != nullptr and supportItf->isConnected());
+        cb.sendMessage(new SupportReadyRequest(), supportItf, MSG_DELAY, 0);
+    }
+}
+
+void SupportReadyRequest::handle(BaseSimulator::BlockCode* bc) {
+    CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
+
+    VS_ASSERT(cb.isSupportPosition(cb.catom->position));
+
+    cb.supportReadyRequestItf = destinationInterface;
+
+    // Segments are done being built
+    if (cb.numCompletedSegments == cb.expectedSegments.size()) {
+        // Answer right away
+        cb.sendMessage(new SupportReadyResponse(cb.expectedSegments.size() > 0),
+                       cb.supportReadyRequestItf, MSG_DELAY, 0);
+    } // else, wait for them to complete and send reply only then
+}
+
+void SupportReadyResponse::handle(BaseSimulator::BlockCode* bc) {
+    CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
+
+    // Once segmentDetected is set to true, it cannot be unset
+    cb.segmentsDetected = cb.segmentsDetected or hasSegments;
+
+    // Forward message further along the border
+    const Cell3DPosition& sender = cb.lastBorderFollowingItf->hostBlock->position;
+    Cell3DPosition next = cb.findNextCoatingPositionOnLayer(sender);
+
+    P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
+    VS_ASSERT(nextItf != nullptr and nextItf->isConnected());
+    cb.sendMessage(new NextPlaneSupportsReadyMessage(cb.segmentsDetected), nextItf,
+                   MSG_DELAY, 0);
 }

@@ -719,11 +719,11 @@ void CoatingBlockCode::initializePlaneSeeds() {
                         maxPlane = idx;
                         planeRequires.push_back(0);
                         planeAttracted.push_back(0);
-                        planeSeed.push_back(list<Cell3DPosition>());
+                        planeSeed.push_back(set<Cell3DPosition>());
                     }
 
                     if (seeding->isPlaneSeed(pos)) // Super costly
-                        planeSeed[idx].push_back(pos);
+                        planeSeed[idx].insert(pos);
 
                     planeRequires[idx]++;
                 }
@@ -994,34 +994,8 @@ void CoatingBlockCode::attractPlane(unsigned int layer) {
             // We should just count the number of supports and see if they are ready, and wait
             //  otherwise
 
-            // if (not isOnSupportSegment(firstPos)) {
-            //     sendAttractSignalTo(firstPos);
-            // } else {
 
-                // // FIXME: THIS SHOULD BE DONE FROM THE SEED MODULE, MIGHT CAUSE ERRORS
-                // // check for neighbor segment positions
-                // bool hasSegmentNeighbor = false;
-                // for (const Cell3DPosition& p : lattice->getNeighborhood(seed)) {
-                //     if (p[2] == catom->position[2] and isOnSupportSegment(p)) {
-                //         hasSegmentNeighbor = true;
-                //         break;
-                //     }
-                // }
 
-                // // Completion is guaranteed
-                // if (hasSegmentNeighbor) {
-                //     startBorderCompletionAlgorithmFromSeed(seed);
-                // } else { // Check if completion is necessary before attracting First
-                //     // Find next coating position on own layer and send it a detection message
-                //     Cell3DPosition next =
-                //         findNextCoatingPositionOnLayer(Cell3DPosition(-1,-1,-1));
-                //     VS_ASSERT(next != Cell3DPosition(-1,-1,-1));
-
-                //     P2PNetworkInterface* nextItf = catom->getInterface(next);
-                //     sendMessage(new NextPlaneSegmentDetectionMessage(false),
-                //                 nextItf, MSG_DELAY, 0);
-                // }
-            // }
         }
     }
 }
@@ -1157,4 +1131,10 @@ void CoatingBlockCode::handleBorderCompletion(const Cell3DPosition& sender) {
     }
 
     handledBorderCompletion = true;
+}
+
+bool CoatingBlockCode::isSeedPosition(const Cell3DPosition& pos) const {
+    int layer = getGLayer(pos);
+
+    return planeSeed[layer].count(pos);
 }
