@@ -32,14 +32,15 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
             unsigned int layer = cb.getGLayer(cb.catom->position);
 
             if (++cb.planeSupportsReady[layer] == cb.planeSupports[layer].size()) {
-                // for (const Cell3DPosition& seed : cb.planeSeed[layer]) {
-                //     CoatingBlockCode* seedCb = static_cast<CoatingBlockCode*>(
-                //         cb.lattice->getBlock(seed)->blockCode);
-
-                // call some init function
-                cb.attractPlane(layer);
-
-                // }
+                if (layer == 0)
+                    if (cb.lattice->isFree(cb.G_SEED_POS))
+                        cb.world->addBlock(0, cb.buildNewBlockCode, cb.G_SEED_POS, CYAN);
+                    else { // Might be on a segment
+                        static_cast<CoatingBlockCode*>(
+                            cb.lattice->getBlock(cb.G_SEED_POS)->blockCode)
+                            ->handleBorderCompletion();
+                    }
+                else cb.attractPlane(layer);
             }
         }
     }
@@ -51,26 +52,7 @@ void BorderCompletionMessage::handle(BaseSimulator::BlockCode* bc) {
     if (cb.handledBorderCompletion) return; // Algorithm over for border, we went full circle
 
     const Cell3DPosition& sender = sourceInterface->hostBlock->position;
-
-    // Get the next border position
-    // FIXME: There should be only one for now but this won't last with planar cases
-    Cell3DPosition next = cb.findNextCoatingPositionOnLayer(sender);
-    VS_ASSERT(next != Cell3DPosition(-1,-1,-1));
-
-    if (cb.lattice->isFree(next)) {
-        // Module has to be attracted, do it and start monitoring its location
-        //  so as to be ready to send it the message when it connects
-        cb.expectingCompletionNeighbor = true;
-        cb.completionNeighborPos = next;
-        cb.sendAttractSignalTo(next);
-    } else {
-        // Forward message further along the border
-        P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
-        VS_ASSERT(nextItf != nullptr);
-        cb.sendMessage(this->clone(), nextItf, MSG_DELAY, 0);
-    }
-
-    cb.handledBorderCompletion = true;
+    cb.handleBorderCompletion(sender);
 }
 
 void NextPlaneSegmentDetectionMessage::handle(BaseSimulator::BlockCode* bc) {

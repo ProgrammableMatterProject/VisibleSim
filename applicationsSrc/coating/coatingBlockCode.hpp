@@ -24,6 +24,8 @@ class CoatingBlockCode : public Catoms3DBlockCode {
 // private:
 public :
     // App-wide Parameters
+    static inline unsigned int B = 6;
+
     static inline bool HIGHLIGHT_COATING = false;
     static inline bool HIGHLIGHT_CSG = false;
     static inline int HIGHLIGHT_COATING_LAYER = -1;
@@ -71,7 +73,11 @@ public :
     static inline vector<int> planeAttracted; //!< Number of modules plane i has attracted
     static inline vector<list<Cell3DPosition>> planeSeed; //!< Modules responsible for attracting the first module of the plane above them, one per contiguous plane, potentially multiple per layer therefore
 
+    // FIXME: non-local, should be a gradient value
     static inline set<Cell3DPosition> attractedBySupport; //!< Set of all modules that have been attracted by a support rather than through the regular road. It fakes a gradient signal that would contain whether or not this is a regular gradient or a support gradient
+
+    // FIXME: non-local, should be a gradient value
+    static inline set<Cell3DPosition> borderCompleted; //!< Set of all modules that have been attracted through border completion
 
     set<Cell3DPosition> expectedSegments; //!< Roots of segments grown from a support module
     unsigned short numCompletedSegments = 0; //!< Number of completion ACK rcvd from segments
@@ -169,6 +175,11 @@ public :
     void sendAttractSignalTo(const Cell3DPosition& pos);
 
     /**
+     * Creates a list of all structural supports
+     */
+    void initializeStructuralSupports();
+
+    /**
      * Attracts all structural supports for the given layer to their positions.
      * @param layer
      */
@@ -229,6 +240,12 @@ public :
     bool coatingCellWillBeBlockedBy(const Cell3DPosition& a, const Cell3DPosition& b) const;
 
     /**
+     * @param pos
+     * @return true if position pos cannot be blocked by two opposing coating modules
+     */
+    bool isCoatingCornerCell(const Cell3DPosition& pos) const;
+
+    /**
      * Called by a module that has just been attracted by a support module, or one which
      *  belongs to one of the modules of the segment grown by this support so as to avoid
      *  leaving blocked positions on the border.
@@ -276,6 +293,19 @@ public :
      * Attracts scaffold neighbors if scaffold had not been initialized
      */
     void assembleInternalScaffoldNeighbors();
+
+    /**
+     * Searches for the first coating position on the diagonal and then for the first corner
+     *  position rotating CCW from there. Set that point as G_SEED_POS and start coating from
+     *  there by inserting that module
+     */
+    void initializeGSeedPosition();
+
+    /**
+     * Finds the next position on the prefilled border and either add the next module along it
+     * @param sender of the border completion message, or
+     */
+    void handleBorderCompletion(const Cell3DPosition& sender = Cell3DPosition(-1,-1,-1));
 
     /// Advanced blockcode handlers below
 

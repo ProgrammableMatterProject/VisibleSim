@@ -57,7 +57,13 @@ void CoatingBlockCode::startup() {
     if (COATING_MODE and not sandboxInitialized) initializeSandbox();
 
     if (catom->blockId == 1) {
-        G_SEED_POS = catom->position; // FIXME:
+        G_SEED_POS = catom->position; // Simply for initialization, will be overloaded
+
+        initializeStructuralSupports(); // FIXME:
+        initializeGSeedPosition();
+        initializePlaneSeeds();
+
+        attractStructuralSupports(0); // first layer supports only
 
         if (not isInG(G_SEED_POS)) {
             stringstream ss;
@@ -67,7 +73,7 @@ void CoatingBlockCode::startup() {
 
             if (COATING_MODE)
                 lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-                    return isInCoatingLayer(p, HIGHLIGHT_COATING_LAYER); }, RED);
+                    return isInCoatingLayer(p, 0); }, RED);
             else
                 target->highlight();
 
@@ -75,6 +81,8 @@ void CoatingBlockCode::startup() {
 
             throw CoatingException(ss.str());
         }
+
+        return;
     }
 
     static bool delayInit = false;
@@ -90,6 +98,8 @@ void CoatingBlockCode::startup() {
         HIGHLIGHT_CSG = false;
         HIGHLIGHT_SEEDS = false;
     }
+
+    int layer = getGLayer(catom->position);
 
     if (isSupportPosition(catom->position)) {
         // For each free neighbor position
@@ -112,6 +122,19 @@ void CoatingBlockCode::startup() {
 
         nextNeighbor: ;
         }
+
+        if (expectedSegments.size() == 0
+            and ++planeSupportsReady[layer] == planeSupports[layer].size()) {
+
+            if (layer == 0)
+                if (lattice->isFree(G_SEED_POS))
+                    world->addBlock(0, buildNewBlockCode, G_SEED_POS, CYAN);
+                else { // Might be on a segment
+                    static_cast<CoatingBlockCode*>(lattice->getBlock(G_SEED_POS)->blockCode)
+                        ->handleBorderCompletion();
+                }
+            else attractPlane(layer);
+        }
     }
 
     if (not isInG(catom->position)) {
@@ -119,19 +142,11 @@ void CoatingBlockCode::startup() {
         return;
     }
 
-    int layer = getGLayer(catom->position);
-
     if (attractedBySupport.count(catom->position)) {
         catom->setColor(MAGENTA);
         ++planeAttracted[layer];
         attractNextModuleAlongSegment();
         return;
-    }
-
-    if (catom->position == G_SEED_POS) {
-        initializePlaneSeeds();
-
-        if (COATING_MODE) attractStructuralSupports(0); // first layer supports only
     }
 
     if (++planeAttracted[layer] == planeRequires[layer]) {
@@ -164,7 +179,7 @@ void CoatingBlockCode::startup() {
     }
 
 
-    if (isInG(catom->position)) {
+    if (isInG(catom->position) and not borderCompleted.count(catom->position)) {
         attract();
     }
 }
@@ -556,21 +571,26 @@ void CoatingBlockCode::attract() {
     }
 }
 
-void CoatingBlockCode::attractStructuralSupports(int layer) {
-    int z = G_SEED_POS[2] + layer;
+void CoatingBlockCode::initializeStructuralSupports() {
+    for (short z = G_SEED_POS[2]; z <= lattice->getGridUpperBounds()[2]; z++) {
+        unsigned int layer = z - G_SEED_POS[2];
 
-    if (planeSupports.size() <= (unsigned int)layer) {
         planeSupports.push_back(set<Cell3DPosition>());
         planeSupportsReady.push_back(0);
-        VS_ASSERT(planeSupports.size() > (unsigned int)layer);
-    }
 
-    for (const Cell3DPosition& pos : scaffold->getAllSupportPositionsForPlane(z)) {
+        for (const Cell3DPosition& pos : scaffold->getAllSupportPositionsForPlane(z)) {
+            planeSupports[layer].insert(pos);
+        }
+    }
+}
+
+void CoatingBlockCode::attractStructuralSupports(int layer) {
+    VS_ASSERT(planeSupports.size() > (unsigned int)layer);
+
+    for (const Cell3DPosition& pos : planeSupports[layer]) {
         stringstream info;
         info << " attracts layer " << layer << " structural support to " << pos;
         scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
-
-        planeSupports[layer].insert(pos);
 
         Color color = SupportColor;
         if (lattice->cellIsBlocked(pos)) {
@@ -585,7 +605,7 @@ void CoatingBlockCode::attractStructuralSupports(int layer) {
             lattice->highlightCell(pos, color);
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY * 4));
+        usleep(ATTRACT_DELAY * 1000);
     }
 }
 
@@ -867,13 +887,22 @@ void CoatingBlockCode::reachEndOfSegmentInDirection(short dir, Cell3DPosition& c
     } while (isInG(cur));
 }
 
-
 bool CoatingBlockCode::coatingCellWillBeBlockedBy(const Cell3DPosition& a,
                                                   const Cell3DPosition& b) const {
     // Topology:
     // b - a - c
     // a is only blocked by b is c is part of the coating
     return isInG(a) and isInG(lattice->getOppositeCell(a, b));
+}
+
+bool CoatingBlockCode::isCoatingCornerCell(const Cell3DPosition& pos) const {
+    for (const Cell3DPosition& nPos : lattice->getNeighborhood(pos)) {
+        if (nPos[2] == pos[2] and isInG(nPos)
+            and coatingCellWillBeBlockedBy(pos, nPos))
+            return false;
+    }
+
+    return true;
 }
 
 void CoatingBlockCode::attractNextModuleAlongSegment() {
@@ -1016,7 +1045,7 @@ void CoatingBlockCode::assembleInternalScaffoldNeighbors() {
         if (scaffold->isInScaffold(scaffold->normalize(pos)) and scaffold->isInsideFn(pos)
             and lattice->isFree(pos)) {
             try {
-                world->addBlock(0, buildNewBlockCode, pos, GREY);
+                world->addBlock(0, buildNewBlockCode, pos, WHITE);
             } catch (DoubleInsertionException const& e) {
                 cerr << e.what() << endl;
                 lattice->highlightCell(pos, InvalidColor);
@@ -1025,4 +1054,96 @@ void CoatingBlockCode::assembleInternalScaffoldNeighbors() {
     }
 
     builtScaffold = true;
+}
+
+void CoatingBlockCode::initializeGSeedPosition() {
+    const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+
+    Cell3DPosition pos;
+    const int GroundLevel = 3;
+
+    // Scan base for lowest XY
+    for (short ix = 0; ix < ulb[0]; ix++) {
+        for (short iy = 0; iy < ulb[1]; iy++) {
+            if (ix == iy) {
+                pos.set(ix, iy, GroundLevel); // 3 is grid base over sandbox
+
+                // lattice->highlightCell(pos, ORANGE);
+
+                if (isInCoatingLayer(pos, 0)) {
+                    // lattice->highlightCell(pos, CYAN);
+
+                    int idx = border->getIndexForBorder(pos);
+                    VS_ASSERT(idx != -1 and border->isOnBorder(pos));
+
+                    Cell3DPosition currentPos = pos;
+                    border->getNextBorderNeighbor(idx, currentPos);
+
+                    // Go around the border and return first non-blocking corner
+                    while(currentPos != pos) {
+                        lattice->highlightCell(currentPos, ORANGE);
+
+                        bool isSeedCandidate = true;
+                        for (const Cell3DPosition& nPos: lattice->getNeighborhood(currentPos)){
+                            if (nPos[2] != currentPos[2]) continue;
+
+                            lattice->highlightCell(nPos, BLUE);
+
+                            const Cell3DPosition& nOppC =
+                                lattice->getOppositeCell(currentPos, nPos);
+                            const Cell3DPosition& nOppN =
+                                lattice->getOppositeCell(nPos, currentPos);
+                            if (isInG(nPos) and (isInG(nOppC) or isSupportPosition(nOppN))) {
+                                isSeedCandidate = false;
+                                break;
+                            }
+                        }
+
+                        if (isSeedCandidate) break;
+
+                        border->getNextBorderNeighbor(idx, currentPos);
+                    }
+
+                    G_SEED_POS = currentPos;
+                    lattice->highlightCell(G_SEED_POS, CYAN);
+
+                    if (planeSupports[0].size() == 0) { // obviously never happens
+                        VS_ASSERT_MSG(isCoatingCornerCell(G_SEED_POS), "seed must be a corner");
+
+                        try {
+                            world->addBlock(0, buildNewBlockCode, G_SEED_POS, CYAN);
+                        } catch (DoubleInsertionException const& e) {
+                            cerr << e.what() << endl;
+                            lattice->highlightCell(pos, InvalidColor);
+                        }
+                    } // otherwise, it will be done when supports are ready
+
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void CoatingBlockCode::handleBorderCompletion(const Cell3DPosition& sender) {
+    // Get the next border position
+    // FIXME: There should be only one for now but this won't last with planar cases
+    Cell3DPosition next = findNextCoatingPositionOnLayer(sender);
+    VS_ASSERT(next != Cell3DPosition(-1,-1,-1));
+
+    if (lattice->isFree(next)) {
+        // Module has to be attracted, do it and start monitoring its location
+        //  so as to be ready to send it the message when it connects
+        expectingCompletionNeighbor = true;
+        completionNeighborPos = next;
+        borderCompleted.insert(next);
+        sendAttractSignalTo(next);
+    } else {
+        // Forward message further along the border
+        P2PNetworkInterface* nextItf = catom->getInterface(next);
+        VS_ASSERT(nextItf != nullptr);
+        sendMessage(new BorderCompletionMessage(), nextItf, MSG_DELAY, 0);
+    }
+
+    handledBorderCompletion = true;
 }
