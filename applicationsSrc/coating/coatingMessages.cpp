@@ -17,30 +17,26 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
     cb.catom->setColor(YELLOW);
 
     // Not a support module, forward message along the segment
-    if (not cb.isSupportPosition(cb.catom->position)) {
-        P2PNetworkInterface* prev = cb.catom->getInterface(
-            cb.lattice->getOppositeDirection(cb.catom->getDirection(destinationInterface)));
-
-        VS_ASSERT(prev != nullptr and prev->isConnected());
-
-        cb.sendMessage(this->clone(), prev, MSG_DELAY, 0);
-    } else {
-        if (cb.expectedSegments.count(sourceInterface->hostBlock->position)
-            and ++cb.numCompletedSegments == cb.expectedSegments.size()) {
-
+    if (cb.expectedSegments.count(sourceInterface->hostBlock->position)
+        and ++cb.numCompletedSegments == cb.expectedSegments.size()) {
+        if (not cb.isSupportPosition(cb.catom->position)) {
+            cb.notifyAttracterOfSegmentCompletion(destinationInterface);
+        } else {
             cb.catom->setColor(GREY);
             unsigned int layer = cb.getGLayer(cb.catom->position);
 
             if (++cb.planeSupportsReady[layer] == cb.planeSupports[layer].size()) {
-                if (layer == 0)
-                    if (cb.lattice->isFree(cb.G_SEED_POS))
+                if (layer == 0) {
+                    if (cb.lattice->isFree(cb.G_SEED_POS)) {
                         cb.world->addBlock(0, cb.buildNewBlockCode, cb.G_SEED_POS, CYAN);
-                    else { // Might be on a segment
+                    } else { // Might be on a segment
                         static_cast<CoatingBlockCode*>(
                             cb.lattice->getBlock(cb.G_SEED_POS)->blockCode)
                             ->handleBorderCompletion();
                     }
-                else cb.attractPlane(layer);
+                } else {
+                    cb.attractPlane(layer);
+                }
             }
         }
     }

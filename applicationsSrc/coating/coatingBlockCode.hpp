@@ -307,6 +307,11 @@ public :
      */
     void handleBorderCompletion(const Cell3DPosition& sender = Cell3DPosition(-1,-1,-1));
 
+    /**
+     * Sends a message to
+     */
+    void notifyAttracterOfSegmentCompletion(P2PNetworkInterface *sender = nullptr);
+
     /// Advanced blockcode handlers below
 
     /**
