@@ -55,6 +55,7 @@ inline static const Color ORANGE(1.0,0.64706,0.0);
 inline static const Color DARKORANGE(1.0,0.549,0.0);
 inline static const Color BLACK(0.0,0.0,0.0);
 inline static const Color BROWN(102, 51, 0, 255, true);
+inline static const Color DARKGREEN(6, 240, 46, 255, true);
 
 static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},
                                          {0.0,1.0,0.0,1.0},{0.0,0.0,1.0,1.0},

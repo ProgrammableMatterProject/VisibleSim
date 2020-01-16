@@ -45,7 +45,7 @@ public :
     static inline const Color WaitingColor = BLUE;
     static inline const Color AttractedColor = GREEN;
     static inline const Color SupportColor = ORANGE;
-    static inline const Color DefaultColor = YELLOW;
+    static inline const Color DefaultColor = DARKGREEN;
     static inline const Color InvalidColor = Color(156, 0, 0, 255, true);
 
     // DApp Variables
@@ -88,7 +88,7 @@ public :
 
     bool builtScaffold = false; //!< Indicates if module has attempted to attract scaffold neighbors
 
-    P2PNetworkInterface *lastBorderFollowingItf = nullptr;
+    Cell3DPosition lastBorderFollowingPosition;
     P2PNetworkInterface *supportReadyRequestItf = nullptr; //!< Awaiting request if != nullptr
     bool segmentsDetected = false;
 public :
@@ -321,6 +321,18 @@ public :
      * @return true if pos is a seed position
      */
     bool isSeedPosition(const Cell3DPosition& pos) const;
+
+    /**
+     * @param seed A seed module
+     * @return the first position of the plane above the seed module
+     */
+    Cell3DPosition getStartPositionAboveSeed(const Cell3DPosition& seed) const;
+
+    /**
+     * Sends a message to the first module of the next plane that is already in place
+     *  (is a segment module), and engage border completion
+     */
+    void startBorderCompletionAlgorithm();
 
     /// Advanced blockcode handlers below
 

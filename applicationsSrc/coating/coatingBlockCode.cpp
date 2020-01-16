@@ -133,7 +133,7 @@ void CoatingBlockCode::startup() {
                     static_cast<CoatingBlockCode*>(lattice->getBlock(G_SEED_POS)->blockCode)
                         ->handleBorderCompletion();
                 }
-            else attractPlane(layer);
+            else {} // attractPlane(layer);
         }
     }
 
@@ -150,7 +150,7 @@ void CoatingBlockCode::startup() {
     }
 
     if (++planeAttracted[layer] == planeRequires[layer]) {
-        catom->setColor(CYAN);
+        catom->setColor(YELLOW);
 
         // Start next layer if not top plane
         // cout << "nPlanes: " << nPlanes << endl;
@@ -614,10 +614,10 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
          << " position " << pos;
     scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
-    if (catom->color != InvalidColor // Preserve err trace
-        and not isSupportPosition(catom->position)
-        and not attractedBySupport.count(catom->position))
-        catom->setColor(AttractedColor);
+    // if (catom->color != InvalidColor // Preserve err trace
+    //     and not isSupportPosition(catom->position)
+    //     and not attractedBySupport.count(catom->position))
+        // catom->setColor(AttractedColor);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY));
 
@@ -976,41 +976,39 @@ void CoatingBlockCode::notifyAttracterOfSegmentCompletion(P2PNetworkInterface *s
 }
 
 void CoatingBlockCode::attractPlane(unsigned int layer) {
-    // Attract first modules of next plane
+    // For each seed, attract right away if no supports on layer above, or
+    //  send border verification message
     for (const Cell3DPosition& seed : planeSeed[layer - 1]) {
-        const Cell3DPosition& aPos = isInG(seed + seeding->forwardSeed) ?
-            seeding->forwardSeed : seeding->backwardSeed;
-
-        const Cell3DPosition& firstPos = seed + aPos;
-
-        VS_ASSERT_MSG(isInG(firstPos), "seed target is not in G!");
-
-        // If first module of next plane has already been attracted by a support module
-        //  Message it to start attracting remaining modules?
-
         if (planeSupports[layer].size() == 0) {
+            const Cell3DPosition& firstPos = getStartPositionAboveSeed(seed);
             sendAttractSignalTo(firstPos);
         } else { // Otherwise seed will be added when all supports are ready
-            // We should just count the number of supports and see if they are ready, and wait
-            //  otherwise
+            // FIXME: NON LOCAL
+            CoatingBlockCode* cb = static_cast<CoatingBlockCode*>
+                (lattice->getBlock(seed)->blockCode);
 
+            cb->catom->setColor(MAGENTA);
 
-
+            Cell3DPosition next = cb->findNextCoatingPositionOnLayer(seed); // no prev
+            P2PNetworkInterface* nextItf = cb->catom->getInterface(next);
+            VS_ASSERT(nextItf != nullptr and nextItf->isConnected());
+            cb->sendMessage(new NextPlaneSupportsReadyMessage(false),
+                           nextItf, MSG_DELAY, 0);
         }
     }
 }
 
-void CoatingBlockCode::startBorderCompletionAlgorithmFromSeed(const Cell3DPosition& seed) {
-    // FIXME: This should not be done by manually getting the module from Lattice!
-    Catoms3DBlock *seedCatom = static_cast<Catoms3DBlock*>(lattice->getBlock(seed));
-    VS_ASSERT(seedCatom != nullptr);
-
+Cell3DPosition CoatingBlockCode::getStartPositionAboveSeed(const Cell3DPosition& seed) const {
     const Cell3DPosition& aPos = isInG(seed + seeding->forwardSeed) ?
         seeding->forwardSeed : seeding->backwardSeed;
 
-    const Cell3DPosition& firstPos = seed + aPos;
+    return seed + aPos;
+}
 
-    P2PNetworkInterface* nextItf = seedCatom->getInterface(firstPos);
+void CoatingBlockCode::startBorderCompletionAlgorithm() {
+    const Cell3DPosition& firstPos = getStartPositionAboveSeed(catom->position);
+
+    P2PNetworkInterface* nextItf = catom->getInterface(firstPos);
     sendMessage(new BorderCompletionMessage, nextItf, MSG_DELAY, 0);
 }
 
@@ -1093,7 +1091,7 @@ void CoatingBlockCode::initializeGSeedPosition() {
                     lattice->highlightCell(G_SEED_POS, CYAN);
 
                     if (planeSupports[0].size() == 0) { // obviously never happens
-                        VS_ASSERT_MSG(isCoatingCornerCell(G_SEED_POS), "seed must be a corner");
+                        VS_ASSERT_MSG(isCoatingCornerCell(G_SEED_POS),"seed must be a corner");
 
                         try {
                             world->addBlock(0, buildNewBlockCode, G_SEED_POS, CYAN);

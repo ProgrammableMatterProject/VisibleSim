@@ -35,7 +35,8 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
                             ->handleBorderCompletion();
                     }
                 } else {
-                    cb.attractPlane(layer);
+                    // NOTE: Should be useless now, along with planeSupportsReady
+                    // cb.attractPlane(layer);
                 }
             }
         }
@@ -55,8 +56,26 @@ void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
 
     if (cb.isSeedPosition(cb.catom->position)) {
+        const Cell3DPosition& firstPos = cb.getStartPositionAboveSeed(cb.catom->position);
+
         // Attract module above seed, or start border following depending on segmentsDetected
-        // TODO
+        if (segmentsDetected) {
+            // Check if module right above is in place
+            if (cb.lattice->isFree(firstPos)) {
+                // Mark for border completion and attract
+                cb.borderCompleted.insert(firstPos);
+                cb.expectingCompletionNeighbor = true;
+                cb.completionNeighborPos = firstPos;
+                cb.sendAttractSignalTo(firstPos);
+            } else {
+                cb.startBorderCompletionAlgorithm();
+            }
+        } else {
+            VS_ASSERT(cb.lattice->isFree(firstPos));
+            cb.sendAttractSignalTo(firstPos);
+        }
+
+        return;
     }
 
     // Border module, keep forwarding along the border
@@ -80,7 +99,7 @@ void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         cb.sendMessage(new NextPlaneSupportsReadyMessage(segmentsDetected),
                        nextItf, MSG_DELAY, 0);
     } else {
-        cb.lastBorderFollowingItf = destinationInterface;
+        cb.lastBorderFollowingPosition = sourceInterface->hostBlock->position;
         VS_ASSERT(supportItf != nullptr and supportItf->isConnected());
         cb.sendMessage(new SupportReadyRequest(), supportItf, MSG_DELAY, 0);
     }
@@ -108,8 +127,7 @@ void SupportReadyResponse::handle(BaseSimulator::BlockCode* bc) {
     cb.segmentsDetected = cb.segmentsDetected or hasSegments;
 
     // Forward message further along the border
-    const Cell3DPosition& sender = cb.lastBorderFollowingItf->hostBlock->position;
-    Cell3DPosition next = cb.findNextCoatingPositionOnLayer(sender);
+    Cell3DPosition next = cb.findNextCoatingPositionOnLayer(cb.lastBorderFollowingPosition);
 
     P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
     VS_ASSERT(nextItf != nullptr and nextItf->isConnected());
