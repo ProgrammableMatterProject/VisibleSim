@@ -30,9 +30,15 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
                     if (cb.lattice->isFree(cb.G_SEED_POS)) {
                         cb.world->addBlock(0, cb.buildNewBlockCode, cb.G_SEED_POS, CYAN);
                     } else { // Might be on a segment
-                        static_cast<CoatingBlockCode*>(
-                            cb.lattice->getBlock(cb.G_SEED_POS)->blockCode)
-                            ->handleBorderCompletion();
+                        if (cb.isCoatingCornerCell(cb.G_SEED_POS)) {
+                            static_cast<CoatingBlockCode*>(
+                                cb.lattice->getBlock(cb.G_SEED_POS)->blockCode)
+                                ->handleBorderCompletion(Cell3DPosition(-1,-1,-1), false);
+                        } else {
+                            static_cast<CoatingBlockCode*>(
+                                cb.lattice->getBlock(cb.G_SEED_POS)->blockCode)
+                                ->startBorderCompletion();
+                        }
                     }
                 } else {
                     // NOTE: Should be useless now, along with planeSupportsReady
@@ -49,7 +55,10 @@ void BorderCompletionMessage::handle(BaseSimulator::BlockCode* bc) {
     if (cb.handledBorderCompletion) return; // Algorithm over for border, we went full circle
 
     const Cell3DPosition& sender = sourceInterface->hostBlock->position;
-    cb.handleBorderCompletion(sender);
+    if (sender[2] == cb.catom->position[2])
+        cb.handleBorderCompletion(sender, stopAtCorner);
+    else // This is the first message, coming from the seed module
+        cb.startBorderCompletion();
 }
 
 void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
@@ -64,8 +73,8 @@ void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
             if (cb.lattice->isFree(firstPos)) {
                 // Mark for border completion and attract
                 cb.borderCompleted.insert(firstPos);
-                cb.expectingCompletionNeighbor = true;
-                cb.completionNeighborPos = firstPos;
+                cb.completionNeighbors.insert(firstPos);
+                cb.nextBorderItf = cb.catom->getInterface(firstPos);
                 cb.sendAttractSignalTo(firstPos);
             } else {
                 cb.startBorderCompletionAlgorithm();

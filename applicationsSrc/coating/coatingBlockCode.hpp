@@ -83,9 +83,10 @@ public :
     unsigned short numCompletedSegments = 0; //!< Number of completion ACK rcvd from segments
 
     bool handledBorderCompletion = false; //!< True if module has already attracted its neighbor during the border completion algorithm
-    bool expectingCompletionNeighbor = false; //!< indicates that the modules has a attracted a module to a neighbor spot for border completion and is waiting to send it a message
-    Cell3DPosition completionNeighborPos; //!< the position that the module has attracted and is monitoring
-
+    // bool expectingCompletionNeighbor = false; //!< indicates that the modules has a attracted a module to a neighbor spot for border completion and is waiting to send it a message
+    set<Cell3DPosition> completionNeighbors; //!< the positions that the module has attracted and is monitoring
+    P2PNetworkInterface *prevBorderItf = nullptr; //!< Previous itf module is waiting on for border completion
+    P2PNetworkInterface *nextBorderItf = nullptr; //!< Next itf module is waiting on for border completion
     bool builtScaffold = false; //!< Indicates if module has attempted to attract scaffold neighbors
 
     Cell3DPosition lastBorderFollowingPosition;
@@ -306,10 +307,18 @@ public :
     void initializeGSeedPosition();
 
     /**
+     * Start the border completion algorithm in the normal direction, as well as until
+     *  the next corner module in the other direction
+     */
+    void startBorderCompletion();
+
+    /**
      * Finds the next position on the prefilled border and either add the next module along it
      * @param sender of the border completion message, or
+     * @param stopAtCorner if stopAtCorner is active, complete backward until next corner
+     *                      else only go forward
      */
-    void handleBorderCompletion(const Cell3DPosition& sender = Cell3DPosition(-1,-1,-1));
+    void handleBorderCompletion(const Cell3DPosition& pos, bool stopAtCorner);
 
     /**
      * Sends a message to

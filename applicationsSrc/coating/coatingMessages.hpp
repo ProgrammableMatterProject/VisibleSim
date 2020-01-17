@@ -31,8 +31,10 @@ public:
  *  message to it if that's the case. Otherwise, it attracts it.
  */
 class BorderCompletionMessage : public HandleableMessage {
+    bool stopAtCorner;
 public:
-    BorderCompletionMessage() {};
+    BorderCompletionMessage() : stopAtCorner(false) {};
+    BorderCompletionMessage(bool _stopAtCorner) : stopAtCorner(_stopAtCorner) {};
     virtual ~BorderCompletionMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
