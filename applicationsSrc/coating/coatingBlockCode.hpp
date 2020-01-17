@@ -25,6 +25,7 @@ class CoatingBlockCode : public Catoms3DBlockCode {
 public :
     // App-wide Parameters
     static inline unsigned int B = 6;
+    static inline unsigned int GroundZ = 3;
 
     static inline bool HIGHLIGHT_COATING = false;
     static inline bool HIGHLIGHT_CSG = false;

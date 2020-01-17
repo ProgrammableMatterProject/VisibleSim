@@ -603,7 +603,7 @@ void CoatingBlockCode::attractStructuralSupports(int layer) {
         if (lattice->cellIsBlocked(pos)) {
             lattice->highlightCell(pos, RED);
             color = InvalidColor;
-            awaitKeyPressed();
+            // awaitKeyPressed();
         }
 
         try {
@@ -637,7 +637,7 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
     if (lattice->cellIsBlocked(pos)) {
         lattice->highlightCell(pos, RED);
         color = InvalidColor;
-        awaitKeyPressed();
+        // awaitKeyPressed();
     }
 
     try {
@@ -1097,6 +1097,7 @@ void CoatingBlockCode::initializeGSeedPosition() {
                     }
 
                     G_SEED_POS = currentPos;
+                    cout << "G_SEED_POS: " << G_SEED_POS << endl;
                     lattice->highlightCell(G_SEED_POS, CYAN);
 
                     if (planeSupports[0].size() == 0) { // obviously never happens
