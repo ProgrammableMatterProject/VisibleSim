@@ -93,6 +93,7 @@ public :
     Cell3DPosition lastBorderFollowingPosition;
     P2PNetworkInterface *supportReadyRequestItf = nullptr; //!< Awaiting request if != nullptr
     bool segmentsDetected = false;
+    set<Cell3DPosition> supportsReadyBlacklist; //!< Used to avoid looping
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode();
@@ -294,6 +295,13 @@ public :
      *  previous->catom->next for the current layer
      */
     Cell3DPosition findNextCoatingPositionOnLayer(const Cell3DPosition& previous) const;
+
+    /**
+     * @param set of modules to disregard
+     * @return the next coating position along the border in the direction
+     *  previous->catom->next for the current layer
+     */
+    Cell3DPosition findNextCoatingPositionOnLayer(const set<Cell3DPosition>& previous) const;
 
     /**
      * Attracts scaffold neighbors if scaffold had not been initialized

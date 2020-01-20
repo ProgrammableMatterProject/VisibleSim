@@ -98,17 +98,21 @@ void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
         }
     }
 
+    cb.supportsReadyBlacklist.insert(sourceInterface->hostBlock->position);
+
     if (not hasSupportNeighborAbove) {
         // Forward message further along the border
         const Cell3DPosition& sender = sourceInterface->hostBlock->position;
-        Cell3DPosition next = cb.findNextCoatingPositionOnLayer(sender);
+        Cell3DPosition next = cb.findNextCoatingPositionOnLayer(cb.supportsReadyBlacklist);
 
         P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
         VS_ASSERT(nextItf != nullptr and nextItf->isConnected());
         cb.sendMessage(new NextPlaneSupportsReadyMessage(segmentsDetected),
                        nextItf, MSG_DELAY, 0);
+
+        cb.supportsReadyBlacklist.insert(next);
     } else {
-        cb.lastBorderFollowingPosition = sourceInterface->hostBlock->position;
+        // cb.lastBorderFollowingPosition = sourceInterface->hostBlock->position;
         VS_ASSERT(supportItf != nullptr and supportItf->isConnected());
         cb.sendMessage(new SupportReadyRequest(), supportItf, MSG_DELAY, 0);
     }
@@ -136,7 +140,7 @@ void SupportReadyResponse::handle(BaseSimulator::BlockCode* bc) {
     cb.segmentsDetected = cb.segmentsDetected or hasSegments;
 
     // Forward message further along the border
-    Cell3DPosition next = cb.findNextCoatingPositionOnLayer(cb.lastBorderFollowingPosition);
+    Cell3DPosition next = cb.findNextCoatingPositionOnLayer(cb.supportsReadyBlacklist);
 
     P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
     VS_ASSERT(nextItf != nullptr and nextItf->isConnected());

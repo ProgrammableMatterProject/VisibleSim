@@ -1002,7 +1002,9 @@ void CoatingBlockCode::attractPlane(unsigned int layer) {
             P2PNetworkInterface* nextItf = cb->catom->getInterface(next);
             VS_ASSERT(nextItf != nullptr and nextItf->isConnected());
             cb->sendMessage(new NextPlaneSupportsReadyMessage(false),
-                           nextItf, MSG_DELAY, 0);
+                            nextItf, MSG_DELAY, 0);
+
+            cb->supportsReadyBlacklist.insert(next);
         }
     }
 }
@@ -1025,6 +1027,17 @@ Cell3DPosition CoatingBlockCode::
 findNextCoatingPositionOnLayer(const Cell3DPosition& previous) const {
     for (const Cell3DPosition& p : lattice->getNeighborhood(catom->position)) {
         if (p[2] == catom->position[2] and isInG(p) and p != previous) {
+            return p;
+        }
+    }
+
+    return Cell3DPosition(-1,-1,-1);
+}
+
+Cell3DPosition
+CoatingBlockCode::findNextCoatingPositionOnLayer(const set<Cell3DPosition>& previous) const {
+    for (const Cell3DPosition& p : lattice->getNeighborhood(catom->position)) {
+        if (p[2] == catom->position[2] and isInG(p) and previous.count(p) == 0) {
             return p;
         }
     }
