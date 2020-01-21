@@ -82,6 +82,7 @@ public :
 
     set<Cell3DPosition> expectedSegments; //!< Roots of segments grown from a support module
     unsigned short numCompletedSegments = 0; //!< Number of completion ACK rcvd from segments
+    set<Cell3DPosition> segmentsAckBlacklist; //!< Used to maintain convergence/border following
 
     bool handledBorderCompletion = false; //!< True if module has already attracted its neighbor during the border completion algorithm
     // bool expectingCompletionNeighbor = false; //!< indicates that the modules has a attracted a module to a neighbor spot for border completion and is waiting to send it a message
@@ -291,17 +292,25 @@ public :
 
     /**
      * @param previous module on the border
+     * @param additional predicate that the target position must verify
      * @return the next coating position along the border in the direction
      *  previous->catom->next for the current layer
      */
-    Cell3DPosition findNextCoatingPositionOnLayer(const Cell3DPosition& previous) const;
+    Cell3DPosition
+    findNextCoatingPositionOnLayer(const Cell3DPosition& previous,
+                                   const std::function<bool(const Cell3DPosition&)> pred =
+                                   [](const Cell3DPosition& p) { return true; }) const;
 
     /**
      * @param set of modules to disregard
+     * @param additional predicate that the target position must verify
      * @return the next coating position along the border in the direction
      *  previous->catom->next for the current layer
      */
-    Cell3DPosition findNextCoatingPositionOnLayer(const set<Cell3DPosition>& previous) const;
+    Cell3DPosition
+    findNextCoatingPositionOnLayer(const set<Cell3DPosition>& previous,
+                                   const std::function<bool(const Cell3DPosition&)> pred =
+                                   [](const Cell3DPosition& p) { return true; }) const;
 
     /**
      * Attracts scaffold neighbors if scaffold had not been initialized
@@ -332,7 +341,8 @@ public :
     /**
      * Sends a message to
      */
-    void notifyAttracterOfSegmentCompletion(P2PNetworkInterface *sender = nullptr);
+    void notifyAttracterOfSegmentCompletion(set<Cell3DPosition>& blacklist,
+                                            P2PNetworkInterface *sender = nullptr);
 
     /**
      * @param pos
@@ -351,6 +361,10 @@ public :
      *  (is a segment module), and engage border completion
      */
     void startBorderCompletionAlgorithm();
+
+    inline static bool isInScaffold(const Cell3DPosition& pos) {
+        return scaffold->isInScaffold(scaffold->normalize(pos)) and scaffold->isInsideFn(pos);
+    }
 
     /// Advanced blockcode handlers below
 

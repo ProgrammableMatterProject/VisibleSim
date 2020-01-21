@@ -1,5 +1,7 @@
 #include "scaffoldManager.hpp"
 
+#include "coatingUtils.hpp"
+
 #include "world.h"
 
 #include <string>
@@ -273,16 +275,24 @@ bool ScaffoldManager::isWithinCSGMinus2(const Cell3DPosition& pos) const {
     // This is used to work with scaffolds that are smaller than the CSG they represent by
     //  two modules.
 
-    for (int i = 0; i < N_BRANCHES; i++) {
-        BranchIndex bi = (BranchIndex)i;
-        // We do not need a distance 2 for vertical positions since that would leave too much
-        // space at the top of the structure and prevent the attachment of the coating to
-        // the scaffold
-        const Cell3DPosition &pn = pos + (i < XBranch ? 1 : 2)*getBranchUnitOffset(bi);
+
+    for (const Cell3DPosition& p : _2ndOrderScaffoldNeighbors) {
+        const Cell3DPosition &pn = pos + p;
         if (not isInCSG(pn)) {
             return false;
         }
     }
+
+    // for (int i = 0; i < N_BRANCHES; i++) {
+    //     BranchIndex bi = (BranchIndex)i;
+    //     // We do not need a distance 2 for vertical positions since that would leave too much
+    //     // space at the top of the structure and prevent the attachment of the coating to
+    //     // the scaffold
+    //     const Cell3DPosition &pn = pos + 2*getBranchUnitOffset(bi);
+    //     if (not isInCSG(pn)) {
+    //         return false;
+    //     }
+    // }
 
     return true;
 }

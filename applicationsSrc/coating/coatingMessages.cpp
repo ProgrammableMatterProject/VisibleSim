@@ -20,7 +20,9 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
     if (cb.expectedSegments.count(sourceInterface->hostBlock->position)
         and ++cb.numCompletedSegments == cb.expectedSegments.size()) {
         if (not cb.isSupportPosition(cb.catom->position)) {
-            cb.notifyAttracterOfSegmentCompletion(destinationInterface);
+            cb.segmentsAckBlacklist.insert(sourceInterface->hostBlock->position);
+            cb.notifyAttracterOfSegmentCompletion(cb.segmentsAckBlacklist,
+                                                  destinationInterface);
         } else {
             cb.catom->setColor(GREY);
             unsigned int layer = cb.getGLayer(cb.catom->position);
@@ -46,7 +48,19 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
                 }
             }
         }
+    } else if (cb.isSupportPosition(cb.catom->position)) {
+
+        // Wrong support
+        cb.sendMessage(new SegmentCompleteWrongSupport(), destinationInterface, MSG_DELAY, 0);
     }
+}
+
+void SegmentCompleteWrongSupport::handle(BaseSimulator::BlockCode* bc) {
+    CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
+
+    VS_ASSERT(not cb.isSupportPosition(cb.catom->position));
+
+    cb.notifyAttracterOfSegmentCompletion(cb.segmentsAckBlacklist, destinationInterface);
 }
 
 void BorderCompletionMessage::handle(BaseSimulator::BlockCode* bc) {
@@ -63,6 +77,8 @@ void BorderCompletionMessage::handle(BaseSimulator::BlockCode* bc) {
 
 void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
+
+    cb.segmentsDetected = segmentsDetected;
 
     if (cb.isSeedPosition(cb.catom->position)) {
         const Cell3DPosition& firstPos = cb.getStartPositionAboveSeed(cb.catom->position);
@@ -102,8 +118,20 @@ void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
 
     if (not hasSupportNeighborAbove) {
         // Forward message further along the border
-        const Cell3DPosition& sender = sourceInterface->hostBlock->position;
-        Cell3DPosition next = cb.findNextCoatingPositionOnLayer(cb.supportsReadyBlacklist);
+        // const Cell3DPosition& sender = sourceInterface->hostBlock->position;
+        Cell3DPosition next = cb.findNextCoatingPositionOnLayer
+            (cb.supportsReadyBlacklist,
+             //  ensure that we always stay below the next
+             //   coating layer
+             // FIXME: This is guaranteed to lead to issues
+             //         later on. e.g., if seed isn't
+             [&cb](const Cell3DPosition& p) {
+                 for (const Cell3DPosition& np : cb.lattice->getNeighborhood(p)) {
+                     if (np[2] > p[2] and cb.isInG(np)) return true;
+                 }
+
+                 return false;
+             });
 
         P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
         VS_ASSERT(nextItf != nullptr and nextItf->isConnected());

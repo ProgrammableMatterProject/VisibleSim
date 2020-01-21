@@ -114,7 +114,11 @@ void CoatingBlockCode::startup() {
                         goto nextNeighbor;
                 }
 
-                // Attract neighbors to that position until the next corner along the border
+                // Attract neighbors to that position until the next corner along the borde
+                stringstream info;
+                info << " attracted segment module to" << p;
+                scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
+
                 expectedSegments.insert(p);
                 attractedBySupport.insert(p);
                 sendAttractSignalTo(p);
@@ -256,6 +260,9 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
+    cout << "isOnCSGBorder(" << catom->position << "): "
+         << isOnCSGBorder(catom->position) << endl;
+
     // cout << "isNorthSeed(" << catom->position << "): "
     //      << seeding->isNorthSeed(catom->position) << endl;
 
@@ -293,21 +300,21 @@ void CoatingBlockCode::onBlockSelected() {
     //     cout << i << "\t" << planeAttracted[i] << endl;
     // }
 
-    // cout << endl << "Plane Seed: " << endl;
-    // for (int i = 0; i < nPlanes; i++) {
-    //     cout << i;
-    //     for (const Cell3DPosition& seed : planeSeed[i]) {
-    //         cout << "\t" << seed;
-    //     }
-    //     cout << endl;
-    // }
-
-    cout << endl << "Plane Structural Supports: " << endl;
-    cout << catom->position[2] << "\t[";
-    for(const Cell3DPosition&pos:scaffold->getAllSupportPositionsForPlane(catom->position[2])){
-        cout << pos << ", ";
+    cout << endl << "Plane Seed: " << endl;
+    for (int i = 0; i < nPlanes; i++) {
+        cout << i;
+        for (const Cell3DPosition& seed : planeSeed[i]) {
+            cout << "\t" << seed;
+        }
+        cout << endl;
     }
-    cout << "]" << endl;
+
+    // cout << endl << "Plane Structural Supports: " << endl;
+    // cout << catom->position[2] << "\t[";
+    // for(const Cell3DPosition&pos:scaffold->getAllSupportPositionsForPlane(catom->position[2])){
+    //     cout << pos << ", ";
+    // }
+    // cout << "]" << endl;
 }
 
 void CoatingBlockCode::onAssertTriggered() {
@@ -444,11 +451,17 @@ int CoatingBlockCode::getGLayer(const Cell3DPosition& pos) {
 
 bool CoatingBlockCode::isOnCSGBorder(const Cell3DPosition& pos) {
     if (target->isInTarget(pos)) {
+        bool isOnBorder = false;
         for (const Cell3DPosition& neighbor :
                  BaseSimulator::getWorld()->lattice->getNeighborhood(pos)) {
-            if (neighbor[2] >= G_SEED_POS[2]
-                and not target->isInTarget(neighbor)) return true;
+            if (neighbor[2] >= G_SEED_POS[2] and not target->isInTarget(neighbor))
+                isOnBorder = true;
+
+            // if (neighbor[2] >= G_SEED_POS[2] and scaffold->isInsideFn(neighbor))
+            //     return false;
         }
+
+        return isOnBorder;
     } else {
         // Try to include outer corners but exclude inner corners
         bool hasOrthoNeighborsInCSG = hasOrthogonalNeighborsInCSG(pos);
@@ -586,7 +599,23 @@ void CoatingBlockCode::initializeStructuralSupports() {
         planeSupportsReady.push_back(0);
 
         for (const Cell3DPosition& pos : scaffold->getAllSupportPositionsForPlane(z)) {
-            planeSupports[layer].insert(pos);
+            // Check that border is not larger than one in front of support, avoids blockages
+            bool eligible = true;
+            for (const Cell3DPosition& np : lattice->getNeighborhood(pos)) {
+                const Cell3DPosition& opp = lattice->getOppositeCell(np, pos);
+                if (np[2] == pos[2] and isInG(np) and isInG(opp)) {
+                    lattice->highlightCell(pos, ORANGE);
+                    lattice->highlightCell(np, RED);
+                    lattice->highlightCell(opp, BLUE);
+                    // awaitKeyPressed();
+                    eligible = false;
+                    break;
+                }
+            }
+
+            if (eligible) {
+                planeSupports[layer].insert(pos);
+            }
         }
     }
 }
@@ -922,6 +951,10 @@ void CoatingBlockCode::attractNextModuleAlongSegment() {
         if (p[2] == catom->position[2] and lattice->isFree(p) and isInG(p)
             and coatingCellWillBeBlockedBy(p, catom->position)) {
 
+            stringstream info;
+            info << " attracted segment module to" << p;
+            scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
+
             expectedSegments.insert(p);
             attractedBySupport.insert(p);
             sendAttractSignalTo(p);
@@ -932,56 +965,52 @@ void CoatingBlockCode::attractNextModuleAlongSegment() {
 
     if (numBlockedCells == 0) {
         // segment is complete, notify parent support
-        notifyAttracterOfSegmentCompletion();
+        notifyAttracterOfSegmentCompletion(segmentsAckBlacklist);
     }
 }
 
-void CoatingBlockCode::notifyAttracterOfSegmentCompletion(P2PNetworkInterface *sender) {
+void CoatingBlockCode::notifyAttracterOfSegmentCompletion(set<Cell3DPosition>& blacklist,
+                                                          P2PNetworkInterface* sender){
     // Find the attracter of this module
     //  either a support for first module of segment, or a neighbor coating position
     Cell3DPosition attracter = Cell3DPosition(-1,-1,-1);
-    short int numSupportNeighbors = 0;
     for (const Cell3DPosition& p : lattice->getActiveNeighborCells(catom->position)) {
-        if (p[2] == catom->position[2]
-            and (isInG(p) or isSupportPosition(p))) {
+        if (p[2] == catom->position[2] and (isInG(p) or isSupportPosition(p))
+            and not blacklist.count(p)) {
             attracter = p;
+
+            // Give priority to supports
             if (isSupportPosition(p)) {
-                ++numSupportNeighbors;
+                P2PNetworkInterface* supportItf = catom->getInterface(p);
+                VS_ASSERT(supportItf != nullptr and supportItf->isConnected());
+
+                segmentsAckBlacklist.insert(p);
+                sendMessage(new SupportSegmentCompleteMessage(), supportItf, MSG_DELAY, 0);
+                return;
             }
         }
     }
 
     VS_ASSERT(attracter != Cell3DPosition(-1,-1,-1));
 
-    // corner modules might have more than one support neighbors if the segment length
-    //  is 1. However, only one of them has attracted it, thus, notify both as it is
-    //  unknown which one is the actual parent
-    if (numSupportNeighbors > 0) {
-        for (const Cell3DPosition& p : lattice->getActiveNeighborCells(catom->position)){
-            if (p[2] == catom->position[2] and isSupportPosition(p)) {
-                P2PNetworkInterface* supportItf = catom->getInterface(p);
-                VS_ASSERT(supportItf != nullptr and supportItf->isConnected());
+    // Try first by simply following segment
+    P2PNetworkInterface* prev = nullptr;
 
-                sendMessage(new SupportSegmentCompleteMessage(), supportItf, MSG_DELAY, 0);
-            }
-        }
+    if (sender != nullptr)
+        prev = catom->getInterface(lattice->
+                                   getOppositeDirection(catom->getDirection(sender)));
+
+    if (prev != nullptr and prev->isConnected()) {
+        segmentsAckBlacklist.insert(prev->connectedInterface->hostBlock->position);
+        sendMessage(new SupportSegmentCompleteMessage(), prev, MSG_DELAY, 0);
     } else {
-        // Try first by simply following segment
-        P2PNetworkInterface* prev = nullptr;
+        P2PNetworkInterface* attItf = catom->getInterface(attracter);
+        VS_ASSERT(attItf != nullptr and attItf->isConnected());
 
-        if (sender != nullptr)
-            prev = catom->getInterface(lattice->
-                                       getOppositeDirection(catom->getDirection(sender)));
-
-        if (prev != nullptr and prev->isConnected()) {
-            sendMessage(new SupportSegmentCompleteMessage(), prev, MSG_DELAY, 0);
-        } else {
-            P2PNetworkInterface* attItf = catom->getInterface(attracter);
-            VS_ASSERT(attItf != nullptr and attItf->isConnected());
-
-            sendMessage(new SupportSegmentCompleteMessage(), attItf, MSG_DELAY, 0);
-        }
+        segmentsAckBlacklist.insert(attracter);
+        sendMessage(new SupportSegmentCompleteMessage(), attItf, MSG_DELAY, 0);
     }
+
 }
 
 void CoatingBlockCode::attractPlane(unsigned int layer) {
@@ -998,7 +1027,20 @@ void CoatingBlockCode::attractPlane(unsigned int layer) {
 
             cb->catom->setColor(MAGENTA);
 
-            Cell3DPosition next = cb->findNextCoatingPositionOnLayer(seed); // no prev
+            Cell3DPosition next = cb->findNextCoatingPositionOnLayer
+                (seed,
+                 //  ensure that we always stay below the next
+                 //   coating layer
+                 // FIXME: This is guaranteed to lead to issues
+                 //         later on. e.g., if seed isn't
+                 [this](const Cell3DPosition& p) {
+                     for (const Cell3DPosition& np : lattice->getNeighborhood(p)) {
+                         if (np[2] > p[2] and isInG(np)) return true;
+                     }
+
+                     return false;
+                 }); // no prev
+
             P2PNetworkInterface* nextItf = cb->catom->getInterface(next);
             VS_ASSERT(nextItf != nullptr and nextItf->isConnected());
             cb->sendMessage(new NextPlaneSupportsReadyMessage(false),
@@ -1024,9 +1066,11 @@ void CoatingBlockCode::startBorderCompletionAlgorithm() {
 }
 
 Cell3DPosition CoatingBlockCode::
-findNextCoatingPositionOnLayer(const Cell3DPosition& previous) const {
+findNextCoatingPositionOnLayer(const Cell3DPosition& previous,
+                               const std::function<bool(const Cell3DPosition&)> pred) const {
     for (const Cell3DPosition& p : lattice->getNeighborhood(catom->position)) {
-        if (p[2] == catom->position[2] and isInG(p) and p != previous) {
+        if (p[2] == catom->position[2] and isInG(p) and p != previous
+            and pred(p)) {
             return p;
         }
     }
@@ -1034,10 +1078,12 @@ findNextCoatingPositionOnLayer(const Cell3DPosition& previous) const {
     return Cell3DPosition(-1,-1,-1);
 }
 
-Cell3DPosition
-CoatingBlockCode::findNextCoatingPositionOnLayer(const set<Cell3DPosition>& previous) const {
+Cell3DPosition CoatingBlockCode::
+findNextCoatingPositionOnLayer(const set<Cell3DPosition>& previous,
+                               const std::function<bool(const Cell3DPosition&)> pred) const {
     for (const Cell3DPosition& p : lattice->getNeighborhood(catom->position)) {
-        if (p[2] == catom->position[2] and isInG(p) and previous.count(p) == 0) {
+        if (p[2] == catom->position[2] and isInG(p) and previous.count(p) == 0
+            and pred(p)) {
             return p;
         }
     }
@@ -1153,6 +1199,10 @@ void CoatingBlockCode::startBorderCompletion() {
 
         prevBorderItf = prevItf;
 
+        stringstream info;
+        info << " border completion attract to " << previous;
+        scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
+
         sendAttractSignalTo(previous);
     } else {
         // Forward message further along the border
@@ -1165,7 +1215,20 @@ void CoatingBlockCode::handleBorderCompletion(const Cell3DPosition& previous,
                                               bool stopAtCorner) {
     // Get the next border position
     // FIXME: There should be only one for now but this won't last with planar cases
-    Cell3DPosition next = findNextCoatingPositionOnLayer(previous);
+    Cell3DPosition next =
+        findNextCoatingPositionOnLayer(previous,
+                                       [this](const Cell3DPosition& p) {
+                                           size_t hNeighbors = 0;
+                                           for (const Cell3DPosition& np:
+                                                    lattice->getActiveNeighborCells(p)) {
+                                               if (p[2] == np[2]) ++hNeighbors;
+                                           }
+                                           // FIXME: THIS FUNCTION IS CLEARLY A HACK
+                                           //  MAY PAUSE PBs LATER.
+                                           // USED TO AVOID GETTING STUCK
+                                           //  IN BORDER INNER CORNERS.
+                                           return hNeighbors < 4;
+                                       });
     VS_ASSERT(next != Cell3DPosition(-1,-1,-1));
 
     // stop condition on backward completion
@@ -1181,6 +1244,10 @@ void CoatingBlockCode::handleBorderCompletion(const Cell3DPosition& previous,
         // We need to know whether or not to provide stopAtCorner for the given itf
         if (stopAtCorner) prevBorderItf = nextItf;
         else nextBorderItf = nextItf;
+
+        stringstream info;
+        info << " border completion attract to " << next;
+        scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
         sendAttractSignalTo(next);
     } else {

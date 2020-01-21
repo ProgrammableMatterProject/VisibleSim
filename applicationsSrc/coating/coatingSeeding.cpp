@@ -84,6 +84,19 @@ bool Seeding::isSouthLineOnMerge(const Cell3DPosition& pos) const {
 }
 
 bool Seeding::isPlaneSeed(const Cell3DPosition& pos) const {
+    if (pos == Cell3DPosition(3, -7, 33)) {
+        cout << "not (couldBeSeed(nbh->cellInDirection(pos, East)):"
+             << not couldBeSeed(nbh->cellInDirection(pos, East)) << endl;
+        cout << "or couldBeSeed(nbh->cellInDirection(pos, South))):"
+             << couldBeSeed(nbh->cellInDirection(pos, South)) << endl;
+        cout << "and (isSeedBorderOnNextPlane(pos + backwardSeed):"
+             << (isSeedBorderOnNextPlane(pos + backwardSeed)) << endl;
+        cout << "or isSeedBorderOnNextPlane(pos + forwardSeed):"
+             << isSeedBorderOnNextPlane(pos + forwardSeed) << endl;
+        cout << "or isSeedBorderOnCurrentPlane(pos));:"
+             << isSeedBorderOnCurrentPlane(pos) << endl;
+    }
+
     return not (couldBeSeed(nbh->cellInDirection(pos, East))
                 or couldBeSeed(nbh->cellInDirection(pos, South)))
         and (isSeedBorderOnNextPlane(pos + backwardSeed)

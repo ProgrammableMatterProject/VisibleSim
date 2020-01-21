@@ -25,6 +25,21 @@ public:
 };
 
 /**
+ * Used as a reply by a support that receives a SupportSegmentComplete message when it has
+ *  not built a segment. This is used to signify that the SegmentCompletion ack must be
+ *  propagated further along the border in order to reach the parent support
+ */
+class SegmentCompleteWrongSupport : public HandleableMessage {
+public:
+    SegmentCompleteWrongSupport() {};
+    virtual ~SegmentCompleteWrongSupport() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+    virtual Message* clone() const override { return new SegmentCompleteWrongSupport(*this);}
+    virtual string getName() const override { return "SegmentCompleteWrongSupport"; }
+};
+
+/**
  * Message sent across a coating layer that has been precompleted by the insertion of
  *  supports and blocked positions.
  * Each module checks if the next module along the coating is in place and forwards the
@@ -39,7 +54,9 @@ public:
 
     virtual void handle(BaseSimulator::BlockCode*) override;
     virtual Message* clone() const override { return new BorderCompletionMessage(*this);}
-    virtual string getName() const override { return "BorderCompletionMessage"; }
+    virtual string getName() const override { return "BorderCompletionMessage("
+            + string(stopAtCorner ? "true" : "false") + ")";
+    }
 };
 
 /**

@@ -132,4 +132,60 @@ inline constexpr Cell3DPosition _2ndOrderNeighbors[40] = {
     // Cell3DPosition(1,1,-2), // right below
 };
 
+inline constexpr Cell3DPosition _2ndOrderScaffoldNeighbors[] = {
+    Cell3DPosition(-2,-2,0), // Bottom-Left corner
+    Cell3DPosition(-1,-2,0),
+    Cell3DPosition(0,-2,0),
+    Cell3DPosition(1,-2,0),
+
+    Cell3DPosition(2,-2,0),  // Bottom-right corner
+    Cell3DPosition(2,-1,0),
+    Cell3DPosition(2,0,0),
+    Cell3DPosition(2,1,0),
+
+    Cell3DPosition(2,2,0), // Top-right corner
+    Cell3DPosition(1,2,0),
+    Cell3DPosition(0,2,0),
+    Cell3DPosition(-1,2,0),
+
+    Cell3DPosition(-2,2,0), // Top-left corner
+    Cell3DPosition(-2,1,0),
+    Cell3DPosition(-2,0,0),
+    Cell3DPosition(-2,-1,0),
+
+    Cell3DPosition(-2,-2,1), // upper ring front-left corner
+    Cell3DPosition(-1,-2,1),
+    Cell3DPosition(0,-2,1),
+
+    Cell3DPosition(1,-2,1), // upper ring front-right corner
+    Cell3DPosition(1,-1,1),
+    Cell3DPosition(1,0,1),
+
+    Cell3DPosition(1,1,1), // upper ring rear-right corner
+    Cell3DPosition(0,1,1),
+    Cell3DPosition(-1,1,1),
+
+    Cell3DPosition(-2,1,1), // upper ring rear-left corner
+    Cell3DPosition(-2,0,1),
+    Cell3DPosition(-2,-1,1),
+
+    // Cell3DPosition(-1,-1,-1), // lower ring front-left corner
+    // Cell3DPosition(0,-1,-1),
+    // Cell3DPosition(1,-1,-1),
+
+    // Cell3DPosition(2,-1,-1), // lower ring front-right corner
+    // Cell3DPosition(2,0,-1),
+    // Cell3DPosition(2,1,-1),
+
+    // Cell3DPosition(2,2,-1),  // lower ring rear-right corner
+    // Cell3DPosition(1,2,-1),
+    // Cell3DPosition(0,2,-1),
+
+    // Cell3DPosition(-1,2,-1), // lower ring rear-left corner
+    // Cell3DPosition(-1,1,-1),
+    // Cell3DPosition(-1,0,-1),
+
+    // Cell3DPosition(-1,-1,2), // right above
+    // Cell3DPosition(1,1,-2), // right below
+};
 #endif // COATING_UTILS__H_

@@ -9,7 +9,7 @@
               <csg translate="5,5,2" content="union() {
 
     color([0,0,0])
-    cube([20, 20, 21], true);
+    cube([20, 20, 23], true);
     translate([0,0,5])
 
     color([0,0,0])
