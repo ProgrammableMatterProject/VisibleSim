@@ -92,9 +92,11 @@ public :
     bool builtScaffold = false; //!< Indicates if module has attempted to attract scaffold neighbors
 
     Cell3DPosition lastBorderFollowingPosition;
-    P2PNetworkInterface *supportReadyRequestItf = nullptr; //!< Awaiting request if != nullptr
+    P2PNetworkInterface *supportsReadyRequestItf = nullptr; //!< Awaiting request if != nullptr
+    P2PNetworkInterface *supportsReadyBacktraceItf = nullptr; //!< Module to backtrace through
     bool segmentsDetected = false;
     set<Cell3DPosition> supportsReadyBlacklist; //!< Used to avoid looping
+
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode();

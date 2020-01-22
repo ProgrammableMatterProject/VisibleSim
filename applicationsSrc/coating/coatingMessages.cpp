@@ -79,6 +79,7 @@ void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
 
     cb.segmentsDetected = segmentsDetected;
+    cb.supportsReadyBacktraceItf = destinationInterface;
 
     if (cb.isSeedPosition(cb.catom->position)) {
         const Cell3DPosition& firstPos = cb.getStartPositionAboveSeed(cb.catom->position);
@@ -124,25 +125,66 @@ void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
              //  ensure that we always stay below the next
              //   coating layer
              // FIXME: This is guaranteed to lead to issues
-             //         later on. e.g., if seed isn't
+             //         later on. e.g., if seed isn't below the coating layer
              [&cb](const Cell3DPosition& p) {
                  for (const Cell3DPosition& np : cb.lattice->getNeighborhood(p)) {
-                     if (np[2] > p[2] and cb.isInG(np)) return true;
+                     if (np[2] > p[2] and cb.isInG(np)) {
+                         return true;
+                     }
                  }
 
                  return false;
              });
 
         P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
-        VS_ASSERT(nextItf != nullptr and nextItf->isConnected());
-        cb.sendMessage(new NextPlaneSupportsReadyMessage(segmentsDetected),
-                       nextItf, MSG_DELAY, 0);
-
-        cb.supportsReadyBlacklist.insert(next);
+        if (nextItf != nullptr and nextItf->isConnected()) {
+            cb.sendMessage(new NextPlaneSupportsReadyMessage(segmentsDetected),
+                           nextItf, MSG_DELAY, 0);
+            cb.supportsReadyBlacklist.insert(next);
+        } else {
+            // Notify sender that we are stuck and backtrace to next other border option
+            cb.sendMessage(new NextPlaneSupportsReadyReturn(segmentsDetected),
+                           cb.supportsReadyBacktraceItf, MSG_DELAY, 0);
+        }
     } else {
         // cb.lastBorderFollowingPosition = sourceInterface->hostBlock->position;
         VS_ASSERT(supportItf != nullptr and supportItf->isConnected());
         cb.sendMessage(new SupportReadyRequest(), supportItf, MSG_DELAY, 0);
+    }
+}
+
+void NextPlaneSupportsReadyReturn::handle(BaseSimulator::BlockCode* bc) {
+    CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
+
+    cb.segmentsDetected = cb.segmentsDetected or segmentsDetected;
+
+    // Forward message further along the border
+    // const Cell3DPosition& sender = sourceInterface->hostBlock->position;
+    Cell3DPosition next = cb.findNextCoatingPositionOnLayer
+        (cb.supportsReadyBlacklist,
+         //  ensure that we always stay below the next
+         //   coating layer
+         // FIXME: This is guaranteed to lead to issues
+         //         later on. e.g., if seed isn't below the coating layer
+         [&cb](const Cell3DPosition& p) {
+             for (const Cell3DPosition& np : cb.lattice->getNeighborhood(p)) {
+                 if (np[2] > p[2] and cb.isInG(np)) {
+                     return true;
+                 }
+             }
+
+             return false;
+         });
+
+    P2PNetworkInterface* nextItf = cb.catom->getInterface(next);
+    if (nextItf != nullptr and nextItf->isConnected()) {
+        cb.sendMessage(new NextPlaneSupportsReadyMessage(cb.segmentsDetected),
+                       nextItf, MSG_DELAY, 0);
+        cb.supportsReadyBlacklist.insert(next);
+    } else {
+        // Notify sender that we are stuck and backtrace to next other border option
+        cb.sendMessage(new NextPlaneSupportsReadyReturn(cb.segmentsDetected),
+                       cb.supportsReadyBacktraceItf, MSG_DELAY, 0);
     }
 }
 
@@ -151,13 +193,13 @@ void SupportReadyRequest::handle(BaseSimulator::BlockCode* bc) {
 
     VS_ASSERT(cb.isSupportPosition(cb.catom->position));
 
-    cb.supportReadyRequestItf = destinationInterface;
+    cb.supportsReadyRequestItf = destinationInterface;
 
     // Segments are done being built
     if (cb.numCompletedSegments == cb.expectedSegments.size()) {
         // Answer right away
         cb.sendMessage(new SupportReadyResponse(cb.expectedSegments.size() > 0),
-                       cb.supportReadyRequestItf, MSG_DELAY, 0);
+                       cb.supportsReadyRequestItf, MSG_DELAY, 0);
     } // else, wait for them to complete and send reply only then
 }
 

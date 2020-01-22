@@ -65,6 +65,16 @@ void CoatingBlockCode::startup() {
 
         attractStructuralSupports(0); // first layer supports only
 
+        // FIXME: If multiple ground seeds are present it might means that we are dealing
+        //  with multiple disjoint parts. In that case the best thing to do would actually
+        //  be to initialize a container of ground seeds that tell us where are the actually
+        //  seeds for the first plane
+        for (const Cell3DPosition& seed : planeSeed[0]) {
+            if (seed != G_SEED_POS and lattice->isFree(seed)) {
+                world->addBlock(0, buildNewBlockCode, seed, CYAN);
+            }
+        }
+
         if (not isInG(G_SEED_POS)) {
             stringstream ss;
             ss << "Seed module at "
@@ -260,8 +270,8 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
-    cout << "isOnCSGBorder(" << catom->position << "): "
-         << isOnCSGBorder(catom->position) << endl;
+    // cout << "isOnCSGBorder(" << catom->position << "): "
+    //      << isOnCSGBorder(catom->position) << endl;
 
     // cout << "isNorthSeed(" << catom->position << "): "
     //      << seeding->isNorthSeed(catom->position) << endl;
@@ -300,14 +310,14 @@ void CoatingBlockCode::onBlockSelected() {
     //     cout << i << "\t" << planeAttracted[i] << endl;
     // }
 
-    cout << endl << "Plane Seed: " << endl;
-    for (int i = 0; i < nPlanes; i++) {
-        cout << i;
-        for (const Cell3DPosition& seed : planeSeed[i]) {
-            cout << "\t" << seed;
-        }
-        cout << endl;
-    }
+    // cout << endl << "Plane Seed: " << endl;
+    // for (int i = 0; i < nPlanes; i++) {
+    //     cout << i;
+    //     for (const Cell3DPosition& seed : planeSeed[i]) {
+    //         cout << "\t" << seed;
+    //     }
+    //     cout << endl;
+    // }
 
     // cout << endl << "Plane Structural Supports: " << endl;
     // cout << catom->position[2] << "\t[";

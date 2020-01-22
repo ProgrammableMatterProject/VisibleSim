@@ -83,6 +83,28 @@ public:
     }
 };
 
+/**
+ * This messages is a reply to NextPlaneSupportsReady sent by a module that has no other module
+ *  to propagate its message to, as can happen when border following.
+ */
+class NextPlaneSupportsReadyReturn : public HandleableMessage {
+    bool segmentsDetected;
+public:
+    NextPlaneSupportsReadyReturn(bool _det) : segmentsDetected(_det) {};
+    virtual ~NextPlaneSupportsReadyReturn() {};
+
+    virtual void handle(BaseSimulator::BlockCode*) override;
+
+    virtual Message* clone() const override {
+        return new NextPlaneSupportsReadyReturn(*this);
+    }
+
+    virtual string getName() const override {
+        return "NextPlaneSupportsReadyReturn("
+            + string(segmentsDetected ? "true" : "false") + ")";
+    }
+};
+
 class SupportReadyRequest : public HandleableMessage {
 public:
     SupportReadyRequest() {};
