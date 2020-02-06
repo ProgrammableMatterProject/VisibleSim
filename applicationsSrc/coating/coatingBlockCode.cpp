@@ -270,6 +270,8 @@ void CoatingBlockCode::onBlockSelected() {
     // Debug stuff:
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
+    seeding->print(catom->position);
+
     // cout << "isOnCSGBorder(" << catom->position << "): "
     //      << isOnCSGBorder(catom->position) << endl;
 

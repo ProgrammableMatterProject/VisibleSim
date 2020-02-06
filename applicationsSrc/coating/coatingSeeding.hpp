@@ -21,6 +21,8 @@ public :
 
     static inline const Cell3DPosition& forwardSeed = Cell3DPosition(-1, 0, 1);
     static inline const Cell3DPosition& backwardSeed = Cell3DPosition(0, -1, 1);
+    static inline const Cell3DPosition& rightwardSeed = Cell3DPosition(0, 0, 1);
+    static inline const Cell3DPosition& leftwardSeed = Cell3DPosition(-1, -1, 1);
 
     /**
      * @return true if catom is a north seed and should attract modules to its north column
@@ -74,14 +76,16 @@ public :
      * @return true if the next plane is smaller than the current one and
      *  pos is the seed module of this next plane
      */
-    bool isSeedBorderOnNextPlane(const Cell3DPosition& pos) const;
+    bool isSeedBorderOnNextPlane(const Cell3DPosition& pos,
+                                 const Cell3DPosition& candidate) const;
 
     /**
      * @param pos
      * @return true if pos is the module of the next plane with minimum coordinates
      *  and a module in G under it
      */
-    bool isLowestOfBorderOnNextPlane(const Cell3DPosition& pos) const;
+    bool isLowestOfBorderOnNextPlane(const Cell3DPosition& pos,
+                                     const Cell3DPosition& candidate) const;
 
     /**
      * @param pos
@@ -89,6 +93,12 @@ public :
      *  and a module in G over it
      */
     bool isLowestOfBorderOnCurrentPlane(const Cell3DPosition& pos) const;
+
+    /**
+     * Provides a detailed print of why position pos is a seed or not
+     * @param pos
+     */
+    void print(const Cell3DPosition& pos) const;
 };
 
 #endif /* CoatingBorder_H_ */
