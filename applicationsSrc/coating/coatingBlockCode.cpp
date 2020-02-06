@@ -1234,7 +1234,7 @@ void CoatingBlockCode::handleBorderCompletion(const Cell3DPosition& previous,
                                                if (p[2] == np[2]) ++hNeighbors;
                                            }
                                            // FIXME: THIS FUNCTION IS CLEARLY A HACK
-                                           //  MAY PAUSE PBs LATER.
+                                           //  MAY POSE PBs LATER.
                                            // USED TO AVOID GETTING STUCK
                                            //  IN BORDER INNER CORNERS.
                                            return hNeighbors < 4;
