@@ -72,7 +72,9 @@ public :
 
     static inline vector<int> planeRequires; //!< Number of modules plane i needs
     static inline vector<int> planeAttracted; //!< Number of modules plane i has attracted
-    static inline vector<set<Cell3DPosition>> planeSeed; //!< Modules responsible for attracting the first module of the plane above them, one per contiguous plane, potentially multiple per layer therefore
+    // static inline vector<set<Cell3DPosition>> planeSeed; //!< Modules responsible for attracting the first module of the plane above them, one per contiguous plane, potentially multiple per layer therefore
+
+    static inline vector<map<Cell3DPosition, Seeding::SeedDirection>> planeSeed; //!< Modules responsible for attracting the first module of the plane above them, one per contiguous plane, potentially multiple per layer therefore. SeedDirection tells in which direction the seed module must attract a neighbor
 
     // FIXME: non-local, should be a gradient value
     static inline set<Cell3DPosition> attractedBySupport; //!< Set of all modules that have been attracted by a support rather than through the regular road. It fakes a gradient signal that would contain whether or not this is a regular gradient or a support gradient

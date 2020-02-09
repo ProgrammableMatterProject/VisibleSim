@@ -19,10 +19,14 @@ public :
            Neighborhood *_neighborhood, Border *_border);
     ~Seeding() {};
 
-    static inline const Cell3DPosition& forwardSeed = Cell3DPosition(-1, 0, 1);
-    static inline const Cell3DPosition& backwardSeed = Cell3DPosition(0, -1, 1);
-    static inline const Cell3DPosition& rightwardSeed = Cell3DPosition(0, 0, 1);
-    static inline const Cell3DPosition& leftwardSeed = Cell3DPosition(-1, -1, 1);
+    enum SeedDirection {
+        Zward = 0, RevZward, LZward, RZward
+    };
+
+    static inline constexpr Cell3DPosition seedDirPositions[4] = {
+        Cell3DPosition(-1,0,1), Cell3DPosition(0,-1,1),
+        Cell3DPosition(-1,-1,1), Cell3DPosition(0,0,1),
+    };
 
     /**
      * @return true if catom is a north seed and should attract modules to its north column
@@ -52,7 +56,8 @@ public :
      * @param pos
      * @return true is pos is the seed of its plane
      */
-    bool isPlaneSeed(const Cell3DPosition& pos) const;
+    bool isPlaneSeed(const Cell3DPosition& pos,
+                     SeedDirection &seedDir) const;
 
     /**
      * @param pos
@@ -77,15 +82,14 @@ public :
      *  pos is the seed module of this next plane
      */
     bool isSeedBorderOnNextPlane(const Cell3DPosition& pos,
-                                 const Cell3DPosition& candidate) const;
+                                 SeedDirection &seedDir) const;
 
     /**
      * @param pos
      * @return true if pos is the module of the next plane with minimum coordinates
      *  and a module in G under it
      */
-    bool isLowestOfBorderOnNextPlane(const Cell3DPosition& pos,
-                                     const Cell3DPosition& candidate) const;
+    bool isLowestOfBorderOnNextPlane(const Cell3DPosition& pos) const;
 
     /**
      * @param pos
@@ -99,6 +103,10 @@ public :
      * @param pos
      */
     void print(const Cell3DPosition& pos) const;
+
+    bool hasLowerNeighborInCoating(const Cell3DPosition& pos) const;
+    bool firstPositionOfPlaneHasNoBetterCandidate(const Cell3DPosition& firstPos,
+                                                  SeedDirection dir) const;
 };
 
 #endif /* CoatingBorder_H_ */

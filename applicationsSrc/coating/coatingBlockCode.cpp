@@ -69,9 +69,10 @@ void CoatingBlockCode::startup() {
         //  with multiple disjoint parts. In that case the best thing to do would actually
         //  be to initialize a container of ground seeds that tell us where are the actually
         //  seeds for the first plane
-        for (const Cell3DPosition& seed : planeSeed[0]) {
-            if (seed != G_SEED_POS and lattice->isFree(seed)) {
-                world->addBlock(0, buildNewBlockCode, seed, CYAN);
+        // for (const Cell3DPosition& seed : planeSeed[0]) {
+        for (const auto& seedPair : planeSeed[0]) {
+            if (seedPair.first != G_SEED_POS and lattice->isFree(seedPair.first)) {
+                world->addBlock(0, buildNewBlockCode, seedPair.first, CYAN);
             }
         }
 
@@ -434,8 +435,11 @@ void CoatingBlockCode::highlight() const {
         //     return neighborhood->isSouthLineOnMerge(p); }, BLUE);
         // lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
         //     return isInG(p) and border->isOnInternalHole(p); }, MAGENTA);
-        lattice->highlightAllCellsThatVerify([this](const Cell3DPosition& p) {
-            return isInG(p) and seeding->isPlaneSeed(p); }, MAGENTA);
+        lattice->highlightAllCellsThatVerify
+            ([this](const Cell3DPosition& p) {
+                 Seeding::SeedDirection seedDir;
+                 return isInG(p) and seeding->isPlaneSeed(p, seedDir);
+             }, MAGENTA);
     }
 
     if (HIGHLIGHT_SCAFFOLD) {
@@ -770,11 +774,12 @@ void CoatingBlockCode::initializePlaneSeeds() {
                         maxPlane = idx;
                         planeRequires.push_back(0);
                         planeAttracted.push_back(0);
-                        planeSeed.push_back(set<Cell3DPosition>());
+                        planeSeed.push_back(map<Cell3DPosition, Seeding::SeedDirection>());
                     }
 
-                    if (seeding->isPlaneSeed(pos)) // Super costly
-                        planeSeed[idx].insert(pos);
+                    Seeding::SeedDirection sd;
+                    if (seeding->isPlaneSeed(pos, sd)) // Super costly
+                        planeSeed[idx].emplace(pos, sd);
 
                     planeRequires[idx]++;
                 }
@@ -1028,7 +1033,9 @@ void CoatingBlockCode::notifyAttracterOfSegmentCompletion(set<Cell3DPosition>& b
 void CoatingBlockCode::attractPlane(unsigned int layer) {
     // For each seed, attract right away if no supports on layer above, or
     //  send border verification message
-    for (const Cell3DPosition& seed : planeSeed[layer - 1]) {
+    // for (const Cell3DPosition& seed : planeSeed[layer - 1]) {
+    for (const auto& seedPair : planeSeed[layer - 1]) {
+        const Cell3DPosition& seed = seedPair.first;
         if (planeSupports[layer].size() == 0) {
             const Cell3DPosition& firstPos = getStartPositionAboveSeed(seed);
             sendAttractSignalTo(firstPos);
@@ -1064,10 +1071,7 @@ void CoatingBlockCode::attractPlane(unsigned int layer) {
 }
 
 Cell3DPosition CoatingBlockCode::getStartPositionAboveSeed(const Cell3DPosition& seed) const {
-    const Cell3DPosition& aPos = isInG(seed + seeding->forwardSeed) ?
-        seeding->forwardSeed : seeding->backwardSeed;
-
-    return seed + aPos;
+    return seed + seeding->seedDirPositions[planeSeed[getGLayer(seed)][seed]];
 }
 
 void CoatingBlockCode::startBorderCompletionAlgorithm() {
