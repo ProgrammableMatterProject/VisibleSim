@@ -203,6 +203,10 @@ public:
      */
     virtual void removeNeighbor(P2PNetworkInterface *ni) override;
 
+    /**
+     * Exports the time, ID, and matrix to the log file
+     */
+    void exportMatrix() const;
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb);

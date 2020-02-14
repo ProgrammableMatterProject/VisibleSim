@@ -96,6 +96,8 @@ void CoatingBlockCode::startup() {
         return;
     }
 
+    // catom->exportMatrix();
+
     static bool delayInit = false;
     if (not delayInit) {
         if (scheduler->getMode() == SCHEDULER_MODE_FASTEST)
