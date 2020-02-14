@@ -99,6 +99,10 @@ public :
     bool segmentsDetected = false;
     set<Cell3DPosition> supportsReadyBlacklist; //!< Used to avoid looping
 
+    static inline size_t numAttractedCoatingModules = 0;
+    static inline size_t numScaffoldModules = 0;
+    static inline size_t numSandboxModules = 0;
+    static inline size_t numMessagesSent = 0;
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode();
@@ -366,8 +370,47 @@ public :
      */
     void startBorderCompletionAlgorithm();
 
+    void attractGroundSeeds();
+
     inline static bool isInScaffold(const Cell3DPosition& pos) {
         return scaffold->isInScaffold(scaffold->normalize(pos)) and scaffold->isInsideFn(pos);
+    }
+
+    inline static void logAttractedModule() {
+        OUTPUT << "numAttractedModules: " << getScheduler()->now() << "\t"
+               << ++numAttractedCoatingModules << endl;
+    }
+
+    inline static void logSentMessage() {
+        ++numMessagesSent;
+    }
+
+    inline static void logSentMessagesTotal() {
+        OUTPUT << "numSentMessages: " << numMessagesSent << endl;
+    }
+
+    inline static void logScaffoldAttracted() {
+        ++numScaffoldModules;
+    }
+
+    inline static void logScaffoldModulesTotal() {
+        OUTPUT << "numScaffoldModules: " << numScaffoldModules << endl;
+    }
+
+    inline static void logSandboxAttracted() {
+        ++numSandboxModules;
+    }
+
+    inline static void logSandboxModulesTotal() {
+        OUTPUT << "numSandboxModules: " << numSandboxModules << endl;
+    }
+
+
+
+    inline int sendMessage(HandleableMessage*msg,
+                           P2PNetworkInterface *dest, Time t0, Time dt) override {
+        logSentMessage();
+        return Catoms3DBlockCode::sendMessage(msg, dest, t0, dt);
     }
 
     /// Advanced blockcode handlers below

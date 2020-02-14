@@ -178,6 +178,26 @@ bool Seeding::isLowestOfBorderOnNextPlane(const Cell3DPosition& pos) const {
     return nTurns <= 0;
 }
 
+Cell3DPosition Seeding::findLowestOfBorderFrom(const Cell3DPosition& pos) const {
+    int nTurns = 0;
+    int idx = border->getIndexForBorder(pos);
+
+    Cell3DPosition lowest = pos;
+
+    Cell3DPosition currentPos = pos;
+    nTurns += border->getNextBorderNeighborCCW(idx, currentPos);
+    while(currentPos != pos) {
+        if (currentPos[1] < pos[1] or (currentPos[1] == pos[1] and currentPos[0] > pos[0])) {
+
+            lowest = currentPos;
+        }
+
+        nTurns += border->getNextBorderNeighborCCW(idx, currentPos);
+    }
+
+    return lowest;
+}
+
 bool Seeding::hasLowerNeighborInCoating(const Cell3DPosition& pos) const {
     for (const Cell3DPosition& np : lattice->getNeighborhood(pos)) {
         if (np[2] < pos[2] and isInG(np)) return true;

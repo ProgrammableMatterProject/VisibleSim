@@ -107,6 +107,8 @@ public :
     bool hasLowerNeighborInCoating(const Cell3DPosition& pos) const;
     bool firstPositionOfPlaneHasNoBetterCandidate(const Cell3DPosition& firstPos,
                                                   SeedDirection dir) const;
+
+    Cell3DPosition findLowestOfBorderFrom(const Cell3DPosition& pos) const;
 };
 
 #endif /* CoatingBorder_H_ */

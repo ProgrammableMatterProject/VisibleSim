@@ -50,6 +50,10 @@ CoatingBlockCode::~CoatingBlockCode() {
     if (scaffold) {
         delete scaffold;
         scaffold = nullptr;
+
+        logSentMessagesTotal();
+        logScaffoldModulesTotal();
+        logSandboxModulesTotal();
     }
 };
 
@@ -70,11 +74,7 @@ void CoatingBlockCode::startup() {
         //  be to initialize a container of ground seeds that tell us where are the actually
         //  seeds for the first plane
         // for (const Cell3DPosition& seed : planeSeed[0]) {
-        for (const auto& seedPair : planeSeed[0]) {
-            if (seedPair.first != G_SEED_POS and lattice->isFree(seedPair.first)) {
-                world->addBlock(0, buildNewBlockCode, seedPair.first, CYAN);
-            }
-        }
+        attractGroundSeeds();
 
         if (not isInG(G_SEED_POS)) {
             stringstream ss;
@@ -115,6 +115,8 @@ void CoatingBlockCode::startup() {
     int layer = getGLayer(catom->position);
 
     if (isSupportPosition(catom->position)) {
+        logAttractedModule();
+
         // For each free neighbor position
         for (const Cell3DPosition& p : lattice->getFreeNeighborCells(catom->position)) {
             // If it is a blocked coating position
@@ -155,9 +157,14 @@ void CoatingBlockCode::startup() {
     }
 
     if (not isInG(catom->position)) {
+        if (catom->position[2] > 2) logScaffoldAttracted();
+        else logSandboxAttracted();
+
         assembleInternalScaffoldNeighbors();
         return;
     }
+
+    logAttractedModule();
 
     if (attractedBySupport.count(catom->position)) {
         catom->setColor(MAGENTA);
@@ -675,7 +682,7 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
     //     and not attractedBySupport.count(catom->position))
         // catom->setColor(AttractedColor);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(ATTRACT_DELAY));
+    usleep(ATTRACT_DELAY * 1000);
 
     if (waitingModules.find(pos) != waitingModules.end())
         waitingModules.erase(catom->position);
@@ -689,6 +696,7 @@ void CoatingBlockCode::sendAttractSignalTo(const Cell3DPosition& pos) {
 
     try {
         world->addBlock(0, buildNewBlockCode, pos, color);
+        // logAttractedModule();
     } catch (DoubleInsertionException const& e) {
         cerr << e.what() << endl;
         catom->setColor(InvalidColor);
@@ -1140,40 +1148,7 @@ void CoatingBlockCode::initializeGSeedPosition() {
                 // lattice->highlightCell(pos, ORANGE);
 
                 if (isInCoatingLayer(pos, 0)) {
-                    // lattice->highlightCell(pos, CYAN);
-
-                    int idx = border->getIndexForBorder(pos);
-                    VS_ASSERT(idx != -1 and border->isOnBorder(pos));
-
-                    Cell3DPosition currentPos = pos;
-                    border->getNextBorderNeighbor(idx, currentPos);
-
-                    // Go around the border and return first non-blocking corner
-                    while(currentPos != pos) {
-                        // lattice->highlightCell(currentPos, ORANGE);
-
-                        bool isSeedCandidate = true;
-                        for (const Cell3DPosition& nPos: lattice->getNeighborhood(currentPos)){
-                            if (nPos[2] != currentPos[2]) continue;
-
-                            // lattice->highlightCell(nPos, BLUE);
-
-                            const Cell3DPosition& nOppC =
-                                lattice->getOppositeCell(currentPos, nPos);
-                            const Cell3DPosition& nOppN =
-                                lattice->getOppositeCell(nPos, currentPos);
-                            if (isInG(nPos) and (isInG(nOppC) or isSupportPosition(nOppN))) {
-                                isSeedCandidate = false;
-                                break;
-                            }
-                        }
-
-                        if (isSeedCandidate) break;
-
-                        border->getNextBorderNeighbor(idx, currentPos);
-                    }
-
-                    G_SEED_POS = currentPos;
+                    G_SEED_POS = seeding->findLowestOfBorderFrom(pos);
                     cout << "G_SEED_POS: " << G_SEED_POS << endl;
                     lattice->highlightCell(G_SEED_POS, CYAN);
 
@@ -1281,4 +1256,17 @@ bool CoatingBlockCode::isSeedPosition(const Cell3DPosition& pos) const {
     int layer = getGLayer(pos);
 
     return planeSeed[layer].count(pos);
+}
+
+
+void CoatingBlockCode::attractGroundSeeds() {
+    // Take every seed for the next layer, and for each disjoint ground part,
+    //  pick the module from the lowest border of each seeds
+    for (const auto& seedPair : planeSeed[0]) {
+        Cell3DPosition lowest = seeding->findLowestOfBorderFrom(seedPair.first);
+
+        if (lattice->isFree(lowest)) {
+            world->addBlock(0, buildNewBlockCode, lowest, CYAN);
+        }
+    }
 }
