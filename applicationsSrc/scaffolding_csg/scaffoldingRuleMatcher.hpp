@@ -471,6 +471,10 @@ public:
      * @return branch index of the branch that should bring the tile root
      */
     BranchIndex getTileRootInsertionBranch(const Cell3DPosition& pos) const;
+
+    inline bool isStructuralPosition(const Cell3DPosition &pos) const {
+        return isInMesh(pos);
+    }
 };
 
 }

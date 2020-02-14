@@ -233,7 +233,9 @@ void ScaffoldingBlockCode::onBlockSelected() {
 //     cout << endl;
 
     Cell3DPosition nextHop;
-    matchLocalRules(catom->getLocalNeighborhoodState(), catom->position,
+    cout << "bits: " << getMeshLocalNeighborhoodState() << endl;
+    cout << "targetPosition: " << targetPosition << endl;
+    matchLocalRules(getMeshLocalNeighborhoodState(), catom->position,
                     targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
     cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
 //     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
@@ -516,7 +518,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                 if (addNeighborToProcess > 0) addNeighborToProcess--;
 
                 if (not rotating) {
-                    if (not ruleMatcher->isInCSGMeshOrSandbox(norm(pos))) {
+                    if (not ruleMatcher->isStructuralPosition(norm(pos))) {
                         // Neighbor is not a module in terminal position
                         SET_GREEN_LIGHT(false);
                     }
@@ -614,7 +616,7 @@ void ScaffoldingBlockCode::processLocalEvent(EventPtr pev) {
                     // Check whether or not neighbor is in mesh or sandbox
                     //  if not, module must be a freeagent that was waiting
                     //  for this catom to get into place.
-                    if (not ruleMatcher->isInCSGMeshOrSandbox(norm(nCell))) {
+                    if (not ruleMatcher->isStructuralPosition(norm(nCell))) {
                         // In that case catom should turn red immediatly
                         shouldTurnRed = true;
                         break;
@@ -1872,7 +1874,8 @@ std::bitset<12> ScaffoldingBlockCode::getMeshLocalNeighborhoodState() {
     for (const Cell3DPosition& nPos : localNeighborhood) {
         P2PNetworkInterface *itf = catom->getInterface(nPos);
         bitset.set(catom->getAbsoluteDirection(nPos),
-                   itf->isConnected() and ruleMatcher->isInCSGMeshOrSandbox(norm(nPos)));
+                   itf->isConnected()
+                   and ruleMatcher->isStructuralPosition(norm(nPos)));
     }
 
     return bitset;
