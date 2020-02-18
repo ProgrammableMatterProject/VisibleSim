@@ -376,6 +376,10 @@ public :
         return scaffold->isInScaffold(scaffold->normalize(pos)) and scaffold->isInsideFn(pos);
     }
 
+    inline static bool isInSandbox(const Cell3DPosition& pos) {
+        return pos[2] < G_SEED_POS[2];
+    }
+
     inline static void logAttractedModule() {
         OUTPUT << "numAttractedModules: " << getScheduler()->now() << "\t"
                << ++numAttractedCoatingModules << endl;

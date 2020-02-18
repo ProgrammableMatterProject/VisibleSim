@@ -6,6 +6,8 @@
 #include "coatingNeighborhood.hpp"
 #include "coatingBorder.hpp"
 
+#include <set>
+
 using namespace Catoms3D;
 
 class Seeding {
@@ -27,6 +29,9 @@ public :
         Cell3DPosition(-1,0,1), Cell3DPosition(0,-1,1),
         Cell3DPosition(-1,-1,1), Cell3DPosition(0,0,1),
     };
+
+    // Speeds up our centralized simplification of the seed election mechanism
+    static inline set<Cell3DPosition> isNotLowestOfBorder;
 
     /**
      * @return true if catom is a north seed and should attract modules to its north column

@@ -278,7 +278,7 @@ bool ScaffoldManager::isWithinCSGMinus2(const Cell3DPosition& pos) const {
 
     for (const Cell3DPosition& p : _2ndOrderScaffoldNeighbors) {
         const Cell3DPosition &pn = pos + p;
-        if (not isInCSG(pn)) {
+        if (pn[2] > 2 and not isInCSG(pn)) {
             return false;
         }
     }

@@ -86,6 +86,8 @@ bool Seeding::isSouthLineOnMerge(const Cell3DPosition& pos) const {
 bool Seeding::isPlaneSeed(const Cell3DPosition& pos,
                           SeedDirection &seedDir) const {
 
+    if (not isInG(pos)) return false;
+
     // return not (couldBeSeed(nbh->cellInDirection(pos, East))
     //             or couldBeSeed(nbh->cellInDirection(pos, South)))
     //     and ( (isSeedBorderOnNextPlane(pos, seedDir))
@@ -118,6 +120,7 @@ bool Seeding::isSeedBorderOnNextPlane(const Cell3DPosition& pos,
         const Cell3DPosition& firstPos = pos + seedDirPositions[dir];
 
         if (isInG(firstPos) and border->isOnBorder(firstPos)
+            and not isNotLowestOfBorder.count(firstPos)
             and isLowestOfBorderOnNextPlane(firstPos)) {
 
             // cout << pos << " - " << dir << ": true";
@@ -144,6 +147,7 @@ bool Seeding::isLowestOfBorderOnCurrentPlane(const Cell3DPosition& pos) const {
         if ((currentPos[1] < pos[1] or (currentPos[1] == pos[1] and currentPos[0] > pos[0]))
             // and (isInG(currentPos + forwardSeed))) {
             and (isInG(currentPos + seedDirPositions[RevZward]))) {
+            isNotLowestOfBorder.insert(pos);
             return false;
         }
 

@@ -157,6 +157,7 @@ void CoatingBlockCode::startup() {
     }
 
     if (not isInG(catom->position)) {
+    // if (isInScaffold(catom->position) or isInSandbox(catom->position)){
         if (catom->position[2] > 2) logScaffoldAttracted();
         else logSandboxAttracted();
 
@@ -281,6 +282,10 @@ void CoatingBlockCode::onBlockSelected() {
     cout << endl << "--- PRINT CATOM " << *catom << "---" << endl;
 
     seeding->print(catom->position);
+
+    cout << "isInScaffold: " << (scaffold->isInScaffold(scaffold->normalize(catom->position)) and scaffold->isInsideFn(catom->position)) << endl;
+    cout << "isInG: " << isInG(catom->position) << endl;
+    cout << "isSupportModule: " << isSupportPosition(catom->position) << endl;
 
     // cout << "isOnCSGBorder(" << catom->position << "): "
     //      << isOnCSGBorder(catom->position) << endl;
@@ -503,7 +508,8 @@ bool CoatingBlockCode::isOnCSGBorder(const Cell3DPosition& pos) {
 
 bool CoatingBlockCode::isInCoating(const Cell3DPosition& pos) {
     return BaseSimulator::getWorld()->lattice->isInGrid(pos)
-        and pos[2] >= G_SEED_POS[2] and isInCoatingLayer(pos, getGLayer(pos));
+        and pos[2] >= G_SEED_POS[2] and isInCoatingLayer(pos, getGLayer(pos))
+        and not isInScaffold(pos);
 }
 
 bool CoatingBlockCode::isInCoatingLayer(const Cell3DPosition& pos, int layer) {
@@ -1120,6 +1126,8 @@ findNextCoatingPositionOnLayer(const set<Cell3DPosition>& previous,
 void CoatingBlockCode::assembleInternalScaffoldNeighbors() {
     for (const Cell3DPosition& pos : lattice->getNeighborhood(catom->position)) {
         if (scaffold->isInScaffold(scaffold->normalize(pos)) and scaffold->isInsideFn(pos)
+            // and not isInCoating(pos)
+            and pos[2] >= catom->position[2]
             and lattice->isFree(pos)) {
             try {
                 world->addBlock(0, buildNewBlockCode, pos, WHITE);
@@ -1153,7 +1161,7 @@ void CoatingBlockCode::initializeGSeedPosition() {
                     lattice->highlightCell(G_SEED_POS, CYAN);
 
                     if (planeSupports[0].size() == 0) { // obviously never happens
-                        VS_ASSERT_MSG(isCoatingCornerCell(G_SEED_POS),"seed must be a corner");
+                        // VS_ASSERT_MSG(isCoatingCornerCell(G_SEED_POS),"seed must be a corner");
 
                         try {
                             world->addBlock(0, buildNewBlockCode, G_SEED_POS, CYAN);
@@ -1265,7 +1273,7 @@ void CoatingBlockCode::attractGroundSeeds() {
     for (const auto& seedPair : planeSeed[0]) {
         Cell3DPosition lowest = seeding->findLowestOfBorderFrom(seedPair.first);
 
-        if (lattice->isFree(lowest)) {
+        if (lattice->isFree(lowest) and lowest != G_SEED_POS) {
             world->addBlock(0, buildNewBlockCode, lowest, CYAN);
         }
     }
