@@ -655,6 +655,12 @@ void CoatingBlockCode::attractStructuralSupports(int layer) {
     VS_ASSERT(planeSupports.size() > (unsigned int)layer);
 
     for (const Cell3DPosition& pos : planeSupports[layer]) {
+        if (isBlockedSupport(pos)) {
+            lattice->highlightCell(pos, BROWN);
+            cout << "Support position " << pos << " has been omitted (blocked)" << endl;
+            continue;
+        }
+
         stringstream info;
         info << " attracts layer " << layer << " structural support to " << pos;
         scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
@@ -892,7 +898,7 @@ bool CoatingBlockCode::isSupportPosition(const Cell3DPosition& pos) {
 
     if (planeSupports.size() <= layer) return false;
 
-    return planeSupports[layer].count(pos);
+    return planeSupports[layer].count(pos) and not isBlockedSupport(pos);
 }
 
 bool CoatingBlockCode::isOnSupportSegment(const Cell3DPosition& pos) const {
@@ -1285,4 +1291,17 @@ void CoatingBlockCode::attractGroundSeeds() {
             world->addBlock(0, buildNewBlockCode, lowest, CYAN);
         }
     }
+}
+
+
+bool CoatingBlockCode::isBlockedSupport(const Cell3DPosition& pos) {
+    Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
+    for (const Cell3DPosition& nPos : lattice->getNeighborhood(pos)) {
+        if (nPos[2] != pos[2]) continue;
+        if (planeSupports[getGLayer(nPos)].count(nPos)
+            and isInScaffold(lattice->getOppositeCell(pos, nPos)))
+            return true;
+    }
+
+    return false;
 }

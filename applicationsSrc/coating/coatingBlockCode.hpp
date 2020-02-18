@@ -380,6 +380,8 @@ public :
         return pos[2] < G_SEED_POS[2];
     }
 
+    static bool isBlockedSupport(const Cell3DPosition& pos);
+
     inline static void logAttractedModule() {
         OUTPUT << "numAttractedModules: " << getScheduler()->now() << "\t"
                << ++numAttractedCoatingModules << endl;
