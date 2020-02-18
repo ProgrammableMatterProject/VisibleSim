@@ -2,6 +2,8 @@
 
 #include "world.h"
 
+#include <unistd.h>
+
 Seeding::Seeding(std::function<bool(const Cell3DPosition&)> _isInG,
                  Neighborhood *_neighborhood, Border *_border)
     : isInG(_isInG), nbh(_neighborhood), border(_border) {
@@ -182,24 +184,38 @@ bool Seeding::isLowestOfBorderOnNextPlane(const Cell3DPosition& pos) const {
     return nTurns <= 0;
 }
 
-Cell3DPosition Seeding::findLowestOfBorderFrom(const Cell3DPosition& pos) const {
+bool Seeding::findLowestOfBorderFrom(const Cell3DPosition& pos,
+                                     Cell3DPosition &lowest) const {
     int nTurns = 0;
     int idx = border->getIndexForBorder(pos);
 
-    Cell3DPosition lowest = pos;
+    lowest = pos;
+
+    // static int tsms = 500;
+
+    // lattice->highlightCell(pos, BLUE);
+    // usleep(tsms * 1000);
 
     Cell3DPosition currentPos = pos;
     nTurns += border->getNextBorderNeighborCCW(idx, currentPos);
     while(currentPos != pos) {
-        if (currentPos[1] < pos[1] or (currentPos[1] == pos[1] and currentPos[0] > pos[0])) {
-
+        if (currentPos[1] < lowest[1]
+            or (currentPos[1] == lowest[1] and currentPos[0] > lowest[0])) {
+            // if (pos != lowest) lattice->unhighlightCell(lowest);
             lowest = currentPos;
+
+            // lattice->highlightCell(lowest);
+            // usleep(tsms * 1000);
         }
 
         nTurns += border->getNextBorderNeighborCCW(idx, currentPos);
     }
 
-    return lowest;
+    // lattice->highlightCell(lowest, (nTurns <= 0 ? GREEN : RED));
+    // usleep(tsms * 1000);
+    // lattice->unhighlightCell(lowest);
+
+    return nTurns <= 0;
 }
 
 bool Seeding::hasLowerNeighborInCoating(const Cell3DPosition& pos) const {

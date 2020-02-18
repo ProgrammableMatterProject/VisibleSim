@@ -1156,7 +1156,11 @@ void CoatingBlockCode::initializeGSeedPosition() {
                 // lattice->highlightCell(pos, ORANGE);
 
                 if (isInCoatingLayer(pos, 0)) {
-                    G_SEED_POS = seeding->findLowestOfBorderFrom(pos);
+                    // cout << "G_SEED search from: " << pos << endl;
+                    // bool outerBorder =
+                        seeding->findLowestOfBorderFrom(pos, G_SEED_POS);
+                    // VS_ASSERT(outerBorder);
+
                     cout << "G_SEED_POS: " << G_SEED_POS << endl;
                     lattice->highlightCell(G_SEED_POS, CYAN);
 
@@ -1271,9 +1275,13 @@ void CoatingBlockCode::attractGroundSeeds() {
     // Take every seed for the next layer, and for each disjoint ground part,
     //  pick the module from the lowest border of each seeds
     for (const auto& seedPair : planeSeed[0]) {
-        Cell3DPosition lowest = seeding->findLowestOfBorderFrom(seedPair.first);
+        Cell3DPosition lowest;
+        // cout << "Ground attract from : " << seedPair.first << endl;
+        // bool isOnOuterBorder =
+            seeding->findLowestOfBorderFrom(seedPair.first, lowest);
 
-        if (lattice->isFree(lowest) and lowest != G_SEED_POS) {
+        if (// isOnOuterBorder and
+            lattice->isFree(lowest) and lowest != G_SEED_POS) {
             world->addBlock(0, buildNewBlockCode, lowest, CYAN);
         }
     }

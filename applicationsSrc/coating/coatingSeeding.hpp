@@ -113,7 +113,13 @@ public :
     bool firstPositionOfPlaneHasNoBetterCandidate(const Cell3DPosition& firstPos,
                                                   SeedDirection dir) const;
 
-    Cell3DPosition findLowestOfBorderFrom(const Cell3DPosition& pos) const;
+    /**
+     * @param pos source border position
+     * @param lowest lowest position on border
+     * @return true if border from pos is an outer border, false otherwise
+     */
+    bool findLowestOfBorderFrom(const Cell3DPosition& pos,
+                                Cell3DPosition& lowest) const;
 };
 
 #endif /* CoatingBorder_H_ */
