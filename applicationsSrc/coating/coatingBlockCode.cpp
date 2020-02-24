@@ -54,6 +54,10 @@ CoatingBlockCode::~CoatingBlockCode() {
         logSentMessagesTotal();
         logScaffoldModulesTotal();
         logSandboxModulesTotal();
+        logAttractedModulesTotal();
+        logSupportModulesTotal();
+
+        logSpreadsheetExport();
     }
 };
 
@@ -61,6 +65,8 @@ void CoatingBlockCode::startup() {
     if (COATING_MODE and not sandboxInitialized) initializeSandbox();
 
     if (catom->blockId == 1) {
+        logNumberOfModulesInDenseShape();
+
         G_SEED_POS = catom->position; // Simply for initialization, will be overloaded
 
         initializePlaneSeeds();
@@ -115,7 +121,7 @@ void CoatingBlockCode::startup() {
     int layer = getGLayer(catom->position);
 
     if (isSupportPosition(catom->position)) {
-        logAttractedModule();
+        logSupportAttracted();
 
         // For each free neighbor position
         for (const Cell3DPosition& p : lattice->getFreeNeighborCells(catom->position)) {
@@ -154,6 +160,8 @@ void CoatingBlockCode::startup() {
                 }
             else {} // attractPlane(layer);
         }
+
+        return;
     }
 
     if (not isInG(catom->position)) {

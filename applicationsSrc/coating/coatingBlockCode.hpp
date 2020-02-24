@@ -102,7 +102,10 @@ public :
     static inline size_t numAttractedCoatingModules = 0;
     static inline size_t numScaffoldModules = 0;
     static inline size_t numSandboxModules = 0;
+    static inline size_t numSegmentModules = 0;
+    static inline size_t numSupportModules = 0;
     static inline size_t numMessagesSent = 0;
+    static inline unsigned long numModulesDense = 0;
 public :
     CoatingBlockCode(Catoms3DBlock *host);
     ~CoatingBlockCode();
@@ -387,12 +390,18 @@ public :
                << ++numAttractedCoatingModules << endl;
     }
 
+
+    inline static void logAttractedModulesTotal() {
+        cout << "numAttractedModules: " << numAttractedCoatingModules << endl;
+    }
+
     inline static void logSentMessage() {
         ++numMessagesSent;
     }
 
     inline static void logSentMessagesTotal() {
         OUTPUT << "numSentMessages: " << numMessagesSent << endl;
+        cout << "numSentMessages: " << numMessagesSent << endl;
     }
 
     inline static void logScaffoldAttracted() {
@@ -401,6 +410,7 @@ public :
 
     inline static void logScaffoldModulesTotal() {
         OUTPUT << "numScaffoldModules: " << numScaffoldModules << endl;
+        cout << "numScaffoldModules: " << numScaffoldModules << endl;
     }
 
     inline static void logSandboxAttracted() {
@@ -409,9 +419,53 @@ public :
 
     inline static void logSandboxModulesTotal() {
         OUTPUT << "numSandboxModules: " << numSandboxModules << endl;
+        cout << "numSandboxModules: " << numSandboxModules << endl;
+    }
+
+    inline static void logSupportAttracted() {
+        ++numSupportModules;
+    }
+
+    inline static void logSupportModulesTotal() {
+        OUTPUT << "numSupportModules: " << numSupportModules << endl;
+        cout << "numSupportModules: " << numSupportModules << endl;
+    }
+
+    inline static void logSegmentModulesAttracted() {
+        ++numSegmentModules;
+    }
+
+    inline static void logSegmentModulesTotal() {
+        OUTPUT << "numSegmentModules: " << numSegmentModules << endl;
+        cout << "numSegmentModules: " << numSegmentModules << endl;
     }
 
 
+    inline static void logSpreadsheetExport() {
+        cout << numAttractedCoatingModules << "\t";
+        cout << numScaffoldModules << "\t";
+        cout << numSupportModules << "\t";
+        cout << numSandboxModules << "\t";
+        cout << numModulesDense << "\t";
+        cout << numMessagesSent << endl;
+    }
+
+
+    inline static void logNumberOfModulesInDenseShape() {
+        Cell3DPosition pos;
+        Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
+        for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++){
+            const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
+            const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
+            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                    pos.set(ix,iy,iz);
+
+                    if (target->isInTarget(pos)) numModulesDense++;
+                }
+            }
+        }
+    }
 
     inline int sendMessage(HandleableMessage*msg,
                            P2PNetworkInterface *dest, Time t0, Time dt) override {
