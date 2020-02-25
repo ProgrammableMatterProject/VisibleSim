@@ -73,6 +73,9 @@ void CoatingBlockCode::startup() {
         initializeStructuralSupports(); // FIXME:
         initializeGSeedPosition();
 
+        // for (int i = 0; i < nPlanes; i++)
+        //     attractStructuralSupports(i); // for manual configuration export
+
         attractStructuralSupports(0); // first layer supports only
 
         // FIXME: If multiple ground seeds are present it might means that we are dealing
@@ -102,7 +105,13 @@ void CoatingBlockCode::startup() {
         return;
     }
 
-    // catom->exportMatrix();
+    // if (isInG(catom->position)) catom->setColor(YELLOW);
+    // else if (isSupportPosition(catom->position)) catom->setColor(ORANGE);
+    // else if (isInScaffold(catom->position)) catom->setColor(CYAN);
+    // else catom->setColor(GREY);
+
+    // if (isInG(catom->position) or isSupportPosition(catom->position))
+    //     catom->exportMatrix();
 
     static bool delayInit = false;
     if (not delayInit) {
