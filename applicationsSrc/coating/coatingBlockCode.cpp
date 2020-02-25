@@ -105,10 +105,10 @@ void CoatingBlockCode::startup() {
         return;
     }
 
-    // if (isInG(catom->position)) catom->setColor(YELLOW);
-    // else if (isSupportPosition(catom->position)) catom->setColor(ORANGE);
-    // else if (isInScaffold(catom->position)) catom->setColor(CYAN);
-    // else catom->setColor(GREY);
+    if (isInG(catom->position)) catom->setColor(YELLOW);
+    else if (isSupportPosition(catom->position)) catom->setColor(ORANGE);
+    else if (isInScaffold(catom->position)) catom->setColor(CYAN);
+    else catom->setColor(GREY);
 
     // if (isInG(catom->position) or isSupportPosition(catom->position))
     //     catom->exportMatrix();
@@ -157,18 +157,28 @@ void CoatingBlockCode::startup() {
         nextNeighbor: ;
         }
 
-        if (expectedSegments.size() == 0
-            and ++planeSupportsReady[layer] == planeSupports[layer].size()) {
+        if (expectedSegments.size() == 0) {
+            if (supportsReadyRequestItf != nullptr) {
+                // No segments needed, inform requester
+                sendMessage(new SupportReadyResponse(numCompletedSegments),
+                               supportsReadyRequestItf, MSG_DELAY, 0);
+                supportsReadyRequestItf = nullptr;
+            }
 
-            if (layer == 0)
-                if (lattice->isFree(G_SEED_POS))
-                    world->addBlock(0, buildNewBlockCode, G_SEED_POS, CYAN);
-                else { // Might be on a segment
-                    static_cast<CoatingBlockCode*>(lattice->getBlock(G_SEED_POS)->blockCode)
-                        ->startBorderCompletionAlgorithm();
-                }
-            else {} // attractPlane(layer);
+            if (++planeSupportsReady[layer] == planeSupports[layer].size()) {
+
+                if (layer == 0)
+                    if (lattice->isFree(G_SEED_POS))
+                        world->addBlock(0, buildNewBlockCode, G_SEED_POS, CYAN);
+                    else { // Might be on a segment
+                        static_cast<CoatingBlockCode*>(lattice->getBlock(G_SEED_POS)->blockCode)
+                            ->startBorderCompletion();
+                    }
+                else {} // attractPlane(layer);
+            }
         }
+
+        supportInitialized = true;
 
         return;
     }
@@ -220,6 +230,10 @@ void CoatingBlockCode::startup() {
         watchlist.erase(it);
     }
 
+    if (catom->position == G_SEED_POS and layer0HasSegments) {
+        startBorderCompletion();
+        return;
+    }
 
     if (isInG(catom->position) and not borderCompleted.count(catom->position)) {
         attract();
@@ -649,16 +663,45 @@ void CoatingBlockCode::initializeStructuralSupports() {
         for (const Cell3DPosition& pos : scaffold->getAllSupportPositionsForPlane(z)) {
             // Check that border is not larger than one in front of support, avoids blockages
             bool eligible = true;
-            for (const Cell3DPosition& np : lattice->getNeighborhood(pos)) {
-                const Cell3DPosition& opp = lattice->getOppositeCell(np, pos);
-                if (np[2] == pos[2] and isInG(np) and isInG(opp)) {
-                    lattice->highlightCell(pos, ORANGE);
-                    lattice->highlightCell(np, RED);
-                    lattice->highlightCell(opp, BLUE);
-                    // awaitKeyPressed();
-                    eligible = false;
-                    break;
-                }
+
+            if (isUselessSupport(pos) or isBlockedSupport(pos)
+                or isUnreachableSupport(pos)) {
+                eligible = false;
+                lattice->highlightCell(pos, BROWN);
+                cout << "Support position " << pos << " has been omitted" << endl;
+                continue;
+            }
+
+            // for (const Cell3DPosition& np : lattice->getNeighborhood(pos)) {
+            //     const Cell3DPosition& opp = lattice->getOppositeCell(np, pos);
+            //     if (np[2] == pos[2] and isInG(np) and isInG(opp)) {
+            //         lattice->highlightCell(pos, ORANGE);
+            //         lattice->highlightCell(np, RED);
+            //         lattice->highlightCell(opp, BLUE);
+            //         // awaitKeyPressed();
+            //         eligible = false;
+            //         break;
+            //     }
+            // }
+
+            // NOTE: Good idea but does not work as segment detection fails
+            //  when support at layer N has no N-1 neighbor...
+
+            std::array<Cell3DPosition, 2> npDirs = {
+                Cell3DPosition(1, 0, 0), Cell3DPosition(0,1,0) };
+            // for (const Cell3DPosition& np : lattice->getNeighborhood(pos)) {
+            const Cell3DPosition& np0 = pos + npDirs[0];
+            const Cell3DPosition& np1 = pos + npDirs[1];
+            const Cell3DPosition& opp0 = lattice->getOppositeCell(np0, pos);
+            const Cell3DPosition& opp1 = lattice->getOppositeCell(np1, pos);
+            if (isInG(np0) and isInG(opp0) and isInG(np1) and isInG(opp1)) {
+                lattice->highlightCell(pos, ORANGE);
+                lattice->highlightCell(np0, RED);
+                lattice->highlightCell(opp0, BLUE);
+                lattice->highlightCell(np1, RED);
+                lattice->highlightCell(opp1, BLUE);
+                // awaitKeyPressed();
+                eligible = false;
             }
 
             if (eligible) {
@@ -675,6 +718,14 @@ void CoatingBlockCode::attractStructuralSupports(int layer) {
         if (isBlockedSupport(pos)) {
             lattice->highlightCell(pos, BROWN);
             cout << "Support position " << pos << " has been omitted (blocked)" << endl;
+            continue;
+        } else if (isUselessSupport(pos)) {
+            lattice->highlightCell(pos, BROWN);
+            cout << "Support position " << pos << " has been omitted (useless)" << endl;
+            continue;
+        } else if (isUnreachableSupport(pos)) {
+            lattice->highlightCell(pos, BROWN);
+            cout << "Support position " << pos << " has been omitted (unreachable)" << endl;
             continue;
         }
 
@@ -915,7 +966,10 @@ bool CoatingBlockCode::isSupportPosition(const Cell3DPosition& pos) {
 
     if (planeSupports.size() <= layer) return false;
 
-    return planeSupports[layer].count(pos) and not isBlockedSupport(pos);
+    return planeSupports[layer].count(pos);
+        // and not isBlockedSupport(pos)
+        // and not isUselessSupport(pos)
+        // and not isUnreachableSupport(pos);
 }
 
 bool CoatingBlockCode::isOnSupportSegment(const Cell3DPosition& pos) const {
@@ -1012,6 +1066,10 @@ void CoatingBlockCode::attractNextModuleAlongSegment() {
             scheduler->trace(info.str(), catom->blockId, ATTRACT_DEBUG_COLOR);
 
             expectedSegments.insert(p);
+
+            if (getGLayer(catom->position) == 0)
+                layer0HasSegments = true;
+
             attractedBySupport.insert(p);
             sendAttractSignalTo(p);
 
@@ -1083,7 +1141,7 @@ void CoatingBlockCode::attractPlane(unsigned int layer) {
             CoatingBlockCode* cb = static_cast<CoatingBlockCode*>
                 (lattice->getBlock(seed)->blockCode);
 
-            cb->catom->setColor(MAGENTA);
+            // cb->catom->setColor(MAGENTA);
 
             Cell3DPosition next = cb->findNextCoatingPositionOnLayer
                 (seed,
@@ -1321,4 +1379,31 @@ bool CoatingBlockCode::isBlockedSupport(const Cell3DPosition& pos) {
     }
 
     return false;
+}
+
+
+bool CoatingBlockCode::isUselessSupport(const Cell3DPosition& pos) {
+    bool hasCoatingNeighbor = false;
+
+    Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
+    for (const Cell3DPosition& nPos : lattice->getNeighborhood(pos)) {
+        if (nPos[2] != pos[2]) continue;
+        if (isInG(nPos)) hasCoatingNeighbor = true;
+    }
+
+    return not hasCoatingNeighbor;
+}
+
+bool CoatingBlockCode::isUnreachableSupport(const Cell3DPosition& pos) {
+    bool hasCoatingBottomNeighbor = false;
+
+    if (getGLayer(pos) == 0) return false;
+
+    Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
+    for (const Cell3DPosition& nPos : lattice->getNeighborhood(pos)) {
+        if (nPos[2] >= pos[2]) continue;
+        if (isInG(nPos)) hasCoatingBottomNeighbor = true;
+    }
+
+    return not hasCoatingBottomNeighbor;
 }

@@ -97,7 +97,10 @@ public :
     P2PNetworkInterface *supportsReadyRequestItf = nullptr; //!< Awaiting request if != nullptr
     P2PNetworkInterface *supportsReadyBacktraceItf = nullptr; //!< Module to backtrace through
     bool segmentsDetected = false;
+    bool supportInitialized = false;
     set<Cell3DPosition> supportsReadyBlacklist; //!< Used to avoid looping
+
+    static inline bool layer0HasSegments = false;
 
     static inline size_t numAttractedCoatingModules = 0;
     static inline size_t numScaffoldModules = 0;
@@ -384,6 +387,8 @@ public :
     }
 
     static bool isBlockedSupport(const Cell3DPosition& pos);
+    static bool isUselessSupport(const Cell3DPosition& pos);
+    static bool isUnreachableSupport(const Cell3DPosition& pos);
 
     inline static void logAttractedModule() {
         OUTPUT << "numAttractedModules: " << getScheduler()->now() << "\t"

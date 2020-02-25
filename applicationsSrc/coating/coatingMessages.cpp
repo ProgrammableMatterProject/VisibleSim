@@ -24,8 +24,16 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
             cb.notifyAttracterOfSegmentCompletion(cb.segmentsAckBlacklist,
                                                   destinationInterface);
         } else {
-            cb.catom->setColor(GREY);
+            cb.catom->setColor(LIGHTBLUE);
             unsigned int layer = cb.getGLayer(cb.catom->position);
+
+            if (cb.supportsReadyRequestItf != nullptr) {
+            // Notify of segment completion if previously asked
+            // Segments are done being built
+                cb.sendMessage(new SupportReadyResponse(cb.numCompletedSegments),
+                               cb.supportsReadyRequestItf, MSG_DELAY, 0);
+                cb.supportsReadyRequestItf = nullptr;
+            }
 
             if (++cb.planeSupportsReady[layer] == cb.planeSupports[layer].size()) {
                 if (layer == 0) {
@@ -196,10 +204,12 @@ void SupportReadyRequest::handle(BaseSimulator::BlockCode* bc) {
     cb.supportsReadyRequestItf = destinationInterface;
 
     // Segments are done being built
-    if (cb.numCompletedSegments == cb.expectedSegments.size()) {
+    if (cb.supportInitialized // If not itinialized, wait also
+        and cb.numCompletedSegments == cb.expectedSegments.size()) {
         // Answer right away
         cb.sendMessage(new SupportReadyResponse(cb.expectedSegments.size() > 0),
                        cb.supportsReadyRequestItf, MSG_DELAY, 0);
+        cb.supportsReadyRequestItf = nullptr;
     } // else, wait for them to complete and send reply only then
 }
 

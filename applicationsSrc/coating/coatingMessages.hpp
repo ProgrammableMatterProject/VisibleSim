@@ -125,5 +125,6 @@ public:
     virtual void handle(BaseSimulator::BlockCode*) override;
 
     virtual Message* clone() const override { return new SupportReadyResponse(*this); }
-    virtual string getName() const override { return "SupportReadyResponse"; }
+    virtual string getName() const override { return "SupportReadyResponse("
+            + string(hasSegments ? "true" : "false") + ")"; }
 };
