@@ -557,11 +557,11 @@ void GlutContext::calculateFPS(void) {
 }
 
 void GlutContext::calculateSimulationInfo(void) {
-    // Compute rotation time
-    Time motionDuration = Rotations3D::rotationDelayMultiplier * Rotations3D::ANIMATION_DELAY;
+    // // Compute rotation time
+    // Time motionDuration = Rotations3D::rotationDelayMultiplier * Rotations3D::ANIMATION_DELAY;
 
-    // Calculate time step
-    timestep = round(getScheduler()->now() / (motionDuration));
+    // // Calculate time step
+    // timestep = round(getScheduler()->now() / (motionDuration));
 
     // Update number of modules (disregard deletions, compensate for moving modules)
     nbModules = BaseSimulator::getWorld()->lattice->nbModules;
@@ -593,8 +593,8 @@ void GlutContext::showSimulationInfo(void) {
 
         glColor4f(1.0,1.0,1.0,0.75);
 
-    sprintf(str,"Timestep: %lu", timestep);
-    GlutWindow::drawString(50, 50, str, font);
+    // sprintf(str,"Timestep: %lu", timestep);
+    // GlutWindow::drawString(50, 50, str, font);
 
     sprintf(str,"Nb modules: %u", nbModules);
     GlutWindow::drawString(50, 25, str, font);

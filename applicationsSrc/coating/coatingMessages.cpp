@@ -14,9 +14,9 @@
 void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
     CoatingBlockCode& cb = *static_cast<CoatingBlockCode*>(bc);
 
-    cb.catom->setColor(YELLOW);
+    // cb.catom->setColor(YELLOW);
 
-    // Not a support module, forward message along the segment
+    // not a support module, forward message along the segment
     if (cb.expectedSegments.count(sourceInterface->hostBlock->position)) {
         if (++cb.numCompletedSegments == cb.expectedSegments.size()) {
             if (not cb.isSupportPosition(cb.catom->position)) {
@@ -24,7 +24,7 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
                 cb.notifyAttracterOfSegmentCompletion(cb.segmentsAckBlacklist,
                                                       destinationInterface);
             } else {
-                cb.catom->setColor(LIGHTBLUE);
+                // cb.catom->setColor(LIGHTBLUE);
                 unsigned int layer = cb.getGLayer(cb.catom->position);
 
                 if (cb.supportsReadyRequestItf != nullptr) {
@@ -90,23 +90,31 @@ void NextPlaneSupportsReadyMessage::handle(BaseSimulator::BlockCode* bc) {
     cb.supportsReadyBacktraceItf = destinationInterface;
 
     if (cb.isSeedPosition(cb.catom->position)) {
-        const Cell3DPosition& firstPos = cb.getStartPositionAboveSeed(cb.catom->position);
+        set<Cell3DPosition> processed;
+        for (const auto& seedPair : cb.planeSeed[0]) {
+            Cell3DPosition lowest;
+            cb.seeding->findLowestOfBorderFrom(seedPair.first, lowest);
+            const Cell3DPosition& firstPos = cb.getStartPositionAboveSeed(lowest);
 
-        // Attract module above seed, or start border following depending on segmentsDetected
-        if (segmentsDetected) {
-            // Check if module right above is in place
-            if (cb.lattice->isFree(firstPos)) {
-                // Mark for border completion and attract
-                cb.borderCompleted.insert(firstPos);
-                cb.completionNeighbors.insert(firstPos);
-                cb.nextBorderItf = cb.catom->getInterface(firstPos);
-                cb.sendAttractSignalTo(firstPos);
+            if (processed.count(lowest)) continue;
+
+            CoatingBlockCode& cs = *static_cast<CoatingBlockCode*>(cb.lattice->getBlock(lowest)->blockCode);
+
+            if (segmentsDetected) {
+                // Check if module right above is in place
+                if (cs.lattice->isFree(firstPos)) {
+                    // Mark for border completion and attract
+                    cs.borderCompleted.insert(firstPos);
+                    cs.completionNeighbors.insert(firstPos);
+                    cs.nextBorderItf = cb.catom->getInterface(firstPos);
+                    cs.sendAttractSignalTo(firstPos);
+                } else {
+                    cs.startBorderCompletionAlgorithm();
+                }
             } else {
-                cb.startBorderCompletionAlgorithm();
+                if(cs.lattice->isFree(firstPos))
+                    cs.sendAttractSignalTo(firstPos);
             }
-        } else {
-            VS_ASSERT(cb.lattice->isFree(firstPos));
-            cb.sendAttractSignalTo(firstPos);
         }
 
         return;

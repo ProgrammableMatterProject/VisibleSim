@@ -82,6 +82,8 @@ public :
     // FIXME: non-local, should be a gradient value
     static inline set<Cell3DPosition> borderCompleted; //!< Set of all modules that have been attracted through border completion
 
+    static inline set<Cell3DPosition> groundSeed;
+
     set<Cell3DPosition> expectedSegments; //!< Roots of segments grown from a support module
     unsigned short numCompletedSegments = 0; //!< Number of completion ACK rcvd from segments
     set<Cell3DPosition> segmentsAckBlacklist; //!< Used to maintain convergence/border following
@@ -100,7 +102,8 @@ public :
     bool supportInitialized = false;
     set<Cell3DPosition> supportsReadyBlacklist; //!< Used to avoid looping
 
-    static inline bool layer0HasSegments = false;
+    static inline bool layer0HasSegments = true;
+    static inline vector<bool> layerHasSegments;
 
     static inline size_t numAttractedCoatingModules = 0;
     static inline size_t numScaffoldModules = 0;

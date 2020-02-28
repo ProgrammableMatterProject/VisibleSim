@@ -274,22 +274,22 @@ bool ScaffoldManager::isWithinCSGMinus2(const Cell3DPosition& pos) const {
 
     // This is used to work with scaffolds that are smaller than the CSG they represent by
     //  two modules.
-    // const Cell3DPosition& dpos = denormalize(pos);
-    // if (IS_ODD(pos[2]) and m_mod(dpos[2], 6) == 0 and not (isHelperModule(dpos))) {
-    //     for (const Cell3DPosition& p : _2ndOrderOddScaffoldNeighbors) {
-    //         const Cell3DPosition &pn = pos + p;
-    //         if (pn[2] > 2 and not isInCSG(pn)) {
-    //             return false;
-    //         }
-    //     }
-    // } else {
+    const Cell3DPosition& dpos = denormalize(pos);
+    if (IS_ODD(pos[2]) and m_mod(dpos[2], 6) == 0 and not (isHelperModule(dpos))) {
+        for (const Cell3DPosition& p : _2ndOrderOddScaffoldNeighbors) {
+            const Cell3DPosition &pn = pos + p;
+            if (pn[2] > 2 and not isInCSG(pn)) {
+                return false;
+            }
+        }
+    } else {
         for (const Cell3DPosition& p : _2ndOrderScaffoldNeighbors) {
             const Cell3DPosition &pn = pos + p;
             if (pn[2] > 2 and not isInCSG(pn)) {
                 return false;
             }
         }
-    // }
+    }
 
     // for (int i = 0; i < N_BRANCHES; i++) {
     //     BranchIndex bi = (BranchIndex)i;
