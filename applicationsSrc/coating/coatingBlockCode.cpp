@@ -111,7 +111,7 @@ void CoatingBlockCode::startup() {
     else catom->setColor(GREY);
 
     // if (isInG(catom->position) or isSupportPosition(catom->position))
-    //     catom->exportMatrix();
+        // catom->exportMatrix();
 
     static bool delayInit = false;
     if (not delayInit) {
@@ -667,7 +667,7 @@ void CoatingBlockCode::initializeStructuralSupports() {
             if (isUselessSupport(pos) or isBlockedSupport(pos)
                 or isUnreachableSupport(pos)) {
                 eligible = false;
-                lattice->highlightCell(pos, BROWN);
+                // lattice->highlightCell(pos, BROWN);
                 cout << "Support position " << pos << " has been omitted" << endl;
                 continue;
             }

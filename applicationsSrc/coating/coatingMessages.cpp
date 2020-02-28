@@ -17,47 +17,47 @@ void SupportSegmentCompleteMessage::handle(BaseSimulator::BlockCode* bc) {
     cb.catom->setColor(YELLOW);
 
     // Not a support module, forward message along the segment
-    if (cb.expectedSegments.count(sourceInterface->hostBlock->position)
-        and ++cb.numCompletedSegments == cb.expectedSegments.size()) {
-        if (not cb.isSupportPosition(cb.catom->position)) {
-            cb.segmentsAckBlacklist.insert(sourceInterface->hostBlock->position);
-            cb.notifyAttracterOfSegmentCompletion(cb.segmentsAckBlacklist,
-                                                  destinationInterface);
-        } else {
-            cb.catom->setColor(LIGHTBLUE);
-            unsigned int layer = cb.getGLayer(cb.catom->position);
+    if (cb.expectedSegments.count(sourceInterface->hostBlock->position)) {
+        if (++cb.numCompletedSegments == cb.expectedSegments.size()) {
+            if (not cb.isSupportPosition(cb.catom->position)) {
+                cb.segmentsAckBlacklist.insert(sourceInterface->hostBlock->position);
+                cb.notifyAttracterOfSegmentCompletion(cb.segmentsAckBlacklist,
+                                                      destinationInterface);
+            } else {
+                cb.catom->setColor(LIGHTBLUE);
+                unsigned int layer = cb.getGLayer(cb.catom->position);
 
-            if (cb.supportsReadyRequestItf != nullptr) {
-            // Notify of segment completion if previously asked
-            // Segments are done being built
-                cb.sendMessage(new SupportReadyResponse(cb.numCompletedSegments),
-                               cb.supportsReadyRequestItf, MSG_DELAY, 0);
-                cb.supportsReadyRequestItf = nullptr;
-            }
+                if (cb.supportsReadyRequestItf != nullptr) {
+                    // Notify of segment completion if previously asked
+                    // Segments are done being built
+                    cb.sendMessage(new SupportReadyResponse(cb.numCompletedSegments),
+                                   cb.supportsReadyRequestItf, MSG_DELAY, 0);
+                    cb.supportsReadyRequestItf = nullptr;
+                }
 
-            if (++cb.planeSupportsReady[layer] == cb.planeSupports[layer].size()) {
-                if (layer == 0) {
-                    if (cb.lattice->isFree(cb.G_SEED_POS)) {
-                        cb.world->addBlock(0, cb.buildNewBlockCode, cb.G_SEED_POS, CYAN);
-                    } else { // Might be on a segment
-                        if (cb.isCoatingCornerCell(cb.G_SEED_POS)) {
-                            static_cast<CoatingBlockCode*>(
-                                cb.lattice->getBlock(cb.G_SEED_POS)->blockCode)
-                                ->handleBorderCompletion(Cell3DPosition(-1,-1,-1), false);
-                        } else {
-                            static_cast<CoatingBlockCode*>(
-                                cb.lattice->getBlock(cb.G_SEED_POS)->blockCode)
-                                ->startBorderCompletion();
+                if (++cb.planeSupportsReady[layer] == cb.planeSupports[layer].size()) {
+                    if (layer == 0) {
+                        if (cb.lattice->isFree(cb.G_SEED_POS)) {
+                            cb.world->addBlock(0, cb.buildNewBlockCode, cb.G_SEED_POS, CYAN);
+                        } else { // Might be on a segment
+                            if (cb.isCoatingCornerCell(cb.G_SEED_POS)) {
+                                static_cast<CoatingBlockCode*>(
+                                    cb.lattice->getBlock(cb.G_SEED_POS)->blockCode)
+                                    ->handleBorderCompletion(Cell3DPosition(-1,-1,-1), false);
+                            } else {
+                                static_cast<CoatingBlockCode*>(
+                                    cb.lattice->getBlock(cb.G_SEED_POS)->blockCode)
+                                    ->startBorderCompletion();
+                            }
                         }
+                    } else {
+                        // NOTE: Should be useless now, along with planeSupportsReady
+                        // cb.attractPlane(layer);
                     }
-                } else {
-                    // NOTE: Should be useless now, along with planeSupportsReady
-                    // cb.attractPlane(layer);
                 }
             }
         }
     } else if (cb.isSupportPosition(cb.catom->position)) {
-
         // Wrong support
         cb.sendMessage(new SegmentCompleteWrongSupport(), destinationInterface, MSG_DELAY, 0);
     }

@@ -188,4 +188,40 @@ inline constexpr Cell3DPosition _2ndOrderScaffoldNeighbors[] = {
     // Cell3DPosition(-1,-1,2), // right above
     // Cell3DPosition(1,1,-2), // right below
 };
+
+inline constexpr Cell3DPosition _2ndOrderOddScaffoldNeighbors[] = {
+
+    Cell3DPosition(-2,-2,1), // upper ring front-left corner
+    Cell3DPosition(-1,-2,1),
+    Cell3DPosition(0,-2,1),
+
+    Cell3DPosition(1,-2,1), // upper ring front-right corner
+    Cell3DPosition(1,-1,1),
+    Cell3DPosition(1,0,1),
+
+    Cell3DPosition(1,1,1), // upper ring rear-right corner
+    Cell3DPosition(0,1,1),
+    Cell3DPosition(-1,1,1),
+
+    Cell3DPosition(-2,1,1), // upper ring rear-left corner
+    Cell3DPosition(-2,0,1),
+    Cell3DPosition(-2,-1,1),
+
+    Cell3DPosition(-1,-1,-1), // lower ring front-left corner
+    Cell3DPosition(0,-1,-1),
+    Cell3DPosition(1,-1,-1),
+
+    Cell3DPosition(2,-1,-1), // lower ring front-right corner
+    Cell3DPosition(2,0,-1),
+    Cell3DPosition(2,1,-1),
+
+    Cell3DPosition(2,2,-1),  // lower ring rear-right corner
+    Cell3DPosition(1,2,-1),
+    Cell3DPosition(0,2,-1),
+
+    Cell3DPosition(-1,2,-1), // lower ring rear-left corner
+    Cell3DPosition(-1,1,-1),
+    Cell3DPosition(-1,0,-1),
+};
+
 #endif // COATING_UTILS__H_
