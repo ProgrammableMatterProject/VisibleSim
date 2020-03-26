@@ -155,7 +155,7 @@ public:
      * @throw NoRotationPathForFaceException if no feasible rotations can be found.
      * @throw InvalidArgumentException if one of the arguments is invalid
      */
-    Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot, short conToId,
+    Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Catoms3DBlock *pivot, short conToId,
                          RotationLinkType faceReq = RotationLinkType::Any,
                          bool exclusively = true);
 
@@ -174,7 +174,7 @@ public:
      * @throw InvalidArgumentException if one of the arguments is invalid
      * @attention constructor chaining with Rotation3DStartEvent(Time t, Catoms3DBlock*m, Catoms3DBlock *, short, RotationLinkType)
      */
-    Rotation3DStartEvent(Time t, Catoms3DBlock*m, Catoms3DBlock *pivot,
+    Rotation3DStartEvent(Time t, Catoms3DBlock*m, const Catoms3DBlock *pivot,
                          const Cell3DPosition& tPos,
                          RotationLinkType faceReq = RotationLinkType::Any,
                          bool exclusively = true);

@@ -41,7 +41,7 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *block,const Ro
     rot = r;
 }
 
-Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot,
+Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Catoms3DBlock *pivot,
                                            const Cell3DPosition& tPos,
                                            RotationLinkType faceReq, bool exclusivelyReq)
     : Rotation3DStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1,
@@ -62,7 +62,7 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m,
                                   Any : faceReq), exclusively)
 {}
 
-Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot,
+Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Catoms3DBlock *pivot,
                                            short toCon, RotationLinkType faceReq,
                                            bool exclusively) : BlockEvent(t, m) {
     EVENT_CONSTRUCTOR_INFO();
@@ -329,7 +329,7 @@ void Rotations3D::init(const Matrix& m) {
 
 
 void Rotations3D::exportMatrix(const Matrix& m) {
-// #define ROTATION_STEP_MATRIX_EXPORT
+#define ROTATION_STEP_MATRIX_EXPORT
 #ifdef ROTATION_STEP_MATRIX_EXPORT
 
     Catoms3DBlock* block = static_cast<Catoms3DBlock*>

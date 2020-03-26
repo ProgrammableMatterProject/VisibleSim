@@ -84,25 +84,39 @@ void C3DRotateCode::initDistances() {
 }
 
 void C3DRotateCode::startup() {
-    isLocked=false;
-    currentMotion=NULL;
+	isLockedBy=0;
+	currentMotion=NULL;
 
-	addMessageEventFunc(LOCK_MSG,_myLockFunc);
-	addMessageEventFunc(ANSLOCK_MSG,_myAnsLockFunc);
+	/*addMessageEventFunc(LOCK_MSG,_myLockFunc);
+	addMessageEventFunc(UNLOCK_MSG,_myUnlockFunc);
+	addMessageEventFunc(ANSLOCK_MSG,_myAnsLockFunc);*/
+	addMessageEventFunc2(LOCK_MSG,
+											 std::bind(&C3DRotateCode::myLockFunc, this,
+																 std::placeholders::_1, std::placeholders::_2));
+	addMessageEventFunc2(UNLOCK_MSG,
+											 std::bind(&C3DRotateCode::myUnlockFunc, this,
+																 std::placeholders::_1, std::placeholders::_2));
+	addMessageEventFunc2(ANSLOCK_MSG,
+											 std::bind(&C3DRotateCode::myAnsLockFunc, this,
+																 std::placeholders::_1, std::placeholders::_2));
+	
+	
+	assert(target!=NULL);
+	if (target->isInTarget(module->position)) {
+		module->setColor(target->getTargetColor(module->position));
+	}
 
-    assert(target!=NULL);
-    if (target->isInTarget(module->position)) {
-        module->setColor(target->getTargetColor(module->position));
-    }
-
-    FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
-    lattice->initTabDistances();
-    initDistances();
-    tryToMove();
+	FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
+	lattice->initTabDistances();
+	initDistances();
+	tryToMove();
 }
 
 bool C3DRotateCode::tryToMove() {
-    if (isLocked || target->isInTarget(module->position)) return false;
+    if (isLockedBy!=0 || target->isInTarget(module->position)) {
+			if (isLockedBy) console << "locked by " << isLockedBy << "!\n";
+			return false;
+		}
     FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
     unsigned short moduleDistance = lattice->getDistance(module->position);
 
@@ -157,10 +171,11 @@ bool C3DRotateCode::tryToMove() {
     return false;
 }
 
-void C3DRotateCode::myLockFunc(const MessageOf<Motions>*msg, P2PNetworkInterface*sender) {
+void C3DRotateCode::myLockFunc(MessagePtr anonMsg, P2PNetworkInterface*sender) {
+	MessageOf<Motions>* msg = static_cast<MessageOf<Motions>*>(anonMsg.get());
 	Motions msgData = *msg->getData();
     bool answer = false;
-    if (!isLocked) {
+    if (isLockedBy==0) {
         FCCLattice *FCClat = (FCCLattice*)(Catoms3D::getWorld()->lattice);
         answer=true;
         int n=0;
@@ -181,22 +196,33 @@ void C3DRotateCode::myLockFunc(const MessageOf<Motions>*msg, P2PNetworkInterface
                 ci--;
             }
         }
-        isLocked = answer;
-        if (isLocked) module->setColor(RED);
+        if (answer) {
+					isLockedBy=sender->getConnectedBlockId();
+					module->setColor(RED);
+				}
     }
     console << "send ANSLOCK(" << answer << ") to " << sender->connectedInterface->hostBlock->blockId << "\n";
     sendMessage(new MessageOf<bool>(ANSLOCK_MSG,answer),sender,100,200);
 };
 
-void C3DRotateCode::myAnsLockFunc(const MessageOf<bool>*msg, P2PNetworkInterface*sender) {
+void C3DRotateCode::myUnlockFunc(MessagePtr anonMsg, P2PNetworkInterface*sender) {
+	if (sender->getConnectedBlockId()==isLockedBy) {
+		isLockedBy=0;
+	}
+}
+
+void C3DRotateCode::myAnsLockFunc(MessagePtr anonMsg, P2PNetworkInterface*sender) {
+	MessageOf<bool>* msg = static_cast<MessageOf<bool>*>(anonMsg.get());
 	bool msgData = *msg->getData();
 
-    if (msgData) {
-        currentMotion->MRlist->sendRotationEvent(module,currentMotion->fixed,scheduler->now()+2000);
+		if (msgData) {
+			console << "rcv. ANSLOCK\n";
+			currentMotion->MRlist->sendRotationEvent(module,currentMotion->fixed,scheduler->now()+2000);
     }
 };
 
 void C3DRotateCode::onMotionEnd() {
+	console << "On motion End\n";
 // unlock cells
 
     FCCLattice *FCClat = (FCCLattice*)(Catoms3D::getWorld()->lattice);
@@ -206,10 +232,18 @@ void C3DRotateCode::onMotionEnd() {
         FCClat->unlockCell(*ci);
         ci++;
     }
+    P2PNetworkInterface *p2p = nullptr;
+		for (int i=0; i<12; i++) {
+			if (module->getInterface(i)->getConnectedBlockId()==currentMotion->fixed->blockId) {
+				p2p = module->getInterface(i);
+			}
+		}
+    if (p2p) sendMessage(new Message(UNLOCK_MSG),p2p,100,200);
+		
     delete currentMotion;
-    isLocked = false;
     module->setColor(YELLOW);
     currentMotion=NULL;
+		tryToMove();
 }
 
 void C3DRotateCode::onTap(int n) {
@@ -217,17 +251,23 @@ void C3DRotateCode::onTap(int n) {
     tryToMove();
 }
 
-void _myLockFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+/*void _myLockFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
 	C3DRotateCode *cb = (C3DRotateCode*)codebloc;
 	MessageOf<Motions>*msgType = (MessageOf<Motions>*)msg.get();
 	cb->myLockFunc(msgType,sender);
+}
+
+void _myUnlockFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	C3DRotateCode *cb = (C3DRotateCode*)codebloc;
+	MessageOf<Motions>*msgType = (MessagePtr)msg.get();
+	cb->myUnlockFunc(msgType,sender);
 }
 
 void _myAnsLockFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
 	C3DRotateCode *cb = (C3DRotateCode*)codebloc;
 	MessageOf<bool>*msgType = (MessageOf<bool>*)msg.get();
 	cb->myAnsLockFunc(msgType,sender);
-}
+}*/
 
 Motions::Motions(Catoms3DBlock *m,Catoms3DBlock *f,Catoms3DMotionRulesLink* mrl) {
     mobile = m;

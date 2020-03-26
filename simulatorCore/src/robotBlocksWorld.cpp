@@ -446,4 +446,132 @@ void RobotBlocksWorld::exportConfiguration() {
     exporter.exportConfiguration();
 }
 
+void saveStlRect(ofstream &fout,const Vector3D &O,const Vector3D &u,const Vector3D &v,const Vector3D &N) {
+	char buf[25];
+	snprintf(buf,25,"%5.3f %5.3f %5.3f", N[0], N[1], N[2]);
+	fout << "          facet normal " << buf << endl;
+	fout << "            outer loop" << endl;
+	snprintf(buf,25,"%5.3f %5.3f %5.3f", O[0], O[1], O[2]);
+	fout << "              vertex " << buf << endl;
+	snprintf(buf,25,"%5.3f %5.3f %5.3f", O[0]+u[0], O[1]+u[1], O[2]+u[2]);
+	fout << "              vertex " << buf << endl;
+	snprintf(buf,25,"%5.3f %5.3f %5.3f", O[0]+v[0], O[1]+v[1], O[2]+v[2]);
+	fout << "              vertex " << buf << endl;
+	fout << "            endloop" << endl;
+	fout << "          endfacet" << endl;
+
+	snprintf(buf,25,"%5.3f %5.3f %5.3f", N[0], N[1], N[2]);
+	fout << "          facet normal " << buf << endl;
+	fout << "            outer loop" << endl;
+	snprintf(buf,25,"%5.3f %5.3f %5.3f", O[0]+u[0], O[1]+u[1], O[2]+u[2]);
+	fout << "              vertex " << buf << endl;
+	snprintf(buf,25,"%5.3f %5.3f %5.3f", O[0]+u[0]+v[0], O[1]+u[1]+v[1], O[2]+u[2]+v[2]);
+	fout << "              vertex " << buf << endl;
+	snprintf(buf,25,"%5.3f %5.3f %5.3f", O[0]+v[0], O[1]+v[1], O[2]+v[2]);
+	fout << "              vertex " << buf << endl;
+	fout << "            endloop" << endl;
+	fout << "          endfacet" << endl;
+}
+
+bool RobotBlocksWorld::exportSTLModel(string title) {
+	cout << "Writing STL output file..." << endl;
+	Matrix mt;
+	Vector3D pos,v1,v2,N;
+	Cell3DPosition cell,neighborCell;
+	
+	
+	// select robotBlock in the border
+	vector <RobotBlocksBlock*> borderBlocks;
+	cout << "step #1: " << endl;
+	for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
+		if (pair.second->getState() != BuildingBlock::REMOVED
+			and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
+			RobotBlocksBlock *rb = (RobotBlocksBlock *)pair.second;
+			if (rb->getNbNeighbors()<6) { // moins de 6 voisins
+				rb->setColor(RED);
+				borderBlocks.push_back(rb);
+			} 
+		}
+	}
+	
+	cout << "border blocks: " << borderBlocks.size() << "/" << buildingBlocksMap.size() << endl;
+	
+	cout << "step #2: " << endl;
+	int loop=0,nbreLoop=borderBlocks.size();
+	ofstream file(title);
+	if (!file.is_open()) return false;
+	
+	lock();
+	for (auto block: borderBlocks) {
+		GlBlock *glblock = block->getGlBlock();
+		file << "solid rb#" << glblock->blockId << endl;
+		pos.set(glblock->position[0],glblock->position[1],glblock->position[2]);
+		cell = lattice->worldToGridPosition(pos);
+		
+		// top connector
+		if (!block->getInterface(SCLattice::Direction::Top)->isConnected() ||
+			block->getInterface(SCLattice::Direction::Top)->connectedInterface->hostBlock==NULL) {
+			pos.set(glblock->position[0]-5.0,glblock->position[1]-5.0,glblock->position[2]+5.0);
+			v1.set(10.0,0,0);
+			v2.set(0,10.0,0);
+			N.set(0,0,1.0);
+			saveStlRect(file,pos,v1,v2,N);
+		}
+		// bottom connector
+		if (!block->getInterface(SCLattice::Direction::Bottom)->isConnected() ||
+			block->getInterface(SCLattice::Direction::Bottom)->connectedInterface->hostBlock==NULL) {
+			pos.set(glblock->position[0]+5.0,glblock->position[1]-5.0,glblock->position[2]-5.0);
+			v1.set(-10.0,0,0);
+			v2.set(0,10.0,0);
+			N.set(0,0,-1.0);
+			saveStlRect(file,pos,v1,v2,N);
+		}
+		// left connector
+		if (!block->getInterface(SCLattice::Direction::Left)->isConnected() ||
+			block->getInterface(SCLattice::Direction::Left)->connectedInterface->hostBlock==NULL) {
+			pos.set(glblock->position[0]-5.0,glblock->position[1]+5.0,glblock->position[2]-5.0);
+		v1.set(0,-10.0,0);
+		v2.set(0,0,10.0);
+		N.set(-1.0,0,0);
+		saveStlRect(file,pos,v1,v2,N);
+			}
+		// right connector
+		if (!block->getInterface(SCLattice::Direction::Right)->isConnected() ||
+			block->getInterface(SCLattice::Direction::Right)->connectedInterface->hostBlock==NULL) {
+			pos.set(glblock->position[0]+5.0,glblock->position[1]-5.0,glblock->position[2]-5.0);
+			v1.set(0,10.0,0);
+			v2.set(0,0,10.0);
+			N.set(1.0,0,0);
+			saveStlRect(file,pos,v1,v2,N);
+		}
+		// back connector
+		if (!block->getInterface(SCLattice::Direction::Back)->isConnected() ||
+			block->getInterface(SCLattice::Direction::Back)->connectedInterface->hostBlock==NULL) {
+			pos.set(glblock->position[0]+5.0,glblock->position[1]+5.0,glblock->position[2]-5.0);
+			v1.set(-10.0,0,0);
+			v2.set(0,0,10.0);
+			N.set(0,-1.0,0);
+			saveStlRect(file,pos,v1,v2,N);
+		}
+		// front connector
+		if (!block->getInterface(SCLattice::Direction::Front)->isConnected() ||
+			block->getInterface(SCLattice::Direction::Front)->connectedInterface->hostBlock==NULL) {
+			pos.set(glblock->position[0]-5.0,glblock->position[1]-5.0,glblock->position[2]-5.0);
+			v1.set(10.0,0,0);
+			v2.set(0,0,10.0);
+			N.set(0,1.0,0);
+			saveStlRect(file,pos,v1,v2,N);
+		}
+			
+		
+		file << "        endsolid rb#" << glblock->blockId << endl;
+	}
+	unlock();
+	file.close();
+	cout << "...done." << endl;
+	
+	return true;
+}
+
+
 } // RobotBlock namespace

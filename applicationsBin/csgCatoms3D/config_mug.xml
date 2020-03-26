@@ -5,7 +5,7 @@
   </blockList>
   <targetList>
     <target format="csg">
-         <csg content="scale([2.5,2.5,2.5]) difference() {
+         <csg content="difference() {
 union() {cylinder(10,4,4,true);
     translate([-3.9,0,0])
     rotate([90.0,0,0])

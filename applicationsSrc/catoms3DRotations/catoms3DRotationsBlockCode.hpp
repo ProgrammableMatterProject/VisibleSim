@@ -32,8 +32,7 @@ public:
     
     /**
      * \brief Global message handler for this instance of the blockcode
-     * \param msg Message received b
-y the module
+     * \param msg Message received by the module
      * \param sender Connector that has received the message and hence that is connected to the sender */
     void processReceivedMessage(MessagePtr msg, P2PNetworkInterface* sender);
     

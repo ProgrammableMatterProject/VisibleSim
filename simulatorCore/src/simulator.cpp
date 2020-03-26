@@ -320,10 +320,10 @@ bID Simulator::countNumberOfModules() {
         element = child->ToElement();
         attr = element->Attribute("boxOrigin");
         if (attr) {
-            // cout << "origin" << endl;
+            cout << "origin" << endl;
             string str(attr);
             int pos1 = str.find_first_of(','),
-                pos2 = str.find_last_of(',');
+  pos2 = str.find_last_of(',');
             boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
             boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
             boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
@@ -333,13 +333,13 @@ bID Simulator::countNumberOfModules() {
                          world->lattice->gridSize[2]*world->lattice->gridScale[2]);
         attr = element->Attribute("boxSize");
         if (attr) {
-            // cout << "dest" << endl;
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
             boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
             boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
             boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            cout << "boxDest" << endl;
         }
         Vector3D pos;
         Cell3DPosition position;
@@ -355,7 +355,7 @@ bID Simulator::countNumberOfModules() {
             }
         }
     }
-    // cout << "count=" << moduleCount << endl;
+    cout << "count=" << moduleCount << endl;
 
     return moduleCount;
 }
