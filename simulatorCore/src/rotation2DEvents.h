@@ -18,18 +18,18 @@ using namespace Catoms2D;
 
 //===========================================================================================================
 //
-//          Rotation2DMove  (class)
+//          Catoms2DRotationMove  (class)
 //
 //===========================================================================================================
 
-class Rotation2DMove {
+class Catoms2DRotationMove {
 public:
     Catoms2DBlock *pivot;
     RelativeDirection::Direction direction;
 
-    Rotation2DMove(Catoms2DBlock *p, RelativeDirection::Direction d);
-    Rotation2DMove(const Rotation2DMove &m);
-    ~Rotation2DMove();
+    Catoms2DRotationMove(Catoms2DBlock *p, RelativeDirection::Direction d);
+    Catoms2DRotationMove(const Catoms2DRotationMove &m);
+    ~Catoms2DRotationMove();
 
     RelativeDirection::Direction getDirection() const;
     Catoms2DBlock* getPivot() const;
@@ -39,20 +39,20 @@ public:
 
 //===========================================================================================================
 //
-//          Rotation2DStartEvent  (class)
+//          Catoms2DRotationStartEvent  (class)
 //
 //===========================================================================================================
 
-class Rotation2DStartEvent : public BlockEvent {
+class Catoms2DRotationStartEvent : public BlockEvent {
 protected:
   Vector3D pivot;
   double angle;
   int sens;
   Time duration;
 public:
-    Rotation2DStartEvent(Time, Catoms2DBlock *block, const Rotation2DMove &m);
-    Rotation2DStartEvent(Rotation2DStartEvent *ev);
-    ~Rotation2DStartEvent();
+    Catoms2DRotationStartEvent(Time, Catoms2DBlock *block, const Catoms2DRotationMove &m);
+    Catoms2DRotationStartEvent(Catoms2DRotationStartEvent *ev);
+    ~Catoms2DRotationStartEvent();
     void consumeBlockEvent() override {}
     void consume() override;
     const virtual string getEventName() override;
@@ -60,20 +60,20 @@ public:
 
 //===========================================================================================================
 //
-//          Rotation2DStepEvent  (class)
+//          Catoms2DRotationStepEvent  (class)
 //
 //===========================================================================================================
 
-class Rotation2DStepEvent : public BlockEvent {
+class Catoms2DRotationStepEvent : public BlockEvent {
 protected:
     Vector3D pivot;
     double angle;
     int sens;
     Time duration;
 public:
-    Rotation2DStepEvent(Time, Catoms2DBlock *block,const Vector3D &pivot,double angle2goal,int s, Time d);
-    Rotation2DStepEvent(Rotation2DStepEvent *ev);
-    ~Rotation2DStepEvent();
+    Catoms2DRotationStepEvent(Time, Catoms2DBlock *block,const Vector3D &pivot,double angle2goal,int s, Time d);
+    Catoms2DRotationStepEvent(Catoms2DRotationStepEvent *ev);
+    ~Catoms2DRotationStepEvent();
     void consumeBlockEvent() override {}
     void consume() override;
     const virtual string getEventName() override;
@@ -81,17 +81,17 @@ public:
 
 //===========================================================================================================
 //
-//          Rotation2DStopEvent  (class)
+//          Catoms2DRotationStopEvent  (class)
 //
 //===========================================================================================================
 
-class Rotation2DStopEvent : public BlockEvent {
+class Catoms2DRotationStopEvent : public BlockEvent {
 protected:
   Time duration;
 public:
-    Rotation2DStopEvent(Time, Catoms2DBlock *block, Time d);
-    Rotation2DStopEvent(Rotation2DStopEvent *ev);
-    ~Rotation2DStopEvent();
+    Catoms2DRotationStopEvent(Time, Catoms2DBlock *block, Time d);
+    Catoms2DRotationStopEvent(Catoms2DRotationStopEvent *ev);
+    ~Catoms2DRotationStopEvent();
     void consumeBlockEvent() override {}
     void consume() override;
     const virtual string getEventName() override;
@@ -99,15 +99,15 @@ public:
 
 //===========================================================================================================
 //
-//          Rotation2DEndEvent  (class)
+//          Catoms2DRotationEndEvent  (class)
 //
 //===========================================================================================================
 
-class Rotation2DEndEvent : public BlockEvent {
+class Catoms2DRotationEndEvent : public BlockEvent {
 public:
-    Rotation2DEndEvent(Time, Catoms2DBlock *block);
-    Rotation2DEndEvent(Rotation2DEndEvent *ev);
-    ~Rotation2DEndEvent();
+    Catoms2DRotationEndEvent(Time, Catoms2DBlock *block);
+    Catoms2DRotationEndEvent(Catoms2DRotationEndEvent *ev);
+    ~Catoms2DRotationEndEvent();
     void consumeBlockEvent() override {}
     void consume() override;
     const virtual string getEventName() override;

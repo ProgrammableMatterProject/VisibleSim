@@ -243,7 +243,7 @@ void GlutSlidingMainWindow::glDraw() {
 		if (selectedGlBlock) {
             GLfloat posy = h-40;
             int ss = 0; // index of slice start
-            unsigned int str_length; 
+            unsigned int str_length;
 			sprintf(str,"Selected Block : %s",selectedGlBlock->getInfo().c_str());
             str_length = strlen(str);
             for (unsigned int i = 0; i < str_length + 1; i++) { // draw lines one at a time
@@ -621,7 +621,7 @@ GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GL
 void GlutRotationButton::glDraw() {
 	GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
 	ty=0.0;
-	
+
 	// draw background
 	bindTexture();
 	glPushMatrix();
@@ -663,10 +663,10 @@ void GlutRotationButton::glDraw() {
 	glTexCoord2f(tx,ty+0.5f);
 	glVertex2i(0.625*w,h);
 	glEnd();
-	
+
 	glPopMatrix();
 	glEnable(GL_DEPTH_TEST);
-	
+
 }
 
 int GlutRotationButton::mouseFunc(int button,int state,int mx,int my) {
@@ -695,7 +695,7 @@ GlutRBMotionButton::GlutRBMotionButton(GlutWindow *parent,GLuint pid,GLint px,GL
 void GlutRBMotionButton::glDraw() {
 	GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
 	ty=0.0;
-	
+
 	// draw background
 	bindTexture();
 	glPushMatrix();
@@ -737,10 +737,10 @@ void GlutRBMotionButton::glDraw() {
 	glTexCoord2f(tx,ty+0.5f);
 	glVertex2i(0.625*w,h);
 	glEnd();
-	
+
 	glPopMatrix();
 	glEnable(GL_DEPTH_TEST);
-	
+
 }
 
 int GlutRBMotionButton::mouseFunc(int button,int state,int mx,int my) {
@@ -770,7 +770,7 @@ GlutRotation2DButton::GlutRotation2DButton(GlutWindow *parent,GLuint pid,GLint p
 void GlutRotation2DButton::glDraw() {
 	GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
 	ty=0.0;
-	
+
 	// draw background
 	bindTexture();
 	glPushMatrix();
@@ -812,16 +812,17 @@ void GlutRotation2DButton::glDraw() {
 	glTexCoord2f(tx,ty+0.5f);
 	glVertex2i(0.625*w,h);
 	glEnd();
-	
+
 	glPopMatrix();
 	glEnable(GL_DEPTH_TEST);
-	
+
 }
 
 int GlutRotation2DButton::mouseFunc(int button,int state,int mx,int my) {
 	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
 	return (isHighlighted && state==GLUT_UP)? id:0;
 }
+
 bool GlutRotation2DButton::passiveMotionFunc(int mx,int my) {
 	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
 	return isHighlighted;

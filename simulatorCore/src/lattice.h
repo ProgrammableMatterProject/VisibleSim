@@ -215,7 +215,7 @@ public:
      * @param p The position of the cell to consider
      * @return A vector containing all relative position of neighbor cells
      */
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const = 0;
     /**
      * @brief Overriden getter to get the maximum number of neighbor a lattice cell can have
      * @return the maximum number of neighbor for the callee lattice
@@ -227,7 +227,7 @@ public:
      * @return Position of the cell in direction "direction" from cell pRef
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) = 0;
+                                              int direction) const = 0;
 
     /**
      * Computes the distance between two lattice cells (Manhattan/network distance).
@@ -286,7 +286,7 @@ public:
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override = 0;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override = 0;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
@@ -297,7 +297,7 @@ public:
      * @copydoc Lattice::getCellInDirection
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) override = 0;
+                                              int direction) const override = 0;
 };
 
 /*! @brief 3-Dimensional Lattice abstract class
@@ -338,7 +338,7 @@ public:
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override = 0;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override = 0;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
@@ -348,7 +348,7 @@ public:
      * @copydoc Lattice::getCellInDirection
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) override = 0;
+                                              int direction) const override = 0;
 };
 
 /*! @brief Square 2D Lattice
@@ -371,6 +371,7 @@ public:
     virtual short getOppositeDirection(short d) override;
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(short d) override;
+    Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
 
     /**
      * @brief SLattice constructor.
@@ -402,7 +403,7 @@ public:
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
@@ -411,7 +412,7 @@ public:
      * @copydoc Lattice::getCellInDirection
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) override;
+                                              int direction) const override;
 };
 
 /*! @brief Hexagonal 2D Lattice
@@ -481,7 +482,7 @@ public:
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
@@ -490,8 +491,81 @@ public:
      * @copydoc Lattice::getCellInDirection
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) override;
+                                              int direction) const override;
 };
+
+/*! @brief Horizontal Hexagonal 2D Lattice
+ *
+ * Used by HexaNode blocks. Be careful, the 2 dimensions are **x and y**.
+ *
+ */
+class HHLattice : public HLattice {
+	// This is in the same order as pickingTextures / NeighborDirections
+	vector<Cell3DPosition> nCells{
+		Cell3DPosition(1,0,0),  // EAST
+		Cell3DPosition(0,1,0), // NORTH-EAST
+		Cell3DPosition(-1,1,0), // NORTH-WEST
+		Cell3DPosition(-1,0,0), // WEST
+		Cell3DPosition(0,-1,0), // SOUTH-WEST
+		Cell3DPosition(1,-1,0)   // SOUTH-EAST
+	}; //!< Vector containing relative position of neighboring cells for odd(z) cells
+
+	static const string directionName[];
+public:
+	enum Direction {EAST = 0, NORTH_EAST = 1, NORTH_WEST = 2,
+		WEST = 3, SOUTH_WEST = 4, SOUTH_EAST = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+		//!< @copydoc Lattice::getOppositeDirection
+		virtual short getOppositeDirection(short d) override;
+		//!< @copydoc Lattice::getDirectionString
+		virtual string getDirectionString(short d) override;
+
+		/**
+		 * @brief HHLattice constructor.
+		 */
+		HHLattice();
+		/**
+		 * @brief HHLattice constructor.
+		 * @param gsz The size of the grid
+		 * @param gsc The real size of a block on the grid, also equal to the scale of the grid
+		 */
+		HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
+		/**
+		 * @brief HLattice destructor.
+		 */
+		~HHLattice();
+
+		/**
+		 * @copydoc Lattice::gridToUnscaledWorldPosition
+		 */
+		virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+		/**
+		 * @copydoc Lattice::unscaledWorldToGridPosition
+		 */
+		virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+		/**
+		 * @copydoc Lattice::gridToWorldPosition
+		 */
+		virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) override;
+		/**
+		 * @copydoc Lattice::worldToGridPosition
+		 */
+		virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
+		/**
+		 * @copydoc Lattice::getRelativeConnectivity
+		 */
+		virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
+		/**
+		 * @copydoc Lattice::getMaxNumNeighbors
+		 */
+		virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
+		/**
+		 * @copydoc Lattice::getCellInDirection
+		 */
+		virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,int direction) const override;
+
+		Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; }
+};
+
 
 /*! @brief 3D Face-Centered Cubic Lattice
  *
@@ -631,7 +705,7 @@ public:
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
@@ -641,7 +715,7 @@ public:
      * @copydoc Lattice::getCellInDirection
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) override;
+                                              int direction) const override;
 
     // NEIGHBORHOOD RESTRICTIONS
     bool isPositionBlocked(const Cell3DPosition &pos);
@@ -727,13 +801,13 @@ public:
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
 
     /**
      * @copydoc Lattice::getCellInDirection
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) override;
+                                              int direction) const override;
 
     /**
      * @copydoc Lattice::getCellDistance
@@ -858,7 +932,7 @@ public:
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
@@ -868,7 +942,7 @@ public:
      * @copydoc Lattice::getCellInDirection
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) override
+                                              int direction) const override
     {
          // Does not apply to mobile-type modular robots
          return Cell3DPosition(0,0,0);

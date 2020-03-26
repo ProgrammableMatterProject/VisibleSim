@@ -320,11 +320,11 @@ bool Catoms2DBlock::canMove(const Rotation2DMove &m) const {
     return res;
 }
 
-void Catoms2DBlock::startMove(Rotation2DMove &m, Time t) {
-  getScheduler()->schedule(new Rotation2DStartEvent(t,this,m));
+void Catoms2DBlock::startMove(Catoms2DRotationMove &m, Time t) {
+  getScheduler()->schedule(new Catoms2DRotationStartEvent(t,this,m));
 }
 
-void Catoms2DBlock::startMove(Rotation2DMove &m) {
+void Catoms2DBlock::startMove(Catoms2DRotationMove &m) {
   startMove(m,getScheduler()->now());
 }
 

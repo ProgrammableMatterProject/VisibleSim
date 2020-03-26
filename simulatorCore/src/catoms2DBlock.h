@@ -16,7 +16,7 @@
 #include "lattice.h"
 #include "catoms2DMotionEngine.h"
 
-class Rotation2DMove;
+class Catoms2DRotationMove;
 
 namespace Catoms2D {
 
@@ -64,8 +64,8 @@ public:
     bool canMove(const Rotation2DMove &m) const;
     int getCCWMovePivotId() const;
     int getCWMovePivotId() const;
-    void startMove(Rotation2DMove &m, Time t);
-    void startMove(Rotation2DMove &m);
+    void startMove(Catoms2DRotationMove &m, Time t);
+    void startMove(Catoms2DRotationMove &m);
 
     bool canRotate(RelativeDirection::Direction d) const;
     void rotate(RelativeDirection::Direction d, Time t = 0);

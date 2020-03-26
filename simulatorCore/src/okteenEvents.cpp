@@ -18,7 +18,7 @@ const int COM_DELAY=2000;
 
 //===========================================================================================================
 //
-//          Rotation2DStartEvent  (class)
+//          Catoms2DRotationStartEvent  (class)
 //
 //===========================================================================================================
 
@@ -455,4 +455,3 @@ void OkteenMotions::getFinalPosition(Cell3DPosition &position) {
     SCLattice* lattice = (SCLattice *)((Okteen::getWorld())->lattice);
     position = lattice->worldToGridPosition(finalPos);
 }
-
