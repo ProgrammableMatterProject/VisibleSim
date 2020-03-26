@@ -70,10 +70,12 @@ applicationsBin/*/*.xml
 
 # Screenshot and video exports
 applicationsBin/*/*.ppm
+applicationsBin/*/*.png
 applicationsBin/*/*.jpg
 applicationsBin/*/*.jpeg
 applicationsBin/*/*.mkv
 applicationsBin/*/*.mpeg
+applicationsBin/*/*.mp4
 applicationsBin/*/animation_*/
 applicationsBin/*/Screenshots/
 
