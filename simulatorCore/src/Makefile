@@ -52,10 +52,6 @@ SMARTBLOCKS_SRCS = smartBlocksSimulator.cpp smartBlocksBlock.cpp smartBlocksBloc
 SMARTBLOCKS_OBJS = $(SMARTBLOCKS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 SMARTBLOCKS_DEPS = $(SMARTBLOCKS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-MULTIROBOTS_SRCS = multiRobotsSimulator.cpp multiRobotsBlock.cpp multiRobotsBlockCode.cpp multiRobotsWorld.cpp multiRobotsGlBlock.cpp
-MULTIROBOTS_OBJS = $(MULTIROBOTS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
-MULTIROBOTS_DEPS = $(MULTIROBOTS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
-
 OKTEEN_SRCS = okteenSimulator.cpp okteenBlock.cpp okteenBlockCode.cpp okteenWorld.cpp okteenGlBlock.cpp okteenEvents.cpp
 OKTEEN_OBJS = $(OKTEEN_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 OKTEEN_DEPS = $(OKTEEN_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
@@ -72,7 +68,7 @@ HEXANODE_SRCS = hexanodeSimulator.cpp hexanodeBlock.cpp hexanodeBlockCode.cpp he
 HEXANODE_OBJS = $(HEXANODE_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 HEXANODE_DEPS = $(HEXANODE_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(MULTIROBOTS_SRCS) $(OKTEEN_SRCS) $(DATOMS_SRCS) $(NODE_SRCS) $(HEXANODE_SRCS)
+SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(OKTEEN_SRCS) $(DATOMS_SRCS) $(NODE_SRCS) $(HEXANODE_SRCS)
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
 OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimMultiRobots.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a $(LDIR)/libsimHexanode.a
@@ -132,10 +128,6 @@ $(LDIR)/libsimCatoms3D.a: $(CATOMS3D_OBJS)
 $(LDIR)/libsimSmartBlocks.a: $(SMARTBLOCKS_OBJS)
 	@echo "Archiving SmartBlocks library..."
 	@ar rcs $(LDIR)/libsimSmartBlocks.a $(SMARTBLOCKS_OBJS)
-
-$(LDIR)/libsimMultiRobots.a: $(MULTIROBOTS_OBJS)
-	@echo "Archiving MultiRobots library..."
-	@ar rcs $(LDIR)/libsimMultiRobots.a $(MULTIROBOTS_OBJS)
 
 $(LDIR)/libsimOkteen.a: $(OKTEEN_OBJS)
 	@echo "Archiving Okteen library..."

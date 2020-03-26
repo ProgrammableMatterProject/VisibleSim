@@ -188,14 +188,14 @@ public:
      * @param pos The grid position to consider
      * @return The corresponding world position
      */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) = 0; // TODO: REFACTOR
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const = 0; // TODO: REFACTOR
 
     /**
      * @brief Transforms a real world position considering a 1x1x1 grid scale into an integer grid position
      * @param pos The unscaled world position to consider
      * @return The corresponding grid position
      */
-    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) = 0;
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const = 0;
 
     /**
      * @brief Transforms an integer grid position into a real world position considering the actual scale of the lattice
@@ -209,7 +209,7 @@ public:
      * @param pos The world position to consider
      * @return The corresponding grid position
      */
-    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) = 0;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const = 0;
     /**
      * @brief Returns the relative position of all cells around cell p
      * @param p The position of the cell to consider
@@ -272,17 +272,17 @@ public:
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override = 0;
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override = 0;
 
     /**
      * @copydoc Lattice::unscaledWorldToGridPosition
      */
-    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override = 0;
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override = 0;
 
     /**
      * @copydoc Lattice::worldToGridPosition
      */
-    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override = 0;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override = 0;
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
@@ -326,15 +326,15 @@ public:
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override = 0;
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override = 0;
     /**
      * @copydoc Lattice::unscaledWorldToGridPosition
      */
-    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override = 0;
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override = 0;
     /**
      * @copydoc Lattice::worldToGridPosition
      */
-    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override = 0;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override = 0;
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
@@ -391,15 +391,15 @@ public:
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
     /**
      * @copydoc Lattice::unscaledWorldToGridPosition
      */
-    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::worldToGridPosition
      */
-    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
@@ -466,11 +466,11 @@ public:
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
     /**
      * @copydoc Lattice::unscaledWorldToGridPosition
      */
-    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -478,7 +478,7 @@ public:
     /**
      * @copydoc Lattice::worldToGridPosition
      */
-    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
@@ -500,70 +500,70 @@ public:
  *
  */
 class HHLattice : public HLattice {
-	// This is in the same order as pickingTextures / NeighborDirections
-	vector<Cell3DPosition> nCells{
-		Cell3DPosition(1,0,0),  // EAST
-		Cell3DPosition(0,1,0), // NORTH-EAST
-		Cell3DPosition(-1,1,0), // NORTH-WEST
-		Cell3DPosition(-1,0,0), // WEST
-		Cell3DPosition(0,-1,0), // SOUTH-WEST
-		Cell3DPosition(1,-1,0)   // SOUTH-EAST
-	}; //!< Vector containing relative position of neighboring cells for odd(z) cells
+    // This is in the same order as pickingTextures / NeighborDirections
+    vector<Cell3DPosition> nCells{
+        Cell3DPosition(1,0,0),  // EAST
+        Cell3DPosition(0,1,0), // NORTH-EAST
+        Cell3DPosition(-1,1,0), // NORTH-WEST
+        Cell3DPosition(-1,0,0), // WEST
+        Cell3DPosition(0,-1,0), // SOUTH-WEST
+        Cell3DPosition(1,-1,0)   // SOUTH-EAST
+    }; //!< Vector containing relative position of neighboring cells for odd(z) cells
 
-	static const string directionName[];
+    static const string directionName[];
 public:
-	enum Direction {EAST = 0, NORTH_EAST = 1, NORTH_WEST = 2,
-		WEST = 3, SOUTH_WEST = 4, SOUTH_EAST = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
-		//!< @copydoc Lattice::getOppositeDirection
-		virtual short getOppositeDirection(short d) override;
-		//!< @copydoc Lattice::getDirectionString
-		virtual string getDirectionString(short d) override;
+    enum Direction {EAST = 0, NORTH_EAST = 1, NORTH_WEST = 2,
+        WEST = 3, SOUTH_WEST = 4, SOUTH_EAST = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+        //!< @copydoc Lattice::getOppositeDirection
+        virtual short getOppositeDirection(short d) override;
+        //!< @copydoc Lattice::getDirectionString
+        virtual string getDirectionString(short d) override;
 
-		/**
-		 * @brief HHLattice constructor.
-		 */
-		HHLattice();
-		/**
-		 * @brief HHLattice constructor.
-		 * @param gsz The size of the grid
-		 * @param gsc The real size of a block on the grid, also equal to the scale of the grid
-		 */
-		HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
-		/**
-		 * @brief HLattice destructor.
-		 */
-		~HHLattice();
+        /**
+         * @brief HHLattice constructor.
+         */
+        HHLattice();
+        /**
+         * @brief HHLattice constructor.
+         * @param gsz The size of the grid
+         * @param gsc The real size of a block on the grid, also equal to the scale of the grid
+         */
+        HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
+        /**
+         * @brief HLattice destructor.
+         */
+        ~HHLattice();
 
-		/**
-		 * @copydoc Lattice::gridToUnscaledWorldPosition
-		 */
-		virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
-		/**
-		 * @copydoc Lattice::unscaledWorldToGridPosition
-		 */
-		virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
-		/**
-		 * @copydoc Lattice::gridToWorldPosition
-		 */
-		virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) override;
-		/**
-		 * @copydoc Lattice::worldToGridPosition
-		 */
-		virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
-		/**
-		 * @copydoc Lattice::getRelativeConnectivity
-		 */
-		virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
-		/**
-		 * @copydoc Lattice::getMaxNumNeighbors
-		 */
-		virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
-		/**
-		 * @copydoc Lattice::getCellInDirection
-		 */
-		virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,int direction) const override;
+        /**
+         * @copydoc Lattice::gridToUnscaledWorldPosition
+         */
+        virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
+        /**
+         * @copydoc Lattice::unscaledWorldToGridPosition
+         */
+        virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override;
+        /**
+         * @copydoc Lattice::gridToWorldPosition
+         */
+        virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) override;
+        /**
+         * @copydoc Lattice::worldToGridPosition
+         */
+        virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override;
+        /**
+         * @copydoc Lattice::getRelativeConnectivity
+         */
+        virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
+        /**
+         * @copydoc Lattice::getMaxNumNeighbors
+         */
+        virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
+        /**
+         * @copydoc Lattice::getCellInDirection
+         */
+        virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,int direction) const override;
 
-		Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; }
+        Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; }
 };
 
 
@@ -644,8 +644,6 @@ class FCCLattice : public Lattice3D {
                                 Cell3DPosition(0,-1,0), Cell3DPosition(0,1,0) };
 
     static const string directionName[];
-    bool *tabLockedCells;
-    unsigned short *tabDistances;
 
     // NEIGHBORDHOOD RESTRICTIONS
     enum class BlockingPositionPlane { XY, YZ, XZ };
@@ -693,15 +691,15 @@ public:
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
     /**
      * @copydoc Lattice::unscaledWorldToGridPosition
      */
-    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::worldToGridPosition
      */
-    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
@@ -722,12 +720,6 @@ public:
     bool isPositionBlocked(const Cell3DPosition &pos, const Cell3DPosition &ignore);
     // bool isPositionBlockable(const Cell3DPosition &pos);
 
-    // FIXME: @Pthy: These are blockcode related and should not be in the simulator core.
-    bool lockCell(const Cell3DPosition &pos);
-    bool unlockCell(const Cell3DPosition &pos);
-    void initTabDistances();
-    unsigned short getDistance(const Cell3DPosition &pos);
-    void setDistance(const Cell3DPosition &pos,unsigned short d);
     void glDraw() override;
 };
 
@@ -785,19 +777,22 @@ public:
      * @copydoc Lattice::getGridLowerBounds
      */
     virtual Cell3DPosition getGridLowerBounds() const override;
-
+    /**
+     * @copydoc Lattice::getGridUpperBounds
+     */
+    virtual Cell3DPosition getGridUpperBounds() const override;
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
     /**
      * @copydoc Lattice::unscaledWorldToGridPosition
      */
-    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::worldToGridPosition
      */
-    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
@@ -830,105 +825,40 @@ class SCLattice : public Lattice3D {
             Cell3DPosition(0,0,1)  // TOP
             }; //!< Vector containing relative position of neighboring cells
     static const string directionName[];
-		unsigned short *tabDistances;
+        unsigned short *tabDistances;
 public:
-	enum Direction { Bottom = 0, Back = 1, Right, Left, Front, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
-	//!< @copydoc Lattice::getOppositeDirection
-	virtual short getOppositeDirection(short d) override;
-	//!< @copydoc Lattice::getDirectionString
-	virtual string getDirectionString(short d) override;
-	Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
-	/**
-		* @brief SCLattice constructor.
-		*/
-	SCLattice();
-	/**
-		* @brief SCLattice constructor.
-		* @param gsz The size of the grid
-		* @param gsc The real size of a block on the grid, also equal to the scale of the grid
-		*/
-	SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
-	/**
-		* @brief SCLattice destructor.
-		*/
-	~SCLattice();
-
-	/**
-		* @copydoc Lattice::gridToUnscaledWorldPosition
-		*/
-	virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
-	/**
-		* @copydoc Lattice::unscaledWorldToGridPosition
-		*/
-	virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
-	/**
-		* @copydoc Lattice::worldToGridPosition
-		*/
-	virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
-	/**
-		* @copydoc Lattice::getRelativeConnectivity
-		*/
-	virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override;
-	/**
-		* @copydoc Lattice::getMaxNumNeighbors
-		*/
-	virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
-
-	/**
-		* @copydoc Lattice::getCellInDirection
-		*/
-	virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-																						int direction) override;
-	void initTabDistances();
-	unsigned short getDistance(const Cell3DPosition &pos);
-	void setDistance(const Cell3DPosition &pos,unsigned short d);
-	void glDraw() override;
-
-};
-
-/*! @brief 3D Broadcast Lattice
- *
- * Used by MultiRobots. All blocks are connected to each other.
- *
- *
- */
-class BCLattice : public Lattice3D {
-public:
-    enum Direction {BROADCAST = 0, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    enum Direction { Bottom = 0, Back = 1, Right, Left, Front, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
     virtual short getOppositeDirection(short d) override;
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(short d) override;
-
-    list<BuildingBlock*> connected; //!< contains all cells with a block on it
-
+    Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
     /**
-     * @brief BCLattice constructor.
-     */
-    BCLattice();
+        * @brief SCLattice constructor.
+        */
+    SCLattice();
     /**
-     * @brief BCLattice constructor.
-     * @param gsz The size of the grid
-     * @param gsc The real size of a block on the grid, also equal to the scale of the grid
-     */
-    BCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
+        * @brief SCLattice constructor.
+        * @param gsz The size of the grid
+        * @param gsc The real size of a block on the grid, also equal to the scale of the grid
+        */
+    SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief BCLattice destructor.
-     */
-    ~BCLattice();
-
+        * @brief SCLattice destructor.
+        */
+    ~SCLattice();
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
     /**
      * @copydoc Lattice::unscaledWorldToGridPosition
      */
-    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::worldToGridPosition
      */
-    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override;
     /**
      * @copydoc Lattice::getRelativeConnectivity
      */
@@ -941,12 +871,9 @@ public:
     /**
      * @copydoc Lattice::getCellInDirection
      */
-    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) const override
-    {
-         // Does not apply to mobile-type modular robots
-         return Cell3DPosition(0,0,0);
-    }
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef, int direction) const override;
+
+    void glDraw() override;
 };
 
 }

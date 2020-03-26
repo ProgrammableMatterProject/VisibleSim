@@ -404,7 +404,7 @@ void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int i
             assert(TYPE_SIZE(TUPLE_TYPE(tuple)) <= MELD_MESSAGE_DEFAULT_SIZE);
             MessagePtr ptr;
             if (isNew > 0) {
-           ptr = (MessagePtr)(new AddTupleMessage(tuple, MELD_MESSAGE_DEFAULT_SIZE));
+                ptr = (MessagePtr)(new AddTupleMessage(tuple, MELD_MESSAGE_DEFAULT_SIZE));
             }
             else {
                 ptr = (MessagePtr)(new RemoveTupleMessage(tuple, MELD_MESSAGE_DEFAULT_SIZE));
@@ -418,37 +418,9 @@ void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int i
                 new VMSendMessageEvent(MeldInterpret::getScheduler()->now(), host, ptr, p2p));
         }
         else {
-            // PTHY: TEMPORARY WORKAROUND, until broadcast communication is natively supported in VS
-            if (host->getNbInterfaces() == 1) { // This is a broadcast message
-                assert(TUPLE_TYPE(tuple) < NUM_TYPES);
-                MessagePtr ptr;
-                if (isNew > 0) {
-                    ptr = (MessagePtr)(new AddTupleMessage(tuple, MELD_MESSAGE_DEFAULT_SIZE));
-                }
-                else {
-                    ptr = (MessagePtr)(new RemoveTupleMessage(tuple, MELD_MESSAGE_DEFAULT_SIZE));
-                }
-
-                BuildingBlock* toblock = NULL;
-                for (BuildingBlock *bb : static_cast<BCLattice*>(getWorld()->lattice)->connected) {
-                    if(bb->blockId == target) {
-                        toblock = bb;
-                        break;
-                    }
-                }
-
-                if (toblock != NULL) {
-                    MeldInterpret::getScheduler()->schedule(
-                        new VMSendMessageEvent2(MeldInterpret::getScheduler()->now(), host, ptr, toblock));
-                } else {
-                    cerr << "error: Unable to send message, recipient does not exist\n";
-                }
-
-            } else {
-                /** This may happen when you delete a block in the simulator */
-                fprintf(stderr, "--%d--\tUNABLE TO ROUTE MESSAGE! To %d\n", (int)blockId, (int)target);
-                //exit(EXIT_FAILURE);
-            }
+            /** This may happen when you delete a block in the simulator */
+            fprintf(stderr, "--%d--\tUNABLE TO ROUTE MESSAGE! To %d\n", (int)blockId, (int)target);
+            //exit(EXIT_FAILURE);
         }
     }
 }

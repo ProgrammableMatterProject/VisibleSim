@@ -4,6 +4,29 @@
 
 #include "C3DRotateCode.h"
 
+
+void C3DRotateCode::initTabDistances() {
+    if (tabDistances == NULL) {
+        const Cell3DPosition& gs = lattice->gridSize;
+        int n = gs.pt[0]*gs.pt[1]*gs.pt[2];
+        tabDistances = new unsigned short[n];
+        // initialisation of tabDistances with value 'd'
+        unsigned short *ptr = tabDistances;
+        while (n--) {
+            *ptr++=USHRT_MAX;
+        }
+    }
+}
+
+unsigned short C3DRotateCode::getDistance(const Cell3DPosition &pos) {
+    if (!lattice->isInGrid(pos)) return USHRT_MAX;
+    return tabDistances[lattice->getIndex(pos)];
+}
+
+void C3DRotateCode::setDistance(const Cell3DPosition &pos,unsigned short d) {
+    if (lattice->isInGrid(pos)) tabDistances[lattice->getIndex(pos)]=d;
+}
+
 void C3DRotateCode::initDistances() {
     static bool first=true;
 
@@ -24,7 +47,7 @@ void C3DRotateCode::initDistances() {
                     if (target->isInTarget(pos)) {
                         ngoal++;
                         if (!lattice->cellHasBlock(pos)) {
-                            lattice->setDistance(pos,0);
+                            setDistance(pos,0);
                             OUTPUT << "dist0 : " << pos << endl;
                             stkCells.push(pos);
                             nwp++;
@@ -33,7 +56,7 @@ void C3DRotateCode::initDistances() {
                 }
             }
         }
-        
+
         OUTPUT << "Target: " << ngoal-nwp << "/" << ngoal << " cells" << endl;
         vector<Cell3DPosition> neighborhood;
         vector <Catoms3DMotionRulesLink*>vml;
@@ -42,7 +65,7 @@ void C3DRotateCode::initDistances() {
         while (!stkCells.empty()) {
             pos = stkCells.front();
             stkCells.pop();
-            currentLevel = lattice->getDistance(pos)+1;
+            currentLevel = getDistance(pos)+1;
             OUTPUT << pos << " LEVEL " << currentLevel << endl;
             neighborhood = lattice->getNeighborhood(pos);
             vector<Cell3DPosition>::const_iterator ci = neighborhood.begin();
@@ -66,9 +89,9 @@ void C3DRotateCode::initDistances() {
                                     pivot->getNeighborPos(i,fromPos);
                                     bool full = lattice->cellHasBlock(fromPos);
                                     if (lattice->isInGrid(fromPos) &&
-                                        lattice->getDistance(fromPos)>currentLevel ) {
+                                        getDistance(fromPos)>currentLevel ) {
                                         OUTPUT << "dist " << currentLevel << " : "<< fromPos << " " << i << "->" << to << " " << destPos << " full=" << full << endl;
-                                        lattice->setDistance(fromPos,currentLevel);
+                                        setDistance(fromPos,currentLevel);
                                         stkCells.push(fromPos);
                                     }
                                 }
@@ -84,43 +107,42 @@ void C3DRotateCode::initDistances() {
 }
 
 void C3DRotateCode::startup() {
-	isLockedBy=0;
-	currentMotion=NULL;
+    isLockedBy=0;
+    currentMotion=NULL;
 
-	/*addMessageEventFunc(LOCK_MSG,_myLockFunc);
-	addMessageEventFunc(UNLOCK_MSG,_myUnlockFunc);
-	addMessageEventFunc(ANSLOCK_MSG,_myAnsLockFunc);*/
-	addMessageEventFunc2(LOCK_MSG,
-											 std::bind(&C3DRotateCode::myLockFunc, this,
-																 std::placeholders::_1, std::placeholders::_2));
-	addMessageEventFunc2(UNLOCK_MSG,
-											 std::bind(&C3DRotateCode::myUnlockFunc, this,
-																 std::placeholders::_1, std::placeholders::_2));
-	addMessageEventFunc2(ANSLOCK_MSG,
-											 std::bind(&C3DRotateCode::myAnsLockFunc, this,
-																 std::placeholders::_1, std::placeholders::_2));
-	
-	
-	assert(target!=NULL);
-	if (target->isInTarget(module->position)) {
-		module->setColor(target->getTargetColor(module->position));
-	}
+    /*addMessageEventFunc(LOCK_MSG,_myLockFunc);
+    addMessageEventFunc(UNLOCK_MSG,_myUnlockFunc);
+    addMessageEventFunc(ANSLOCK_MSG,_myAnsLockFunc);*/
+    addMessageEventFunc2(LOCK_MSG,
+                                             std::bind(&C3DRotateCode::myLockFunc, this,
+                                                                 std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(UNLOCK_MSG,
+                                             std::bind(&C3DRotateCode::myUnlockFunc, this,
+                                                                 std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(ANSLOCK_MSG,
+                                             std::bind(&C3DRotateCode::myAnsLockFunc, this,
+                                                                 std::placeholders::_1, std::placeholders::_2));
 
-	FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
-	lattice->initTabDistances();
-	initDistances();
-	tryToMove();
+
+    assert(target!=NULL);
+    if (target->isInTarget(module->position)) {
+        module->setColor(target->getTargetColor(module->position));
+    }
+
+    initTabDistances();
+    initDistances();
+    tryToMove();
 }
 
 bool C3DRotateCode::tryToMove() {
     if (isLockedBy!=0 || target->isInTarget(module->position)) {
-			if (isLockedBy) console << "locked by " << isLockedBy << "!\n";
-			return false;
-		}
+            if (isLockedBy) console << "locked by " << isLockedBy << "!\n";
+            return false;
+        }
     FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
-    unsigned short moduleDistance = lattice->getDistance(module->position);
+    unsigned short moduleDistance = getDistance(module->position);
 
-	console << "try to move p=" << module->position << ";" << moduleDistance << "\n";
+    console << "try to move p=" << module->position << ";" << moduleDistance << "\n";
 
     P2PNetworkInterface *p2p;
     Catoms3DBlock *neighbor;
@@ -143,7 +165,7 @@ bool C3DRotateCode::tryToMove() {
                 while (ci!=vml.end()) {
                     v = (*ci)->getFinalPosition(module);
                     if (lattice->isInGrid(v)) {
-                        p = lattice->getDistance(v);
+                        p = getDistance(v);
                         OUTPUT << (*ci)->getID() << ":" << v << ";" << p << endl;
                         if (p<bestDistance) {
                             bestOri = i;
@@ -157,7 +179,7 @@ bool C3DRotateCode::tryToMove() {
             }
         }
     }
-    
+
     if (bestMRL && bestDistance<moduleDistance) {
         console << "Best Orig." << bestOri << " ->" << bestMRL->getConToID() << ":" << bestDistance << "\n";
         p2p=module->getInterface(bestOri);
@@ -167,21 +189,20 @@ bool C3DRotateCode::tryToMove() {
 
         return true;
     }
-    
+
     return false;
 }
 
 void C3DRotateCode::myLockFunc(MessagePtr anonMsg, P2PNetworkInterface*sender) {
-	MessageOf<Motions>* msg = static_cast<MessageOf<Motions>*>(anonMsg.get());
-	Motions msgData = *msg->getData();
+    MessageOf<Motions>* msg = static_cast<MessageOf<Motions>*>(anonMsg.get());
+    Motions msgData = *msg->getData();
     bool answer = false;
     if (isLockedBy==0) {
-        FCCLattice *FCClat = (FCCLattice*)(Catoms3D::getWorld()->lattice);
         answer=true;
         int n=0;
         vector <Cell3DPosition>::const_iterator ci = msgData.tabCells.begin();
         while (answer && ci!=msgData.tabCells.end()) {
-            answer = FCClat->lockCell(*ci);
+            answer = lockCell(*ci);
             OUTPUT << "lock " << *ci << " : " << answer << endl;
             ci++;
             n++;
@@ -192,58 +213,57 @@ void C3DRotateCode::myLockFunc(MessagePtr anonMsg, P2PNetworkInterface*sender) {
             ci--;
             while(n--) {
                 OUTPUT << "unlock " << *ci << endl;
-                FCClat->unlockCell(*ci);
+                unlockCell(*ci);
                 ci--;
             }
         }
         if (answer) {
-					isLockedBy=sender->getConnectedBlockId();
-					module->setColor(RED);
-				}
+                    isLockedBy=sender->getConnectedBlockId();
+                    module->setColor(RED);
+                }
     }
     console << "send ANSLOCK(" << answer << ") to " << sender->connectedInterface->hostBlock->blockId << "\n";
     sendMessage(new MessageOf<bool>(ANSLOCK_MSG,answer),sender,100,200);
 };
 
 void C3DRotateCode::myUnlockFunc(MessagePtr anonMsg, P2PNetworkInterface*sender) {
-	if (sender->getConnectedBlockId()==isLockedBy) {
-		isLockedBy=0;
-	}
+    if (sender->getConnectedBlockId()==isLockedBy) {
+        isLockedBy=0;
+    }
 }
 
 void C3DRotateCode::myAnsLockFunc(MessagePtr anonMsg, P2PNetworkInterface*sender) {
-	MessageOf<bool>* msg = static_cast<MessageOf<bool>*>(anonMsg.get());
-	bool msgData = *msg->getData();
+    MessageOf<bool>* msg = static_cast<MessageOf<bool>*>(anonMsg.get());
+    bool msgData = *msg->getData();
 
-		if (msgData) {
-			console << "rcv. ANSLOCK\n";
-			currentMotion->MRlist->sendRotationEvent(module,currentMotion->fixed,scheduler->now()+2000);
+        if (msgData) {
+            console << "rcv. ANSLOCK\n";
+            currentMotion->MRlist->sendRotationEvent(module,currentMotion->fixed,scheduler->now()+2000);
     }
 };
 
 void C3DRotateCode::onMotionEnd() {
-	console << "On motion End\n";
+    console << "On motion End\n";
 // unlock cells
 
-    FCCLattice *FCClat = (FCCLattice*)(Catoms3D::getWorld()->lattice);
     vector <Cell3DPosition>::const_iterator ci = currentMotion->tabCells.begin();
     while (ci!=currentMotion->tabCells.end()) {
         OUTPUT << "unlock " << *ci << endl;
-        FCClat->unlockCell(*ci);
+        unlockCell(*ci);
         ci++;
     }
     P2PNetworkInterface *p2p = nullptr;
-		for (int i=0; i<12; i++) {
-			if (module->getInterface(i)->getConnectedBlockId()==currentMotion->fixed->blockId) {
-				p2p = module->getInterface(i);
-			}
-		}
+        for (int i=0; i<12; i++) {
+            if (module->getInterface(i)->getConnectedBlockId()==(int)currentMotion->fixed->blockId) {
+                p2p = module->getInterface(i);
+            }
+        }
     if (p2p) sendMessage(new Message(UNLOCK_MSG),p2p,100,200);
-		
+
     delete currentMotion;
     module->setColor(YELLOW);
     currentMotion=NULL;
-		tryToMove();
+        tryToMove();
 }
 
 void C3DRotateCode::onTap(int n) {
@@ -252,21 +272,21 @@ void C3DRotateCode::onTap(int n) {
 }
 
 /*void _myLockFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	C3DRotateCode *cb = (C3DRotateCode*)codebloc;
-	MessageOf<Motions>*msgType = (MessageOf<Motions>*)msg.get();
-	cb->myLockFunc(msgType,sender);
+    C3DRotateCode *cb = (C3DRotateCode*)codebloc;
+    MessageOf<Motions>*msgType = (MessageOf<Motions>*)msg.get();
+    cb->myLockFunc(msgType,sender);
 }
 
 void _myUnlockFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	C3DRotateCode *cb = (C3DRotateCode*)codebloc;
-	MessageOf<Motions>*msgType = (MessagePtr)msg.get();
-	cb->myUnlockFunc(msgType,sender);
+    C3DRotateCode *cb = (C3DRotateCode*)codebloc;
+    MessageOf<Motions>*msgType = (MessagePtr)msg.get();
+    cb->myUnlockFunc(msgType,sender);
 }
 
 void _myAnsLockFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-	C3DRotateCode *cb = (C3DRotateCode*)codebloc;
-	MessageOf<bool>*msgType = (MessageOf<bool>*)msg.get();
-	cb->myAnsLockFunc(msgType,sender);
+    C3DRotateCode *cb = (C3DRotateCode*)codebloc;
+    MessageOf<bool>*msgType = (MessageOf<bool>*)msg.get();
+    cb->myAnsLockFunc(msgType,sender);
 }*/
 
 Motions::Motions(Catoms3DBlock *m,Catoms3DBlock *f,Catoms3DMotionRulesLink* mrl) {
@@ -278,4 +298,74 @@ Motions::Motions(Catoms3DBlock *m,Catoms3DBlock *f,Catoms3DMotionRulesLink* mrl)
 
 Motions::~Motions() {
     tabCells.clear();
+}
+
+
+bool C3DRotateCode::lockCell(const Cell3DPosition &pos) {
+    if (!lattice->isInGrid(pos)) return true;
+
+    int ind = lattice->getIndex(pos);
+    OUTPUT << "ind=" << ind << " / pos=" << pos << " / state=" << tabLockedCells[ind] << " / bb=" << (lattice->grid[ind]==NULL?0:1) << endl;
+    if (tabLockedCells[ind] || lattice->grid[ind]!=NULL) {
+        return false;
+    }
+    tabLockedCells[ind] = true;
+    return true;
+}
+
+bool C3DRotateCode::unlockCell(const Cell3DPosition &pos) {
+    if (!lattice->isInGrid(pos)) return true;
+
+    int ind = lattice->getIndex(pos);
+    bool prev = tabLockedCells[ind];
+    tabLockedCells[ind] = false;
+    return prev;
+}
+
+
+void C3DRotateCode::onGlDraw() {
+    if (tabDistances) {
+        int ix,iy,iz;
+        Cell3DPosition gp;
+        Vector3D v;
+        unsigned short *ptrDistance = tabDistances;
+        bool *ptr = tabLockedCells;
+
+        static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f}, gray[]={0.2f,0.2f,0.2f,1.0f};
+
+        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+        glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+
+        const Cell3DPosition& gridSize = lattice->gridSize;
+        const Cell3DPosition& gridScale = lattice->gridScale;
+        for (iz=0; iz<gridSize[2]; iz++) {
+            for (iy=0; iy<gridSize[1]; iy++) {
+                for (ix=0; ix<gridSize[0]; ix++) {
+                    if (*ptr) {
+                        glPushMatrix();
+                        gp.set(ix,iy,iz);
+                        v = lattice->gridToWorldPosition(gp);
+                        glTranslatef(v[0],v[1],v[2]);
+                        glutSolidSphere(0.065*gridScale[0],6,6);
+                        glPopMatrix();
+                    }
+                    if (*ptrDistance!=USHRT_MAX) {
+                        glPushMatrix();
+                        gp.set(ix,iy,iz);
+                        v = lattice->gridToWorldPosition(gp);
+                        glTranslatef(v[0],v[1],v[2]);
+
+                        glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
+                        glutSolidCube(0.2*gridScale[0]);
+                        glPopMatrix();
+
+                    }
+                    ptr++;
+                    ptrDistance++;
+                }
+            }
+        }
+    }
 }

@@ -55,7 +55,7 @@ Catoms2DBlock* Catoms2DRotationMove::getPivot() const {
 //
 //===========================================================================================================
 
-Catoms2DRotationStartEvent::Catoms2DRotationStartEvent(Time t, Catoms2DBlock *block, Catoms2DRotationMove &m): BlockEvent(t,block) {
+Catoms2DRotationStartEvent::Catoms2DRotationStartEvent(Time t, Catoms2DBlock *block, const Catoms2DRotationMove &m): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_START;
 
@@ -65,6 +65,7 @@ Catoms2DRotationStartEvent::Catoms2DRotationStartEvent(Time t, Catoms2DBlock *bl
     Distance r = defaultBlockSize[0]/2.0; // radius
     Distance d =  r*M_PI/3.0;
     duration = block->motionEngine->getDuration(d);
+
 #ifdef DURATION_MOTION_DEBUG
     cerr << "Total motion duration (us): " << duration << endl;
     cerr << "Total motion distance (mm): " << d << endl;
@@ -238,7 +239,7 @@ void Catoms2DRotationStopEvent::consume() {
     StatsIndividual::incMotionCount(rb->stats);
 
     Scheduler *scheduler = getScheduler();
-    scheduler->schedule(new Rotation2DEndEvent(scheduler->now(), rb));
+    scheduler->schedule(new Catoms2DRotationEndEvent(scheduler->now(), rb));
 }
 
 const string Catoms2DRotationStopEvent::getEventName() {
@@ -268,7 +269,7 @@ void Catoms2DRotationEndEvent::consume() {
     EVENT_CONSUME_INFO();
 
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
-    concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(date+COM_DELAY,rb)));
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new Catoms2DRotationEndEvent(date+COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(rb->stats);
 }

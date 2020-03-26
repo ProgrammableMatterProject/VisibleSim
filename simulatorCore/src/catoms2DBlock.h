@@ -61,7 +61,7 @@ public:
 
     // Motion
     bool isBlocked() const;
-    bool canMove(const Rotation2DMove &m) const;
+    bool canMove(const Catoms2DRotationMove &m) const;
     int getCCWMovePivotId() const;
     int getCWMovePivotId() const;
     void startMove(Catoms2DRotationMove &m, Time t);

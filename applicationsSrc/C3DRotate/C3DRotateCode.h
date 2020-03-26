@@ -26,32 +26,51 @@ private:
     Catoms3DBlock *module;
     int isLockedBy;
     Motions *currentMotion;
+    inline static unsigned short *tabDistances;
+    inline static bool *tabLockedCells;
 public :
-	C3DRotateCode(Catoms3DBlock *host):Catoms3DBlockCode(host) { module = host; };
-	~C3DRotateCode() {};
+    C3DRotateCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
+        module = host;
+        tabDistances = nullptr;
+        tabLockedCells = new bool[lattice->gridSize[0]
+                                  * lattice->gridSize[1] * lattice->gridSize[2]]();
+    };
 
-	void initDistances();
+    ~C3DRotateCode() {
+        delete [] tabDistances;
+        delete [] tabLockedCells;
+    };
 
-	void startup();
-	bool tryToMove();
+    void initDistances();
+    void initTabDistances();
+    unsigned short getDistance(const Cell3DPosition &pos);
+    void setDistance(const Cell3DPosition &pos,unsigned short d);
+
+    bool lockCell(const Cell3DPosition &pos);
+    bool unlockCell(const Cell3DPosition &pos);
+
+    void startup() override;
+    bool tryToMove();
 /*	void myLockFunc(const MessageOf<Motions>*msg,P2PNetworkInterface *sender);
-	void myUnlockFunc(const MessagePtr msg,P2PNetworkInterface *sender);
-	void myAnsLockFunc(const MessageOf<bool>*msg,P2PNetworkInterface *sender);*/
-void myLockFunc(MessagePtr anonMsg,P2PNetworkInterface *sender);
-void myUnlockFunc(MessagePtr anonMsg,P2PNetworkInterface *sender);
-void myAnsLockFunc(MessagePtr anonMsg,P2PNetworkInterface *sender);
-	void onMotionEnd();
-	void onTap(int);
+    void myUnlockFunc(const MessagePtr msg,P2PNetworkInterface *sender);
+    void myAnsLockFunc(const MessageOf<bool>*msg,P2PNetworkInterface *sender);*/
+    void myLockFunc(MessagePtr anonMsg,P2PNetworkInterface *sender);
+    void myUnlockFunc(MessagePtr anonMsg,P2PNetworkInterface *sender);
+    void myAnsLockFunc(MessagePtr anonMsg,P2PNetworkInterface *sender);
+    void onMotionEnd() override;
+    void onTap(int) override;
+    void onGlDraw() override;
+
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-		return(new C3DRotateCode((Catoms3DBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return(new C3DRotateCode((Catoms3DBlock*)host));
+    };
 /*****************************************************************************/
 };
 
 /*void _myLockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-void _myUnlockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-void _myAnsLockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);*/
+  void _myUnlockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+  void _myAnsLockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);*/
 
 #endif /* C3DRotateCode_H_ */

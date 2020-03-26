@@ -26,27 +26,44 @@ private:
     DatomsBlock *module;
     bool isLocked;
     Motions *currentMotion;
-	SkewFCCLattice *lattice;
+    SkewFCCLattice *lattice;
+    inline static unsigned short *tabDistances;
+    inline static bool *tabLockedCells;
 public :
-	DatomsRotateCode(DatomsBlock *host):DatomsBlockCode(host) { module = host; };
-	~DatomsRotateCode() {};
+    DatomsRotateCode(DatomsBlock *host):DatomsBlockCode(host) {
+        module = host;
+        tabDistances = nullptr;
+        tabLockedCells = new bool[lattice->gridSize[0]
+                                  * lattice->gridSize[1] * lattice->gridSize[2]]();
+    };
+    ~DatomsRotateCode() {
+        delete [] tabDistances;
+        delete [] tabLockedCells;
+    };
 
-	void initDistances();
+    void initDistances();
+    void initTabDistances();
+    unsigned short getDistance(const Cell3DPosition &pos);
+    void setDistance(const Cell3DPosition &pos,unsigned short d);
 
-	void startup();
-	bool tryToMove();
-	void myLockFunc(const MessageOf<Motions>*msg,P2PNetworkInterface *sender);
-	void myAnsLockFunc(const MessageOf<bool>*msg,P2PNetworkInterface *sender);
+    bool lockCell(const Cell3DPosition &pos);
+    bool unlockCell(const Cell3DPosition &pos);
+
+    void startup() override;
+    bool tryToMove();
+    void myLockFunc(const MessageOf<Motions>*msg,P2PNetworkInterface *sender);
+    void myAnsLockFunc(const MessageOf<bool>*msg,P2PNetworkInterface *sender);
     void myUnlockFunc(P2PNetworkInterface *sender);
-    void onMotionEnd();
-    void onTap(int);
-	
-	//void parseUserElements(TiXmlDocument *config);
+    void onMotionEnd() override;
+    void onTap(int) override;
+    void onGlDraw() override;
+
+    //void parseUserElements(TiXmlDocument *config);
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-		return(new DatomsRotateCode((DatomsBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return(new DatomsRotateCode((DatomsBlock*)host));
+    };
 /*****************************************************************************/
 };
 

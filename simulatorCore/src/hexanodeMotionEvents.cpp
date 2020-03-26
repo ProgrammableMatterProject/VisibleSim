@@ -27,12 +27,12 @@ namespace BaseSimulator {
 //===========================================================================================================
 
 HexanodeMotionStartEvent::HexanodeMotionStartEvent(Time t,
-																					 BuildingBlock *block,
-																					 const Cell3DPosition &fpos, HHLattice::Direction forient): BlockEvent(t,block) {
+                                                   BuildingBlock *block,
+                                                   const Cell3DPosition &fpos, HHLattice::Direction forient): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_NODEMOTION_START;
     finalPosition = fpos;
-		finalOrientation = forient;
+    finalOrientation = forient;
 }
 
 HexanodeMotionStartEvent::HexanodeMotionStartEvent(HexanodeMotionStartEvent *ev) : BlockEvent(ev) {
@@ -71,36 +71,36 @@ const string HexanodeMotionStartEvent::getEventName() {
 //===========================================================================================================
 
 HexanodeMotionStopEvent::HexanodeMotionStopEvent(Time t, BuildingBlock *block,const Cell3DPosition &fpos, HHLattice::Direction forient): BlockEvent(t,block) {
-	EVENT_CONSTRUCTOR_INFO();
-	eventType = EVENT_NODEMOTION_STOP;
-	finalPosition = fpos;
-	finalOrientation = forient;
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_NODEMOTION_STOP;
+    finalPosition = fpos;
+    finalOrientation = forient;
 }
 
 HexanodeMotionStopEvent::~HexanodeMotionStopEvent() {
-	EVENT_DESTRUCTOR_INFO();
+    EVENT_DESTRUCTOR_INFO();
 }
 
 void HexanodeMotionStopEvent::consume() {
-	EVENT_CONSUME_INFO();
+    EVENT_CONSUME_INFO();
 
-	Hexanode::HexanodeBlock *bb = (Hexanode::HexanodeBlock*)concernedBlock;
-	World *wrld = getWorld();
-	bb->setPositionAndOrientation(finalPosition,finalOrientation);
-	wrld->updateGlData(bb);
+    Hexanode::HexanodeBlock *bb = (Hexanode::HexanodeBlock*)concernedBlock;
+    World *wrld = getWorld();
+    bb->setPositionAndOrientation(finalPosition,finalOrientation);
+    wrld->updateGlData(bb);
 
 #ifdef COLOR_MOTION_DEBUG
-	bb->setColor(YELLOW);
+    bb->setColor(YELLOW);
 #endif
 
-	OUTPUT << "connect Block " << bb->blockId << "\n";
-	wrld->connectBlock(bb);
-	Scheduler *scheduler = getScheduler();
-	scheduler->schedule(new HexanodeMotionEndEvent(scheduler->now(), bb));
+    OUTPUT << "connect Block " << bb->blockId << "\n";
+    wrld->connectBlock(bb);
+    Scheduler *scheduler = getScheduler();
+    scheduler->schedule(new HexanodeMotionEndEvent(scheduler->now(), bb));
 }
 
 const string HexanodeMotionStopEvent::getEventName() {
-	return("HexanodeMotionStop Event");
+    return("HexanodeMotionStop Event");
 }
 
 //===========================================================================================================
@@ -110,32 +110,32 @@ const string HexanodeMotionStopEvent::getEventName() {
 //===========================================================================================================
 
 HexanodeMotionEndEvent::HexanodeMotionEndEvent(Time t, BuildingBlock *block): BlockEvent(t,block) {
-	EVENT_CONSTRUCTOR_INFO();
-	eventType = EVENT_NODEMOTION_END;
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_NODEMOTION_END;
 }
 
 HexanodeMotionEndEvent::HexanodeMotionEndEvent(HexanodeMotionEndEvent *ev) : BlockEvent(ev) {
-	EVENT_CONSTRUCTOR_INFO();
+    EVENT_CONSTRUCTOR_INFO();
 }
 
 HexanodeMotionEndEvent::~HexanodeMotionEndEvent() {
-	EVENT_DESTRUCTOR_INFO();
+    EVENT_DESTRUCTOR_INFO();
 }
 
 void HexanodeMotionEndEvent::consume() {
-	EVENT_CONSUME_INFO();
-	Hexanode::HexanodeBlock *bb = (Hexanode::HexanodeBlock*)concernedBlock;
-	bb->blockCode->console << " finished HexanodeMotion to " << bb->position << "," << bb->orientationCode
-													<< " at " << date + COM_DELAY << "\n";
-	concernedBlock->blockCode->processLocalEvent(
-			EventPtr(new HexanodeMotionEndEvent(date + COM_DELAY,bb))
-			);
-	StatsCollector::getInstance().incMotionCount();
-	StatsIndividual::incMotionCount(bb->stats);
+    EVENT_CONSUME_INFO();
+    Hexanode::HexanodeBlock *bb = (Hexanode::HexanodeBlock*)concernedBlock;
+    bb->blockCode->console << " finished HexanodeMotion to " << bb->position << "," << bb->orientationCode
+                           << " at " << date + COM_DELAY << "\n";
+    concernedBlock->blockCode->processLocalEvent(
+        EventPtr(new HexanodeMotionEndEvent(date + COM_DELAY,bb))
+        );
+    StatsCollector::getInstance().incMotionCount();
+    StatsIndividual::incMotionCount(bb->stats);
 }
 
 const string HexanodeMotionEndEvent::getEventName() {
-	return("HexanodeMotionEnd Event");
+    return("HexanodeMotionEnd Event");
 }
 
 

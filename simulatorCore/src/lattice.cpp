@@ -219,7 +219,7 @@ HLattice::HLattice() : Lattice2D() {}
 HLattice::HLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice2D(gsz,gsc) {}
 HLattice::~HLattice() {}
 
-Vector3D HLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
+Vector3D HLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
     Vector3D res;
 
     res.pt[2] = M_SQRT3_2 * pos[2];
@@ -243,7 +243,7 @@ Vector3D HLattice::gridToWorldPosition(const Cell3DPosition &pos) {
     return gridToUnscaledWorldPosition(pos).dot(Vector3D(gridScale[0], 1, 1));
 }
 
-Cell3DPosition HLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
+Cell3DPosition HLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
     Cell3DPosition res;
 
     res.pt[2] = round(pos[2] / M_SQRT3_2);
@@ -253,7 +253,7 @@ Cell3DPosition HLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
     return res;
 }
 
-Cell3DPosition HLattice::worldToGridPosition(const Vector3D &pos) {
+Cell3DPosition HLattice::worldToGridPosition(const Vector3D &pos) const {
     Cell3DPosition res;
 
     res.pt[2] = round(pos[2] / (M_SQRT3_2 * gridScale[2]));
@@ -321,45 +321,45 @@ HHLattice::HHLattice() : HLattice() {}
 HHLattice::HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : HLattice(gsz,gsc) {}
 HHLattice::~HHLattice() {}
 
-Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
-	Vector3D res;
+Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    Vector3D res;
 
-	res.pt[2] = 0;
-	res.pt[1] = pos[1]*M_SQRT3_2;
-	res.pt[0] = pos[0]+0.5*pos[1];
+    res.pt[2] = 0;
+    res.pt[1] = pos[1]*M_SQRT3_2;
+    res.pt[0] = pos[0]+0.5*pos[1];
 
-	return res;
+    return res;
 }
 
 Vector3D HHLattice::gridToWorldPosition(const Cell3DPosition &pos) {
-	return gridToUnscaledWorldPosition(pos).dot(Vector3D(gridScale[0], gridScale[1], 1));
+    return gridToUnscaledWorldPosition(pos).dot(Vector3D(gridScale[0], gridScale[1], 1));
 }
 
-Cell3DPosition HHLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
-	Cell3DPosition res;
+Cell3DPosition HHLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
+    Cell3DPosition res;
 
-	res.pt[2] = 0;
-	res.pt[1] = round(pos[1]/M_SQRT3_2);              // grid is 2D (x,y)
-	res.pt[0] = round(pos[0] - res.pt[1]* 0.5);
+    res.pt[2] = 0;
+    res.pt[1] = round(pos[1]/M_SQRT3_2);              // grid is 2D (x,y)
+    res.pt[0] = round(pos[0] - res.pt[1]* 0.5);
 
-	return res;
+    return res;
 }
 
-Cell3DPosition HHLattice::worldToGridPosition(const Vector3D &pos) {
-	Cell3DPosition res;
+Cell3DPosition HHLattice::worldToGridPosition(const Vector3D &pos) const {
+    Cell3DPosition res;
 
-	res.pt[2] = 0;
-	res.pt[1] = round(pos[1] / (M_SQRT3_2 * gridScale[1]));
-	res.pt[0] = round(pos[0] / gridScale[0] - res.pt[1] * 0.5);
-	return res;
+    res.pt[2] = 0;
+    res.pt[1] = round(pos[1] / (M_SQRT3_2 * gridScale[1]));
+    res.pt[0] = round(pos[0] / gridScale[0] - res.pt[1] * 0.5);
+    return res;
 }
 
 vector<Cell3DPosition> HHLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
-	return nCells;
+    return nCells;
 }
 
 Cell3DPosition HHLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
-	return pRef + getRelativeConnectivity(pRef)[direction];
+    return pRef + getRelativeConnectivity(pRef)[direction];
 }
 
 
@@ -369,13 +369,13 @@ Cell3DPosition HHLattice::getCellInDirection(const Cell3DPosition &pRef, int dir
 
 const string HHLattice::directionName[] = {"East","NorthEast","NorthWest","West","SouthWest","SouthEst"};
 
-	short HHLattice::getOppositeDirection(short d) {
-		return (d+3)%6;
-	}
+    short HHLattice::getOppositeDirection(short d) {
+        return (d+3)%6;
+    }
 
-	string HHLattice::getDirectionString(short d) {
-		return directionName[d];
-	}
+    string HHLattice::getDirectionString(short d) {
+        return directionName[d];
+    }
 
 
 /********************* SLattice *********************/
@@ -387,15 +387,15 @@ vector<Cell3DPosition> SLattice::getRelativeConnectivity(const Cell3DPosition &p
     return nCells;
 }
 
-Vector3D SLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
+Vector3D SLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
     return Vector3D(pos[0], pos[1], 0, 0);
 }
 
-Cell3DPosition SLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
+Cell3DPosition SLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
     return Cell3DPosition(pos[0], pos[1], 0);
 }
 
-Cell3DPosition SLattice::worldToGridPosition(const Vector3D &pos) {
+Cell3DPosition SLattice::worldToGridPosition(const Vector3D &pos) const {
     return Cell3DPosition(pos[0] / gridScale[0],
                           pos[1] / gridScale[1],
                           0);
@@ -439,28 +439,12 @@ string SLattice::getDirectionString(short d) {
 
 /********************* FCCLattice *********************/
 FCCLattice::FCCLattice() : Lattice3D() {
-	tabDistances=NULL;
 }
 
-FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {
-    tabLockedCells = new bool[gridSize[0] * gridSize[1] * gridSize[2]]();
-    // FIXME:
-    /*bool *ptr=tabLockedCells;
-    int i=gridSize[0] * gridSize[1] * gridSize[2];
-    while (--i) {
-        *ptr++=false;
-    }*/
-    // OUTPUT << "init Lattice" << endl;
-    // for (int i=0; i<gridSize[0] * gridSize[1] * gridSize[2];i++) { OUTPUT << tabLockedCells[i] << " "; }
-    // OUTPUT << endl;
-
-    tabDistances=NULL;
-}
+FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
 
 
 FCCLattice::~FCCLattice() {
-    delete [] tabLockedCells;
-    delete [] tabDistances;
 }
 
 vector<Cell3DPosition> FCCLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
@@ -468,7 +452,7 @@ vector<Cell3DPosition> FCCLattice::getRelativeConnectivity(const Cell3DPosition 
 }
 
 
-Vector3D FCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
+Vector3D FCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
     Vector3D res;
 
     res.pt[3] = 1.0;
@@ -486,7 +470,7 @@ Vector3D FCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
     return res;
 }
 
-Cell3DPosition FCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
+Cell3DPosition FCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
     Cell3DPosition res;
     static const double round=0.05;
     double v;
@@ -507,7 +491,7 @@ Cell3DPosition FCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
     return res;
 }
 
-Cell3DPosition FCCLattice::worldToGridPosition(const Vector3D &pos) {
+Cell3DPosition FCCLattice::worldToGridPosition(const Vector3D &pos) const {
     Cell3DPosition res;
     static const double round=0.05;
     double v;
@@ -567,52 +551,9 @@ Cell3DPosition FCCLattice::getCellInDirection(const Cell3DPosition &pRef, int di
 }
 
 void FCCLattice::glDraw() {
-static const float pts[24][3]={{2.928,0,4.996},{0,2.928,4.996},{-2.928,0,4.996},{0,-2.928,4.996},{4.996,2.069,2.069},{2.069,4.996,2.069},{-2.069,4.996,2.069},{-4.996,2.069,2.069},{-4.996,-2.069,2.069},{-2.069,-4.996,2.069},{2.069,-4.996,2.069},{4.996,-2.069,2.069},{4.996,2.069,-2.069},{2.069,4.996,-2.069},{-2.069,4.996,-2.069},{-4.996,2.069,-2.069},{-4.996,-2.069,-2.069},{-2.069,-4.996,-2.069},{2.069,-4.996,-2.069},{4.996,-2.069,-2.069},{2.928,0,-4.996},{0,2.928,-4.996},{-2.928,0,-4.996},{0,-2.928,-4.996}};
-static const uint8_t quads[72]={0,1,2,3,0,4,5,1,1,6,7,2,2,8,9,3,3,10,11,0,4,12,13,5,5,13,14,6,6,14,15,7,7,15,16,8,8,16,17,9,9,17,18,10,10,18,19,11,11,19,12,4,12,20,21,13,14,21,22,15,16,22,23,17,18,23,20,19,23,22,21,20};
-static const uint8_t tris[24]={1,5,6,2,7,8,3,9,10,0,11,4,13,21,14,15,22,16,17,23,18,19,23,12};
-static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-        gray[]={0.2f,0.2f,0.2f,1.0f};
-
-    if (tabDistances) {
-        int ix,iy,iz;
-        Cell3DPosition gp;
-        Vector3D v;
-        unsigned short *ptrDistance = tabDistances;
-        bool *ptr = tabLockedCells;
-
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-
-        for (iz=0; iz<gridSize[2]; iz++) {
-            for (iy=0; iy<gridSize[1]; iy++) {
-                for (ix=0; ix<gridSize[0]; ix++) {
-                    if (*ptr) {
-                        glPushMatrix();
-                        gp.set(ix,iy,iz);
-                        v = gridToWorldPosition(gp);
-                        glTranslatef(v[0],v[1],v[2]);
-                        glutSolidSphere(0.065*gridScale[0],6,6);
-                        glPopMatrix();
-                    }
-                    if (*ptrDistance!=USHRT_MAX) {
-                        glPushMatrix();
-                        gp.set(ix,iy,iz);
-                        v = gridToWorldPosition(gp);
-                        glTranslatef(v[0],v[1],v[2]);
-
-                        glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-                        glutSolidCube(0.2*gridScale[0]);
-                        glPopMatrix();
-
-                    }
-                    ptr++;
-                    ptrDistance++;
-                }
-            }
-        }
-    }
+    static const float pts[24][3]={{2.928,0,4.996},{0,2.928,4.996},{-2.928,0,4.996},{0,-2.928,4.996},{4.996,2.069,2.069},{2.069,4.996,2.069},{-2.069,4.996,2.069},{-4.996,2.069,2.069},{-4.996,-2.069,2.069},{-2.069,-4.996,2.069},{2.069,-4.996,2.069},{4.996,-2.069,2.069},{4.996,2.069,-2.069},{2.069,4.996,-2.069},{-2.069,4.996,-2.069},{-4.996,2.069,-2.069},{-4.996,-2.069,-2.069},{-2.069,-4.996,-2.069},{2.069,-4.996,-2.069},{4.996,-2.069,-2.069},{2.928,0,-4.996},{0,2.928,-4.996},{-2.928,0,-4.996},{0,-2.928,-4.996}};
+    static const uint8_t quads[72]={0,1,2,3,0,4,5,1,1,6,7,2,2,8,9,3,3,10,11,0,4,12,13,5,5,13,14,6,6,14,15,7,7,15,16,8,8,16,17,9,9,17,18,10,10,18,19,11,11,19,12,4,12,20,21,13,14,21,22,15,16,22,23,17,18,23,20,19,23,22,21,20};
+    static const uint8_t tris[24]={1,5,6,2,7,8,3,9,10,0,11,4,13,21,14,15,22,16,17,23,18,19,23,12};
 
     if (!mapHighlightedCells.empty()) {
         Vector3D v;
@@ -647,48 +588,6 @@ static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
             glPopMatrix();
         }
     }
-}
-
-bool FCCLattice::lockCell(const Cell3DPosition &pos) {
-    if (!isInGrid(pos)) return true;
-
-    int ind = getIndex(pos);
-    OUTPUT << "ind=" << ind << " / pos=" << pos << " / state=" << tabLockedCells[ind] << " / bb=" << (grid[ind]==NULL?0:1) << endl;
-    if (tabLockedCells[ind] || grid[ind]!=NULL) {
-        return false;
-    }
-    tabLockedCells[ind] = true;
-    return true;
-}
-
-bool FCCLattice::unlockCell(const Cell3DPosition &pos) {
-    if (!isInGrid(pos)) return true;
-
-    int ind = getIndex(pos);
-    bool prev = tabLockedCells[ind];
-    tabLockedCells[ind] = false;
-    return prev;
-}
-
-void FCCLattice::initTabDistances() {
-    if (tabDistances==NULL) {
-        int n = gridSize.pt[0]*gridSize.pt[1]*gridSize.pt[2];
-        tabDistances = new unsigned short[n];
-        // initialisation of tabDistances with value 'd'
-        unsigned short *ptr=tabDistances;
-        while (n--) {
-            *ptr++=USHRT_MAX;
-        }
-    }
-}
-
-unsigned short FCCLattice::getDistance(const Cell3DPosition &pos) {
-    if (!isInGrid(pos)) return USHRT_MAX;
-    return tabDistances[getIndex(pos)];
-}
-
-void FCCLattice::setDistance(const Cell3DPosition &pos,unsigned short d) {
-    if (isInGrid(pos)) tabDistances[getIndex(pos)]=d;
 }
 
 // === NEIGHBOR RESTRICTIONS ===
@@ -835,7 +734,7 @@ vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosit
     return nCells;
 }
 
-Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
+Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
     Vector3D res;
 
     res.pt[3] = 1.0;
@@ -848,7 +747,7 @@ Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) 
     return res;
 }
 
-Cell3DPosition SkewFCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
+Cell3DPosition SkewFCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
     Cell3DPosition res;
 
     res.pt[2] = round((2 * pos[2]) / (M_SQRT2) - 0.5);
@@ -858,7 +757,7 @@ Cell3DPosition SkewFCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) 
     return res;
 }
 
-Cell3DPosition SkewFCCLattice::worldToGridPosition(const Vector3D &pos) {
+Cell3DPosition SkewFCCLattice::worldToGridPosition(const Vector3D &pos) const {
     Cell3DPosition res;
 
     res.pt[2] = round((2 * pos[2]) / (M_SQRT2 * gridScale[2]) - 0.5);
@@ -898,15 +797,15 @@ vector<Cell3DPosition> SCLattice::getRelativeConnectivity(const Cell3DPosition &
     return nCells;
 }
 
-Vector3D SCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
+Vector3D SCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
     return Vector3D(pos[0], pos[1], pos[2], 0);
 }
 
-Cell3DPosition SCLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
+Cell3DPosition SCLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
     return Cell3DPosition(pos[0], pos[1], pos[2]);
 }
 
-Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) {
+Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) const {
     return Cell3DPosition(pos[0] / gridScale[0],
                           pos[1] / gridScale[1],
                           pos[2] / gridScale[2]);
@@ -937,91 +836,38 @@ Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int dir
     return pRef + nCells[direction];
 }
 
-void SCLattice::initTabDistances() {
-	if (tabDistances==nullptr) {
-		int n = gridSize.pt[0]*gridSize.pt[1]*gridSize.pt[2];
-		tabDistances = new unsigned short[n];
-		// initialisation of tabDistances with value 'd'
-		unsigned short *ptr=tabDistances;
-		while (n--) {
-			*ptr++=USHRT_MAX;
-		}
-	}
-}
-
-unsigned short SCLattice::getDistance(const Cell3DPosition &pos) {
-	if (!isInGrid(pos)) return USHRT_MAX;
-	return tabDistances[getIndex(pos)];
-}
-
-void SCLattice::setDistance(const Cell3DPosition &pos,unsigned short d) {
-	if (isInGrid(pos)) tabDistances[getIndex(pos)]=d;
-}
-
 void SCLattice::glDraw() {
-	static GLfloat white[]={0.2f,0.2f,0.2f,1.0f},
-	gray[]={0.2f,0.2f,0.2f,1.0f};
+    static GLfloat white[]={0.2f,0.2f,0.2f,1.0f},
+    gray[]={0.2f,0.2f,0.2f,1.0f};
 
-	if (tabDistances) {
-		int ix,iy,iz;
-		Cell3DPosition gp;
-		Vector3D v;
-		unsigned short *ptrDistance = tabDistances;
+    if (tabDistances) {
+        int ix,iy,iz;
+        Cell3DPosition gp;
+        Vector3D v;
+        unsigned short *ptrDistance = tabDistances;
 
-		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-		glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+        glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
 
-		for (iz=0; iz<gridSize[2]; iz++) {
-			for (iy=0; iy<gridSize[1]; iy++) {
-				for (ix=0; ix<gridSize[0]; ix++) {
-					if (*ptrDistance!=USHRT_MAX) {
-						glPushMatrix();
-						gp.set(ix,iy,iz);
-						v = gridToWorldPosition(gp);
-						glTranslatef(v[0]+0.5*gridScale[0],v[1]+0.5*gridScale[1],v[2]+0.5*gridScale[2]);
+        for (iz=0; iz<gridSize[2]; iz++) {
+            for (iy=0; iy<gridSize[1]; iy++) {
+                for (ix=0; ix<gridSize[0]; ix++) {
+                    if (*ptrDistance!=USHRT_MAX) {
+                        glPushMatrix();
+                        gp.set(ix,iy,iz);
+                        v = gridToWorldPosition(gp);
+                        glTranslatef(v[0]+0.5*gridScale[0],v[1]+0.5*gridScale[1],v[2]+0.5*gridScale[2]);
 
-						glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-						glutSolidCube(0.2*gridScale[0]);
-						glPopMatrix();
+                        glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
+                        glutSolidCube(0.2*gridScale[0]);
+                        glPopMatrix();
 
-					}
-					ptrDistance++;
-				}
-			}
-		}
-	}
-}
-
-
-/********************* BCLattice *********************/
-BCLattice::BCLattice() : Lattice3D() {}
-BCLattice::BCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
-BCLattice::~BCLattice() {}
-
-vector<Cell3DPosition> BCLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
-    return vector<Cell3DPosition>();
-}
-
-Vector3D BCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) {
-    return Vector3D(pos[0], pos[1], pos[2], 0);
-}
-
-Cell3DPosition BCLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
-    return Cell3DPosition(pos[0], pos[1], pos[2]);
-}
-
-Cell3DPosition BCLattice::worldToGridPosition(const Vector3D &pos) {
-    return Cell3DPosition(pos[0] / gridScale[0],
-                          pos[1] / gridScale[1],
-                          pos[2] / gridScale[2]);
-}
-
-short BCLattice::getOppositeDirection(short d) {
-    return -1;
-}
-
-string BCLattice::getDirectionString(short d) {
-    return "Wireless";
+                    }
+                    ptrDistance++;
+                }
+            }
+        }
+    }
 }

@@ -2,10 +2,10 @@
  * @file   catoms3DRotationsBlockCode.hpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Wed Oct 10 14:12:52 2018
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 
@@ -20,7 +20,7 @@
 #include "cell3DPosition.h"
 
 class Catoms3DRotationsBlockCode : public Catoms3D::Catoms3DBlockCode {
-public:    
+public:
     Scheduler *scheduler;
     World *world;
     Lattice *lattice;
@@ -28,17 +28,17 @@ public:
 
     // TargetCSG *target;
     Catoms3DRotationsBlockCode(Catoms3D::Catoms3DBlock *host);
-    ~Catoms3DRotationsBlockCode();          
-    
+    ~Catoms3DRotationsBlockCode();
+
     /**
      * \brief Global message handler for this instance of the blockcode
      * \param msg Message received by the module
      * \param sender Connector that has received the message and hence that is connected to the sender */
     void processReceivedMessage(MessagePtr msg, P2PNetworkInterface* sender);
-    
-    void startup();
-    void processLocalEvent(EventPtr pev);
-    void onBlockSelected();
+
+    void startup() override;
+    void processLocalEvent(EventPtr pev) override;
+    void onBlockSelected() override;
     void maFunc();
 
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
@@ -47,4 +47,3 @@ public:
 };
 
 #endif /* CATOMS3DROTATIONSBLOCKCODE_H_ */
-    
