@@ -47,7 +47,7 @@ Catoms2D1BlockCode::~Catoms2D1BlockCode() {
     C2SRMsg::printHopCountStats();
     statsPrinted = true;
   }
-  
+
   delete c2sr;
   delete map;
 }
@@ -88,10 +88,10 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     case BACK_MAP_MSG: {
       bool finished = map->handleMessage(message);
       if (finished) {
-	scheduleC2SRStart();
-	if (map->connectedToHost) {
-	  cout << "@" << catom2D->blockId << " has created the coordinate system" << endl;
-	}
+    scheduleC2SRStart();
+    if (map->connectedToHost) {
+      cout << "@" << catom2D->blockId << " has created the coordinate system" << endl;
+    }
       }
     }
       break;
@@ -107,7 +107,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   case EVENT_START_C2SR: {
     c2sr->start();
   }
-    break;  
+    break;
   case  EVENT_ROTATION2D_END: {
     #ifdef RECONFIGURATION_DEBUG
     cout << "@" << catom2D->blockId << " motion end: " << catom2D->position << endl;
@@ -127,11 +127,11 @@ void Catoms2D1BlockCode::setSimulationParameters() {
 
 void Catoms2D1BlockCode::setCommunicationRate() {
   double mean = simParams.commRateMean;
-  
+
   if (mean > 0) {
     double sd = mean*DEFAULT_SD_FACTOR;
-    vector<P2PNetworkInterface*>& interfaces = catom2D->getP2PNetworkInterfaces();
-    vector<P2PNetworkInterface*>::iterator it;
+    const vector<P2PNetworkInterface*>& interfaces = catom2D->getP2PNetworkInterfaces();
+    vector<P2PNetworkInterface*>::const_iterator it;
     for (it = interfaces.begin() ; it != interfaces.end(); ++it) {
       P2PNetworkInterface* p2p = *it;
       doubleRNG g = Random::getNormalDoubleRNG(catom2D->getRandomUint(),mean,sd);
