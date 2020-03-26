@@ -407,7 +407,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
-
     /**
      * @copydoc Lattice::getCellInDirection
      */
@@ -487,7 +486,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
-
     /**
      * @copydoc Lattice::getCellInDirection
      */
@@ -715,11 +713,6 @@ public:
     virtual Cell3DPosition getGridLowerBounds() const override;
 
     /**
-     * @copydoc Lattice::getGridUpperBounds
-     */
-    virtual Cell3DPosition getGridUpperBounds() const override;
-
-    /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
@@ -763,54 +756,60 @@ class SCLattice : public Lattice3D {
             Cell3DPosition(0,0,1)  // TOP
             }; //!< Vector containing relative position of neighboring cells
     static const string directionName[];
+		unsigned short *tabDistances;
 public:
-    enum Direction { Bottom = 0, Back = 1, Right, Left, Front, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
-    //!< @copydoc Lattice::getOppositeDirection
-    virtual short getOppositeDirection(short d) override;
-    //!< @copydoc Lattice::getDirectionString
-    virtual string getDirectionString(short d) override;
-    Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
-    /**
-     * @brief SCLattice constructor.
-     */
-    SCLattice();
-    /**
-     * @brief SCLattice constructor.
-     * @param gsz The size of the grid
-     * @param gsc The real size of a block on the grid, also equal to the scale of the grid
-     */
-    SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
-    /**
-     * @brief SCLattice destructor.
-     */
-    ~SCLattice();
+	enum Direction { Bottom = 0, Back = 1, Right, Left, Front, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+	//!< @copydoc Lattice::getOppositeDirection
+	virtual short getOppositeDirection(short d) override;
+	//!< @copydoc Lattice::getDirectionString
+	virtual string getDirectionString(short d) override;
+	Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
+	/**
+		* @brief SCLattice constructor.
+		*/
+	SCLattice();
+	/**
+		* @brief SCLattice constructor.
+		* @param gsz The size of the grid
+		* @param gsc The real size of a block on the grid, also equal to the scale of the grid
+		*/
+	SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
+	/**
+		* @brief SCLattice destructor.
+		*/
+	~SCLattice();
 
-    /**
-     * @copydoc Lattice::gridToUnscaledWorldPosition
-     */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
-    /**
-     * @copydoc Lattice::unscaledWorldToGridPosition
-     */
-    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
-    /**
-     * @copydoc Lattice::worldToGridPosition
-     */
-    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
-    /**
-     * @copydoc Lattice::getRelativeConnectivity
-     */
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override;
-    /**
-     * @copydoc Lattice::getMaxNumNeighbors
-     */
-    virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
+	/**
+		* @copydoc Lattice::gridToUnscaledWorldPosition
+		*/
+	virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+	/**
+		* @copydoc Lattice::unscaledWorldToGridPosition
+		*/
+	virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+	/**
+		* @copydoc Lattice::worldToGridPosition
+		*/
+	virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) override;
+	/**
+		* @copydoc Lattice::getRelativeConnectivity
+		*/
+	virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) override;
+	/**
+		* @copydoc Lattice::getMaxNumNeighbors
+		*/
+	virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
 
-    /**
-     * @copydoc Lattice::getCellInDirection
-     */
-    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
-                                              int direction) override;
+	/**
+		* @copydoc Lattice::getCellInDirection
+		*/
+	virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+																						int direction) override;
+	void initTabDistances();
+	unsigned short getDistance(const Cell3DPosition &pos);
+	void setDistance(const Cell3DPosition &pos,unsigned short d);
+	void glDraw() override;
+
 };
 
 /*! @brief 3D Broadcast Lattice
@@ -875,7 +874,6 @@ public:
          return Cell3DPosition(0,0,0);
     }
 };
-
 
 }
 

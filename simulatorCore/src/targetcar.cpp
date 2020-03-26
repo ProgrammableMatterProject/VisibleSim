@@ -1,5 +1,5 @@
 /*! @file target.cpp
- * @brief Defines a target configuration for reconfiguration algorithms, 
+ * @brief Defines a target configuration for reconfiguration algorithms,
  * several ways of defining the configuration are provided to the user.
  * @author Pierre Thalamy
  * @date 21/07/2016
@@ -22,7 +22,7 @@ TiXmlNode *Target::targetNode = NULL;
 Target *Target::loadNextTarget() {
     if (Target::targetListNode) {
         // Move targetNode pointer to next target (or NULL if there is none)
-        Target::targetNode = targetListNode->IterateChildren(targetNode); 
+        Target::targetNode = targetListNode->IterateChildren(targetNode);
 
         if (Target::targetNode) {
             TiXmlElement* element;
@@ -54,13 +54,13 @@ Target *Target::loadNextTarget() {
 ostream& operator<<(ostream& out,const Target *t) {
     t->print(out);
     return out;
-}   
+}
 
 /************************************************************
  *                      TargetGrid
  ************************************************************/
 
-TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {    
+TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     TiXmlNode *cellNode = targetNode->FirstChild("cell");
     const char* attr;
     TiXmlElement *element;
@@ -72,7 +72,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     while (cellNode) {
         element = cellNode->ToElement();
         color = defaultColor;
-        
+
         attr = element->Attribute("position");
         if (attr) {
             string str(attr);
@@ -82,9 +82,11 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
             position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
             position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
         } else {
-            cerr << "error: position attribute missing for target cell" << endl;
-            throw TargetParsingException();
+            stringstream error;
+            error << "position attribute missing for target cell" << "\n";
+            throw ParsingException(error.str());
         }
+
         attr = element->Attribute("color");
         if (attr) {
             string str(attr);
@@ -102,7 +104,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     // Parse lines of cells
     cellNode = targetNode->FirstChild("targetLine");
     while (cellNode) {
-        int line = 0, plane = 0;            
+        int line = 0, plane = 0;
         element = cellNode->ToElement();
         color = defaultColor;
         attr = element->Attribute("color");
@@ -119,12 +121,12 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
         if (attr) {
             line = atoi(attr);
         }
-        
+
         attr = element->Attribute("plane");
         if (attr) {
             plane = atoi(attr);
         }
-        
+
         attr = element->Attribute("values");
         if (attr) {
             string str(attr);
@@ -234,7 +236,7 @@ const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
  *                      TargetSurface
  ************************************************************/
 
-TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {    
+TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
     TiXmlNode *methNode = targetNode->FirstChild("method");
     const char* attr;
     TiXmlElement *element;
@@ -249,22 +251,22 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                 string str(attr);
                 if (str.compare("interpolation") == 0) {
                     method = str;
-                    cout << "Method initialized" << method << endl; 
+                    cout << "Method initialized" << method << endl;
                 }
                 else if (str.compare("neighbor") == 0) {
                     method = str;
-                    cout << "Method initialized" << method << endl; 
+                    cout << "Method initialized" << method << endl;
                 }
                 else if (str.compare("nurbs") == 0) {
                     method = str;
-                    cout << "Method initialized" << method << endl; 
+                    cout << "Method initialized" << method << endl;
                 }
                 TiXmlNode *cellNode = methNode->FirstChild("cell");
                 // Parse individual cells
                 while (cellNode) {
                 element = cellNode->ToElement();
                 color = defaultColor;
-                  
+
                 attr = element->Attribute("position");
                 if (attr) {
                     string str(attr);
@@ -274,8 +276,9 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                     position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
                     position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
                 } else {
-                    cerr << "error: position attribute missing for target cell" << endl;
-                    throw TargetParsingException();
+                    stringstream error;
+                    error << "position attribute missing for target cell" << "\n";
+                    throw ParsingException(error.str());
                 }
                 attr = element->Attribute("color");
                 if (attr) {
@@ -294,7 +297,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
             // Parse lines of cells
             cellNode = targetNode->FirstChild("targetLine");
             while (cellNode) {
-                int line = 0, plane = 0;            
+                int line = 0, plane = 0;
                 element = cellNode->ToElement();
                 color = defaultColor;
                 attr = element->Attribute("color");
@@ -306,17 +309,17 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                               atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
                               atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
                 }
-        
+
                 attr = element->Attribute("line");
                 if (attr) {
                     line = atoi(attr);
                 }
-        
+
                 attr = element->Attribute("plane");
                 if (attr) {
                     plane = atoi(attr);
                 }
-                
+
                 attr = element->Attribute("values");
                 if (attr) {
                     string str(attr);
@@ -337,7 +340,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
             }
     }
 
-    
+
     if (method.compare("interpolation") == 0) {
         //Calculate polynom coeff
         cout << "Coefficients to be calculated"<< endl;
@@ -418,7 +421,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
         T_NUMPOINTS = 4;
         T_ORDER = 3;
         T_NUMKNOTS = T_NUMPOINTS + T_ORDER;
-        
+
         //Filling sknots
         sknots.push_back(0);
         sknots.push_back(0.1);
@@ -528,7 +531,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
         //ctlpoints[3][3][2]=90;
 
         //Checking ctlpoints
-        
+
         for (int i=0; i < S_NUMPOINTS; i++){
             for (int j=0; j < T_NUMPOINTS; j++){
                 cout << "ctlpoints["<<i<<"]["<<j<<"][2] = "<< ctlpoints[i][j][2]<< endl;
@@ -579,7 +582,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
 
     else if (method.compare("neighbor") == 0) {
         //print method
-        cout << "Call to isInTarget method =" << method << endl; 
+        cout << "Call to isInTarget method =" << method << endl;
         //Nearest neighboor research
         float mindist = FLT_MAX;
         int neighbor = 0;
@@ -598,13 +601,13 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
         }
         else{
             return false;
-        }        
+        }
     }
 
 
     else if (method.compare("nurbs") == 0) {
         //print method
-        //cout << "Call to isInTarget method =" << method << endl; 
+        //cout << "Call to isInTarget method =" << method << endl;
         //Initialization of dichotomy parameters
         float precision = FLT_MAX;
         float precGoal = 100;
@@ -689,7 +692,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
                 u0 = (u1+u0)/2;
                 v0 = (v1+v0)/2;
             }
-            
+
             precision = sqrt(mindist);
             //cout<<"quadrant="<<quadrant<<endl;
             //cout<<"x="<<x<<",x1="<<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
@@ -704,9 +707,9 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
         }
         else{
             return false;
-        }        
+        }
     }
-    
+
     else {
         throw BaseSimulator::NotImplementedException("TargetSurface::isInTarget");
     }
@@ -821,19 +824,19 @@ void TargetSurface::print(ostream& where) const {
 
     if (method.compare("interpolation") == 0) {
         //print method
-        cout << "Call to print method =" << method << endl; 
+        cout << "Call to print method =" << method << endl;
     }
 
     else if (method.compare("neighbor") == 0) {
         //print method
-        cout << "Call to print method =" << method << endl; 
+        cout << "Call to print method =" << method << endl;
     }
-    
+
     else if (method.compare("nurbs") == 0) {
         //print method
-        cout << "Call to print method =" << method << endl; 
+        cout << "Call to print method =" << method << endl;
     }
-    
+
     else {
         throw BaseSimulator::NotImplementedException("TargetSurface::print");
     }

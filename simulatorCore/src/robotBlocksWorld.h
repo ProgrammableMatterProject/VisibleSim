@@ -17,6 +17,7 @@
 #include "objLoader.h"
 #include "scheduler.h"
 #include "trace.h"
+#include "robotBlocksMotionRules.h"
 
 namespace RobotBlocks {
 
@@ -28,7 +29,7 @@ class RobotBlocksWorld : public BaseSimulator::World {
                                                        used to deduce selected Block / face */
 protected:
     GLuint idTextureWall = 0;
-
+		RobotBlocksMotionRules *motionRules;
     virtual ~RobotBlocksWorld();
 public:
     RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
@@ -44,6 +45,7 @@ public:
         OUTPUT << "I'm a RobotBlocksWorld" << endl;
     }
 
+    RobotBlocksMotionRules *getMotionRules() { return motionRules; }
     virtual RobotBlocksBlock* getBlockById(int bId) override {
         return((RobotBlocksBlock*)World::getBlockById(bId));
     }
@@ -92,6 +94,17 @@ public:
      * @copydoc World::exportConfiguration
      */
     virtual void exportConfiguration() override;
+		
+		virtual void createPopupMenu(int ix, int iy) override;
+		virtual void menuChoice(int n) override;
+		
+		/**
+		 * \brief Export a 3D model in STL format to print the whole configuration
+		 * \param title : title of the STL file
+		 * \result Returns true if the faces was well written
+		 */
+		virtual bool exportSTLModel(string title) override;
+		
 };
 
 inline void deleteWorld() {

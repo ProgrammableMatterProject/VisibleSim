@@ -117,6 +117,8 @@ void BlinkyBlocksWorld::glDraw() {
     if (bb) bb->blockCode->onGlDraw();
 
     glDrawBackground();
+
+    lattice->glDraw();
 }
 
 void BlinkyBlocksWorld::glDrawId() {

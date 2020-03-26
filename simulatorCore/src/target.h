@@ -125,7 +125,7 @@ public:
      * @param pos position to condiser
      * @return target color at cell p
      */
-    virtual const Color getTargetColor(const Cell3DPosition &pos) = 0;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const = 0;
 
     /**
      * @brief Returns the target bounding box
@@ -137,6 +137,16 @@ public:
      * @brief Draw geometry of the target in the interfaces
      */
     virtual void glDraw();
+
+    /**
+     * Highlights the target with semi-transparent colored cells
+     */
+    virtual void highlight() const = 0;
+
+    /**
+     * Cancels out Target::highlight
+     */
+    virtual void unhighlight() const = 0;
 
     friend ostream& operator<<(ostream& out,const Target *t);
 };  // class Target
@@ -174,13 +184,13 @@ public:
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
-    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
 
     //!< @copydoc Target::BoundingBox
     virtual void boundingBox(BoundingBox &bb) override;
 
-    virtual void highlight();
-    virtual void unhighlight();
+    virtual void highlight() const override;
+    virtual void unhighlight() const override;
 
     friend ostream& operator<<(ostream& f,const TargetGrid&tg);
 };  // class TargetGrid
@@ -207,7 +217,7 @@ public:
         delete targetCellsInConstructionOrder;
     };
 
-    //!< @copydoc Target::getTargetColor
+    //!< @copydoc Target::iInTargetColor
     //!< a cell is in the target grid if and only if it is present in the target cells container
      //!< @warning Can only be used once origin has been set, and expects a relative position as input
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
@@ -253,7 +263,7 @@ public:
     //!< @copydoc Target::isInTarget
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
-    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
 
     /**
      * @brief Grid to unscaled world position within bounding box
@@ -278,8 +288,9 @@ public:
      * @brief Draw geometry of the target in the interfaces
      */
     virtual void glDraw() override;
+    void highlight() const override;
+    void unhighlight() const override;
 
-    void highlight();
 };  // class TargetCSG
 
 //<! @brief A target modeling a surface by a point cloud
@@ -332,10 +343,18 @@ public:
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
-    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
 
     //!< @copydoc Target::BoundingBox
     virtual void boundingBox(BoundingBox &bb) override;
+
+    void highlight() const override {
+        throw NotImplementedException("TargetSurface::highlight");
+    }
+
+    void unhighlight() const override {
+        throw NotImplementedException("TargetSurface::unhighlight");
+    }
 
     virtual void glDraw() override;
 };  // class TargetSurface

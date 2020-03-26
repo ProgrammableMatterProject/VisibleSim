@@ -171,22 +171,28 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 }
 
 void Simulator::parseConfiguration(int argc, char*argv[]) {
-    // Identify the type of the simulation (CPP / Meld Process / MeldInterpret)
-    readSimulationType(argc, argv);
+    try {
+        // Identify the type of the simulation (CPP / Meld Process / MeldInterpret)
+        readSimulationType(argc, argv);
 
-    // Configure the simulation world
-    parseWorld(argc, argv);
-    initializeIDPool();
+        // Configure the simulation world
+        parseWorld(argc, argv);
+        initializeIDPool();
 
-    // Instantiate and configure the Scheduler
-    loadScheduler(schedulerMaxDate);
+        // Instantiate and configure the Scheduler
+        loadScheduler(schedulerMaxDate);
 
-	// Parse and configure the remaining items
-	parseBlockList();
-	parseCameraAndSpotlight();
-	parseObstacles();
-	parseTarget();
-    parseCustomizations();
+        // Parse and configure the remaining items
+        parseBlockList();
+        parseCameraAndSpotlight();
+        parseObstacles();
+        parseTarget();
+        parseCustomizations();
+    } catch(ParsingException const& e) {
+        cerr << e.what();
+        exit(EXIT_FAILURE);
+    }
+
 }
 
 Simulator::IDScheme Simulator::determineIDScheme() {
@@ -202,9 +208,11 @@ Simulator::IDScheme Simulator::determineIDScheme() {
         else if (str.compare("RANDOM") == 0)
             return RANDOM;
         else {
-            cerr << "error:  unknown ID distribution scheme in configuration file: " << str << endl;
-            cerr << "\texpected values: [ORDERED, MANUAL, RANDOM]" << endl;
-            throw ParsingException();
+            stringstream error;
+            error << "unknown ID distribution scheme in configuration file: "
+                  << str << "\n";
+            error << "\texpected values: [ORDERED, MANUAL, RANDOM]" << "\n";
+            throw ParsingException(error.str());
         }
     }
 
@@ -219,8 +227,9 @@ int Simulator::parseRandomIdSeed() {
             string str(attr);
             return stoi(str);
         } catch (const std::invalid_argument& e) {
-            cerr << "error: invalid seed attribute value in configuration file" << endl;
-            throw ParsingException();
+            stringstream error;
+            error << "invalid seed attribute value in configuration file: " << attr << "\n";
+            throw ParsingException(error.str());
         }
     } else { // No seed, generate distribution with random seed or cmd line seed
         return cmdLine.isSimulationSeedSet() ? cmdLine.getSimulationSeed() : -1;
@@ -235,8 +244,9 @@ bID Simulator::parseRandomStep() {
             string str(attr);
             return stol(str);
         } catch (const std::invalid_argument& e) {
-            cerr << "error: invalid step attribute value in configuration file" << endl;
-            throw ParsingException();
+            stringstream error;
+            error << "invalid step attribute value in configuration file: " << attr << "\n";
+            throw ParsingException(error.str());
         }
     } else {				// No step, generate distribution with step of one
         return 1;
@@ -310,10 +320,10 @@ bID Simulator::countNumberOfModules() {
         element = child->ToElement();
         attr = element->Attribute("boxOrigin");
         if (attr) {
-            // cout << "origin" << endl;
+            cout << "origin" << endl;
             string str(attr);
             int pos1 = str.find_first_of(','),
-                pos2 = str.find_last_of(',');
+  pos2 = str.find_last_of(',');
             boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
             boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
             boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
@@ -323,13 +333,13 @@ bID Simulator::countNumberOfModules() {
                          world->lattice->gridSize[2]*world->lattice->gridScale[2]);
         attr = element->Attribute("boxSize");
         if (attr) {
-            // cout << "dest" << endl;
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
             boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
             boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
             boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            cout << "boxDest" << endl;
         }
         Vector3D pos;
         Cell3DPosition position;
@@ -345,7 +355,7 @@ bID Simulator::countNumberOfModules() {
             }
         }
     }
-    // cout << "count=" << moduleCount << endl;
+    cout << "count=" << moduleCount << endl;
 
     return moduleCount;
 }
@@ -390,15 +400,20 @@ void Simulator::initializeIDPool() {
                         string str(attr);
                         id =  stoull(str); // id in range [0, 2^64 - 1]
                     } catch (const std::invalid_argument& e) {
-                        cerr << "error: invalid id attribute value in configuration file" << endl;
-                        throw ParsingException();
+                        stringstream error;
+                        error << "invalid id attribute value in configuration file: "
+                              << attr << "\n";
+                        throw ParsingException(error.str());
                     } catch (const std::out_of_range& e) {
-                        cerr << "error: out of range id attribute value in configuration file" << endl;
-                        throw ParsingException();
+                        stringstream error;
+                        error << "out of range id attribute value in configuration file: "
+                              << attr << "\n";
+                        throw ParsingException(error.str());
                     }
                 } else {
-                    cerr << "error: missing id attribute for block node in configuration file while in MANUAL mode" << endl;
-                    throw ParsingException();
+                    stringstream error;
+                    error << "missing id attribute for block node in configuration file while in MANUAL mode" << "\n";
+                    throw ParsingException(error.str());
                 }
 
                 // Ensure unicity of the ID, by inserting id to the set and checking that insertion took place
@@ -406,9 +421,9 @@ void Simulator::initializeIDPool() {
                 if (dupCheck.insert(id).second)
                     IDPool.push_back(id);
                 else {
-                    cerr << "error: duplicate id attribute " << id << " for block node in configuration file while in MANUAL mode"
-                         << endl;
-                    throw ParsingException();
+                    stringstream error;
+                    error << "duplicate id attribute " << id << " for block node in configuration file while in MANUAL mode" << "\n";
+                    throw ParsingException(error.str());
                 }
             }
 
@@ -546,130 +561,132 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 #endif
             }
         } else {
-            cerr << "error: No blockList element in XML configuration file" << endl;
-            throw ParsingException();
+            stringstream error;
+            error << "No blockList element in XML configuration file" << "\n";
+            throw ParsingException(error.str());
         }
 
         // Create the simulation world and lattice
         loadWorld(Cell3DPosition(lx,ly,lz),
                   Vector3D(blockSize[0], blockSize[1], blockSize[2]), argc, argv);
     } else {
-        ERRPUT << "ERROR : No world in XML configuration file" << endl;
-        throw ParsingException();
+        stringstream error;
+        error << "No world in XML configuration file" << "\n";
+        throw ParsingException(error.str());
     }
 }
 
 void Simulator::parseCameraAndSpotlight() {
-	if (GlutContext::GUIisEnabled) {
-		Lattice *lattice = getWorld()->lattice;
-		// calculate the position of the camera from the lattice size
-		Vector3D target(0.5*lattice->gridSize[0]*lattice->gridScale[0],
-										0.5*lattice->gridSize[1]*lattice->gridScale[1],
-										0.25*lattice->gridSize[2]*lattice->gridScale[2]); // usual target point (midx,miy,quarterz)
-		world->getCamera()->setTarget(target);
-		double d=target.norme();
-		world->getCamera()->setDistance(3.0*d);
-		world->getCamera()->setDirection(45.0,30.0);
-		world->getCamera()->setNearFar(0.25*d,5.0*d);
-		world->getCamera()->setAngle(35.0);
-		world->getCamera()->setLightParameters(target,-30.0,30.0,3.0*d,30.0,0.25*d,4.0*d);
-		// loading the camera parameters
-		TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");
-		if (nodeConfig) {
-			TiXmlElement* cameraElement = nodeConfig->ToElement();
-			const char *attr=cameraElement->Attribute("target");
-			double def_near=1,def_far=1500;
-			float angle=45.0;
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				Vector3D target;
-				target.pt[0] = atof(str.substr(0,pos1).c_str());
-				target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-				target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-				world->getCamera()->setTarget(target);
-			}
+    if (GlutContext::GUIisEnabled) {
+        Lattice *lattice = getWorld()->lattice;
+        // calculate the position of the camera from the lattice size
+        Vector3D target(0.5*lattice->gridSize[0]*lattice->gridScale[0],
+                                        0.5*lattice->gridSize[1]*lattice->gridScale[1],
+                                        0.25*lattice->gridSize[2]*lattice->gridScale[2]); // usual target point (midx,miy,quarterz)
+        world->getCamera()->setTarget(target);
+        double d=target.norme();
+        world->getCamera()->setDistance(3.0*d);
+        world->getCamera()->setDirection(45.0,30.0);
+        world->getCamera()->setNearFar(0.25*d,5.0*d);
+        world->getCamera()->setAngle(35.0);
+        world->getCamera()->setLightParameters(target,-30.0,30.0,3.0*d,30.0,0.25*d,4.0*d);
+        // loading the camera parameters
+        TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");
+        if (nodeConfig) {
+            TiXmlElement* cameraElement = nodeConfig->ToElement();
+            const char *attr=cameraElement->Attribute("target");
+            double def_near=1,def_far=1500;
+            float angle=45.0;
+            if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+                    pos2 = str.find_last_of(',');
+                Vector3D target;
+                target.pt[0] = atof(str.substr(0,pos1).c_str());
+                target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+                target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                world->getCamera()->setTarget(target);
+            }
 
-			attr=cameraElement->Attribute("angle");
-			if (attr) {
-				angle = atof(attr);
-				world->getCamera()->setAngle(angle);
-			}
+            attr=cameraElement->Attribute("angle");
+            if (attr) {
+                angle = atof(attr);
+                world->getCamera()->setAngle(angle);
+            }
 
-			attr=cameraElement->Attribute("directionSpherical");
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				float az,ele,dist;
-				az = -90.0+atof(str.substr(0,pos1).c_str());
-				ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-				dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-				world->getCamera()->setDirection(az,ele);
-				world->getCamera()->setDistance(dist);
-				// az = dist*sin(angle*M_PI/180.0);
-				// def_near = dist-az;
-				// def_far = dist+az;
-			}
+            attr=cameraElement->Attribute("directionSpherical");
+            if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+                    pos2 = str.find_last_of(',');
+                float az,ele,dist;
+                az = -90.0+atof(str.substr(0,pos1).c_str());
+                ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+                dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                world->getCamera()->setDirection(az,ele);
+                world->getCamera()->setDistance(dist);
+                // az = dist*sin(angle*M_PI/180.0);
+                // def_near = dist-az;
+                // def_far = dist+az;
+            }
 
-			attr=cameraElement->Attribute("near");
-			if (attr) {
-				def_near = atof(attr);
-			}
+            attr=cameraElement->Attribute("near");
+            if (attr) {
+                def_near = atof(attr);
+            }
 
-			attr=cameraElement->Attribute("far");
-			if (attr) {
-				def_far = atof(attr);
-			}
-			world->getCamera()->setNearFar(def_near,def_far);
-		}
+            attr=cameraElement->Attribute("far");
+            if (attr) {
+                def_far = atof(attr);
+            }
+            world->getCamera()->setNearFar(def_near,def_far);
+        }
 
-		// loading the spotlight parameters
-		nodeConfig = xmlWorldNode->FirstChild("spotlight");
-		if (nodeConfig) {
-			Vector3D target;
-			float az=0,ele=60,dist=1000,angle=50;
-			double nearPlane=10,farPlane=2000;
-			TiXmlElement* lightElement = nodeConfig->ToElement();
-			const char *attr=lightElement->Attribute("target");
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				target.pt[0] = atof(str.substr(0,pos1).c_str());
-				target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-				target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-			}
+        // loading the spotlight parameters
+        nodeConfig = xmlWorldNode->FirstChild("spotlight");
+        if (nodeConfig) {
+            Vector3D target;
+            float az=0,ele=60,dist=1000,angle=50;
+            double nearPlane=10,farPlane=2000;
+            TiXmlElement* lightElement = nodeConfig->ToElement();
+            const char *attr=lightElement->Attribute("target");
+            if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+                    pos2 = str.find_last_of(',');
+                target.pt[0] = atof(str.substr(0,pos1).c_str());
+                target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+                target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            }
 
-			attr=lightElement->Attribute("directionSpherical");
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				az = -90.0+atof(str.substr(0,pos1).c_str());
-				ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-				dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-			}
+            attr=lightElement->Attribute("directionSpherical");
+            if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+                    pos2 = str.find_last_of(',');
+                az = -90.0+atof(str.substr(0,pos1).c_str());
+                ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+                dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            }
 
-			attr=lightElement->Attribute("angle");
-			if (attr) {
-				angle = atof(attr);
-			}
+            attr=lightElement->Attribute("angle");
+            if (attr) {
+                angle = atof(attr);
+            }
 
-			world->getCamera()->getNearFar(nearPlane,farPlane);
-			attr=lightElement->Attribute("near");
-			if (attr) {
-				nearPlane = atof(attr);
-			}
+            world->getCamera()->getNearFar(nearPlane,farPlane);
+            attr=lightElement->Attribute("near");
+            if (attr) {
+                nearPlane = atof(attr);
+            }
 
-			attr=lightElement->Attribute("far");
-			if (attr) {
-				farPlane = atof(attr);
-			}
-			world->getCamera()->setLightParameters(target,az,ele,dist,angle,nearPlane,farPlane);
-		}
-	}
+            attr=lightElement->Attribute("far");
+            if (attr) {
+                farPlane = atof(attr);
+            }
+            world->getCamera()->setLightParameters(target,az,ele,dist,angle,nearPlane,farPlane);
+        }
+    }
 }
 
 void Simulator::parseBlockList() {
@@ -738,6 +755,12 @@ void Simulator::parseBlockList() {
 #endif
             }
 
+            if (not getWorld()->lattice->isInGrid(position)) {
+                stringstream error;
+                error << "module at " << position << " is out of grid" << "\n";
+                throw ParsingException(error.str());
+            }
+
             // cerr << "addBlock(" << currentID << ") pos = " << position << endl;
             loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++],
                       bcb, position, color, master);
@@ -750,8 +773,9 @@ void Simulator::parseBlockList() {
         int line = 0, plane = 0;
         while (block) {
             if (ids == MANUAL) {
-                cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
-                throw ParsingException();
+                stringstream error;
+                error << "blocksLine element cannot be used in MANUAL identifier assignment mode" << "\n";
+                throw ParsingException(error.str());
             }
 
             line = 0;
@@ -799,8 +823,9 @@ void Simulator::parseBlockList() {
         block = xmlBlockListNode->FirstChild("blockBox");
         while (block) {
             if (ids == MANUAL) {
-                cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
-                throw ParsingException();
+                stringstream error;
+                error << "blocksLine element cannot be used in MANUAL identifier assignment mode" << "\n";
+                throw ParsingException(error.str());
             }
 
             element = block->ToElement();
@@ -893,27 +918,55 @@ void Simulator::parseBlockList() {
             Vector3D csgPos;
             const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
             const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-            for (short iz = glb[2]; iz < ulb[2]; iz++) {
-                for (short iy = glb[1]; iy < ulb[1]; iy++) {
-                    for (short ix = glb[0]; ix < ulb[0]; ix++) {
-                        position.set(ix,iy,iz);
-                        csgPos = world->lattice->gridToUnscaledWorldPosition(position);
+            if (typeid(world->lattice) != typeid(SkewFCCLattice)) {
+                for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+                    for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                        for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                            position.set(ix,iy,iz);
+                            csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
 #ifdef OFFSET_BOUNDINGBOX
-                        csgPos.pt[0] += bb.P0[0] - 1.0;
-                        csgPos.pt[1] += bb.P0[1] - 1.0;
-                        csgPos.pt[2] += bb.P0[2] - 1.0;
+                            csgPos.pt[0] += bb.P0[0] - 1.0;
+                            csgPos.pt[1] += bb.P0[1] - 1.0;
+                            csgPos.pt[2] += bb.P0[2] - 1.0;
 #else
-                        csgPos.pt[0] += bb.P0[0];
-                        csgPos.pt[1] += bb.P0[1];
-                        csgPos.pt[2] += bb.P0[2];
+                            csgPos.pt[0] += bb.P0[0];
+                            csgPos.pt[1] += bb.P0[1];
+                            csgPos.pt[2] += bb.P0[2];
 #endif
 
-                        if (world->lattice->isInGrid(position)
-                            and csgRoot->isInside(csgPos, color)) {
-                            loadBlock(element,
-                                      ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                      bcb, position, color, false);
+                            if (world->lattice->isInGrid(position)
+                                and csgRoot->isInside(csgPos, color)) {
+                                loadBlock(element,
+                                          ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
+                                          bcb, position, color, false);
+                            }
+                        }
+                    }
+                }
+            } else {
+                for (short iz = glb[2]; iz <= ulb[2]; iz++) {
+                    for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
+                        for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
+                            position.set(ix,iy,iz);
+                            csgPos = world->lattice->gridToUnscaledWorldPosition(position);
+
+#ifdef OFFSET_BOUNDINGBOX
+                            csgPos.pt[0] += bb.P0[0] - 1.0;
+                            csgPos.pt[1] += bb.P0[1] - 1.0;
+                            csgPos.pt[2] += bb.P0[2] - 1.0;
+#else
+                            csgPos.pt[0] += bb.P0[0];
+                            csgPos.pt[1] += bb.P0[1];
+                            csgPos.pt[2] += bb.P0[2];
+#endif
+
+                            if (world->lattice->isInGrid(position)
+                                and csgRoot->isInside(csgPos, color)) {
+                                loadBlock(element,
+                                          ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
+                                          bcb, position, color, false);
+                            }
                         }
                     }
                 }

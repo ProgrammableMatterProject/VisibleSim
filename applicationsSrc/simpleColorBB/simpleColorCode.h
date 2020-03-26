@@ -13,8 +13,8 @@ public :
     SimpleColorCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) {};
     ~SimpleColorCode() {};
 
-    void startup();
-    void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void startup() override;
+    void myBroadcastFunc(MessagePtr anonMsg, P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
@@ -23,5 +23,4 @@ public :
     };
 /*****************************************************************************/
 };
-    void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* simpleColorCode_H_ */

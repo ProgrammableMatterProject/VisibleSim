@@ -608,76 +608,65 @@ bool GlutButton::passiveMotionFunc(int mx,int my) {
 /* GlutRotationButton */
 /***************************************************************************************/
 
-GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation) : GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
+GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw) : GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
 	isBlue = blue;
 	id0 = idSrc;
 	id1 = idDest;
 	isHighlighted = false;
-    finalPosition=pos;
-    finalOrientation=orientation;
+	finalPosition=pos;
+	finalOrientation=orientation;
+	characterWidth=cw;
 }
 
 void GlutRotationButton::glDraw() {
-	  GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
-					  ty=0.0;
-
+	GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
+	ty=0.0;
+	
 	// draw background
-    bindTexture();
-		glPushMatrix();
-		glTranslatef(x,y,0.0f);
-		glBegin(GL_QUADS);
-		glTexCoord2f(tx,ty);
-		glVertex2i(0,0);
-		glTexCoord2f(tx+0.25f,ty);
-		glVertex2i(w,0);
-		glTexCoord2f(tx+0.25f,ty+0.5f);
-		glVertex2i(w,h);
-		glTexCoord2f(tx,ty+0.5f);
-  	glVertex2i(0,h);
-  	glEnd();
-// draw X->Y
-		glDisable(GL_DEPTH_TEST);
-		// first id
-		tx = id0*0.0625f;
-		ty=0.5;
-		glBegin(GL_QUADS);
-		glTexCoord2f(tx,ty);
-		glVertex2i(0.125*w,0);
-		glTexCoord2f(tx+0.0625f,ty);
-		glVertex2i(0.375*w,0);
-		glTexCoord2f(tx+0.0625f,ty+0.5f);
-		glVertex2i(0.375*w,h);
-		glTexCoord2f(tx,ty+0.5f);
-  	glVertex2i(0.125*w,h);
-  	glEnd();
-		// arrow
-    tx = 12*0.0625f;
-		glBegin(GL_QUADS);
-		glTexCoord2f(tx,ty);
-		glVertex2i(0.375*w,0);
-		glTexCoord2f(tx+0.0625f,ty);
-		glVertex2i(0.625*w,0);
-		glTexCoord2f(tx+0.0625f,ty+0.5f);
-		glVertex2i(0.625*w,h);
-		glTexCoord2f(tx,ty+0.5f);
-  	glVertex2i(0.375*w,h);
-  	glEnd();
-		// second id
-		tx = id1*0.0625f;
-		glBegin(GL_QUADS);
-		glTexCoord2f(tx,ty);
-		glVertex2i(0.625*w,0);
-		glTexCoord2f(tx+0.0625f,ty);
-		glVertex2i(0.875*w,0);
-		glTexCoord2f(tx+0.0625f,ty+0.5f);
-		glVertex2i(0.875*w,h);
-		glTexCoord2f(tx,ty+0.5f);
-  	glVertex2i(0.625*w,h);
-  	glEnd();
-
-  	glPopMatrix();
-		glEnable(GL_DEPTH_TEST);
-
+	bindTexture();
+	glPushMatrix();
+	glTranslatef(x,y,0.0f);
+	glBegin(GL_QUADS);
+	glTexCoord2f(tx,ty);
+	glVertex2i(0,0);
+	glTexCoord2f(tx+0.25f,ty);
+	glVertex2i(w,0);
+	glTexCoord2f(tx+0.25f,ty+0.5f);
+	glVertex2i(w,h);
+	glTexCoord2f(tx,ty+0.5f);
+	glVertex2i(0,h);
+	glEnd();
+	// draw X->Y
+	glDisable(GL_DEPTH_TEST);
+	// first id
+	tx = id0*characterWidth;
+	ty=0.5;
+	glBegin(GL_QUADS);
+	glTexCoord2f(tx,ty);
+	glVertex2i(0.125*w,0);
+	glTexCoord2f(tx+characterWidth,ty);
+	glVertex2i(0.375*w,0);
+	glTexCoord2f(tx+characterWidth,ty+0.5f);
+	glVertex2i(0.375*w,h);
+	glTexCoord2f(tx,ty+0.5f);
+	glVertex2i(0.125*w,h);
+	glEnd();
+	// second id
+	tx = id1*characterWidth;
+	glBegin(GL_QUADS);
+	glTexCoord2f(tx,ty);
+	glVertex2i(0.625*w,0);
+	glTexCoord2f(tx+characterWidth,ty);
+	glVertex2i(0.875*w,0);
+	glTexCoord2f(tx+characterWidth,ty+0.5f);
+	glVertex2i(0.875*w,h);
+	glTexCoord2f(tx,ty+0.5f);
+	glVertex2i(0.625*w,h);
+	glEnd();
+	
+	glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
+	
 }
 
 int GlutRotationButton::mouseFunc(int button,int state,int mx,int my) {
@@ -690,6 +679,153 @@ bool GlutRotationButton::passiveMotionFunc(int mx,int my) {
 	return isHighlighted;
 }
 
+/***************************************************************************************/
+/* GlutRBMotionButton */
+/***************************************************************************************/
+
+GlutRBMotionButton::GlutRBMotionButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool isRotation,uint8_t idDest,Cell3DPosition &pos,float cw): GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
+	isBlue = isRotation;
+	actionID = 6+isRotation;
+	directionID = idDest;
+	isHighlighted = false;
+	finalPosition=pos;
+	characterWidth=cw;
+}
+
+void GlutRBMotionButton::glDraw() {
+	GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
+	ty=0.0;
+	
+	// draw background
+	bindTexture();
+	glPushMatrix();
+	glTranslatef(x,y,0.0f);
+	glBegin(GL_QUADS);
+	glTexCoord2f(tx,ty);
+	glVertex2i(0,0);
+	glTexCoord2f(tx+0.25f,ty);
+	glVertex2i(w,0);
+	glTexCoord2f(tx+0.25f,ty+0.5f);
+	glVertex2i(w,h);
+	glTexCoord2f(tx,ty+0.5f);
+	glVertex2i(0,h);
+	glEnd();
+	// draw -> X
+	glDisable(GL_DEPTH_TEST);
+	// first id
+	tx = actionID*characterWidth;
+	ty=0.5;
+	glBegin(GL_QUADS);
+	glTexCoord2f(tx,ty);
+	glVertex2i(0.125*w,0);
+	glTexCoord2f(tx+characterWidth,ty);
+	glVertex2i(0.375*w,0);
+	glTexCoord2f(tx+characterWidth,ty+0.5f);
+	glVertex2i(0.375*w,h);
+	glTexCoord2f(tx,ty+0.5f);
+	glVertex2i(0.125*w,h);
+	glEnd();
+	// second id
+	tx = directionID*characterWidth;
+	glBegin(GL_QUADS);
+	glTexCoord2f(tx,ty);
+	glVertex2i(0.625*w,0);
+	glTexCoord2f(tx+characterWidth,ty);
+	glVertex2i(0.875*w,0);
+	glTexCoord2f(tx+characterWidth,ty+0.5f);
+	glVertex2i(0.875*w,h);
+	glTexCoord2f(tx,ty+0.5f);
+	glVertex2i(0.625*w,h);
+	glEnd();
+	
+	glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
+	
+}
+
+int GlutRBMotionButton::mouseFunc(int button,int state,int mx,int my) {
+	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+	return (isHighlighted && state==GLUT_UP)? id:0;
+}
+
+bool GlutRBMotionButton::passiveMotionFunc(int mx,int my) {
+	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+	return isHighlighted;
+}
+
+/***************************************************************************************/
+/* GlutRotation2DButton */
+/***************************************************************************************/
+
+GlutRotation2DButton::GlutRotation2DButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw) : GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
+	isBlue = blue;
+	id0 = idSrc;
+	id1 = idDest;
+	isHighlighted = false;
+	finalPosition=pos;
+	finalOrientation=orientation;
+	characterWidth=cw;
+}
+
+void GlutRotation2DButton::glDraw() {
+	GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
+	ty=0.0;
+	
+	// draw background
+	bindTexture();
+	glPushMatrix();
+	glTranslatef(x,y,0.0f);
+	glBegin(GL_QUADS);
+	glTexCoord2f(tx,ty);
+	glVertex2i(0,0);
+	glTexCoord2f(tx+0.25f,ty);
+	glVertex2i(w,0);
+	glTexCoord2f(tx+0.25f,ty+0.5f);
+	glVertex2i(w,h);
+	glTexCoord2f(tx,ty+0.5f);
+	glVertex2i(0,h);
+	glEnd();
+	// draw X->Y
+	glDisable(GL_DEPTH_TEST);
+	// first id
+	tx = id0*characterWidth;
+	ty=0.5;
+	glBegin(GL_QUADS);
+	glTexCoord2f(tx,ty);
+	glVertex2i(0.125*w,0);
+	glTexCoord2f(tx+characterWidth,ty);
+	glVertex2i(0.375*w,0);
+	glTexCoord2f(tx+characterWidth,ty+0.5f);
+	glVertex2i(0.375*w,h);
+	glTexCoord2f(tx,ty+0.5f);
+	glVertex2i(0.125*w,h);
+	glEnd();
+	// second id
+	tx = id1*characterWidth;
+	glBegin(GL_QUADS);
+	glTexCoord2f(tx,ty);
+	glVertex2i(0.625*w,0);
+	glTexCoord2f(tx+characterWidth,ty);
+	glVertex2i(0.875*w,0);
+	glTexCoord2f(tx+characterWidth,ty+0.5f);
+	glVertex2i(0.875*w,h);
+	glTexCoord2f(tx,ty+0.5f);
+	glVertex2i(0.625*w,h);
+	glEnd();
+	
+	glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
+	
+}
+
+int GlutRotation2DButton::mouseFunc(int button,int state,int mx,int my) {
+	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+	return (isHighlighted && state==GLUT_UP)? id:0;
+}
+bool GlutRotation2DButton::passiveMotionFunc(int mx,int my) {
+	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+	return isHighlighted;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // loadTextures

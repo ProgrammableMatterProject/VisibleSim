@@ -55,6 +55,10 @@ void BlockCode::addMessageEventFunc(int type,eventFunc func) {
     eventFuncMap.insert(pair<int,eventFunc>(type,func));
 }
 
+void BlockCode::addMessageEventFunc2(int type, eventFunc2 func) {
+    eventFuncMap2.insert(pair<int,eventFunc2>(type,func));
+}
+
 int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,Time t0,Time dt) {
     return sendMessage(NULL, msg, dest, t0, dt);
 }
@@ -157,28 +161,29 @@ void BlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
 
-//cout << "event #" << pev->id << ":" << pev->eventType << endl;
+    // cout << "event #" << pev->id << ":" << pev->eventType << endl;
     switch (pev->eventType) {
         case EVENT_NI_RECEIVE: {
             message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-    // search message id in eventFuncMap
+            // search message id in eventFuncMap
             multimap<int,eventFunc>::iterator im = eventFuncMap.find(message->type);
+            multimap<int,eventFunc2>::iterator im2 = eventFuncMap2.find(message->type);
             if (im!=eventFuncMap.end()) {
                 P2PNetworkInterface *recv_interface = message->destinationInterface;
                 (*im).second(this,message,recv_interface);
+            } else if (im2 != eventFuncMap2.end()) {
+                P2PNetworkInterface *recv_interface = message->destinationInterface;
+                (*im2).second(message,recv_interface);
             } else {
                 OUTPUT << "ERROR: message Id #"<< message->type << " unknown!" << endl;
             }
         } break;
-        case EVENT_ADD_NEIGHBOR: {
-            // @PTHY 08/11/2017: Startup needs not be called every time a neighbor is added
-            //  This would mean that a catom is disconnected from its power source everytime its
-            //   neighborhood is updated.
-            // startup();
-        } break;
         case EVENT_TAP: {
             int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
             onTap(face);
+        } break;
+        case EVENT_TELEPORTATION_END: {
+            onMotionEnd();
         } break;
     }
 }

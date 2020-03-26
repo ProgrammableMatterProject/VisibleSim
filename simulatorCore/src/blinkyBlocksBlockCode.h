@@ -18,9 +18,14 @@ class BlinkyBlocksBlock;
 
 class BlinkyBlocksBlockCode : public BaseSimulator::BlockCode {
 public:
-	
-	BlinkyBlocksBlockCode(BlinkyBlocksBlock *host);
-	virtual ~BlinkyBlocksBlockCode();
+
+    BlinkyBlocksBlockCode(BlinkyBlocksBlock *host);
+    virtual ~BlinkyBlocksBlockCode();
+
+    virtual void processLocalEvent(EventPtr pev) override {
+        // Do not remove, used by sample blockcode
+        BlockCode::processLocalEvent(pev);
+    }
 };
 
 }

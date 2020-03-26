@@ -25,7 +25,6 @@ public:
     virtual ~SmartBlocksBlockCode();
 
     virtual void processLocalEvent(EventPtr pev) override;
-    virtual void onMotionEnd() {};
 };
 
 }

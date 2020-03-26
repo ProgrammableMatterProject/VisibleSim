@@ -131,9 +131,7 @@ void Catoms2D1BlockCode::setCommunicationRate() {
   if (mean > 0) {
     double sd = mean*DEFAULT_SD_FACTOR;
     const vector<P2PNetworkInterface*>& interfaces = catom2D->getP2PNetworkInterfaces();
-    vector<P2PNetworkInterface*>::const_iterator it;
-    for (it = interfaces.begin() ; it != interfaces.end(); ++it) {
-      P2PNetworkInterface* p2p = *it;
+    for (P2PNetworkInterface* p2p : interfaces) {
       doubleRNG g = Random::getNormalDoubleRNG(catom2D->getRandomUint(),mean,sd);
       RandomRate *rate = new RandomRate(g);
       p2p->setDataRate(rate);

@@ -201,7 +201,7 @@ void Lattice::unhighlightCell(const Cell3DPosition& pos) {
 }
 
 void Lattice::resetCellHighlights() {
-	mapHighlightedCells.clear();
+    mapHighlightedCells.clear();
 }
 
 /********************* Lattice2D *********************/
@@ -278,7 +278,6 @@ Cell3DPosition HLattice::getCellInDirection(const Cell3DPosition &pRef, int dire
     return pRef + getRelativeConnectivity(pRef)[direction];
 }
 
-
 /************************************************************
  *   HLattice::NeighborDirections
  ************************************************************/
@@ -334,7 +333,6 @@ Cell3DPosition SLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
     return Cell3DPosition(pos[0], pos[1], 0);
 }
 
-
 Cell3DPosition SLattice::worldToGridPosition(const Vector3D &pos) {
     return Cell3DPosition(pos[0] / gridScale[0],
                           pos[1] / gridScale[1],
@@ -380,6 +378,7 @@ string SLattice::getDirectionString(short d) {
 
 /********************* FCCLattice *********************/
 FCCLattice::FCCLattice() : Lattice3D() {
+	tabDistances=NULL;
 }
 
 FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {
@@ -492,9 +491,9 @@ short FCCLattice::getOppositeDirection(short d) {
     case Con10:	return Con4; break;
     case Con11:	return Con5; break;
     default:
-		ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-		return -1;
-		break;
+        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+        return -1;
+        break;
     }
 }
 
@@ -512,82 +511,82 @@ static const float pts[24][3]={{2.928,0,4.996},{0,2.928,4.996},{-2.928,0,4.996},
 static const uint8_t quads[72]={0,1,2,3,0,4,5,1,1,6,7,2,2,8,9,3,3,10,11,0,4,12,13,5,5,13,14,6,6,14,15,7,7,15,16,8,8,16,17,9,9,17,18,10,10,18,19,11,11,19,12,4,12,20,21,13,14,21,22,15,16,22,23,17,18,23,20,19,23,22,21,20};
 static const uint8_t tris[24]={1,5,6,2,7,8,3,9,10,0,11,4,13,21,14,15,22,16,17,23,18,19,23,12};
 static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-		gray[]={0.2f,0.2f,0.2f,1.0f};
+        gray[]={0.2f,0.2f,0.2f,1.0f};
 
     if (tabDistances) {
-		int ix,iy,iz;
-		Cell3DPosition gp;
-		Vector3D v;
-		unsigned short *ptrDistance = tabDistances;
-		bool *ptr = tabLockedCells;
+        int ix,iy,iz;
+        Cell3DPosition gp;
+        Vector3D v;
+        unsigned short *ptrDistance = tabDistances;
+        bool *ptr = tabLockedCells;
 
-		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-		glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+        glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
 
-		for (iz=0; iz<gridSize[2]; iz++) {
-			for (iy=0; iy<gridSize[1]; iy++) {
-				for (ix=0; ix<gridSize[0]; ix++) {
-					if (*ptr) {
-						glPushMatrix();
-						gp.set(ix,iy,iz);
-						v = gridToWorldPosition(gp);
-						glTranslatef(v[0],v[1],v[2]);
-						glutSolidSphere(0.065*gridScale[0],6,6);
-						glPopMatrix();
-					}
-					if (*ptrDistance!=USHRT_MAX) {
-						glPushMatrix();
-						gp.set(ix,iy,iz);
-						v = gridToWorldPosition(gp);
-						glTranslatef(v[0],v[1],v[2]);
+        for (iz=0; iz<gridSize[2]; iz++) {
+            for (iy=0; iy<gridSize[1]; iy++) {
+                for (ix=0; ix<gridSize[0]; ix++) {
+                    if (*ptr) {
+                        glPushMatrix();
+                        gp.set(ix,iy,iz);
+                        v = gridToWorldPosition(gp);
+                        glTranslatef(v[0],v[1],v[2]);
+                        glutSolidSphere(0.065*gridScale[0],6,6);
+                        glPopMatrix();
+                    }
+                    if (*ptrDistance!=USHRT_MAX) {
+                        glPushMatrix();
+                        gp.set(ix,iy,iz);
+                        v = gridToWorldPosition(gp);
+                        glTranslatef(v[0],v[1],v[2]);
 
-						glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-						glutSolidCube(0.2*gridScale[0]);
-						glPopMatrix();
+                        glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
+                        glutSolidCube(0.2*gridScale[0]);
+                        glPopMatrix();
 
-					}
-					ptr++;
-					ptrDistance++;
-				}
-			}
-		}
-	}
+                    }
+                    ptr++;
+                    ptrDistance++;
+                }
+            }
+        }
+    }
 
     if (!mapHighlightedCells.empty()) {
-		Vector3D v;
-		int i=72;
-		const uint8_t *ptr;
-		Color c;
-		for (const auto& pair : mapHighlightedCells) {
-			glPushMatrix();
-			v = gridToWorldPosition(pair.first);
-			glTranslatef(v.pt[0],v.pt[1],v.pt[2]);
-			c.set(pair.second.rgba[0],pair.second.rgba[1],pair.second.rgba[2],0.5f);
-			glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c.rgba);
-			glBegin(GL_QUADS);
-			ptr = quads;
-			i=18;
-			while (i--) {
-				glVertex3fv(pts[*ptr++]);
-				glVertex3fv(pts[*ptr++]);
-				glVertex3fv(pts[*ptr++]);
-				glVertex3fv(pts[*ptr++]);
-			}
-			glEnd();
-			glBegin(GL_TRIANGLES);
-			ptr = tris;
-			i=8;
-			while (i--) {
-				glVertex3fv(pts[*ptr++]);
-				glVertex3fv(pts[*ptr++]);
-				glVertex3fv(pts[*ptr++]);
-			}
-			glEnd();
-			glPopMatrix();
-		}
-	}
+        Vector3D v;
+        int i=72;
+        const uint8_t *ptr;
+        Color c;
+        for (const auto& pair : mapHighlightedCells) {
+            glPushMatrix();
+            v = gridToWorldPosition(pair.first);
+            glTranslatef(v.pt[0],v.pt[1],v.pt[2]);
+            c.set(pair.second.rgba[0],pair.second.rgba[1],pair.second.rgba[2],0.5f);
+            glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c.rgba);
+            glBegin(GL_QUADS);
+            ptr = quads;
+            i=18;
+            while (i--) {
+                glVertex3fv(pts[*ptr++]);
+                glVertex3fv(pts[*ptr++]);
+                glVertex3fv(pts[*ptr++]);
+                glVertex3fv(pts[*ptr++]);
+            }
+            glEnd();
+            glBegin(GL_TRIANGLES);
+            ptr = tris;
+            i=8;
+            while (i--) {
+                glVertex3fv(pts[*ptr++]);
+                glVertex3fv(pts[*ptr++]);
+                glVertex3fv(pts[*ptr++]);
+            }
+            glEnd();
+            glPopMatrix();
+        }
+    }
 }
 
 bool FCCLattice::lockCell(const Cell3DPosition &pos) {
@@ -620,7 +619,6 @@ void FCCLattice::initTabDistances() {
         while (n--) {
             *ptr++=USHRT_MAX;
         }
-
     }
 }
 
@@ -769,10 +767,6 @@ Cell3DPosition SkewFCCLattice::getGridLowerBounds() const {
                           0);
 }
 
-Cell3DPosition SkewFCCLattice::getGridUpperBounds() const {
-    return gridSize - Cell3DPosition(1, 1, 1);
-}
-
 vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
     return nCells;
 }
@@ -833,9 +827,9 @@ Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, in
 }
 
 /********************* SCLattice *********************/
-SCLattice::SCLattice() : Lattice3D() {}
-SCLattice::SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
-SCLattice::~SCLattice() {}
+SCLattice::SCLattice() : Lattice3D() { tabDistances=nullptr; }
+SCLattice::SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) { tabDistances=nullptr; }
+SCLattice::~SCLattice() { delete [] tabDistances; }
 
 vector<Cell3DPosition> SCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
     return nCells;
@@ -866,9 +860,9 @@ short SCLattice::getOppositeDirection(short d) {
     case Top:	return Bottom; break;
     case Bottom:	return Top; break;
     default:
-		ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-		return -1;
-		break;
+        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+        return -1;
+        break;
     }
 }
 
@@ -880,6 +874,64 @@ Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int dir
 {
     return pRef + nCells[direction];
 }
+
+void SCLattice::initTabDistances() {
+	if (tabDistances==nullptr) {
+		int n = gridSize.pt[0]*gridSize.pt[1]*gridSize.pt[2];
+		tabDistances = new unsigned short[n];
+		// initialisation of tabDistances with value 'd'
+		unsigned short *ptr=tabDistances;
+		while (n--) {
+			*ptr++=USHRT_MAX;
+		}
+	}
+}
+
+unsigned short SCLattice::getDistance(const Cell3DPosition &pos) {
+	if (!isInGrid(pos)) return USHRT_MAX;
+	return tabDistances[getIndex(pos)];
+}
+
+void SCLattice::setDistance(const Cell3DPosition &pos,unsigned short d) {
+	if (isInGrid(pos)) tabDistances[getIndex(pos)]=d;
+}
+
+void SCLattice::glDraw() {
+	static GLfloat white[]={0.2f,0.2f,0.2f,1.0f},
+	gray[]={0.2f,0.2f,0.2f,1.0f};
+	
+	if (tabDistances) {
+		int ix,iy,iz;
+		Cell3DPosition gp;
+		Vector3D v;
+		unsigned short *ptrDistance = tabDistances;
+		
+		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+		glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+		
+		for (iz=0; iz<gridSize[2]; iz++) {
+			for (iy=0; iy<gridSize[1]; iy++) {
+				for (ix=0; ix<gridSize[0]; ix++) {
+					if (*ptrDistance!=USHRT_MAX) {
+						glPushMatrix();
+						gp.set(ix,iy,iz);
+						v = gridToWorldPosition(gp);
+						glTranslatef(v[0]+0.5*gridScale[0],v[1]+0.5*gridScale[1],v[2]+0.5*gridScale[2]);
+						
+						glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
+						glutSolidCube(0.2*gridScale[0]);
+						glPopMatrix();
+						
+					}
+					ptrDistance++;
+				}
+			}
+		}
+	}
+}
+
 
 /********************* BCLattice *********************/
 BCLattice::BCLattice() : Lattice3D() {}
@@ -898,7 +950,6 @@ Cell3DPosition BCLattice::unscaledWorldToGridPosition(const Vector3D &pos) {
     return Cell3DPosition(pos[0], pos[1], pos[2]);
 }
 
-
 Cell3DPosition BCLattice::worldToGridPosition(const Vector3D &pos) {
     return Cell3DPosition(pos[0] / gridScale[0],
                           pos[1] / gridScale[1],
@@ -912,3 +963,4 @@ short BCLattice::getOppositeDirection(short d) {
 string BCLattice::getDirectionString(short d) {
     return "Wireless";
 }
+
