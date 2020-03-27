@@ -1,4 +1,0 @@
-type neighborCount(node, int).
-type vacant(node, int).
-
-neighborCount(A, 0) -o setColor2(A, 5).

@@ -1,6 +1,0 @@
-
-type linear f(node).
-
-f(@1).
-
-f(A) -o 1.
