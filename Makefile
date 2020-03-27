@@ -84,6 +84,8 @@ GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 .PHONY: subdirs $(SUBDIRS) test doc
 #.PHONY: subdirs $(SUBDIRS) test doc
 
+.NOTPARALLEL: applicationsSrc/
+
 subdirs: $(SUBDIRS)
 
 $(SUBDIRS):
