@@ -2,10 +2,10 @@
  * @file   lightWalkMessages.cpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Mon Dec 10 15:32:56 2018
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <iostream>
@@ -19,8 +19,8 @@
 
 
 void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
-    LightWalkCatoms3DBlockCode& mabc = *static_cast<LightWalkCatoms3DBlockCode*>(bc);    
-    
+    LightWalkCatoms3DBlockCode& mabc = *static_cast<LightWalkCatoms3DBlockCode*>(bc);
+
     if (mabc.catom->position[2] == mabc.ZLINE) { // module is pivot
         bool nextToSender = mabc.isAdjacentToPosition(srcPos);
         bool nextToTarget = mabc.isAdjacentToPosition(targetPos);
@@ -32,7 +32,7 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
         cout << "\ttargetLightNeighbor: " << (targetLightNeighbor ?
                                               targetLightNeighbor->position.to_string()
                                               : "NULL") << endl;
-        
+
         if (targetLightNeighbor
             and targetLightNeighbor->position != srcPos) { // neighbor is target light
             mabc.sendMessage(this->clone(),
@@ -70,7 +70,7 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
     if (mabc.catom->position[2] == mabc.ZLINE
         and (mabc.hasLeftNeighbor() or not mabc.greenLightIsOn)) { // module is pivot
         bool nextToDest = mabc.isAdjacentToPosition(dstPos);
-        
+
         P2PNetworkInterface* itf = nextToDest ?
             mabc.catom->getInterface(dstPos) :
             mabc.catom->getInterface(mabc.catom->position + Cell3DPosition(-1, 0, 0));
@@ -84,6 +84,6 @@ void GreenLightIsOnMessage::handle(BaseSimulator::BlockCode* bc) {
         // Perform pending motion
         mabc.rotating = true;
         mabc.scheduler->schedule(
-            new Rotation3DStartEvent(getScheduler()->now(), mabc.catom, mabc.targetPos));
+            new Catoms3DRotationStartEvent(getScheduler()->now(), mabc.catom, mabc.targetPos));
     }
 }

@@ -397,9 +397,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     ruleMatcher->getComponentForPosition(
                         catom->position - coordinatorPos) == S_RevZ) {
                     int ts = round(getScheduler()->now()
-                                   / ((Rotations3D::ANIMATION_DELAY *
-                                       Rotations3D::rotationDelayMultiplier +
-                                       Rotations3D::COM_DELAY) + 20128));
+                                   / ((Catoms3DRotation::ANIMATION_DELAY *
+                                       Catoms3DRotation::rotationDelayMultiplier +
+                                       Catoms3DRotation::COM_DELAY) + 20128));
                     cerr << ruleMatcher->getPyramidDimension()
                          << "-PYRAMID CONSTRUCTION OVER AT TimeStep = "
                          << ts << " with " << lattice->nbModules << " modules" << endl;
@@ -663,7 +663,7 @@ void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
 
         OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
         // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
-        scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
+        scheduler->schedule(new Catoms3DRotationStartEvent(getScheduler()->now(),
                                                      catom, pivot, pos,
                                                      RotationLinkType::HexaFace, false));
 #ifdef INTERACTIVE_MODE

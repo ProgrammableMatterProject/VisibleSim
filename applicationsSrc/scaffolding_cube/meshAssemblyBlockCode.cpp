@@ -855,7 +855,7 @@ void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
 
         // OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
         // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
-        scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
+        scheduler->schedule(new Catoms3DRotationStartEvent(getScheduler()->now(),
                                                      catom, pivot, pos,
                                                      RotationLinkType::HexaFace, false));
 #ifdef INTERACTIVE_MODE

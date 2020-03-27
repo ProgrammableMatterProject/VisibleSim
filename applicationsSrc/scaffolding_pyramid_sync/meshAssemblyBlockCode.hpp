@@ -79,8 +79,8 @@ public:
     };
 
     inline static Time getRoundDuration() {
-        return (Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
-                + Rotations3D::COM_DELAY) + 20128;// + (getScheduler()->now() / 1000);
+        return (Catoms3DRotation::ANIMATION_DELAY * Catoms3DRotation::rotationDelayMultiplier
+                + Catoms3DRotation::COM_DELAY) + 20128;// + (getScheduler()->now() / 1000);
     }
 
     inline const Cell3DPosition& getEntryPointRelativePos(MeshComponent mc) const {
