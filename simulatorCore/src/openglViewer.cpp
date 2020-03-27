@@ -254,7 +254,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
     } else { // selection of the clicked block
         if (state==GLUT_UP) {
             int n=selectFunc(x,y);
-						GlBlock *slct=BaseSimulator::getWorld()->getselectedGlBlock();
+                        GlBlock *slct=BaseSimulator::getWorld()->getselectedGlBlock();
             // unselect current if exists
             if (slct) slct->toggleHighlight();
             // set n-1 block selected block (no selected block if n=0
@@ -266,7 +266,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
                 int n=selectFaceFunc(x,y);
-								cout << "selectFaceFunc=" << n << endl;
+                                cout << "selectFaceFunc=" << n << endl;
                 if (n>0) {
                     BaseSimulator::getWorld()->setSelectedFace(n);
                     BaseSimulator::getWorld()->createPopupMenu(x,y);
@@ -363,7 +363,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                      << " has ended, attempting conversion" << endl;
                 // Add a script for converting into a video, asynchronously
 #ifndef WIN32
-                std::async([](const std::string& animDir){
+                auto a = std::async([](const std::string& animDir){
                                const string& vidName = generateTimestampedFilename("video", "mkv");
                                int r = system(
                                    string("ffmpeg -pattern_type glob -framerate 30 -i \""
@@ -388,7 +388,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
             saveScreen(ssName.c_str());
 #ifndef WIN32
-            std::async([ssNameJpg, ssName](){
+            auto a =  std::async([ssNameJpg, ssName](){
                            system(string("convert " + ssName + " " + ssNameJpg
                                          + " >/dev/null 2>/dev/null").c_str());
                        });
@@ -491,12 +491,11 @@ void GlutContext::idleFunc(void) {
 #endif
     if (saveScreenMode) {
         static int num=0;
-        char title[32];
+        char title[32], title2[32];
         strncpy(title, animationDirName.c_str(), sizeof(title));
         strncat(title, "/save%04d.ppm", sizeof(title) - strlen(title) - 1);
-
-        sprintf(title,title,num++);
-        saveScreen(title);
+        sprintf(title2,title,num++);
+        saveScreen(title2);
     }
     if (lastMotionTime) {
         int tm = glutGet(GLUT_ELAPSED_TIME);
