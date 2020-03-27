@@ -17,7 +17,7 @@
 #include "cppScheduler.h"
 #include "openglViewer.h"
 #include "utils.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "targetEncoding/CSG/csg.h"
 #include "targetEncoding/CSG/csgParser.h"
 #include "targetEncoding/CSG/csgUtils.h"
@@ -1049,7 +1049,7 @@ void Simulator::parseCustomizations() {
             const char *attr= element->Attribute("multiplier");
 
             if (attr != NULL) {
-                Rotations3D::rotationDelayMultiplier = atof(attr);
+                Catoms3DRotation::rotationDelayMultiplier = atof(attr);
             } else {
                 cout << "wut" << endl;
             }

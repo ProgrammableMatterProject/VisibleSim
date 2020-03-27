@@ -334,44 +334,4 @@ public:
     const virtual string getEventName() override;
 };
 
-//===========================================================================================================
-//
-//          PivotActuationStartEvent  (class)
-//
-//===========================================================================================================
-
-class PivotActuationStartEvent : public BlockEvent {
-public:
-    const BaseSimulator::BuildingBlock *mobile;
-    short fromConP;
-    short toConP;
-
-    PivotActuationStartEvent(Time t, BuildingBlock *conBlock, const BuildingBlock *mobile,
-                             short from, short to);
-    PivotActuationStartEvent(PivotActuationStartEvent *ev);
-    ~PivotActuationStartEvent();
-    void consumeBlockEvent() override;
-    const virtual string getEventName() override;
-};
-
-//===========================================================================================================
-//
-//          PivotActuationEndEvent  (class)
-//
-//===========================================================================================================
-
-class PivotActuationEndEvent : public BlockEvent {
-public:
-    const BaseSimulator::BuildingBlock *mobile;
-    short fromConP;
-    short toConP;
-
-    PivotActuationEndEvent(Time t, BuildingBlock *conBlock, const BuildingBlock *mobile,
-                           short from, short to);
-    PivotActuationEndEvent(PivotActuationEndEvent *ev);
-    ~PivotActuationEndEvent();
-    void consumeBlockEvent() override;
-    const virtual string getEventName() override;
-};
-
 #endif /* EVENTS_H_ */

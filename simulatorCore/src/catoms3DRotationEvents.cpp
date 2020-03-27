@@ -14,44 +14,44 @@
 using namespace BaseSimulator::utils;
 using namespace Catoms3D;
 
-mt19937 Rotations3D::rng = mt19937(std::random_device()());
+mt19937 Catoms3DRotation::rng = mt19937(std::random_device()());
 int DELTA = 3;
 uniform_int_distribution<std::mt19937::result_type>
-Rotations3D::randomAnimationDelay = uniform_int_distribution<std::mt19937::result_type>
+Catoms3DRotation::randomAnimationDelay = uniform_int_distribution<std::mt19937::result_type>
     (-(ANIMATION_DELAY / DELTA),ANIMATION_DELAY / DELTA);
-const int Rotations3D::ANIMATION_DELAY = 400000;
-const int Rotations3D::COM_DELAY = 0;//2000;
-const int Rotations3D::nbRotationSteps = 20;
-float Rotations3D::rotationDelayMultiplier = 1.0f;
+const int Catoms3DRotation::ANIMATION_DELAY = 400000;
+const int Catoms3DRotation::COM_DELAY = 0;//2000;
+const int Catoms3DRotation::nbRotationSteps = 20;
+float Catoms3DRotation::rotationDelayMultiplier = 1.0f;
 
-std::ostream& Catoms3D::operator<<(std::ostream &stream, Rotations3D const& rots) {
+std::ostream& Catoms3D::operator<<(std::ostream &stream, Catoms3DRotation const& rots) {
     stream << rots.axe1 << "/" << rots.angle1 << " -- " << rots.axe2 << "/" << rots.angle2;
     return stream;
 }
 
 //===========================================================================================================
 //
-//          Rotation3DStartEvent  (class)
+//          Catoms3DRotationStartEvent  (class)
 //
 //===========================================================================================================
 
-Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *block,const Rotations3D &r): BlockEvent(t,block) {
+Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Time t, Catoms3DBlock *block,const Catoms3DRotation &r): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_START;
     rot = r;
 }
 
-Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Catoms3DBlock *pivot,
+Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Time t, Catoms3DBlock *m, const Catoms3DBlock *pivot,
                                            const Cell3DPosition& tPos,
                                            RotationLinkType faceReq, bool exclusivelyReq)
-    : Rotation3DStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1,
+    : Catoms3DRotationStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1,
                            faceReq, exclusivelyReq)
 {}
 
-Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m,
+Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Time t, Catoms3DBlock *m,
                                            const Cell3DPosition& tPos,
                                            RotationLinkType faceReq, bool exclusively)
-    : Rotation3DStartEvent(t, m,
+    : Catoms3DRotationStartEvent(t, m,
                            // If not exclusively, fall back to any face type
                            (Catoms3DMotionEngine::findMotionPivot(m, tPos, faceReq) == NULL
                             and (faceReq != RotationLinkType::Any and not exclusively) ?
@@ -62,7 +62,7 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m,
                                   Any : faceReq), exclusively)
 {}
 
-Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Catoms3DBlock *pivot,
+Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Time t, Catoms3DBlock *m, const Catoms3DBlock *pivot,
                                            short toCon, RotationLinkType faceReq,
                                            bool exclusively) : BlockEvent(t, m) {
     EVENT_CONSTRUCTOR_INFO();
@@ -121,15 +121,15 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, const Catom
     rot.conToP = toCon;
 }
 
-Rotation3DStartEvent::Rotation3DStartEvent(Rotation3DStartEvent *ev) : BlockEvent(ev) {
+Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Catoms3DRotationStartEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
 }
 
-Rotation3DStartEvent::~Rotation3DStartEvent() {
+Catoms3DRotationStartEvent::~Catoms3DRotationStartEvent() {
     EVENT_DESTRUCTOR_INFO();
 }
 
-void Rotation3DStartEvent::consume() {
+void Catoms3DRotationStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     // cout << "[t-" << scheduler->now() << "] rotation starts" << endl;
@@ -161,41 +161,41 @@ void Rotation3DStartEvent::consume() {
 
     Catoms3DWorld::getWorld()->disconnectBlock(catom);
 
-    concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DStartEvent(date+Rotations3D::COM_DELAY, catom, rot)));
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new Catoms3DRotationStartEvent(date+Catoms3DRotation::COM_DELAY, catom, rot)));
 
 //    catom->setColor(DARKGREY);
     rot.init(((Catoms3DGlBlock*)catom->ptrGlBlock)->mat);
     scheduler->schedule(
-        new Rotation3DStepEvent(scheduler->now()+Rotations3D::getNextRotationEventDelay(),
+        new Catoms3DRotationStepEvent(scheduler->now()+Catoms3DRotation::getNextRotationEventDelay(),
                                 catom, rot));
 }
 
-const string Rotation3DStartEvent::getEventName() {
-    return("Rotation3DStart Event");
+const string Catoms3DRotationStartEvent::getEventName() {
+    return("Catoms3DRotationStart Event");
 }
 
 //===========================================================================================================
 //
-//          Rotation3DStepEvent  (class)
+//          Catoms3DRotationStepEvent  (class)
 //
 //===========================================================================================================
 
-Rotation3DStepEvent::Rotation3DStepEvent(Time t, Catoms3DBlock *block,const Rotations3D &r): BlockEvent(t,block) {
+Catoms3DRotationStepEvent::Catoms3DRotationStepEvent(Time t, Catoms3DBlock *block,const Catoms3DRotation &r): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_STEP;
 
     rot=r;
 }
 
-Rotation3DStepEvent::Rotation3DStepEvent(Rotation3DStepEvent *ev) : BlockEvent(ev) {
+Catoms3DRotationStepEvent::Catoms3DRotationStepEvent(Catoms3DRotationStepEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
 }
 
-Rotation3DStepEvent::~Rotation3DStepEvent() {
+Catoms3DRotationStepEvent::~Catoms3DRotationStepEvent() {
     EVENT_DESTRUCTOR_INFO();
 }
 
-void Rotation3DStepEvent::consume() {
+void Catoms3DRotationStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
     catom->setState(BuildingBlock::State::ALIVE);
@@ -209,39 +209,39 @@ void Rotation3DStepEvent::consume() {
     Catoms3DWorld::getWorld()->updateGlData(catom,mat);
     if (rotationEnd) {
         scheduler->schedule(
-            new Rotation3DStopEvent(scheduler->now(), catom, rot));
+            new Catoms3DRotationStopEvent(scheduler->now(), catom, rot));
     } else {
-        scheduler->schedule(new Rotation3DStepEvent(
-                                scheduler->now()+Rotations3D::getNextRotationEventDelay(),
+        scheduler->schedule(new Catoms3DRotationStepEvent(
+                                scheduler->now()+Catoms3DRotation::getNextRotationEventDelay(),
                                 catom, rot));
     }
 }
 
-const string Rotation3DStepEvent::getEventName() {
-    return("Rotation3DStep Event");
+const string Catoms3DRotationStepEvent::getEventName() {
+    return("Catoms3DRotationStep Event");
 }
 
 //===========================================================================================================
 //
-//          Rotation3DStepEvent  (class)
+//          Catoms3DRotationStepEvent  (class)
 //
 //===========================================================================================================
 
-Rotation3DStopEvent::Rotation3DStopEvent(Time t, Catoms3DBlock *block,const Rotations3D& r): BlockEvent(t,block) {
+Catoms3DRotationStopEvent::Catoms3DRotationStopEvent(Time t, Catoms3DBlock *block,const Catoms3DRotation& r): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_STOP;
     rot = r;
 }
 
-Rotation3DStopEvent::Rotation3DStopEvent(Rotation3DStepEvent *ev) : BlockEvent(ev) {
+Catoms3DRotationStopEvent::Catoms3DRotationStopEvent(Catoms3DRotationStepEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
 }
 
-Rotation3DStopEvent::~Rotation3DStopEvent() {
+Catoms3DRotationStopEvent::~Catoms3DRotationStopEvent() {
     EVENT_DESTRUCTOR_INFO();
 }
 
-void Rotation3DStopEvent::consume() {
+void Catoms3DRotationStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
     // cout << "[t-" << getScheduler()->now() << "] rotation stop" << endl;
@@ -265,7 +265,7 @@ void Rotation3DStopEvent::consume() {
     scheduler->trace(info.str(),catom->blockId,LIGHTBLUE);
 
     scheduler->schedule(
-        new Rotation3DEndEvent(scheduler->now(), catom));
+        new Catoms3DRotationEndEvent(scheduler->now(), catom));
 
     info.str("");
     info << " finished actuating for module #" << catom->blockId << " ("
@@ -276,49 +276,49 @@ void Rotation3DStopEvent::consume() {
                                    rot.mobile, rot.conFromP, rot.conToP));
 }
 
-const string Rotation3DStopEvent::getEventName() {
-    return("Rotation3DStop Event");
+const string Catoms3DRotationStopEvent::getEventName() {
+    return("Catoms3DRotationStop Event");
 }
 
 //===========================================================================================================
 //
-//          Rotation3DEndEvent  (class)
+//          Catoms3DRotationEndEvent  (class)
 //
 //===========================================================================================================
 
-Rotation3DEndEvent::Rotation3DEndEvent(Time t, Catoms3DBlock *block): BlockEvent(t,block) {
+Catoms3DRotationEndEvent::Catoms3DRotationEndEvent(Time t, Catoms3DBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_END;
 }
 
-Rotation3DEndEvent::Rotation3DEndEvent(Rotation3DEndEvent *ev) : BlockEvent(ev) {
+Catoms3DRotationEndEvent::Catoms3DRotationEndEvent(Catoms3DRotationEndEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
 }
 
-Rotation3DEndEvent::~Rotation3DEndEvent() {
+Catoms3DRotationEndEvent::~Catoms3DRotationEndEvent() {
     EVENT_DESTRUCTOR_INFO();
 }
 
-void Rotation3DEndEvent::consume() {
+void Catoms3DRotationEndEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
     // cout << "[t-" << getScheduler()->now() << "] rotation ended" << endl;
-    concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DEndEvent(date+Rotations3D::COM_DELAY,rb)));
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new Catoms3DRotationEndEvent(date+Catoms3DRotation::COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(rb->stats);
 }
 
-const string Rotation3DEndEvent::getEventName() {
-    return("Rotation3DEnd Event");
+const string Catoms3DRotationEndEvent::getEventName() {
+    return("Catoms3DRotationEnd Event");
 }
 
 //===========================================================================================================
 //
-//          Rotations3D  (class)
+//          Catoms3DRotation  (class)
 //
 //===========================================================================================================
 
-void Rotations3D::init(const Matrix& m) {
+void Catoms3DRotation::init(const Matrix& m) {
     firstRotation=true;
     step=0;
     initialMatrix=m;
@@ -328,7 +328,7 @@ void Rotations3D::init(const Matrix& m) {
 }
 
 
-void Rotations3D::exportMatrix(const Matrix& m) {
+void Catoms3DRotation::exportMatrix(const Matrix& m) {
 #define ROTATION_STEP_MATRIX_EXPORT
 #ifdef ROTATION_STEP_MATRIX_EXPORT
 
@@ -354,7 +354,7 @@ void Rotations3D::exportMatrix(const Matrix& m) {
 #endif
 }
 
-Rotations3D::Rotations3D(const Catoms3DBlock *mobile, const Catoms3DBlock *fixe, double rprim,
+Catoms3DRotation::Catoms3DRotation(const Catoms3DBlock *mobile, const Catoms3DBlock *fixe, double rprim,
                          const Vector3D &ax1, double ang1,
                          const Vector3D &ax2, double ang2,
                          short from, short to) : angle1(ang1),angle2(ang2) {
@@ -417,10 +417,10 @@ Rotations3D::Rotations3D(const Catoms3DBlock *mobile, const Catoms3DBlock *fixe,
     A1C1 = (0.5-0.5*rprim)*AB+shift*V;
 }
 
-bool Rotations3D::nextStep(Matrix &m) {
+bool Catoms3DRotation::nextStep(Matrix &m) {
     if (firstRotation) {
         step++;
-        double angle=angle1*step/Rotations3D::nbRotationSteps;
+        double angle=angle1*step/Catoms3DRotation::nbRotationSteps;
         //OUTPUT << "step=" << step << "   angle=" << angle << endl;
         Matrix mr;
         mr.setRotation(angle,axe1);
@@ -433,11 +433,11 @@ bool Rotations3D::nextStep(Matrix &m) {
         m = initialMatrix * m;
 //        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
 
-        if (step==Rotations3D::nbRotationSteps)
+        if (step==Catoms3DRotation::nbRotationSteps)
             firstRotation=false;
     } else {
         step--;
-        double angle=-angle2*step/Rotations3D::nbRotationSteps;
+        double angle=-angle2*step/Catoms3DRotation::nbRotationSteps;
         // TRT-1R
         Matrix mr;
         mr.setRotation(angle,axe2);
@@ -456,11 +456,90 @@ bool Rotations3D::nextStep(Matrix &m) {
     return step == 0;
 }
 
-void Rotations3D::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
+void Catoms3DRotation::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
     Vector3D p(0,0,0,1),q = finalMatrix * p;
 
 //    OUTPUT << "final=" << q << endl;
     position = Catoms3D::getWorld()->lattice->worldToGridPosition(q);
 //    OUTPUT << "final grid=" << position << endl;
     orientation=Catoms3DBlock::getOrientationFromMatrix(finalMatrix);
+}
+
+
+//===========================================================================================================
+//
+//          PivotActuationStartEvent  (class)
+//
+//===========================================================================================================
+
+PivotActuationStartEvent::PivotActuationStartEvent(Time t,
+                                                   BuildingBlock *conBlock,
+                                                   const BuildingBlock *m,
+                                                   short from,
+                                                   short to): BlockEvent(t, conBlock) {
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_PIVOT_ACTUATION_START;
+    fromConP = from;
+    toConP = to;
+    mobile = m;
+}
+
+PivotActuationStartEvent::PivotActuationStartEvent(PivotActuationStartEvent *ev) : BlockEvent(ev) {
+    EVENT_CONSTRUCTOR_INFO();
+    fromConP = ev->fromConP;
+    toConP = ev->toConP;
+    mobile = ev->mobile;
+}
+
+PivotActuationStartEvent::~PivotActuationStartEvent() {
+    EVENT_DESTRUCTOR_INFO();
+}
+
+void PivotActuationStartEvent::consumeBlockEvent() {
+    EVENT_CONSUME_INFO();
+    concernedBlock->scheduleLocalEvent(EventPtr(new PivotActuationStartEvent(this)));
+    concernedBlock->setState(BuildingBlock::State::ACTUATING);
+}
+
+const string PivotActuationStartEvent::getEventName() {
+    return("PivotActuationStart Event");
+}
+
+//===========================================================================================================
+//
+//          PivotActuationEndEvent  (class)
+//
+//===========================================================================================================
+
+PivotActuationEndEvent::PivotActuationEndEvent(Time t,
+                                               BuildingBlock *conBlock,
+                                               const BuildingBlock *m,
+                                               short from,
+                                               short to): BlockEvent(t, conBlock) {
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_PIVOT_ACTUATION_END;
+    fromConP = from;
+    toConP = to;
+    mobile = m;
+}
+
+PivotActuationEndEvent::PivotActuationEndEvent(PivotActuationEndEvent *ev) : BlockEvent(ev) {
+    EVENT_CONSTRUCTOR_INFO();
+    fromConP = ev->fromConP;
+    toConP = ev->toConP;
+    mobile = ev->mobile;
+}
+
+PivotActuationEndEvent::~PivotActuationEndEvent() {
+    EVENT_DESTRUCTOR_INFO();
+}
+
+void PivotActuationEndEvent::consumeBlockEvent() {
+    EVENT_CONSUME_INFO();
+    concernedBlock->scheduleLocalEvent(EventPtr(new PivotActuationEndEvent(this)));
+    concernedBlock->setState(BuildingBlock::State::ALIVE);
+}
+
+const string PivotActuationEndEvent::getEventName() {
+    return("PivotActuationEnd Event");
 }

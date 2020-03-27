@@ -1,5 +1,5 @@
 /*!
- * \file catoms3DRotationEvents.h
+ * \file rotation3DEvents.h
  * \brief Motion events for 3D rotating blocks
  * \date 15/02/2015
  * \author Benoît Piranda, Pierre Thalamy

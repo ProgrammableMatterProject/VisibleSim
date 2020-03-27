@@ -17,7 +17,7 @@
 #include "catoms3DMotionEngine.h"
 #include "trace.h"
 #include "configExporter.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "simulator.h"
 #include "catoms3DSimulator.h"
 
@@ -109,7 +109,7 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 
   // update rotateSubMenu depending on rotation catoms3DCapabilities
     Catoms3DBlock *bb = (Catoms3DBlock *)getSelectedBuildingBlock();
-    vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> tab = Catoms3DMotionEngine::getAllRotationsForModule(bb);
+    vector<std::pair<const Catoms3DMotionRulesLink*, Catoms3DRotation>> tab = Catoms3DMotionEngine::getAllRotationsForModule(bb);
     int nbreMenus=tab.size();
     if (nbreMenus==0) {
             ((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(false);
@@ -194,7 +194,7 @@ void Catoms3DWorld::menuChoice(int n) {
                 GlutContext::popupSubMenu->show(false);
                 GlutContext::popupMenu->show(false);
                 // if (getScheduler()->state == RUNNING) {
-                // scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(), bb, Rotations3D r));
+                // scheduler->schedule(new Catoms3DRotationStartEvent(getScheduler()->now(), bb, Catoms3DRotation r));
                 // } else {
                 Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
                 short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
