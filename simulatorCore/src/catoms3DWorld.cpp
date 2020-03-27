@@ -19,6 +19,7 @@
 #include "configExporter.h"
 #include "rotation3DEvents.h"
 #include "simulator.h"
+#include "catoms3DSimulator.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -42,7 +43,6 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
     if (GlutContext::GUIisEnabled) {
 /* Toggle to use catoms3D with max connector size (no rotation) but very simple models*/
 #define CATOMS3D_TEXTURE_ID 0
-#define UseC3DSkewFCC 0
 
 #if CATOMS3D_TEXTURE_ID == 1 // Standard, but w/o conID
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2.obj");
@@ -58,18 +58,17 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
         objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");
 #endif
 
-#if UseC3DSkewFCC == 1
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D_Zinc.obj");
-#else
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
-#endif
+        if (Catoms3DSimulator::getSimulator()->useSkewedFCCLattice)
+            objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D_Zinc.obj");
+        else
+            objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
     }
 
-#if UseC3DSkewFCC == 1
-    lattice = new SkewFCCLattice(gridSize,gridScale.hasZero() ? defaultBlockSize : gridScale);
-#else
-    lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
-#endif
+    if (Catoms3DSimulator::getSimulator()->useSkewedFCCLattice)
+        lattice = new SkewFCCLattice(gridSize,gridScale.hasZero() ?
+                                     defaultBlockSize : gridScale);
+    else lattice = new FCCLattice(gridSize, gridScale.hasZero() ?
+                                  defaultBlockSize : gridScale);
 
     motionRules = new Catoms3DMotionRules();
 }

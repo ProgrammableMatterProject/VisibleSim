@@ -35,8 +35,10 @@ Catoms3DSimulator::~Catoms3DSimulator() {
 #endif
 }
 
-void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb,
+                                        bool useSkewedFCCLattice) {
     simulator = new Catoms3DSimulator(argc, argv, bcb);
+    ((Catoms3DSimulator*)simulator)->useSkewedFCCLattice = useSkewedFCCLattice;
     simulator->parseConfiguration(argc, argv);
     simulator->startSimulation();
 }

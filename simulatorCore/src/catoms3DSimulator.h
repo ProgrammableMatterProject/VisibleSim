@@ -26,7 +26,12 @@ protected:
 public:
     bool testMode;
 
-    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
+    /// CUSTOMIZATION PARAMETERS
+    bool useSkewedFCCLattice; //!< Indicates whether an FCC lattice with a skewed Z axis should be used instead for a normal FCC lattice, for FCC simulations
+    ////////////////////////////
+
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb,
+                                bool useSkewedFCCLattice);
 
     static Catoms3DSimulator* getSimulator() {
     assert(simulator != NULL);
@@ -41,8 +46,9 @@ public:
     void help();
 };
 
-inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
-    Catoms3DSimulator::createSimulator(argc, argv, bcb);
+inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb,
+                            bool useSkewedFCCLattice = false) {
+    Catoms3DSimulator::createSimulator(argc, argv, bcb, useSkewedFCCLattice);
 }
 
 inline Catoms3DSimulator* getSimulator() { return(Catoms3DSimulator::getSimulator()); }
