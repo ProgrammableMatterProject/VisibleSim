@@ -24,12 +24,12 @@ namespace MeldProcess {
 class VMSetIdEvent : public BlockEvent {
 public:
 
-	VMSetIdEvent(Time, BuildingBlock *conBlock);
-	VMSetIdEvent(VMSetIdEvent *ev);
-	~VMSetIdEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    VMSetIdEvent(Time, BuildingBlock *conBlock);
+    VMSetIdEvent(VMSetIdEvent *ev);
+    ~VMSetIdEvent();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -41,12 +41,12 @@ public:
 class VMStopEvent : public BlockEvent {
 public:
 
-	VMStopEvent(Time, BuildingBlock *conBlock);
-	VMStopEvent(VMStopEvent *ev);
-	~VMStopEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    VMStopEvent(Time, BuildingBlock *conBlock);
+    VMStopEvent(VMStopEvent *ev);
+    ~VMStopEvent();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 
@@ -58,14 +58,14 @@ public:
 
 class VMSendMessageEvent : public BlockEvent {
 public:
-	MessagePtr message;
-	P2PNetworkInterface *sourceInterface;
+    MessagePtr message;
+    P2PNetworkInterface *sourceInterface;
 
-	VMSendMessageEvent(Time, BuildingBlock *conBlock, Message *mes, P2PNetworkInterface *ni);
-	VMSendMessageEvent(VMSendMessageEvent *ev);
-	~VMSendMessageEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    VMSendMessageEvent(Time, BuildingBlock *conBlock, Message *mes, P2PNetworkInterface *ni);
+    VMSendMessageEvent(VMSendMessageEvent *ev);
+    ~VMSendMessageEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -77,13 +77,13 @@ public:
 class VMHandleDebugCommandEvent : public BlockEvent {
 
 public:
-	DebbuggerVMCommand *command;
-	
-	VMHandleDebugCommandEvent(Time, BuildingBlock *conBlock, DebbuggerVMCommand *c);
-	VMHandleDebugCommandEvent(VMHandleDebugCommandEvent *ev);
-	~VMHandleDebugCommandEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    DebbuggerVMCommand *command;
+
+    VMHandleDebugCommandEvent(Time, BuildingBlock *conBlock, DebbuggerVMCommand *c);
+    VMHandleDebugCommandEvent(VMHandleDebugCommandEvent *ev);
+    ~VMHandleDebugCommandEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -95,12 +95,12 @@ public:
 class VMDebugPauseSimEvent : public Event {
 
 public:
-	
-	VMDebugPauseSimEvent(Time);
-	VMDebugPauseSimEvent(VMDebugPauseSimEvent *ev);
-	~VMDebugPauseSimEvent();
-	void consume();
-	const virtual string getEventName();
+
+    VMDebugPauseSimEvent(Time);
+    VMDebugPauseSimEvent(VMDebugPauseSimEvent *ev);
+    ~VMDebugPauseSimEvent();
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -112,11 +112,11 @@ public:
 class VMEndPollEvent : public BlockEvent {
 public:
 
-	VMEndPollEvent(Time, BuildingBlock *conBlock);
-	VMEndPollEvent(VMEndPollEvent *ev);
-	~VMEndPollEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
+    VMEndPollEvent(Time, BuildingBlock *conBlock);
+    VMEndPollEvent(VMEndPollEvent *ev);
+    ~VMEndPollEvent();
+    void consumeBlockEvent() override;
+    const virtual string getEventName() override;
 };
 
 } // MeldProcess namespace

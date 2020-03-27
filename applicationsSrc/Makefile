@@ -1,6 +1,5 @@
 # GENERIC BlockCodes
-SUBDIRS = c2srCatoms2D  datomsRotate leader_election map03   meshCatoms3D_mvmt  reconfCatoms3DMultilayer   scaffolding_pyramid_sync  simpleColorSB  targetColoration bbCycle C3DRotate datomsTestbed lightWalkCatoms3D  map04   msrSync  robot02 simpleCatoms3D  simpleMotion blinky01   catoms3DRotations  distanceRB  lineC2D  meld musicPlayer   sbReconf simpleColorBB simpleMotionOkteen blinky02   cbLE edyLE  locomotion meltSortGrow node_demo scaffolding_csg  simpleColorC2D  simpleReconfC2D broadcast  coating  forcesPredictionIPPT  Makefile meshCatoms3D noneCatoms2D  scaffolding_cube simpleColorOkteen sinkSource c2d_demo   csgCatoms3D   hexanode_demo map02 meshCatoms3D_assembly  reconfCatoms3D scaffolding_pyramid_async  simpleColorRB   smartBlocks1
-
+SUBDIRS = C3DRotate hexanode_demo meld reconfCatoms3DMultilayer scaffolding_pyramid_async simpleColorC2D csgCatoms3D lightWalkCatoms3D musicPlayer robot02 scaffolding_pyramid_sync simpleColorOkteen simpleOkteenMotion c2d_demo datomsRotate locomotion node_demo sbReconf simpleColorRB sinkSource c2srCatoms2D distanceRB reconfCatoms3D scaffolding_cube simpleColorBB simpleColorSB targetColoration
 
 .PHONY: subdirs $(SUBDIRS) test
 

@@ -13,7 +13,7 @@
 #include "catom2D1BlockCode.h"
 #include "scheduler.h"
 #include "events.h"
-#include "rotation2DEvents.h"
+#include "catoms2DRotationEvents.h"
 #include "rate.h"
 
 #include "c2srMsg.h"
@@ -82,7 +82,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   switch (pev->eventType) {
   case EVENT_NI_RECEIVE: {
     MessagePtr message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-    P2PNetworkInterface * recv_interface = message->destinationInterface;
+    // P2PNetworkInterface * recv_interface = message->destinationInterface;
     switch(message->type) {
     case GO_MAP_MSG:
     case BACK_MAP_MSG: {

@@ -31,7 +31,7 @@ public:
     virtual ~HexanodeBlockCode();
 
     virtual void processLocalEvent(EventPtr pev) override;
-    virtual void onMotionEnd() {};
+    virtual void onMotionEnd() override {};
 
     void addDebugAttributes(Scheduler* scheduler) override;
 };

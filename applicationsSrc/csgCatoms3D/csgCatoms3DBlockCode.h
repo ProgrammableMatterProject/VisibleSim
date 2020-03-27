@@ -42,8 +42,8 @@ public:
     CsgCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
     ~CsgCatoms3DBlockCode();
 
-    void startup();
-    void processLocalEvent(EventPtr pev);
+    void startup() override;
+    void processLocalEvent(EventPtr pev) override;
     void createCSG();
     void sendCSGMessage();
 

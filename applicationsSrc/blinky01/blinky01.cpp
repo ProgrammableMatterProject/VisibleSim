@@ -12,41 +12,41 @@
 #include "meldProcessDebugger.h"
 #include "meldProcessVM.h"
 #include "configStat.h"
-#include <trace.h> 
+#include <trace.h>
 
 using namespace std;
 using namespace BlinkyBlocks;
 
 int main(int argc, char **argv) {
-	
-	OUTPUT << "\033[1;33m" << "Starting Blinky Blocks simulation (main) ..." << "\033[0m" << endl;
 
-	BaseSimulator::Simulator::setType(BaseSimulator::Simulator::MELDPROCESS);
-	createSimulator(argc, argv, Blinky01BlockCode::buildNewBlockCode);
+    OUTPUT << "\033[1;33m" << "Starting Blinky Blocks simulation (main) ..." << "\033[0m" << endl;
 
-	//ConfigStat stat(BaseSimulator::getWorld());
-	//stat.print();
-	
-	/*
-	{
-		using namespace BaseSimulator;
+    BaseSimulator::Simulator::setType(BaseSimulator::Simulator::MELDPROCESS);
+    createSimulator(argc, argv, Blinky01BlockCode::buildNewBlockCode);
 
-		Simulator *s = Simulator::getSimulator();
-		s->printInfo();
-	}
-	* getSimulator()->printInfo();
-	* getScheduler()->printInfo();
-	* BaseSimulator::getWorld()->printInfo();
-	*/
-		
-	getScheduler()->waitForSchedulerEnd();
-		
-	if (MeldProcess::MeldProcessVM::isInDebuggingMode()) {
-		MeldProcess::getDebugger()->waitForDebuggerEnd();
-	}
-	
-	deleteSimulator();
-	
-	OUTPUT << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
-	return(0);
+    //ConfigStat stat(BaseSimulator::getWorld());
+    //stat.print();
+
+    /*
+    {
+        using namespace BaseSimulator;
+
+        Simulator *s = Simulator::getSimulator();
+        s->printInfo();
+    }
+    * getSimulator()->printInfo();
+    * getScheduler()->printInfo();
+    * BaseSimulator::getWorld()->printInfo();
+    */
+
+    getScheduler()->waitForSchedulerEnd();
+
+    if (MeldProcess::MeldProcessVM::isInDebuggingMode()) {
+        MeldProcess::getDebugger()->waitForDebuggerEnd();
+    }
+
+    deleteSimulator();
+
+    OUTPUT << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
+    return(0);
 }

@@ -1,5 +1,5 @@
 /*!
- * \file rotation2DEvents.h
+ * \file catoms2DRotationEvents.h
  * \brief Motion events for 2D Catoms
  * \date 15/02/2015
  * \author Benoît Piranda, Pierre Thalamy

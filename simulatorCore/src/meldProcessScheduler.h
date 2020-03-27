@@ -19,56 +19,56 @@ namespace MeldProcess {
 
 class MeldProcessScheduler : public BaseSimulator::Scheduler {
 protected:
-	MeldProcessScheduler();
-	virtual ~MeldProcessScheduler();
-	void* startPaused(/*void *param */);
-	
-public:	
-	static void createScheduler();
-	static void deleteScheduler();
-	static MeldProcessScheduler* getScheduler() {
-		assert(scheduler != NULL);
-		return((MeldProcessScheduler*)scheduler);
-	}
+    MeldProcessScheduler();
+    virtual ~MeldProcessScheduler();
+    void* startPaused(/*void *param */);
 
-	void printInfo() {
-		OUTPUT << "I'm a MeldProcessScheduler" << endl;
-	}
-	
-	void start(int mode);
+public:
+    static void createScheduler();
+    static void deleteScheduler();
+    static MeldProcessScheduler* getScheduler() {
+        assert(scheduler != NULL);
+        return((MeldProcessScheduler*)scheduler);
+    }
 
-	void waitForSchedulerEnd() {
-		schedulerThread->join();
-	}
-		
-	// stop for good
-	void stop(Time date);	
-	void pause(Time date);
-	void unPause();
-		
-	// NOT TESTED
-	bool isPaused() {
-		bool r = sem_schedulerStart->tryWait();
-		if (r) {
-			sem_schedulerStart->signal();
-		}
-		return !r;
-	}
-	
-	bool schedule(Event *ev);
-	
-	void SemWaitOrReadDebugMessage();
-	
-	inline int getMode() { return schedulerMode; }
-		
+    void printInfo() override {
+        OUTPUT << "I'm a MeldProcessScheduler" << endl;
+    }
+
+    void start(int mode) override;
+
+    void waitForSchedulerEnd() {
+        schedulerThread->join();
+    }
+
+    // stop for good
+    void stop(Time date) override;
+    void pause(Time date);
+    void unPause();
+
+    // NOT TESTED
+    bool isPaused() {
+        bool r = sem_schedulerStart->tryWait();
+        if (r) {
+            sem_schedulerStart->signal();
+        }
+        return !r;
+    }
+
+    bool schedule(Event *ev) override;
+
+    void SemWaitOrReadDebugMessage();
+
+    inline int getMode() { return schedulerMode; }
+
 };
 
 inline void createScheduler() {
-	MeldProcessScheduler::createScheduler();
+    MeldProcessScheduler::createScheduler();
 }
 
 inline void deleteScheduler() {
-	MeldProcessScheduler::deleteScheduler();
+    MeldProcessScheduler::deleteScheduler();
 }
 
 inline MeldProcessScheduler* getScheduler() { return(MeldProcessScheduler::getScheduler()); }

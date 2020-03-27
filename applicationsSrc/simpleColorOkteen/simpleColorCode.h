@@ -10,18 +10,18 @@ class SimpleColorCode : public OkteenBlockCode {
 private:
     int distance;
 public :
-	SimpleColorCode(OkteenBlock *host):OkteenBlockCode(host) {};
-	~SimpleColorCode() {};
+    SimpleColorCode(OkteenBlock *host):OkteenBlockCode(host) {};
+    ~SimpleColorCode() {};
 
-	void startup();
-	void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void startup() override;
+    void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-	    return (new SimpleColorCode((OkteenBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return (new SimpleColorCode((OkteenBlock*)host));
+    };
 /*****************************************************************************/
 };
-	void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+    void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* simpleColorCode_H_ */

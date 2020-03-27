@@ -11,7 +11,7 @@
 #include "catoms2DWorld.h"
 #include "catoms2DSimulator.h"
 
-#include "rotation2DEvents.h"
+#include "catoms2DRotationEvents.h"
 #include "trace.h"
 
 using namespace std;

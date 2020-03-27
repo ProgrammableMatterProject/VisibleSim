@@ -1,12 +1,12 @@
 /*
- * @file rotation2DEvents.cpp
+ * @file catoms2DRotationEvents.cpp
  *
  * Formerly catoms2DEvents.cpp
  *  Created on: 2014 fevrary 1st, 18/07/16
  *      Author: Benoît, Pierre
  */
 
-#include "rotation2DEvents.h"
+#include "catoms2DRotationEvents.h"
 #include "catoms2DWorld.h"
 #include "utils.h"
 

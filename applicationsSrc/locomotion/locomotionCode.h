@@ -12,45 +12,45 @@ static const int CONFIRM_STREAMLINE_MSG=1005;
 
 using namespace RobotBlocks;
 
-enum PathState {NONE, BFS, ConfPath, Streamline};  
+enum PathState {NONE, BFS, ConfPath, Streamline};
 
 class LocomotionCode : public RobotBlocksBlockCode {
 private:
-	RobotBlocksBlock *module;
-	PathState mainPathState;	//! state of the main path: {NONE, BFS, ConfPath, Streamline}
-	bID mainPathIn;				//! ID of parent meta-module on the main tree
-	vector<bID>mainPathOut; 	//! ID’s of child meta-modules on the main tree
-	vector<bID>mainPathOld; 	//! old ID’s of child meta-modules on the main tree
-	PathState aug1PathState;	//! state of the augmenting path 1: {NONE, BFS, ConfPath}
-	bID aug1PathIn;				//! ID of parent meta-module on the augmenting tree (type 1)
-	vector<bID>aug1PathOut;		//! ID’s of child meta-modules on the augmenting tree (type 1)
-	vector<bID>aug1PathOld;		//! old ID’s of child meta-modules on the augmenting tree (type 1)
-	PathState aug2PathState;	//! state of the augmenting path 2: {NONE, BFS, ConfPath}
-	bID aug2PathIn;				//! ID of parent meta-module on the augmenting tree (type 2)
-	vector<bID>aug2PathOut;		//! ID’s of child meta-modules on the augmenting tree (type 2)
-	vector<bID>aug2PathOld;		//! old ID’s of child meta-modules on the augmenting tree (type 2)
-	//vector<bID>pathsOld;		//! list of path ID’s that has been processed in current step
-	bool isSource;				//! Is meta-module a source.
-	bool isSink;
+    RobotBlocksBlock *module;
+    PathState mainPathState;	//! state of the main path: {NONE, BFS, ConfPath, Streamline}
+    bID mainPathIn;				//! ID of parent meta-module on the main tree
+    vector<bID>mainPathOut;     //! ID’s of child meta-modules on the main tree
+    vector<bID>mainPathOld;     //! old ID’s of child meta-modules on the main tree
+    PathState aug1PathState;	//! state of the augmenting path 1: {NONE, BFS, ConfPath}
+    bID aug1PathIn;				//! ID of parent meta-module on the augmenting tree (type 1)
+    vector<bID>aug1PathOut;		//! ID’s of child meta-modules on the augmenting tree (type 1)
+    vector<bID>aug1PathOld;		//! old ID’s of child meta-modules on the augmenting tree (type 1)
+    PathState aug2PathState;	//! state of the augmenting path 2: {NONE, BFS, ConfPath}
+    bID aug2PathIn;				//! ID of parent meta-module on the augmenting tree (type 2)
+    vector<bID>aug2PathOut;		//! ID’s of child meta-modules on the augmenting tree (type 2)
+    vector<bID>aug2PathOld;		//! old ID’s of child meta-modules on the augmenting tree (type 2)
+    //vector<bID>pathsOld;		//! list of path ID’s that has been processed in current step
+    bool isSource;				//! Is meta-module a source.
+    bool isSink;
 
 public :
-	LocomotionCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) { module=host; };
-	~LocomotionCode() {};
+    LocomotionCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) { module=host; };
+    ~LocomotionCode() {};
 
-	void startup();
-	void ProcBFS(const MessageOf<bID>*msg,P2PNetworkInterface *sender);
-	void ProcConfirmEdge(P2PNetworkInterface *sender);
-	void ProcCutOff(P2PNetworkInterface *sender);
-	void ProcAvailable(P2PNetworkInterface *sender);
-	void ProcConfirmPath(P2PNetworkInterface *sender);
-	void ProcConfirmStreamline(P2PNetworkInterface *sender);
+    void startup() override;
+    void ProcBFS(const MessageOf<bID>*msg,P2PNetworkInterface *sender);
+    void ProcConfirmEdge(P2PNetworkInterface *sender);
+    void ProcCutOff(P2PNetworkInterface *sender);
+    void ProcAvailable(P2PNetworkInterface *sender);
+    void ProcConfirmPath(P2PNetworkInterface *sender);
+    void ProcConfirmStreamline(P2PNetworkInterface *sender);
 
-	void sendMessageToPath(const string &str, int msgType,vector<bID> &path,bID exception);
+    void sendMessageToPath(const string &str, int msgType,vector<bID> &path,bID exception);
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-	    return(new LocomotionCode((RobotBlocksBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return(new LocomotionCode((RobotBlocksBlock*)host));
+    };
 /*****************************************************************************/
 };
 

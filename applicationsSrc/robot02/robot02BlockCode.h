@@ -21,25 +21,25 @@ const int COM_DELAY=100000;
 
 class SearchMasterMessage : public Message {
 public :
-	int blockId;
-	Color blockColor;
-	SearchMasterMessage(int i,Color c):blockId(i),blockColor(c) { type=SEARCH_MASTER_MESSAGE; };
-	~SearchMasterMessage() {};
+    int blockId;
+    Color blockColor;
+    SearchMasterMessage(int i,Color c):blockId(i),blockColor(c) { type=SEARCH_MASTER_MESSAGE; };
+    ~SearchMasterMessage() {};
 };
 
 class ReturnMasterMessage : public Message {
 public :
-	int blockId;
-	Color blockColor;
-	ReturnMasterMessage(int i,Color c):blockId(i),blockColor(c) { type=RETURN_MASTER_MESSAGE; };
-	~ReturnMasterMessage() {};
+    int blockId;
+    Color blockColor;
+    ReturnMasterMessage(int i,Color c):blockId(i),blockColor(c) { type=RETURN_MASTER_MESSAGE; };
+    ~ReturnMasterMessage() {};
 };
 
 class ColorMessage : public Message {
 public :
-	Color color;
-	ColorMessage(Color c):color(c) { type=COLOR_MESSAGE; };
-	~ColorMessage() {};
+    Color color;
+    ColorMessage(Color c):color(c) { type=COLOR_MESSAGE; };
+    ~ColorMessage() {};
 };
 
 typedef std::shared_ptr<ColorMessage> ColorMessage_ptr;
@@ -50,23 +50,26 @@ using namespace std;
 using namespace RobotBlocks;
 
 class Robot02BlockCode : public RobotBlocks::RobotBlocksBlockCode {
-	int masterId;
-	Color masterColor;
-	bool searchDone;
-	int nbreOfWaitedAnswers;
-	P2PNetworkInterface *block2answer;
-	bool colored;
+    int masterId;
+    Color masterColor;
+    bool searchDone;
+    int nbreOfWaitedAnswers;
+    P2PNetworkInterface *block2answer;
+    bool colored;
 public:
-	Scheduler *scheduler;
-	RobotBlocks::RobotBlocksBlock *block;
+    Scheduler *scheduler;
+    RobotBlocks::RobotBlocksBlock *block;
 
-	Robot02BlockCode (RobotBlocks::RobotBlocksBlock *host);
-	~Robot02BlockCode ();
+    Robot02BlockCode (RobotBlocks::RobotBlocksBlock *host);
+    ~Robot02BlockCode ();
 
-	void startup();
-	void processLocalEvent(EventPtr pev);
+    void startup() override;
+    void processLocalEvent(EventPtr pev) override;
 
-	static RobotBlocks::RobotBlocksBlockCode *buildNewBlockCode( RobotBlocks::RobotBlocksBlock *host);
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return (new Robot02BlockCode((RobotBlocks::RobotBlocksBlock*)host));
+    }
+
     void sendMasterMessageToAllNeighbors(P2PNetworkInterface *except);
     void sendReturnMessageTo(P2PNetworkInterface *p2p);
     void sendColorMessageToAllNeighbors(P2PNetworkInterface *except);

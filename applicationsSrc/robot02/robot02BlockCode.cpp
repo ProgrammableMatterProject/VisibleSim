@@ -14,19 +14,19 @@
 
 
 Robot02BlockCode::Robot02BlockCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {
-	cout << "Robot02BlockCode constructor" << endl;
-	scheduler = getScheduler();
-	block = (RobotBlocksBlock*)hostBlock;
+    cout << "Robot02BlockCode constructor" << endl;
+    scheduler = getScheduler();
+    block = (RobotBlocksBlock*)hostBlock;
 // initialize object deleted in destructor
 }
 
 Robot02BlockCode::~Robot02BlockCode() {
-	cout << "Robot02BlockCode destructor" << endl;
+    cout << "Robot02BlockCode destructor" << endl;
 }
 
 void Robot02BlockCode::startup() {
-	stringstream info;
-	info << "start #" << block->blockId;
+    stringstream info;
+    info << "start #" << block->blockId;
     masterId = block->blockId;
     searchDone=false;
     masterColor = block->color;
@@ -43,13 +43,13 @@ void Robot02BlockCode::startup() {
 }
 
 void Robot02BlockCode::processLocalEvent(EventPtr pev) {
-	MessagePtr message;
+    MessagePtr message;
     stringstream info;
 
     if (pev->eventType == EVENT_RECEIVE_MESSAGE) {
         message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 
-		switch (message->type) {
+        switch (message->type) {
             case SEARCH_MASTER_MESSAGE : {
                 SearchMasterMessage_ptr recvMessage = std::static_pointer_cast<SearchMasterMessage>(message);
                 if (masterId<recvMessage->blockId) {
@@ -136,13 +136,9 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
                     sendColorMessageToAllNeighbors(message->destinationInterface);
                 }
             }
-			break;
+            break;
         }
-	}
-}
-
-RobotBlocks::RobotBlocksBlockCode* Robot02BlockCode::buildNewBlockCode(RobotBlocksBlock *host) {
-	return(new Robot02BlockCode(host));
+    }
 }
 
 void Robot02BlockCode::sendMasterMessageToAllNeighbors(P2PNetworkInterface *except) {
@@ -156,7 +152,7 @@ void Robot02BlockCode::sendMasterMessageToAllNeighbors(P2PNetworkInterface *exce
     searchDone=true;
 
     for(int i = 0; i<6; i++) {
-        p2p = block->getInterface((RobotBlocks::NeighborDirection::Direction)i);
+        p2p = block->getInterface(SCLattice::Direction(i));
         if (p2p->connectedInterface && p2p->connectedInterface!=except) {
             nbreOfWaitedAnswers++;
             SearchMasterMessage *message = new SearchMasterMessage(masterId,masterColor);
@@ -174,7 +170,7 @@ void Robot02BlockCode::sendColorMessageToAllNeighbors(P2PNetworkInterface *excep
     P2PNetworkInterface * p2p;
 
     for(int i = 0; i<6; i++) {
-        p2p = block->getInterface((RobotBlocks::NeighborDirection::Direction)i);
+        p2p = block->getInterface(SCLattice::Direction(i));
         if (p2p->connectedInterface && p2p->connectedInterface!=except) {
             ColorMessage *message = new ColorMessage(masterColor);
             scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now()+COM_DELAY, message, p2p));

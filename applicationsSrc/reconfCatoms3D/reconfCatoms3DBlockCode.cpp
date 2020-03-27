@@ -12,7 +12,7 @@ using namespace Catoms3D;
 
 ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
     scheduler = getScheduler();
-	catom = (Catoms3DBlock*)hostBlock;
+    catom = (Catoms3DBlock*)hostBlock;
 
     reconf = new Reconf(catom);
     syncNext = new SyncNext(catom, reconf);
@@ -92,10 +92,10 @@ void ReconfCatoms3DBlockCode::stochasticRun() {
     }
 }
 void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
-	MessagePtr message;
-	stringstream info;
+    MessagePtr message;
+    stringstream info;
 
-	switch (pev->eventType) {
+    switch (pev->eventType) {
     case EVENT_NI_RECEIVE: {
       message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
         if (message->isMessageHandleable()) {
@@ -216,7 +216,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         getStats();
         break;
     }
-	}
+    }
 }
 
 void ReconfCatoms3DBlockCode::getStats() {
@@ -225,7 +225,7 @@ void ReconfCatoms3DBlockCode::getStats() {
     count += Scheduler::getScheduler()->getNbEventsById(ADDRIGHTBLOCK_EVENT_ID);
     count += Scheduler::getScheduler()->getNbEventsById(ADDNEXTLINE_EVENT_ID);
     count += Scheduler::getScheduler()->getNbEventsById(ADDPREVIOUSLINE_EVENT_ID);
-    int nbBlocks = World::getWorld()->getNbBlocks();
+    // int nbBlocks = World::getWorld()->getNbBlocks();
     int nMessages = 0;
     nMessages += NeighborMessages::nMessagesGetInfo;
     nMessages += Neighborhood::numberMessagesToAddBlock;

@@ -1603,24 +1603,24 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced(P2PNe
 }
 
 P2PNetworkInterface *SbReconfBlockCode::getBorderSinglePrevious() {
-    SLattice::Direction dir,dirStop;
+    SLattice::Direction dir;// ,dirStop;
 
 //OUTPUT << "motionDir:" <<  _motionDir << endl;
     if (_motionDir.x==0) {
         if (_motionDir.y==1) {
             dir = SLattice::West;
-            dirStop = SLattice::North;
+            // dirStop = SLattice::North;
         } else {
             dir = SLattice::East;
-            dirStop = SLattice::South;
+            // dirStop = SLattice::South;
         }
     } else {
         if (_motionDir.x==1) {
             dir = SLattice::North;
-            dirStop = SLattice::East;
+            // dirStop = SLattice::East;
         } else {
             dir = SLattice::South;
-            dirStop = SLattice::West;
+            // dirStop = SLattice::West;
         }
     }
 //    P2PNetworkInterface *stop = block->getInterface(dirStop);
@@ -1645,7 +1645,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNeighborById(int id) {
         p2p=block->getInterface(SLattice::SLattice::Direction(i));
         if (p2p->connectedInterface) {
 //            OUTPUT << i << " : " << p2p->connectedInterface->hostBlock->blockId << endl;
-            found=p2p->connectedInterface->hostBlock->blockId==id;
+            found=p2p->connectedInterface->hostBlock->blockId==(bID)id;
         }
     }
     return found?p2p:NULL;

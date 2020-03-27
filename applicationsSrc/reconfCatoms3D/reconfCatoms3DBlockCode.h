@@ -20,8 +20,8 @@
 
 class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
-	Scheduler *scheduler;
-	Catoms3D::Catoms3DBlock *catom;
+    Scheduler *scheduler;
+    Catoms3D::Catoms3DBlock *catom;
 
     Neighborhood *neighborhood;
     NeighborMessages *neighborMessages;
@@ -33,11 +33,11 @@ public:
     SyncPlane *syncPlane;
     SyncPlaneManager *syncPlaneManager;
 
-	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
-	~ReconfCatoms3DBlockCode();
+    ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
+    ~ReconfCatoms3DBlockCode();
 
-	void startup();
-	void processLocalEvent(EventPtr pev);
+    void startup() override;
+    void processLocalEvent(EventPtr pev) override;
 
     void planningRun();
     void stochasticRun();
@@ -55,7 +55,7 @@ public:
     void canFill();
     void getStats();
 
-	static BlockCode *buildNewBlockCode(BuildingBlock *host);
+    static BlockCode *buildNewBlockCode(BuildingBlock *host);
 private:
     bool cellHasBlock(const Cell3DPosition &pos);
 };

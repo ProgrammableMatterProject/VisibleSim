@@ -10,19 +10,18 @@ class SimpleColorCode : public RobotBlocksBlockCode {
 private:
     int distance;
 public :
-	SimpleColorCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {};
-	~SimpleColorCode() {};
+    SimpleColorCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {};
+    ~SimpleColorCode() {};
 
-	void startup();
-	void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void startup() override;
+    void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-	    return (new SimpleColorCode((RobotBlocksBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return (new SimpleColorCode((RobotBlocksBlock*)host));
+    };
 /*****************************************************************************/
 };
-	void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+    void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* simpleColorCode_H_ */
-
