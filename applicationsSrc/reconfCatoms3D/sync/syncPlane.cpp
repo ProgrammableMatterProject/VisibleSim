@@ -24,7 +24,7 @@ bool SyncPlane::isOnBorder(Cell3DPosition pos)
     return false;
 }
 
-bool debugPosition(Cell3DPosition pos) {
+void debugPosition(Cell3DPosition pos) {
     cout << "debug position " << pos << " ";
     if (BlockCode::target->isInTarget(pos.addY(1)))
         cout << "hasNorth ";

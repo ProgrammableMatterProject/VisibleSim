@@ -8,19 +8,19 @@ using namespace RobotBlocks;
 
 class DistanceRBCode : public RobotBlocksBlockCode {
 private:
-	uint16_t distance;
+    uint16_t distance;
 public:
-	DistanceRBCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {};
-	~DistanceRBCode() {};
+    DistanceRBCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {};
+    ~DistanceRBCode() {};
 
-	void startup();
-	void myBROADCAST_MSGFunc(const MessageOf<uint16_t>*msg,P2PNetworkInterface *sender);
+    void startup() override;
+    void myBROADCAST_MSGFunc(const MessageOf<uint16_t>*msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-	    return (new DistanceRBCode((RobotBlocksBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return (new DistanceRBCode((RobotBlocksBlock*)host));
+    };
 /*****************************************************************************/
 };
 

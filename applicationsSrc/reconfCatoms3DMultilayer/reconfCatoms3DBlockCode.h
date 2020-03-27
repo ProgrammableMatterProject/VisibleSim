@@ -18,8 +18,8 @@
 
 class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
-	Scheduler *scheduler;
-	Catoms3D::Catoms3DBlock *catom;
+    Scheduler *scheduler;
+    Catoms3D::Catoms3DBlock *catom;
     Vector3D worldPosition;
 
     Neighborhood *neighborhood;
@@ -31,11 +31,11 @@ public:
     SyncNext *syncNext;
     SyncPrevious *syncPrevious;
 
-	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
-	~ReconfCatoms3DBlockCode();
+    ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
+    ~ReconfCatoms3DBlockCode();
 
-	void startup();
-	void processLocalEvent(EventPtr pev);
+    void startup() override;
+    void processLocalEvent(EventPtr pev) override;
 
     void planningRun();
     void stochasticRun();
@@ -48,7 +48,7 @@ public:
     void syncPreviousMessage(shared_ptr<Sync_message> recv_message);
     void syncResponse(shared_ptr<Sync_response_message> recv_message);
 
-	static BlockCode *buildNewBlockCode(BuildingBlock *host);
+    static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 #endif /* RECONFCATOMS3DBLOCKCODE_H_ */
