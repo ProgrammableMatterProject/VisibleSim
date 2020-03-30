@@ -127,18 +127,18 @@ public:
 };
 
 /**
- * @brief RobotBlocks Configuration Exporter
+ * @brief SlidingCubes Configuration Exporter
  */
-class RobotBlocksConfigExporter : public ConfigExporter {
+class SlidingCubesConfigExporter : public ConfigExporter {
 public:
     /**
-     * @brief RobotBlocks Configuration Exporter constructor
+     * @brief SlidingCubes Configuration Exporter constructor
      */
-    RobotBlocksConfigExporter(World *_world) : ConfigExporter(_world) {};
+    SlidingCubesConfigExporter(World *_world) : ConfigExporter(_world) {};
     /**
-     * @brief RobotBlocks Configuration Exporter destructor
+     * @brief SlidingCubes Configuration Exporter destructor
      */
-    virtual ~RobotBlocksConfigExporter() { };
+    virtual ~SlidingCubesConfigExporter() { };
 };
 
 /**
@@ -193,16 +193,16 @@ public:
 };
 
 /**
- * @brief RobotBlocks Configuration Exporter
+ * @brief SlidingCubes Configuration Exporter
  */
 class OkteenConfigExporter : public ConfigExporter {
 public:
     /**
-     * @brief RobotBlocks Configuration Exporter constructor
+     * @brief SlidingCubes Configuration Exporter constructor
      */
     OkteenConfigExporter(World *_world) : ConfigExporter(_world) {};
     /**
-     * @brief RobotBlocks Configuration Exporter destructor
+     * @brief SlidingCubes Configuration Exporter destructor
      */
     virtual ~OkteenConfigExporter() { };
 };
@@ -248,14 +248,14 @@ public:
  */
 class HexanodeConfigExporter : public ConfigExporter {
 public:
-	/**
-	 * @brief Node Configuration Exporter constructor
-	 */
-	HexanodeConfigExporter(World *_world) : ConfigExporter(_world) {};
-	/**
-	 * @brief Node Configuration Exporter destructor
-	 */
-	virtual ~HexanodeConfigExporter() { };
+    /**
+     * @brief Node Configuration Exporter constructor
+     */
+    HexanodeConfigExporter(World *_world) : ConfigExporter(_world) {};
+    /**
+     * @brief Node Configuration Exporter destructor
+     */
+    virtual ~HexanodeConfigExporter() { };
 };
 
 } // BASESIMULATOR_NAMESPACE

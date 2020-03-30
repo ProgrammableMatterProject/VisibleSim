@@ -24,9 +24,9 @@ BLINKYBLOCKS_SRCS = $(DEBUGGER) blinkyBlocksSimulator.cpp blinkyBlocksBlock.cpp 
 BLINKYBLOCKS_OBJS = $(BLINKYBLOCKS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 BLINKYBLOCKS_DEPS = $(BLINKYBLOCKS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-ROBOTBLOCKS_SRCS = robotBlocksSimulator.cpp robotBlocksBlock.cpp robotBlocksBlockCode.cpp robotBlocksWorld.cpp robotBlocksGlBlock.cpp robotBlocksMotionRules.cpp
-ROBOTBLOCKS_OBJS = $(ROBOTBLOCKS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
-ROBOTBLOCKS_DEPS = $(ROBOTBLOCKS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
+SLIDINGCUBES_SRCS = slidingCubesSimulator.cpp slidingCubesBlock.cpp slidingCubesBlockCode.cpp slidingCubesWorld.cpp slidingCubesGlBlock.cpp slidingCubesMotionRules.cpp
+SLIDINGCUBES_OBJS = $(SLIDINGCUBES_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
+SLIDINGCUBES_DEPS = $(SLIDINGCUBES_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
 CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp catoms2DWorld.cpp catoms2DGlBlock.cpp catoms2DRotationEvents.cpp catoms2DMotionEngine.cpp
 CATOMS2D_OBJS = $(CATOMS2D_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
@@ -56,10 +56,10 @@ HEXANODE_SRCS = hexanodeSimulator.cpp hexanodeBlock.cpp hexanodeBlockCode.cpp he
 HEXANODE_OBJS = $(HEXANODE_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 HEXANODE_DEPS = $(HEXANODE_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(OKTEEN_SRCS) $(DATOMS_SRCS) $(NODE_SRCS) $(HEXANODE_SRCS)
+SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(SLIDINGCUBES_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(OKTEEN_SRCS) $(DATOMS_SRCS) $(NODE_SRCS) $(HEXANODE_SRCS)
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
-OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a $(LDIR)/libsimHexanode.a
+OUT = $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a $(LDIR)/libsimHexanode.a
 
 INCLUDES = $(GLOBAL_INCLUDES) -I.
 
@@ -92,7 +92,7 @@ $(OBJDIR)/%.o: %.cpp
 	$(POSTCOMPILE)
 
 
-all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a $(LDIR)/libsimHexanode.a
+all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNode.a $(LDIR)/libsimHexanode.a
 
 ${OUTDIRS}:
 	@mkdir -p $@
@@ -101,9 +101,9 @@ $(LDIR)/libsimBlinkyBlocks.a: $(BLINKYBLOCKS_OBJS)
 	@echo "Archiving BlinkyBlocks library..."
 	@ar rcs $(LDIR)/libsimBlinkyBlocks.a $(BLINKYBLOCKS_OBJS)
 
-$(LDIR)/libsimRobotBlocks.a: $(ROBOTBLOCKS_OBJS)
-	@echo "Archiving RobotBlocks library..."
-	@ar rcs $(LDIR)/libsimRobotBlocks.a $(ROBOTBLOCKS_OBJS)
+$(LDIR)/libsimSlidingCubes.a: $(SLIDINGCUBES_OBJS)
+	@echo "Archiving SlidingCubes library..."
+	@ar rcs $(LDIR)/libsimSlidingCubes.a $(SLIDINGCUBES_OBJS)
 
 $(LDIR)/libsimCatoms2D.a: $(CATOMS2D_OBJS)
 	@echo "Archiving Catoms2D library..."

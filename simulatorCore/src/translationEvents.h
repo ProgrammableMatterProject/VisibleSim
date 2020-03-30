@@ -1,7 +1,7 @@
 /**
  * @file translationEvents.h
  * @brief This file implements the realization of a translation motion events
- *  (created from refactoring of smartBlocksEvents and robotBlocksEvents)
+ *  (created from refactoring of smartBlocksEvents and slidingCubeEvents)
  *
  *  Created on: 07/07/16
  *      Author: Pierre

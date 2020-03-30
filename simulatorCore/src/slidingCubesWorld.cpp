@@ -12,43 +12,43 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robotBlocksWorld.h"
-#include "robotBlocksBlock.h"
+#include "slidingCubesWorld.h"
+#include "slidingCubesBlock.h"
 #include "trace.h"
 #include "configExporter.h"
 
 using namespace std;
 
-namespace RobotBlocks {
+namespace SlidingCubes {
 
-RobotBlocksWorld::RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+SlidingCubesWorld::SlidingCubesWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                                    int argc, char *argv[]):World(argc, argv) {
-    OUTPUT << TermColor::LifecycleColor << "RobotBlocksWorld constructor" << TermColor::Reset << endl;
+    OUTPUT << TermColor::LifecycleColor << "SlidingCubesWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures","robotBlock.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures","robotBlockPicking.obj");
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","robotBlock.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","robotBlockPicking.obj");
         objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
     }
 
     lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 
-        motionRules = new RobotBlocksMotionRules();
+        motionRules = new SlidingCubesMotionRules();
 }
 
-RobotBlocksWorld::~RobotBlocksWorld() {
+SlidingCubesWorld::~SlidingCubesWorld() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "RobotBlocksWorld destructor" << endl;
+    OUTPUT << "SlidingCubesWorld destructor" << endl;
 #endif
     /*	block linked are deleted by world::~world() */
         delete motionRules;
 }
 
-void RobotBlocksWorld::deleteWorld() {
-    delete((RobotBlocksWorld*)world);
+void SlidingCubesWorld::deleteWorld() {
+    delete((SlidingCubesWorld*)world);
 }
 
-void RobotBlocksWorld::createPopupMenu(int ix, int iy) {
+void SlidingCubesWorld::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
         GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,202,215);
         // create submenu "Add"
@@ -66,8 +66,8 @@ void RobotBlocksWorld::createPopupMenu(int ix, int iy) {
     }
 
     // update rotateSubMenu depending on rotation catoms3DCapabilities
-    RobotBlocksBlock *rb = (RobotBlocksBlock*)getSelectedBuildingBlock();
-    vector<RobotBlocksMotionRule*> tab = motionRules->getValidMotionList(rb);
+    SlidingCubesBlock *rb = (SlidingCubesBlock*)getSelectedBuildingBlock();
+    vector<SlidingCubesMotionRule*> tab = motionRules->getValidMotionList(rb);
     // remove element pointing in the same motion
     /*if (tab.size()>1) {
         auto ci=tab.begin()+1;
@@ -118,8 +118,8 @@ void RobotBlocksWorld::createPopupMenu(int ix, int iy) {
     if (GlutContext::popupSubMenu) GlutContext::popupSubMenu->show(false);
 }
 
-void RobotBlocksWorld::menuChoice(int n) {
-    RobotBlocksBlock *rb = (RobotBlocksBlock *)getSelectedBuildingBlock();
+void SlidingCubesWorld::menuChoice(int n) {
+    SlidingCubesBlock *rb = (SlidingCubesBlock *)getSelectedBuildingBlock();
     Cell3DPosition nPos;
     switch (n) {
         case 6:
@@ -139,7 +139,7 @@ void RobotBlocksWorld::menuChoice(int n) {
                 GlutContext::popupMenu->show(false);
 
                 Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
-                RobotBlocksWorld *wrld = getWorld();
+                SlidingCubesWorld *wrld = getWorld();
                 wrld->disconnectBlock(rb);
                 rb->setPosition(pos);
                 wrld->connectBlock(rb);
@@ -152,20 +152,20 @@ void RobotBlocksWorld::menuChoice(int n) {
     }
 }
 
-void RobotBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos,
+void SlidingCubesWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos,
                                 const Color &col, short orientation, bool master) {
     if (blockId > maxBlockId)
         maxBlockId = blockId;
     else if (blockId == 0)
         blockId = incrementBlockId();
 
-    RobotBlocksBlock *robotBlock = new RobotBlocksBlock(blockId, bcb);
+    SlidingCubesBlock *robotBlock = new SlidingCubesBlock(blockId, bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (robotBlock->blockId, (BaseSimulator::BuildingBlock*)robotBlock));
 
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), robotBlock));
 
-    RobotBlocksGlBlock *glBlock = new RobotBlocksGlBlock(blockId);
+    SlidingCubesGlBlock *glBlock = new SlidingCubesGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     robotBlock->setGlBlock(glBlock);
     robotBlock->setPosition(pos);
@@ -180,16 +180,16 @@ void RobotBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DP
     }
 }
 
-void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
-    RobotBlocksBlock *ptrNeighbor;
-    RobotBlocksBlock *ptrBlock = (RobotBlocksBlock*)lattice->getBlock(pos);
+void SlidingCubesWorld::linkBlock(const Cell3DPosition &pos) {
+    SlidingCubesBlock *ptrNeighbor;
+    SlidingCubesBlock *ptrBlock = (SlidingCubesBlock*)lattice->getBlock(pos);
     vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
     Cell3DPosition nPos;
 
     // Check neighbors for each interface
     for (int i = 0; i < 6; i++) {
         nPos = pos + nRelCells[i];
-        ptrNeighbor = (RobotBlocksBlock*)lattice->getBlock(nPos);
+        ptrNeighbor = (SlidingCubesBlock*)lattice->getBlock(nPos);
         if (ptrNeighbor) {
             (ptrBlock)->getInterface(SCLattice::Direction(i))->
                 connect(ptrNeighbor->getInterface(SCLattice::Direction(
@@ -206,7 +206,7 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
     }
 }
 
-void RobotBlocksWorld::glDraw() {
+void SlidingCubesWorld::glDraw() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
         gray[]={0.2f,0.2f,0.2f,1.0f};
 
@@ -215,7 +215,7 @@ void RobotBlocksWorld::glDraw() {
         glDisable(GL_TEXTURE_2D);
         lock();
         for (const auto& pair : mapGlBlocks) {
-            ((RobotBlocksGlBlock*)pair.second)->glDraw(objBlock);
+            ((SlidingCubesGlBlock*)pair.second)->glDraw(objBlock);
         }
         unlock();
         glPopMatrix();
@@ -303,19 +303,19 @@ void RobotBlocksWorld::glDraw() {
         lattice->glDraw();
 }
 
-void RobotBlocksWorld::glDrawId() {
+void SlidingCubesWorld::glDrawId() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
     glDisable(GL_TEXTURE_2D);
     lock();
     for (const auto& pair : mapGlBlocks) {
-        ((RobotBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
+        ((SlidingCubesGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
     }
     unlock();
     glPopMatrix();
 }
 
-void RobotBlocksWorld::glDrawIdByMaterial() {
+void SlidingCubesWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 
@@ -324,7 +324,7 @@ void RobotBlocksWorld::glDrawIdByMaterial() {
     lock();
     for (const auto& pair : mapGlBlocks) {
         n = pair.first * numPickingTextures;
-        ((RobotBlocksGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
+        ((SlidingCubesGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
     glPopMatrix();
@@ -332,7 +332,7 @@ void RobotBlocksWorld::glDrawIdByMaterial() {
     glDrawBackground();
 }
 
-void RobotBlocksWorld::glDrawSpecificBg() {
+void SlidingCubesWorld::glDrawSpecificBg() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
         gray[]={0.2f,0.2f,0.2f,1.0f};
 
@@ -415,14 +415,14 @@ void RobotBlocksWorld::glDrawSpecificBg() {
     objRepere->glDraw();
     glPopMatrix();
 }
-void RobotBlocksWorld::loadTextures(const string &str) {
+void SlidingCubesWorld::loadTextures(const string &str) {
     string path = str+"/texture_plane.tga";
     int lx,ly;
     idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
-void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
-    RobotBlocksGlBlock *glblc = blc->getGlBlock();
+void SlidingCubesWorld::updateGlData(SlidingCubesBlock*blc,int prev,int next) {
+    SlidingCubesGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
         lock();
         glblc->setPrevNext(prev,next);
@@ -430,7 +430,7 @@ void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
     }
 }
 
-void RobotBlocksWorld::setSelectedFace(int n) {
+void SlidingCubesWorld::setSelectedFace(int n) {
     numSelectedGlBlock=n/numPickingTextures;
     string name = objBlockForPicking->getObjMtlName(n%numPickingTextures);
         if (name=="face_top") numSelectedFace=SCLattice::Top;
@@ -441,8 +441,8 @@ void RobotBlocksWorld::setSelectedFace(int n) {
     else if (name=="face_back") numSelectedFace=SCLattice::Back;
 }
 
-void RobotBlocksWorld::exportConfiguration() {
-    RobotBlocksConfigExporter exporter = RobotBlocksConfigExporter(this);
+void SlidingCubesWorld::exportConfiguration() {
+    SlidingCubesConfigExporter exporter = SlidingCubesConfigExporter(this);
     exporter.exportConfiguration();
 }
 
@@ -473,7 +473,7 @@ void saveStlRect(ofstream &fout,const Vector3D &O,const Vector3D &u,const Vector
     fout << "          endfacet" << endl;
 }
 
-bool RobotBlocksWorld::exportSTLModel(string title) {
+bool SlidingCubesWorld::exportSTLModel(string title) {
     cout << "Writing STL output file..." << endl;
     Matrix mt;
     Vector3D pos,v1,v2,N;
@@ -481,12 +481,12 @@ bool RobotBlocksWorld::exportSTLModel(string title) {
 
 
     // select robotBlock in the border
-    vector <RobotBlocksBlock*> borderBlocks;
+    vector <SlidingCubesBlock*> borderBlocks;
     cout << "step #1: " << endl;
     for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
         if (pair.second->getState() != BuildingBlock::REMOVED
             and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
-            RobotBlocksBlock *rb = (RobotBlocksBlock *)pair.second;
+            SlidingCubesBlock *rb = (SlidingCubesBlock *)pair.second;
             if (rb->getNbNeighbors()<6) { // moins de 6 voisins
                 rb->setColor(RED);
                 borderBlocks.push_back(rb);

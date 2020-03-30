@@ -1,16 +1,16 @@
 #ifndef simpleColorCode_H_
 #define simpleColorCode_H_
-#include "robotBlocksBlockCode.h"
+#include "slidingCubesBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
 
-using namespace RobotBlocks;
+using namespace SlidingCubes;
 
-class SimpleColorCode : public RobotBlocksBlockCode {
+class SimpleColorCode : public SlidingCubesBlockCode {
 private:
     int distance;
 public :
-    SimpleColorCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {};
+    SimpleColorCode(SlidingCubesBlock *host):SlidingCubesBlockCode(host) {};
     ~SimpleColorCode() {};
 
     void startup() override;
@@ -19,7 +19,7 @@ public :
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-        return (new SimpleColorCode((RobotBlocksBlock*)host));
+        return (new SimpleColorCode((SlidingCubesBlock*)host));
     };
 /*****************************************************************************/
 };

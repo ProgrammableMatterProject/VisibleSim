@@ -8,10 +8,10 @@
 #ifndef ROBOT02BLOCKCODE_H_
 #define ROBOT02BLOCKCODE_H_
 
-#include "robotBlocksBlockCode.h"
-#include "robotBlocksSimulator.h"
+#include "slidingCubesBlockCode.h"
+#include "slidingCubesSimulator.h"
 
-#include "robotBlocksBlock.h"
+#include "slidingCubesBlock.h"
 
 #define COLOR_MESSAGE	1001
 #define SEARCH_MASTER_MESSAGE	1002
@@ -47,9 +47,9 @@ typedef std::shared_ptr<SearchMasterMessage> SearchMasterMessage_ptr;
 typedef std::shared_ptr<ReturnMasterMessage> ReturnMasterMessage_ptr;
 
 using namespace std;
-using namespace RobotBlocks;
+using namespace SlidingCubes;
 
-class Robot02BlockCode : public RobotBlocks::RobotBlocksBlockCode {
+class Robot02BlockCode : public SlidingCubes::SlidingCubesBlockCode {
     int masterId;
     Color masterColor;
     bool searchDone;
@@ -58,16 +58,16 @@ class Robot02BlockCode : public RobotBlocks::RobotBlocksBlockCode {
     bool colored;
 public:
     Scheduler *scheduler;
-    RobotBlocks::RobotBlocksBlock *block;
+    SlidingCubes::SlidingCubesBlock *block;
 
-    Robot02BlockCode (RobotBlocks::RobotBlocksBlock *host);
+    Robot02BlockCode (SlidingCubes::SlidingCubesBlock *host);
     ~Robot02BlockCode ();
 
     void startup() override;
     void processLocalEvent(EventPtr pev) override;
 
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-        return (new Robot02BlockCode((RobotBlocks::RobotBlocksBlock*)host));
+        return (new Robot02BlockCode((SlidingCubes::SlidingCubesBlock*)host));
     }
 
     void sendMasterMessageToAllNeighbors(P2PNetworkInterface *except);

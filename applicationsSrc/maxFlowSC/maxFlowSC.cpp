@@ -1,13 +1,13 @@
 #include <iostream>
-#include "robotBlocksSimulator.h"
-#include "robotBlocksBlockCode.h"
+#include "slidingCubesSimulator.h"
+#include "slidingCubesBlockCode.h"
 #include "maxFlowSCCode.h"
 
 using namespace std;
-using namespace RobotBlocks;
+using namespace SlidingCubes;
 
 int main(int argc, char **argv) {
-    cout << "\033[1;33m" << "Starting RobotBlocks simulation (main) ..."
+    cout << "\033[1;33m" << "Starting SlidingCubes simulation (main) ..."
          << "\033[0m" << endl;
 
     try

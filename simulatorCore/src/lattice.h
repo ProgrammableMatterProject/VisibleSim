@@ -812,7 +812,7 @@ public:
 
 /*! @brief 3D Simple Cubic Lattice
  *
- * Used by BlinkyBlocks, RobotBlocks and Okteen
+ * Used by BlinkyBlocks, SlidingCubes and Okteen
  *
  */
 class SCLattice : public Lattice3D {

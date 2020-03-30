@@ -18,12 +18,12 @@ APPDIR = ../../applicationsBin/$(current_dir)
 SRCS =  simpleColor.cpp  simpleColorCode.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/simpleColorRB
+OUT = $(APPDIR)/simpleColorSC
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
-MODULELIB = -lsimRobotBlocks
+MODULELIB = -lsimSlidingCubes
 # TESTS contains the commands that will be executed when `make test` is called
-TESTS = ../../utilities/blockCodeTest.sh simpleColorRB $(OUT)
+TESTS = ../../utilities/blockCodeTest.sh simpleColorSC $(OUT)
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -54,7 +54,7 @@ ifeq ($(GLOBAL_CCFLAGS),)
 CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 	ifeq ($(OS), Darwin)
 	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
-	endif 
+	endif
 else
 CCFLAGS = $(GLOBAL_CCFLAGS)
 endif

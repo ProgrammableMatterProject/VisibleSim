@@ -13,10 +13,10 @@
 #include <memory>
 
 
-Robot02BlockCode::Robot02BlockCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {
+Robot02BlockCode::Robot02BlockCode(SlidingCubesBlock *host):SlidingCubesBlockCode(host) {
     cout << "Robot02BlockCode constructor" << endl;
     scheduler = getScheduler();
-    block = (RobotBlocksBlock*)hostBlock;
+    block = (SlidingCubesBlock*)hostBlock;
 // initialize object deleted in destructor
 }
 

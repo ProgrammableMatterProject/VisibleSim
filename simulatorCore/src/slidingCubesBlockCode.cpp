@@ -1,30 +1,30 @@
 /*
- * robotBlocksBlockCode.cpp
+ * slidingCubesBlockCode.cpp
  *
  *  Created on: 12 janvier 2014
  *      Author: Benoît
  */
 
 #include <iostream>
-#include "robotBlocksBlockCode.h"
+#include "slidingCubesBlockCode.h"
 #include "trace.h"
 
 using namespace std;
 
-namespace RobotBlocks {
-RobotBlocksBlockCode::RobotBlocksBlockCode(RobotBlocksBlock *host):BlockCode(host) {
+namespace SlidingCubes {
+SlidingCubesBlockCode::SlidingCubesBlockCode(SlidingCubesBlock *host):BlockCode(host) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "RobotBlocksBlockCode constructor" << endl;
+    OUTPUT << "SlidingCubesBlockCode constructor" << endl;
 #endif
 }
 
-RobotBlocksBlockCode::~RobotBlocksBlockCode() {
+SlidingCubesBlockCode::~SlidingCubesBlockCode() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "RobotBlocksBlockCode destructor" << endl;
+    OUTPUT << "SlidingCubesBlockCode destructor" << endl;
 #endif
 }
 
-void RobotBlocksBlockCode::processLocalEvent(EventPtr pev) {
+void SlidingCubesBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
 

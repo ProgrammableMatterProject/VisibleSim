@@ -1,7 +1,7 @@
 #ifndef maxFlowSCCode_H_
 #define maxFlowSCCode_H_
-#include "robotBlocksSimulator.h"
-#include "robotBlocksBlockCode.h"
+#include "slidingCubesSimulator.h"
+#include "slidingCubesBlockCode.h"
 
 static const int BFS_MSG=1001;
 static const int CONFIRM_EDGE_MSG=1002;
@@ -10,13 +10,13 @@ static const int AVAILABLE_MSG=1004;
 static const int CONFIRM_PATH_MSG=1005;
 static const int CONFIRM_STREAMLINE_MSG=1005;
 
-using namespace RobotBlocks;
+using namespace SlidingCubes;
 
 enum PathState {NONE, BFS, ConfPath, Streamline};
 
-class MaxFlowSCCode : public RobotBlocksBlockCode {
+class MaxFlowSCCode : public SlidingCubesBlockCode {
 private:
-    RobotBlocksBlock *module;
+    SlidingCubesBlock *module;
     PathState mainPathState;	//! state of the main path: {NONE, BFS, ConfPath, Streamline}
     bID mainPathIn;				//! ID of parent meta-module on the main tree
     vector<bID>mainPathOut;     //! ID’s of child meta-modules on the main tree
@@ -34,7 +34,7 @@ private:
     bool isSink;
 
 public :
-    MaxFlowSCCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) { module=host; };
+    MaxFlowSCCode(SlidingCubesBlock *host):SlidingCubesBlockCode(host) { module=host; };
     ~MaxFlowSCCode() {};
 
     void startup() override;
@@ -49,7 +49,7 @@ public :
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-        return(new MaxFlowSCCode((RobotBlocksBlock*)host));
+        return(new MaxFlowSCCode((SlidingCubesBlock*)host));
     };
 /*****************************************************************************/
 };

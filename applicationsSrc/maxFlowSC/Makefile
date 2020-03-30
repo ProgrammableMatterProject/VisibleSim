@@ -21,7 +21,7 @@ SRCS = maxFlowSC.cpp  maxFlowSCCode.cpp
 OUT = $(APPDIR)/maxFlowSC
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
-MODULELIB = -lsimRobotBlocks
+MODULELIB = -lsimSlidingCubes
 # TESTS contains the commands that will be executed when `make test` is called
 TESTS = ../../utilities/blockCodeTest.sh maxFlowSC $(OUT)
 #

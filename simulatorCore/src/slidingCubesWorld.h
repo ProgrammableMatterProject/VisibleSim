@@ -1,53 +1,53 @@
 /*
- * robotBlocksWorld.h
+ * slidingCubesWorld.h
  *
  *  Created on: 12 janvier 2014
  *      Author: Benoît
  */
 
-#ifndef ROBOTBLOCKSWORLD_H_
-#define ROBOTBLOCKSWORLD_H_
+#ifndef SLIDINGCUBESWORLD_H_
+#define SLIDINGCUBESWORLD_H_
 
 #include <vector>
 
 #include "openglViewer.h"
 #include "world.h"
 #include "vector3D.h"
-#include "robotBlocksBlock.h"
+#include "slidingCubesBlock.h"
 #include "objLoader.h"
 #include "scheduler.h"
 #include "trace.h"
-#include "robotBlocksMotionRules.h"
+#include "slidingCubesMotionRules.h"
 
-namespace RobotBlocks {
+namespace SlidingCubes {
 
 static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
 
-class RobotBlocksWorld : public BaseSimulator::World {
+class SlidingCubesWorld : public BaseSimulator::World {
     inline static const int numPickingTextures = 6; /* The number of picking textures defined
                                                        for this type of catom,
                                                        used to deduce selected Block / face */
 protected:
     GLuint idTextureWall = 0;
-		RobotBlocksMotionRules *motionRules;
-    virtual ~RobotBlocksWorld();
+        SlidingCubesMotionRules *motionRules;
+    virtual ~SlidingCubesWorld();
 public:
-    RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+    SlidingCubesWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                      int argc, char *argv[]);
 
     static void deleteWorld();
-    static RobotBlocksWorld* getWorld() {
+    static SlidingCubesWorld* getWorld() {
         assert(world != NULL);
-        return((RobotBlocksWorld*)world);
+        return((SlidingCubesWorld*)world);
     }
 
     void printInfo() {
-        OUTPUT << "I'm a RobotBlocksWorld" << endl;
+        OUTPUT << "I'm a SlidingCubesWorld" << endl;
     }
 
-    RobotBlocksMotionRules *getMotionRules() { return motionRules; }
-    virtual RobotBlocksBlock* getBlockById(int bId) override {
-        return((RobotBlocksBlock*)World::getBlockById(bId));
+    SlidingCubesMotionRules *getMotionRules() { return motionRules; }
+    virtual SlidingCubesBlock* getBlockById(int bId) override {
+        return((SlidingCubesBlock*)World::getBlockById(bId));
     }
 
     /**
@@ -85,7 +85,7 @@ public:
     /**
      * @copydoc World::updateGlData
      */
-    virtual void updateGlData(RobotBlocksBlock*blc,int prev,int next);
+    virtual void updateGlData(SlidingCubesBlock*blc,int prev,int next);
     /**
      * @copydoc World::setSelectedFace
      */
@@ -94,25 +94,25 @@ public:
      * @copydoc World::exportConfiguration
      */
     virtual void exportConfiguration() override;
-		
-		virtual void createPopupMenu(int ix, int iy) override;
-		virtual void menuChoice(int n) override;
-		
-		/**
-		 * \brief Export a 3D model in STL format to print the whole configuration
-		 * \param title : title of the STL file
-		 * \result Returns true if the faces was well written
-		 */
-		virtual bool exportSTLModel(string title) override;
-		
+
+        virtual void createPopupMenu(int ix, int iy) override;
+        virtual void menuChoice(int n) override;
+
+        /**
+         * \brief Export a 3D model in STL format to print the whole configuration
+         * \param title : title of the STL file
+         * \result Returns true if the faces was well written
+         */
+        virtual bool exportSTLModel(string title) override;
+
 };
 
 inline void deleteWorld() {
-    RobotBlocksWorld::deleteWorld();
+    SlidingCubesWorld::deleteWorld();
 }
 
-inline RobotBlocksWorld* getWorld() { return(RobotBlocksWorld::getWorld()); }
+inline SlidingCubesWorld* getWorld() { return(SlidingCubesWorld::getWorld()); }
 
-} // RobotBlocks namespace
+} // SlidingCube namespace
 
-#endif /* ROBOTBLOCKSWORLD_H_ */
+#endif /* SLIDINGCUBESWORLD_H_ */

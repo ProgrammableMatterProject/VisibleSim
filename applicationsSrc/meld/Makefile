@@ -21,7 +21,7 @@ SRCS =  meld.cpp  meldBlockCode.cpp
 OUT = $(APPDIR)/meld
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
-MODULELIB = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks
+MODULELIB = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks
 # TESTS contains the commands that will be executed when `make test` is called
 TESTS = ../../utilities/blockCodeTest.sh meldbb $(OUT) -c configs/configBB.xml -p outprogs/rainbow.bb -k BB ;\
 	../../utilities/blockCodeTest.sh meldsb $(OUT) -c configs/configSB.xml -p outprogs/rainbowSB.bb -k SB ;\

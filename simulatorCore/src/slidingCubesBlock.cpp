@@ -1,5 +1,5 @@
 /*
- * robotBlocksBlock.cpp
+ * slidingCubesBlock.cpp
  *
  *  Created on: 12 janvier 2014
  *      Author: Benoît
@@ -7,46 +7,46 @@
 
 #include <iostream>
 
-#include "robotBlocksBlock.h"
-#include "robotBlocksWorld.h"
-#include "robotBlocksSimulator.h"
+#include "slidingCubesBlock.h"
+#include "slidingCubesWorld.h"
+#include "slidingCubesSimulator.h"
 #include "lattice.h"
 #include "trace.h"
 
 using namespace std;
 
-namespace RobotBlocks {
+namespace SlidingCubes {
 
-RobotBlocksBlock::RobotBlocksBlock(int bId, BlockCodeBuilder bcb)
+SlidingCubesBlock::SlidingCubesBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "RobotBlocksBlock constructor" << endl;
+    OUTPUT << "SlidingCubesBlock constructor" << endl;
 #endif
 }
 
-RobotBlocksBlock::~RobotBlocksBlock() {
-    OUTPUT << "RobotBlocksBlock destructor " << blockId << endl;
+SlidingCubesBlock::~SlidingCubesBlock() {
+    OUTPUT << "SlidingCubesBlock destructor " << blockId << endl;
 }
 
-void RobotBlocksBlock::setPrevNext(int prev,int next) {
+void SlidingCubesBlock::setPrevNext(int prev,int next) {
     getWorld()->updateGlData(this,prev,next);
 }
 
-void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next) {
+void SlidingCubesBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next) {
     int prevId=0,nextId=0;
     if (prev) {
-        RobotBlocksBlock*rb = (RobotBlocksBlock*)(prev->hostBlock);
+        SlidingCubesBlock*rb = (SlidingCubesBlock*)(prev->hostBlock);
         prevId = rb->blockId;
     }
     if (next) {
-        RobotBlocksBlock*rb = (RobotBlocksBlock*)(next->hostBlock);
+        SlidingCubesBlock*rb = (SlidingCubesBlock*)(next->hostBlock);
         nextId = rb->blockId;
     }
     //cout << (prev?prev->hostBlock->blockId:-1) << "," << (next?next->hostBlock->blockId:-1) << endl;
     getWorld()->updateGlData(this,prevId,nextId);
 }
 
-void RobotBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+void SlidingCubesBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
            << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
@@ -56,7 +56,7 @@ void RobotBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* targe
                              getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
-void RobotBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
+void SlidingCubesBlock::removeNeighbor(P2PNetworkInterface *ni) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
            << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
@@ -66,7 +66,7 @@ void RobotBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
                                 getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
 
-int RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) const {
+int SlidingCubesBlock::getDirection(P2PNetworkInterface *given_interface) const {
     if( !given_interface) {
         return SCLattice::Direction(0);
     }
@@ -76,7 +76,7 @@ int RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) const {
     return SCLattice::Direction(0);
 }
 
-P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) const {
+P2PNetworkInterface *SlidingCubesBlock::getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) const {
     if (pos[0]==-1) return P2PNetworkInterfaces[SCLattice::Left];
     else if (pos[0]==1) return P2PNetworkInterfaces[SCLattice::Right];
     else if (pos[1]==-1) return P2PNetworkInterfaces[SCLattice::Front];
@@ -87,7 +87,7 @@ P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const Cell
     return NULL;
 }
 
-std::ostream& operator<<(std::ostream &stream, RobotBlocksBlock const& bb) {
+std::ostream& operator<<(std::ostream &stream, SlidingCubesBlock const& bb) {
     stream << bb.blockId << "\tcolor: " << bb.color;
     return stream;
 }

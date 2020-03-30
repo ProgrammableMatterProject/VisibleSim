@@ -1,17 +1,17 @@
-#ifndef distanceRBCode_H_
-#define distanceRBCode_H_
-#include "robotBlocksBlockCode.h"
+#ifndef distanceSCCode_H_
+#define distanceSCCode_H_
+#include "slidingCubesBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
 
-using namespace RobotBlocks;
+using namespace SlidingCubes;
 
-class DistanceRBCode : public RobotBlocksBlockCode {
+class DistanceSCCode : public SlidingCubesBlockCode {
 private:
     uint16_t distance;
 public:
-    DistanceRBCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {};
-    ~DistanceRBCode() {};
+    DistanceSCCode(SlidingCubesBlock *host):SlidingCubesBlockCode(host) {};
+    ~DistanceSCCode() {};
 
     void startup() override;
     void myBROADCAST_MSGFunc(const MessageOf<uint16_t>*msg,P2PNetworkInterface *sender);
@@ -19,11 +19,11 @@ public:
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-        return (new DistanceRBCode((RobotBlocksBlock*)host));
+        return (new DistanceSCCode((SlidingCubesBlock*)host));
     };
 /*****************************************************************************/
 };
 
 void _myBROADCAST_MSGFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 
-#endif /* distanceRBCode_H_ */
+#endif /* distanceSCCode_H_ */
