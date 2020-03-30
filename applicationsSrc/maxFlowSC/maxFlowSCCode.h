@@ -1,5 +1,5 @@
-#ifndef locomotionCode_H_
-#define locomotionCode_H_
+#ifndef maxFlowSCCode_H_
+#define maxFlowSCCode_H_
 #include "robotBlocksSimulator.h"
 #include "robotBlocksBlockCode.h"
 
@@ -14,7 +14,7 @@ using namespace RobotBlocks;
 
 enum PathState {NONE, BFS, ConfPath, Streamline};
 
-class LocomotionCode : public RobotBlocksBlockCode {
+class MaxFlowSCCode : public RobotBlocksBlockCode {
 private:
     RobotBlocksBlock *module;
     PathState mainPathState;	//! state of the main path: {NONE, BFS, ConfPath, Streamline}
@@ -34,8 +34,8 @@ private:
     bool isSink;
 
 public :
-    LocomotionCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) { module=host; };
-    ~LocomotionCode() {};
+    MaxFlowSCCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) { module=host; };
+    ~MaxFlowSCCode() {};
 
     void startup() override;
     void ProcBFS(const MessageOf<bID>*msg,P2PNetworkInterface *sender);
@@ -49,7 +49,7 @@ public :
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-        return(new LocomotionCode((RobotBlocksBlock*)host));
+        return(new MaxFlowSCCode((RobotBlocksBlock*)host));
     };
 /*****************************************************************************/
 };
@@ -67,4 +67,4 @@ template <typename T> bool operator==(T value,const std::vector<T> &v);
 template <typename T> bool operator!=(T value,const std::vector<T> &v);
 
 void vector2string(const std::vector<bID>&v,string &s);
-#endif /* locomotionCode_H_ */
+#endif /* maxFlowSCCode_H_ */

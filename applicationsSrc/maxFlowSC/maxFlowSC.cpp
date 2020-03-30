@@ -1,7 +1,7 @@
 #include <iostream>
 #include "robotBlocksSimulator.h"
 #include "robotBlocksBlockCode.h"
-#include "locomotionCode.h"
+#include "maxFlowSCCode.h"
 
 using namespace std;
 using namespace RobotBlocks;
@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
     try
     {
-        createSimulator(argc, argv, LocomotionCode::buildNewBlockCode);
+        createSimulator(argc, argv, MaxFlowSCCode::buildNewBlockCode);
         getSimulator()->printInfo();
         BaseSimulator::getWorld()->printInfo();
         deleteSimulator();

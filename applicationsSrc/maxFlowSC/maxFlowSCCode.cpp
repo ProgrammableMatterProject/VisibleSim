@@ -1,10 +1,10 @@
-#include "locomotionCode.h"
+#include "maxFlowSCCode.h"
 
 const int messageDelay=50;
 const int messageDelayError=5;
 const int messageDelayCons=1;
 
-void LocomotionCode::startup() {
+void MaxFlowSCCode::startup() {
     addMessageEventFunc(BFS_MSG,_BFSFunc);
     addMessageEventFunc(CONFIRM_EDGE_MSG,_ConfirmEdgeFunc);
     addMessageEventFunc(CUT_OFF_MSG,_CutOffFunc);
@@ -46,7 +46,7 @@ void LocomotionCode::startup() {
 }
 
 /** Processing BFS messages **/
-void LocomotionCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sender) {
+void MaxFlowSCCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sender) {
     vector<bID> pathsOld;
     bID msgData = *(msg->getData());
     bID msgFrom = sender->getConnectedBlockBId();
@@ -136,7 +136,7 @@ void LocomotionCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sende
 };
 
 /** Processing ConfirmEdge messages **/
-void LocomotionCode::ProcConfirmEdge(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcConfirmEdge(P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
 
     console << "rec. ConfirmEdge\n";
@@ -157,7 +157,7 @@ void LocomotionCode::ProcConfirmEdge(P2PNetworkInterface* sender) {
 }
 
 /** Processing CutOff messages **/
-void LocomotionCode::ProcCutOff(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcCutOff(P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "rec. CutOff from " << msgFrom << "\n";
 
@@ -210,7 +210,7 @@ void LocomotionCode::ProcCutOff(P2PNetworkInterface* sender) {
 }
 
 /** Processing Available messages **/
-void LocomotionCode::ProcAvailable(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcAvailable(P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "rec. Available from " << msgFrom << "\n";
 
@@ -250,7 +250,7 @@ void LocomotionCode::ProcAvailable(P2PNetworkInterface* sender) {
 }
 
 /** Processing the "ConfirmPath" message type **/
-void LocomotionCode::ProcConfirmPath(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcConfirmPath(P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "rec. ConfirmPath from " << msgFrom << "\n";
 
@@ -296,7 +296,7 @@ void LocomotionCode::ProcConfirmPath(P2PNetworkInterface* sender) {
 }
 
 /** Processing the "ConfirmStreamline" message type **/
-void LocomotionCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "rec. ConfirmStreamline from " << msgFrom << "\n";
     if (mainPathState==ConfPath && msgFrom==mainPathIn) {
@@ -380,33 +380,33 @@ void LocomotionCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
 /*************************************************************************************************************/
 /*************************************************************************************************************/
 void _BFSFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    LocomotionCode *cb = (LocomotionCode*)codebloc;
+    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
     MessageOf<bID>*msgType = (MessageOf<bID>*)msg.get();
     cb->ProcBFS(msgType,sender);
 }
 
 void _ConfirmEdgeFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    LocomotionCode *cb = (LocomotionCode*)codebloc;
+    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
     cb->ProcConfirmEdge(sender);
 }
 
 void _CutOffFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    LocomotionCode *cb = (LocomotionCode*)codebloc;
+    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
     cb->ProcCutOff(sender);
 }
 
 void _AvailableFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    LocomotionCode *cb = (LocomotionCode*)codebloc;
+    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
     cb->ProcAvailable(sender);
 }
 
 void _ConfirmPathFunc(BlockCode*codebloc, MessagePtr msg, P2PNetworkInterface* sender) {
-    LocomotionCode *cb = (LocomotionCode*)codebloc;
+    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
     cb->ProcConfirmPath(sender);
 }
 
 void _ConfirmStreamlineFunc(BlockCode*codebloc, MessagePtr msg, P2PNetworkInterface* sender) {
-    LocomotionCode *cb = (LocomotionCode*)codebloc;
+    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
     cb->ProcConfirmStreamline(sender);
 }
 
@@ -436,7 +436,7 @@ bool isIn(const std::vector<T> &v,T value) {
     return false;
 }
 
-void LocomotionCode::sendMessageToPath(const string& str, int msgType, vector<bID>& path,bID exception) {
+void MaxFlowSCCode::sendMessageToPath(const string& str, int msgType, vector<bID>& path,bID exception) {
     OUTPUT << "sendMessageToPath({";
     vector<bID>::iterator it = path.begin();
     while (it!=path.end()) {

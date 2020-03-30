@@ -15,15 +15,15 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = locomotion.cpp  locomotionCode.cpp
+SRCS = maxFlowSC.cpp  maxFlowSCCode.cpp
 
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/locomotion
+OUT = $(APPDIR)/maxFlowSC
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimRobotBlocks
 # TESTS contains the commands that will be executed when `make test` is called
-TESTS = ../../utilities/blockCodeTest.sh locomotion $(OUT)
+TESTS = ../../utilities/blockCodeTest.sh maxFlowSC $(OUT)
 #
 # End of Makefile section requiring input by user
 #####################################################################
