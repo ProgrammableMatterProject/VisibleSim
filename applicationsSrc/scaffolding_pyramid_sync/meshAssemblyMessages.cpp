@@ -14,7 +14,7 @@
 #include "utils.h"
 
 #include "teleportationEvents.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 
 #include "meshRuleMatcher.hpp"
 #include "meshAssemblyBlockCode.hpp"

@@ -4,7 +4,7 @@
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
 
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "catoms3DBlock.h"
 
 #include "polymer.h"

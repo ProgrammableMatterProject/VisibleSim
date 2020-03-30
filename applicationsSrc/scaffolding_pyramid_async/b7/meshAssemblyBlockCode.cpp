@@ -18,7 +18,7 @@
 #include "tDefs.h"
 
 #include "teleportationEvents.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "catoms3DMotionEngine.h"
 
 #include "meshAssemblyBlockCode.hpp"

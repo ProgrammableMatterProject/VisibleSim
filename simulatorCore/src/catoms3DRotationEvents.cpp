@@ -7,7 +7,7 @@
  *      Author: Benoit Piranda, Pierre Thalamy
  */
 
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "catoms3DWorld.h"
 #include "catoms3DMotionEngine.h"
 
@@ -358,6 +358,7 @@ Catoms3DRotation::Catoms3DRotation(const Catoms3DBlock *mobile, const Catoms3DBl
                          const Vector3D &ax1, double ang1,
                          const Vector3D &ax2, double ang2,
                          short from, short to) : angle1(ang1),angle2(ang2) {
+    this->mobile = mobile;
     catomId = mobile->blockId;
     pivot = fixe;
 

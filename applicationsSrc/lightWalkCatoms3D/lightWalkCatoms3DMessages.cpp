@@ -12,7 +12,7 @@
 #include <sstream>
 
 #include "utils.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 
 #include "lightWalkCatoms3DBlockCode.hpp"
 #include "lightWalkCatoms3DMessages.hpp"

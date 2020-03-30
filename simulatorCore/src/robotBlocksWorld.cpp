@@ -300,7 +300,7 @@ void RobotBlocksWorld::glDraw() {
 
         BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
         if (bb) bb->blockCode->onGlDraw();
-                lattice->glDraw();
+        lattice->glDraw();
 }
 
 void RobotBlocksWorld::glDrawId() {
