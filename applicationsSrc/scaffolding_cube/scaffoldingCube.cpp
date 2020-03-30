@@ -22,7 +22,9 @@ int main(int argc, char **argv) {
 
     try
     {
-        createSimulator(argc, argv, MeshAssemblyBlockCode::buildNewBlockCode);
+        createSimulator(argc, argv, MeshAssemblyBlockCode::buildNewBlockCode,
+                        // useSkewedFCCLattice
+                        true);
         getSimulator()->printInfo();
         BaseSimulator::getWorld()->printInfo();
         deleteSimulator();

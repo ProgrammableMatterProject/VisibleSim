@@ -61,7 +61,7 @@ RobotBlocksRotationMotionRule::RobotBlocksRotationMotionRule(NeighborDirection _
     mustBeFree.push_back(-NeighborDirectionVector[pivot]);
     mustBeFree.push_back(dir-NeighborDirectionVector[pivot]);
 
-    cout << "pivot:" << NeighborDirectionVector[pivot] << "; axe:" << NeighborDirectionVector[axe] << "; dir=" << dir << endl;
+    // cout << "pivot:" << NeighborDirectionVector[pivot] << "; axe:" << NeighborDirectionVector[axe] << "; dir=" << dir << endl;
 };
 
 RobotBlocksMotionRules::RobotBlocksMotionRules() {

@@ -355,7 +355,7 @@ bID Simulator::countNumberOfModules() {
             }
         }
     }
-    cout << "count=" << moduleCount << endl;
+    // cout << "count=" << moduleCount << endl;
 
     return moduleCount;
 }

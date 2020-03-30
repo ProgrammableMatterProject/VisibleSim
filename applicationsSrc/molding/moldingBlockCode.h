@@ -1,5 +1,5 @@
-#ifndef targetColorationBlockCode_H_
-#define targetColorationBlockCode_H_
+#ifndef moldingBlockCode_H_
+#define moldingBlockCode_H_
 
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
@@ -9,7 +9,7 @@
 
 #include "polymer.h"
 
-class targetColorationBlockCode : public Catoms3D::Catoms3DBlockCode {
+class moldingBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
     // custom attribute
     Polymer *polymer = NULL;
@@ -17,8 +17,8 @@ public:
 
     Catoms3D::Catoms3DBlock *catom;
 
-    targetColorationBlockCode(Catoms3D::Catoms3DBlock *host);
-    ~targetColorationBlockCode();
+    moldingBlockCode(Catoms3D::Catoms3DBlock *host);
+    ~moldingBlockCode();
 
     /**
      * @brief This function is called on startup of the blockCode,
@@ -29,7 +29,7 @@ public:
     /** @brief Returns a new instance of this BlocKCode. Needed to associate code to module.
      *  @return pointer to a newly allocated instance of this distributed program, for host assignment */
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-        return (new targetColorationBlockCode((Catoms3DBlock*)host));
+        return (new moldingBlockCode((Catoms3DBlock*)host));
     };
 
     /**
@@ -49,4 +49,4 @@ public:
     void simulatePolymer();
 };
 
-#endif /* targetColorationBlockCode_H_ */
+#endif /* moldingBlockCode_H_ */
