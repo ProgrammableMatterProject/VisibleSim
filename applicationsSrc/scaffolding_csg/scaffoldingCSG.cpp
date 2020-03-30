@@ -23,7 +23,9 @@ int main(int argc, char **argv) {
 
     try
     {
-        createSimulator(argc, argv, ScaffoldingBlockCode::buildNewBlockCode);
+        createSimulator(argc, argv, ScaffoldingBlockCode::buildNewBlockCode,
+                        // useSkewedFCCLattice
+                        true);
         getSimulator()->printInfo();
         BaseSimulator::getWorld()->printInfo();
         deleteSimulator();

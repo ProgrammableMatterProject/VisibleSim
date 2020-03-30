@@ -21,7 +21,7 @@
 #include "configExporter.h"
 
 #include "teleportationEvents.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "catoms3DMotionEngine.h"
 #include "color.h"
 
@@ -232,12 +232,12 @@ void ScaffoldingBlockCode::onBlockSelected() {
 //             static_cast<ScafComponent>(ScaffoldingRuleMatcher::getComponentForPosition(targetPosition - coordinatorPos))) << "]";
 //     cout << endl;
 
-    Cell3DPosition nextHop;
-    cout << "bits: " << getMeshLocalNeighborhoodState() << endl;
-    cout << "targetPosition: " << targetPosition << endl;
-    matchLocalRules(getMeshLocalNeighborhoodState(), catom->position,
-                    targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
-    cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
+    // Cell3DPosition nextHop;
+    // cout << "bits: " << getMeshLocalNeighborhoodState() << endl;
+    // cout << "targetPosition: " << targetPosition << endl;
+    // matchLocalRules(getMeshLocalNeighborhoodState(), catom->position,
+    //                 targetPosition, coordinatorPos, step, lastVisitedEPL, nextHop, true);
+    // cout << "nextHop: " << getTileRelativePosition() << " -> " << nextHop << endl;
 //     cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
 //     cout << "isInCSGMeshOrSandbox: "<<ruleMatcher->isInCSGMeshOrSandbox(norm(catom->position)) <<endl;
 
@@ -947,9 +947,9 @@ void ScaffoldingBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
 
         // OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
         // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
-        scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
-                                                     catom, pivot, pos,
-                                                     RotationLinkType::HexaFace, false));
+        scheduler->schedule(new Catoms3DRotationStartEvent(getScheduler()->now(),
+                                                           catom, pivot, pos,
+                                                           RotationLinkType::HexaFace, false));
 #ifdef INTERACTIVE_MODE
         awaitKeyPressed();
 #endif

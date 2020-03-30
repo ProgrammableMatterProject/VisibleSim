@@ -1,5 +1,7 @@
 #include "bitmapUtils.h"
 
+string BitmapUtils::bitmap = "";
+
 void BitmapUtils::readFile(string path_to_file) {
     fstream bitmapFile(path_to_file);
     unsigned char c;

@@ -379,7 +379,7 @@ Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const
     return res;
 }
 
-Vector3D HHLattice::gridToWorldPosition(const Cell3DPosition &pos) {
+Vector3D HHLattice::gridToWorldPosition(const Cell3DPosition &pos) const {
     return gridToUnscaledWorldPosition(pos).dot(Vector3D(gridScale[0], gridScale[1], 1));
 }
 
@@ -417,11 +417,11 @@ Cell3DPosition HHLattice::getCellInDirection(const Cell3DPosition &pRef, int dir
 
 const string HHLattice::directionName[] = {"East","NorthEast","NorthWest","West","SouthWest","SouthEst"};
 
-    short HHLattice::getOppositeDirection(short d) {
+    short HHLattice::getOppositeDirection(short d) const {
         return (d+3)%6;
     }
 
-    string HHLattice::getDirectionString(short d) {
+    string HHLattice::getDirectionString(short d) const {
         return directionName[d];
     }
 
@@ -605,49 +605,6 @@ void FCCLattice::glDraw() const {
 static const float pts[24][3]={{2.928,0,4.996},{0,2.928,4.996},{-2.928,0,4.996},{0,-2.928,4.996},{4.996,2.069,2.069},{2.069,4.996,2.069},{-2.069,4.996,2.069},{-4.996,2.069,2.069},{-4.996,-2.069,2.069},{-2.069,-4.996,2.069},{2.069,-4.996,2.069},{4.996,-2.069,2.069},{4.996,2.069,-2.069},{2.069,4.996,-2.069},{-2.069,4.996,-2.069},{-4.996,2.069,-2.069},{-4.996,-2.069,-2.069},{-2.069,-4.996,-2.069},{2.069,-4.996,-2.069},{4.996,-2.069,-2.069},{2.928,0,-4.996},{0,2.928,-4.996},{-2.928,0,-4.996},{0,-2.928,-4.996}};
 static const uint8_t quads[72]={0,1,2,3,0,4,5,1,1,6,7,2,2,8,9,3,3,10,11,0,4,12,13,5,5,13,14,6,6,14,15,7,7,15,16,8,8,16,17,9,9,17,18,10,10,18,19,11,11,19,12,4,12,20,21,13,14,21,22,15,16,22,23,17,18,23,20,19,23,22,21,20};
 static const uint8_t tris[24]={1,5,6,2,7,8,3,9,10,0,11,4,13,21,14,15,22,16,17,23,18,19,23,12};
-static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-        gray[]={0.2f,0.2f,0.2f,1.0f};
-
-    if (tabDistances) {
-        int ix,iy,iz;
-        Cell3DPosition gp;
-        Vector3D v;
-        unsigned short *ptrDistance = tabDistances;
-        bool *ptr = tabLockedCells;
-
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-
-        for (iz=0; iz<gridSize[2]; iz++) {
-            for (iy=0; iy<gridSize[1]; iy++) {
-                for (ix=0; ix<gridSize[0]; ix++) {
-                    if (*ptr) {
-                        glPushMatrix();
-                        gp.set(ix,iy,iz);
-                        v = gridToWorldPosition(gp);
-                        glTranslatef(v[0],v[1],v[2]);
-                        glutSolidSphere(0.065*gridScale[0],6,6);
-                        glPopMatrix();
-                    }
-                    if (*ptrDistance!=USHRT_MAX) {
-                        glPushMatrix();
-                        gp.set(ix,iy,iz);
-                        v = gridToWorldPosition(gp);
-                        glTranslatef(v[0],v[1],v[2]);
-
-                        glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-                        glutSolidCube(0.2*gridScale[0]);
-                        glPopMatrix();
-
-                    }
-                    ptr++;
-                    ptrDistance++;
-                }
-            }
-        }
-    }
 
     if (!mapHighlightedCells.empty()) {
         Vector3D v;
@@ -808,10 +765,6 @@ Cell3DPosition SkewFCCLattice::getGridUpperBounds(int z) const {
     return gridSize - Cell3DPosition(z/2, z/2, 0) - Cell3DPosition(1,1,1);
 }
 
-Cell3DPosition SkewFCCLattice::getGridUpperBounds() const {
-    return gridSize - Cell3DPosition(1, 1, 1);
-}
-
 vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
     return nCells;
 }
@@ -886,9 +839,9 @@ Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, in
 }
 
 /********************* SCLattice *********************/
-SCLattice::SCLattice() : Lattice3D() { tabDistances=nullptr; }
-SCLattice::SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) { tabDistances=nullptr; }
-SCLattice::~SCLattice() { delete [] tabDistances; }
+SCLattice::SCLattice() : Lattice3D() { }
+SCLattice::SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
+SCLattice::~SCLattice() { }
 
 vector<Cell3DPosition> SCLattice::getRelativeConnectivity(const Cell3DPosition &p) const {
     return nCells;
@@ -907,8 +860,6 @@ Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) const {
                           pos[1] / gridScale[1],
                           pos[2] / gridScale[2]);
 }
-
-const string SCLattice::directionName[] = {"Bottom", "Back", "Right","Front", "Left", "Top"};
 
 short SCLattice::getOppositeDirection(short d) const {
     switch (Direction(d)) {
@@ -931,40 +882,4 @@ string SCLattice::getDirectionString(short d) const {
 
 Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
     return pRef + nCells[direction];
-}
-
-void SCLattice::glDraw() {
-    static GLfloat white[]={0.2f,0.2f,0.2f,1.0f},
-    gray[]={0.2f,0.2f,0.2f,1.0f};
-
-    if (tabDistances) {
-        int ix,iy,iz;
-        Cell3DPosition gp;
-        Vector3D v;
-        unsigned short *ptrDistance = tabDistances;
-
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-
-        for (iz=0; iz<gridSize[2]; iz++) {
-            for (iy=0; iy<gridSize[1]; iy++) {
-                for (ix=0; ix<gridSize[0]; ix++) {
-                    if (*ptrDistance!=USHRT_MAX) {
-                        glPushMatrix();
-                        gp.set(ix,iy,iz);
-                        v = gridToWorldPosition(gp);
-                        glTranslatef(v[0]+0.5*gridScale[0],v[1]+0.5*gridScale[1],v[2]+0.5*gridScale[2]);
-
-                        glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-                        glutSolidCube(0.2*gridScale[0]);
-                        glPopMatrix();
-
-                    }
-                    ptrDistance++;
-                }
-            }
-        }
-    }
 }

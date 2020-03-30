@@ -386,10 +386,10 @@ public:
 class SLattice : public Lattice2D {
     vector<Cell3DPosition> nCells{
         Cell3DPosition(0,1,0),  // NORTH
-            Cell3DPosition(1,0,0), // EAST
-            Cell3DPosition(0,-1,0), // SOUTH
-            Cell3DPosition(-1,0,0)  // WEST
-            }; //!< Vector containing relative position of neighboring cells
+        Cell3DPosition(1,0,0), // EAST
+        Cell3DPosition(0,-1,0), // SOUTH
+        Cell3DPosition(-1,0,0)  // WEST
+    }; //!< Vector containing relative position of neighboring cells
 
     static const string directionName[];
 public:
@@ -398,7 +398,7 @@ public:
     virtual short getOppositeDirection(short d) const override;
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(short d) const override;
-    Cell3DPosition getNeighborRelativePos(Direction d) const override { return nCells[d]; };
+    Cell3DPosition getNeighborRelativePos(Direction d) const { return nCells[d]; };
 
     /**
      * @brief SLattice constructor.
@@ -451,20 +451,20 @@ class HLattice : public Lattice2D {
     // This is in the same order as pickingTextures / NeighborDirections
     vector<Cell3DPosition> nCellsOdd{
         Cell3DPosition(1,0,0),  // RIGHT
-            Cell3DPosition(1,0,1), // TOP-RIGHT
-            Cell3DPosition(0,0,1), // TOP-LEFT
-            Cell3DPosition(-1,0,0), // LEFT
-            Cell3DPosition(0,0,-1), // BOTTOM-LEFT
-            Cell3DPosition(1,0,-1)  // BOTTOM-RIGHT
-            }; //!< Vector containing relative position of neighboring cells for even(z) cells
+        Cell3DPosition(1,0,1), // TOP-RIGHT
+        Cell3DPosition(0,0,1), // TOP-LEFT
+        Cell3DPosition(-1,0,0), // LEFT
+        Cell3DPosition(0,0,-1), // BOTTOM-LEFT
+        Cell3DPosition(1,0,-1)  // BOTTOM-RIGHT
+    }; //!< Vector containing relative position of neighboring cells for even(z) cells
     vector<Cell3DPosition> nCellsEven{
         Cell3DPosition(1,0,0),  // RIGHT
-            Cell3DPosition(0,0,1), // TOP-RIGHT
-            Cell3DPosition(-1,0,1), // TOP-LEFT
-            Cell3DPosition(-1,0,0), // LEFT
-            Cell3DPosition(-1,0,-1), // BOTTOM-LEFT
-            Cell3DPosition(0,0,-1)   // BOTTOM-RIGHT
-            }; //!< Vector containing relative position of neighboring cells for odd(z) cells
+        Cell3DPosition(0,0,1), // TOP-RIGHT
+        Cell3DPosition(-1,0,1), // TOP-LEFT
+        Cell3DPosition(-1,0,0), // LEFT
+        Cell3DPosition(-1,0,-1), // BOTTOM-LEFT
+        Cell3DPosition(0,0,-1)   // BOTTOM-RIGHT
+    }; //!< Vector containing relative position of neighboring cells for odd(z) cells
 
     static const string directionName[];
 public:
@@ -540,57 +540,57 @@ class HHLattice : public HLattice {
     static const string directionName[];
 public:
     enum Direction {EAST = 0, NORTH_EAST = 1, NORTH_WEST = 2,
-        WEST = 3, SOUTH_WEST = 4, SOUTH_EAST = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
-        //!< @copydoc Lattice::getOppositeDirection
-        virtual short getOppositeDirection(short d) override;
-        //!< @copydoc Lattice::getDirectionString
-        virtual string getDirectionString(short d) override;
+                    WEST = 3, SOUTH_WEST = 4, SOUTH_EAST = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    //!< @copydoc Lattice::getOppositeDirection
+    virtual short getOppositeDirection(short d) const override;
+    //!< @copydoc Lattice::getDirectionString
+    virtual string getDirectionString(short d) const override;
 
-        /**
-         * @brief HHLattice constructor.
-         */
-        HHLattice();
-        /**
-         * @brief HHLattice constructor.
-         * @param gsz The size of the grid
-         * @param gsc The real size of a block on the grid, also equal to the scale of the grid
-         */
-        HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
-        /**
-         * @brief HLattice destructor.
-         */
-        ~HHLattice();
+    /**
+     * @brief HHLattice constructor.
+     */
+    HHLattice();
+    /**
+     * @brief HHLattice constructor.
+     * @param gsz The size of the grid
+     * @param gsc The real size of a block on the grid, also equal to the scale of the grid
+     */
+    HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
+    /**
+     * @brief HLattice destructor.
+     */
+    ~HHLattice();
 
-        /**
-         * @copydoc Lattice::gridToUnscaledWorldPosition
-         */
-        virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
-        /**
-         * @copydoc Lattice::unscaledWorldToGridPosition
-         */
-        virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override;
-        /**
-         * @copydoc Lattice::gridToWorldPosition
-         */
-        virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) override;
-        /**
-         * @copydoc Lattice::worldToGridPosition
-         */
-        virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override;
-        /**
-         * @copydoc Lattice::getRelativeConnectivity
-         */
-        virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
-        /**
-         * @copydoc Lattice::getMaxNumNeighbors
-         */
-        virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
-        /**
-         * @copydoc Lattice::getCellInDirection
-         */
-        virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,int direction) const override;
+    /**
+     * @copydoc Lattice::gridToUnscaledWorldPosition
+     */
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
+    /**
+     * @copydoc Lattice::unscaledWorldToGridPosition
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override;
+    /**
+     * @copydoc Lattice::gridToWorldPosition
+     */
+    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) const override;
+    /**
+     * @copydoc Lattice::worldToGridPosition
+     */
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override;
+    /**
+     * @copydoc Lattice::getRelativeConnectivity
+     */
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
+    /**
+     * @copydoc Lattice::getMaxNumNeighbors
+     */
+    virtual inline const int getMaxNumNeighbors() const override { return MAX_NB_NEIGHBORS; }
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,int direction) const override;
 
-        Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; }
+    Cell3DPosition getNeighborRelativePos(Direction d) const  { return nCells[d]; }
 };
 
 
@@ -603,38 +603,38 @@ class FCCLattice : public Lattice3D {
     // The index i of the relative position in the vector corresponds to the cell on interface i of a block
     vector<Cell3DPosition> nCellsOdd{
         Cell3DPosition(1,0,0),  // 0
-            Cell3DPosition(0,1,0), // 1
-            Cell3DPosition(1,1,1), // 2
-            Cell3DPosition(0,1,1), // 3
-            Cell3DPosition(0,0,1), // 4
-            Cell3DPosition(1,0,1), // 5
-            Cell3DPosition(-1,0,0), // 6
-            Cell3DPosition(0,-1,0), // 7
-            Cell3DPosition(0,0,-1), // 8
-            Cell3DPosition(1,0,-1), // 9
-            Cell3DPosition(1,1,-1), // 10
-            Cell3DPosition(0,1,-1), // 11
-            }; //!< Vector containing relative position of neighboring cells for even(z) cells;
+        Cell3DPosition(0,1,0), // 1
+        Cell3DPosition(1,1,1), // 2
+        Cell3DPosition(0,1,1), // 3
+        Cell3DPosition(0,0,1), // 4
+        Cell3DPosition(1,0,1), // 5
+        Cell3DPosition(-1,0,0), // 6
+        Cell3DPosition(0,-1,0), // 7
+        Cell3DPosition(0,0,-1), // 8
+        Cell3DPosition(1,0,-1), // 9
+        Cell3DPosition(1,1,-1), // 10
+        Cell3DPosition(0,1,-1), // 11
+    }; //!< Vector containing relative position of neighboring cells for even(z) cells;
 
     vector<Cell3DPosition> nCellsEven{
         Cell3DPosition(1,0,0), // 0
-            Cell3DPosition(0,1,0),  // 1
-            Cell3DPosition(0,0,1),  // 2
-            Cell3DPosition(-1,0,1), // 3
-            Cell3DPosition(-1,-1,1), // 4
-            Cell3DPosition(0,-1,1), // 5
-            Cell3DPosition(-1,0,0), // 6
-            Cell3DPosition(0,-1,0), // 7
-            Cell3DPosition(-1,-1,-1), // 8
-            Cell3DPosition(0,-1,-1),  // 9
-            Cell3DPosition(0,0,-1),   // 10
-            Cell3DPosition(-1,0,-1) // 11
-            }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
+        Cell3DPosition(0,1,0),  // 1
+        Cell3DPosition(0,0,1),  // 2
+        Cell3DPosition(-1,0,1), // 3
+        Cell3DPosition(-1,-1,1), // 4
+        Cell3DPosition(0,-1,1), // 5
+        Cell3DPosition(-1,0,0), // 6
+        Cell3DPosition(0,-1,0), // 7
+        Cell3DPosition(-1,-1,-1), // 8
+        Cell3DPosition(0,-1,-1),  // 9
+        Cell3DPosition(0,0,-1),   // 10
+        Cell3DPosition(-1,0,-1) // 11
+    }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
 
     //!< Neighborhood Planes for blocking cells computation
 
     Cell3DPosition sideOneOddXY[4] = { Cell3DPosition(1,0,-1), Cell3DPosition(1,1,-1),
-                                      Cell3DPosition(0,1,-1), Cell3DPosition(0,0,-1) };
+                                       Cell3DPosition(0,1,-1), Cell3DPosition(0,0,-1) };
     Cell3DPosition sideTwoOddXY[4] = { Cell3DPosition(1,0,1),Cell3DPosition(1,1,1),
                                        Cell3DPosition(0,1,1),Cell3DPosition(0,0,1) };
     Cell3DPosition sideOneEvenXY[4] = { Cell3DPosition(0,0,-1),Cell3DPosition(-1,-1,-1),
@@ -664,8 +664,8 @@ class FCCLattice : public Lattice3D {
                                         Cell3DPosition(0,-1,1),Cell3DPosition(-1,-1,1),
                                         Cell3DPosition(0,-1,0) };
     Cell3DPosition sideTwoEvenYZ[5] = { Cell3DPosition(0,0,-1),Cell3DPosition(-1,0,-1),
-                                           Cell3DPosition(0,0,1),Cell3DPosition(-1,0,1),
-                                           Cell3DPosition(0,1,0) };
+                                        Cell3DPosition(0,0,1),Cell3DPosition(-1,0,1),
+                                        Cell3DPosition(0,1,0) };
 
     Cell3DPosition xyPos[4] = { Cell3DPosition(-1,0,0), Cell3DPosition(1,0,0),
                                 Cell3DPosition(0,-1,0), Cell3DPosition(0,1,0) };
@@ -778,7 +778,7 @@ class SkewFCCLattice : public FCCLattice {
         Cell3DPosition(1,0,-1), // 9
         Cell3DPosition(1,1,-1), // 10
         Cell3DPosition(0,1,-1), // 11
-        }; //!< Vector containing relative position of neighboring cells;
+    }; //!< Vector containing relative position of neighboring cells;
 
     static const string directionName[];
 public:
@@ -857,34 +857,33 @@ public:
 class SCLattice : public Lattice3D {
     vector<Cell3DPosition> nCells{
         Cell3DPosition(0,0,-1), // BOTTOM
-            Cell3DPosition(0,1,0), // BACK
-            Cell3DPosition(1,0,0),  // RIGHT
-            Cell3DPosition(-1,0,0),  // LEFT
-            Cell3DPosition(0,-1,0),  // FRONT
-            Cell3DPosition(0,0,1)  // TOP
-            }; //!< Vector containing relative position of neighboring cells
-    static const string directionName[];
-        unsigned short *tabDistances;
+        Cell3DPosition(0,1,0), // BACK
+        Cell3DPosition(1,0,0),  // RIGHT
+        Cell3DPosition(-1,0,0),  // LEFT
+        Cell3DPosition(0,-1,0),  // FRONT
+        Cell3DPosition(0,0,1)  // TOP
+    }; //!< Vector containing relative position of neighboring cells
 public:
+    static inline const string directionName[] = { "Bottom", "Back", "Right","Front", "Left", "Top" };
     enum Direction { Bottom = 0, Back = 1, Right, Left, Front, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
     virtual short getOppositeDirection(short d) const override;
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(short d) const override;
-    Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
+    Cell3DPosition getNeighborRelativePos(Direction d) const  { return nCells[d]; };
     /**
-        * @brief SCLattice constructor.
-        */
+     * @brief SCLattice constructor.
+     */
     SCLattice();
     /**
-        * @brief SCLattice constructor.
-        * @param gsz The size of the grid
-        * @param gsc The real size of a block on the grid, also equal to the scale of the grid
-        */
+     * @brief SCLattice constructor.
+     * @param gsz The size of the grid
+     * @param gsc The real size of a block on the grid, also equal to the scale of the grid
+     */
     SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-        * @brief SCLattice destructor.
-        */
+     * @brief SCLattice destructor.
+     */
     ~SCLattice();
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
@@ -912,10 +911,6 @@ public:
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
                                               int direction) const override;
-    /**
-     * @copydoc Lattice::glDraw
-     */
-    virtual void glDraw() const override;
 };
 
 }

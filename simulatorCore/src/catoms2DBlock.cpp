@@ -324,7 +324,7 @@ void Catoms2DBlock::startMove(Catoms2DRotationMove &m, Time t) {
     getScheduler()->schedule(new Catoms2DRotationStartEvent(t,this,m));
 }
 
-void Catoms2DBlock::startMove(Rotation2DMove &m) {
+void Catoms2DBlock::startMove(Catoms2DRotationMove &m) {
     startMove(m,getScheduler()->now());
 }
 

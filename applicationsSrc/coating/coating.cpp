@@ -11,7 +11,9 @@ using namespace Catoms3D;
 int main(int argc, char **argv) {
     try
     {
-        createSimulator(argc, argv, CoatingBlockCode::buildNewBlockCode);
+        createSimulator(argc, argv, CoatingBlockCode::buildNewBlockCode,
+                        // useSkewedFCCLattice
+                        true);
         getSimulator()->printInfo();
         BaseSimulator::getWorld()->printInfo();
         deleteSimulator();

@@ -19,7 +19,7 @@ bool SyncPrevious::needSyncToLeft() {
     if (!BlockCode::target->isInTarget(catom->position.addX(-1)) &&
             BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1))) {
         BoundingBox bb;
-        BlockCode::target->boundingBox(bb);
+        static_cast<TargetCSG*>(BlockCode::target)->boundingBox(bb);
 
         for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToCSGPosition(catom->position.addX(-i))[0] < bb.P1[0]; i++) {
             if (!BlockCode::target->isInTarget(catom->position.addX(-i)) &&

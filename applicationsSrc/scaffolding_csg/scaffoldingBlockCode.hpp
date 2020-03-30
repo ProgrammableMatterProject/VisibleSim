@@ -19,7 +19,7 @@
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
 #include "catoms3DMotionRules.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "catoms3DBlock.h"
 #include "cell3DPosition.h"
 
@@ -103,8 +103,8 @@ public:
         Time duration = 0;
 
         // Simulate actual motion of a catom
-        for (int i = 0; i < 2 * Rotations3D::nbRotationSteps; i++) {
-            duration += Rotations3D::getNextRotationEventDelay();
+        for (int i = 0; i < 2 * Catoms3DRotation::nbRotationSteps; i++) {
+            duration += Catoms3DRotation::getNextRotationEventDelay();
         }
 
         return duration;
