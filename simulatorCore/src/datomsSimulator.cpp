@@ -63,6 +63,7 @@ void DatomsSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBu
 
     // Finally, add block to the world
     ((DatomsWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
 } // Datoms namespace

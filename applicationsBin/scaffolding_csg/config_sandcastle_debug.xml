@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="110,110,110">
+
+  <blockList color="128,128,128" blocksize="10,10,10">
+    <block position="5,5,2" color="0,255,255" orientation="11" />
+  </blockList>
+
+    <targetList>
+      <target format="csg">
+        <csg translate="5,5,2"
+             content="
+
+union() {
+    translate([0,0,13])
+    cube([42,42,20], true);
+
+    translate([0,0,32])
+    cylinder(19.5, 19.5, true);
+
+    difference() {
+        translate([0,0,34])
+        sphere(21, true);
+        translate([0,0,32])
+        cylinder(18, 38, true);
+    }
+
+    cube([78,78,6], true);
+}"/>
+      </target>
+    </targetList>
+
+</world>

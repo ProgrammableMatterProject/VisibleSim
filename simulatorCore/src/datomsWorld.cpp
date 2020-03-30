@@ -173,9 +173,9 @@ void DatomsWorld::menuChoice(int n) {
                 Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
                 short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
                 DatomsWorld *wrld = getWorld();
-                wrld->disconnectBlock(bb);
+                wrld->disconnectBlock(bb, false);
                 bb->setPositionAndOrientation(pos,orient);
-                wrld->connectBlock(bb);
+                wrld->connectBlock(bb, false);
                 //}
             } else World::menuChoice(n); // For all non-catoms2D-specific cases
         break;

@@ -20,13 +20,12 @@ class ObjLoader;
 using namespace std;
 
 class GlBlock {
-protected :
-    bool isHighlighted;
 public :
+    bool isHighlighted;
     GLfloat position[3];
     GLfloat color[4];
     bID blockId;
-
+	
     GlBlock(bID id);
     GlBlock(bID id,const Vector3D &pos, const Vector3D &col);
     virtual ~GlBlock();

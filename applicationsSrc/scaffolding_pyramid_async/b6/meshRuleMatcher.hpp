@@ -323,6 +323,7 @@ public:
      * @return dimension of the h-pyramid, or -1 if undefined
      */
     int getPyramidDimension() const;
+
 };
 
 }

@@ -18,12 +18,16 @@
 
 class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
+    Catoms3DWorld *world;
+    Lattice *lattice;
     Scheduler *scheduler;
     Catoms3D::Catoms3DBlock *catom;
     Vector3D worldPosition;
 
     Neighborhood *neighborhood;
     NeighborMessages *neighborMessages;
+
+    static inline bool HIGHLIGHT_CSG = false;
 
     // Reconfiguration Variables
     Reconf *reconf;
@@ -36,6 +40,9 @@ public:
 
     void startup() override;
     void processLocalEvent(EventPtr pev) override;
+    bool parseUserCommandLineArgument(int &argc, char **argv[]) override;
+
+    void highlightCSG();
 
     void planningRun();
     void stochasticRun();

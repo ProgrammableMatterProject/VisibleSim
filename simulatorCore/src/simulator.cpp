@@ -39,7 +39,7 @@ Simulator* Simulator::simulator = NULL;
 Simulator::Type	Simulator::type = CPP; // CPP code by default
 bool Simulator::regrTesting = false; // No regression testing by default
 
-Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv) {
+Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv, _bcb) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << TermColor::LifecycleColor << "Simulator constructor" << TermColor::Reset << endl;
 #endif
@@ -192,7 +192,6 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
         cerr << e.what();
         exit(EXIT_FAILURE);
     }
-
 }
 
 Simulator::IDScheme Simulator::determineIDScheme() {
@@ -756,6 +755,10 @@ void Simulator::parseBlockList() {
             }
 
             if (not getWorld()->lattice->isInGrid(position)) {
+                cerr << "GridLowerBounds: "
+                     << getWorld()->lattice->getGridLowerBounds(position[2]) << endl;
+                cerr << "GridUpperBounds: "
+                     << getWorld()->lattice->getGridUpperBounds(position[2])<< endl;
                 stringstream error;
                 error << "module at " << position << " is out of grid" << "\n";
                 throw ParsingException(error.str());
@@ -904,6 +907,22 @@ void Simulator::parseBlockList() {
             TiXmlElement *element = block->ToElement();
             string str = element->Attribute("content");
 
+            Vector3D translate = Vector3D(0,0,0);
+            attr = element->Attribute("translate");
+            if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+                    pos2 = str.find_last_of(',');
+                translate.pt[0] = atof(str.substr(0,pos1).c_str());
+                translate.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+                translate.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "csg translate :" << translate << endl;
+#endif
+            }
+
+
             BoundingBox bb;
             bool boundingBox = true;
             element->QueryBoolAttribute("boundingBox", &boundingBox);
@@ -916,57 +935,29 @@ void Simulator::parseBlockList() {
             if (boundingBox) csgRoot->boundingBox(bb);
 
             Vector3D csgPos;
-            const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
-            const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-            if (typeid(world->lattice) != typeid(SkewFCCLattice)) {
-                for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-                    for (short iy = glb[1]; iy <= ulb[1]; iy++) {
-                        for (short ix = glb[0]; ix <= ulb[0]; ix++) {
-                            position.set(ix,iy,iz);
-                            csgPos = world->lattice->gridToUnscaledWorldPosition(position);
+            for (short iz = 0; iz <= world->lattice->getGridUpperBounds()[2]; iz++) {
+                const Cell3DPosition& glb = world->lattice->getGridLowerBounds(iz);
+                const Cell3DPosition& ulb = world->lattice->getGridUpperBounds(iz);
+                for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                    for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                        position.set(ix,iy,iz);
+                        csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
 #ifdef OFFSET_BOUNDINGBOX
-                            csgPos.pt[0] += bb.P0[0] - 1.0;
-                            csgPos.pt[1] += bb.P0[1] - 1.0;
-                            csgPos.pt[2] += bb.P0[2] - 1.0;
+                        csgPos.pt[0] += bb.P0[0] - 1.0;
+                        csgPos.pt[1] += bb.P0[1] - 1.0;
+                        csgPos.pt[2] += bb.P0[2] - 1.0;
 #else
-                            csgPos.pt[0] += bb.P0[0];
-                            csgPos.pt[1] += bb.P0[1];
-                            csgPos.pt[2] += bb.P0[2];
+                        csgPos.pt[0] += bb.P0[0];
+                        csgPos.pt[1] += bb.P0[1];
+                        csgPos.pt[2] += bb.P0[2];
 #endif
 
-                            if (world->lattice->isInGrid(position)
-                                and csgRoot->isInside(csgPos, color)) {
-                                loadBlock(element,
-                                          ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                          bcb, position, color, false);
-                            }
-                        }
-                    }
-                }
-            } else {
-                for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-                    for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
-                        for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
-                            position.set(ix,iy,iz);
-                            csgPos = world->lattice->gridToUnscaledWorldPosition(position);
-
-#ifdef OFFSET_BOUNDINGBOX
-                            csgPos.pt[0] += bb.P0[0] - 1.0;
-                            csgPos.pt[1] += bb.P0[1] - 1.0;
-                            csgPos.pt[2] += bb.P0[2] - 1.0;
-#else
-                            csgPos.pt[0] += bb.P0[0];
-                            csgPos.pt[1] += bb.P0[1];
-                            csgPos.pt[2] += bb.P0[2];
-#endif
-
-                            if (world->lattice->isInGrid(position)
-                                and csgRoot->isInside(csgPos, color)) {
-                                loadBlock(element,
-                                          ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                          bcb, position, color, false);
-                            }
+                        if (world->lattice->isInGrid(position)
+                            and csgRoot->isInside(csgPos, color)) {
+                            loadBlock(element,
+                                      ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
+                                      bcb, position, color, false);
                         }
                     }
                 }

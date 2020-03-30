@@ -1,0 +1,220 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="30,30,50" windowSize="1280,720">
+  <blockList color="128,128,128" blocksize="1,1,1">
+    <block position="3,3,3" orientation="0"/>
+    <block position="3,3,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,3,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,3,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="4,4,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="5,5,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="6,6,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="4,3,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="5,3,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="6,3,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,4,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,5,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,6,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,9,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,9,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,9,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="4,10,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="5,11,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="6,12,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="4,9,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="5,9,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="6,9,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,10,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,11,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,12,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,15,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,15,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,15,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="4,16,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="5,17,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="6,18,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="4,15,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="5,15,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="6,15,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,16,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,17,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,18,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,21,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,21,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,21,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="4,22,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="5,23,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="6,24,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="4,21,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="5,21,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="6,21,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,22,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,23,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="3,24,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,3,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,3,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,3,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="10,4,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="11,5,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="12,6,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="10,3,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="11,3,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="12,3,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,4,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,5,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,6,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,9,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,9,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,9,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="10,10,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="11,11,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="12,12,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="10,9,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="11,9,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="12,9,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,10,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,11,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,12,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,15,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,15,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,15,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="10,16,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="11,17,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="12,18,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="10,15,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="11,15,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="12,15,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,16,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,17,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,18,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,21,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,21,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,21,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="10,22,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="11,23,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="12,24,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="10,21,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="11,21,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="12,21,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,22,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,23,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="9,24,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,3,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,3,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,3,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="16,4,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="17,5,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="18,6,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="16,3,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="17,3,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="18,3,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,4,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,5,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,6,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,9,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,9,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,9,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="16,10,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="17,11,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="18,12,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="16,9,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="17,9,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="18,9,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,10,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,11,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,12,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,15,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,15,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,15,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="16,16,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="17,17,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="18,18,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="16,15,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="17,15,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="18,15,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,16,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,17,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,18,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,21,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,21,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,21,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="16,22,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="17,23,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="18,24,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="16,21,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="17,21,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="18,21,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,22,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,23,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="15,24,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,3,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,3,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,3,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="22,4,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="23,5,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="24,6,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="22,3,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="23,3,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="24,3,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,4,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,5,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,6,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,9,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,9,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,9,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="22,10,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="23,11,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="24,12,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="22,9,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="23,9,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="24,9,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,10,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,11,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,12,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,15,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,15,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,15,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="22,16,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="23,17,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="24,18,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="22,15,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="23,15,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="24,15,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,16,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,17,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,18,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,21,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,21,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,21,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="22,22,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="23,23,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="24,24,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="22,21,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="23,21,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="24,21,0" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,22,2" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,23,1" color="127.5,127.5,127.5" orientation="0" />
+        <block position="21,24,0" color="127.5,127.5,127.5" orientation="0" />
+  </blockList>
+
+      <targetList>
+        <target format="csg">
+          <csg translate="5,5,2" content="union() {
+                                          color([0,0,0])
+                                          cube([20, 20, 20], true);
+
+color([0,0,0])
+translate([0,5,5])
+cube([20,5,30], true);
+
+color([0,0,0])
+translate([0,-5,5])
+cube([20,5,30], true);
+
+color([1,0,0])
+translate([0,0,10])
+cube([20,20,1], true);
+}" />
+        </target>
+      </targetList>
+
+</world>

@@ -46,6 +46,13 @@ public:
      *  Creates the output document, filename and header
      */
     ConfigExporter(World *world);
+
+    /**
+     * @brief Constructor for the abstract configuration exporter
+     *  Creates the output document, filename and header
+     */
+    ConfigExporter(World *world, const string& _filename);
+
     /**
      * @brief Destructor for the abstract configuration exporter
      *  Deletes the TiXMLDocument used for exporting
@@ -99,6 +106,8 @@ public:
      * @brief BlinkyBlocks Configuration Exporter constructor
      */
     BlinkyBlocksConfigExporter(World *_world) : ConfigExporter(_world) {};
+    BlinkyBlocksConfigExporter(World *_world, const string& _filename)
+        : ConfigExporter(_world, _filename) {};
     /**
      * @brief BlinkyBlocks Configuration Exporter destructor
      */
@@ -114,6 +123,9 @@ public:
      * @brief Catoms3D Configuration Exporter constructor
      */
     Catoms3DConfigExporter(World *_world) : ConfigExporter(_world) {};
+    Catoms3DConfigExporter(World *_world, const string& _filename)
+        : ConfigExporter(_world, _filename) {};
+
     /**
      * @brief Catoms3D Configuration Exporter destructor
      */
@@ -135,6 +147,8 @@ public:
      * @brief SlidingCubes Configuration Exporter constructor
      */
     SlidingCubesConfigExporter(World *_world) : ConfigExporter(_world) {};
+    SlidingCubesConfigExporter(World *_world, const string& _filename)
+        : ConfigExporter(_world, _filename) {};
     /**
      * @brief SlidingCubes Configuration Exporter destructor
      */
@@ -150,6 +164,9 @@ public:
      * @brief Catoms2D Configuration Exporter constructor
      */
     Catoms2DConfigExporter(World *_world) : ConfigExporter(_world) {};
+    Catoms2DConfigExporter(World *_world, const string& _filename)
+        : ConfigExporter(_world, _filename) {};
+
     /**
      * @brief Catoms2D Configuration Exporter constructor
      */
@@ -171,6 +188,9 @@ public:
      * @brief SmartBlocks Configuration Exporter constructor
      */
     SmartBlocksConfigExporter(World *_world) : ConfigExporter(_world) {};
+    SmartBlocksConfigExporter(World *_world, const string& _filename)
+        : ConfigExporter(_world, _filename) {};
+
     /**
      * @brief SmartBlocks Configuration Exporter constructor
      */
@@ -186,6 +206,9 @@ public:
      * @brief MultiRobots Configuration Exporter constructor
      */
     MultiRobotsConfigExporter(World *_world) : ConfigExporter(_world) {};
+    MultiRobotsConfigExporter(World *_world, const string& _filename)
+        : ConfigExporter(_world, _filename) {};
+
     /**
      * @brief MultiRobots Configuration Exporter constructor
      */
@@ -201,6 +224,9 @@ public:
      * @brief SlidingCubes Configuration Exporter constructor
      */
     OkteenConfigExporter(World *_world) : ConfigExporter(_world) {};
+    OkteenConfigExporter(World *_world, const string& _filename)
+        : ConfigExporter(_world, _filename) {};
+
     /**
      * @brief SlidingCubes Configuration Exporter destructor
      */
@@ -216,6 +242,9 @@ public:
      * @brief Datoms Configuration Exporter constructor
      */
     DatomsConfigExporter (World *_world) : ConfigExporter(_world) {};
+    DatomsConfigExporter(World *_world, const string& _filename)
+        : ConfigExporter(_world, _filename) {};
+
     /**
      * @brief Datoms Configuration Exporter destructor
      */

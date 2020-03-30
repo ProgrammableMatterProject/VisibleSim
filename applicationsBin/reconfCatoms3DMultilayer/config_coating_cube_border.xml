@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="30,30,50" windowSize="1280,720">
+  <blockList color="128,128,128" blocksize="1,1,1">
+    <block position="3,3,3" orientation="0"/>
+  </blockList>
+
+      <targetList>
+        <target format="csg">
+          <csg translate="5,5,2" content="difference() {
+    cube([10.5,10.5,10], true);
+    cube([9,9,11], true);
+}" />
+        </target>
+      </targetList>
+
+</world>

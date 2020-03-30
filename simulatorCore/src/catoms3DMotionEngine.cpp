@@ -94,6 +94,12 @@ Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(const Catoms3DBlock* m,
         for (const Cell3DPosition& pPos : adjacentCells) {
             pivot = static_cast<Catoms3DBlock*>(lattice->getBlock(pPos));
 
+            // Do no allow rotating modules to actuate for others
+            if (pivot->getState() == BuildingBlock::State::MOVING) {
+                // cout << pPos << " is rotating" << endl;
+                continue;
+            }
+
             // Determine pivot connectors and check if a possible path exists
             short conFrom = pivot->getConnectorId(m->position);
             short conTo = pivot->getConnectorId(tPos);
@@ -137,6 +143,8 @@ Catoms3DBlock* Catoms3DMotionEngine::findMotionPivot(const Catoms3DBlock* m,
                                                      RotationLinkType faceReq) {
     const auto &allLinkPairs = findPivotLinkPairsForTargetCell(m, tPos, faceReq);
 
+    // cout << "size: " << allLinkPairs.size() << endl;
+
     for (const auto& pair : allLinkPairs) {
         // cout << "{ " << *pair.first << ", " << *pair.second << " }" << endl;
         if (pair.second->getMRLT() == faceReq or faceReq == RotationLinkType::Any)
@@ -166,4 +174,22 @@ Catoms3DMotionEngine::getAllRotationsForModule(const Catoms3DBlock* m) {
     }
 
     return allRotations;
+}
+
+bool Catoms3DMotionEngine::canMoveTo(const Catoms3DBlock* m, const Cell3DPosition& tPos,
+                                     RotationLinkType faceReq) {
+    return findMotionPivot(m, tPos, faceReq) != NULL;
+}
+
+const vector<Cell3DPosition>
+Catoms3DMotionEngine::getAllReachablePositions(const Catoms3DBlock* m,
+                                               RotationLinkType faceReq) {
+    vector<Cell3DPosition> reachablePositions;
+    for (const Cell3DPosition& rPos : relReachablePosition) {
+        const Cell3DPosition& pos = rPos + m->position;
+        if (canMoveTo(m, pos)) {
+            reachablePositions.push_back(pos);
+        }
+    }
+    return reachablePositions;
 }

@@ -11,6 +11,7 @@
 #include "blockCode.h"
 #include "blinkyBlocksBlock.h"
 #include "network.h"
+#include "events.h"
 
 namespace BlinkyBlocks {
 
@@ -20,7 +21,7 @@ class BlinkyBlocksBlockCode : public BaseSimulator::BlockCode {
 public:
 
     BlinkyBlocksBlockCode(BlinkyBlocksBlock *host);
-    virtual ~BlinkyBlocksBlockCode();
+    virtual ~BlinkyBlocksBlockCode() override;
 
     virtual void processLocalEvent(EventPtr pev) override {
         // Do not remove, used by sample blockcode

@@ -49,7 +49,7 @@ void TranslationStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     BuildingBlock *bb = concernedBlock;
-    World::getWorld()->disconnectBlock(bb);
+    World::getWorld()->disconnectBlock(bb, false);
     bb->setColor(DARKGREY);
 
     Time t = scheduler->now() + ANIMATION_DELAY;
@@ -156,7 +156,7 @@ void TranslationStopEvent::consume() {
 #endif
 
     OUTPUT << "connect Block " << bb->blockId << "\n";
-    wrld->connectBlock(bb);
+    wrld->connectBlock(bb, false);
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new TranslationEndEvent(scheduler->now() + ANIMATION_DELAY, bb));
 }

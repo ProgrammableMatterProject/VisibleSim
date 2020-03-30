@@ -88,7 +88,7 @@ void Neighborhood::addNeighborToPreviousPlane()
 bool Neighborhood::isFirstCatomOfLine()
 {
     if (!catom->getInterface(catom->position.addX(-1))->isConnected() &&
-            !catom->getInterface(catom->position.addX(1))->isConnected())
+        !catom->getInterface(catom->position.addX(1))->isConnected())
         return true;
     return false;
 }
@@ -234,6 +234,7 @@ bool Neighborhood::addNeighbor(Cell3DPosition pos)
             numberBlockedModules++;
             cout << "number of blocked modules = " << numberBlockedModules << endl;
             cout << "---- ERROR ----\nPosition " << pos << " blocked" << endl;
+            world->lattice->highlightCell(pos, RED);
 
             //std::this_thread::sleep_for(std::chrono::milliseconds(100000));
         }

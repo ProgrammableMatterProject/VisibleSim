@@ -36,11 +36,14 @@ InterfaceNotConnectedException(BlockCode* bc, const Message* msg,
 }
 
 BlockCode::BlockCode(BuildingBlock *host) : hostBlock(host) {
-    scheduler = getScheduler();
-    lattice = getWorld()->lattice;
-    console.setInfo(scheduler, hostBlock->blockId);
-    addDebugAttributes(scheduler);
+    if (host) {
+        scheduler = getScheduler();
+        lattice = getWorld()->lattice;
+        console.setInfo(scheduler, hostBlock->blockId);
+        addDebugAttributes(scheduler);
+    }
 }
+
 
 BlockCode::~BlockCode() {
     if (target) {
@@ -80,7 +83,8 @@ int BlockCode::sendMessage(HandleableMessage*msg,
            << " sends " << msg->type << " to "
            << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
 #endif
-    assert(dest->getConnectedBlockId() > 0);
+
+    VS_ASSERT(dest->getConnectedBlockId() > 0);
 
     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
     return 0;

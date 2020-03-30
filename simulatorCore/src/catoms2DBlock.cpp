@@ -321,11 +321,11 @@ bool Catoms2DBlock::canMove(const Catoms2DRotationMove &m) const {
 }
 
 void Catoms2DBlock::startMove(Catoms2DRotationMove &m, Time t) {
-  getScheduler()->schedule(new Catoms2DRotationStartEvent(t,this,m));
+    getScheduler()->schedule(new Catoms2DRotationStartEvent(t,this,m));
 }
 
-void Catoms2DBlock::startMove(Catoms2DRotationMove &m) {
-  startMove(m,getScheduler()->now());
+void Catoms2DBlock::startMove(Rotation2DMove &m) {
+    startMove(m,getScheduler()->now());
 }
 
 void Catoms2DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {

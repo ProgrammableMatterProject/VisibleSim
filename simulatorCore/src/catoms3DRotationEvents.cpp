@@ -159,7 +159,7 @@ void Catoms3DRotationStartEvent::consume() {
         new PivotActuationStartEvent(scheduler->now(), const_cast<Catoms3DBlock*>(rot.pivot),
                                      rot.mobile, rot.conFromP, rot.conToP));
 
-    Catoms3DWorld::getWorld()->disconnectBlock(catom);
+    Catoms3DWorld::getWorld()->disconnectBlock(catom, false);
 
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Catoms3DRotationStartEvent(date+Catoms3DRotation::COM_DELAY, catom, rot)));
 
@@ -198,7 +198,6 @@ Catoms3DRotationStepEvent::~Catoms3DRotationStepEvent() {
 void Catoms3DRotationStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
-    catom->setState(BuildingBlock::State::ALIVE);
 
     Scheduler *scheduler = getScheduler();
     // cout << "[t-" << scheduler->now() << "] rotation step" << endl;
@@ -258,7 +257,7 @@ void Catoms3DRotationStopEvent::consume() {
     /* Transformer les coordonnées GL en coordonnées grille*/
     rot.getFinalPositionAndOrientation(position,orientation);
     catom->setPositionAndOrientation(position,orientation);
-    wrld->connectBlock(catom);
+    wrld->connectBlock(catom, false);
 
     info << " finished rotating to " << position << " on pivot #" << rot.pivot->blockId << " ("
          << rot.conFromP << " -> " << rot.conToP << ")";
@@ -302,6 +301,7 @@ Catoms3DRotationEndEvent::~Catoms3DRotationEndEvent() {
 void Catoms3DRotationEndEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
+    rb->setState(BuildingBlock::State::ALIVE);
     // cout << "[t-" << getScheduler()->now() << "] rotation ended" << endl;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Catoms3DRotationEndEvent(date+Catoms3DRotation::COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
@@ -338,9 +338,16 @@ void Catoms3DRotation::exportMatrix(const Matrix& m) {
     if ((exportMatrixCount % 2) == 0 or exportMatrixCount == 40) {
         OUTPUT << getScheduler()->now() << "|";
 
+        if (exportMatrixCount == 40) {
+            short ori;
+            getFinalPositionAndOrientation(block->blockCode->motionDest, ori);
+        }
+
         block->blockCode->onBlockSelected();
 
         OUTPUT << catomId << "|";
+
+        // OUTPUT << block->color << "|";
 
         OUTPUT << "(matrix3 "
                << "[" << m.m[0] << "," << m.m[4] << "," << m.m[8] << "] "

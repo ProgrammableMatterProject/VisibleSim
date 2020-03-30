@@ -56,11 +56,14 @@ public:
     ConsoleStream console;  //!< pointer to the single instance of ConsoleStream of the simulation
     static Target *target; //!< pointer shared by all blockCodes to the current target configuration
 
+    Cell3DPosition motionDest; //!< Only used for motion export for animations
+
 /**
  * @brief BlockCode constructor
  * @para, host The block on which this instance of the blockCode will be executed
  */
     BlockCode(BuildingBlock *host);
+
 /**
  * @brief BlockCode destructor
  */
@@ -73,6 +76,22 @@ public:
  * Called from BuildingBlock constructor, only once.
  */
     virtual void parseUserElements(TiXmlDocument *config) { }
+
+/**
+ * User-implemented command line reader that can handle all user-defined
+ *  command line arguments not caught by the simulator
+ * @note call is made from CommandLine::read (commandLine.h)
+ */
+    virtual bool parseUserCommandLineArgument(int& argc, char **argv[]) {
+        return false; // default, did not parse any argument
+    };
+
+/**
+ * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from each block config. Has to be overriden in the child class.
+ * @param config : pointer to the TiXmlElement representing the block configuration file, all information related to concerned block have already been parsed
+ *
+ */
+    virtual void parseUserBlockElements(TiXmlElement *config) { }
 /**
  * @brief Handler for all events received by the host block
  */

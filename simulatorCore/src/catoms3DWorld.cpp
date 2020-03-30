@@ -199,9 +199,9 @@ void Catoms3DWorld::menuChoice(int n) {
                 Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
                 short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
                 Catoms3DWorld *wrld = getWorld();
-                wrld->disconnectBlock(bb);
+                wrld->disconnectBlock(bb, false);
                 bb->setPositionAndOrientation(pos,orient);
-                wrld->connectBlock(bb);
+                wrld->connectBlock(bb, false);
                 //}
             } else World::menuChoice(n); // For all non-catoms2D-specific cases
         break;
@@ -225,7 +225,8 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     rng.seed(Simulator::getSimulator()->getCmdLine().getSimulationSeed());
     std::uniform_int_distribution<std::mt19937::result_type> u500(0,500);
     // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + u500(rng), catom));
-    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
+    // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
+    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + 1000, catom));
 
     Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
@@ -610,10 +611,10 @@ void Catoms3DWorld::setSelectedFace(int n) {
     else if (name == "Material__69") numSelectedFace = 10;
     else if (name == "Material__70") numSelectedFace = 11;
     else {
-        cerr << "warning: Unrecognized picking face" << endl;
+        // cerr << "warning: Unrecognized picking face" << endl;
         numSelectedFace = 13;	// UNDEFINED
     }
-    cerr << name << " => " << numSelectedFace << endl;
+    // cerr << name << " => " << numSelectedFace << endl;
 }
 
 void Catoms3DWorld::exportConfiguration() {

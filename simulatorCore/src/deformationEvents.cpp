@@ -39,7 +39,7 @@ void DeformationStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     DatomsBlock *datom = (DatomsBlock *)concernedBlock;
-    DatomsWorld::getWorld()->disconnectBlock(datom);
+    DatomsWorld::getWorld()->disconnectBlock(datom, false);
 
     datom->getGlBlock()->currentModel=deform.modelId;
     cout << "Model="<< (int)deform.modelId << endl;
@@ -130,7 +130,7 @@ void DeformationStopEvent::consume() {
     info.str("");
     info << "connect Block " << datom->blockId;
     getScheduler()->trace(info.str(),datom->blockId,LIGHTBLUE);
-    wrld->connectBlock(datom);
+    wrld->connectBlock(datom, false);
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new DeformationEndEvent(scheduler->now() + ANIMATION_DELAY, datom));
 }

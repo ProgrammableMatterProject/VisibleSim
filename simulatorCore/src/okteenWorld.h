@@ -77,7 +77,7 @@ public:
     virtual void setSelectedFace(int n) override;
     virtual void exportConfiguration() override;
 
-    virtual void disconnectBlock(BuildingBlock *block);
+    virtual void disconnectBlock(BuildingBlock *block, bool count = false);
 
 /**
  * \brief load the background textures (internal)

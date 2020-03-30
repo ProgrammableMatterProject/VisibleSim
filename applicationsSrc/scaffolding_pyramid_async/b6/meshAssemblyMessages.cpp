@@ -394,7 +394,9 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
                 mabc.moduleAwaitingGo = true;
                 mabc.awaitingModulePos = srcPos;
                 mabc.awaitingModuleProbeItf = destinationInterface;
-                mabc.catom->setColor(DARKORANGE);
+
+                if (mabc.catom->position[2] >= mabc.meshSeedPosition[2])
+                    mabc.catom->setColor(DARKORANGE);
             }
         } else { // not neighborNextToTarget and not nextToSender
             mabc.catom->setColor(BLACK);

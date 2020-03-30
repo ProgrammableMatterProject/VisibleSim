@@ -155,7 +155,7 @@ bool TargetGrid::isInTarget(const Cell3DPosition &pos) const {
 }
 
 const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) const {
-    if (!isInTarget(pos)) {
+    if (!isInTarget(pos) or tCells.find(pos) == tCells.end()) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException(pos);
     }
@@ -172,11 +172,6 @@ void TargetGrid::print(ostream& where) const {
         where << "<cell position=" << pair.first << " color=" << pair.second << " />" << endl;
     }
 }
-
-void TargetGrid::boundingBox(BoundingBox &bb) {
-    throw BaseSimulator::NotImplementedException("TargetGrid::boundingBox");
-}
-
 void TargetGrid::highlight() const {
     for (const auto& pair : tCells) {
         getWorld()->lattice->highlightCell(pair.first, pair.second);
@@ -340,24 +335,36 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     csgRoot = csgUtils.readCSGBuffer(csgBin);
     csgRoot->toString();
 
+    const char *attr = element->Attribute("translate");
+    if (attr) {
+        string str_attr(attr);
+        int pos1 = str_attr.find_first_of(','),
+            pos2 = str_attr.find_last_of(',');
+        translate.pt[0] = atof(str_attr.substr(0,pos1).c_str());
+        translate.pt[1] = atof(str_attr.substr(pos1+1,pos2-pos1-1).c_str());
+        translate.pt[2] = atof(str_attr.substr(pos2+1,str_attr.length()-pos1-1).c_str());
+    }
+
     if (boundingBox) csgRoot->boundingBox(bb);
 }
 
-// #define OFFSET_BOUNDINGBOX
+//#define OFFSET_BOUNDINGBOX
 
 Vector3D TargetCSG::gridToCSGPosition(const Cell3DPosition &pos) const {
     Vector3D res = getWorld()->lattice->gridToUnscaledWorldPosition(pos);
 
 #ifdef OFFSET_BOUNDINGBOX
-    res.pt[0] += bb.P0[0] - 1.0;
-    res.pt[1] += bb.P0[1] - 1.0;
-    res.pt[2] += bb.P0[2] - 1.0;
+    res.pt[0] += bb.P0[0] - 1.0 - translate.pt[0];
+    res.pt[1] += bb.P0[1] - 1.0 - translate.pt[1];
+    res.pt[2] += bb.P0[2] - 1.0 - translate.pt[2];
 #else
-    res.pt[0] += bb.P0[0];
-    res.pt[1] += bb.P0[1];
-    res.pt[2] += bb.P0[2];
+    res.pt[0] += bb.P0[0] - translate.pt[0];
+    res.pt[1] += bb.P0[1] - translate.pt[1];
+    res.pt[2] += bb.P0[2] - translate.pt[2];
 #endif
+
     // cout << "gridToWorldPosition" << pos << " -> " << res << endl;
+
     return res;
 }
 
@@ -365,13 +372,13 @@ Cell3DPosition TargetCSG::CSGToGridPosition(const Vector3D &pos) const {
     Vector3D unboundPos = pos;
 
 #ifdef OFFSET_BOUNDINGBOX
-    unboundPos.pt[0] -= bb.P0[0] - 1.0;
-    unboundPos.pt[1] -= bb.P0[1] - 1.0;
-    unboundPos.pt[2] -= bb.P0[2] - 1.0;
+    unboundPos.pt[0] -= bb.P0[0] + 1.0 + translate.pt[0];
+    unboundPos.pt[1] -= bb.P0[1] + 1.0 + translate.pt[1];
+    unboundPos.pt[2] -= bb.P0[2] + 1.0 + translate.pt[2];
 #else
-    unboundPos.pt[0] -= bb.P0[0];
-    unboundPos.pt[1] -= bb.P0[1];
-    unboundPos.pt[2] -= bb.P0[2];
+    unboundPos.pt[0] -= bb.P0[0] + translate.pt[0];
+    unboundPos.pt[1] -= bb.P0[1] + translate.pt[1];
+    unboundPos.pt[2] -= bb.P0[2] + translate.pt[2];
 #endif
 
     Cell3DPosition res = getWorld()->lattice->unscaledWorldToGridPosition(unboundPos);
@@ -397,28 +404,17 @@ void TargetCSG::boundingBox(BoundingBox &bb) {
 void TargetCSG::highlight() const {
     Lattice *lattice = BaseSimulator::getWorld()->lattice;
 
-    const Cell3DPosition& glb = lattice->getGridLowerBounds();
-    const Cell3DPosition& ulb = lattice->getGridUpperBounds();
-
     Cell3DPosition p;
-    if (typeid(lattice) == typeid(SkewFCCLattice)) {
-        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
-                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
-                    p.set(ix,iy,iz);
-                    if (isInTarget(p))
-                        lattice->highlightCell(p, getTargetColor(p));
-                }
-            }
-        }
-    } else {
-        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
-                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
-                    p.set(ix,iy,iz);
-                    if (isInTarget(p))
-                        lattice->highlightCell(p, getTargetColor(p));
-                }
+    for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
+        const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
+        const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                p.set(ix,iy,iz);
+
+                Color color = WHITE;
+                if (csgRoot->isInside(gridToCSGPosition(p), color))
+                    lattice->highlightCell(p, color);
             }
         }
     }
@@ -427,39 +423,30 @@ void TargetCSG::highlight() const {
 void TargetCSG::unhighlight() const {
     Lattice *lattice = BaseSimulator::getWorld()->lattice;
 
-    const Cell3DPosition& glb = lattice->getGridLowerBounds();
-    const Cell3DPosition& ulb = lattice->getGridUpperBounds();
-
     Cell3DPosition p;
-    if (typeid(lattice) == typeid(SkewFCCLattice)) {
-        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-            for (short iy = glb[1] - iz / 2; iy <= ulb[1] - iz / 2; iy++) {
-                for (short ix = glb[0] - iz / 2; ix <= ulb[0] - iz / 2; ix++) {
-                    p.set(ix,iy,iz);
-                    if (isInTarget(p))
-                        lattice->unhighlightCell(p);
-                }
-            }
-        }
-    } else {
-        for (short iz = glb[2]; iz <= ulb[2]; iz++) {
-            for (short iy = glb[1]; iy <= ulb[1]; iy++) {
-                for (short ix = glb[0]; ix <= ulb[0]; ix++) {
-                    p.set(ix,iy,iz);
-                    if (isInTarget(p))
-                        lattice->highlightCell(p);
-                }
+    for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
+        const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
+        const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                p.set(ix,iy,iz);
+
+                Color c;
+                if (csgRoot->isInside(gridToCSGPosition(p), c))
+                    lattice->unhighlightCell(p);
             }
         }
     }
 }
 
 const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) const {
-    Color color;
+    Color color = WHITE;
+
     if (!csgRoot->isInside(gridToCSGPosition(pos), color)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException(pos);
     }
+
     return color;
 }
 
@@ -1122,10 +1109,6 @@ void TargetSurface::print(ostream& where) const {
     else {
         throw BaseSimulator::NotImplementedException("TargetSurface::print");
     }
-}
-
-void TargetSurface::boundingBox(BoundingBox &bb) {
-    throw BaseSimulator::NotImplementedException("TargetSurface::boundingBox");
 }
 
 void TargetSurface::glDraw() {

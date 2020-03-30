@@ -19,9 +19,10 @@ bool SyncPrevious::needSyncToLeft() {
     if (!BlockCode::target->isInTarget(catom->position.addX(-1)) &&
             BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1))) {
         BoundingBox bb;
-        BlockCode::target->boundingBox(bb);
+        static_cast<TargetCSG*>(BlockCode::target)->boundingBox(bb);
 
         for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToCSGPosition(catom->position.addX(-i))[0] < bb.P1[0]; i++) {
+            cout << "b" << endl;
             if (!BlockCode::target->isInTarget(catom->position.addX(-i)) &&
                 BlockCode::target->isInTarget(catom->position.addX(-i).addY(-1)))
                 continue;
@@ -45,6 +46,7 @@ bool SyncPrevious::needSyncToRight() {
         return isInternalBorder(3);
     return false;
 }
+
 void SyncPrevious::handleMessage(shared_ptr<Message> message) {
     //catom->setColor(BLUE);
     shared_ptr<SyncPrevious_message> syncMsg = static_pointer_cast<SyncPrevious_message>(message);

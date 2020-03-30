@@ -55,8 +55,9 @@ public:
     ObjLoader::ObjLoader *objBlock = NULL;           //!< Object loader for a block
     ObjLoader::ObjLoader *objBlockForPicking = NULL; //!< Object loader for a block used during picking
     ObjLoader::ObjLoader *objRepere = NULL;          //!< Object loader for the frame
-
     GLint menuId;
+
+    bool isBlinkingBlocks=false;
     Camera *camera = NULL; //!< Pointer to the camera object for the graphical simulation, also includes the light source
 
     /************************************************************
@@ -186,16 +187,16 @@ public:
     void deleteBlock(BuildingBlock *blc);
     /**
      * @brief Connects the interfaces of a block to all of its neighbors and notifiy them
-     *
      * @param blc : a pointer to the block to connect to its neighborhood
+     * @param count indicates whether the inserted modules should be counted towards nbModules
      */
-    void connectBlock(BuildingBlock *block);
+    void connectBlock(BuildingBlock *block, bool count = true);
     /**
      * @brief Disconnects the interfaces of a block from all of its neighbors and notify them
-     *
      * @param blc : a pointer to the block to disconnect from its neighborhood
+     * @param count indicates whether the removed modules should be discounted from nbModules
      */
-    void disconnectBlock(BuildingBlock *block);
+    void disconnectBlock(BuildingBlock *block, bool count = true);
 
     /**
      * @brief add an obstacle to the grid as a disabled block
@@ -217,7 +218,12 @@ public:
      */
     inline GlBlock* setselectedGlBlock(int n) {
         auto const &glBlock = mapGlBlocks.find(n);
-        return (selectedGlBlock=(glBlock != mapGlBlocks.end()) ? (*glBlock).second : NULL);
+
+        selectedGlBlock= (glBlock != mapGlBlocks.end()) ? (*glBlock).second : NULL;
+
+        if (selectedGlBlock) numSelectedGlBlock = n;
+
+        return selectedGlBlock;
     };
 
     /**
@@ -347,16 +353,16 @@ public:
     /**
      * @brief Toggle world background
      */
-	void toggleBackground() { background = !background; }
+    void toggleBackground() { background = !background; }
 
-	/**
-	 * \brief Export a 3D model in STL format to print the whole configuration
-	 * \param title : title of the STL file
-	 * \result Returns true if the faces was well written
-	 */
-	virtual bool exportSTLModel(string title) { return false; };
+    /**
+     * \brief Export a 3D model in STL format to print the whole configuration
+     * \param title : title of the STL file
+     * \result Returns true if the faces was well written
+     */
+    virtual bool exportSTLModel(string title) { return false; };
 
-	/**
+    /**
      * @brief Simulate Polymer surface
      */
     virtual void simulatePolymer() {}
@@ -364,6 +370,7 @@ public:
     * @brief get bounding box coordinate from centers of glBlocks
     */
     void getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax);
+    bool hasBlinkingBlocks() { return isBlinkingBlocks;};
 };
 
 /**

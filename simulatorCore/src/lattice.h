@@ -25,36 +25,6 @@ namespace BaseSimulator {
  */
 class Lattice {
 public:
-    class OutOfLatticeInsertionException : public VisibleSimException {
-    public:
-        OutOfLatticeInsertionException(const Cell3DPosition& p)
-            {
-                stringstream ss;
-                ss <<  "Trying to insert a block out of the grid at " << p << endl;
-                m_msg = ss.str();
-            }
-    };
-
-    class DoubleInsertionException : public VisibleSimException {
-    public:
-        DoubleInsertionException(const Cell3DPosition& p) {
-            stringstream ss;
-            ss << "Trying to insert a block on non-empty cell at " << p << endl;
-            m_msg = ss.str();
-        }
-    };
-
-    class InvalidDimensionsException : public VisibleSimException {
-    public:
-        InvalidDimensionsException(const Cell3DPosition& size) {
-            stringstream ss;
-            ss << "Lattice size in any direction cannot be negative or null: "
-                << size << endl;
-            m_msg = ss.str();
-        }
-    };
-
-protected:
     static const string directionName[];
 
     map<const Cell3DPosition, Color> mapHighlightedCells;
@@ -65,20 +35,20 @@ public:
      * @param d id of the direction from which we want the opposite
      * @return id of direction opposite to d
      */
-    virtual short getOppositeDirection(short d) { return -1; }
+    virtual short getOppositeDirection(short d) const { return -1; }
     /**
      * @brief Returns the name string corresponding to direction d
      * @param d id of the direction from which we want the name
      * @return name string corresponding to direction d
      */
-    virtual string getDirectionString(short d);
+    virtual string getDirectionString(short d) const;
 
     /**
      * @brief Returns the direction in which cell neighbor is, relative to cell p
      * @param p the reference cell
      * @return a short int representing a lattice specific direction enum value
      */
-    short getDirection(const Cell3DPosition &p, const Cell3DPosition &neighbor);
+    short getDirection(const Cell3DPosition &p, const Cell3DPosition &neighbor) const;
 
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
@@ -86,14 +56,18 @@ public:
     unsigned int nbModules = 0; //!< The number of modules currently part of the lattice
 
     /**
+     * @param z if z != -1, returns the bounds for the grid at height z
+     * @note Applies only to non orthogonal coordinate systems such as SkewFCCLattice
      * @return the coordinates of the start of the grid
      */
-    virtual Cell3DPosition getGridLowerBounds() const;
+    virtual Cell3DPosition getGridLowerBounds(int z = -1) const;
 
     /**
+     * @param z if z != -1, returns the bounds for the grid at height z
+     * @note Applies only to non orthogonal coordinate systems such as SkewFCCLattice
      * @return the coordinates of the end of the grid
      */
-    virtual Cell3DPosition getGridUpperBounds() const;
+    virtual Cell3DPosition getGridUpperBounds(int z = -1) const;
 
     /**
      * @brief Abstract Lattice constructor.
@@ -114,13 +88,15 @@ public:
      * @brief Adds block bb to cell with position p of the grid
      * @param bb The block to add to the grid
      * @param p The position of the cell on which the block will be inserted
+     * @param count indicates whether the inserted modules should be counted in nbModules
      */
-    void insert(BuildingBlock* bb, const Cell3DPosition &p);
+    void insert(BuildingBlock* bb, const Cell3DPosition &p, bool count = true);
     /**
      * @brief Removes block on cell p of the grid
      * @param p The position of the block to remove
+     * @param count indicates whether the removed modules should be counted towards nbModules
      */
-    void remove(const Cell3DPosition &p);
+    void remove(const Cell3DPosition &p, bool count = true);
     /**
      * @brief Indicates if cell at position p is inside the grid
      * @param p The position of the cell to test
@@ -156,26 +132,26 @@ public:
      * @param pos The cell to consider
      * @return A vector containing the position of all alive neighbors of cell pos
      */
-    std::vector<Cell3DPosition> getActiveNeighborCells(const Cell3DPosition &pos);
+    std::vector<Cell3DPosition> getActiveNeighborCells(const Cell3DPosition &pos) const;
     /**
      * @brief Returns the location of all empty neighbor cell positions around pos
      * @param pos The cell to consider
      * @return A vector containing the position of all free cells around pos
      */
-    std::vector<Cell3DPosition> getFreeNeighborCells(const Cell3DPosition &pos);
+    std::vector<Cell3DPosition> getFreeNeighborCells(const Cell3DPosition &pos) const;
     /**
      * @brief Returns the location of all neighbor cells for cell pos
      * @param pos The cell to consider
      * @return A vector containing the position of all cells (empty and full) around pos
      */
-    std::vector<Cell3DPosition> getNeighborhood(const Cell3DPosition &pos);
+    std::vector<Cell3DPosition> getNeighborhood(const Cell3DPosition &pos) const;
     /**
      * @brief Indicates whether cells in argument are adjacent to each other
      * @param p1 the first cell
      * @param p2 the second cell
      * @return a boolean indicating whether the two cells p1 and p2 are adjacent
      */
-    bool cellsAreAdjacent(const Cell3DPosition &p1, const Cell3DPosition &p2);
+    bool cellsAreAdjacent(const Cell3DPosition &p1, const Cell3DPosition &p2) const;
 
     /**
      * @brief Returns the total number of cells on the grid
@@ -202,7 +178,7 @@ public:
      * @param pos The grid position to consider
      * @return The corresponding world position
      */
-    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos);
+    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) const;
 
     /**
      * @brief Transforms a real world position into its grid equivalent
@@ -220,7 +196,7 @@ public:
      * @brief Overriden getter to get the maximum number of neighbor a lattice cell can have
      * @return the maximum number of neighbor for the callee lattice
      */
-    virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; };
+    virtual inline const int getMaxNumNeighbors() const { return MAX_NB_NEIGHBORS; };
 
     /**
      * @brief Returns the Cell3DPosition in some direction from a reference cell
@@ -237,13 +213,64 @@ public:
      *
      * @return distance between p1 and p2
      */
-    virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2);
+    virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2) const;
 
-    virtual void glDraw() {};
+    virtual void glDraw() const {};
 
+    /**
+     * Draws a transparent shape that fills the cell at location pos, with the given color
+     * @param pos position of the cell to highlight
+     * @param color highlight color, YELLOW by default
+     */
     virtual void highlightCell(const Cell3DPosition& pos, const Color &color = YELLOW);
+
+    /**
+     * Cancels out Lattice::highlightCell for a given cell
+     * @param pos position of the cell to unhighlight
+     */
     virtual void unhighlightCell(const Cell3DPosition& pos);
+
+    /**
+     * Unhighlights all highlighted cells
+     */
     virtual void resetCellHighlights(); // Unhighlight all highlighted cells
+
+    /**
+     * Iterates over all cells in the lattice and highlights all verify the predicate
+     * @param predicate condition to verify
+     * @param color highlight color
+     */
+    void highlightAllCellsThatVerify(std::function<bool (const Cell3DPosition&)> predicate,
+                                     Color color = YELLOW);
+
+    /**
+     * Cancels out utils::highlightAllCellsThatVerify
+     * @param predicate condition to verify
+     */
+    void unhighlightAllCellsThatVerify(std::function<bool(const Cell3DPosition&)> predicate);
+
+    /**
+     * @param pos
+     * @return true if pos is blocked from insertion/removal due to motion constraints
+     */
+    virtual bool cellIsBlocked(const Cell3DPosition& pos) const { return false; }
+
+    /**
+     * @brief Returns the cell in the direction opposite to pDir relative to pRef
+     * @param d cell from which we want the opposite
+     * @param pRef cell of reference
+     * @return the cell in the direction opposite to d relative pRef
+     */
+    Cell3DPosition getOppositeCell(const Cell3DPosition& pRef,
+                                   const Cell3DPosition& pDir) const;
+
+    /**
+     * @brief Returns the cell in the direction opposite to d relative to pRef
+     * @param d id of the direction from which we want the opposite cell
+     * @param pRef cell of reference
+     * @return the cell in the direction opposite to d relative pRef
+     */
+    Cell3DPosition getOppositeCell(const Cell3DPosition& pRef, short d) const;
 };
 
 /*! @brief 2-Dimensional Lattice abstract class
@@ -290,7 +317,7 @@ public:
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
-    virtual inline const int getMaxNumNeighbors() override = 0;
+    virtual inline const int getMaxNumNeighbors() const override = 0;
 
 
     /**
@@ -342,7 +369,7 @@ public:
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
-    virtual inline const int getMaxNumNeighbors() override = 0;
+    virtual inline const int getMaxNumNeighbors() const override = 0;
 
     /**
      * @copydoc Lattice::getCellInDirection
@@ -368,10 +395,10 @@ class SLattice : public Lattice2D {
 public:
     enum Direction {North = 0, East, South, West, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
-    virtual short getOppositeDirection(short d) override;
+    virtual short getOppositeDirection(short d) const override;
     //!< @copydoc Lattice::getDirectionString
-    virtual string getDirectionString(short d) override;
-    Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
+    virtual string getDirectionString(short d) const override;
+    Cell3DPosition getNeighborRelativePos(Direction d) const override { return nCells[d]; };
 
     /**
      * @brief SLattice constructor.
@@ -407,7 +434,7 @@ public:
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
-    virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
+    virtual inline const int getMaxNumNeighbors() const override { return MAX_NB_NEIGHBORS; }
     /**
      * @copydoc Lattice::getCellInDirection
      */
@@ -444,9 +471,9 @@ public:
     enum Direction {Right = 0, TopRight = 1, TopLeft = 2,
                     Left = 3, BottomLeft = 4, BottomRight = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
-    virtual short getOppositeDirection(short d) override;
+    virtual short getOppositeDirection(short d) const override;
     //!< @copydoc Lattice::getDirectionString
-    virtual string getDirectionString(short d) override;
+    virtual string getDirectionString(short d) const override;
 
     /**
      * @brief HLattice constructor.
@@ -474,7 +501,7 @@ public:
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
-    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) override;
+    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) const override;
     /**
      * @copydoc Lattice::worldToGridPosition
      */
@@ -486,7 +513,7 @@ public:
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
-    virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
+    virtual inline const int getMaxNumNeighbors() const override { return MAX_NB_NEIGHBORS; }
     /**
      * @copydoc Lattice::getCellInDirection
      */
@@ -659,19 +686,26 @@ class FCCLattice : public Lattice3D {
     void setPlaneSides(BlockingPositionPlane plane,
                        const Cell3DPosition& pos,
                        Cell3DPosition& sideOne, Cell3DPosition& sideTwo,
-                       int d, bool evenZ);
-    bool isPositionUnblockedSide(const Cell3DPosition &pos);
-    bool isPositionUnblocked(const Cell3DPosition &pos, BlockingPositionPlane plane);
-    bool isPositionUnblockedSide(const Cell3DPosition &pos, const Cell3DPosition &ignore);
+                       int d, bool evenZ) const;
+    bool isPositionUnblockedSide(const Cell3DPosition &pos) const;
+    bool isPositionUnblocked(const Cell3DPosition &pos, BlockingPositionPlane plane) const;
+    bool isPositionUnblockedSide(const Cell3DPosition &pos, const Cell3DPosition &ignore) const;
     bool isPositionUnblocked(const Cell3DPosition &pos, const Cell3DPosition &ignore,
-                             BlockingPositionPlane plane);
+                             BlockingPositionPlane plane) const;
 public:
-    enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
-                    Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    enum Direction {
+        C0East, C1North, C2TopNE, C3TopNW,
+        C4TopSW, C5TopSE, C6West, C7South,
+        C8BottomSW,C9BottomSE, C10BottomNE, C11BottomNW,
+        MAX_NB_NEIGHBORS
+    };//!< @copydoc Lattice::Direction
+
+    // enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
+    //                 Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
-    virtual short getOppositeDirection(short d) override;
+    virtual short getOppositeDirection(short d) const override;
     //!< @copydoc Lattice::getDirectionString
-    virtual string getDirectionString(short d) override;
+    virtual string getDirectionString(short d) const override;
 
     /**
      * @brief FCCLattice constructor.
@@ -707,7 +741,7 @@ public:
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
-    virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
+    virtual inline const int getMaxNumNeighbors() const override { return MAX_NB_NEIGHBORS; }
 
     /**
      * @copydoc Lattice::getCellInDirection
@@ -716,11 +750,11 @@ public:
                                               int direction) const override;
 
     // NEIGHBORHOOD RESTRICTIONS
-    bool isPositionBlocked(const Cell3DPosition &pos);
-    bool isPositionBlocked(const Cell3DPosition &pos, const Cell3DPosition &ignore);
+    bool isPositionBlocked(const Cell3DPosition &pos) const;
+    bool isPositionBlocked(const Cell3DPosition &pos, const Cell3DPosition &ignore) const;
     // bool isPositionBlockable(const Cell3DPosition &pos);
 
-    void glDraw() override;
+    void glDraw() const override;
 };
 
 
@@ -769,18 +803,15 @@ public:
     virtual unsigned int getIndex(const Cell3DPosition &p) const override;
 
     /**
-     * @copydoc Lattice::isInGrid
-     */
-    virtual bool isInGrid(const Cell3DPosition &p) const override;
-
-    /**
      * @copydoc Lattice::getGridLowerBounds
      */
-    virtual Cell3DPosition getGridLowerBounds() const override;
+    virtual Cell3DPosition getGridLowerBounds(int z = -1) const override;
+
     /**
      * @copydoc Lattice::getGridUpperBounds
      */
-    virtual Cell3DPosition getGridUpperBounds() const override;
+    virtual Cell3DPosition getGridUpperBounds(int z = -1) const override;
+
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
@@ -807,7 +838,15 @@ public:
     /**
      * @copydoc Lattice::getCellDistance
      */
-    virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2) override;
+    virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2) const override;
+
+    /**
+     * An FCC lattice cell is blocked if there are two occupied cells on opposite directions
+     *  around the target cell.
+     * @param pos cell position to evaluate
+     * @return true is pos has two opposite cells surrounding it
+     */
+    virtual bool cellIsBlocked(const Cell3DPosition& pos) const override;
 }; // SkewFCCLattice
 
 /*! @brief 3D Simple Cubic Lattice
@@ -829,9 +868,9 @@ class SCLattice : public Lattice3D {
 public:
     enum Direction { Bottom = 0, Back = 1, Right, Left, Front, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
-    virtual short getOppositeDirection(short d) override;
+    virtual short getOppositeDirection(short d) const override;
     //!< @copydoc Lattice::getDirectionString
-    virtual string getDirectionString(short d) override;
+    virtual string getDirectionString(short d) const override;
     Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
     /**
         * @brief SCLattice constructor.
@@ -866,14 +905,17 @@ public:
     /**
      * @copydoc Lattice::getMaxNumNeighbors
      */
-    virtual inline const int getMaxNumNeighbors() override { return MAX_NB_NEIGHBORS; }
+    virtual inline const int getMaxNumNeighbors() const override { return MAX_NB_NEIGHBORS; }
 
     /**
      * @copydoc Lattice::getCellInDirection
      */
-    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef, int direction) const override;
-
-    void glDraw() override;
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction) const override;
+    /**
+     * @copydoc Lattice::glDraw
+     */
+    virtual void glDraw() const override;
 };
 
 }

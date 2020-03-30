@@ -127,12 +127,6 @@ public:
      */
     virtual const Color getTargetColor(const Cell3DPosition &pos) const = 0;
 
-    /**
-     * @brief Returns the target bounding box
-     * @param bb boundingbox to be written
-     */
-    virtual void boundingBox(BoundingBox &bb) = 0;
-
     /*
      * @brief Draw geometry of the target in the interfaces
      */
@@ -185,9 +179,6 @@ public:
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
     virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
-
-    //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb) override;
 
     virtual void highlight() const override;
     virtual void unhighlight() const override;
@@ -248,9 +239,10 @@ public:
 
 //<! @brief A target modeled as an ensemble of shapes
 class TargetCSG : public Target {
-public: // FIXME:
+public:
     CSGNode *csgRoot;
     BoundingBox bb;
+    Vector3D translate; // Can be used to to offset the origin of the CSG object by x,y,z
 protected:
     //!< @copydoc Target::print
     virtual void print(ostream& where) const override {};
@@ -258,8 +250,11 @@ public:
     TargetCSG(TiXmlNode *targetNode);
     virtual ~TargetCSG() {};
 
-    //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb) override;
+    /**
+     * @brief Returns the target bounding box
+     * @param bb boundingbox to be written
+     */
+    virtual void boundingBox(BoundingBox &bb);
     //!< @copydoc Target::isInTarget
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
@@ -288,8 +283,8 @@ public:
      * @brief Draw geometry of the target in the interfaces
      */
     virtual void glDraw() override;
-    void highlight() const override;
-    void unhighlight() const override;
+    virtual void highlight() const override;
+    virtual void unhighlight() const override;
 
 };  // class TargetCSG
 
@@ -344,9 +339,6 @@ public:
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
     virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
-
-    //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb) override;
 
     void highlight() const override {
         throw NotImplementedException("TargetSurface::highlight");

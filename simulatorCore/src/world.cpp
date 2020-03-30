@@ -145,15 +145,15 @@ void World::linkNeighbors(const Cell3DPosition &pos) {
 }
 
 
-void World::connectBlock(BuildingBlock *block) {
+void World::connectBlock(BuildingBlock *block, bool count) {
     Cell3DPosition pos = block->position;
     OUTPUT << "Connect Block " << block->blockId << " pos = " << pos << endl;
-    lattice->insert(block, pos);
+    lattice->insert(block, pos, count);
     linkBlock(pos);
     linkNeighbors(pos);
 }
 
-void World::disconnectBlock(BuildingBlock *block) {
+void World::disconnectBlock(BuildingBlock *block, bool count) {
     P2PNetworkInterface *fromBlock,*toBlock;
 
     for(int i = 0; i < block->getNbInterfaces(); i++) {
@@ -175,7 +175,7 @@ void World::disconnectBlock(BuildingBlock *block) {
         }
     }
 
-    lattice->remove(block->position);
+    lattice->remove(block->position, count);
 
     OUTPUT << getScheduler()->now() << " : Disconnect Block " << block->blockId <<
         " pos = " << block->position << endl;

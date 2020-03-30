@@ -54,6 +54,7 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
     if (contextModule) {
         cerr << TermColor::BWhite << "#"
              << contextModule->blockId << " at " << contextModule->position;
+        contextModule->setColor(BLACK);
         getWorld()->getCamera()->setTarget(contextModule->ptrGlBlock->getPosition());
     } else
         cerr << TermColor::BWhite << "NULL";
@@ -86,7 +87,7 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
 
 bool utils::assert_stack_print() {
     cerr << "--------- StackTrace ---------" << endl;
-    cerr << Backtrace(3);
+    cerr << utils::Backtrace(3);
     cerr << "--------- END ---------" << endl;
 
     return true;
@@ -134,6 +135,16 @@ void utils::swap(int* a, int* b) {
     *b = temp;
 }
 
+string utils::myBasename(const string& path) {
+    return string(myBasename(path.c_str()));
+}
+
+char *utils::myBasename(char const *path) {
+    char *s = strrchr(const_cast<char*>(path), '/');
+    if (!s) return strdup(path);
+    else return strdup(s + 1);
+}
+
 /*
  * Copyright (c) 2009-2017, Farooq Mela
  * All rights reserved.
@@ -173,7 +184,7 @@ void utils::swap(int* a, int* b) {
 #include <cxxabi.h>   // for __cxa_demangle
 
 // This function produces a stack backtrace with demangled function & method names.
-std::string Backtrace(int skip)
+std::string utils::Backtrace(int skip)
 {
     void *callstack[128];
     const int nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);

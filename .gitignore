@@ -72,10 +72,13 @@ applicationsBin/*/*.xml
 applicationsBin/*/*.ppm
 applicationsBin/*/*.png
 applicationsBin/*/*.jpg
+applicationsBin/*/*.png
 applicationsBin/*/*.jpeg
 applicationsBin/*/*.mkv
-applicationsBin/*/*.mpeg
 applicationsBin/*/*.mp4
+applicationsBin/*/*.mpeg
+applicationsBin/*/*.dat
+applicationsBin/*/*.pdf
 applicationsBin/*/animation_*/
 applicationsBin/*/Screenshots/
 

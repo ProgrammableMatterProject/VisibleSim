@@ -202,7 +202,7 @@ short Catoms3DBlock::getConnectorId(const Cell3DPosition& pos) const {
         d=x*x+y*y+z*z;
         i++;
     }
-    
+
     return d > 0.1 ? -1 : i - 1;
 }
 
@@ -221,24 +221,24 @@ bool Catoms3DBlock::areOrientationsInverted(short otherOriCode) const {
 void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(
-		new AddNeighborEvent(getScheduler()->now(), this,
-							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
+        new AddNeighborEvent(getScheduler()->now(), this,
+                             getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void Catoms3DBlock::removeNeighbor(P2PNetworkInterface *ni) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(
-		new RemoveNeighborEvent(getScheduler()->now(), this,
-								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
+        new RemoveNeighborEvent(getScheduler()->now(), this,
+                                getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
 
-Catoms3DBlock *Catoms3DBlock::getNeighborBlock(const Cell3DPosition& nPos) const {     
+Catoms3DBlock *Catoms3DBlock::getNeighborBlock(const Cell3DPosition& nPos) const {
     return static_cast<Catoms3DBlock*>(getWorld()->lattice->getBlock(nPos));
 }
 
@@ -260,11 +260,24 @@ std::bitset<12> Catoms3DBlock::getLocalNeighborhoodState() const {
     bitset<12> bitset = {0};
     const vector<Cell3DPosition> localNeighborhood =
         Catoms3DWorld::getWorld()->lattice->getNeighborhood(position);
-        
+
     for (const Cell3DPosition& nPos : localNeighborhood) {
         P2PNetworkInterface *itf = getInterface(nPos);
         bitset.set(getAbsoluteDirection(nPos), itf->isConnected());
     }
 
     return bitset;
+}
+
+void Catoms3DBlock::exportMatrix() const {
+    OUTPUT << getScheduler()->now() << "|";
+    OUTPUT << blockId << "|";
+    OUTPUT << color << "|";
+    const Matrix& m = getMatrixFromPositionAndOrientation(position, orientationCode);
+    OUTPUT << "(matrix3 "
+           << "[" << m.m[0] << "," << m.m[4] << "," << m.m[8] << "] "
+           << "[" << m.m[1] << "," << m.m[5] << "," << m.m[9] << "] "
+           << "[" << m.m[2] << "," << m.m[6] << "," << m.m[10] << "] "
+           << "[" << m.m[3] << "," << m.m[7] << "," << m.m[11] << "])"
+           << endl;
 }

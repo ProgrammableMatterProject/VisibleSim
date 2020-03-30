@@ -13,7 +13,7 @@ OS = $(shell uname -s)
 VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks -lsimOkteen -lsimDatoms -lsimNode -lsimHexanode
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL
+TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -Wsuggest-override -fno-stack-protector
 # TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 
 ifeq ($(CXX),g++)

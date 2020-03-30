@@ -22,10 +22,6 @@
 #include "utils.h"
 #include "catoms3DWorld.h"
 
-#ifdef ENABLE_MELDPROCESS
-#include "meldProcessDebugger.h"
-#endif
-
 // #define showStatsFPS	0
 
 //===========================================================================================================
@@ -363,35 +359,46 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                      << " has ended, attempting conversion" << endl;
                 // Add a script for converting into a video, asynchronously
 #ifndef WIN32
-                auto a = std::async([](const std::string& animDir){
-                               const string& vidName = generateTimestampedFilename("video", "mkv");
-                               int r = system(
-                                   string("ffmpeg -pattern_type glob -framerate 30 -i \""
-                                          + animationDirName + "/*.ppm\" " + vidName
-                                          + ">/dev/null 2>/dev/null").c_str());
-                               if (r == 0) {
-                                   system(string("rm -rf " + animationDirName).c_str());
-                                   cerr << "Animation video exported to "
-                                        << vidName << endl;
-                               } else {
-                                   cerr << animationDirName.c_str()
-                                        << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
-                               }
-                           }, animationDirName);
+                  auto a = (void)std::async([](const std::string& animDir){
+                    const string& bsname = myBasename(Simulator::configFileName);
+                    const string& vidName =
+                        generateTimestampedFilename("video_" + bsname.substr(0, bsname.size()-4), "mkv");
+                    // cout << vidName << endl;
+                    cerr << TermColor::BWhite << "running:"
+                         << TermColor::BYellow << "`ffmpeg -pattern_type glob -framerate 30 -i \""
+                        + animationDirName + "/*.jpg\" " + vidName << "`"
+                         << TermColor::Reset << endl;
+                    int r = system(
+                        string("ffmpeg -pattern_type glob -framerate 30 -i \""
+                               + animationDirName + "/*.jpg\" " + vidName
+                               + ">/dev/null 2>/dev/null").c_str());
+                    if (r == 0) {
+                        system(string("rm -rf " + animationDirName).c_str());
+                        cerr << "Animation video exported to "
+                             << vidName << endl;
+                    } else {
+                        cerr << animationDirName.c_str()
+                             << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
+                    }
+                }, animationDirName);
 #endif
             }
             saveScreenMode=!saveScreenMode;
         } break;
         case 's' : {
-            const string& ssName = generateTimestampedFilename("capture", "ppm");
+            const string& bsname = myBasename(Simulator::configFileName);
+            const string& ssName = generateTimestampedFilename("capture_" + bsname.substr(0, bsname.size()-4), "ppm");
             string ssNameJpg = ssName;
             ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
             saveScreen(ssName.c_str());
 #ifndef WIN32
-            auto a =  std::async([ssNameJpg, ssName](){
-                           system(string("convert " + ssName + " " + ssNameJpg
-                                         + " >/dev/null 2>/dev/null").c_str());
-                       });
+              auto a = (void)std::async([ssNameJpg, ssName](){
+                int r = system(string("convert " + ssName + " " + ssNameJpg
+                                      + " >/dev/null 2>/dev/null").c_str());
+                if (r == 0)
+                    system(string("rm -rf " + ssName
+                                  + " >/dev/null 2>/dev/null").c_str());
+            });
 #endif
                 cout << "Screenshot saved to files: " << ssName
                         << " and " << ssNameJpg << endl;
@@ -494,9 +501,24 @@ void GlutContext::idleFunc(void) {
         char title[32], title2[32];
         strncpy(title, animationDirName.c_str(), sizeof(title));
         strncat(title, "/save%04d.ppm", sizeof(title) - strlen(title) - 1);
-        sprintf(title2,title,num++);
-        saveScreen(title2);
+
+        sprintf(title,title,num++);
+
+        string titleStr = string(title);
+        string titleJpg = titleStr;
+        titleJpg.replace(titleStr.length() - 3, 3, "jpg");
+
+        saveScreen(title);
+
+        (void)std::async([titleJpg, titleStr](){
+                int r = system(string("convert " + titleStr + " " + titleJpg
+                                      + " >/dev/null 2>/dev/null").c_str());
+                if (r == 0)
+                    system(string("rm -rf " + titleStr
+                                  + " >/dev/null 2>/dev/null").c_str());
+        });
     }
+
     if (lastMotionTime) {
         int tm = glutGet(GLUT_ELAPSED_TIME);
         if (tm-lastMotionTime>100) {
@@ -513,7 +535,7 @@ void GlutContext::idleFunc(void) {
             glutPostRedisplay();
         }
     }
-    if (mainWindow->hasselectedGlBlock() || getScheduler()->state==Scheduler::RUNNING) {
+    if (mainWindow->hasselectedGlBlock() || getScheduler()->state==Scheduler::RUNNING || BaseSimulator::getWorld()->hasBlinkingBlocks()) {
         glutPostRedisplay(); // for blinking
     }
 }
@@ -532,10 +554,13 @@ void GlutContext::calculateFPS(void) {
 }
 
 void GlutContext::calculateSimulationInfo(void) {
-    // Calculate time step
-    timestep = round(getScheduler()->now() / (400000)); //FIXME: PTHY
+    // // Compute rotation time
+    // Time motionDuration = Rotations3D::rotationDelayMultiplier * Rotations3D::ANIMATION_DELAY;
 
-    // Update number of modules
+    // // Calculate time step
+    // timestep = round(getScheduler()->now() / (motionDuration));
+
+    // Update number of modules (disregard deletions, compensate for moving modules)
     nbModules = BaseSimulator::getWorld()->lattice->nbModules;
 }
 
@@ -565,8 +590,8 @@ void GlutContext::showSimulationInfo(void) {
 
         glColor4f(1.0,1.0,1.0,0.75);
 
-    sprintf(str,"Timestep: %lu", timestep);
-    GlutWindow::drawString(50, 50, str, font);
+    // sprintf(str,"Timestep: %lu", timestep);
+    // GlutWindow::drawString(50, 50, str, font);
 
     sprintf(str,"Nb modules: %u", nbModules);
     GlutWindow::drawString(50, 25, str, font);

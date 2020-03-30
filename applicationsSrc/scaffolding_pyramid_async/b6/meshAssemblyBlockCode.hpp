@@ -58,7 +58,7 @@ public:
     static int nbCatomsInPlace;
     static int nbMessages;
     static Time t0;
-    inline static const bool NO_FLOODING = false;
+    inline static const bool NO_FLOODING = true;
 
     // For stats export
     pair<int, string> maxBitrate;
@@ -208,7 +208,7 @@ public:
     /**
      * Dynamically builds the construction queue based on the position of the tile.
      */
-    void buildConstructionQueue();
+    std::deque<std::pair<MeshComponent, MeshComponent>> buildConstructionQueue(const Cell3DPosition& pos) const;
 
     /**
      * Indicates whether an EPL pivot module has received a TileInsertionReady message

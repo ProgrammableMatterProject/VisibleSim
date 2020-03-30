@@ -88,7 +88,7 @@ void Catoms2DRotationStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
-    Catoms2DWorld::getWorld()->disconnectBlock(rb);
+    Catoms2DWorld::getWorld()->disconnectBlock(rb, false);
 #ifdef COLOR_MOTION_DEBUG
     rb->setColor(DARKGREY);
 #endif
@@ -229,11 +229,11 @@ void Catoms2DRotationStopEvent::consume() {
     cerr << "----------" << endl;
 #endif
 
-    stringstream info;
-    info.str("");
-    info << "connect Block " << rb->blockId;
-    getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
-    wrld->connectBlock(rb);
+    // stringstream info;
+    // info.str("");
+    // info << "connect Block " << rb->blockId;
+    // getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
+    wrld->connectBlock(rb, false);
 
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(rb->stats);

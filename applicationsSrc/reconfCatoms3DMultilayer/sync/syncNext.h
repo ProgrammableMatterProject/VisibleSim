@@ -15,7 +15,7 @@ public:
     SyncNext(Catoms3D::Catoms3DBlock *c, Reconf *r) : Sync(c,r) {};
     ~SyncNext(){};
     void sync() override;
-    void response(Cell3DPosition origin)override;
+    void response(Cell3DPosition origin) override;
     void handleMessage(shared_ptr<Message> message) override;
     void handleMessageResponse(shared_ptr<Message> message) override;
     bool needSyncToLeft() override;

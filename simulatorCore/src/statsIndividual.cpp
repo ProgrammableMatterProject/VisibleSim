@@ -5,13 +5,10 @@
  */
 
 #include <cmath>
-#include <fstream>
 
 #include "statsIndividual.h"
 #include "buildingBlock.h"
 #include "world.h"
-
-//#define EXPORT_INDIVIDUAL_STATS
 
 using namespace std;
 
@@ -200,23 +197,6 @@ string StatsIndividual::getStats() {
   s += formatStat("Maximum outgoing message queue size",momqs,momqsm,momqssd,"\n");
   s += formatStat("Maximum incomming message queue size",mimqs,mimqsm,mimqssd,"\n");
   s += formatStat("Motions",m,mm,msd,"\n");
-
-#ifdef EXPORT_INDIVIDUAL_STATS
-  ofstream data;
-  data.open ("individualStats.dat", std::ios::out | std::ios::trunc);
-
-  for (it = modules.begin(); it != modules.end(); ++it) {
-    StatsIndividual *st = it->second->stats;
-    data << it->second->blockId << " "
-	 << st->sentMessages << " "
-	 << st->maxMessageQueueSize << " "
-	 << st->motions << " "
-	 << endl;
-  }
-  data.close();
-  cerr << "Individual stats exported!" << endl;
-#endif
-  
   return s;
 }
 

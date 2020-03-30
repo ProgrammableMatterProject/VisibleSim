@@ -71,6 +71,7 @@ void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId,
 
     // Finally, add block to the world
     ((Catoms3DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
 } // Catoms3D namespace
