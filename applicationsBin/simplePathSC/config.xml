@@ -1,0 +1,33 @@
+<?xml version="1.0" standalone="no" ?>
+
+<world gridSize="10,6,6" windowSize="1800,900">
+	<camera target="50,30,17" directionSpherical="-30,10,80" angle="45"/>
+	<spotlight target="100,10,80" directionSpherical="60,45,80" angle="25"/>
+
+	<blockList color="128,128,128" blockSize="10.0,10.0,10.0" ids="RANDOM" seed="200">
+		<blocksLine plane="0" line=" 1" values="0001010100"/>
+		<blocksLine plane="0" line=" 1" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="0" line=" 2" values="0011111100"/>
+		<blocksLine plane="0" line=" 3" values="0001010100"/>
+		<blocksLine plane="0" line=" 3" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="0" line=" 4" values="0011111100"/>
+		<blocksLine plane="1" line=" 1" values="0001010100" color="255,128,128"/>
+		<blocksLine plane="1" line=" 2" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="1" line=" 2" values="0001010100"/>
+		<blocksLine plane="1" line=" 3" values="0001010100" color="255,128,128"/>
+		<blocksLine plane="1" line=" 4" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="1" line=" 4" values="0001010100"/>
+		<blocksLine plane="2" line=" 1" values="0001010100"/>
+		<blocksLine plane="2" line=" 1" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="2" line=" 2" values="0011111100"/>
+		<blocksLine plane="2" line=" 3" values="0001010100"/>
+		<blocksLine plane="2" line=" 3" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="2" line=" 4" values="0011111100"/>
+		<blocksLine plane="3" line=" 1" values="0001010100" color="255,128,128"/>
+		<blocksLine plane="3" line=" 2" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="3" line=" 2" values="0001010100"/>
+		<blocksLine plane="3" line=" 3" values="0001010100" color="255,128,128"/>
+		<blocksLine plane="3" line=" 4" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="3" line=" 4" values="0001010100"/>
+	</blockList>
+</world>

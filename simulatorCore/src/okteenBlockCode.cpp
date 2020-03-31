@@ -16,13 +16,13 @@ namespace Okteen {
 
 OkteenBlockCode::OkteenBlockCode(OkteenBlock *host):BlockCode(host) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-	OUTPUT << "OkteenBlockCode constructor" << endl;
+    OUTPUT << "OkteenBlockCode constructor" << endl;
 #endif
 }
 
 OkteenBlockCode::~OkteenBlockCode() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-	OUTPUT << "OkteenBlockCode destructor" << endl;
+    OUTPUT << "OkteenBlockCode destructor" << endl;
 #endif
 }
 
@@ -35,40 +35,19 @@ void OkteenBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
 
-//cout << "event #" << pev->id << ":" << pev->eventType << endl;
+    BlockCode::processLocalEvent(pev);
+
     switch (pev->eventType) {
-        case EVENT_NI_RECEIVE: {
-            message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-    // search message id in eventFuncMap
-            multimap<int,eventFunc>::iterator im = eventFuncMap.find(message->type);
-            if (im!=eventFuncMap.end()) {
-                P2PNetworkInterface *recv_interface = message->destinationInterface;
-                (*im).second(this,message,recv_interface);
-            } else {
-                OUTPUT << "ERROR: message Id #"<< message->type << " unknown!" << endl;
-            }
-        } break;
-        case EVENT_ADD_NEIGHBOR: {
-            OUTPUT << "ADD_NEIGHBOR" << endl;
-            //startup();
-        } break;
-        case EVENT_TAP: {
-			int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
-            onTap(face);
-        } break;
         case EVENT_ROTATION3D_END: {
 #ifdef verbose
-			info.str("");
-			info << "rec.: EVENT_MOTION_END";
-			scheduler->trace(info.str(),hostBlock->blockId);
+            info.str("");
+            info << "rec.: EVENT_MOTION_END";
+            scheduler->trace(info.str(),hostBlock->blockId);
 #endif
             OkteenBlock*c3d = (OkteenBlock*)hostBlock;
             c3d->setPosition(c3d->position);
             onMotionEnd();
         }  break;
-        case EVENT_TELEPORTATION_END: {
-            onMotionEnd();
-        } break;
     }
 }
 

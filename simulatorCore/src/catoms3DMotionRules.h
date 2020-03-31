@@ -3,7 +3,7 @@
 
 #include "lattice.h"
 #include "catoms3DBlock.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 
 //!< \namespace Catoms3D
 namespace Catoms3D {
@@ -58,13 +58,13 @@ public :
 
     // inline Catoms3DLinkDirection getDirection() { return Catoms3DLinkDirection(axis1, axis2); };
 
-    /** 
+    /**
      * @param mobile Catom about to move
      * @param pivot Fixed catom that will be used as a pivot
      * @return Rotation object corresponding to this specific connector link on surface of pivot
      */
-    Rotations3D getRotations(const Catoms3DBlock* mobile, const Catoms3DBlock* pivot) const;
-    
+    Catoms3DRotation getRotations(const Catoms3DBlock* mobile, const Catoms3DBlock* pivot) const;
+
     /**
        \brief Returns an array containing the ids of the two connectors forming the link such that [fromCon, ToCon]
     **/
@@ -145,7 +145,7 @@ public:
      */
     const vector<Catoms3DMotionRulesLink*>& getMotionRulesLinksForConnector(short con);
 
-    /** 
+    /**
      * @param anchorCon latching connector to another catom
      * @param conTo connector whose direction to determine relative to anchorCon
      * @return ConnectorDirection corresponding to conTo relative to anchorCon or -1 if an input is invalid or anchorCon and conTo are not neighbor connectors
@@ -216,8 +216,8 @@ public:
     bool getValidSurfaceLinksOnCatom(const Catoms3DBlock* pivot,
                                      vector<Catoms3DMotionRulesLink*>& links);
 
-    /** 
-     * Attempts to mtach a surface link from a pivot to a connector link for a connected 
+    /**
+     * Attempts to mtach a surface link from a pivot to a connector link for a connected
      *  mobile module to follow
      * @param pivLink link to match
      * @param m module that seeks to use surface link
@@ -229,7 +229,7 @@ public:
                                          const Catoms3DBlock* m,
                                          const Catoms3DBlock* pivot);
 
-    /** 
+    /**
      * Computes and return the mirror connector of mirroringCon of m1, on the surface of m2 with m1 and m2 connected through the connector of id dockingConM1  and dockingConM2, of m1 and m2, respectively.
      * @note If m1 was to rotate from its mirroringCon connector to its dockingConM1 connector using m2 as pivot, the mirror connector of mirroringCon corresponds to the connector of m2 on which m1 is now attached.
      * @param m1 reference module. Module that wants to move.

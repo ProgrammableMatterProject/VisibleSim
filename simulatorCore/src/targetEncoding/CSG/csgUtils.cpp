@@ -3,6 +3,7 @@
 CsgUtils::~CsgUtils() {
     delete csgBuffer;
 }
+
 CSGNode* CsgUtils::readFile(string path_to_file) {
     fstream csgFile;
     csgFile.open(path_to_file, ios::binary | ios::in | ios::ate);
@@ -145,4 +146,3 @@ CSGNode* CsgUtils::readCSGNode() {
         }
     }
 }
-

@@ -25,8 +25,8 @@ class Catoms2DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureLines;
     static const int numPickingTextures = 7; /* The number of picking textures defined for
-                        this type of catom,
-                        used to deduce selected Block / face */
+                                                this type of catom,
+                                                used to deduce selected Block / face */
 
     virtual ~Catoms2DWorld();
 public:
@@ -43,43 +43,44 @@ public:
     OUTPUT << "I'm a Catoms2DWorld" << endl;
     }
 
-    virtual Catoms2DBlock* getBlockById(int bId) {
+    virtual Catoms2DBlock* getBlockById(int bId) override {
     return((Catoms2DBlock*)World::getBlockById(bId));
     }
 
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation = 0, bool master = false);
-    void loadTextures(const string &str);
+                          short orientation = 0, bool master = false) override;
+    void loadTextures(const string &str) override;
 
     /**
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
      */
-    virtual void linkBlock(const Cell3DPosition &pos);
+    virtual void linkBlock(const Cell3DPosition &pos) override;
 
     bool areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2);
     bool areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &pos2);
 
-    virtual void updateGlData(BuildingBlock*blc);
+    using World::updateGlData; // Suppresses hiding warning
+    virtual void updateGlData(BuildingBlock*blc) override;
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position);
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position, double angle);
 
     /** @copydoc World::glDraw() */
-    virtual void glDraw();
+    virtual void glDraw() override;
     /** @copydoc World::glDrawId() */
-    virtual void glDrawId();
+    virtual void glDrawId() override;
     /** @copydoc World::glDrawIdByMaterial() */
-    virtual void glDrawIdByMaterial();
+    virtual void glDrawIdByMaterial() override;
     /** @copydoc World::glDrawSpecificBg() */
-    virtual void glDrawSpecificBg();
+    virtual void glDrawSpecificBg() override;
     /** @copydoc World::createPopupMenu(int ix,int iy) */
-    virtual void createPopupMenu(int ix,int iy);
+    virtual void createPopupMenu(int ix,int iy) override;
     /** @copydoc World::setSelectedFace(int n) */
-    virtual void setSelectedFace(int n);
+    virtual void setSelectedFace(int n) override;
     /** @copydoc World::menuChoice(int n) */
-    virtual void menuChoice(int n);
+    virtual void menuChoice(int n) override;
     /** @copydoc World::exportConfiguration() */
-    virtual void exportConfiguration();
+    virtual void exportConfiguration() override;
 };
 
 inline void deleteWorld() {

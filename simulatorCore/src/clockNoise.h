@@ -29,12 +29,12 @@ public:
   virtual ~ClockNoise();
   /**
    * @brief Returns the noise for the simulation time in parameter
-   * @para simTime simulation time 
+   * @para simTime simulation time
    * @return noise
    */
   virtual clockNoise_t getNoise(Time simTime) = 0;
 };
- 
+
 /**
  * \brief class to simulate a gaussian clock noise N(mean,sd)
  */
@@ -55,15 +55,15 @@ class GClockNoise : public ClockNoise {
    */
   ~GClockNoise();
 
-  clockNoise_t getNoise(Time simTime);
+  clockNoise_t getNoise(Time simTime) override;
 };
- 
+
 /**
  * \brief class to replay clock noise from a list of data files
  */
 class DClockNoise : public ClockNoise {
   typedef pair<Time, clockNoise_t> referencePt_t;
-  typedef vector<referencePt_t> noiseSignal_t; 
+  typedef vector<referencePt_t> noiseSignal_t;
  private:
   static vector<noiseSignal_t> noiseSignals;//!< Noise signals
   unsigned int id;//!< Index of the noise in noiseSignals
@@ -71,11 +71,11 @@ class DClockNoise : public ClockNoise {
   /**
    * @brief Returns the noise for the time in parameter.
    * @para time simulation time for which we want to compute the noise.
-   * @para p1 reference point (simulation time: t_1, noise: n_1), t_1 >= time  
+   * @para p1 reference point (simulation time: t_1, noise: n_1), t_1 >= time
    * @para p2 reference point (t_2,n_2), t_2 <= time
    */
   clockNoise_t getNoise(Time time, referencePt_t p1, referencePt_t p2);
-  
+
  public:
   /**
    * @brief ClockNoise constructor.
@@ -86,14 +86,14 @@ class DClockNoise : public ClockNoise {
    * @brief GClockNoise destructor.
    */
   ~DClockNoise();
-  
-  clockNoise_t getNoise(Time simTime);
+
+  clockNoise_t getNoise(Time simTime) override;
 
   /**
    * @brief Print the noise signal (simulation time, noise value)
    */
   void print();
-  
+
   /**
    * @brief Load noise data from the set of files in parameters.
    * @para files vector of string path to files that contain noise signals

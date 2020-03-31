@@ -18,13 +18,11 @@
 #include "simulator.h"
 #include "events.h"
 #include "trace.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "utils.h"
 #include "catoms3DWorld.h"
 
-#ifdef ENABLE_MELDPROCESS
-#include "meldProcessDebugger.h"
-#endif
+// #define showStatsFPS	0
 
 //===========================================================================================================
 //
@@ -174,11 +172,11 @@ void GlutContext::passiveMotionFunc(int x,int y) {
         glutPostRedisplay();
         return;
     }
-        if (popupMenu && popupSubMenu && popupSubMenu->passiveMotionFunc(x,screenHeight - y)) {
-                glutPostRedisplay();
-                return;
-        }
-        if (mainWindow->passiveMotionFunc(x,screenHeight - y)) {
+    if (popupMenu && popupSubMenu && popupSubMenu->passiveMotionFunc(x,screenHeight - y)) {
+        glutPostRedisplay();
+        return;
+    }
+    if (mainWindow->passiveMotionFunc(x,screenHeight - y)) {
         glutPostRedisplay();
         return;
     }
@@ -212,7 +210,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             World::getWorld()->menuChoice(n);
         }
     }
-        if (popupSubMenu && popupSubMenu->isVisible) {
+    if (popupSubMenu && popupSubMenu->isVisible) {
         int n=popupSubMenu->mouseFunc(button,state,x,screenHeight - y);
         if (n) {
             popupSubMenu->show(false);
@@ -264,6 +262,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
                 int n=selectFaceFunc(x,y);
+                cout << "selectFaceFunc=" << n << endl;
                 if (n>0) {
                     BaseSimulator::getWorld()->setSelectedFace(n);
                     BaseSimulator::getWorld()->createPopupMenu(x,y);
@@ -360,78 +359,89 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                      << " has ended, attempting conversion" << endl;
                 // Add a script for converting into a video, asynchronously
 #ifndef WIN32
-                std::async([](const std::string& animDir){
-                               const string& vidName = generateTimestampedFilename("video", "mkv");
-                               int r = system(
-                                   string("ffmpeg -pattern_type glob -framerate 30 -i \""
-                                          + animationDirName + "/*.ppm\" " + vidName
-                                          + ">/dev/null 2>/dev/null").c_str());
-                               if (r == 0) {
-                                   system(string("rm -rf " + animationDirName).c_str());
-                                   cerr << "Animation video exported to "
-                                        << vidName << endl;
-                               } else {
-                                   cerr << animationDirName.c_str()
-                                        << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
-                               }
-                           }, animationDirName);
+                (void)std::async([](const std::string& animDir){
+                                     const string& bsname = myBasename(Simulator::configFileName);
+                                     const string& vidName =
+                                         generateTimestampedFilename("video_" + bsname.substr(0, bsname.size()-4), "mkv");
+                                     // cout << vidName << endl;
+                                     cerr << TermColor::BWhite << "running:"
+                                          << TermColor::BYellow << "`ffmpeg -pattern_type glob -framerate 30 -i \""
+                                         + animationDirName + "/*.jpg\" " + vidName << "`"
+                                          << TermColor::Reset << endl;
+                                     int r = system(
+                                         string("ffmpeg -pattern_type glob -framerate 30 -i \""
+                                                + animationDirName + "/*.jpg\" " + vidName
+                                                + ">/dev/null 2>/dev/null").c_str());
+                                     if (r == 0) {
+                                         system(string("rm -rf " + animationDirName).c_str());
+                                         cerr << "Animation video exported to "
+                                              << vidName << endl;
+                                     } else {
+                                         cerr << animationDirName.c_str()
+                                              << " conversion failure. Make sure that package ffmpeg is installed on your system (`sudo apt-get install ffmpeg` under Debian/Ubuntu)" << endl;
+                                     }
+                                 }, animationDirName);
 #endif
             }
             saveScreenMode=!saveScreenMode;
         } break;
         case 's' : {
-            const string& ssName = generateTimestampedFilename("capture", "ppm");
+            const string& bsname = myBasename(Simulator::configFileName);
+            const string& ssName = generateTimestampedFilename("capture_" + bsname.substr(0, bsname.size()-4), "ppm");
             string ssNameJpg = ssName;
             ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
             saveScreen(ssName.c_str());
 #ifndef WIN32
-            std::async([ssNameJpg, ssName](){
-                           system(string("convert " + ssName + " " + ssNameJpg
-                                         + " >/dev/null 2>/dev/null").c_str());
-                       });
+            (void)std::async([ssNameJpg, ssName](){
+                                          int r = system(string("convert " + ssName + " " + ssNameJpg
+                                                                + " >/dev/null 2>/dev/null").c_str());
+                                          if (r == 0)
+                                              system(string("rm -rf " + ssName
+                                                            + " >/dev/null 2>/dev/null").c_str());
+                                      });
 #endif
-                cout << "Screenshot saved to files: " << ssName
-                        << " and " << ssNameJpg << endl;
-            } break;
+            cout << "Screenshot saved to files: " << ssName
+                 << " and " << ssNameJpg << endl;
+        } break;
 
-            case 'B' : {
-                World *world = BaseSimulator::getWorld();
-                world->toggleBackground();
-            } break;
-            case 32: { // SPACE
-                Scheduler *scheduler = getScheduler();
-                scheduler->toggle_pause();
-                if (scheduler->state == Scheduler::State::PAUSED) {
-                    cout << "[t-" << scheduler->now()
-                         << "] Simulation Paused. Press <space> again to resume..." << endl;
-                } else {
-                    cout << "[t-" << scheduler->now()
-                         << "] Simulation Resumed." << endl;
-                }
-            } break;
-            case '!':
-                BaseSimulator::getWorld()->exportSTLModel("model.stl");
-                cout << "Exported STL model to file: model.stl" << endl;
-                break;
-            case '1' : case '2' : case '3' : case '4' :
-            case '5' : case '6' : case '7' : case '8' :  {
-                BuildingBlock *bb = BaseSimulator::getWorld()->getSelectedBuildingBlock();
-                if (bb) {
-                    cout << "Changed color of building block #" << bb->blockId << endl;
-                    bb->setColor(c-'0');
-                } else {
-                    cout << "Cannot change color: No selected block" << endl;
-                }
-            } break;
-            default: { // Pass on key press to user blockcode handler
-                // NOTE: Since C++ does not handle static virtual functions, we need
-                //  to get a pointer to a blockcode and call onUserKeyPressed from
-                //  this instance
-                BuildingBlock *bb = BaseSimulator::getWorld()->getSelectedBuildingBlock() ?:
-                    BaseSimulator::getWorld()->getMap().begin()->second;
-                if (bb) bb->blockCode->onUserKeyPressed(c, x, y);
-                break;
+        case 'B' : {
+            World *world = BaseSimulator::getWorld();
+            world->toggleBackground();
+        } break;
+        case 32: { // SPACE
+            Scheduler *scheduler = getScheduler();
+            scheduler->toggle_pause();
+            if (scheduler->state == Scheduler::State::PAUSED) {
+                cout << "[t-" << scheduler->now()
+                     << "] Simulation Paused. Press <space> again to resume..." << endl;
+            } else {
+                cout << "[t-" << scheduler->now()
+                     << "] Simulation Resumed." << endl;
             }
+        } break;
+        case '!':
+            BaseSimulator::getWorld()->exportSTLModel("model.stl");
+            cout << "Exported STL model to file: model.stl" << endl;
+            break;
+        case '1' : case '2' : case '3' : case '4' :
+        case '5' : case '6' : case '7' : case '8' :  {
+            BuildingBlock *bb = BaseSimulator::getWorld()->getSelectedBuildingBlock();
+            if (bb) {
+                cout << "Changed color of building block #" << bb->blockId << endl;
+                bb->setColor(c-'0');
+            } else {
+                cout << "Cannot change color: No selected block" << endl;
+            }
+        } break;
+        default: { // Pass on key press to user blockcode handler
+            // NOTE: Since C++ does not handle static virtual functions, we need
+            //  to get a pointer to a blockcode and call onUserKeyPressed from
+            //  this instance
+            BuildingBlock *bb = BaseSimulator::getWorld()->getSelectedBuildingBlock() ?:
+                BaseSimulator::getWorld()->getMap().begin()->second;
+            if (bb) bb->blockCode->onUserKeyPressed(c, x, y);
+            break;
+        }
     }
 
     glutPostRedisplay();
@@ -446,29 +456,29 @@ void GlutContext::specialFunc(int key, int x, int y)
     switch(key) {
 
         case GLUT_KEY_PAGE_UP: {
-            Rotations3D::rotationDelayMultiplier /= 1.5f;
+            Catoms3DRotation::rotationDelayMultiplier /= 1.5f;
             const float minRotationDelayMultiplier = 0.001f;
-            if (Rotations3D::rotationDelayMultiplier < minRotationDelayMultiplier) {
-                Rotations3D::rotationDelayMultiplier = minRotationDelayMultiplier;
+            if (Catoms3DRotation::rotationDelayMultiplier < minRotationDelayMultiplier) {
+                Catoms3DRotation::rotationDelayMultiplier = minRotationDelayMultiplier;
                 cout << "Max rotation speed reached: "
-                     << Rotations3D::rotationDelayMultiplier << endl;
+                     << Catoms3DRotation::rotationDelayMultiplier << endl;
             } else {
                 cout << "Increased rotation speed: "
-                     << Rotations3D::rotationDelayMultiplier << endl;
+                     << Catoms3DRotation::rotationDelayMultiplier << endl;
             }
         } break;
 
         case GLUT_KEY_PAGE_DOWN: {
             // PTHA: #TODO Should consider creating a configuration variables system
-            Rotations3D::rotationDelayMultiplier *= 1.5f;
+            Catoms3DRotation::rotationDelayMultiplier *= 1.5f;
             const float maxRotationDelayMultiplier = 10.0f;
-            if (Rotations3D::rotationDelayMultiplier > maxRotationDelayMultiplier) {
-                Rotations3D::rotationDelayMultiplier = maxRotationDelayMultiplier;
+            if (Catoms3DRotation::rotationDelayMultiplier > maxRotationDelayMultiplier) {
+                Catoms3DRotation::rotationDelayMultiplier = maxRotationDelayMultiplier;
                 cout << "Min rotation speed reached: "
-                     << Rotations3D::rotationDelayMultiplier << endl;
+                     << Catoms3DRotation::rotationDelayMultiplier << endl;
             } else {
                 cout << "Decreased rotation speed: "
-                     << Rotations3D::rotationDelayMultiplier << endl;
+                     << Catoms3DRotation::rotationDelayMultiplier << endl;
             }
         } break;
     }
@@ -488,10 +498,27 @@ void GlutContext::idleFunc(void) {
 #endif
     if (saveScreenMode) {
         static int num=0;
-        stringstream title;
-        title << animationDirName << "/save" <<  num++ << ".ppm";
-        saveScreen(title.str().c_str());
+        char title[32], title2[32];
+        strncpy(title, animationDirName.c_str(), sizeof(title));
+        strncat(title, "/save%04d.ppm", sizeof(title) - strlen(title) - 1);
+
+        sprintf(title,title2,num++);
+
+        string titleStr = string(title);
+        string titleJpg = titleStr;
+        titleJpg.replace(titleStr.length() - 3, 3, "jpg");
+
+        saveScreen(title);
+
+        (void)std::async([titleJpg, titleStr](){
+                             int r = system(string("convert " + titleStr + " " + titleJpg
+                                                   + " >/dev/null 2>/dev/null").c_str());
+                             if (r == 0)
+                                 system(string("rm -rf " + titleStr
+                                               + " >/dev/null 2>/dev/null").c_str());
+                         });
     }
+
     if (lastMotionTime) {
         int tm = glutGet(GLUT_ELAPSED_TIME);
         if (tm-lastMotionTime>100) {
@@ -508,7 +535,7 @@ void GlutContext::idleFunc(void) {
             glutPostRedisplay();
         }
     }
-    if (mainWindow->hasselectedGlBlock() || getScheduler()->state==Scheduler::RUNNING) {
+    if (mainWindow->hasselectedGlBlock() || getScheduler()->state==Scheduler::RUNNING || BaseSimulator::getWorld()->hasBlinkingBlocks()) {
         glutPostRedisplay(); // for blinking
     }
 }
@@ -527,10 +554,13 @@ void GlutContext::calculateFPS(void) {
 }
 
 void GlutContext::calculateSimulationInfo(void) {
-    // Calculate time step
-    timestep = round(getScheduler()->now() / (400000)); //FIXME: PTHY
+    // // Compute rotation time
+    // Time motionDuration = Rotations3D::rotationDelayMultiplier * Rotations3D::ANIMATION_DELAY;
 
-    // Update number of modules
+    // // Calculate time step
+    // timestep = round(getScheduler()->now() / (motionDuration));
+
+    // Update number of modules (disregard deletions, compensate for moving modules)
     nbModules = BaseSimulator::getWorld()->lattice->nbModules;
 }
 
@@ -538,30 +568,30 @@ void GlutContext::showFPS(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     char str[32];
 
-		glColor4f(1.0,1.0,1.0,0.75);
-		glPushMatrix();
-		glTranslatef(50,75,0);
-		glBegin(GL_QUADS);
-		glVertex2i(0,0);
-		glVertex2i(200,0);
-		glVertex2i(200,30);
-		glVertex2i(0,30);
-		glEnd();
-		glPopMatrix();
+    glColor4f(1.0,1.0,1.0,0.75);
+    glPushMatrix();
+    glTranslatef(50,75,0);
+    glBegin(GL_QUADS);
+    glVertex2i(0,0);
+    glVertex2i(200,0);
+    glVertex2i(200,30);
+    glVertex2i(0,30);
+    glEnd();
+    glPopMatrix();
     sprintf(str, "FPS: %4.2f", fps);
-		glColor4f(0.0,0.0,0.0,0.75);
-		GlutWindow::drawString(50, 75, str, font);
-		cout << str << endl;
+    glColor4f(0.0,0.0,0.0,0.75);
+    GlutWindow::drawString(50, 75, str, font);
+    cout << str << endl;
 }
 
 void GlutContext::showSimulationInfo(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     char str[32];
 
-		glColor4f(1.0,1.0,1.0,0.75);
+    glColor4f(1.0,1.0,1.0,0.75);
 
-    sprintf(str,"Timestep: %lu", timestep);
-    GlutWindow::drawString(50, 50, str, font);
+    // sprintf(str,"Timestep: %lu", timestep);
+    // GlutWindow::drawString(50, 50, str, font);
 
     sprintf(str,"Nb modules: %u", nbModules);
     GlutWindow::drawString(50, 25, str, font);
@@ -573,7 +603,7 @@ void GlutContext::drawFunc(void) {
 
     shadowedRenderingStep1(camera);
     glPushMatrix();
-    wrl->glDraw();
+    wrl->glDrawShadows();
     glPopMatrix();
 
     shadowedRenderingStep2(screenWidth,screenHeight);
@@ -585,7 +615,7 @@ void GlutContext::drawFunc(void) {
     shadowedRenderingStep4();
 
     // drawing of the interface
-		glEnable(GL_BLEND);
+    glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glMatrixMode(GL_PROJECTION);
@@ -604,15 +634,15 @@ void GlutContext::drawFunc(void) {
     if (helpWindow) helpWindow->glDraw();
 
 #ifdef showStatsFPS
-		glDisable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
 
     //showFPS();
-		calculateSimulationInfo();
-		showSimulationInfo();
+    calculateSimulationInfo();
+    showSimulationInfo();
 #endif
 
-		glFlush();
+    glFlush();
     glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
 }

@@ -71,19 +71,19 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 BuildingBlock::~BuildingBlock() {
     delete blockCode;
 #ifdef DEBUG_OBJECT_LIFECYCLE
-	OUTPUT << "BuildingBlock destructor" << endl;
+    OUTPUT << "BuildingBlock destructor" << endl;
 #endif
 
-	if (clock != NULL) {
-		delete clock;
-	}
+    if (clock != NULL) {
+        delete clock;
+    }
 
-	if (stats != NULL) {
-	        delete stats;
-	}
+    if (stats != NULL) {
+            delete stats;
+    }
 
-	for (P2PNetworkInterface *p2p : P2PNetworkInterfaces)
-		delete p2p;
+    for (P2PNetworkInterface *p2p : P2PNetworkInterfaces)
+        delete p2p;
 }
 
 short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
@@ -92,31 +92,31 @@ short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
     }
 
     return -1;
-}  
+}
 
 bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {
     P2PNetworkInterface *ni1, *ni2;
     ni1 = NULL;
     ni2 = NULL;
     if (!getP2PNetworkInterfaceByBlockRef(destBlock)) {
-		// creation of the new network interface
-		OUTPUT << "adding a new interface to block " << destBlock->blockId << endl;
-		ni1 = new P2PNetworkInterface(this);
-		P2PNetworkInterfaces.push_back(ni1);
+        // creation of the new network interface
+        OUTPUT << "adding a new interface to block " << destBlock->blockId << endl;
+        ni1 = new P2PNetworkInterface(this);
+        P2PNetworkInterfaces.push_back(ni1);
     }
 
     if (!destBlock->getP2PNetworkInterfaceByBlockRef(this)) {
-		// creation of the new network interface
-		OUTPUT << "adding a new interface to block " << this->blockId << endl;
-		ni2 = new P2PNetworkInterface(destBlock);
-		destBlock->P2PNetworkInterfaces.push_back(ni2);
+        // creation of the new network interface
+        OUTPUT << "adding a new interface to block " << this->blockId << endl;
+        ni2 = new P2PNetworkInterface(destBlock);
+        destBlock->P2PNetworkInterfaces.push_back(ni2);
     }
 
     if (ni1!=NULL && ni2!=NULL) {
-		ni1->connect(ni2);
-		return (true);
+        ni1->connect(ni2);
+        return (true);
     } else {
-		OUTPUT << "*** ERROR *** could not connect the new interfaces" << endl;
+        OUTPUT << "*** ERROR *** could not connect the new interfaces" << endl;
     }
     return false;
 }
@@ -125,36 +125,36 @@ bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(int destBlockId) {
     // if the link is not in the list
     BuildingBlock *destBlock = BaseSimulator::getWorld()->getBlockById(destBlockId);
     if (!getP2PNetworkInterfaceByBlockRef(destBlock)) {
-		// creation of the new network interface
-		P2PNetworkInterface* ni1 = new P2PNetworkInterface(this);
-		P2PNetworkInterfaces.push_back(ni1);
-		// if the corresponding interface exists in the connected block, we link the two interfaces
-		if (destBlock->addP2PNetworkInterfaceAndConnectTo(this)) {
-			P2PNetworkInterface* ni2 = destBlock->getP2PNetworkInterfaceByBlockRef(this);
-			ni1->connect(ni2);
-		}
+        // creation of the new network interface
+        P2PNetworkInterface* ni1 = new P2PNetworkInterface(this);
+        P2PNetworkInterfaces.push_back(ni1);
+        // if the corresponding interface exists in the connected block, we link the two interfaces
+        if (destBlock->addP2PNetworkInterfaceAndConnectTo(this)) {
+            P2PNetworkInterface* ni2 = destBlock->getP2PNetworkInterfaceByBlockRef(this);
+            ni1->connect(ni2);
+        }
     }
     return false;
 }
 
 P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlock *destBlock) const {
     for(P2PNetworkInterface *p2p : P2PNetworkInterfaces) {
-		if (p2p->connectedInterface) {
-			if (p2p->connectedInterface->hostBlock == destBlock) {
-				return p2p;
-			}
-		}
+        if (p2p->connectedInterface) {
+            if (p2p->connectedInterface->hostBlock == destBlock) {
+                return p2p;
+            }
+        }
     }
     return NULL;
 }
 
 P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destBlockId) const {
     for(P2PNetworkInterface *p2p : P2PNetworkInterfaces) {
-		if (p2p->connectedInterface) {
-			if (p2p->connectedInterface->hostBlock->blockId == destBlockId) {
-				return p2p;
-			}
-		}
+        if (p2p->connectedInterface) {
+            if (p2p->connectedInterface->hostBlock->blockId == destBlockId) {
+                return p2p;
+            }
+        }
     }
     return NULL;
 }
@@ -169,14 +169,14 @@ unsigned short BuildingBlock::getNbNeighbors() const {
       n++;
     }
   }*/
-	for (const P2PNetworkInterface* p2p : P2PNetworkInterfaces) {
-		n+=p2p->isConnected();
-	}
+    for (const P2PNetworkInterface* p2p : P2PNetworkInterfaces) {
+        n+=p2p->isConnected();
+    }
 
   return n;
 }
 
-vector<BuildingBlock*> BuildingBlock::getNeighbors() {
+vector<BuildingBlock*> BuildingBlock::getNeighbors() const {
     vector<BuildingBlock*> res;
     for (P2PNetworkInterface* p2p:P2PNetworkInterfaces) {
       if (p2p->isConnected()) {
@@ -189,9 +189,9 @@ vector<BuildingBlock*> BuildingBlock::getNeighbors() {
 
 bool BuildingBlock::getNeighborPos(short connectorId,Cell3DPosition &pos) const {
   Lattice *lattice = getWorld()->lattice;
-	vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(position);
-	pos = position + nCells[connectorId];
-	return lattice->isInGrid(pos);
+    vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(position);
+    pos = position + nCells[connectorId];
+    return lattice->isInGrid(pos);
 }
 
 
@@ -199,21 +199,21 @@ void BuildingBlock::scheduleLocalEvent(EventPtr pev) {
     localEventsList.push_back(pev);
 
     if (localEventsList.size() == 1) {
-		Time date;
-		date = max(pev->date,this->blockCode->availabilityDate); // WARNING: is blockCode->availabilityDate considered?
-		if (date < getScheduler()->now()) date=getScheduler()->now();
-		getScheduler()->schedule(new ProcessLocalEvent(date,this));
+        Time date;
+        date = max(pev->date,this->blockCode->availabilityDate); // WARNING: is blockCode->availabilityDate considered?
+        if (date < getScheduler()->now()) date=getScheduler()->now();
+        getScheduler()->schedule(new ProcessLocalEvent(date,this));
     }
     return;
 }
 
 void BuildingBlock::processLocalEvent() {
     EventPtr pev;
-    
+
     if (localEventsList.size() == 0) {
-		cerr << "*** ERROR *** The local event list should not be empty !!" << endl;
-		getScheduler()->trace("*** ERROR *** The local event list should not be empty !!");
-		exit(EXIT_FAILURE);
+        cerr << "*** ERROR *** The local event list should not be empty !!" << endl;
+        getScheduler()->trace("*** ERROR *** The local event list should not be empty !!");
+        exit(EXIT_FAILURE);
     }
     pev = localEventsList.front();
     localEventsList.pop_front();
@@ -233,7 +233,7 @@ void BuildingBlock::processLocalEvent() {
 
     if (blockCode->availabilityDate < getScheduler()->now()) blockCode->availabilityDate = getScheduler()->now();
     if (localEventsList.size() > 0) {
-		getScheduler()->schedule(new ProcessLocalEvent(blockCode->availabilityDate,this));
+        getScheduler()->schedule(new ProcessLocalEvent(blockCode->availabilityDate,this));
     }
 }
 
@@ -245,7 +245,7 @@ void BuildingBlock::setColor(int idColor) {
 
 void BuildingBlock::setColor(const Color &c) {
     if (state.load() >= ALIVE) {
-		color = c;
+        color = c;
         getWorld()->updateGlData(this);
     }
 }
@@ -304,16 +304,16 @@ Time BuildingBlock::getSimulationTime(Time localTime) const {
 unsigned short BuildingBlock::getNeighborIDForFace(int faceNum) const {
     short nodeID = P2PNetworkInterfaces[faceNum]->getConnectedBlockId();
 
-	return nodeID > 0  ? (unsigned short)nodeID : 0;
+    return nodeID > 0  ? (unsigned short)nodeID : 0;
 }
 
 int BuildingBlock::getFaceForNeighborID(int nId) const {
-	for (unsigned int face = 0; face < P2PNetworkInterfaces.size(); face++) {
-		if (nId == getNeighborIDForFace(face))
-			return face;
-	}
+    for (unsigned int face = 0; face < P2PNetworkInterfaces.size(); face++) {
+        if (nId == getNeighborIDForFace(face))
+            return face;
+    }
 
-	return -1;
+    return -1;
 }
 
 } // BaseSimulator namespace

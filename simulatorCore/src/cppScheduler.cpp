@@ -169,8 +169,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
         StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
         // if simulation is a regression testing run, export configuration before leaving
-        if (Simulator::regrTesting && !terminate.load())
+        if ((Simulator::regrTesting or Simulator::exportFinalConfiguration)
+            && !terminate.load()) {
             getWorld()->exportConfiguration();
+        }
 
         // if autoStop is enabled, terminate simulation
         if (willAutoStop() && !terminate.load()) {

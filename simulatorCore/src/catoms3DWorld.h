@@ -59,18 +59,21 @@ class Catoms3DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
     Catoms3DMotionRules *motionRules;
+    inline static const int numPickingTextures = 13; /* The number of picking textures defined
+                                                        for this type of catom,
+                                                        used to deduce selected Block / face */
 //Nurbs surface
 /*	GLfloat sknots[S_NUMKNOTS] =
     {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
-	GLfloat tknots[T_NUMKNOTS] = {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
+    GLfloat tknots[T_NUMKNOTS] = {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
 
-	GLfloat ctlpoints[S_NUMPOINTS][T_NUMPOINTS][4] = {
+    GLfloat ctlpoints[S_NUMPOINTS][T_NUMPOINTS][4] = {
     {{0.0,0.0,0.0,45.},{0.0,45.0,0.0,45.},{0.0,90.0,0.0,45.},{0.0,135.0,0.0,45.},{0.0,180.0,0.0,45.}},
     {{45.0,0.0,0.0,45.},{45.0,45.0,0.0,45.},{45.0,90.0,0.0,45.},{45.0,135.0,0.0,45.},{45.0,180.0,0.0,45.}},
     {{90.0,0.0,0.0,45.},{90.0,45.0,270.0,45.},{90.0,90.0,0.0,45.},{90.0,135.0,0.0,45.},{90.0,180.0,0.0,45.}},
     {{135.0,0.0,0.0,45.},{135.0,45.0,0.0,45.},{135.0,90.0,0.0,45.},{135.0,135.0,90.0,45.},{135.0,180.0,0.0,45.}},
     {{180.0,0.0,0.0,45.},{180.0,45.0,0.0,45.},{180.0,90.0,0.0,45.},{180.0,135.0,0.0,45.},{180.0,180.0,0.0,45.}},
-	};
+    };
 */
 
 //Nurbs car
@@ -152,12 +155,12 @@ public:
         OUTPUT << "I'm a Catoms3DWorld" << endl;
     }
 
-    virtual Catoms3DBlock* getBlockById(int bId) {
+    virtual Catoms3DBlock* getBlockById(int bId) override {
         return((Catoms3DBlock*)World::getBlockById(bId));
     }
 
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation, bool master);
+                          short orientation, bool master) override;
 
     inline Catoms3DMotionRules *getMotionRules() { return motionRules; };
 
@@ -165,34 +168,37 @@ public:
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
      */
-    virtual void linkBlock(const Cell3DPosition &pos);
+    virtual void linkBlock(const Cell3DPosition &pos) override;
 
-    virtual void glDraw();
-    virtual void glDrawId();
-    virtual void glDrawIdByMaterial();
-    virtual void glDrawSpecificBg();
-    void updateGlData(BuildingBlock *bb);
+    virtual void glDraw() override;
+    virtual void glDrawId() override;
+    virtual void glDrawIdByMaterial() override;
+    virtual void glDrawSpecificBg() override;
+    virtual void updateGlData(BuildingBlock *bb) override;
+
+    using World::updateGlData; // Suppresses hiding warning
+    void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
+    void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
     void updateGlData(Catoms3DBlock*blc,const Color &color);
     void updateGlData(Catoms3DBlock*blc, bool visible);
     void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
-    void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
-    void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
-    virtual void setSelectedFace(int n);
-    virtual void exportConfiguration();
 
-    virtual void createPopupMenu(int ix, int iy);
-    virtual void menuChoice(int n);
+    virtual void setSelectedFace(int n) override;
+    virtual void exportConfiguration() override;
+
+    virtual void createPopupMenu(int ix, int iy) override;
+    virtual void menuChoice(int n) override;
 /**
  * \brief Export a 3D model in STL format to print the whole configuration
  * \param title : title of the STL file
  * \result Returns true if the faces was well written
  */
-    virtual bool exportSTLModel(string title);
+    virtual bool exportSTLModel(string title) override;
 
 /**
  * \brief load the background textures (internal)
  */
-    void loadTextures(const string &str);
+    void loadTextures(const string &str) override;
 };
 
 inline void deleteWorld() {

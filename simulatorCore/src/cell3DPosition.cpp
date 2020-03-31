@@ -26,19 +26,22 @@ double Cell3DPosition::l2_norm() const {
     return sqrt(pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2]);
 }
 
-Cell3DPosition& Cell3DPosition::addX(short x) {
-    pt[0] += x;
-    return *this;
+Cell3DPosition Cell3DPosition::offsetX(short x) const {
+    Cell3DPosition r(*this);
+    r.pt[0] += x;
+    return r;
 }
 
-Cell3DPosition& Cell3DPosition::addY(short y) {
-    pt[1] += y;
-    return *this;
+Cell3DPosition Cell3DPosition::offsetY(short y) const {
+    Cell3DPosition r(*this);
+    r.pt[1] += y;
+    return r;
 }
 
-Cell3DPosition& Cell3DPosition::addZ(short z) {
-    pt[2] += z;
-    return *this;
+Cell3DPosition Cell3DPosition::offsetZ(short z) const {
+    Cell3DPosition r(*this);
+    r.pt[2] += z;
+    return r;
 }
 
 ostream& operator<<(ostream& f,const Cell3DPosition&p) {

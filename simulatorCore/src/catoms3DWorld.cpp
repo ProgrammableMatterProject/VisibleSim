@@ -17,8 +17,9 @@
 #include "catoms3DMotionEngine.h"
 #include "trace.h"
 #include "configExporter.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "simulator.h"
+#include "catoms3DSimulator.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -42,9 +43,8 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
     if (GlutContext::GUIisEnabled) {
 /* Toggle to use catoms3D with max connector size (no rotation) but very simple models*/
 #define CATOMS3D_TEXTURE_ID 0
-#define UseC3DSkewFCC 0
 
-#if CATOMS3D_TEXTURE_ID == 1 // Standard, no conID
+#if CATOMS3D_TEXTURE_ID == 1 // Standard, but w/o conID
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2.obj");
         objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");
 #elif CATOMS3D_TEXTURE_ID == 2 // w/ coordinates
@@ -58,18 +58,17 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
         objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");
 #endif
 
-#if UseC3DSkewFCC == 1
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D_Zinc.obj");
-#else
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
-#endif
+        if (Catoms3DSimulator::getSimulator()->useSkewedFCCLattice)
+            objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D_Zinc.obj");
+        else
+            objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
     }
 
-#if UseC3DSkewFCC == 1
-    lattice = new SkewFCCLattice(gridSize,gridScale.hasZero() ? defaultBlockSize : gridScale);
-#else
-    lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
-#endif
+    if (Catoms3DSimulator::getSimulator()->useSkewedFCCLattice)
+        lattice = new SkewFCCLattice(gridSize,gridScale.hasZero() ?
+                                     defaultBlockSize : gridScale);
+    else lattice = new FCCLattice(gridSize, gridScale.hasZero() ?
+                                  defaultBlockSize : gridScale);
 
     motionRules = new Catoms3DMotionRules();
 }
@@ -110,7 +109,7 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 
   // update rotateSubMenu depending on rotation catoms3DCapabilities
     Catoms3DBlock *bb = (Catoms3DBlock *)getSelectedBuildingBlock();
-    vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> tab = Catoms3DMotionEngine::getAllRotationsForModule(bb);
+    vector<std::pair<const Catoms3DMotionRulesLink*, Catoms3DRotation>> tab = Catoms3DMotionEngine::getAllRotationsForModule(bb);
     int nbreMenus=tab.size();
     if (nbreMenus==0) {
             ((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(false);
@@ -195,14 +194,14 @@ void Catoms3DWorld::menuChoice(int n) {
                 GlutContext::popupSubMenu->show(false);
                 GlutContext::popupMenu->show(false);
                 // if (getScheduler()->state == RUNNING) {
-                // scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(), bb, Rotations3D r));
+                // scheduler->schedule(new Catoms3DRotationStartEvent(getScheduler()->now(), bb, Catoms3DRotation r));
                 // } else {
                 Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
                 short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
                 Catoms3DWorld *wrld = getWorld();
-                wrld->disconnectBlock(bb);
+                wrld->disconnectBlock(bb, false);
                 bb->setPositionAndOrientation(pos,orient);
-                wrld->connectBlock(bb);
+                wrld->connectBlock(bb, false);
                 //}
             } else World::menuChoice(n); // For all non-catoms2D-specific cases
         break;
@@ -226,7 +225,8 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     rng.seed(Simulator::getSimulator()->getCmdLine().getSimulationSeed());
     std::uniform_int_distribution<std::mt19937::result_type> u500(0,500);
     // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + u500(rng), catom));
-    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
+    // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
+    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + 1000, catom));
 
     Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
@@ -434,7 +434,7 @@ void Catoms3DWorld::glDrawIdByMaterial() {
     lock();
     int n;
     for (const auto& pair : mapGlBlocks) {
-        n = pair.first*13;
+        n = pair.first*numPickingTextures;
         ((Catoms3DGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
@@ -595,8 +595,8 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrix &mat) {
 }
 
 void Catoms3DWorld::setSelectedFace(int n) {
-    numSelectedGlBlock = n/13;
-    string name = objBlockForPicking->getObjMtlName(n%13);
+    numSelectedGlBlock = n/numPickingTextures;
+    string name = objBlockForPicking->getObjMtlName(n%numPickingTextures);
 
     if (name == "Material__66") numSelectedFace = 0;
     else if (name == "Material__68") numSelectedFace = 1;
@@ -611,10 +611,10 @@ void Catoms3DWorld::setSelectedFace(int n) {
     else if (name == "Material__69") numSelectedFace = 10;
     else if (name == "Material__70") numSelectedFace = 11;
     else {
-        cerr << "warning: Unrecognized picking face" << endl;
+        // cerr << "warning: Unrecognized picking face" << endl;
         numSelectedFace = 13;	// UNDEFINED
     }
-    cerr << name << " => " << numSelectedFace << endl;
+    // cerr << name << " => " << numSelectedFace << endl;
 }
 
 void Catoms3DWorld::exportConfiguration() {

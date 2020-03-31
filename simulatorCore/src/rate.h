@@ -4,7 +4,7 @@
 #include "random.h"
 
 namespace BaseSimulator {
-  
+
      class Rate {
      public:
           Rate();
@@ -23,7 +23,7 @@ namespace BaseSimulator {
           StaticRate(const StaticRate &sr);
           ~StaticRate();
 
-          double get();
+          double get() override;
      };
 
      class RandomRate : public Rate {
@@ -34,8 +34,8 @@ namespace BaseSimulator {
           RandomRate(doubleRNG &g);
           RandomRate(const RandomRate &rr);
           ~RandomRate();
-  
-          double get();
+
+          double get() override;
      };
 
 }

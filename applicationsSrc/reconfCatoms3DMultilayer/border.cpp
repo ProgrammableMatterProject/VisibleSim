@@ -3,22 +3,22 @@
 bool Border::isPlaneSeed(Cell3DPosition catomPos)
 {
     // To avoid line cases
-    if (couldBeSeed(catomPos.addX(1)) || couldBeSeed(catomPos.addY(-1)))
+    if (couldBeSeed(catomPos.offsetX(1)) || couldBeSeed(catomPos.offsetY(-1)))
         return false;
 
-    if (isSeedBorderOnNextPlane(catomPos.addZ(1))) {
+    if (isSeedBorderOnNextPlane(catomPos.offsetZ(1))) {
         return true;
     }
 
     if (isSeedBorderOnCurrentPlane(catomPos)) {
         return true;
-        //Cell3DPosition initialPos = getCurrentBorderForNextPlane(catomPos).addZ(1);
+        //Cell3DPosition initialPos = getCurrentBorderForNextPlane(catomPos).offsetZ(1);
         //Cell3DPosition currentPos = initialPos;
         //int idx = getIdxForBorder(currentPos);
         //int nTurns = 0;
         //nTurns += Border::getNextBorderNeighbor(idx, currentPos);
         //while (currentPos != initialPos) {
-            //if (isSeedBorderOnNextPlane(currentPos) && BlockCode::target->isInTarget(currentPos.addZ(-1)))
+            //if (isSeedBorderOnNextPlane(currentPos) && BlockCode::target->isInTarget(currentPos.offsetZ(-1)))
                 //return false;
             //nTurns += getNextBorderNeighbor(idx, currentPos);
         //}
@@ -29,15 +29,15 @@ bool Border::isPlaneSeed(Cell3DPosition catomPos)
 
 bool Border::couldBeSeed(Cell3DPosition pos)
 {
-    if (BlockCode::target->isInTarget(pos) && BlockCode::target->isInTarget(pos.addZ(1)))
-        if (isOnBorder(pos) || isOnBorder(pos.addZ(1)))
+    if (BlockCode::target->isInTarget(pos) && BlockCode::target->isInTarget(pos.offsetZ(1)))
+        if (isOnBorder(pos) || isOnBorder(pos.offsetZ(1)))
             return true;
     return false;
 }
 
 bool Border::isSeedBorderOnCurrentPlane(Cell3DPosition pos)
 {
-    if (BlockCode::target->isInTarget(pos.addZ(1)) && isOnBorder(pos) && isLowestOfBorderOnCurrentPlane(pos))
+    if (BlockCode::target->isInTarget(pos.offsetZ(1)) && isOnBorder(pos) && isLowestOfBorderOnCurrentPlane(pos))
         return true;
     return false;
 }
@@ -56,7 +56,7 @@ bool Border::isLowestOfBorderOnCurrentPlane(Cell3DPosition pos) {
     nTurns += getNextBorderNeighbor(idx, currentPos);
     while(currentPos != pos) {
         if ((currentPos[1] < pos[1] ||
-                (currentPos[1] == pos[1] && currentPos[0] > pos[0])) && BlockCode::target->isInTarget(currentPos.addZ(1))) {
+                (currentPos[1] == pos[1] && currentPos[0] > pos[0])) && BlockCode::target->isInTarget(currentPos.offsetZ(1))) {
             return false;
         }
         nTurns += getNextBorderNeighbor(idx, currentPos);
@@ -68,10 +68,10 @@ bool Border::isLowestOfBorderOnCurrentPlane(Cell3DPosition pos) {
 bool Border::isOnBorder(Cell3DPosition pos)
 {
     if (BlockCode::target->isInTarget(pos) &&
-        (!BlockCode::target->isInTarget(pos.addX(-1)) ||
-        !BlockCode::target->isInTarget(pos.addX(1)) ||
-        !BlockCode::target->isInTarget(pos.addY(-1)) ||
-        !BlockCode::target->isInTarget(pos.addY(1))))
+        (!BlockCode::target->isInTarget(pos.offsetX(-1)) ||
+        !BlockCode::target->isInTarget(pos.offsetX(1)) ||
+        !BlockCode::target->isInTarget(pos.offsetY(-1)) ||
+        !BlockCode::target->isInTarget(pos.offsetY(1))))
         return true;
     return false;
 }
@@ -83,7 +83,7 @@ bool Border::isLowestOfBorderOnNextPlane(Cell3DPosition pos) {
     nTurns += getNextBorderNeighbor(idx, currentPos);
     while(currentPos != pos) {
         if ((currentPos[1] < pos[1] ||
-                (currentPos[1] == pos[1] && currentPos[0] > pos[0])) && BlockCode::target->isInTarget(currentPos.addZ(-1)))
+                (currentPos[1] == pos[1] && currentPos[0] > pos[0])) && BlockCode::target->isInTarget(currentPos.offsetZ(-1)))
         {
             return false;
 
@@ -100,7 +100,7 @@ Cell3DPosition Border::getCurrentBorderForNextPlane(Cell3DPosition catomPos)
     int idx = getIdxForBorder(currentPos);
     getNextBorderNeighbor(idx, currentPos);
     while (currentPos != catomPos) {
-        Cell3DPosition nextPlanePos = currentPos.addZ(1);
+        Cell3DPosition nextPlanePos = currentPos.offsetZ(1);
         if (BlockCode::target->isInTarget(nextPlanePos) &&
                 isOnBorder(nextPlanePos))
             return currentPos;
@@ -114,8 +114,8 @@ int Border::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
     int newIdx;
     for (int i = 0; i < 4; i++) {
         newIdx = (((idx+i-1)%4)+4)%4;
-        Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
-                                          .addY(ccw_order[newIdx].second);
+        Cell3DPosition nextPos = currentPos.offsetX(ccw_order[newIdx].first)
+                                          .offsetY(ccw_order[newIdx].second);
         if (BlockCode::target->isInTarget(nextPos)) {
             idx = newIdx;
             currentPos = nextPos;
@@ -133,83 +133,83 @@ int Border::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
 
 int Border::getIdxForBorder(Cell3DPosition pos) {
     if (isOnBorder(pos)  && BlockCode::target->isInTarget(pos)) {
-        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-            BlockCode::target->isInTarget(pos.addY(1)) &&
-            !BlockCode::target->isInTarget(pos.addX(-1)) &&
-            BlockCode::target->isInTarget(pos.addX(1)))
+        if (BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(1)))
             return 0;
-        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-            !BlockCode::target->isInTarget(pos.addY(1)) &&
-            BlockCode::target->isInTarget(pos.addX(-1)) &&
-            BlockCode::target->isInTarget(pos.addX(1)))
+        if (BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(1)))
             return 3;
-        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-            BlockCode::target->isInTarget(pos.addY(1)) &&
-            BlockCode::target->isInTarget(pos.addX(-1)) &&
-            !BlockCode::target->isInTarget(pos.addX(1)))
+        if (BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(1)))
             return 2;
-        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-            BlockCode::target->isInTarget(pos.addY(1)) &&
-            BlockCode::target->isInTarget(pos.addX(-1)) &&
-            BlockCode::target->isInTarget(pos.addX(1)))
+        if (!BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(1)))
             return 1;
         // 2 empty neighbors
-        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-            !BlockCode::target->isInTarget(pos.addY(1)) &&
-            !BlockCode::target->isInTarget(pos.addX(-1)) &&
-            BlockCode::target->isInTarget(pos.addX(1)))
+        if (BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(1)))
             return 3;
-        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-            BlockCode::target->isInTarget(pos.addY(1)) &&
-            !BlockCode::target->isInTarget(pos.addX(-1)) &&
-            BlockCode::target->isInTarget(pos.addX(1)))
+        if (!BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(1)))
             return 0;
-        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-            BlockCode::target->isInTarget(pos.addY(1)) &&
-            BlockCode::target->isInTarget(pos.addX(-1)) &&
-            !BlockCode::target->isInTarget(pos.addX(1)))
+        if (!BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(1)))
             return 1;
-        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-            !BlockCode::target->isInTarget(pos.addY(1)) &&
-            BlockCode::target->isInTarget(pos.addX(-1)) &&
-            !BlockCode::target->isInTarget(pos.addX(1)))
+        if (BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(1)))
             return 2;
-        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-            !BlockCode::target->isInTarget(pos.addY(1)) &&
-            BlockCode::target->isInTarget(pos.addX(-1)) &&
-            BlockCode::target->isInTarget(pos.addX(1)))
+        if (!BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(1)))
             return 0;
         // critical case?
-        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-            BlockCode::target->isInTarget(pos.addY(1)) &&
-            !BlockCode::target->isInTarget(pos.addX(-1)) &&
-            !BlockCode::target->isInTarget(pos.addX(1)))
+        if (BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(1)))
             return 2;
-        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-            BlockCode::target->isInTarget(pos.addY(1)) &&
-            !BlockCode::target->isInTarget(pos.addX(-1)) &&
-            BlockCode::target->isInTarget(pos.addX(1)))
+        if (!BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(1)))
             return 1;
         // 3 empty neighbors
-        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-            BlockCode::target->isInTarget(pos.addY(1)) &&
-            !BlockCode::target->isInTarget(pos.addX(-1)) &&
-            !BlockCode::target->isInTarget(pos.addX(1)))
+        if (!BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(1)))
             return 0;
-        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-            !BlockCode::target->isInTarget(pos.addY(1)) &&
-            !BlockCode::target->isInTarget(pos.addX(-1)) &&
-            BlockCode::target->isInTarget(pos.addX(1)))
+        if (!BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(1)))
             return 3;
-        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
-            !BlockCode::target->isInTarget(pos.addY(1)) &&
-            !BlockCode::target->isInTarget(pos.addX(-1)) &&
-            !BlockCode::target->isInTarget(pos.addX(1)))
+        if (BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(1)))
             return 2;
-        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
-            !BlockCode::target->isInTarget(pos.addY(1)) &&
-            BlockCode::target->isInTarget(pos.addX(-1)) &&
-            !BlockCode::target->isInTarget(pos.addX(1)))
+        if (!BlockCode::target->isInTarget(pos.offsetY(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetY(1)) &&
+            BlockCode::target->isInTarget(pos.offsetX(-1)) &&
+            !BlockCode::target->isInTarget(pos.offsetX(1)))
             return 1;
     }
     return 0;

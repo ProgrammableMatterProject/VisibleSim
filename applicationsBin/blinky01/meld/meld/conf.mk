@@ -1,2 +1,0 @@
-RELEASE = true
-INTERFACE = false

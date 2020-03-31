@@ -4,11 +4,11 @@
     <spotlight target="200,200,120" directionSpherical="125,40,1500" angle="30" near="80.0" far="2500.0"/>
     <blockList color="128,128,128" blocksize="1,1,1">
 
-		<block position="20,40,1" orientation="0"/>
-	</blockList>
+                <block position="20,40,1" orientation="0"/>
+        </blockList>
   <targetList>
     <target format="csg">
-        <csg content="
+        <csg offset="true" content="
 scale([2,2,2])
 union() {
     difference() {

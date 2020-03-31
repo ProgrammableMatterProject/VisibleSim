@@ -39,9 +39,9 @@ void DeformationStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     DatomsBlock *datom = (DatomsBlock *)concernedBlock;
-    DatomsWorld::getWorld()->disconnectBlock(datom);
+    DatomsWorld::getWorld()->disconnectBlock(datom, false);
 
-		//    datom->setColor(DARKGREY);
+    //    datom->setColor(DARKGREY);
     deform.init();
     scheduler->schedule(new DeformationStepEvent(scheduler->now() + COM_DELAY,datom, deform));
 }
@@ -128,7 +128,7 @@ void DeformationStopEvent::consume() {
     info.str("");
     info << "connect Block " << datom->blockId;
     getScheduler()->trace(info.str(),datom->blockId,LIGHTBLUE);
-    wrld->connectBlock(datom);
+    wrld->connectBlock(datom, false);
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new DeformationEndEvent(scheduler->now() + COM_DELAY, datom));
 }
@@ -174,10 +174,10 @@ const string DeformationEndEvent::getEventName() {
 //
 //===========================================================================================================
 Deformation::Deformation(const DatomsBlock *mobile,const DatomsBlock *pivot,const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2,PistonId mid,PistonId pid, vector<pair<DatomsBlock*,PistonId>> blockingModules) {
-	ptrPivot = pivot;
-	ptrMobile = mobile;
-	mobileShape = mid;
-	pivotShape = pid;
+    ptrPivot = pivot;
+    ptrMobile = mobile;
+    mobileShape = mid;
+    pivotShape = pid;
     copy(blockingModules.begin(), blockingModules.end(),std::back_inserter(animated));
 
     setup(C1,V1,C2,V2);
@@ -220,26 +220,26 @@ void Deformation::setup(const Vector3D &C1,const Vector3D &V1,const Vector3D &C2
 }
 
 bool Deformation::nextStep(Matrix &m) {
-	step++;
-	cout << getScheduler()->now() << ":" << step << endl;
-	DatomsWorld *wrl = DatomsWorld::getWorld();
-	switch (step) {
-		case 1: 
-			m = initialMatrix;
+    step++;
+    cout << getScheduler()->now() << ":" << step << endl;
+    DatomsWorld *wrl = DatomsWorld::getWorld();
+    switch (step) {
+        case 1:
+            m = initialMatrix;
             for (pair<const DatomsBlock*,PistonId> data:animated) {
                 wrl->updateGlData(data.first,data.second);
             }
         break;
-		case 2:
-			m = interMatrix;
-			wrl->updateGlData(ptrMobile,mobileShape);
-			wrl->updateGlData(ptrPivot,pivotShape);
-		break;
-		case 3: 
-			m = finalMatrix;
-			wrl->updateGlData(ptrMobile,AllPistonsOff);
-			wrl->updateGlData(ptrPivot,AllPistonsOff);
-		break;
+        case 2:
+            m = interMatrix;
+            wrl->updateGlData(ptrMobile,mobileShape);
+            wrl->updateGlData(ptrPivot,pivotShape);
+        break;
+        case 3:
+            m = finalMatrix;
+            wrl->updateGlData(ptrMobile,AllPistonsOff);
+            wrl->updateGlData(ptrPivot,AllPistonsOff);
+        break;
         case 4:
             m = finalMatrix;
             for (pair<const DatomsBlock*,PistonId> data:animated) {
@@ -248,15 +248,14 @@ bool Deformation::nextStep(Matrix &m) {
             break;
 
     }
-	return step==4;
+    return step==4;
 }
 
 void Deformation::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
-	Vector3D p(0,0,0,1),q = finalMatrix * p;
+    Vector3D p(0,0,0,1),q = finalMatrix * p;
 
-	//OUTPUT << "final=" << q << endl;
-	position = Datoms::getWorld()->lattice->worldToGridPosition(q);
-	//OUTPUT << "final grid=" << position << " verif=" << Datoms::getWorld()->lattice->gridToWorldPosition(position) << endl;
-	orientation=DatomsBlock::getOrientationFromMatrix(finalMatrix);
+    //OUTPUT << "final=" << q << endl;
+    position = Datoms::getWorld()->lattice->worldToGridPosition(q);
+    //OUTPUT << "final grid=" << position << " verif=" << Datoms::getWorld()->lattice->gridToWorldPosition(position) << endl;
+    orientation=DatomsBlock::getOrientationFromMatrix(finalMatrix);
 }
-

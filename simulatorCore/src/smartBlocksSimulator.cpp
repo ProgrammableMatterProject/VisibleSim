@@ -54,6 +54,7 @@ void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockC
 
     // Finally, add block to the world
     ((SmartBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
+    world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
 } // SmartBlocks namespace

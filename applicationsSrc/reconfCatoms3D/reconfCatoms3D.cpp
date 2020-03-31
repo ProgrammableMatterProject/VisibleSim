@@ -14,18 +14,18 @@ using namespace std;
 using namespace Catoms3D;
 
 int main(int argc, char **argv) {
-	cout << "\033[1;33m" << "Starting Catoms3D simulation (main) ..." << "\033[0m" << endl;
+    cout << "\033[1;33m" << "Starting Catoms3D simulation (main) ..." << "\033[0m" << endl;
 
-	createSimulator(argc, argv, ReconfCatoms3DBlockCode::buildNewBlockCode);
-	getSimulator()->printInfo();
-	BaseSimulator::getWorld()->printInfo();
+    createSimulator(argc, argv, ReconfCatoms3DBlockCode::buildNewBlockCode);
+    getSimulator()->printInfo();
+    BaseSimulator::getWorld()->printInfo();
 
     cout << "Number of messages to get initial info: " << NeighborMessages::nMessagesGetInfo << endl;
     cout << "Number of messages to get permission to add blocks: " << Neighborhood::numberMessagesToAddBlock << endl;
     cout << "Number of messages to sync: " << Sync::nMessagesSync << endl;
     cout << "Number of messages to sync response: " << Sync::nMessagesSyncResponse << endl;
-	deleteSimulator();
-	return(0);
+    deleteSimulator();
+    return(0);
 }
 
 void printXML()

@@ -16,17 +16,14 @@ namespace Catoms3D {
 class Catoms3DGlBlock:public GlBlock {
 protected :
 public :
-    //GLfloat theta,phi,psi; //!< spherical coordinates angles in degree
     Matrix mat{};
 
-	Catoms3DGlBlock(bID id) : GlBlock(id) {};
-	virtual ~Catoms3DGlBlock() {};
+    Catoms3DGlBlock(bID id) : GlBlock(id) {};
+    virtual ~Catoms3DGlBlock() {};
 
-	//void setAngles(float t,float p,float f);
-
-	void glDraw(ObjLoader::ObjLoader *ptrObj);
-	void glDrawId(ObjLoader::ObjLoader *ptrObj,int n);
-	void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n);
+    void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+    void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;
+    void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) override;
 };
 }
 #endif /* CATOMS3DGLBLOCK_H_ */

@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="50,50,30">
+
+  <blockList color="128,128,128" blocksize="10,10,10">
+    <block position="3,3,3" color="0,255,255" orientation="11" />
+  </blockList>
+
+    <targetList>
+      <target format="csg" >
+        <csg boundingBox="true" translate="5,5,2" content="
+scale([1, 1, 0.8])
+union() {
+  cube([12, 42, 13.5], true);
+  cube([42, 12, 13.5], true);
+        }"/>
+      </target>
+    </targetList>
+
+</world>

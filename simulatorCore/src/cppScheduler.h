@@ -17,35 +17,35 @@
 
 class CPPScheduler : public BaseSimulator::Scheduler {
 protected:
-	CPPScheduler();
-	virtual ~CPPScheduler();
-	void* startPaused(/*void *param */);
+    CPPScheduler();
+    virtual ~CPPScheduler();
+    void* startPaused(/*void *param */);
 
 public:
-	static void createScheduler();
-	static void deleteScheduler();
-	static CPPScheduler* getScheduler() {
-		assert(scheduler != NULL);
-		return((CPPScheduler*)scheduler);
-	}
+    static void createScheduler();
+    static void deleteScheduler();
+    static CPPScheduler* getScheduler() {
+        assert(scheduler != NULL);
+        return((CPPScheduler*)scheduler);
+    }
 
-	void printInfo() {
-		OUTPUT << "I'm a CPPScheduler" << endl;
-	}
+    void printInfo() override {
+        OUTPUT << "I'm a CPPScheduler" << endl;
+    }
 
-	void waitForSchedulerEnd() {
-		schedulerThread->join();
-	}
+    void waitForSchedulerEnd() {
+        schedulerThread->join();
+    }
 
-	inline int getMode() { return schedulerMode; }
+    inline int getMode() { return schedulerMode; }
 };
 
 inline void createScheduler() {
-	CPPScheduler::createScheduler();
+    CPPScheduler::createScheduler();
 }
 
 inline void deleteScheduler() {
-	CPPScheduler::deleteScheduler();
+    CPPScheduler::deleteScheduler();
 }
 
 inline CPPScheduler* getScheduler() { return(CPPScheduler::getScheduler()); }

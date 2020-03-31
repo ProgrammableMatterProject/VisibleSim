@@ -9,11 +9,11 @@ AddTupleMessage::AddTupleMessage(tuple_t tpl, unsigned int s) : Message(){
       type = ADD_TUPLE_MSG_ID;
 }
 
-unsigned int AddTupleMessage::size(){
+unsigned int AddTupleMessage::size() const {
       return messageSize;
 }
 
-string AddTupleMessage::getMessageName(){
+string AddTupleMessage::getMessageName() const {
       return "Add Tuple Message";
 }
 
@@ -23,11 +23,11 @@ RemoveTupleMessage::RemoveTupleMessage(tuple_t tpl, unsigned int s) : Message(){
       type = REMOVE_TUPLE_MSG_ID;
 }
 
-unsigned int RemoveTupleMessage::size(){
+unsigned int RemoveTupleMessage::size() const {
       return messageSize;
 }
 
-string RemoveTupleMessage::getMessageName(){
+string RemoveTupleMessage::getMessageName() const {
       return "Remove Tuple Message";
 }
 

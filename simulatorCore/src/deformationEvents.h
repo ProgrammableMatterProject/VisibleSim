@@ -28,14 +28,14 @@ public :
     \param pid : geometrical model id for pivot module
     */
     Deformation(const DatomsBlock *mobile,const DatomsBlock *fixe,const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2,PistonId mid,PistonId  pid, vector<pair<DatomsBlock*,PistonId>> blockingModules);
-	Deformation() {};
+    Deformation() {};
 
-	void setup(const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2);
+    void setup(const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2);
 
-	void init() {
-		step=0;
-	}
-	
+    void init() {
+        step=0;
+    }
+
 
 /**
     \brief Return current transformation matrix in m
@@ -50,12 +50,13 @@ public :
     bool nextStep(Matrix &m);
     void getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation);
 
-	PistonId mobileShape,pivotShape;
-	const DatomsBlock *ptrPivot,*ptrMobile;
+    PistonId mobileShape,pivotShape;
+    const DatomsBlock *ptrPivot,*ptrMobile;
+    uint8_t modelId;
 protected :
-	short step;
-	Matrix initialMatrix,interMatrix,finalMatrix;
-	Vector3D Caxis0,Caxis1,Vaxis0,Vaxis1;
+    short step;
+    Matrix initialMatrix,interMatrix,finalMatrix;
+    Vector3D Caxis0,Caxis1,Vaxis0,Vaxis1;
     vector<pair<DatomsBlock*,PistonId>> animated;
 };
 
@@ -68,12 +69,12 @@ protected :
 class DeformationStartEvent : public BlockEvent {
     Deformation deform;
 public:
-	DeformationStartEvent(Time, DatomsBlock *block,const Deformation& r);
-	DeformationStartEvent(DeformationStartEvent *ev);
-	~DeformationStartEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    DeformationStartEvent(Time, DatomsBlock *block,const Deformation& r);
+    DeformationStartEvent(DeformationStartEvent *ev);
+    ~DeformationStartEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -85,11 +86,11 @@ public:
 class DeformationStepEvent : public BlockEvent {
     Deformation deform;
 public:
-	DeformationStepEvent(Time, DatomsBlock *block,const Deformation& r);
-	DeformationStepEvent(DeformationStepEvent *ev); ~DeformationStepEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    DeformationStepEvent(Time, DatomsBlock *block,const Deformation& r);
+    DeformationStepEvent(DeformationStepEvent *ev); ~DeformationStepEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -101,12 +102,12 @@ public:
 class DeformationStopEvent : public BlockEvent {
     Deformation deform;
 public:
-	DeformationStopEvent(Time, DatomsBlock *block,const Deformation& r);
-	DeformationStopEvent(DeformationStepEvent *ev);
-	~DeformationStopEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    DeformationStopEvent(Time, DatomsBlock *block,const Deformation& r);
+    DeformationStopEvent(DeformationStepEvent *ev);
+    ~DeformationStopEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -117,12 +118,12 @@ public:
 
 class DeformationEndEvent : public BlockEvent {
 public:
-	DeformationEndEvent(Time, DatomsBlock *block);
-	DeformationEndEvent(DeformationEndEvent *ev);
-	~DeformationEndEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    DeformationEndEvent(Time, DatomsBlock *block);
+    DeformationEndEvent(DeformationEndEvent *ev);
+    ~DeformationEndEvent();
+    void consumeBlockEvent() override {}
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 #endif /* DEFORMATIONEVENTS_H_ */

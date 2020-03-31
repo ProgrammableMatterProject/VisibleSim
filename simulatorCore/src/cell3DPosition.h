@@ -29,9 +29,9 @@ public:
     string to_string() const;
     string config_print() const;
 
-    Cell3DPosition& addX(short x);
-    Cell3DPosition& addY(short y);
-    Cell3DPosition& addZ(short z);
+    Cell3DPosition offsetX(short x) const;
+    Cell3DPosition offsetY(short y) const;
+    Cell3DPosition offsetZ(short z) const;
 
     inline const short operator[](const int i) const { return pt[i]; };
     bool operator<(const Cell3DPosition &o) const;

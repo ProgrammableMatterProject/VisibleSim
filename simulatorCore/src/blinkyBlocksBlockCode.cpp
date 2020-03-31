@@ -15,14 +15,13 @@ namespace BlinkyBlocks {
 
 BlinkyBlocksBlockCode::BlinkyBlocksBlockCode(BlinkyBlocksBlock *host):BlockCode(host) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-	OUTPUT << "BlinkyBlocksBlockCode constructor" << endl;
+    OUTPUT << "BlinkyBlocksBlockCode constructor" << endl;
 #endif
 }
 
 BlinkyBlocksBlockCode::~BlinkyBlocksBlockCode() {
-#ifdef DEBUG_OBJECT_LIFECYCLE    
-	OUTPUT << "BlinkyBlocksBlockCode destructor" << endl;
+#ifdef DEBUG_OBJECT_LIFECYCLE
+    OUTPUT << "BlinkyBlocksBlockCode destructor" << endl;
 #endif
 }
-
 }

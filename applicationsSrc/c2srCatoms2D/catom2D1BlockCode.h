@@ -19,7 +19,7 @@
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  public:
   static SimulationParameters simParams;
-  
+
   Scheduler *scheduler;
   Catoms2D::Catoms2DBlock *catom2D;
 
@@ -28,19 +28,19 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
 
   // Distributed map construction
   Map* map;
-  
+
   // C2SR
   C2SR* c2sr;
-  
-  void startup();
-  void processLocalEvent(EventPtr pev);
-  
+
+  void startup() override;
+  void processLocalEvent(EventPtr pev) override;
+
   void setSimulationParameters();
   void setCommunicationRate();
   void setMotionSpeed();
 
   void scheduleC2SRStart();
-  
+
   static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
