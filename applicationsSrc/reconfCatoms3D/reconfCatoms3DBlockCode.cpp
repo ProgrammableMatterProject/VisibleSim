@@ -34,8 +34,9 @@ ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
 }
 
 void ReconfCatoms3DBlockCode::startup() {
-    //if (catom->blockId == 1)
-        //srand(time(NULL));
+    // if (catom->blockId == 1) {
+    //     srand(time(NULL));
+    // }
 
     /* Run with the planning algorithm */
     planningRun();
@@ -77,8 +78,8 @@ void ReconfCatoms3DBlockCode::startTree() {
         reconf->syncPlaneNodeParent = SyncPlane_node_manager::root;
     }
     else {
-        if (Catoms3DWorld::getWorld()->getBlockByPosition(catom->position.addZ(-1)) != NULL) {
-            ReconfCatoms3DBlockCode *neighborBlockCode = (ReconfCatoms3DBlockCode*)Catoms3DWorld::getWorld()->getBlockByPosition(catom->position.addZ(-1))->blockCode;
+        if (Catoms3DWorld::getWorld()->getBlockByPosition(catom->position.offsetZ(-1)) != NULL) {
+            ReconfCatoms3DBlockCode *neighborBlockCode = (ReconfCatoms3DBlockCode*)Catoms3DWorld::getWorld()->getBlockByPosition(catom->position.offsetZ(-1))->blockCode;
             reconf->syncPlaneNodeParent = neighborBlockCode->reconf->syncPlaneNode;
         }
     }
@@ -197,22 +198,22 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         break;
     }
     case ADDLEFTBLOCK_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addX(-1));
+        neighborhood->addNeighbor(catom->position.offsetX(-1));
         getStats();
         break;
     }
     case ADDRIGHTBLOCK_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addX(1));
+        neighborhood->addNeighbor(catom->position.offsetX(1));
         getStats();
         break;
     }
     case ADDNEXTLINE_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addY(1));
+        neighborhood->addNeighbor(catom->position.offsetY(1));
         getStats();
         break;
     }
     case ADDPREVIOUSLINE_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addY(-1));
+        neighborhood->addNeighbor(catom->position.offsetY(-1));
         getStats();
         break;
     }
@@ -307,8 +308,8 @@ void ReconfCatoms3DBlockCode::planeContinue()
 void ReconfCatoms3DBlockCode::removeSeed()
 {
     if (!reconf->isPlaneParent) {
-        if (catom->getInterface(catom->position.addZ(-1))->isConnected()) {
-            ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockByPosition(catom->position.addZ(-1))->blockCode;
+        if (catom->getInterface(catom->position.offsetZ(-1))->isConnected()) {
+            ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockByPosition(catom->position.offsetZ(-1))->blockCode;
             SyncPlane_node_manager::root->remove(otherCatom->reconf->syncPlaneNode, otherCatom->reconf->syncPlaneNodeParent);
         }
     }

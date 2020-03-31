@@ -87,7 +87,7 @@ void NeighborMessages::handleNewCatomPlaneParentResponseMsg(MessagePtr message)
 void NeighborMessages::sendMessageToGetParentInfo()
 {
     for (int i = 0; i < 2; i++) {
-        Cell3DPosition neighborPosition = (i == 0) ? catom->position.addX(-1) : catom->position.addX(1);
+        Cell3DPosition neighborPosition = (i == 0) ? catom->position.offsetX(-1) : catom->position.offsetX(1);
         New_catom_message *msg = new New_catom_message;
         if (i == 0)
             msg->lineParentDirection = TO_LEFT;
@@ -105,13 +105,13 @@ void NeighborMessages::sendMessageToGetLineParentInfo()
     New_catom_line_parent_message *msg = new New_catom_line_parent_message;
     Cell3DPosition neighborPosition;
 
-    neighborPosition = catom->position.addY(1);
+    neighborPosition = catom->position.offsetY(1);
     if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
         nMessagesGetInfo++;
     }
 
-    neighborPosition = catom->position.addY(-1);
+    neighborPosition = catom->position.offsetY(-1);
     if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
         nMessagesGetInfo++;
@@ -123,13 +123,13 @@ void NeighborMessages::sendMessageToGetPlaneParentInfo()
     New_catom_plane_parent_message *msg = new New_catom_plane_parent_message;
     Cell3DPosition neighborPosition;
 
-    neighborPosition = catom->position.addZ(1);
+    neighborPosition = catom->position.offsetZ(1);
     if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
         nMessagesGetInfo++;
     }
 
-    neighborPosition = catom->position.addZ(-1);
+    neighborPosition = catom->position.offsetZ(-1);
     if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
         nMessagesGetInfo++;
@@ -166,7 +166,7 @@ void NeighborMessages::sendMessagePlaneFinishedAck()
         int x = coordinates[i].first;
         int y = coordinates[i].second;
         Plane_finished_ack_message *msg = new Plane_finished_ack_message();
-        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(x).addY(y))));
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.offsetX(x).offsetY(y))));
     }
 }
 
@@ -192,6 +192,6 @@ void NeighborMessages::broadcastMessageParentPlaneFinished()
     for (int i = 0; i < 4; i++) {
         int x = coordinates[i].first;
         int y = coordinates[i].second;
-        sendMessageParentPlaneFinished(catom->position.addX(x).addY(y));
+        sendMessageParentPlaneFinished(catom->position.offsetX(x).offsetY(y));
     }
 }

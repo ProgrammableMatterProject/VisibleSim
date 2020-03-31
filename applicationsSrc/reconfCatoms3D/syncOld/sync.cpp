@@ -16,11 +16,11 @@ Sync::~Sync()
 
 void Sync::sync() {
     if (reconf->needSyncToLeftNext()) {
-        SyncModel syncModel(catom->blockId, catom->position.addX(-1).addY(-1));
+        SyncModel syncModel(catom->blockId, catom->position.offsetX(-1).offsetY(-1));
         syncLeft->syncSeed(syncModel, TO_PREVIOUS);
     }
     if (reconf->needSyncToRightNext()) {
-        SyncModel syncModel(catom->blockId, catom->position.addX(1).addY(1));
+        SyncModel syncModel(catom->blockId, catom->position.offsetX(1).offsetY(1));
 //        syncRight->syncSeed(syncModel, TO_PREVIOUS);
     }
 }

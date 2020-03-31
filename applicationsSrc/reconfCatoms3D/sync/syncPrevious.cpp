@@ -3,7 +3,7 @@
 #define MSG_TIME 0
 
 void SyncPrevious::sync() {
-    shared_ptr<SyncPrevious_message> message(new SyncPrevious_message(3, catom->position.addX(1).addY(1), catom->position));
+    shared_ptr<SyncPrevious_message> message(new SyncPrevious_message(3, catom->position.offsetX(1).offsetY(1), catom->position));
     handleMessage(message);
 }
 
@@ -13,20 +13,20 @@ void SyncPrevious::response(Cell3DPosition origin) {
 }
 
 bool SyncPrevious::needSyncToLeft() {
-    if (catom->getInterface(catom->position.addY(-1))->isConnected())
+    if (catom->getInterface(catom->position.offsetY(-1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(-1)) &&
-            BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1))) {
+    if (!BlockCode::target->isInTarget(catom->position.offsetX(-1)) &&
+            BlockCode::target->isInTarget(catom->position.offsetX(-1).offsetY(-1))) {
         BoundingBox bb;
         static_cast<TargetCSG*>(BlockCode::target)->boundingBox(bb);
 
-        for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToCSGPosition(catom->position.addX(-i))[0] < bb.P1[0]; i++) {
-            if (!BlockCode::target->isInTarget(catom->position.addX(-i)) &&
-                BlockCode::target->isInTarget(catom->position.addX(-i).addY(-1)))
+        for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToCSGPosition(catom->position.offsetX(-i))[0] < bb.P1[0]; i++) {
+            if (!BlockCode::target->isInTarget(catom->position.offsetX(-i)) &&
+                BlockCode::target->isInTarget(catom->position.offsetX(-i).offsetY(-1)))
                 continue;
-            if (BlockCode::target->isInTarget(catom->position.addX(-i)) &&
-                BlockCode::target->isInTarget(catom->position.addX(-i).addY(-1)) )
+            if (BlockCode::target->isInTarget(catom->position.offsetX(-i)) &&
+                BlockCode::target->isInTarget(catom->position.offsetX(-i).offsetY(-1)) )
                 return isInternalBorder(3);
             return false;
         }
@@ -35,13 +35,13 @@ bool SyncPrevious::needSyncToLeft() {
 }
 
 bool SyncPrevious::needSyncToRight() {
-    if (catom->getInterface(catom->position.addX(1))->isConnected())
+    if (catom->getInterface(catom->position.offsetX(1))->isConnected())
         return false;
 
-    if (catom->getInterface(catom->position.addX(1))->connectedInterface == NULL &&
-            !BlockCode::target->isInTarget(catom->position.addY(1)) &&
-            BlockCode::target->isInTarget(catom->position.addX(1)) &&
-            BlockCode::target->isInTarget(catom->position.addX(1).addY(1)) )
+    if (catom->getInterface(catom->position.offsetX(1))->connectedInterface == NULL &&
+            !BlockCode::target->isInTarget(catom->position.offsetY(1)) &&
+            BlockCode::target->isInTarget(catom->position.offsetX(1)) &&
+            BlockCode::target->isInTarget(catom->position.offsetX(1).offsetY(1)) )
         return isInternalBorder(3);
     return false;
 }
@@ -50,8 +50,8 @@ void SyncPrevious::handleMessage(shared_ptr<Message> message) {
     shared_ptr<SyncPrevious_message> syncMsg = static_pointer_cast<SyncPrevious_message>(message);
     for (int i = 0; i < 4; i++) {
         int idx = (((syncMsg->idx+i-1)%4)+4)%4;
-        Cell3DPosition pos = catom->position.addX(ccw_order[idx].first)
-                                            .addY(ccw_order[idx].second);
+        Cell3DPosition pos = catom->position.offsetX(ccw_order[idx].first)
+                                            .offsetY(ccw_order[idx].second);
         P2PNetworkInterface *p2p = catom->getInterface(pos);
         if (BlockCode::target->isInTarget(pos) && !p2p->isConnected()) {
             SyncPrevious_message *msg = new SyncPrevious_message(idx, syncMsg->goal, syncMsg->origin);
@@ -73,8 +73,8 @@ void SyncPrevious::handleMessageResponse(shared_ptr<Message> message) {
     shared_ptr<SyncPrevious_response_message> syncMsg = static_pointer_cast<SyncPrevious_response_message>(message);
     for (int i = 0; i < 4; i++) {
         int idx = (((syncMsg->idx+i-1)%4)+4)%4;
-        Cell3DPosition pos = catom->position.addX(cw_order[idx].first)
-                                            .addY(cw_order[idx].second);
+        Cell3DPosition pos = catom->position.offsetX(cw_order[idx].first)
+                                            .offsetY(cw_order[idx].second);
         P2PNetworkInterface *p2p = catom->getInterface(pos);
         if (p2p->isConnected()) {
             SyncPrevious_response_message *msg = new SyncPrevious_response_message(idx, syncMsg->origin);

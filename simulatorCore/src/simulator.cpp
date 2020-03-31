@@ -926,6 +926,8 @@ void Simulator::parseBlockList() {
             BoundingBox bb;
             bool boundingBox = true;
             element->QueryBoolAttribute("boundingBox", &boundingBox);
+            bool offsetBoundingBox = true;
+            element->QueryBoolAttribute("offset", &offsetBoundingBox);
 
             char* csgBin = CSGParser::parseCsg(str);
             CsgUtils csgUtils;
@@ -943,15 +945,15 @@ void Simulator::parseBlockList() {
                         position.set(ix,iy,iz);
                         csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
-#ifdef OFFSET_BOUNDINGBOX
-                        csgPos.pt[0] += bb.P0[0] - 1.0;
-                        csgPos.pt[1] += bb.P0[1] - 1.0;
-                        csgPos.pt[2] += bb.P0[2] - 1.0;
-#else
-                        csgPos.pt[0] += bb.P0[0];
-                        csgPos.pt[1] += bb.P0[1];
-                        csgPos.pt[2] += bb.P0[2];
-#endif
+                        if (offsetBoundingBox) {
+                            csgPos.pt[0] += bb.P0[0] - 1.0;
+                            csgPos.pt[1] += bb.P0[1] - 1.0;
+                            csgPos.pt[2] += bb.P0[2] - 1.0;
+                        } else {
+                            csgPos.pt[0] += bb.P0[0];
+                            csgPos.pt[1] += bb.P0[1];
+                            csgPos.pt[2] += bb.P0[2];
+                        }
 
                         if (world->lattice->isInGrid(position)
                             and csgRoot->isInside(csgPos, color)) {

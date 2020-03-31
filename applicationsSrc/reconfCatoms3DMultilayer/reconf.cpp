@@ -32,11 +32,11 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 
 bool Reconf::isInternalSeedNext()
 {
-    if (catom->getInterface(catom->position.addY(1))->isConnected())
+    if (catom->getInterface(catom->position.offsetY(1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(1).addY(1)) &&
-            BlockCode::target->isInTarget(catom->position.addY(1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.offsetX(1).offsetY(1)) &&
+            BlockCode::target->isInTarget(catom->position.offsetY(1)) ){
         return true;
     }
     return false;
@@ -44,11 +44,11 @@ bool Reconf::isInternalSeedNext()
 
 bool Reconf::isInternalSeedPrevious()
 {
-    if (catom->getInterface(catom->position.addY(-1))->isConnected())
+    if (catom->getInterface(catom->position.offsetY(-1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1)) &&
-            BlockCode::target->isInTarget(catom->position.addY(-1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.offsetX(-1).offsetY(-1)) &&
+            BlockCode::target->isInTarget(catom->position.offsetY(-1)) ){
         return true;
     }
     return false;
@@ -56,11 +56,11 @@ bool Reconf::isInternalSeedPrevious()
 
 bool Reconf::isBorderSeedNext()
 {
-    if (catom->getInterface(catom->position.addY(1))->isConnected())
+    if (catom->getInterface(catom->position.offsetY(1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(1)) &&
-        BlockCode::target->isInTarget(catom->position.addY(1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.offsetX(1)) &&
+        BlockCode::target->isInTarget(catom->position.offsetY(1)) ){
         return true;
     }
     return false;
@@ -68,11 +68,11 @@ bool Reconf::isBorderSeedNext()
 
 bool Reconf::isBorderSeedPrevious()
 {
-    if (catom->getInterface(catom->position.addY(-1))->isConnected())
+    if (catom->getInterface(catom->position.offsetY(-1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(-1)) &&
-        BlockCode::target->isInTarget(catom->position.addY(-1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.offsetX(-1)) &&
+        BlockCode::target->isInTarget(catom->position.offsetY(-1)) ){
         return true;
     }
     return false;
@@ -95,16 +95,16 @@ bool Reconf::arePreviousPlaneNeighborsComplete()
 {
     Cell3DPosition neighbors[4];
     if (catom->position[2] % 2) {
-        neighbors[0] = catom->position.addZ(-1).addX(1);
-        neighbors[1] = catom->position.addZ(-1);
-        neighbors[2] = catom->position.addZ(-1).addY(1);
-        neighbors[3] = catom->position.addZ(-1).addX(1).addY(1);
+        neighbors[0] = catom->position.offsetZ(-1).offsetX(1);
+        neighbors[1] = catom->position.offsetZ(-1);
+        neighbors[2] = catom->position.offsetZ(-1).offsetY(1);
+        neighbors[3] = catom->position.offsetZ(-1).offsetX(1).offsetY(1);
     }
     else {
-        neighbors[0] = catom->position.addZ(-1).addX(-1);
-        neighbors[1] = catom->position.addZ(-1);
-        neighbors[2] = catom->position.addZ(-1).addY(-1);
-        neighbors[3] = catom->position.addZ(-1).addX(-1).addY(-1);
+        neighbors[0] = catom->position.offsetZ(-1).offsetX(-1);
+        neighbors[1] = catom->position.offsetZ(-1);
+        neighbors[2] = catom->position.offsetZ(-1).offsetY(-1);
+        neighbors[3] = catom->position.offsetZ(-1).offsetX(-1).offsetY(-1);
     }
     for (int i = 0; i < 4; i++) {
         if (BlockCode::target->isInTarget(neighbors[i]) &&
@@ -118,12 +118,12 @@ bool Reconf::canAddNextPlaneSeed()
 {
     Cell3DPosition neighbors[2];
     if (catom->position[2] % 2) {
-        neighbors[0] = catom->position.addY(-1);
-        neighbors[1] = catom->position.addX(-1);
+        neighbors[0] = catom->position.offsetY(-1);
+        neighbors[1] = catom->position.offsetX(-1);
     }
     else {
-        neighbors[0] = catom->position.addY(1);
-        neighbors[1] = catom->position.addX(1);
+        neighbors[0] = catom->position.offsetY(1);
+        neighbors[1] = catom->position.offsetX(1);
     }
 
     for (int i = 0; i < 2; i++) {
@@ -149,10 +149,10 @@ bool Reconf::isOnBorder()
 {
     Cell3DPosition pos = catom->position;
     if (BlockCode::target->isInTarget(pos) &&
-        (!BlockCode::target->isInTarget(pos.addX(-1)) ||
-        !BlockCode::target->isInTarget(pos.addX(1)) ||
-        !BlockCode::target->isInTarget(pos.addY(-1)) ||
-        !BlockCode::target->isInTarget(pos.addY(1))))
+        (!BlockCode::target->isInTarget(pos.offsetX(-1)) ||
+        !BlockCode::target->isInTarget(pos.offsetX(1)) ||
+        !BlockCode::target->isInTarget(pos.offsetY(-1)) ||
+        !BlockCode::target->isInTarget(pos.offsetY(1))))
         return true;
     return false;
 }
@@ -160,14 +160,13 @@ bool Reconf::isOnBorder()
 bool Reconf::areNeighborsPlaced()
 {
     Cell3DPosition pos = catom->position;
-    if (BlockCode::target->isInTarget(pos.addX(-1)) && !catom->getInterface(pos.addX(-1))->isConnected())
+    if (BlockCode::target->isInTarget(pos.offsetX(-1)) && !catom->getInterface(pos.offsetX(-1))->isConnected())
         return false;
-    if (BlockCode::target->isInTarget(pos.addX(1)) && !catom->getInterface(pos.addX(1))->isConnected())
+    if (BlockCode::target->isInTarget(pos.offsetX(1)) && !catom->getInterface(pos.offsetX(1))->isConnected())
         return false;
-    if (BlockCode::target->isInTarget(pos.addY(-1)) && !catom->getInterface(pos.addY(-1))->isConnected())
+    if (BlockCode::target->isInTarget(pos.offsetY(-1)) && !catom->getInterface(pos.offsetY(-1))->isConnected())
         return false;
-    if (BlockCode::target->isInTarget(pos.addY(1)) && !catom->getInterface(pos.addY(1))->isConnected())
+    if (BlockCode::target->isInTarget(pos.offsetY(1)) && !catom->getInterface(pos.offsetY(1))->isConnected())
         return false;
     return true;
 }
-

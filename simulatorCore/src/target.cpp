@@ -329,6 +329,8 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     string str = element->Attribute("content");
     bool boundingBox=true;
     element->QueryBoolAttribute("boundingBox", &boundingBox);
+    offsetBoundingBox = false;
+    element->QueryBoolAttribute("offset", &offsetBoundingBox);
 
     char* csgBin = CSGParser::parseCsg(str);
     CsgUtils csgUtils;
@@ -348,20 +350,18 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     if (boundingBox) csgRoot->boundingBox(bb);
 }
 
-//#define OFFSET_BOUNDINGBOX
-
 Vector3D TargetCSG::gridToCSGPosition(const Cell3DPosition &pos) const {
     Vector3D res = getWorld()->lattice->gridToUnscaledWorldPosition(pos);
 
-#ifdef OFFSET_BOUNDINGBOX
-    res.pt[0] += bb.P0[0] - 1.0 - translate.pt[0];
-    res.pt[1] += bb.P0[1] - 1.0 - translate.pt[1];
-    res.pt[2] += bb.P0[2] - 1.0 - translate.pt[2];
-#else
-    res.pt[0] += bb.P0[0] - translate.pt[0];
-    res.pt[1] += bb.P0[1] - translate.pt[1];
-    res.pt[2] += bb.P0[2] - translate.pt[2];
-#endif
+    if (offsetBoundingBox) {
+        res.pt[0] += bb.P0[0] - 1.0 - translate.pt[0];
+        res.pt[1] += bb.P0[1] - 1.0 - translate.pt[1];
+        res.pt[2] += bb.P0[2] - 1.0 - translate.pt[2];
+    } else {
+        res.pt[0] += bb.P0[0] - translate.pt[0];
+        res.pt[1] += bb.P0[1] - translate.pt[1];
+        res.pt[2] += bb.P0[2] - translate.pt[2];
+    }
 
     // cout << "gridToWorldPosition" << pos << " -> " << res << endl;
 
@@ -371,15 +371,15 @@ Vector3D TargetCSG::gridToCSGPosition(const Cell3DPosition &pos) const {
 Cell3DPosition TargetCSG::CSGToGridPosition(const Vector3D &pos) const {
     Vector3D unboundPos = pos;
 
-#ifdef OFFSET_BOUNDINGBOX
-    unboundPos.pt[0] -= bb.P0[0] + 1.0 + translate.pt[0];
-    unboundPos.pt[1] -= bb.P0[1] + 1.0 + translate.pt[1];
-    unboundPos.pt[2] -= bb.P0[2] + 1.0 + translate.pt[2];
-#else
-    unboundPos.pt[0] -= bb.P0[0] + translate.pt[0];
-    unboundPos.pt[1] -= bb.P0[1] + translate.pt[1];
-    unboundPos.pt[2] -= bb.P0[2] + translate.pt[2];
-#endif
+    if (offsetBoundingBox) {
+        unboundPos.pt[0] -= bb.P0[0] + 1.0 + translate.pt[0];
+        unboundPos.pt[1] -= bb.P0[1] + 1.0 + translate.pt[1];
+        unboundPos.pt[2] -= bb.P0[2] + 1.0 + translate.pt[2];
+    } else {
+        unboundPos.pt[0] -= bb.P0[0] + translate.pt[0];
+        unboundPos.pt[1] -= bb.P0[1] + translate.pt[1];
+        unboundPos.pt[2] -= bb.P0[2] + translate.pt[2];
+    }
 
     Cell3DPosition res = getWorld()->lattice->unscaledWorldToGridPosition(unboundPos);
     return res;

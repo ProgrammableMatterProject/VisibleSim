@@ -243,6 +243,7 @@ public:
     CSGNode *csgRoot;
     BoundingBox bb;
     Vector3D translate; // Can be used to to offset the origin of the CSG object by x,y,z
+    bool offsetBoundingBox; // Offsets entire CSG target by (1,1,1)
 protected:
     //!< @copydoc Target::print
     virtual void print(ostream& where) const override {};

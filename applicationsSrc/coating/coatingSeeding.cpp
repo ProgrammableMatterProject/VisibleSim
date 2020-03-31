@@ -14,26 +14,26 @@ bool Seeding::isNorthSeed(const Cell3DPosition& pos) const {
     // cout << "isInG(" << pos << "): " << isInG(pos) << endl;
     // cout << "isNorthLineOnMerge(" << pos << "): " << isNorthLineOnMerge(pos) << endl;
     // cout << "isInG(" << pos.addY(1) << "): " << isInG(pos.addY(1)) << endl;
-    // cout << "isInG(" << pos.addX(1).addY(1) << "): "
-    //      << isInG(pos.addX(1).addY(1)) << endl;
-    // cout << "isInG(" << pos.addX(1) << "): " << isInG(pos.addX(1)) << endl;
+    // cout << "isInG(" << pos.offsetX(1).addY(1) << "): "
+    //      << isInG(pos.offsetX(1).addY(1)) << endl;
+    // cout << "isInG(" << pos.offsetX(1) << "): " << isInG(pos.offsetX(1)) << endl;
 
     return isInG(pos) and
-        not isSouthLineOnMerge(pos) and isInG(pos.addY(1))
-        and (not isInG(pos.addX(1).addY(1)) or not isInG(pos.addX(1)));
+        not isSouthLineOnMerge(pos) and isInG(pos.offsetY(1))
+        and (not isInG(pos.offsetX(1).offsetY(1)) or not isInG(pos.offsetX(1)));
 }
 
 bool Seeding::isSouthSeed(const Cell3DPosition& pos) const {
     return isInG(pos) and
-        not isNorthLineOnMerge(pos) and isInG(pos.addY(-1))
-        and (not isInG(pos.addX(-1).addY(-1)) or not isInG(pos.addX(-1)));
+        not isNorthLineOnMerge(pos) and isInG(pos.offsetY(-1))
+        and (not isInG(pos.offsetX(-1).offsetY(-1)) or not isInG(pos.offsetX(-1)));
 }
 
 bool Seeding::isNorthLineOnMerge(const Cell3DPosition& pos) const {
     if (not isInG(pos) or nbh->hasNeighborInDirection(pos, SkewFCCLattice::Direction::C1North))
         return false;
 
-    Cell3DPosition xPos = pos.addX(1);
+    Cell3DPosition xPos = pos.offsetX(1);
     Cell3DPosition xyPos = pos + Cell3DPosition(1, 1, 0);
     if (!isInG(xPos) and isInG(xyPos)) {
 
@@ -41,7 +41,7 @@ bool Seeding::isNorthLineOnMerge(const Cell3DPosition& pos) const {
 
         // Thadeu-style weird af loop
         for (int i = 2; pos[0] + i < upperXBound; i++) {
-            xPos = pos.addX(i);
+            xPos = pos.offsetX(i);
             xyPos = pos + Cell3DPosition(i, 1, 0);
 
             if (!isInG(xPos) and isInG(xyPos))
@@ -61,7 +61,7 @@ bool Seeding::isSouthLineOnMerge(const Cell3DPosition& pos) const {
     if (not isInG(pos) or nbh->hasNeighborInDirection(pos, SkewFCCLattice::Direction::C7South))
         return false;
 
-    Cell3DPosition xPos = pos.addX(-1);
+    Cell3DPosition xPos = pos.offsetX(-1);
     Cell3DPosition xyPos = pos + Cell3DPosition(-1, -1, 0);
     if (!isInG(xPos) and isInG(xyPos)) {
 
@@ -69,7 +69,7 @@ bool Seeding::isSouthLineOnMerge(const Cell3DPosition& pos) const {
 
         // Thadeu-style weird af loop
         for (int i = 2; pos[0] - i > lowerXBound; i++) {
-            xPos = pos.addX(-i);
+            xPos = pos.offsetX(-i);
             xyPos = pos + Cell3DPosition(-i, -1, 0);
 
             if (!isInG(xPos) and isInG(xyPos))

@@ -246,32 +246,32 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
       }
       break;
     case ADDLEFTBLOCK_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addX(-1));
+        neighborhood->addNeighbor(catom->position.offsetX(-1));
         //getStats();
         break;
     }
     case ADDRIGHTBLOCK_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addX(1));
+        neighborhood->addNeighbor(catom->position.offsetX(1));
         //getStats();
         break;
     }
     case ADDNEXTLINE_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addY(1));
+        neighborhood->addNeighbor(catom->position.offsetY(1));
         //getStats();
         break;
     }
     case ADDPREVIOUSLINE_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addY(-1));
+        neighborhood->addNeighbor(catom->position.offsetY(-1));
         //getStats();
         break;
     }
     case ADDNEXTPLANE_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addZ(1));
+        neighborhood->addNeighbor(catom->position.offsetZ(1));
         //getStats();
         break;
     }
     case ADDPREVIOUSPLANE_EVENT_ID: {
-        neighborhood->addNeighbor(catom->position.addZ(-1));
+        neighborhood->addNeighbor(catom->position.offsetZ(-1));
         //getStats();
         break;
     }
@@ -398,8 +398,8 @@ void ReconfCatoms3DBlockCode::getStats() {
 void ReconfCatoms3DBlockCode::planeFinishedAck() {
     neighborMessages->sendMessagePlaneFinishedAck();
     if (reconf->isPlaneSeed()) {
-        if(catom->getInterface(catom->position.addZ(1))->isConnected()) {
-            neighborMessages->sendMessageParentPlaneFinished(catom->position.addZ(1));
+        if(catom->getInterface(catom->position.offsetZ(1))->isConnected()) {
+            neighborMessages->sendMessageParentPlaneFinished(catom->position.offsetZ(1));
         }
     }
 }

@@ -16,8 +16,8 @@ int Border::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) const {
         newIdx = (((idx+i-1)%4)+4)%4;
 
         Cell3DPosition nextPos = currentPos
-            .addX(cw_order[newIdx].first)
-            .addY(cw_order[newIdx].second);
+            .offsetX(cw_order[newIdx].first)
+            .offsetY(cw_order[newIdx].second);
 
         if (isInG(nextPos)) {
             idx = newIdx;
@@ -42,8 +42,8 @@ int Border::getNextBorderNeighborInPlace(int &idx, Cell3DPosition &currentPos) c
         newIdx = (((idx+i-1)%4)+4)%4;
 
         Cell3DPosition nextPos = currentPos
-            .addX(cw_order[newIdx].first)
-            .addY(cw_order[newIdx].second);
+            .offsetX(cw_order[newIdx].first)
+            .offsetY(cw_order[newIdx].second);
 
         if (isInG(nextPos) and lattice->getBlock(nextPos)) {
             idx = newIdx;
@@ -65,8 +65,8 @@ int Border::getNextBorderNeighborCCW(int &idx, Cell3DPosition &currentPos) const
     int newIdx;
     for (int i = 0; i < 4; i++) {
         newIdx = (((idx+i-1)%4)+4)%4;
-        Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
-                                          .addY(ccw_order[newIdx].second);
+        Cell3DPosition nextPos = currentPos.offsetX(ccw_order[newIdx].first)
+                                          .offsetY(ccw_order[newIdx].second);
         if (isInG(nextPos)) {
             idx = newIdx;
             currentPos = nextPos;
