@@ -16,4 +16,3 @@ private:
 };
 
 #endif /* MESHUTILS_H_ */
-

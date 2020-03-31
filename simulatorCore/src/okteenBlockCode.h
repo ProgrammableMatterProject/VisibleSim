@@ -24,13 +24,12 @@ class OkteenBlock;
 class OkteenBlockCode : public BaseSimulator::BlockCode {
 public:
 
-	OkteenBlockCode(OkteenBlock *host);
-	virtual ~OkteenBlockCode();
+    OkteenBlockCode(OkteenBlock *host);
+    virtual ~OkteenBlockCode();
 
-	virtual void processLocalEvent(EventPtr pev);
-	virtual void onMotionEnd() {};
+    virtual void processLocalEvent(EventPtr pev) override;
 
-    void addDebugAttributes(Scheduler* scheduler);
+    void addDebugAttributes(Scheduler* scheduler) override;
 };
 
 }

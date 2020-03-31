@@ -10,18 +10,18 @@ class SimpleColorCode : public Catoms2DBlockCode {
 private:
     int distance;
 public :
-	SimpleColorCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {};
-	~SimpleColorCode() {};
+    SimpleColorCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {};
+    ~SimpleColorCode() {};
 
-	void startup();
-	void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void startup() override;
+    void myBroadcastFunc(MessagePtr msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-	    return (new SimpleColorCode((Catoms2DBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return (new SimpleColorCode((Catoms2DBlock*)host));
+    };
 /*****************************************************************************/
 };
-	void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+    void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* simpleColorCode_H_ */

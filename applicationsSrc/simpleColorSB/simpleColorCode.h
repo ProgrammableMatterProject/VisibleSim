@@ -13,7 +13,7 @@ public :
 	SimpleColorCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {};
 	~SimpleColorCode() {};
 
-	void startup();
+	void startup() override;
 	void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/

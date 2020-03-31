@@ -1,4 +1,5 @@
 # GENERIC BlockCodes
+<<<<<<< HEAD
 SUBDIRS = #C3DRotate #simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB
 #SUBDIRS = simpleCatoms3D simpleColorSB simpleColorC2D simpleMotion
 SUBDIRS = datomsRotate datomsTestbed
@@ -15,6 +16,9 @@ SUBDIRS = datomsRotate datomsTestbed
 SUBDIRS += #meshCatoms3D_assembly meshCatoms3D #csgCatoms3D meltSortGrow targetColoration simpleMotionOkteen reconfCatoms3D
 # SUBDIRS = reconfCatoms3D reconfCatoms3DMultilayer
 SUBDIRS += csgCatoms3D catoms3DRotate
+=======
+SUBDIRS = C3DRotate hexanode_demo meld reconfCatoms3DMultilayer scaffolding_pyramid_async simpleColorC2D csgCatoms3D lightWalkCatoms3D musicPlayer robot02 scaffolding_pyramid_sync simpleColorOkteen simpleOkteenMotion c2d_demo datomsRotate maxFlowSC node_demo sbReconf simpleColorSC sinkSource c2srCatoms2D distanceSC reconfCatoms3D scaffolding_cube simpleColorBB simpleColorSB molding coating scaffolding_csg datomsTestbed
+>>>>>>> 730896439aebaf1a83364403d2d7b40eb7d1ddd1
 
 .PHONY: subdirs $(SUBDIRS) test
 

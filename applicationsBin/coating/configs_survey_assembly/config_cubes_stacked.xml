@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="30,30,60" windowSize="1280,720">
+  <blockList blockSize="10,10,10">
+        <block position="2,2,3" orientation="0"/>
+  </blockList>
+
+      <targetList>
+        <target format="csg">
+    <csg translate="5,5,2" content="union() {
+
+    color([0,0,0])
+    cube([20, 20, 21], true);
+    translate([0,0,5])
+
+    color([0,0,0])
+    translate([5,5,5])
+    cube([10,10,30], true);
+
+    color([1,0,0])
+    translate([0,0,11])
+    cube([20,20,1], true);
+}" />
+
+        </target>
+      </targetList>
+
+</world>

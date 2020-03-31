@@ -5,7 +5,7 @@ OUT = $(APPDIR)/musicPlayer
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
-INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES) 
+INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 #-I/usr/local/include -I/opt/local/include
 
 #for macOSX
@@ -40,7 +40,7 @@ autoinstall: $(OUT)
 $(APPDIR)/$(OUT): $(OUT)
 
 
-$(OUT): $(SIMULATORLIB) $(OBJS) 
+$(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 ifneq ($(MAKECMDGOALS),clean)

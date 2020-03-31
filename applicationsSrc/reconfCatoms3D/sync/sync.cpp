@@ -26,8 +26,8 @@ int Sync::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
     int newIdx;
     for (int i = 0; i < 4; i++) {
         newIdx = (((idx+i-1)%4)+4)%4;
-        Cell3DPosition nextPos = currentPos.addX(cw_order[newIdx].first)
-                                          .addY(cw_order[newIdx].second);
+        Cell3DPosition nextPos = currentPos.offsetX(cw_order[newIdx].first)
+                                          .offsetY(cw_order[newIdx].second);
         if (BlockCode::target->isInTarget(nextPos)) {
             idx = newIdx;
             currentPos = nextPos;
@@ -43,4 +43,3 @@ int Sync::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
     }
     return 0;
 }
-

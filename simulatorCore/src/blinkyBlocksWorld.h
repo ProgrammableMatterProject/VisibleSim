@@ -21,7 +21,10 @@ namespace BlinkyBlocks {
 static const Vector3D defaultBlockSize{40.0, 40.0, 41.0};
 
 class BlinkyBlocksWorld : public BaseSimulator::World {
-protected:   
+    inline static const int numPickingTextures = 6; /* The number of picking textures defined
+                                                       for this type of catom,
+                                                       used to deduce selected Block / face */
+protected:
     GLuint idTextureWall;
 
     virtual ~BlinkyBlocksWorld();
@@ -38,22 +41,22 @@ public:
         OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
     }
 
-    virtual BlinkyBlocksBlock* getBlockById(int bId) {
+    virtual BlinkyBlocksBlock* getBlockById(int bId) override {
         return((BlinkyBlocksBlock*)World::getBlockById(bId));
     }
 
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation = 0, bool master = false);
+                          short orientation = 0, bool master = false) override;
 
-    virtual void linkBlock(const Cell3DPosition &pos);
-    virtual void loadTextures(const string &str);
+    virtual void linkBlock(const Cell3DPosition &pos) override;
+    virtual void loadTextures(const string &str) override;
 
-    virtual void glDraw();
-    virtual void glDrawId();
-    virtual void glDrawIdByMaterial();
-    virtual void glDrawSpecificBg();
-    virtual void setSelectedFace(int n);
-    virtual void exportConfiguration();
+    virtual void glDraw() override;
+    virtual void glDrawId() override;
+    virtual void glDrawIdByMaterial() override;
+    virtual void glDrawSpecificBg() override;
+    virtual void setSelectedFace(int n) override;
+    virtual void exportConfiguration() override;
 
     /* Sends the appropriate message (tap, ...) to the VM associated to id block (through the scheduler)*/
     void accelBlock(Time date, bID id, int x, int y, int z);

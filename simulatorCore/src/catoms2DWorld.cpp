@@ -15,7 +15,7 @@
 #include "catoms2DSimulator.h"
 #include "catoms2DWorld.h"
 #include "catoms2DBlock.h"
-#include "rotation2DEvents.h"
+#include "catoms2DRotationEvents.h"
 
 #include "trace.h"
 #include "utils.h"
@@ -77,6 +77,7 @@ void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 
     if (lattice->isInGrid(pos)) {
         lattice->insert(catom2D, pos);
+        linkBlock(pos);
     } else {
         ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
         exit(1);
@@ -99,7 +100,7 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
                                                       lattice->getOppositeDirection(i))));
 
 #ifdef DEBUG_NEIGHBORHOOD
-            OUTPUT << "connection #" << (ptrBlock)->blockId <<
+            cout << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
 #endif
         } else {
@@ -144,9 +145,10 @@ void Catoms2DWorld::glDrawIdByMaterial() {
     glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
 
     glDisable(GL_TEXTURE_2D);
-    int n=1;
+    int n;
     lock();
     for (const auto& pair : mapGlBlocks) {
+        n = pair.first * numPickingTextures;
         ((Catoms2DGlBlock*)pair.second)->glDrawIdByMaterial(objBlockForPicking,n);
     }
     unlock();
@@ -302,14 +304,14 @@ void Catoms2DWorld::menuChoice(int n) {
         // Identify pivot
         int pivotId = bb->getCCWMovePivotId();
         Catoms2DBlock *pivot = (Catoms2DBlock *)getBlockById(pivotId);
-        Rotation2DMove move = Rotation2DMove(pivot, RelativeDirection::CCW);
+        Catoms2DRotationMove move = Catoms2DRotationMove(pivot, RelativeDirection::CCW);
         bb->startMove(move);
     } break;
     case 6: {                // Move Right
         // Identify pivot
         int pivotId = bb->getCWMovePivotId();
         Catoms2DBlock *pivot = (Catoms2DBlock *)getBlockById(pivotId);
-        Rotation2DMove move = Rotation2DMove(pivot, RelativeDirection::CW);
+        Catoms2DRotationMove move = Catoms2DRotationMove(pivot, RelativeDirection::CW);
         bb->startMove(move);
     } break;
     default: World::menuChoice(n); break; // For all non-catoms2D-specific cases

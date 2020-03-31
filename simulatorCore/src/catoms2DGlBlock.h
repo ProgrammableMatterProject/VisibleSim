@@ -19,12 +19,12 @@ protected :
 public :
     double angle = 0; //!< orientation angle in degree around Y axis
 
-	Catoms2DGlBlock(bID id) : GlBlock(id) {};
-	virtual ~Catoms2DGlBlock() {};
+    Catoms2DGlBlock(bID id) : GlBlock(id) {};
+    virtual ~Catoms2DGlBlock() {};
 
-	inline void setAngle(double a) {angle=a;};
+    inline void setAngle(double a) {angle=a;};
 
-	void glDraw(ObjLoader::ObjLoader *ptrObj);
+    void glDraw(ObjLoader::ObjLoader *ptrObj) override;
 };
 }
 #endif /* CATOMS2DGLBLOCK_H_ */

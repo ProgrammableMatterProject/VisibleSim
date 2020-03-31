@@ -114,19 +114,19 @@ class Plane_finished_message : public HandleableMessage {
 public:
     Plane_finished_message() { id = PLANE_FINISHED_MSG_ID; };
 
-    void handle(BlockCode *blockCode);
-    virtual Message* clone() { return new Plane_finished_message(*this); }
-    virtual string getName() { return "Plane Finished"; }
+    void handle(BlockCode *blockCode) override;
+    virtual Message* clone() const override { return new Plane_finished_message(*this); }
+    virtual string getName() const override { return "Plane Finished"; }
 };
 
 class Plane_finished_ack_message : public HandleableMessage {
 public:
     Plane_finished_ack_message() { id = PLANE_FINISHED_ACK_MSG_ID; };
 
-    void handle(BlockCode *blockCode);
+    void handle(BlockCode *blockCode) override;
 
-    virtual Message* clone() { return new Plane_finished_ack_message(*this); }
-    virtual string getName() { return "Plane Finished Ack"; }
+    virtual Message* clone() const override { return new Plane_finished_ack_message(*this); }
+    virtual string getName() const override { return "Plane Finished Ack"; }
 };
 
 class Can_start_next_plane_message : public Message {

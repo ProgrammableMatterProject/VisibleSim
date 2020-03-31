@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="26,26,26" windowSize="1280,720">
+  <blockList blockSize="10,10,10">
+    <block position="2,2,3" color="0,255,0" orientation="2" /> <!--seed-->
+  </blockList>
+
+  <targetList>
+    <target format="csg">
+      <csg translate="5,5,2" content="cube([19, 19, 14.14], true);" />
+    </target>
+  </targetList>
+
+</world>

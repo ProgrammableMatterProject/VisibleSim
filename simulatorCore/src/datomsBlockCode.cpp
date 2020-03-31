@@ -15,11 +15,11 @@ using namespace std;
 namespace Datoms {
 
 DatomsBlockCode::DatomsBlockCode(DatomsBlock *host):BlockCode(host) {
-	OUTPUT << "DatomsBlockCode constructor" << endl;
+    OUTPUT << "DatomsBlockCode constructor" << endl;
 }
 
 DatomsBlockCode::~DatomsBlockCode() {
-	OUTPUT << "DatomsBlockCode destructor" << endl;
+    OUTPUT << "DatomsBlockCode destructor" << endl;
 }
 
 void DatomsBlockCode::addDebugAttributes(Scheduler *scheduler) {
@@ -31,33 +31,14 @@ void DatomsBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
 
-// cout << "event #" << pev->id << ":" << pev->eventType << endl;
+    BlockCode::processLocalEvent(pev);
+
     switch (pev->eventType) {
-        case EVENT_NI_RECEIVE: {
-            message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-    // search message id in eventFuncMap
-            multimap<int,eventFunc>::iterator im = eventFuncMap.find(message->type);
-            if (im!=eventFuncMap.end()) {
-                P2PNetworkInterface *recv_interface = message->destinationInterface;
-                (*im).second(this,message,recv_interface);
-            } else {
-                OUTPUT << "ERROR: message Id #"<< message->type << " unknown!" << endl;
-            }
-        } break;
-        case EVENT_ADD_NEIGHBOR: {
-#ifdef verbose
-            OUTPUT << "ADD_NEIGHBOR" << endl;
-#endif            //startup();
-        } break;
-        case EVENT_TAP: {
-			int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
-            onTap(face);
-        } break;
         case EVENT_DEFORMATION_END: {
 #ifdef verbose
-			info.str("");
-			info << "rec.: EVENT_MOTION_END";
-			scheduler->trace(info.str(),hostBlock->blockId);
+            info.str("");
+            info << "rec.: EVENT_MOTION_END";
+            scheduler->trace(info.str(),hostBlock->blockId);
 #endif
             DatomsBlock*c3d = (DatomsBlock*)hostBlock;
             c3d->setPositionAndOrientation(c3d->position,c3d->orientationCode);

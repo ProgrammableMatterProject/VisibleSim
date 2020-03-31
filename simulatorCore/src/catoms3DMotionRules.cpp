@@ -1,5 +1,5 @@
 #include "catoms3DMotionRules.h"
-#include "rotation3DEvents.h"
+#include "catoms3DRotationEvents.h"
 #include "catoms3DWorld.h"
 #include "catoms3DMotionEngine.h"
 
@@ -441,14 +441,14 @@ getMobileModuleLinkMatchingPivotLink(const Catoms3DMotionRulesLink* pivLink,
             Catoms3DMotionEngine::getMirrorConnectorOnModule(pivot, m,
                                                              pivLink->getConFromID(),
                                                              conFrom, pivLink->getConToID());
-        
+
         // cout << "Conconv: #" << pivot->blockId << " l: " << *pivLink <<endl;
         // cout << pivLink->getConFromID() << " === " << conFrom << endl;
-        // cout << pivLink->getConToID() << " === " << conTo << endl; 
-        
+        // cout << pivLink->getConToID() << " === " << conTo << endl;
+
         vector<Catoms3DMotionRulesLink*> motionRulesLinksFrom;
         getValidMotionList(m, conFrom, motionRulesLinksFrom);
-        
+
         for (const Catoms3DMotionRulesLink* link : motionRulesLinksFrom) {
             if (link->getConToID() == conTo
                 and link->getMRLT() == pivLink->getMRLT())
@@ -500,7 +500,7 @@ Cell3DPosition Catoms3DMotionRulesLink::getFinalPosition(Catoms3DBlock *c3d) con
     short orient;
     Catoms3DBlock *neighbor = (Catoms3DBlock *)c3d->
         getInterface(conFrom->ID)->connectedInterface->hostBlock;
-    Rotations3D rotations(c3d,neighbor,radius,axis1,angle,axis2,angle);
+    Catoms3DRotation rotations(c3d,neighbor,radius,axis1,angle,axis2,angle);
 
     rotations.init(((Catoms3DGlBlock*)c3d->ptrGlBlock)->mat);
     rotations.getFinalPositionAndOrientation(finalPosition,orient);
@@ -512,13 +512,13 @@ Cell3DPosition Catoms3DMotionRulesLink::getFinalPosition(Catoms3DBlock *c3d) con
 void Catoms3DMotionRulesLink::sendRotationEvent(Catoms3DBlock*mobile,
                                                 Catoms3DBlock*pivot,
                                                 Time t) {
-    Rotations3D rotations(mobile,pivot,radius,axis1,angle,axis2,angle);
-    getScheduler()->schedule(new Rotation3DStartEvent(t,mobile, getRotations(mobile, pivot)));
+    Catoms3DRotation rotations(mobile,pivot,radius,axis1,angle,axis2,angle);
+    getScheduler()->schedule(new Catoms3DRotationStartEvent(t,mobile, getRotations(mobile, pivot)));
 }
 
-Rotations3D Catoms3DMotionRulesLink::getRotations(const Catoms3DBlock* mobile,
+Catoms3DRotation Catoms3DMotionRulesLink::getRotations(const Catoms3DBlock* mobile,
                                                   const Catoms3DBlock* pivot) const {
-    return Rotations3D(mobile,pivot,radius,axis1,angle,axis2,angle);
+    return Catoms3DRotation(mobile,pivot,radius,axis1,angle,axis2,angle);
 }
 
 vector<Cell3DPosition> Catoms3DMotionRulesLink::getBlockingCellsList(const Catoms3DBlock *c3d) {
@@ -538,7 +538,7 @@ vector<Cell3DPosition> Catoms3DMotionRulesLink::getBlockingCellsList(const Catom
     return tabPos;
 }
 
-std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mrl) {    
+std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mrl) {
     stream << mrl.getConFromID() << " -> " << mrl.getConToID();
 
     switch (mrl.getMRLT()) {
@@ -546,7 +546,7 @@ std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mr
         case OctaFace: stream << " (OCTA)"; break;
         default: stream << "(ERR)"; break;
     }
-    
+
     return stream;
 }
 

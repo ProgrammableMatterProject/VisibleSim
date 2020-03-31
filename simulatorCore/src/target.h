@@ -125,18 +125,22 @@ public:
      * @param pos position to condiser
      * @return target color at cell p
      */
-    virtual const Color getTargetColor(const Cell3DPosition &pos) = 0;
-
-    /**
-     * @brief Returns the target bounding box
-     * @param bb boundingbox to be written
-     */
-    virtual void boundingBox(BoundingBox &bb) = 0;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const = 0;
 
     /*
      * @brief Draw geometry of the target in the interfaces
      */
     virtual void glDraw();
+
+    /**
+     * Highlights the target with semi-transparent colored cells
+     */
+    virtual void highlight() const = 0;
+
+    /**
+     * Cancels out Target::highlight
+     */
+    virtual void unhighlight() const = 0;
 
     friend ostream& operator<<(ostream& out,const Target *t);
 };  // class Target
@@ -174,13 +178,10 @@ public:
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
-    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
 
-    //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb) override;
-
-    virtual void highlight();
-    virtual void unhighlight();
+    virtual void highlight() const override;
+    virtual void unhighlight() const override;
 
     friend ostream& operator<<(ostream& f,const TargetGrid&tg);
 };  // class TargetGrid
@@ -191,7 +192,7 @@ protected:
      Cell3DPosition *origin = NULL;
      //<! @brief Exception thrown if an there is an attempt to use the RelativeTargetGrid without having set its origin beforehand
      struct MissingInitializationException : std::exception {
-          const char* what() const noexcept {
+          const char* what() const noexcept override {
                return "Attempted to call isInTarget without having set the target's origin first\n";
           }
      };
@@ -207,10 +208,10 @@ public:
         delete targetCellsInConstructionOrder;
     };
 
-    //!< @copydoc Target::getTargetColor
+    //!< @copydoc Target::iInTargetColor
     //!< a cell is in the target grid if and only if it is present in the target cells container
      //!< @warning Can only be used once origin has been set, and expects a relative position as input
-    virtual bool isInTarget(const Cell3DPosition &pos) const;
+    virtual bool isInTarget(const Cell3DPosition &pos) const override;
 
     bool reconfigurationIsComplete() const;
     void highlightByDistanceToRoot() const;
@@ -238,9 +239,11 @@ public:
 
 //<! @brief A target modeled as an ensemble of shapes
 class TargetCSG : public Target {
-public: // FIXME:
+public:
     CSGNode *csgRoot;
     BoundingBox bb;
+    Vector3D translate; // Can be used to to offset the origin of the CSG object by x,y,z
+    bool offsetBoundingBox; // Offsets entire CSG target by (1,1,1)
 protected:
     //!< @copydoc Target::print
     virtual void print(ostream& where) const override {};
@@ -248,12 +251,15 @@ public:
     TargetCSG(TiXmlNode *targetNode);
     virtual ~TargetCSG() {};
 
-    //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb) override;
+    /**
+     * @brief Returns the target bounding box
+     * @param bb boundingbox to be written
+     */
+    virtual void boundingBox(BoundingBox &bb);
     //!< @copydoc Target::isInTarget
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
-    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
 
     /**
      * @brief Grid to unscaled world position within bounding box
@@ -278,8 +284,9 @@ public:
      * @brief Draw geometry of the target in the interfaces
      */
     virtual void glDraw() override;
+    virtual void highlight() const override;
+    virtual void unhighlight() const override;
 
-    void highlight();
 };  // class TargetCSG
 
 //<! @brief A target modeling a surface by a point cloud
@@ -332,10 +339,15 @@ public:
     virtual bool isInTarget(const Cell3DPosition &pos) const override;
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
-    virtual const Color getTargetColor(const Cell3DPosition &pos) override;
+    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
 
-    //!< @copydoc Target::BoundingBox
-    virtual void boundingBox(BoundingBox &bb) override;
+    void highlight() const override {
+        throw NotImplementedException("TargetSurface::highlight");
+    }
+
+    void unhighlight() const override {
+        throw NotImplementedException("TargetSurface::unhighlight");
+    }
 
     virtual void glDraw() override;
 };  // class TargetSurface

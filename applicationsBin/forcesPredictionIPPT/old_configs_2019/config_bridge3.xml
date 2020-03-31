@@ -1,0 +1,46 @@
+<?xml version="1.0" standalone="no" ?>
+<parameters globalMass="0.06103" nofIterations="50000" globalSupportZ="0" />
+<world gridSize="15,4,8" windowSize="1800,900">
+    <camera target="178.019,64.7699,62.5716" directionSpherical="-906499,24.6828,380" angle="45" />
+	<spotlight target="240,20,0" directionSpherical="245,60,400" angle="51" />
+    <blockList  size="1,1,1" blockSize="40,40,41" >
+	<block position="1,1,0" color="0,255,0" myAttribute="3" />
+	<block position="2,1,0" color="0,255,0" />
+
+	<block position="1,1,1" color="0,255,0" />
+	<block position="2,1,1" color="0,255,0" myAttribute="5"/>
+
+	<block position="1,1,2" color="0,255,0" />
+	<block position="2,1,2" color="0,255,0" />
+
+	<block position="3,1,2" color="0,255,0" />
+	<block position="4,1,2" color="0,255,0" />
+	<block position="5,1,2" color="0,255,0" />
+	<block position="6,1,2" color="0,255,0" />
+	<block position="6,1,3" color="0,255,0" />
+	<block position="6,1,4" color="0,255,0" />
+	<block position="6,2,4" color="0,255,0" />
+	<block position="6,0,4" color="0,255,0" />
+
+	<block position="7,1,2" color="0,255,0" />
+	<block position="8,1,2" color="0,255,0" />
+	<block position="9,1,2" color="0,255,0" />
+	<block position="10,1,2" color="0,255,0" />
+	<block position="10,1,1" color="0,255,0" />
+	<block position="10,1,0" color="0,255,0" />
+	<block position="11,1,2" color="0,255,0" />
+	<block position="11,1,1" color="0,255,0" />
+	<block position="11,1,0" color="0,255,0" />
+
+</blockList>
+	<targetList>
+		<target format="grid">
+		<!--<cell position="1,1,1" color="0,255,0" />-->
+<!--		<cell position="1,1,0" color="0,255,0" />
+		<cell position="2,1,0" color="0,255,0" />
+		<cell position="10,1,0" color="0,255,0" />
+		<cell position="11,1,0" color="0,255,0" />
+-->
+		</target>
+	</targetList>
+</world>

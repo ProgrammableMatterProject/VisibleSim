@@ -46,7 +46,7 @@ void TeleportationStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     BuildingBlock *bb = concernedBlock;
-    World::getWorld()->disconnectBlock(bb);
+    World::getWorld()->disconnectBlock(bb, false);
 
     Time t = scheduler->now() + ANIMATION_DELAY;
     if (getWorld()->lattice->isInGrid(finalPosition)) {
@@ -92,7 +92,7 @@ void TeleportationStopEvent::consume() {
 #endif
 
     OUTPUT << "connect Block " << bb->blockId << "\n";
-    wrld->connectBlock(bb);
+    wrld->connectBlock(bb, false);
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new TeleportationEndEvent(scheduler->now(), bb));
 }

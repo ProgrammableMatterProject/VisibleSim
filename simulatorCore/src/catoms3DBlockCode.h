@@ -26,15 +26,13 @@ class Catoms3DBlock;
 class Catoms3DBlockCode : public BaseSimulator::BlockCode {
      /* Catoms3DMotionRules *motionRules; */
 public:
-	Catoms3DBlockCode(Catoms3DBlock *host);
-	virtual ~Catoms3DBlockCode();
+    Catoms3DBlockCode(Catoms3DBlock *host);
+    virtual ~Catoms3DBlockCode();
 
-	virtual void processLocalEvent(EventPtr pev);
-	virtual void onMotionEnd() {};
+    virtual void processLocalEvent(EventPtr pev) override;
 
-    void addDebugAttributes(Scheduler* scheduler);
+    void addDebugAttributes(Scheduler* scheduler) override;
 };
-
 }
 
 #endif /* CATOMS3DBLOCKCODE_H_ */

@@ -87,8 +87,9 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
             position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
             position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
         } else {
-            cerr << "error: position attribute missing for target cell" << endl;
-            throw TargetParsingException();
+            stringstream error;
+            error << "position attribute missing for target cell" << "\n";
+            throw ParsingException(error.str());
         }
         attr = element->Attribute("color");
         if (attr) {
@@ -153,13 +154,13 @@ bool TargetGrid::isInTarget(const Cell3DPosition &pos) const {
     return tCells.count(pos);
 }
 
-const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) {
-    if (!isInTarget(pos)) {
+const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) const {
+    if (!isInTarget(pos) or tCells.find(pos) == tCells.end()) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException(pos);
     }
 
-    return tCells[pos];
+    return tCells.find(pos)->second;
 }
 
 void TargetGrid::addTargetCell(const Cell3DPosition &pos, const Color c) {
@@ -171,18 +172,13 @@ void TargetGrid::print(ostream& where) const {
         where << "<cell position=" << pair.first << " color=" << pair.second << " />" << endl;
     }
 }
-
-void TargetGrid::boundingBox(BoundingBox &bb) {
-    throw BaseSimulator::NotImplementedException("TargetGrid::boundingBox");
-}
-
-void TargetGrid::highlight() {
+void TargetGrid::highlight() const {
     for (const auto& pair : tCells) {
         getWorld()->lattice->highlightCell(pair.first, pair.second);
     }
 }
 
-void TargetGrid::unhighlight() {
+void TargetGrid::unhighlight() const {
     for (const auto& pair : tCells) {
         getWorld()->lattice->unhighlightCell(pair.first);
     }
@@ -333,45 +329,57 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     string str = element->Attribute("content");
     bool boundingBox=true;
     element->QueryBoolAttribute("boundingBox", &boundingBox);
+    offsetBoundingBox = false;
+    element->QueryBoolAttribute("offset", &offsetBoundingBox);
 
     char* csgBin = CSGParser::parseCsg(str);
     CsgUtils csgUtils;
     csgRoot = csgUtils.readCSGBuffer(csgBin);
     csgRoot->toString();
 
+    const char *attr = element->Attribute("translate");
+    if (attr) {
+        string str_attr(attr);
+        int pos1 = str_attr.find_first_of(','),
+            pos2 = str_attr.find_last_of(',');
+        translate.pt[0] = atof(str_attr.substr(0,pos1).c_str());
+        translate.pt[1] = atof(str_attr.substr(pos1+1,pos2-pos1-1).c_str());
+        translate.pt[2] = atof(str_attr.substr(pos2+1,str_attr.length()-pos1-1).c_str());
+    }
+
     if (boundingBox) csgRoot->boundingBox(bb);
 }
-
-// #define OFFSET_BOUNDINGBOX
 
 Vector3D TargetCSG::gridToCSGPosition(const Cell3DPosition &pos) const {
     Vector3D res = getWorld()->lattice->gridToUnscaledWorldPosition(pos);
 
-#ifdef OFFSET_BOUNDINGBOX
-    res.pt[0] += bb.P0[0] - 1.0;
-    res.pt[1] += bb.P0[1] - 1.0;
-    res.pt[2] += bb.P0[2] - 1.0;
-#else
-    res.pt[0] += bb.P0[0];
-    res.pt[1] += bb.P0[1];
-    res.pt[2] += bb.P0[2];
-#endif
+    if (offsetBoundingBox) {
+        res.pt[0] += bb.P0[0] - 1.0 - translate.pt[0];
+        res.pt[1] += bb.P0[1] - 1.0 - translate.pt[1];
+        res.pt[2] += bb.P0[2] - 1.0 - translate.pt[2];
+    } else {
+        res.pt[0] += bb.P0[0] - translate.pt[0];
+        res.pt[1] += bb.P0[1] - translate.pt[1];
+        res.pt[2] += bb.P0[2] - translate.pt[2];
+    }
+
     // cout << "gridToWorldPosition" << pos << " -> " << res << endl;
+
     return res;
 }
 
 Cell3DPosition TargetCSG::CSGToGridPosition(const Vector3D &pos) const {
     Vector3D unboundPos = pos;
 
-#ifdef OFFSET_BOUNDINGBOX
-    unboundPos.pt[0] -= bb.P0[0] - 1.0;
-    unboundPos.pt[1] -= bb.P0[1] - 1.0;
-    unboundPos.pt[2] -= bb.P0[2] - 1.0;
-#else
-    unboundPos.pt[0] -= bb.P0[0];
-    unboundPos.pt[1] -= bb.P0[1];
-    unboundPos.pt[2] -= bb.P0[2];
-#endif
+    if (offsetBoundingBox) {
+        unboundPos.pt[0] -= bb.P0[0] + 1.0 + translate.pt[0];
+        unboundPos.pt[1] -= bb.P0[1] + 1.0 + translate.pt[1];
+        unboundPos.pt[2] -= bb.P0[2] + 1.0 + translate.pt[2];
+    } else {
+        unboundPos.pt[0] -= bb.P0[0] + translate.pt[0];
+        unboundPos.pt[1] -= bb.P0[1] + translate.pt[1];
+        unboundPos.pt[2] -= bb.P0[2] + translate.pt[2];
+    }
 
     Cell3DPosition res = getWorld()->lattice->unscaledWorldToGridPosition(unboundPos);
     return res;
@@ -393,17 +401,52 @@ void TargetCSG::boundingBox(BoundingBox &bb) {
     csgRoot->boundingBox(bb);
 }
 
-void TargetCSG::highlight() {
-    glTranslatef(bb.P1[0] + 1, bb.P1[1] + 1, bb.P1[2] + 1);
-    csgRoot->glDraw();
+void TargetCSG::highlight() const {
+    Lattice *lattice = BaseSimulator::getWorld()->lattice;
+
+    Cell3DPosition p;
+    for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
+        const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
+        const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                p.set(ix,iy,iz);
+
+                Color color = WHITE;
+                if (csgRoot->isInside(gridToCSGPosition(p), color))
+                    lattice->highlightCell(p, color);
+            }
+        }
+    }
 }
 
-const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
-    Color color;
+void TargetCSG::unhighlight() const {
+    Lattice *lattice = BaseSimulator::getWorld()->lattice;
+
+    Cell3DPosition p;
+    for (short iz = 0; iz <= lattice->getGridUpperBounds()[2]; iz++) {
+        const Cell3DPosition& glb = lattice->getGridLowerBounds(iz);
+        const Cell3DPosition& ulb = lattice->getGridUpperBounds(iz);
+        for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+            for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                p.set(ix,iy,iz);
+
+                Color c;
+                if (csgRoot->isInside(gridToCSGPosition(p), c))
+                    lattice->unhighlightCell(p);
+            }
+        }
+    }
+}
+
+const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) const {
+    Color color = WHITE;
+
     if (!csgRoot->isInside(gridToCSGPosition(pos), color)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException(pos);
     }
+
     return color;
 }
 
@@ -454,8 +497,9 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                     position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
                     position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
                 } else {
-                    cerr << "error: position attribute missing for target cell" << endl;
-                    throw TargetParsingException();
+                    stringstream error;
+                    error << "position attribute missing for target cell" << "\n";
+                    throw ParsingException(error.str());
                 }
                 attr = element->Attribute("color");
                 if (attr) {
@@ -936,7 +980,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) const {
     }
 }
 
-const Color TargetSurface::getTargetColor(const Cell3DPosition &pos) {
+const Color TargetSurface::getTargetColor(const Cell3DPosition &pos) const {
     throw BaseSimulator::NotImplementedException("TargetSurface::getTargetColor");
 }
 
@@ -1065,10 +1109,6 @@ void TargetSurface::print(ostream& where) const {
     else {
         throw BaseSimulator::NotImplementedException("TargetSurface::print");
     }
-}
-
-void TargetSurface::boundingBox(BoundingBox &bb) {
-    throw BaseSimulator::NotImplementedException("TargetSurface::boundingBox");
 }
 
 void TargetSurface::glDraw() {

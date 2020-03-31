@@ -24,14 +24,13 @@ class DatomsBlock;
 class DatomsBlockCode : public BaseSimulator::BlockCode {
 public:
 
-	DatomsBlockCode(DatomsBlock *host);
-	virtual ~DatomsBlockCode();
+    DatomsBlockCode(DatomsBlock *host);
+    virtual ~DatomsBlockCode();
 
 //	virtual void processLocalEvent(EventPtr pev) = 0;
 
-    void addDebugAttributes(Scheduler* scheduler);
-	virtual void processLocalEvent(EventPtr pev);
-	virtual void onMotionEnd() { cout << "onMotionEnd must be overloaded!" << endl; };
+    void addDebugAttributes(Scheduler* scheduler) override;
+    virtual void processLocalEvent(EventPtr pev) override;
 
 };
 

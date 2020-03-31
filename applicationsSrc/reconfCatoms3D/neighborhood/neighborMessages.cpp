@@ -79,7 +79,7 @@ void NeighborMessages::handleNewCatomResponseMsg(MessagePtr message)
 void NeighborMessages::sendMessageToGetLineInfo()
 {
     for (int i = 0; i < 2; i++) {
-        Cell3DPosition neighborPosition = (i == 0) ? catom->position.addX(-1) : catom->position.addX(1);
+        Cell3DPosition neighborPosition = (i == 0) ? catom->position.offsetX(-1) : catom->position.offsetX(1);
         New_catom_message *msg = new New_catom_message;
         if (i == 0)
             msg->lineParentDirection = TO_LEFT;
@@ -97,13 +97,13 @@ void NeighborMessages::sendMessageToGetParentInfo()
     New_catom_parent_message *msg = new New_catom_parent_message;
     Cell3DPosition neighborPosition;
 
-    neighborPosition = catom->position.addY(1);
+    neighborPosition = catom->position.offsetY(1);
     if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
         nMessagesGetInfo++;
     }
 
-    neighborPosition = catom->position.addY(-1);
+    neighborPosition = catom->position.offsetY(-1);
     if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
         nMessagesGetInfo++;
@@ -130,7 +130,7 @@ void NeighborMessages::sendMessagePlaneFinishedAck()
         int x = coordinates[i].first;
         int y = coordinates[i].second;
         Plane_finished_ack_message *msg = new Plane_finished_ack_message();
-        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(x).addY(y))));
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.offsetX(x).offsetY(y))));
     }
 }
 
@@ -179,13 +179,13 @@ void NeighborMessages::broadcastConfirmationCanStartNextPlane(Cell3DPosition des
         int y = coordinates[i].second;
         Confirmation_can_start_next_plane_message *msg = new Confirmation_can_start_next_plane_message();
         msg->destination = destination;
-        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(x).addY(y))));
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.offsetX(x).offsetY(y))));
     }
     if (reconf->isSeedNext())
     {
         Confirmation_can_start_next_plane_message *msg = new Confirmation_can_start_next_plane_message();
         msg->destination = destination;
-        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addZ(1))));
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.offsetZ(1))));
     }
 }
 

@@ -9,17 +9,17 @@
 
 /* This is the definition of message type as extracted from the oldVM, they may stay unused */
 
-#define NEIGHBOR_MSG	      0x01
-#define LOG_MSG 		      0x50
-#define CLOCK_SYNC_MSG	      0x60
-#define MSG_NEIGHBOR_START 	0x01				// we can send this on startup
+#define NEIGHBOR_MSG          0x01
+#define LOG_MSG               0x50
+#define CLOCK_SYNC_MSG        0x60
+#define MSG_NEIGHBOR_START  0x01				// we can send this on startup
 #define MSG_NEIGHBOR_RESPONSE	0x02			// neighbor data
 #define MSG_NEIGHBOR_KEEPALIVE	0x03
 #define MSG_RESP_ACK		0x08
 #define MSG_RESP_NACK		0x10
 #define MSG_RESP_NOREPLY	0x18
 #define MSG_RESP_SENDING	0x00
-#define MSG	    0x15
+#define MSG     0x15
 
 /* Here are the message type added */
 
@@ -34,9 +34,9 @@ public:
     unsigned int messageSize;
 
     AddTupleMessage(tuple_t tpl, unsigned int s);
-    unsigned int size();
-    string getMessageName();
-    Message* clone() { return new AddTupleMessage(*this); }
+    virtual unsigned int size() const override;
+    virtual string getMessageName() const override;
+    virtual Message* clone() const override { return new AddTupleMessage(*this); }
 };
 
 class RemoveTupleMessage : public Message{
@@ -45,9 +45,9 @@ public:
     unsigned int messageSize;
 
     RemoveTupleMessage(tuple_t tpl, unsigned int s);
-    unsigned int size();
-    string getMessageName();
-    Message* clone() { return new RemoveTupleMessage(*this); }
+    virtual unsigned int size() const override;
+    virtual string getMessageName() const override;
+    virtual Message* clone() const override { return new RemoveTupleMessage(*this); }
 };
 
 }

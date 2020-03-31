@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="60,60,60">
+
+  <blockList color="128,128,128" blocksize="10,10,10">
+    <block position="5,5,2" color="0,255,255" orientation="11" />
+  </blockList>
+
+    <targetList>
+      <target format="csg">
+        <csg translate="5,5,2" content="cylinder(13.5, 9, true);" />
+      </target>
+    </targetList>
+
+</world>

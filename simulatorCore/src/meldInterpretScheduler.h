@@ -19,51 +19,51 @@ namespace MeldInterpret {
 
 class MeldInterpretScheduler : public BaseSimulator::Scheduler {
 protected:
-	MeldInterpretScheduler();
-	virtual ~MeldInterpretScheduler();
-	void* startPaused(/*void *param */);
+    MeldInterpretScheduler();
+    virtual ~MeldInterpretScheduler();
+    void* startPaused(/*void *param */);
 public:
-	static void createScheduler();
-	static void deleteScheduler();
-	static MeldInterpretScheduler* getScheduler() {
-		assert(scheduler != NULL);
-		return((MeldInterpretScheduler*)scheduler);
-	}
+    static void createScheduler();
+    static void deleteScheduler();
+    static MeldInterpretScheduler* getScheduler() {
+        assert(scheduler != NULL);
+        return((MeldInterpretScheduler*)scheduler);
+    }
 
-	void printInfo() {
-		OUTPUT << "I'm a MeldInterpretScheduler" << endl;
-	}
+    void printInfo() override {
+        OUTPUT << "I'm a MeldInterpretScheduler" << endl;
+    }
 
-	void waitForSchedulerEnd() {
-		schedulerThread->join();
-	}
+    void waitForSchedulerEnd() {
+        schedulerThread->join();
+    }
 
-	// stop for good
-	void stop(Time date);
-	void pause(Time date);
-	void unPause();
+    // stop for good
+    void stop(Time date) override;
+    void pause(Time date);
+    void unPause();
 
-	// NOT TESTED
-	bool isPaused() {
-		bool r = sem_schedulerStart->tryWait();
-		if (r) {
-			sem_schedulerStart->signal();
-		}
-		return !r;
-	}
-   
-	void SemWaitOrReadDebugMessage();
+    // NOT TESTED
+    bool isPaused() {
+        bool r = sem_schedulerStart->tryWait();
+        if (r) {
+            sem_schedulerStart->signal();
+        }
+        return !r;
+    }
 
-	inline int getMode() { return schedulerMode; }
+    void SemWaitOrReadDebugMessage();
+
+    inline int getMode() { return schedulerMode; }
 
 };
 
 inline void createScheduler() {
-	MeldInterpretScheduler::createScheduler();
+    MeldInterpretScheduler::createScheduler();
 }
 
 inline void deleteScheduler() {
-	MeldInterpretScheduler::deleteScheduler();
+    MeldInterpretScheduler::deleteScheduler();
 }
 
 inline MeldInterpretScheduler* getScheduler() { return(MeldInterpretScheduler::getScheduler()); }

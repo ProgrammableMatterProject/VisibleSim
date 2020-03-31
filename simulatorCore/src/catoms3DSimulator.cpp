@@ -35,8 +35,10 @@ Catoms3DSimulator::~Catoms3DSimulator() {
 #endif
 }
 
-void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb,
+                                        bool useSkewedFCCLattice) {
     simulator = new Catoms3DSimulator(argc, argv, bcb);
+    ((Catoms3DSimulator*)simulator)->useSkewedFCCLattice = useSkewedFCCLattice;
     simulator->parseConfiguration(argc, argv);
     simulator->startSimulation();
 }
@@ -66,8 +68,10 @@ void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId,
         OUTPUT << "orientation : " << orientation << endl;
 #endif
     }
+
     // Finally, add block to the world
     ((Catoms3DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
 } // Catoms3D namespace

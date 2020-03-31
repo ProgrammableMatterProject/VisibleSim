@@ -5,7 +5,7 @@ void SyncLeft::syncSeed(SyncModel syncModel, LINE_DIRECTION syncToLineDirection)
     if (reconf->isLineCompleted() && catom->position == syncModel.requestPosition) {
         syncResponse->response(syncModel, syncResponseModel->routes[syncModel.requestCatomID].direction, true, true, true);
     }
-    else if (reconf->isLineCompleted() && !reconf->isSeedNext() && reconf->getNumberSeedsLeft() == 0 &&!catom->getInterface(catom->position.addX(1))->isConnected()) {
+    else if (reconf->isLineCompleted() && !reconf->isSeedNext() && reconf->getNumberSeedsLeft() == 0 &&!catom->getInterface(catom->position.offsetX(1))->isConnected()) {
         syncResponse->response(syncModel, syncResponseModel->routes[syncModel.requestCatomID].direction, false, true, true);
     }
     else {
@@ -26,7 +26,7 @@ void SyncLeft::syncSeedNext(SyncModel syncModel) {
     else if (reconf->getNumberSeedsRight())
         sendNeighborMessage(syncModel, TO_RIGHT, TO_NEXT);
     // line without seeds.
-    else if (catom->getInterface(catom->position.addX(1))->isConnected())
+    else if (catom->getInterface(catom->position.offsetX(1))->isConnected())
         sendNeighborMessage(syncModel, TO_RIGHT, TO_NEXT);
 }
 
@@ -44,7 +44,7 @@ void SyncLeft::syncNeighbor(SyncModel syncModel, SIDE_DIRECTION sideDirection, L
     if (catom->position == syncModel.requestPosition) {
         syncResponse->response(syncModel, syncResponseModel->routes[syncModel.requestCatomID].direction, true, true, true);
     }
-    else if (sideDirection == TO_RIGHT && !catom->getInterface(catom->position.addX(1))->isConnected() &&
+    else if (sideDirection == TO_RIGHT && !catom->getInterface(catom->position.offsetX(1))->isConnected() &&
             ((!reconf->isSeedNext() && lineDirection == TO_NEXT) ||
             (!reconf->isLineParent() && lineDirection == TO_PREVIOUS)) ) {
         syncResponse->response(syncModel, syncResponseModel->routes[syncModel.requestCatomID].direction, false, true, true);
@@ -87,11 +87,11 @@ void SyncLeft::sendNeighborMessage(SyncModel syncModel, SIDE_DIRECTION side_dire
     Cell3DPosition neighborPosition;
     SyncRoute *route = &syncResponseModel->routes[syncModel.requestCatomID];
     if (side_direction == TO_LEFT) {
-        neighborPosition = catom->position.addX(-1);
+        neighborPosition = catom->position.offsetX(-1);
         route->leftSeedVisited = true;
     }
     else {
-        neighborPosition = catom->position.addX(1);
+        neighborPosition = catom->position.offsetX(1);
         route->rightSeedVisited = true;
     }
 
@@ -105,11 +105,11 @@ void SyncLeft::sendSeedMessage(SyncModel syncModel, LINE_DIRECTION lineDirection
     Cell3DPosition neighborPosition;
     SyncRoute *route = &syncResponseModel->routes[syncModel.requestCatomID];
     if (lineDirection == TO_PREVIOUS) {
-        neighborPosition = catom->position.addY(-1);
+        neighborPosition = catom->position.offsetY(-1);
         route->parentVisited = true;
     }
     else {
-        neighborPosition = catom->position.addY(1);
+        neighborPosition = catom->position.offsetY(1);
         route->nextSeedVisited = true;
     }
 
@@ -118,4 +118,3 @@ void SyncLeft::sendSeedMessage(SyncModel syncModel, LINE_DIRECTION lineDirection
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 1000, msg, catom->getInterface(neighborPosition)));
     }
 }
-

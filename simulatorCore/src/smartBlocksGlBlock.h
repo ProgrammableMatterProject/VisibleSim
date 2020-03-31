@@ -15,16 +15,16 @@ namespace SmartBlocks {
 class SmartBlocksGlBlock:public GlBlock {
 protected :
 //	string popupInfo,textInfo;
-	int displayedValue;
+    int displayedValue;
 public :
-	SmartBlocksGlBlock(bID id) : GlBlock(id), displayedValue(id) {};
-	virtual ~SmartBlocksGlBlock() {};
+    SmartBlocksGlBlock(bID id) : GlBlock(id), displayedValue(id) {};
+    virtual ~SmartBlocksGlBlock() {};
 
-	/*	virtual string getPopupInfo();*/
-	void setDisplayedValue(int n) { displayedValue=n; }
-	void glDraw(ObjLoader::ObjLoader *ptrObj);
-	virtual void glDrawId(ObjLoader::ObjLoader *ptrObj,int n);
-	virtual void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n);
+    /*	virtual string getPopupInfo();*/
+    void setDisplayedValue(int n) { displayedValue=n; }
+    void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+    virtual void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;
+    virtual void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) override;
 };
 }
 #endif /* SMARTBLOCKSGLBLOCK_H_ */

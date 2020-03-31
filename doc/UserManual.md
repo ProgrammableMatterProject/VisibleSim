@@ -805,6 +805,15 @@ When simulating __Catoms2D__ ensembles, two additional actions can be performed 
 
 Both actions perform a rotation of the block corresponding to an angle of one interface (60º). A rotation in any direction is possible if and only if the module has three consecutive vacant interface in that direction. In case one or both rotations are not possible, the options will be greyed-out.
 
+## Debugging
+As for many programs, `gdb` can be used to debug VisibleSim programs. However, by default gdb would stop all threads when a breakpoint is reached or a signal has been raised. It is desirable to change this behavior such that only the scheduler thread is stopped when a break occurs, such that the GUI can be inspected and is updated while debugging. 
+To do so, we encourage adding the following two lines to your `.gdbinit` file, or to run them before any command after opening gdb:
+
+```
+set pagination off
+set non-stop on
+```
+
 ## Clock
 In VisibleSim, each `BuildingBlock` is using an independent internal clock, which can be configured to suit the user's needs.
 
@@ -946,3 +955,6 @@ In order to test for regression, the BlockCode is executed with the exact same p
 4. (__Missing Control File__): If when running the script, no control configuration currently exists, then user will be asked to export one interactively, in order for the test to proceed.
  
   __N.B.__: Due to the testing procedure itself, it is not possible to test algorithms that never end, since no terminal configuration can be exported.
+
+
+@author P. Thalamy - pierre.thalamy@femto-st.fr

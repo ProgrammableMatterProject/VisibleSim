@@ -10,11 +10,15 @@
 OS = $(shell uname -s)
 
 # VisibleSim local libraries
-VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen -lsimDatoms
+VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks -lsimOkteen -lsimDatoms -lsimNode -lsimHexanode
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL
+TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -Wsuggest-override -fno-stack-protector
 # TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
+
+ifeq ($(CXX),g++)
+  TEMP_CCFLAGS += -Wsuggest-override
+endif
 
 # ADDITIONAL CCFLAGS
 # ================
@@ -36,7 +40,7 @@ TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL
 TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
 TEMP_CCFLAGS += -DDEBUG_CSG #: trace CSG parsing
-TEMP_CCFLAGS += #-DshowStatsFPS
+TEMP_CCFLAGS += -DshowStatsFPS
 
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"
@@ -61,7 +65,7 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono
 endif
 
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lmuparser -lglut -lGL -lGLEW -lGLU -lpthread -ldl -export-dynamic $(INC_BOOST_IF_NEEDED)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lmuparser -lglut -lGL -lGLEW -lGLU -lpthread -ldl -lstdc++ -lm $(INC_BOOST_IF_NEEDED)"
 
 endif
 
@@ -79,6 +83,8 @@ GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 
 .PHONY: subdirs $(SUBDIRS) test doc
 #.PHONY: subdirs $(SUBDIRS) test doc
+
+.NOTPARALLEL: applicationsSrc/
 
 subdirs: $(SUBDIRS)
 

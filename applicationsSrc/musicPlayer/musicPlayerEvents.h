@@ -28,33 +28,33 @@ public:
 
         ~SynchronizeEvent() {};
 
-        void consumeBlockEvent() {
+        void consumeBlockEvent() override {
                 concernedBlock->scheduleLocalEvent(EventPtr(new SynchronizeEvent(this)));
         }
 
-        const string getEventName() { return "SYNC EVENT"; }
+        const string getEventName() override { return "SYNC EVENT"; }
 };
 
 
 class PlayNoteEvent : public BlockEvent {
 public:
-	
-	PlayNoteEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t,conBlock) {
-		eventType=EVENT_PLAY_NOTE;
-		randomNumber = conBlock->getRandomUint();
-	}
 
-	PlayNoteEvent(PlayNoteEvent *ev) : BlockEvent(ev) {
-		randomNumber = ev->randomNumber;
-	}
-	
-	~PlayNoteEvent() {};
-	
-	void consumeBlockEvent() {
-		concernedBlock->scheduleLocalEvent(EventPtr(new PlayNoteEvent(this)));
-	}
+    PlayNoteEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t,conBlock) {
+        eventType=EVENT_PLAY_NOTE;
+        randomNumber = conBlock->getRandomUint();
+    }
 
-	const string getEventName() { return "PLAY NOTE EVENT"; }
+    PlayNoteEvent(PlayNoteEvent *ev) : BlockEvent(ev) {
+        randomNumber = ev->randomNumber;
+    }
+
+    ~PlayNoteEvent() {};
+
+    void consumeBlockEvent()  override{
+        concernedBlock->scheduleLocalEvent(EventPtr(new PlayNoteEvent(this)));
+    }
+
+    const string getEventName() override { return "PLAY NOTE EVENT"; }
 };
 
 #endif // MSRSYNCMESSAGES_H_

@@ -61,10 +61,10 @@ private:
 
 public:
     CSGCube (double _size_x, double _size_y, double _size_z);
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
     void glDraw() override;
 };
 
@@ -74,10 +74,10 @@ private:
     double radius;
 public:
     CSGSphere (double _radius) : radius(_radius){};
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
 };
 
 class CSGCylinder : public CSGNode
@@ -87,39 +87,39 @@ private:
     bool center;
 public:
     CSGCylinder (double h, double r);
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
 };
 /******************************************************************/
 
 class CSGUnion : public CSGNode
 {
 public:
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
 };
 
 class CSGDifference : public CSGNode
 {
 public:
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
-    void glDraw() override;    
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
+    void glDraw() override;
 };
 
 class CSGIntersection : public CSGNode
 {
 public:
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
 };
 /******************************************************************/
 
@@ -130,10 +130,10 @@ private:
 
 public:
     CSGTranslate(float x, float y, float z) { translate.set(x,y,z); };
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
 };
 
 class CSGRotate : public CSGNode
@@ -144,10 +144,10 @@ private:
 
 public:
     CSGRotate(float x, float y, float z);
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
 };
 
 class CSGScale : public CSGNode
@@ -157,10 +157,10 @@ private:
 
 public:
     CSGScale(float x, float y, float z) { scale.set(x,y,z); };
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
 };
 
 /******************************************************************/
@@ -170,13 +170,11 @@ private:
     Color color;
 public:
     CSGColor(int c1, int c2, int c3) { color.set(c1/255.,c2/255.,c3/255.); };
-    void toString() const;
-    bool isInside(const Vector3D &point, Color &color) const;
-    bool isInBorder(const Vector3D &p, Color &color, double border) const;
-    void boundingBox(BoundingBox &bb);
+    void toString() const override;
+    bool isInside(const Vector3D &point, Color &color) const override;
+    bool isInBorder(const Vector3D &p, Color &color, double border) const override;
+    void boundingBox(BoundingBox &bb) override;
 };
 
 
 #endif /* CSG_H_ */
-
-

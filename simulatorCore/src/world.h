@@ -35,7 +35,7 @@ namespace BaseSimulator {
  */
 class World {
     std::mutex mutex_gl;
-protected:
+public:
     /************************************************************
      *   Global variable
      ************************************************************/
@@ -55,8 +55,9 @@ protected:
     ObjLoader::ObjLoader *objBlock = NULL;           //!< Object loader for a block
     ObjLoader::ObjLoader *objBlockForPicking = NULL; //!< Object loader for a block used during picking
     ObjLoader::ObjLoader *objRepere = NULL;          //!< Object loader for the frame
-
     GLint menuId;
+
+    bool isBlinkingBlocks=false;
     Camera *camera = NULL; //!< Pointer to the camera object for the graphical simulation, also includes the light source
 
     /************************************************************
@@ -107,14 +108,14 @@ public:
     map<bID, BuildingBlock*>& getMap() {
         return buildingBlocksMap;
     }
-    
+
     /**
      * @brief Getter for the map containing all Gl blocks of the world
      */
     unordered_map<bID, GlBlock*>& getMapGl() {
         return mapGlBlocks;
     }
-    
+
     /**
      * @brief Returns the number of blocks in the world
      * @return Number of blocks in the world
@@ -186,16 +187,16 @@ public:
     void deleteBlock(BuildingBlock *blc);
     /**
      * @brief Connects the interfaces of a block to all of its neighbors and notifiy them
-     *
      * @param blc : a pointer to the block to connect to its neighborhood
+     * @param count indicates whether the inserted modules should be counted towards nbModules
      */
-    void connectBlock(BuildingBlock *block);
+    void connectBlock(BuildingBlock *block, bool count = true);
     /**
      * @brief Disconnects the interfaces of a block from all of its neighbors and notify them
-     *
      * @param blc : a pointer to the block to disconnect from its neighborhood
+     * @param count indicates whether the removed modules should be discounted from nbModules
      */
-    void disconnectBlock(BuildingBlock *block);
+    void disconnectBlock(BuildingBlock *block, bool count = true);
 
     /**
      * @brief add an obstacle to the grid as a disabled block
@@ -216,10 +217,15 @@ public:
      * @return a pointer to the selected GlBlock
      */
     inline GlBlock* setselectedGlBlock(int n) {
-        auto const &glBlock = mapGlBlocks.find(n);        
-        return (selectedGlBlock=(glBlock != mapGlBlocks.end()) ? (*glBlock).second : NULL);
+        auto const &glBlock = mapGlBlocks.find(n);
+
+        selectedGlBlock= (glBlock != mapGlBlocks.end()) ? (*glBlock).second : NULL;
+
+        if (selectedGlBlock) numSelectedGlBlock = n;
+
+        return selectedGlBlock;
     };
-    
+
     /**
      * @brief Setter for selected picking face
      * @param n : id of the texture that has been clicked by the user
@@ -233,10 +239,10 @@ public:
      * @param n : id of the Glblock to retrieve
      */
     inline GlBlock* getBlockByNum(bID n) {
-        auto const &glBlock = mapGlBlocks.find(n);       
+        auto const &glBlock = mapGlBlocks.find(n);
         return glBlock != mapGlBlocks.end() ? (*glBlock).second : NULL;
     };
-    
+
     /**
      * @brief Returns the total number of blocks in the world
      * @return the number of blocks in the world
@@ -253,11 +259,15 @@ public:
     /**
      * @brief Draws the environment of the world and all included blocks
      */
-    virtual void glDraw() {};
-    /**
-     * @brief Draws the block ids of the block contained in the world
-     */
-    virtual void glDrawId() {};
+		virtual void glDraw() {};
+		/**
+		 * @brief Draws all blocks for shadows
+		 */
+		virtual void glDrawShadows() { glDraw(); };
+		/**
+		 * @brief Draws the block ids of the block contained in the world
+		 */
+		virtual void glDrawId() {};
     /**
      * @brief Draws the blocks material used for user interactions
      */
@@ -319,10 +329,10 @@ public:
      * @return a pointer to the BuildingBlock corresponding to the selected GlBlock, or NULL if there is none
      */
     inline BuildingBlock *getSelectedBuildingBlock() {
-        auto const &glBlock = mapGlBlocks.find(numSelectedGlBlock);   
+        auto const &glBlock = mapGlBlocks.find(numSelectedGlBlock);
         return glBlock != mapGlBlocks.end() ? getBlockById((*glBlock).second->blockId) : NULL;
     };
-    
+
     /**
      * @brief Schedules a tap event for block with id bId, at time date.
      *
@@ -343,23 +353,24 @@ public:
     /**
      * @brief Toggle world background
      */
-	void toggleBackground() { background = !background; }
+    void toggleBackground() { background = !background; }
 
-	/**
-	 * \brief Export a 3D model in STL format to print the whole configuration
-	 * \param title : title of the STL file
-	 * \result Returns true if the faces was well written
-	 */
-	virtual bool exportSTLModel(string title) { return false; };
-	
-	/**
+    /**
+     * \brief Export a 3D model in STL format to print the whole configuration
+     * \param title : title of the STL file
+     * \result Returns true if the faces was well written
+     */
+    virtual bool exportSTLModel(string title) { return false; };
+
+    /**
      * @brief Simulate Polymer surface
      */
-	virtual void simulatePolymer() {}
+    virtual void simulatePolymer() {}
     /**
     * @brief get bounding box coordinate from centers of glBlocks
     */
     void getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax);
+    bool hasBlinkingBlocks() { return isBlinkingBlocks;};
 };
 
 /**

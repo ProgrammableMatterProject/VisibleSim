@@ -1,7 +1,7 @@
 /**
  * @file translationEvents.h
  * @brief This file implements the realization of a translation motion events
- *  (created from refactoring of smartBlocksEvents and robotBlocksEvents)
+ *  (created from refactoring of smartBlocksEvents and slidingCubeEvents)
  *
  *  Created on: 07/07/16
  *      Author: Pierre
@@ -25,11 +25,12 @@ class TranslationStartEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
     TranslationStartEvent(Time, BuildingBlock *block,const Vector3D &fpos);
+    TranslationStartEvent(Time, BuildingBlock *block,const Cell3DPosition &fpos);
     TranslationStartEvent(TranslationStartEvent *ev);
     ~TranslationStartEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -45,12 +46,12 @@ class TranslationStepEvent : public BlockEvent {
 public:
     TranslationStepEvent(Time, BuildingBlock *block,const Vector3D &fpos);
     TranslationStepEvent(Time, BuildingBlock *block,const Vector3D &fpos,
-		    const Vector3D &step, const Vector3D &mpos);
+            const Vector3D &step, const Vector3D &mpos);
     TranslationStepEvent(TranslationStepEvent *ev);
     ~TranslationStepEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -65,9 +66,9 @@ public:
     TranslationStopEvent(Time, BuildingBlock *block,const Vector3D &fpos);
     TranslationStopEvent(TranslationStepEvent *ev);
     ~TranslationStopEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 //===========================================================================================================
@@ -81,9 +82,9 @@ public:
     TranslationEndEvent(Time, BuildingBlock *block);
     TranslationEndEvent(TranslationEndEvent *ev);
     ~TranslationEndEvent();
-    void consumeBlockEvent() {};
-    void consume();
-    const virtual string getEventName();
+    void consumeBlockEvent() override {};
+    void consume() override;
+    const virtual string getEventName() override;
 };
 
 }
