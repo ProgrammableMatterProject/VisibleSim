@@ -257,7 +257,7 @@ vector<pair<DatomsBlock*,PistonId>> DatomsMotionRulesLink::getBlockingDatoms(con
     Lattice *lattice = DatomsWorld::getWorld()->lattice;
     vector<pair<DatomsBlock*,PistonId>> tabPos;
 
-    OUTPUT << "getBlockingModulesList " << endl;
+    //OUTPUT << "getBlockingModulesList " << endl;
     Vector3D Vm,Vcomp;
 
     for (const BlockingCell bc:tabBlockingCellDirections) {
@@ -271,18 +271,17 @@ vector<pair<DatomsBlock*,PistonId>> DatomsMotionRulesLink::getBlockingDatoms(con
                 Vcomp = bc.compDir;
                 Vcomp.setPoint(true);
                 Vcomp = pivot->getGlBlock()->mat * Vcomp;
-                OUTPUT << "search pid" << Vcomp << endl;
+                //OUTPUT << "search pid" << Vcomp << endl;
                 PistonId pid =  ((DatomsWorld*) getWorld())->getMotionRules()->getPistonId(datom,Vcomp);
                 tabPos.push_back(make_pair(datom,pid));
-                OUTPUT << "Blocking Datom #" << datom->blockId << ":" << pid << endl;
+                //OUTPUT << "Blocking Datom #" << datom->blockId << ":" << pid << endl;
             }
         }
     }
-    OUTPUT << endl;
+    //OUTPUT << endl;
     return tabPos;
 
 }
-
 
 Cell3DPosition DatomsMotionRulesLink::getFinalPosition(DatomsBlock *mobile) {
     Cell3DPosition finalPosition;

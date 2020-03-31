@@ -673,256 +673,257 @@ void Simulator::parseCameraAndSpotlight() {
 }
 
 void Simulator::parseBlockList() {
-    int indexBlock = 0;
+	int indexBlock = 0;
 
-    TiXmlElement* element = xmlBlockListNode->ToElement();
-    if (xmlBlockListNode) {
-        Color defaultColor = DARKGREY;
-        const char *attr= element->Attribute("color");
-        if (attr) {
-            string str(attr);
-            int pos1 = str.find_first_of(','),
-                pos2 = str.find_last_of(',');
-            defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-            defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-            defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+	TiXmlElement* element = xmlBlockListNode->ToElement();
+	if (xmlBlockListNode) {
+		Color defaultColor = DARKGREY;
+		const char *attr= element->Attribute("color");
+		if (attr) {
+				string str(attr);
+				int pos1 = str.find_first_of(','),
+						pos2 = str.find_last_of(',');
+				defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
+				defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
+				defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 #ifdef DEBUG_CONF_PARSING
-            OUTPUT << "new default color :" << defaultColor << endl;
+				OUTPUT << "new default color :" << defaultColor << endl;
 #endif
-        }
+		}
 
-        /* Reading a catoms */
-        TiXmlNode *block = xmlBlockListNode->FirstChild("block");
-        Cell3DPosition position;
-        Color color;
-        bool master;
-        while (block) {
-            element = block->ToElement();
-            color=defaultColor;
-            master=false;
-            attr = element->Attribute("color");
-            if (attr) {
-                string str(attr);
-                int pos1 = str.find_first_of(','),
-                    pos2 = str.find_last_of(',');
-                color.set(atof(str.substr(0,pos1).c_str())/255.0,
-                          atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
-                          atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+		/* Reading a catoms */
+		TiXmlNode *block = xmlBlockListNode->FirstChild("block");
+		Cell3DPosition position;
+		Color color;
+		bool master;
+		while (block) {
+				element = block->ToElement();
+				color=defaultColor;
+				master=false;
+				attr = element->Attribute("color");
+				if (attr) {
+						string str(attr);
+						int pos1 = str.find_first_of(','),
+								pos2 = str.find_last_of(',');
+						color.set(atof(str.substr(0,pos1).c_str())/255.0,
+											atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
+											atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
 #ifdef DEBUG_CONF_PARSING
-                OUTPUT << "new color :" << defaultColor << endl;
+						OUTPUT << "new color :" << defaultColor << endl;
 #endif
-            }
-            attr = element->Attribute("position");
-            if (attr) {
-                string str(attr);
-                int pos = str.find_first_of(',');
-                int pos2 = str.find_last_of(',');
-                int ix = atof(str.substr(0,pos).c_str()),
-                    iy = atoi(str.substr(pos+1,pos2-pos-1).c_str()),
-                    iz = atoi(str.substr(pos2+1,str.length()-pos2-1).c_str());
+				}
+				attr = element->Attribute("position");
+				if (attr) {
+						string str(attr);
+						int pos = str.find_first_of(',');
+						int pos2 = str.find_last_of(',');
+						int ix = atof(str.substr(0,pos).c_str()),
+								iy = atoi(str.substr(pos+1,pos2-pos-1).c_str()),
+								iz = atoi(str.substr(pos2+1,str.length()-pos2-1).c_str());
 
-                // cerr << ix << "," << iy << "," << iz << endl;
+						// cerr << ix << "," << iy << "," << iz << endl;
 
-                position.pt[0] = ix;
-                position.pt[1] = iy;
-                position.pt[2] = iz;
-            }
-            attr = element->Attribute("master");
-            if (attr) {
-                string str(attr);
-                if (str.compare("true")==0 || str.compare("1")==0) {
-                    master=true;
-                }
+						position.pt[0] = ix;
+						position.pt[1] = iy;
+						position.pt[2] = iz;
+				}
+				attr = element->Attribute("master");
+				if (attr) {
+						string str(attr);
+						if (str.compare("true")==0 || str.compare("1")==0) {
+								master=true;
+						}
 #ifdef DEBUG_CONF_PARSING
-                OUTPUT << "master : " << master << endl;
+						OUTPUT << "master : " << master << endl;
 #endif
-            }
+				}
 
-            // cerr << "addBlock(" << currentID << ") pos = " << position << endl;
-            loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++],
-                      bcb, position, color, master);
+				// cerr << "addBlock(" << currentID << ") pos = " << position << endl;
+				loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++],
+									bcb, position, color, master);
 
-            block = block->NextSibling("block");
-        } // end while (block)
+				block = block->NextSibling("block");
+		} // end while (block)
 
-        // Reading blocks lines
-        block = xmlBlockListNode->FirstChild("blocksLine");
-        int line = 0, plane = 0;
-        while (block) {
-            if (ids == MANUAL) {
-                cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
-                throw ParsingException();
-            }
+		// Reading blocks lines
+		block = xmlBlockListNode->FirstChild("blocksLine");
+		int line = 0, plane = 0;
+		while (block) {
+				if (ids == MANUAL) {
+						cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
+						throw ParsingException();
+				}
 
-            line = 0;
-            element = block->ToElement();
-            color=defaultColor;
-            attr = element->Attribute("color");
-            if (attr) {
-                string str(attr);
-                int pos1 = str.find_first_of(','),
-                    pos2 = str.find_last_of(',');
-                color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-                color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-                color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+				line = 0;
+				element = block->ToElement();
+				color=defaultColor;
+				attr = element->Attribute("color");
+				if (attr) {
+						string str(attr);
+						int pos1 = str.find_first_of(','),
+								pos2 = str.find_last_of(',');
+						color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
+						color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
+						color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 #ifdef DEBUG_CONF_PARSING
-                OUTPUT << "line color :" << color << endl;
+						OUTPUT << "line color :" << color << endl;
 #endif
-            }
-            attr = element->Attribute("line");
-            if (attr) {
-                line = atoi(attr);
-            }
-            attr = element->Attribute("plane");
-            if (attr) {
-                plane = atoi(attr);
-            }
-            attr = element->Attribute("values");
-            if (attr) {
-                string str(attr);
-                position.pt[0] = 0;
-                position.pt[1] = line;
-                position.pt[2] = plane;
-                int n = str.length();
-                for(int i=0; i<n; i++) {
-                    if (str[i]=='1') {
-                        position.pt[0]=i;
-                        loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++],
-                                  bcb, position, color, false);
-                    }
-                }
-            }
-            block = block->NextSibling("blocksLine");
-        } // end while (blocksLine)
+				}
+				attr = element->Attribute("line");
+				if (attr) {
+						line = atoi(attr);
+				}
+				attr = element->Attribute("plane");
+				if (attr) {
+						plane = atoi(attr);
+				}
+				attr = element->Attribute("values");
+				if (attr) {
+						string str(attr);
+						position.pt[0] = 0;
+						position.pt[1] = line;
+						position.pt[2] = plane;
+						int n = str.length();
+						for(int i=0; i<n; i++) {
+								if (str[i]=='1') {
+										position.pt[0]=i;
+										loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++],
+															bcb, position, color, false);
+								}
+						}
+				}
+				block = block->NextSibling("blocksLine");
+		} // end while (blocksLine)
 
-        // Reading block boxes
-        block = xmlBlockListNode->FirstChild("blockBox");
-        while (block) {
-            if (ids == MANUAL) {
-                cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
-                throw ParsingException();
-            }
+		// Reading block boxes
+		block = xmlBlockListNode->FirstChild("blockBox");
+		while (block) {
+				if (ids == MANUAL) {
+						cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
+						throw ParsingException();
+				}
 
-            element = block->ToElement();
-            color=defaultColor;
-            attr = element->Attribute("color");
-            if (attr) {
-                string str(attr);
-                int pos1 = str.find_first_of(','),
-                    pos2 = str.find_last_of(',');
-                color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-                color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-                color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+				element = block->ToElement();
+				color=defaultColor;
+				attr = element->Attribute("color");
+				if (attr) {
+						string str(attr);
+						int pos1 = str.find_first_of(','),
+								pos2 = str.find_last_of(',');
+						color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
+						color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
+						color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 #ifdef DEBUG_CONF_PARSING
-                OUTPUT << "box color :" << color << endl;
+						OUTPUT << "box color :" << color << endl;
 #endif
-            }
+				}
 
-            Vector3D boxOrigin(0,0,0);
-            attr = element->Attribute("boxOrigin");
-            if (attr) {
-                string str(attr);
-                int pos1 = str.find_first_of(','),
-                    pos2 = str.find_last_of(',');
-                boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
-                boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				Vector3D boxOrigin(0,0,0);
+				attr = element->Attribute("boxOrigin");
+				if (attr) {
+						string str(attr);
+						int pos1 = str.find_first_of(','),
+								pos2 = str.find_last_of(',');
+						boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
+						boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+						boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
 #ifdef DEBUG_CONF_PARSING
-                OUTPUT << "new boxOrigine:" << boxOrigin << endl;
+						OUTPUT << "new boxOrigine:" << boxOrigin << endl;
 #endif
-            }
+				}
 
-            Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
-                             world->lattice->gridSize[1]*world->lattice->gridScale[1],
-                             world->lattice->gridSize[2]*world->lattice->gridScale[2]);
-            attr = element->Attribute("boxSize");
-            if (attr) {
-                string str(attr);
-                int pos1 = str.find_first_of(','),
-                    pos2 = str.find_last_of(',');
-                boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
-                boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
+													world->lattice->gridSize[1]*world->lattice->gridScale[1],
+													world->lattice->gridSize[2]*world->lattice->gridScale[2]);
+				attr = element->Attribute("boxSize");
+				if (attr) {
+						string str(attr);
+						int pos1 = str.find_first_of(','),
+								pos2 = str.find_last_of(',');
+						boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
+						boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+						boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
 #ifdef DEBUG_CONF_PARSING
-                OUTPUT << "new boxDest:" << boxDest << endl;
+						OUTPUT << "new boxDest:" << boxDest << endl;
 #endif
-            }
+				}
 
-            assert(world->lattice!=NULL);
+				assert(world->lattice!=NULL);
 
-            Vector3D pos;
-            for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
-                for (short iy=0; iy<world->lattice->gridSize[1]; iy++) {
-                    for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
-                        position.set(ix,iy,iz);
-                        pos = world->lattice->gridToWorldPosition(position);
+				Vector3D pos;
+				for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
+						for (short iy=0; iy<world->lattice->gridSize[1]; iy++) {
+								for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
+										position.set(ix,iy,iz);
+										pos = world->lattice->gridToWorldPosition(position);
 
-                        if (pos.isInBox(boxOrigin,boxDest)) {
-                            if (position == Cell3DPosition(1,0,0)) {
-                                cout << "isInBox: " << pos.isInBox(boxOrigin,boxDest) << endl;
-                            }
+										if (pos.isInBox(boxOrigin,boxDest)) {
+												if (position == Cell3DPosition(1,0,0)) {
+														cout << "isInBox: " << pos.isInBox(boxOrigin,boxDest) << endl;
+												}
 
-                            loadBlock(element,
-                                      ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                      bcb, position, color, false);
-                        }
-                    }
-                }
-            }
+												loadBlock(element,
+																	ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
+																	bcb, position, color, false);
+										}
+								}
+						}
+				}
 
-            block = block->NextSibling("blockBox");
-        } // end while (blockBox)*/
+				block = block->NextSibling("blockBox");
+		} // end while (blockBox)*/
 
-        // Reading CSG Object
-        block = xmlBlockListNode->FirstChild("csg");
-        if (block) {
-            TiXmlElement *element = block->ToElement();
-            string str = element->Attribute("content");
+		// Reading CSG Object
+		block = xmlBlockListNode->FirstChild("csg");
+		if (block) {
+		
+					
+			TiXmlElement *element = block->ToElement();
+			string str = element->Attribute("content");
 
-            BoundingBox bb;
-            bool boundingBox = true;
-            element->QueryBoolAttribute("boundingBox", &boundingBox);
+			BoundingBox bb;
+			bool boundingBox = true;
+			element->QueryBoolAttribute("boundingBox", &boundingBox);
 
-            char* csgBin = CSGParser::parseCsg(str);
-            CsgUtils csgUtils;
-            CSGNode *csgRoot = csgUtils.readCSGBuffer(csgBin);
-            csgRoot->toString();
+			char* csgBin = CSGParser::parseCsg(str);
+			CsgUtils csgUtils;
+			CSGNode *csgRoot = csgUtils.readCSGBuffer(csgBin);
+			csgRoot->toString();
 
-            if (boundingBox) csgRoot->boundingBox(bb);
+			if (boundingBox) csgRoot->boundingBox(bb);
 
-            Vector3D csgPos;
-            const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
-            const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
-            for (short iz = glb[2]; iz < ulb[2]; iz++) {
-                for (short iy = glb[1]; iy < ulb[1]; iy++) {
-                    for (short ix = glb[0]; ix < ulb[0]; ix++) {
-                        position.set(ix,iy,iz);
-                        csgPos = world->lattice->gridToUnscaledWorldPosition(position);
+			Vector3D csgPos;
+			const Cell3DPosition& glb = world->lattice->getGridLowerBounds();
+			const Cell3DPosition& ulb = world->lattice->getGridUpperBounds();
+			for (short iz = glb[2]; iz < ulb[2]; iz++) {
+					for (short iy = glb[1]; iy < ulb[1]; iy++) {
+							for (short ix = glb[0]; ix < ulb[0]; ix++) {
+									position.set(ix,iy,iz);
+									csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
 #ifdef OFFSET_BOUNDINGBOX
-                        csgPos.pt[0] += bb.P0[0] - 1.0;
-                        csgPos.pt[1] += bb.P0[1] - 1.0;
-                        csgPos.pt[2] += bb.P0[2] - 1.0;
+									csgPos.pt[0] += bb.P0[0] - 1.0;
+									csgPos.pt[1] += bb.P0[1] - 1.0;
+									csgPos.pt[2] += bb.P0[2] - 1.0;
 #else
-                        csgPos.pt[0] += bb.P0[0];
-                        csgPos.pt[1] += bb.P0[1];
-                        csgPos.pt[2] += bb.P0[2];
+									csgPos.pt[0] += bb.P0[0];
+									csgPos.pt[1] += bb.P0[1];
+									csgPos.pt[2] += bb.P0[2];
 #endif
 
-                        if (world->lattice->isInGrid(position)
-                            and csgRoot->isInside(csgPos, color)) {
-                            loadBlock(element,
-                                      ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                      bcb, position, color, false);
-                        }
-                    }
-                }
-            }
-        }
-    } else { // end if
-
-        cerr << "warning: no Block List in configuration file" << endl;
-    }
+									if (world->lattice->isInGrid(position)
+											and csgRoot->isInside(csgPos, color)) {
+											loadBlock(element,
+																ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
+																bcb, position, color, false);
+									}
+							}
+					}
+			}
+		}
+	} else { // end if
+		cerr << "warning: no Block List in configuration file" << endl;
+	}
 }
 
 void Simulator::parseTarget() {

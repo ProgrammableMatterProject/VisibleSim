@@ -544,9 +544,8 @@ void FCCLattice::glDraw() {
                         glTranslatef(v[0],v[1],v[2]);
 
                         glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-                        glutSolidCube(0.2*gridScale[0]);
+                        glutSolidCube(0.5*gridScale[0]);
                         glPopMatrix();
-
                     }
                     ptr++;
                     ptrDistance++;
@@ -865,10 +864,10 @@ void SkewFCCLattice::glDraw() {
                         glTranslatef(v[0],v[1],v[2]);
 
                         glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-                                                glScalef(1.0f,1.0f,0.1f);
-                                                glRotatef(90.0f,0,0,1.0f);
+												//glScalef(1.0f,1.0f,0.1f);
+                        //glRotatef(90.0f,0,0,1.0f);
                         glutSolidCube(0.5*gridScale[0]);
-                                                //glutSolidSphere(0.25*gridScale[0],12,12);
+                        //glutSolidSphere(0.25*gridScale[0],12,12);
                         glPopMatrix();
                     }
                     ptr++;
