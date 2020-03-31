@@ -21,7 +21,9 @@ private:
 public :
     DatomsRotateCode(DatomsBlock *host):DatomsBlockCode(host) {
         module = host;
-        tabDistances = nullptr;
+        tabDistances = new unsigned short[lattice->gridSize[0]
+                                          * lattice->gridSize[1]
+                                          * lattice->gridSize[2]]();
         tabLockedCells = new bool[lattice->gridSize[0]
                                   * lattice->gridSize[1] * lattice->gridSize[2]]();
     };
