@@ -11,7 +11,7 @@
 #define EVENT_SYNC   15001
 #define EVENT_PLAY_NOTE 15015
 
-#include "events.h"
+#include "events/events.h"
 #include <memory>
 
 class SynchronizeEvent : public BlockEvent {

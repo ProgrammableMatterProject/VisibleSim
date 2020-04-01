@@ -14,9 +14,9 @@
 #include <memory.h>
 #include <map>
 
-#include "glBlock.h"
-#include "color.h"
-#include "cell3DPosition.h"
+#include "base/glBlock.h"
+#include "utils/color.h"
+#include "grid/cell3DPosition.h"
 
 #ifndef GLUT
 #define GLUT

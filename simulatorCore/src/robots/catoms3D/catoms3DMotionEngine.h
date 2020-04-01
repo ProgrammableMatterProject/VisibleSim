@@ -13,8 +13,8 @@
 
 #include <utility>
 
-#include "catoms3DMotionRules.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DMotionRules.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 namespace Catoms3D {
 

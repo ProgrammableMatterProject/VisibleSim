@@ -8,9 +8,9 @@
 #ifndef DATOMSGLBLOCK_H_
 #define DATOMSGLBLOCK_H_
 #include <string>
-#include <objLoader.h>
-#include "matrix44.h"
-#include "glBlock.h"
+#include "gui/objLoader.h"
+#include "math/matrix44.h"
+#include "base/glBlock.h"
 
 namespace Datoms {
 class DatomsGlBlock:public GlBlock {

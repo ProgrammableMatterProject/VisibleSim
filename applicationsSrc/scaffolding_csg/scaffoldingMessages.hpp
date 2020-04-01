@@ -11,7 +11,7 @@
 #ifndef MC3D_MESSAGES_H_
 #define MC3D_MESSAGES_H_
 
-#include "network.h"
+#include "comm/network.h"
 
 #include "scaffoldingRuleMatcher.hpp"
 

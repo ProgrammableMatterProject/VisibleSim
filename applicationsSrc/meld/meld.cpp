@@ -1,22 +1,22 @@
 #include <iostream>
-#include <trace.h>
 
+#include "utils/trace.h"
 #include "meldBlockCode.h"
 
-#include "slidingCubesSimulator.h"
-#include "slidingCubesBlockCode.h"
-#include "smartBlocksSimulator.h"
-#include "smartBlocksBlockCode.h"
-#include "blinkyBlocksSimulator.h"
-#include "blinkyBlocksBlockCode.h"
-#include "catoms2DSimulator.h"
-#include "catoms2DBlockCode.h"
-#include "catoms3DSimulator.h"
-#include "catoms3DBlockCode.h"
+#include "robots/slidingCubes/slidingCubesSimulator.h"
+#include "robots/slidingCubes/slidingCubesBlockCode.h"
+#include "robots/smartBlocks/smartBlocksSimulator.h"
+#include "robots/smartBlocks/smartBlocksBlockCode.h"
+#include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
+#include "robots/catoms2D/catoms2DSimulator.h"
+#include "robots/catoms2D/catoms2DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 
-#include "meldInterpretVM.h"
-#include "commandLine.h"
-#include "configStat.h"
+#include "meld/meldInterpretVM.h"
+#include "utils/commandLine.h"
+#include "stats/configStat.h"
 
 using namespace std;
 

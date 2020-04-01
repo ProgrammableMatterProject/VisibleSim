@@ -9,7 +9,7 @@
 #define CLOCK_H_
 
 #include <cstdint>
-#include "tDefs.h"
+#include "utils/tDefs.h"
 
 using namespace std;
 

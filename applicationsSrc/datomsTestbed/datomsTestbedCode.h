@@ -1,8 +1,8 @@
 #ifndef datomsTestbedCode_H_
 #define datomsTestbedCode_H_
-#include "datomsSimulator.h"
-#include "datomsBlockCode.h"
-#include "datomsMotionRules.h"
+#include "robots/datoms/datomsSimulator.h"
+#include "robots/datoms/datomsBlockCode.h"
+#include "robots/datoms/datomsMotionRules.h"
 
 using namespace Datoms;
 

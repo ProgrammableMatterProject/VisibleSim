@@ -1,7 +1,7 @@
 #ifndef CoatingSeeding_H_
 #define CoatingSeeding_H_
 
-#include "catoms3DBlock.h"
+#include "robots/catoms3D/catoms3DBlock.h"
 
 #include "coatingNeighborhood.hpp"
 #include "coatingBorder.hpp"

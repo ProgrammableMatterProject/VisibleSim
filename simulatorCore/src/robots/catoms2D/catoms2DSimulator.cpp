@@ -8,9 +8,9 @@
 #include <iostream>
 #include <string.h>
 
-#include "catoms2DSimulator.h"
-#include "trace.h"
-#include "utils.h"
+#include "robots/catoms2D/catoms2DSimulator.h"
+#include "utils/trace.h"
+#include "utils/utils.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

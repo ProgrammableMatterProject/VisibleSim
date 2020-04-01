@@ -1,6 +1,6 @@
 #include <iostream>
-#include "slidingCubesSimulator.h"
-#include "slidingCubesBlockCode.h"
+#include "robots/slidingCubes/slidingCubesSimulator.h"
+#include "robots/slidingCubes/slidingCubesBlockCode.h"
 #include "distanceSCCode.h"
 using namespace std;
 using namespace SlidingCubes;

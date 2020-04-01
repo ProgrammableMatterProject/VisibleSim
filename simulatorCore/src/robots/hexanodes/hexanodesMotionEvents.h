@@ -8,65 +8,65 @@
  *      Author: Pierre Thalamy
  */
 
-#ifndef HEXANODEMOTIONEVENTS_H_
-#define HEXANODEMOTIONEVENTS_H_
+#ifndef HEXANODESMOTIONEVENTS_H_
+#define HEXANODESMOTIONEVENTS_H_
 
-#include "buildingBlock.h"
-#include "events.h"
-#include "lattice.h"
+#include "base/buildingBlock.h"
+#include "events/events.h"
+#include "grid/lattice.h"
 
 namespace BaseSimulator {
 
 //===========================================================================================================
 //
-//          HexanodeMotionStartEvent  (class)
+//          HexanodesMotionStartEvent  (class)
 //
 //===========================================================================================================
 
-	class HexanodeMotionStartEvent : public BlockEvent {
-		Cell3DPosition finalPosition;
-		HHLattice::Direction finalOrientation;
-	public:
-		HexanodeMotionStartEvent(Time, BuildingBlock*, const Cell3DPosition &fpos, HHLattice::Direction forient);
-		HexanodeMotionStartEvent(HexanodeMotionStartEvent *ev);
-		~HexanodeMotionStartEvent();
-		void consumeBlockEvent() override {}
-		void consume() override;
-		const virtual string getEventName() override;
-	};
+    class HexanodesMotionStartEvent : public BlockEvent {
+        Cell3DPosition finalPosition;
+        HHLattice::Direction finalOrientation;
+    public:
+        HexanodesMotionStartEvent(Time, BuildingBlock*, const Cell3DPosition &fpos, HHLattice::Direction forient);
+        HexanodesMotionStartEvent(HexanodesMotionStartEvent *ev);
+        ~HexanodesMotionStartEvent();
+        void consumeBlockEvent() override {}
+        void consume() override;
+        const virtual string getEventName() override;
+    };
 
 //===========================================================================================================
 //
-//          HexanodeMotionStopEvent  (class)
+//          HexanodesMotionStopEvent  (class)
 //
 //===========================================================================================================
 
-	class HexanodeMotionStopEvent : public BlockEvent {
-		Cell3DPosition finalPosition;
-		HHLattice::Direction finalOrientation;
-	public:
-		HexanodeMotionStopEvent(Time, BuildingBlock *block,const Cell3DPosition &fpos, HHLattice::Direction forient);
-		~HexanodeMotionStopEvent();
-		void consumeBlockEvent() override {}
-		void consume() override;
-		const virtual string getEventName() override;
-	};
+    class HexanodesMotionStopEvent : public BlockEvent {
+        Cell3DPosition finalPosition;
+        HHLattice::Direction finalOrientation;
+    public:
+        HexanodesMotionStopEvent(Time, BuildingBlock *block,const Cell3DPosition &fpos, HHLattice::Direction forient);
+        ~HexanodesMotionStopEvent();
+        void consumeBlockEvent() override {}
+        void consume() override;
+        const virtual string getEventName() override;
+    };
 
 //===========================================================================================================
 //
-//          HexanodeMotionEndEvent  (class)
+//          HexanodesMotionEndEvent  (class)
 //
 //===========================================================================================================
 
-	class HexanodeMotionEndEvent : public BlockEvent {
-	public:
-		HexanodeMotionEndEvent(Time, BuildingBlock *block);
-		HexanodeMotionEndEvent(HexanodeMotionEndEvent *ev);
-		~HexanodeMotionEndEvent();
-		void consumeBlockEvent() override {}
-		void consume() override;
-		const virtual string getEventName() override;
-	};
+    class HexanodesMotionEndEvent : public BlockEvent {
+    public:
+        HexanodesMotionEndEvent(Time, BuildingBlock *block);
+        HexanodesMotionEndEvent(HexanodesMotionEndEvent *ev);
+        ~HexanodesMotionEndEvent();
+        void consumeBlockEvent() override {}
+        void consume() override;
+        const virtual string getEventName() override;
+    };
 
 }
-#endif /* HEXANODEMOTIONEVENTS_H_ */
+#endif /* HEXANODESMOTIONEVENTS_H_ */

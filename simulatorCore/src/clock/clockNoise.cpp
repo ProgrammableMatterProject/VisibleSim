@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <random>
-#include "clockNoise.h"
+#include "clock/clockNoise.h"
 
 
 using namespace std;
@@ -60,8 +60,8 @@ void DClockNoise::loadData(vector<string> &files) {
     noiseSignal_t signal;
     if (file.is_open()) {
       while(file >> time >> noise) {
-	referencePt_t p = make_pair(time,noise);
-	signal.push_back(p);
+    referencePt_t p = make_pair(time,noise);
+    signal.push_back(p);
       }
       file.close();
       noiseSignals.push_back(signal);
@@ -79,7 +79,7 @@ void DClockNoise::print() {
     cout << "noise: " << i << endl;
     i++;
     for (vector<referencePt_t>::iterator it2 = signal.begin();
-	 it2 != signal.end(); it2++) {
+     it2 != signal.end(); it2++) {
       referencePt_t &p = *it2;
       Time t = p.first;
       clockNoise_t n = p.second;
@@ -95,7 +95,7 @@ clockNoise_t DClockNoise::getNoise(Time simTime, referencePt_t p1, referencePt_t
   n1 = p1.second;
   t2 = p2.first;
   n2 = p2.second;
-  double a = (n2-n1)/(t2-t1); 
+  double a = (n2-n1)/(t2-t1);
   double b = n2 - a*t2;
   double n = round(a*(double)simTime + b);
   return n;
@@ -126,37 +126,37 @@ clockNoise_t DClockNoise::getNoise(Time simTime) {
       break;
     }
   }
-  
-#ifdef DEBUG_CLOCKNOISE  
+
+#ifdef DEBUG_CLOCKNOISE
   int cas = 0;
 #endif
   if (it == signal.begin()) {
     p1 = make_pair(0,0);
     p2 = signal.front();
-#ifdef DEBUG_CLOCKNOISE 
+#ifdef DEBUG_CLOCKNOISE
     cas = 1;
 #endif
   } else if (it == signal.end()) {
     cerr << "Warning node signal shorter than the simulation" << endl;
     p1 = signal.back();
     p2 = make_pair(UINT64_MAX,0);
-#ifdef DEBUG_CLOCKNOISE 
+#ifdef DEBUG_CLOCKNOISE
     cas = 2;
-#endif    
+#endif
   } else if (it->first == simTime) {
     return it->second;
   } else {
     p2 = *it;
     it--;
     p1 = *it;
-#ifdef DEBUG_CLOCKNOISE 
+#ifdef DEBUG_CLOCKNOISE
     cas = 4;
 #endif
   }
-  
+
   clockNoise_t noise = getNoise(simTime,p1,p2);
-#ifdef DEBUG_CLOCKNOISE   
-  cout << "getNoise(" << id << "," << simTime << ") = "  << noise 
+#ifdef DEBUG_CLOCKNOISE
+  cout << "getNoise(" << id << "," << simTime << ") = "  << noise
        << ", time in [" << p1.first << "," << p2.first << "]"
        << ", noise in [" << p1.second << "," << p2.second << "]"
        << "(cas:" << cas

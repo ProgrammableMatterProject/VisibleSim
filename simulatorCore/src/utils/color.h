@@ -8,7 +8,7 @@
 #include <memory.h>
 #endif
 
-#include "shaders.h"
+#include "gui/shaders.h"
 
 class Color {
 public :

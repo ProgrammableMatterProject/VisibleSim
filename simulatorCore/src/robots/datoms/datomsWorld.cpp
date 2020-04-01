@@ -12,11 +12,11 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "datomsWorld.h"
-#include "datomsBlock.h"
-#include "datomsMotionEngine.h"
-#include "trace.h"
-#include "configExporter.h"
+#include "robots/datoms/datomsWorld.h"
+#include "robots/datoms/datomsBlock.h"
+#include "robots/datoms/datomsMotionEngine.h"
+#include "utils/trace.h"
+#include "utils/configExporter.h"
 #include "deformationEvents.h"
 
 using namespace std;

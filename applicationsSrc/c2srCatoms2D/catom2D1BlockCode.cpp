@@ -11,10 +11,10 @@
 #include <float.h>
 
 #include "catom2D1BlockCode.h"
-#include "scheduler.h"
-#include "events.h"
-#include "catoms2DRotationEvents.h"
-#include "rate.h"
+#include "events/scheduler.h"
+#include "events/events.h"
+#include "robots/catoms2D/catoms2DRotationEvents.h"
+#include "comm/rate.h"
 
 #include "c2srMsg.h"
 #include "c2srEvents.h"

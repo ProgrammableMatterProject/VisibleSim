@@ -1,8 +1,8 @@
 #ifndef simpleMotionCode_H_
 #define simpleMotionCode_H_
 
-#include "okteenSimulator.h"
-#include "okteenBlockCode.h"
+#include "robots/okteen/okteenSimulator.h"
+#include "robots/okteen/okteenBlockCode.h"
 
 using namespace Okteen;
 

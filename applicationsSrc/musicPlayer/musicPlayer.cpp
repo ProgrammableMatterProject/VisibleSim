@@ -6,35 +6,35 @@
  */
 
 #include <iostream>
-#include "blinkyBlocksSimulator.h"
-#include "blinkyBlocksBlockCode.h"
+#include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
 #include "musicPlayerBlockCode.h"
-#include <trace.h> 
+#include "utils/trace.h"
 
 using namespace std;
 using namespace BlinkyBlocks;
 
 int main(int argc, char **argv) {
-	
-	OUTPUT << "\033[1;33m" << "Starting Blinky Blocks simulation (main) ..." << "\033[0m" << endl;
 
-	createSimulator(argc, argv, MusicPlayerBlockCode::buildNewBlockCode);
-	
-	{
-		using namespace BaseSimulator;
+    OUTPUT << "\033[1;33m" << "Starting Blinky Blocks simulation (main) ..." << "\033[0m" << endl;
 
-		Simulator *s = Simulator::getSimulator();
-		s->printInfo();
-	}
+    createSimulator(argc, argv, MusicPlayerBlockCode::buildNewBlockCode);
 
-	getSimulator()->printInfo();
-	getScheduler()->printInfo();
-	BaseSimulator::getWorld()->printInfo();
-		
-	getScheduler()->waitForSchedulerEnd();
-		
-	deleteSimulator();
-	
-	OUTPUT << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
-	return(0);
+    {
+        using namespace BaseSimulator;
+
+        Simulator *s = Simulator::getSimulator();
+        s->printInfo();
+    }
+
+    getSimulator()->printInfo();
+    getScheduler()->printInfo();
+    BaseSimulator::getWorld()->printInfo();
+
+    getScheduler()->waitForSchedulerEnd();
+
+    deleteSimulator();
+
+    OUTPUT << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
+    return(0);
 }

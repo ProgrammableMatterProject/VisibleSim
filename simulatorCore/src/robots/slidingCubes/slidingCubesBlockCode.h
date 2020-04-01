@@ -8,10 +8,10 @@
 #ifndef SLIDINGCUBESBLOCKCODE_H_
 #define SLIDINGCUBESBLOCKCODE_H_
 
-#include "blockCode.h"
-#include "slidingCubesBlock.h"
-#include "network.h"
-#include "events.h"
+#include "base/blockCode.h"
+#include "robots/slidingCubes/slidingCubesBlock.h"
+#include "comm/network.h"
+#include "events/events.h"
 
 namespace SlidingCubes {
 

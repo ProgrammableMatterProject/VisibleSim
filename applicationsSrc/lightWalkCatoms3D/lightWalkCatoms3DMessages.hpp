@@ -11,7 +11,7 @@
 #ifndef LIGHTWALKCATOMS3D_MESSAGES_H_
 #define LIGHTWALKCATOMS3D_MESSAGES_H_
 
-#include "network.h"
+#include "comm/network.h"
 
 static const uint MSG_DELAY_MC = 5000;
 

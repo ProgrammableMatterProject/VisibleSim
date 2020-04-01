@@ -5,7 +5,7 @@
  *
  */
 
-#include "matrix44.h"
+#include "math/matrix44.h"
 
 Matrix::Matrix(const float *tab)
 { int i=16;
@@ -94,8 +94,8 @@ double det33(double a,double b,double c,double d,double e,double f,double g,doub
 double Matrix::determinant() const
 { return ( m[0] * det33(m[5],m[6],m[7],m[9],m[10],m[11],m[13],m[14],m[15])-
            m[4] * det33(m[1],m[2],m[3],m[9],m[10],m[11],m[13],m[14],m[15])+
-		   m[8] * det33(m[1],m[2],m[3],m[5],m[6],m[7],m[13],m[14],m[15])-
-		   m[12]* det33(m[1],m[2],m[3],m[5],m[6],m[7],m[9],m[10],m[11]));
+           m[8] * det33(m[1],m[2],m[3],m[5],m[6],m[7],m[13],m[14],m[15])-
+           m[12]* det33(m[1],m[2],m[3],m[5],m[6],m[7],m[9],m[10],m[11]));
 }
 
 
@@ -146,9 +146,9 @@ void Matrix::transpose(Matrix &t) const
 }
 
 void Matrix::set(double x00,double x10,double x20,double x30,
-				  double x01,double x11,double x21,double x31,
-				  double x02,double x12,double x22,double x32,
-				  double x03,double x13,double x23,double x33)
+                  double x01,double x11,double x21,double x31,
+                  double x02,double x12,double x22,double x32,
+                  double x03,double x13,double x23,double x33)
 { m[0] = x00;
   m[1] = x10;
   m[2] = x20;
@@ -209,77 +209,74 @@ void Matrix::setRotation(double a,const Vector3D &V)
 }
 
 void Matrix::setFromGL(GLfloat *mat) {
-	// copie en transposant !
-	m[0] = mat[0];
-	m[1] = mat[4];
-	m[2] = mat[8];
-	m[3] = mat[12];
-	m[4] = mat[1];
-	m[5] = mat[5];
-	m[6] = mat[9];
-	m[7] = mat[13];
-	m[8] = mat[2];
-	m[9] = mat[6];
-	m[10] = mat[10];
-	m[11] = mat[14];
-	m[12] = mat[3];
-	m[13] = mat[7];
-	m[14] = mat[11];
-	m[15] = mat[15];
+    // copie en transposant !
+    m[0] = mat[0];
+    m[1] = mat[4];
+    m[2] = mat[8];
+    m[3] = mat[12];
+    m[4] = mat[1];
+    m[5] = mat[5];
+    m[6] = mat[9];
+    m[7] = mat[13];
+    m[8] = mat[2];
+    m[9] = mat[6];
+    m[10] = mat[10];
+    m[11] = mat[14];
+    m[12] = mat[3];
+    m[13] = mat[7];
+    m[14] = mat[11];
+    m[15] = mat[15];
 }
 
 void Matrix::glLoadMatrix() {
-	GLfloat mat[16];
+    GLfloat mat[16];
 
-	mat[0] = GLfloat(m[0]);
-	mat[1] = GLfloat(m[4]);
-	mat[2] = GLfloat(m[8]);
-	mat[3] = GLfloat(m[12]);
-	mat[4] = GLfloat(m[1]);
-	mat[5] = GLfloat(m[5]);
-	mat[6] = GLfloat(m[9]);
-	mat[7] = GLfloat(m[13]);
-	mat[8] = GLfloat(m[2]);
-	mat[9] = GLfloat(m[6]);
-	mat[10] = GLfloat(m[10]);
-	mat[11] = GLfloat(m[14]);
-	mat[12] = GLfloat(m[3]);
-	mat[13] = GLfloat(m[7]);
-	mat[14] = GLfloat(m[11]);
-	mat[15] = GLfloat(m[15]);
-	glLoadMatrixf(mat);
+    mat[0] = GLfloat(m[0]);
+    mat[1] = GLfloat(m[4]);
+    mat[2] = GLfloat(m[8]);
+    mat[3] = GLfloat(m[12]);
+    mat[4] = GLfloat(m[1]);
+    mat[5] = GLfloat(m[5]);
+    mat[6] = GLfloat(m[9]);
+    mat[7] = GLfloat(m[13]);
+    mat[8] = GLfloat(m[2]);
+    mat[9] = GLfloat(m[6]);
+    mat[10] = GLfloat(m[10]);
+    mat[11] = GLfloat(m[14]);
+    mat[12] = GLfloat(m[3]);
+    mat[13] = GLfloat(m[7]);
+    mat[14] = GLfloat(m[11]);
+    mat[15] = GLfloat(m[15]);
+    glLoadMatrixf(mat);
 }
 
 void Matrix::glMultMatrix() {
-	GLfloat mat[16];
+    GLfloat mat[16];
 
-	mat[0] = GLfloat(m[0]);
-	mat[1] = GLfloat(m[4]);
-	mat[2] = GLfloat(m[8]);
-	mat[3] = GLfloat(m[12]);
-	mat[4] = GLfloat(m[1]);
-	mat[5] = GLfloat(m[5]);
-	mat[6] = GLfloat(m[9]);
-	mat[7] = GLfloat(m[13]);
-	mat[8] = GLfloat(m[2]);
-	mat[9] = GLfloat(m[6]);
-	mat[10] = GLfloat(m[10]);
-	mat[11] = GLfloat(m[14]);
-	mat[12] = GLfloat(m[3]);
-	mat[13] = GLfloat(m[7]);
-	mat[14] = GLfloat(m[11]);
-	mat[15] = GLfloat(m[15]);
-	glMultMatrixf(mat);
+    mat[0] = GLfloat(m[0]);
+    mat[1] = GLfloat(m[4]);
+    mat[2] = GLfloat(m[8]);
+    mat[3] = GLfloat(m[12]);
+    mat[4] = GLfloat(m[1]);
+    mat[5] = GLfloat(m[5]);
+    mat[6] = GLfloat(m[9]);
+    mat[7] = GLfloat(m[13]);
+    mat[8] = GLfloat(m[2]);
+    mat[9] = GLfloat(m[6]);
+    mat[10] = GLfloat(m[10]);
+    mat[11] = GLfloat(m[14]);
+    mat[12] = GLfloat(m[3]);
+    mat[13] = GLfloat(m[7]);
+    mat[14] = GLfloat(m[11]);
+    mat[15] = GLfloat(m[15]);
+    glMultMatrixf(mat);
 }
 
 void Matrix::fillArray(GLdouble *mat) {
-	memcpy(mat,m,16*sizeof(GLdouble));
+    memcpy(mat,m,16*sizeof(GLdouble));
 }
 
 void Matrix::fillArray(GLfloat *mat) {
-	int i;
-	for (i=0; i<16; i++) { mat[i]=GLfloat(m[i]); };
+    int i;
+    for (i=0; i<16; i++) { mat[i]=GLfloat(m[i]); };
 }
-
-
-

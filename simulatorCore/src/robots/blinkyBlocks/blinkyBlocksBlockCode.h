@@ -8,10 +8,10 @@
 #ifndef BLINKYBLOCKSBLOCKCODE_H_
 #define BLINKYBLOCKSBLOCKCODE_H_
 
-#include "blockCode.h"
-#include "blinkyBlocksBlock.h"
-#include "network.h"
-#include "events.h"
+#include "base/blockCode.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
+#include "comm/network.h"
+#include "events/events.h"
 
 namespace BlinkyBlocks {
 

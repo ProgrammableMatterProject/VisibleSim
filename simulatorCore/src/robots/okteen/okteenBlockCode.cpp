@@ -6,9 +6,9 @@
  */
 
 #include <iostream>
-#include "okteenBlockCode.h"
-#include "network.h"
-#include "trace.h"
+#include "robots/okteen/okteenBlockCode.h"
+#include "comm/network.h"
+#include "utils/trace.h"
 
 using namespace std;
 

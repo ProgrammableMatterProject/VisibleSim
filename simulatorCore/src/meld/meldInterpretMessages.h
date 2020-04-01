@@ -1,8 +1,8 @@
 #ifndef MELDINTERPMESSAGES_H_
 #define MELDINTERPMESSAGES_H_
 
-#include "network.h"
-#include "meldInterpretVM.h"
+#include "comm/network.h"
+#include "meld/meldInterpretVM.h"
 
 
 #define MELD_MESSAGE_DEFAULT_SIZE 17

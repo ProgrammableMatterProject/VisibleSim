@@ -10,15 +10,15 @@
 
 #include <vector>
 
-#include "buildingBlock.h"
-#include "openglViewer.h"
-#include "world.h"
-#include "vector3D.h"
-#include "cell3DPosition.h"
-#include "catoms3DBlock.h"
-#include "objLoader.h"
-#include "trace.h"
-#include "catoms3DMotionRules.h"
+#include "base/buildingBlock.h"
+#include "gui/openglViewer.h"
+#include "base/world.h"
+#include "math/vector3D.h"
+#include "grid/cell3DPosition.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "gui/objLoader.h"
+#include "utils/trace.h"
+#include "robots/catoms3D/catoms3DMotionRules.h"
 
 //!< \namespace Catoms3D
 namespace Catoms3D {

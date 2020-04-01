@@ -8,10 +8,10 @@
 #ifndef CATOM2D1BLOCKCODE_H_
 #define CATOM2D1BLOCKCODE_H_
 
-#include "catoms2DBlockCode.h"
-#include "catoms2DSimulator.h"
+#include "robots/catoms2D/catoms2DBlockCode.h"
+#include "robots/catoms2D/catoms2DSimulator.h"
 
-#include "catoms2DBlock.h"
+#include "robots/catoms2D/catoms2DBlock.h"
 #include "localTupleSpace.hpp"
 #include "tuple.hpp"
 #include "contextTuple.hpp"
@@ -41,24 +41,24 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
 
   // Geo-routing
   //GPSR gpsr;
-  
+
   //Landmark structure
   Landmarks* landmarks;
 
   // CTuples system
   CTuples* ctuples;
-  
+
   // Reconfiguration
   Reconfiguration* reconfiguration;
 
   bool geoTest;
-  
+
   void startup();
   void processLocalEvent(EventPtr pev);
-	
+
   //void updateBorder();
   //bool canMove();
-  
+
   static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 

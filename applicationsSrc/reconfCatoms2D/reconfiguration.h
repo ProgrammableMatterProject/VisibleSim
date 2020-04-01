@@ -9,10 +9,10 @@
 #define RECONFIGURATION_H_
 
 #include <list>
-#include "catoms2DBlock.h"
+#include "robots/catoms2D/catoms2DBlock.h"
 #include "rotation2DEvents.h"
 
-#include "network.h"
+#include "comm/network.h"
 #include "map.h"
 #include "border.h"
 
@@ -32,45 +32,45 @@ class PerimeterCaseState {
   std::string toString();
 };
 
-class Reconfiguration {  
+class Reconfiguration {
 private:
    reconfigurationState_t state;
    Catoms2D::Catoms2DBlock *catom;
    Map *map;
    bool started;
-   
+
    //Border *border;
    //PerimeterCaseState rotationDirectionCell;
    //PerimeterCaseState antiRotationDirectionCell;
    std::list<Coordinate> moving;
    int nbWaitingAuthorization;
-   
+
    void init();
    void updatePosition();
    void updateState();
-   
+
    int advertiseBeforeMoving();
    bool isMoving(Coordinate &c);
    bool isNeighborToMoving(Coordinate &c);
    void removeMoving(Coordinate &c);
    void forwardStopMoving(P2PNetworkInterface *p2p, Coordinate &c);
    void printMoving();
-   
+
    void move();
    void queryStates();
    P2PNetworkInterface* getPivot();
    Coordinate getCellAfterRotationAround(P2PNetworkInterface *pivot);
-   bool isFree(); 
+   bool isFree();
    bool isInTarget();
    bool isOnBorder();
    bool hasConverged();
-   
+
    P2PNetworkInterface *canMove(PerimeterCaseState &pcs);
    bool shouldMove(P2PNetworkInterface *pivot, PerimeterCaseState &pcs);
    void forwardStateUpdate(P2PNetworkInterface *p2p, PerimeterCaseState &pcs);
    Rotation2DMove* nextMove();
 public:
-   
+
    Reconfiguration(Catoms2D::Catoms2DBlock *c, Map *m);
    ~Reconfiguration();
 

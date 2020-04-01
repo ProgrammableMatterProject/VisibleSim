@@ -7,11 +7,11 @@
 
 #include <iostream>
 
-#include "slidingCubesBlock.h"
-#include "slidingCubesWorld.h"
-#include "slidingCubesSimulator.h"
-#include "lattice.h"
-#include "trace.h"
+#include "robots/slidingCubes/slidingCubesBlock.h"
+#include "robots/slidingCubes/slidingCubesWorld.h"
+#include "robots/slidingCubes/slidingCubesSimulator.h"
+#include "grid/lattice.h"
+#include "utils/trace.h"
 
 using namespace std;
 

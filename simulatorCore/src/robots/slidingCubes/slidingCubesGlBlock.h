@@ -9,8 +9,8 @@
 #define SLIDINGCUBESGLBLOCK_H_
 #include <string>
 #include <sstream>
-#include <objLoader.h>
-#include "glBlock.h"
+#include "gui/objLoader.h"
+#include "base/glBlock.h"
 
 namespace SlidingCubes {
 class SlidingCubesGlBlock:public GlBlock {

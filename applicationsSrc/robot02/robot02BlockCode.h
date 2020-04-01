@@ -8,10 +8,10 @@
 #ifndef ROBOT02BLOCKCODE_H_
 #define ROBOT02BLOCKCODE_H_
 
-#include "slidingCubesBlockCode.h"
-#include "slidingCubesSimulator.h"
+#include "robots/slidingCubes/slidingCubesBlockCode.h"
+#include "robots/slidingCubes/slidingCubesSimulator.h"
 
-#include "slidingCubesBlock.h"
+#include "robots/slidingCubes/slidingCubesBlock.h"
 
 #define COLOR_MESSAGE	1001
 #define SEARCH_MASTER_MESSAGE	1002

@@ -1,6 +1,6 @@
-#include "clock.h"
-#include "scheduler.h"
-#include "buildingBlock.h"
+#include "clock/clock.h"
+#include "events/scheduler.h"
+#include "base/buildingBlock.h"
 
 namespace BaseSimulator {
 
@@ -27,11 +27,9 @@ PerfectClock::~PerfectClock() {}
 Time PerfectClock::getTime(Time simTime) {
   return simTime;
 }
-  
+
 Time PerfectClock::getSimulationTime(Time localTime) {
   return localTime;
 }
- 
+
 }
-
-

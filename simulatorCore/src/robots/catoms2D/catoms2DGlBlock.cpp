@@ -1,4 +1,4 @@
-#include "catoms2DGlBlock.h"
+#include "robots/catoms2D/catoms2DGlBlock.h"
 
 namespace Catoms2D {
 

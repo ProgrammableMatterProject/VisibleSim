@@ -1,7 +1,7 @@
 #ifndef maxFlowSCCode_H_
 #define maxFlowSCCode_H_
-#include "slidingCubesSimulator.h"
-#include "slidingCubesBlockCode.h"
+#include "robots/slidingCubes/slidingCubesSimulator.h"
+#include "robots/slidingCubes/slidingCubesBlockCode.h"
 
 static const int BFS_MSG=1001;
 static const int CONFIRM_EDGE_MSG=1002;

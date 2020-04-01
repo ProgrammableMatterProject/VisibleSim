@@ -11,11 +11,11 @@
 #include <memory>
 #include <stdio.h>
 #include <SFML/Audio.hpp>
-#include "scheduler.h"
-#include "network.h"
+#include "events/scheduler.h"
+#include "comm/network.h"
 #include "musicPlayerBlockCode.h"
 #include "musicPlayerEvents.h"
-#include "trace.h"
+#include "utils/trace.h"
 #include <vector>
 
 using namespace std;

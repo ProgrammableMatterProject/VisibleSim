@@ -8,7 +8,7 @@
 #ifndef SYNC_H_
 #define SYNC_H_
 
-#include "catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 #include "../reconf.h"
 
 #define SYNCNEXT_MESSAGE_ID    8201

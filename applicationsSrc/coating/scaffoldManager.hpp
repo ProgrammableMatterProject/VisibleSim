@@ -1,8 +1,8 @@
 #ifndef ScaffoldManager_H_
 #define ScaffoldManager_H_
 
-#include "lattice.h"
-#include "catoms3DBlock.h"
+#include "grid/lattice.h"
+#include "robots/catoms3D/catoms3DBlock.h"
 
 #include <list>
 

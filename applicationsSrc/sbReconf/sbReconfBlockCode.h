@@ -26,11 +26,11 @@
 #define ASK4END_MSG_ID      9015
 #define ANS4END_MSG_ID      9016
 
-#include "smartBlocksBlockCode.h"
-#include "smartBlocksSimulator.h"
-#include "smartBlocksBlock.h"
+#include "robots/smartBlocks/smartBlocksBlockCode.h"
+#include "robots/smartBlocks/smartBlocksSimulator.h"
+#include "robots/smartBlocks/smartBlocksBlock.h"
 #include "smartBlocksCapabilities.h"
-#include "lattice.h"
+#include "grid/lattice.h"
 
 class MapMessage;
 class AckMapMessage;

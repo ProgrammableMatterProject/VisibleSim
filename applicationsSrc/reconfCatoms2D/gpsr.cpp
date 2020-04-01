@@ -1,7 +1,7 @@
 #include "gpsr.h"
-#include "catoms2DBlock.h"
+#include "robots/catoms2D/catoms2DBlock.h"
 #include "segment.h"
-#include "catoms2DWorld.h"
+#include "robots/catoms2D/catoms2DWorld.h"
 
 //#define GEO_ROUTING_DEBUG
 
@@ -61,104 +61,104 @@ void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
     switch (m->getMode()) {
     case GPSRPacket::mode_t::GREEDY:
       {
-	P2PNetworkInterface *next = map.getClosestInterface(m->getDestination(), recv_interface);
-	if(next != NULL) {
+    P2PNetworkInterface *next = map.getClosestInterface(m->getDestination(), recv_interface);
+    if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
-	  cout << "Greedy forward to " << map.getPosition(next) << endl;
+      cout << "Greedy forward to " << map.getPosition(next) << endl;
 #endif
-	  send(m,next);
-	} else {
-	  // perimeter mode
-	  m->setPerimeterMode(map.getPosition());
-	  // find interface
-	  next = angle.getNextConnectedCounterClockWiseInterface(m->getDestination());
-	  m->setFirstEdge(catom2D->getDirection(next));
-	  send(m,next);
+      send(m,next);
+    } else {
+      // perimeter mode
+      m->setPerimeterMode(map.getPosition());
+      // find interface
+      next = angle.getNextConnectedCounterClockWiseInterface(m->getDestination());
+      m->setFirstEdge(catom2D->getDirection(next));
+      send(m,next);
 #ifdef GEO_ROUTING_DEBUG
-	  cout << "Perimeter (new) forward to " << map.getPosition(next) << endl;
+      cout << "Perimeter (new) forward to " << map.getPosition(next) << endl;
 #endif
-	  //cout << next << " " <<  catom2D->getDirection(next) << " " << m->getFirstEdge() << endl;
-	}
+      //cout << next << " " <<  catom2D->getDirection(next) << " " << m->getFirstEdge() << endl;
+    }
       }
       break;
     case GPSRPacket::mode_t::PERIMETER: {
       P2PNetworkInterface *next = angle.getNextConnectedCounterClockWiseInterface(recv_interface);
       if (next == NULL) {
-	break; // next is NULL only if the catom is not connected to any other.
+    break; // next is NULL only if the catom is not connected to any other.
       }
       int d1 = map.distance(map.getPosition(next), m->getDestination());
       int d2 = map.distance(m->getPerimeterStart(),m->getDestination());
-	
+
 #ifdef GEO_ROUTING_DEBUG
       cout << "perimeter leave?: " << d1 << "vs" << d2 << endl;
 #endif
 
       if ((d1 < d2) || (map.getPosition(next) == m->getDestination())) {
-	// leave PERIMETER mode
-	m->setGreedyMode();
+    // leave PERIMETER mode
+    m->setGreedyMode();
 
 #ifdef GEO_ROUTING_DEBUG
-	cout << "Greedy (leave perimeter) forward to " << map.getPosition(next) << endl;
+    cout << "Greedy (leave perimeter) forward to " << map.getPosition(next) << endl;
 #endif
-	send(m,next);
+    send(m,next);
       } else {
-	// check if an incident edge hit/cut the segment 
-	// (destination;point enter in perimeter mode)
-	Segment s(m->getDestination(),m->getPerimeterStart()); 
-	P2PNetworkInterface *p2p = s.getIntersectInterface(catom2D,map,NULL);
-	// cout << m->getPerimeterStart() << " vs " << getPosition(p2p) << endl; 
-	      
-	if ((p2p != NULL) && (map.getPosition() != m->getPerimeterStart()) && (map.getPosition(p2p) != m->getPerimeterStart())) {
-	  Coordinate p = map.getPosition(p2p);
-	  P2PNetworkInterface *next = angle.getNextConnectedCounterClockWiseInterface(p);
-	  m->setFirstEdge(catom2D->getDirection(next));
-	  send(m,next);
+    // check if an incident edge hit/cut the segment
+    // (destination;point enter in perimeter mode)
+    Segment s(m->getDestination(),m->getPerimeterStart());
+    P2PNetworkInterface *p2p = s.getIntersectInterface(catom2D,map,NULL);
+    // cout << m->getPerimeterStart() << " vs " << getPosition(p2p) << endl;
+
+    if ((p2p != NULL) && (map.getPosition() != m->getPerimeterStart()) && (map.getPosition(p2p) != m->getPerimeterStart())) {
+      Coordinate p = map.getPosition(p2p);
+      P2PNetworkInterface *next = angle.getNextConnectedCounterClockWiseInterface(p);
+      m->setFirstEdge(catom2D->getDirection(next));
+      send(m,next);
 #ifdef GEO_ROUTING_DEBUG
-	  cout << "Perimeter (new face?) forward to " << map.getPosition(next) << endl;
+      cout << "Perimeter (new face?) forward to " << map.getPosition(next) << endl;
 #endif
-	} else {
-	  P2PNetworkInterface *next = angle.getNextConnectedCounterClockWiseInterface(recv_interface);
-	  if ((m->getPerimeterStart() == map.getPosition()) && (catom2D->getDirection(next) == m->getFirstEdge())) {
+    } else {
+      P2PNetworkInterface *next = angle.getNextConnectedCounterClockWiseInterface(recv_interface);
+      if ((m->getPerimeterStart() == map.getPosition()) && (catom2D->getDirection(next) == m->getFirstEdge())) {
 
 #ifdef GEO_ROUTING_DEBUG
-	    Catoms2DWorld *world = Catoms2DWorld::getWorld();
-	    Coordinate s = map.virtual2Real(m->getSource());
-	    Coordinate d = map.virtual2Real(m->getDestination());
-	    Catoms2DBlock *cs = world->getGridPtr(s.getX(),0,s.getY());
-	    Catoms2DBlock *cd = world->getGridPtr(d.getX(),0,d.getY());
-	    cs->setColor(RED);
-	    int ids = cs->blockId;
-	    int idd = -1;
-		  
-	    catom2D->setColor(BLUE);
+        Catoms2DWorld *world = Catoms2DWorld::getWorld();
+        Coordinate s = map.virtual2Real(m->getSource());
+        Coordinate d = map.virtual2Real(m->getDestination());
+        Catoms2DBlock *cs = world->getGridPtr(s.getX(),0,s.getY());
+        Catoms2DBlock *cd = world->getGridPtr(d.getX(),0,d.getY());
+        cs->setColor(RED);
+        int ids = cs->blockId;
+        int idd = -1;
 
-	    if (cd != NULL) {
-	      cd->setColor(GREEN);
-	      idd = cd->blockId;
-	    }
-	    // packet has made a complete tour
-	    cout << "packet has made a complete tour (s="
-		 << m->getSource()
-		 << "=>" << s
-		 << "(id=" << ids << ")"
-		 << ", d="
-		 << m->getDestination()
-		 << "=>" << d
-		 << "(id=" << idd << ")"
-		 << ", p="
-		 << map.getPosition()
-		 << "=>" <<  map.virtual2Real(map.getPosition())
-		 <<  "(id=" << catom2D->blockId << ")"
-		 << endl;
+        catom2D->setColor(BLUE);
+
+        if (cd != NULL) {
+          cd->setColor(GREEN);
+          idd = cd->blockId;
+        }
+        // packet has made a complete tour
+        cout << "packet has made a complete tour (s="
+         << m->getSource()
+         << "=>" << s
+         << "(id=" << ids << ")"
+         << ", d="
+         << m->getDestination()
+         << "=>" << d
+         << "(id=" << idd << ")"
+         << ", p="
+         << map.getPosition()
+         << "=>" <<  map.virtual2Real(map.getPosition())
+         <<  "(id=" << catom2D->blockId << ")"
+         << endl;
 #endif
-	    return m->getData();
-	  } else {
-	    send(m,next);
+        return m->getData();
+      } else {
+        send(m,next);
 #ifdef GEO_ROUTING_DEBUG
-	    cout << "Perimeter (same face) forward to " << map.getPosition(next) << endl;
+        cout << "Perimeter (same face) forward to " << map.getPosition(next) << endl;
 #endif
-	  }
-	}
+      }
+    }
       }
     }
     }

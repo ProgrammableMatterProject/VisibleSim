@@ -17,7 +17,7 @@
 #define ADDLEFTBLOCK_EVENT_ID 12007
 #define ADDRIGHTBLOCK_EVENT_ID 12008
 
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
 #include "../sync/syncNext.h"

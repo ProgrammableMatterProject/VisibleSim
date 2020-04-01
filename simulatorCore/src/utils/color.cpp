@@ -1,4 +1,4 @@
-#include "color.h"
+#include "utils/color.h"
 
 Color::Color() {
     memset(rgba,0,4*sizeof(GLfloat));

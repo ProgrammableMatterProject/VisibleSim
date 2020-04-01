@@ -7,9 +7,9 @@
  *      Author: Pierre
  */
 
-#include "translationEvents.h"
-#include "world.h"
-#include "utils.h"
+#include "motion/translationEvents.h"
+#include "base/world.h"
+#include "utils/utils.h"
 
 using namespace BaseSimulator::utils;
 

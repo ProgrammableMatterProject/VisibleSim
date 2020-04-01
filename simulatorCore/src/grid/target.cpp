@@ -3,12 +3,12 @@
  * @author Pierre Thalamy
  * @date 21/07/2016
  */
-#include "target.h"
-#include "utils.h"
-#include "targetEncoding/CSG/csgParser.h"
-#include "targetEncoding/CSG/csgUtils.h"
-#include "catoms3DWorld.h"
-#include <Eigen/Dense>
+#include "grid/target.h"
+#include "utils/utils.h"
+#include "csg/csgParser.h"
+#include "csg/csgUtils.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "deps/Eigen/Dense"
 
 #include <algorithm>
 

@@ -10,9 +10,9 @@
 
 #include "meshRuleMatcher.hpp"
 
-#include "network.h"
-#include "utils.h"
-#include "catoms3DWorld.h"
+#include "comm/network.h"
+#include "utils/utils.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 using namespace MeshCoating;
 using namespace BaseSimulator;
@@ -488,7 +488,7 @@ Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(int bi) const {
         case LZBranch: return Cell3DPosition(-1,0,1);
         case XBranch: return Cell3DPosition(1,0,0);
         case YBranch: return Cell3DPosition(0,1,0);
-        default: 
+        default:
             cerr << "bi: " << bi << endl;
             VS_ASSERT_MSG(false, "invalid branch index");
     }
@@ -938,7 +938,7 @@ BranchIndex MeshRuleMatcher::getBranchForEPL(MeshComponent epl) {
     return N_BRANCHES;
 }
 
-const Cell3DPosition MeshRuleMatcher::getTargetEPLPositionForBranch(BranchIndex bi) {    
+const Cell3DPosition MeshRuleMatcher::getTargetEPLPositionForBranch(BranchIndex bi) {
     switch (bi) {
         case RevZBranch: return Cell3DPosition(-3, -3, 4);
         case RZBranch: return Cell3DPosition(-1, -3, 4);

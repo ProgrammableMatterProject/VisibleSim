@@ -1,8 +1,8 @@
 #ifndef GPRS_HPP
 #define GPRS_HPP
 
-#include "catoms2DBlock.h"
-#include "network.h"
+#include "robots/catoms2D/catoms2DBlock.h"
+#include "comm/network.h"
 #include "map.h"
 #include "angle.h"
 
@@ -21,7 +21,7 @@ class GPSR {
   Map &map;
   Angle angle;
  public:
-  
+
   GPSR(Catoms2D::Catoms2DBlock *host, Map &m);
   GPSR(GPSR const &g);
   ~GPSR();
@@ -32,7 +32,7 @@ class GPSR {
 class GPSRPacket : public Message {
  public:
   enum mode_t {GREEDY = 0, PERIMETER};
- protected:  
+ protected:
   // routing information (header)
   Coordinate source;
   Coordinate last;
@@ -45,7 +45,7 @@ class GPSRPacket : public Message {
   // data information (payload)
   MessagePtr data;
  public :
- GPSRPacket(Coordinate s, Coordinate d, Message *da) : Message() { 
+ GPSRPacket(Coordinate s, Coordinate d, Message *da) : Message() {
     type = GPSR_PACKET;
     source = s;
     last = s;
@@ -57,8 +57,8 @@ class GPSRPacket : public Message {
     data = MessagePtr(da);
   };
 
-    GPSRPacket(GPSRPacket *m) : Message() { 
-    type = m->type; 
+    GPSRPacket(GPSRPacket *m) : Message() {
+    type = m->type;
     source = m->source;
     destination = m->destination;
     last = m->last;
@@ -68,7 +68,7 @@ class GPSRPacket : public Message {
     data = m->data;
     firstEdge = m->firstEdge;
   };
-  
+
   ~GPSRPacket() {
     data.reset();
   };
@@ -76,13 +76,13 @@ class GPSRPacket : public Message {
   Coordinate getSource() {return source; };
   Coordinate getDestination() {return destination; };
   Coordinate getLast() {return last;};
-  
+
   mode_t getMode() {return mode;};
   bool isInPerimeterMode() {return mode == mode_t::PERIMETER;};
   Coordinate getPerimeterStart() {return perimeterStart;};
   void setGreedyMode() {mode = mode_t::GREEDY;};
   void setPerimeterMode(Coordinate p) {mode = mode_t::PERIMETER; perimeterStart = p;}
-  
+
   void setFirstEdge(int e0) {firstEdge = e0;}
   int getFirstEdge() {return firstEdge;}
 

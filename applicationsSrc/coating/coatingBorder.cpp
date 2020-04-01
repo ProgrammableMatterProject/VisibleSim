@@ -1,6 +1,6 @@
 #include "coatingBorder.hpp"
 
-#include "world.h"
+#include "base/world.h"
 
 Border::Border(std::function<bool(const Cell3DPosition&)> _isInG,
                Neighborhood *_neighborhood) : isInG(_isInG), nbh(_neighborhood) {

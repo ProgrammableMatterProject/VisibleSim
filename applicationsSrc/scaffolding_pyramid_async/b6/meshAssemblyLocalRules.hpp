@@ -12,7 +12,7 @@
 #ifndef MESHASSEMBLYLOCALRULES_HPP__
 #define MESHASSEMBLYLOCALRULES_HPP__
 
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 
 #include <bitset>
 #include <utility>

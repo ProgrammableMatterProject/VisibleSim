@@ -1,5 +1,5 @@
 #include "qclock.h"
-#include "scheduler.h"
+#include "events/scheduler.h"
 
 using namespace BaseSimulator;
 using namespace BaseSimulator::utils;

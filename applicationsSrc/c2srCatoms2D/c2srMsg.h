@@ -12,7 +12,7 @@
 #include <string>
 #include <memory>
 #include "c2sr.h"
-#include "network.h"
+#include "comm/network.h"
 #include "coordinate.h"
 
 #define C2SR_MSG 15004

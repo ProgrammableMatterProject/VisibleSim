@@ -8,10 +8,10 @@
 #ifndef CATOMS2DSIMULATOR_H_
 #define CATOMS2DSIMULATOR_H_
 
-#include "simulator.h"
-#include "catoms2DBlockCode.h"
-#include "catoms2DWorld.h"
-#include "trace.h"
+#include "base/simulator.h"
+#include "robots/catoms2D/catoms2DBlockCode.h"
+#include "robots/catoms2D/catoms2DWorld.h"
+#include "utils/trace.h"
 
 using namespace std;
 

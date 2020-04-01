@@ -8,32 +8,32 @@
  *
  */
 
-#include "hexanodeBlockCode.h"
+#include "robots/hexanodes/hexanodesBlockCode.h"
 
 #include <iostream>
 
-#include "network.h"
-#include "trace.h"
+#include "comm/network.h"
+#include "utils/trace.h"
 
 using namespace std;
-using namespace Hexanode;
+using namespace Hexanodes;
 
-HexanodeBlockCode::HexanodeBlockCode(HexanodeBlock *host):BlockCode(host) {
+HexanodesBlockCode::HexanodesBlockCode(HexanodesBlock *host):BlockCode(host) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "HexanodeBlockCode constructor" << endl;
+    OUTPUT << "HexanodesBlockCode constructor" << endl;
 #endif
 }
 
-HexanodeBlockCode::~HexanodeBlockCode() {
+HexanodesBlockCode::~HexanodesBlockCode() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << "HexanodeBlockCode destructor" << endl;
+    OUTPUT << "HexanodesBlockCode destructor" << endl;
 #endif
 }
 
-void HexanodeBlockCode::addDebugAttributes(Scheduler *scheduler) {
+void HexanodesBlockCode::addDebugAttributes(Scheduler *scheduler) {
 }
 
-void HexanodeBlockCode::processLocalEvent(EventPtr pev) {
+void HexanodesBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
 
@@ -62,7 +62,7 @@ void HexanodeBlockCode::processLocalEvent(EventPtr pev) {
             onTap(face);
         } break;
 
-				case EVENT_NODEMOTION_END: {
+                case EVENT_HEXANODESMOTION_END: {
 #ifdef verbose
             info.str("");
             info << "rec.: EVENT_MOTION_END";

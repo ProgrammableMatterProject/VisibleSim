@@ -7,8 +7,8 @@
 
 #include <iostream>
 #include <string>
-#include "catoms2DSimulator.h"
-#include "catoms2DBlockCode.h"
+#include "robots/catoms2D/catoms2DSimulator.h"
+#include "robots/catoms2D/catoms2DBlockCode.h"
 #include "catom2D1BlockCode.h"
 
 using namespace std;
@@ -22,14 +22,14 @@ void parseCmdLine(int argc, char **argv) {
   for (int i = 0; i < argc; i++) {
     if (argv[i][0] == '-') {
       if (argv[i][1] == 'B') {
-	comm = stod(argv[i+1]);
- 	argv[i][0] = 0;
-	argv[i][1] = 0;
+    comm = stod(argv[i+1]);
+    argv[i][0] = 0;
+    argv[i][1] = 0;
       }
       if (argv[i][1] == 'M') {
-	motion = stod(argv[i+1]);
-	argv[i][0] = 0;
-	argv[i][1] = 0;
+    motion = stod(argv[i+1]);
+    argv[i][0] = 0;
+    argv[i][1] = 0;
       }
     }
   }
@@ -38,18 +38,18 @@ void parseCmdLine(int argc, char **argv) {
     cerr << "Baudrate: " << comm << endl;
     comm *= 0.8; // assume 8-N-1 communications
     cerr << "Bit rate (8-N-1 communications): "
-	 << " mean = " << comm << ","
-	 << " sd = " << comm*DEFAULT_SD_FACTOR
-	 << endl;
+     << " mean = " << comm << ","
+     << " sd = " << comm*DEFAULT_SD_FACTOR
+     << endl;
   }
 
   if (motion > 0) {
     cerr << "Motion speed: "
-	 << " mean = " << motion << ","
-	 << " sd = " << motion*DEFAULT_SD_FACTOR
-	 << endl;
+     << " mean = " << motion << ","
+     << " sd = " << motion*DEFAULT_SD_FACTOR
+     << endl;
   }
-  
+
   Catoms2D1BlockCode::simParams.commRateMean = comm;
   Catoms2D1BlockCode::simParams.motionSpeedMean = motion;
 }
@@ -57,11 +57,11 @@ void parseCmdLine(int argc, char **argv) {
 int main(int argc, char **argv) {
 
   parseCmdLine(argc,argv);
-  
+
   createSimulator(argc, argv, Catoms2D1BlockCode::buildNewBlockCode);
   getSimulator()->printInfo();
   BaseSimulator::getWorld()->printInfo();
   deleteSimulator();
-  
+
   return(0);
 }

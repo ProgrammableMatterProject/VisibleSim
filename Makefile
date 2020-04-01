@@ -10,7 +10,7 @@
 OS = $(shell uname -s)
 
 # VisibleSim local libraries
-VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks -lsimOkteen -lsimDatoms -lsimNode -lsimHexanode
+VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks -lsimOkteen -lsimDatoms -lsimNodes2D -lsimHexanodes
 
 #for debug version
 TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -Wsuggest-override -fno-stack-protector
@@ -89,12 +89,7 @@ GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 subdirs: $(SUBDIRS)
 
 $(SUBDIRS):
-	@$(MAKE) -C $@ APPDIR=../../applicationsBin/ GLOBAL_INCLUDES=$(GLOBAL_INCLUDES) GLOBAL_LIBS=$(GLOBAL_LIBS) GLOBAL_CCFLAGS=$(GLOBAL_CCFLAGS)
-
-#subdirs:
-#	@for dir in $(SUBDIRS); do \
-#	$(MAKE) -C $$dir; \
-#	done
+	@$(MAKE) -C $@ APPDIR=../../applicationsBin/ GLOBAL_INCLUDES=$(GLOBAL_INCLUDES) GLOBAL_LIBS=$(GLOBAL_LIBS) GLOBAL_CCFLAGS=$(GLOBAL_CCFLAGS) LOCAL_INCLUDES=$(LOCAL_INCLUDES)
 
 test: subdirs
 	@$(MAKE) -C applicationsSrc test;

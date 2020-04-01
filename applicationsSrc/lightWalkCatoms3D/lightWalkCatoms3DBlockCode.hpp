@@ -13,12 +13,12 @@
 
 #include <queue>
 
-#include "catoms3DBlockCode.h"
-#include "catoms3DSimulator.h"
-#include "catoms3DMotionRules.h"
-#include "catoms3DRotationEvents.h"
-#include "catoms3DBlock.h"
-#include "cell3DPosition.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DMotionRules.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "grid/cell3DPosition.h"
 
 #include "lightWalkCatoms3DMessages.hpp"
 

@@ -8,9 +8,9 @@
 #ifndef CATOM2D1BLOCKCODE_H_
 #define CATOM2D1BLOCKCODE_H_
 
-#include "catoms2DBlock.h"
-#include "catoms2DBlockCode.h"
-#include "catoms2DSimulator.h"
+#include "robots/catoms2D/catoms2DBlock.h"
+#include "robots/catoms2D/catoms2DBlockCode.h"
+#include "robots/catoms2D/catoms2DSimulator.h"
 
 #include "simulationParameters.h"
 #include "map.h"

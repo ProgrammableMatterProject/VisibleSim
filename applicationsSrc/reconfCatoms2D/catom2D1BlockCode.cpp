@@ -8,8 +8,8 @@
 #include <iostream>
 #include <sstream>
 #include "catom2D1BlockCode.h"
-#include "scheduler.h"
-#include "events.h"
+#include "events/scheduler.h"
+#include "events/events.h"
 #include "rotation2DEvents.h"
 //MODIF NICO
 #include <memory>
@@ -63,7 +63,7 @@ void Catoms2D1BlockCode::updateBorder() {
       }
       }
       catom2D->setColor(GREEN);
-  
+
 }
 
 
@@ -101,7 +101,7 @@ void Catoms2D1BlockCode::startup() {
   if (catom2D->blockId == 1) {
     //Coordinate p1(0,0);
     //Coordinate p2(1,0);
-    
+
     //Coordinate p1(1,1);
     //Coordinate p2(2,0);
 
@@ -117,7 +117,7 @@ void Catoms2D1BlockCode::startup() {
 #endif
 
   //landmarks->start();
-  
+
 }
 
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
@@ -132,63 +132,63 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     case BACK_MAP_MSG: {
       bool finished = map->handleMessage(message);
       if (finished) {
-	//ctuples->out(ContextTuple(string("map"), map->getPosition()));
-	reconfiguration->start();
-	
-	if (map->connectedToHost) {
-	  //cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
-	  cout << "@" << catom2D->blockId << " has created the coordinate system" << endl;
-	  // Link to PC host simulation:	  
+    //ctuples->out(ContextTuple(string("map"), map->getPosition()));
+    reconfiguration->start();
+
+    if (map->connectedToHost) {
+      //cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
+      cout << "@" << catom2D->blockId << " has created the coordinate system" << endl;
+      // Link to PC host simulation:
 #ifdef TEST_GHT
-	  //out(new ContextTuple(Coordinate(6,0), string("target")));
+      //out(new ContextTuple(Coordinate(6,0), string("target")));
 #endif
 
 #ifdef GEO_ROUTING_TEST
 #ifdef TEST_GEO_ROUTING_ALL_TO_ALL
-	  // send a packet to everybody
-	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
-	  int *gridSize = world->getGridSize();
-	  for (int iy = 0; iy < gridSize[2]; iy++) {
-	    for (int ix = 0; ix < gridSize[0]; ix++) {
-	      Catoms2DBlock* c = world->getGridPtr(ix,0,iy);
-	      if (c != NULL) {
-		Coordinate real(ix,iy);
-		Coordinate t =  map->real2Virtual(real);
-		cout << "@" << catom2D->blockId
-		     << " (" << map->position << ")"
-		     << " sends \"testGeoRouting\" tuple to @" 
-		     << c->blockId << " (" <<  real << "=>" << t << ")" 
-		     << endl;
-		ctuples->out(ContextTuple(string("testGeoRouting"),t));
-	      }
-	    }
-	  }
+      // send a packet to everybody
+      Catoms2DWorld *world = Catoms2DWorld::getWorld();
+      int *gridSize = world->getGridSize();
+      for (int iy = 0; iy < gridSize[2]; iy++) {
+        for (int ix = 0; ix < gridSize[0]; ix++) {
+          Catoms2DBlock* c = world->getGridPtr(ix,0,iy);
+          if (c != NULL) {
+        Coordinate real(ix,iy);
+        Coordinate t =  map->real2Virtual(real);
+        cout << "@" << catom2D->blockId
+             << " (" << map->position << ")"
+             << " sends \"testGeoRouting\" tuple to @"
+             << c->blockId << " (" <<  real << "=>" << t << ")"
+             << endl;
+        ctuples->out(ContextTuple(string("testGeoRouting"),t));
+          }
+        }
+      }
 #endif
 #endif
 
 #ifdef SEND_TARGET_TUPLES
-	  Coordinate pmin(INT_MAX,INT_MAX);
-	  Coordinate pmax(INT_MIN,INT_MIN);
-	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
-	  int *gridSize = world->getGridSize();
-	  for (int iy = 0; iy < gridSize[2]; iy++) {
-	    for (int ix = 0; ix < gridSize[0]; ix++) {
-	      if (world->getTargetGrid(ix,0,iy) == fullCell ) {
-		pmin.x = min(pmin.x, ix);
-		pmin.y = min(pmin.y, iy);
-		pmax.x = max(pmax.x, ix);
-		pmax.y = max(pmax.y, iy);
-		Coordinate real(ix,iy);
-		Coordinate t =  map->real2Virtual(real);
-		cout << "target: (" << t.x << " " << t.y << ")" << endl;
-		ctuples->out(ContextTuple(string("target"),t));
-	      }
-	    }
-	  }
-	  Rectangle bounds(pmin,pmax);
-	  CTuple::setBounds(bounds);
+      Coordinate pmin(INT_MAX,INT_MAX);
+      Coordinate pmax(INT_MIN,INT_MIN);
+      Catoms2DWorld *world = Catoms2DWorld::getWorld();
+      int *gridSize = world->getGridSize();
+      for (int iy = 0; iy < gridSize[2]; iy++) {
+        for (int ix = 0; ix < gridSize[0]; ix++) {
+          if (world->getTargetGrid(ix,0,iy) == fullCell ) {
+        pmin.x = min(pmin.x, ix);
+        pmin.y = min(pmin.y, iy);
+        pmax.x = max(pmax.x, ix);
+        pmax.y = max(pmax.y, iy);
+        Coordinate real(ix,iy);
+        Coordinate t =  map->real2Virtual(real);
+        cout << "target: (" << t.x << " " << t.y << ")" << endl;
+        ctuples->out(ContextTuple(string("target"),t));
+          }
+        }
+      }
+      Rectangle bounds(pmin,pmax);
+      CTuple::setBounds(bounds);
 #endif
-	}
+    }
       }
     }
       break;
@@ -203,19 +203,19 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       //case GPSR_PACKET: {
       //MessagePtr m =  gpsr.handleGPSRPacket(message);
       /*if (m != NULL) {
-	switch(m->type) {
-	case CTUPLES_MSG: {
-	  ctuples->handleCTuplesMessage(m);
-	  CTuple *t = ctuples->localInp(Tuple(string("target"), map->getPosition()));
-	  if (t != NULL) {
-	    //reconfiguration->setState(Reconfiguration::WELL_PLACED);
-	    catom2D->setColor(GREEN);
-	    delete t;
-	  }
-	  }
-	  break;
-	}
-	}*/
+    switch(m->type) {
+    case CTUPLES_MSG: {
+      ctuples->handleCTuplesMessage(m);
+      CTuple *t = ctuples->localInp(Tuple(string("target"), map->getPosition()));
+      if (t != NULL) {
+        //reconfiguration->setState(Reconfiguration::WELL_PLACED);
+        catom2D->setColor(GREEN);
+        delete t;
+      }
+      }
+      break;
+    }
+    }*/
       //}
       break;
     default:
@@ -225,7 +225,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     break;
   case EVENT_TRY_TO_MOVE: {
     // identify a free target position
-    // 
+    //
     //in(new ContextTuple(, string("testGeoRouting")));
   }
     break;

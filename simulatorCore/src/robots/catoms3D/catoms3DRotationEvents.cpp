@@ -7,9 +7,9 @@
  *      Author: Benoit Piranda, Pierre Thalamy
  */
 
-#include "catoms3DRotationEvents.h"
-#include "catoms3DWorld.h"
-#include "catoms3DMotionEngine.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DMotionEngine.h"
 
 using namespace BaseSimulator::utils;
 using namespace Catoms3D;

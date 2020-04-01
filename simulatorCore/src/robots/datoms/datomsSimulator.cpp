@@ -6,10 +6,10 @@
  */
 
 #include <iostream>
-#include "datomsSimulator.h"
+#include "robots/datoms/datomsSimulator.h"
 #include <string.h>
-#include "trace.h"
-#include "utils.h"
+#include "utils/trace.h"
+#include "utils/utils.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

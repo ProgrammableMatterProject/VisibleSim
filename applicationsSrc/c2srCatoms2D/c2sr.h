@@ -9,10 +9,10 @@
 #define C2SR_H_
 
 #include <list>
-#include "catoms2DBlock.h"
-#include "catoms2DRotationEvents.h"
+#include "robots/catoms2D/catoms2DBlock.h"
+#include "robots/catoms2D/catoms2DRotationEvents.h"
 
-#include "network.h"
+#include "comm/network.h"
 #include "map.h"
 #include "border.h"
 

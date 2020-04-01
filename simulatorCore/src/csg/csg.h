@@ -9,8 +9,8 @@
 #define CSG_H_
 
 #include <vector>
-#include "color.h"
-#include "matrix44.h"
+#include "utils/color.h"
+#include "math/matrix44.h"
 
 class CSGTreeStats
 {

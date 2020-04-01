@@ -7,7 +7,7 @@
 
 #ifndef SYNC_H_
 #define SYNC_H_
-#include "catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 #include "../reconf.h"
 #include "syncLeft.h"
 #include "syncResponse.h"
@@ -41,4 +41,3 @@ public:
 
 
 #endif /* SYNC_H_ */
-

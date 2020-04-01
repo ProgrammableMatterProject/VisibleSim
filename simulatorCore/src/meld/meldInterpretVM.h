@@ -10,8 +10,8 @@
 #include <memory>
 #include <map>
 
-#include "color.h"
-#include "buildingBlock.h"
+#include "utils/color.h"
+#include "base/buildingBlock.h"
 
 #include <sys/timeb.h>
 

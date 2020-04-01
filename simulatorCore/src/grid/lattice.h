@@ -12,11 +12,11 @@
 #include <string>
 #include <vector>
 
-#include "utils.h"
-#include "exceptions.h"
-#include "buildingBlock.h"
-#include "vector3D.h"
-#include "cell3DPosition.h"
+#include "utils/utils.h"
+#include "utils/exceptions.h"
+#include "base/buildingBlock.h"
+#include "math/vector3D.h"
+#include "grid/cell3DPosition.h"
 
 namespace BaseSimulator {
 

@@ -1,9 +1,9 @@
 #include "csg.h"
-#include "color.h"
-#include "cell3DPosition.h"
-#include "world.h"
+#include "utils/color.h"
+#include "grid/cell3DPosition.h"
+#include "base/world.h"
 
-#include "target.h"
+#include "grid/target.h"
 
 #define EPS 1e-10
 
@@ -18,7 +18,7 @@ void CSGCube::toString() const {
     printf("cube([%lf, %lf, %lf], true);\n", size_x, size_y, size_z);
 }
 
-bool CSGCube::isInside(const Vector3D &p, Color &color) const {    
+bool CSGCube::isInside(const Vector3D &p, Color &color) const {
     if (center) {
         if (p.pt[0] <= size_x/2.0 && p.pt[0] >= -size_x/2.0 &&
                 p.pt[1] <= size_y/2.0 && p.pt[1] >= -size_y/2.0 &&
@@ -72,15 +72,15 @@ void CSGCube::boundingBox(BoundingBox &bb) {
 void CSGCube::glDraw() {
     // c.set(1.0f, 0.0f, 0.0,0.5f);
     // glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c.rgba);
-    
-    // White side - BACK    
+
+    // White side - BACK
     glBegin(GL_POLYGON);
     glVertex3f(  size_x / 2.0, -size_y / 2.0, size_z / 2.0 );
     glVertex3f(  size_x / 2.0,  size_y / 2.0, size_z / 2.0 );
     glVertex3f( -size_x / 2.0,  size_y / 2.0, size_z / 2.0 );
     glVertex3f( -size_x / 2.0, -size_y / 2.0, size_z / 2.0 );
     glEnd();
- 
+
     // Purple side - RIGHT
     glBegin(GL_POLYGON);
     glVertex3f( size_x / 2.0, -size_y / 2.0, -size_z / 2.0 );
@@ -88,7 +88,7 @@ void CSGCube::glDraw() {
     glVertex3f( size_x / 2.0,  size_y / 2.0,  size_z / 2.0 );
     glVertex3f( size_x / 2.0, -size_y / 2.0,  size_z / 2.0 );
     glEnd();
- 
+
     // Green side - LEFT
     glBegin(GL_POLYGON);
     glVertex3f( -size_x / 2.0, -size_y / 2.0,  size_z / 2.0 );
@@ -96,7 +96,7 @@ void CSGCube::glDraw() {
     glVertex3f( -size_x / 2.0,  size_y / 2.0, -size_z / 2.0 );
     glVertex3f( -size_x / 2.0, -size_y / 2.0, -size_z / 2.0 );
     glEnd();
- 
+
     // Blue side - TOP
     glBegin(GL_POLYGON);
     glVertex3f(  size_x / 2.0,  size_y / 2.0,  size_z / 2.0 );
@@ -104,7 +104,7 @@ void CSGCube::glDraw() {
     glVertex3f( -size_x / 2.0,  size_y / 2.0, -size_z / 2.0 );
     glVertex3f( -size_x / 2.0,  size_y / 2.0,  size_z / 2.0 );
     glEnd();
- 
+
     // Red side - BOTTOM
     glBegin(GL_POLYGON);
     glVertex3f(  size_x / 2.0, -size_y / 2.0, -size_z / 2.0 );
@@ -112,7 +112,7 @@ void CSGCube::glDraw() {
     glVertex3f( -size_x / 2.0, -size_y / 2.0,  size_z / 2.0 );
     glVertex3f( -size_x / 2.0, -size_y / 2.0, -size_z / 2.0 );
     glEnd();
- 
+
     // glFlush();
     // glutSwapBuffers();
 }
@@ -146,7 +146,7 @@ void CSGSphere::boundingBox(BoundingBox &bb) {
 CSGCylinder::CSGCylinder (double h, double r) : height(h), radius(r), center(true) {};
 
 void CSGCylinder::toString() const {
-    printf("cylinder(%lf, %lf, %lf, %s);\n", height, radius, radius, 
+    printf("cylinder(%lf, %lf, %lf, %s);\n", height, radius, radius,
            center ? "true" : "false");
 }
 
@@ -369,23 +369,23 @@ bool CSGDifference::isInside(const Vector3D &p, Color &color) const {
     return false;
 }
 
-bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) const {    
+bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) const {
     if (children.size() > 0 and isInside(p, color)) {
         if (children[0]->isInBorder(p, color, border)) return true;
         else if (children[0]->isInside(p, color)) {
             const Cell3DPosition pPos = static_cast<TargetCSG*>(BlockCode::target)->
                 CSGToGridPosition(p);
-            
+
             // cout << "\t" << pPos << " - p: " << p << endl;
             if (border > 1.0) throw NotImplementedException("CSG difference border > 1.0");
-            
-            for (const Cell3DPosition& nPos : getWorld()->lattice->getNeighborhood(pPos)) { 
+
+            for (const Cell3DPosition& nPos : getWorld()->lattice->getNeighborhood(pPos)) {
                 if (not BlockCode::target->isInTarget(nPos))
                     return true;
             }
         }
-    }            
-    
+    }
+
     return false;
 }
 
@@ -398,7 +398,7 @@ void CSGDifference::boundingBox(BoundingBox &bb) {
 void CSGDifference::glDraw() {
     for (unsigned int i = 1; i < children.size(); i++) {
         children[i]->glDraw();
-    }    
+    }
 }
 
 /******************************************************************/

@@ -10,8 +10,8 @@
 #include <memory>
 
 #include "sbReconfBlockCode.h"
-#include "scheduler.h"
-#include "translationEvents.h"
+#include "events/scheduler.h"
+#include "motion/translationEvents.h"
 
 /*************************
 STEP 0: get map

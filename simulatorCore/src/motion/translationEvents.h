@@ -10,8 +10,8 @@
 #ifndef TRANSLATIONEVENTS_H_
 #define TRANSLATIONEVENTS_H_
 
-#include "buildingBlock.h"
-#include "events.h"
+#include "base/buildingBlock.h"
+#include "events/events.h"
 
 namespace BaseSimulator {
 

@@ -31,4 +31,3 @@ public:
     double c;
     double d;
 };
-

@@ -6,9 +6,9 @@
  */
 
 #include <iostream>
-#include "datomsBlockCode.h"
-#include "network.h"
-#include "trace.h"
+#include "robots/datoms/datomsBlockCode.h"
+#include "comm/network.h"
+#include "utils/trace.h"
 
 using namespace std;
 
@@ -44,9 +44,9 @@ void DatomsBlockCode::processLocalEvent(EventPtr pev) {
             c3d->setPositionAndOrientation(c3d->position,c3d->orientationCode);
             onMotionEnd();
         }  break;
-				case EVENT_TELEPORTATION_END: {
-					onMotionEnd();
-				}
+                case EVENT_TELEPORTATION_END: {
+                    onMotionEnd();
+                }
     }
 }
 

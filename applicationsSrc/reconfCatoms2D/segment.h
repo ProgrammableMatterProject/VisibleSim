@@ -2,8 +2,8 @@
 #define SEGMENT_H_
 
 #include "coordinate.h"
-#include "catoms2DBlock.h"
-#include "network.h"
+#include "robots/catoms2D/catoms2DBlock.h"
+#include "comm/network.h"
 #include "map.h"
 
 class Segment {
@@ -13,7 +13,7 @@ class Segment {
 
   bool onSegment(Coordinate p, Coordinate q, Coordinate r) const;
   int orientation(Coordinate p, Coordinate q, Coordinate r) const;
-  
+
  public:
 
   Segment(Coordinate p1, Coordinate p2);
@@ -21,11 +21,11 @@ class Segment {
   ~Segment();
 
   bool intersect(Segment &s) const;
-  
-  P2PNetworkInterface* 
+
+  P2PNetworkInterface*
     getIntersectInterface(Catoms2D::Catoms2DBlock *catom2D,
-			  Map &map, 
-			  P2PNetworkInterface *ignore) const;
+              Map &map,
+              P2PNetworkInterface *ignore) const;
 };
 
 #endif

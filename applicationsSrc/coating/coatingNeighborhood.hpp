@@ -1,11 +1,11 @@
 #ifndef CoatingNeighborhood_H_
 #define CoatingNeighborhood_H_
 
-#include "catoms3DBlock.h"
+#include "robots/catoms3D/catoms3DBlock.h"
 
 #include "coatingUtils.hpp"
 
-#include "lattice.h"
+#include "grid/lattice.h"
 
 using namespace Catoms3D;
 

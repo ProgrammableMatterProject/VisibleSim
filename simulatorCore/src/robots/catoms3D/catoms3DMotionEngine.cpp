@@ -1,6 +1,6 @@
-#include "catoms3DMotionEngine.h"
+#include "robots/catoms3D/catoms3DMotionEngine.h"
 
-#include "utils.h"
+#include "utils/utils.h"
 #include <vector>
 
 const Catoms3DMotionRulesLink*

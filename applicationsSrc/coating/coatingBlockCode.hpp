@@ -1,8 +1,8 @@
 #ifndef CoatingBlockCode_H_
 #define CoatingBlockCode_H_
 
-#include "catoms3DWorld.h"
-#include "catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 
 #include "coatingNeighborhood.hpp"
 #include "coatingBorder.hpp"

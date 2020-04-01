@@ -11,10 +11,10 @@
 #include <iostream>
 #include <sstream>
 
-#include "utils.h"
+#include "utils/utils.h"
 
-#include "teleportationEvents.h"
-#include "catoms3DRotationEvents.h"
+#include "motion/teleportationEvents.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
 
 #include "scaffoldingRuleMatcher.hpp"
 #include "scaffoldingBlockCode.hpp"

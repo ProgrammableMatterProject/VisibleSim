@@ -8,8 +8,8 @@
 #include <iostream>
 #include <sstream>
 #include "robot02BlockCode.h"
-#include "scheduler.h"
-#include "translationEvents.h"
+#include "events/scheduler.h"
+#include "motion/translationEvents.h"
 #include <memory>
 
 

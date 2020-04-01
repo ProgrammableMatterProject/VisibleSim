@@ -1,6 +1,6 @@
 #ifndef distanceSCCode_H_
 #define distanceSCCode_H_
-#include "slidingCubesBlockCode.h"
+#include "robots/slidingCubes/slidingCubesBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
 

@@ -10,15 +10,15 @@
 
 #include <vector>
 
-#include "buildingBlock.h"
-#include "openglViewer.h"
-#include "world.h"
-#include "vector3D.h"
-#include "cell3DPosition.h"
-#include "datomsBlock.h"
-#include "objLoader.h"
-#include "trace.h"
-#include "datomsMotionRules.h"
+#include "base/buildingBlock.h"
+#include "gui/openglViewer.h"
+#include "base/world.h"
+#include "math/vector3D.h"
+#include "grid/cell3DPosition.h"
+#include "robots/datoms/datomsBlock.h"
+#include "gui/objLoader.h"
+#include "utils/trace.h"
+#include "robots/datoms/datomsMotionRules.h"
 
 //!< \namespace Datoms
 namespace Datoms {
@@ -77,7 +77,7 @@ public:
     void updateGlData(DatomsBlock*blc, const Cell3DPosition &position);
     void updateGlData(DatomsBlock*blc, const Vector3D &position);
     void updateGlData(DatomsBlock*blc, const Matrix &mat);
-	  void updateGlData(const DatomsBlock*blc, PistonId id);
+      void updateGlData(const DatomsBlock*blc, PistonId id);
     virtual void setSelectedFace(int n) override;
     virtual void exportConfiguration() override;
 

@@ -2,7 +2,7 @@
 #define CSGUTILS_H_
 
 #include "csg.h"
-#include "color.h"
+#include "utils/color.h"
 #include "csgParser.h"
 
 class CsgUtils
@@ -20,4 +20,3 @@ private:
 };
 
 #endif /* CSGUTILS_H_ */
-

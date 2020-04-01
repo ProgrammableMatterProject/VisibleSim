@@ -1,13 +1,13 @@
 #ifndef MELDINTERPEVENTS_H_
 #define MELDINTERPEVENTS_H_
 
-#include "buildingBlock.h"
-#include "meldInterpretVM.h"
-#include "events.h"
-#include "network.h"
+#include "base/buildingBlock.h"
+#include "meld/meldInterpretVM.h"
+#include "events/events.h"
+#include "comm/network.h"
 
 //We'll see later for a debugger
-//#include "meldProcessDebugger.h"
+//#include "meld/meldProcessDebugger.h"
 
 namespace MeldInterpret {
 

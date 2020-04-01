@@ -1,11 +1,11 @@
 #ifndef moldingBlockCode_H_
 #define moldingBlockCode_H_
 
-#include "catoms3DBlockCode.h"
-#include "catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
 
-#include "catoms3DRotationEvents.h"
-#include "catoms3DBlock.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DBlock.h"
 
 #include "polymer.h"
 

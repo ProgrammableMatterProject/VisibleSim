@@ -8,7 +8,7 @@
 #ifndef RECONFCATOMS2DMESSAGES_H_
 #define RECONFCATOMS2DMESSAGES_H_
 
-#include "network.h"
+#include "comm/network.h"
 #include <memory>
 #include "tuple.hpp"
 #include "contextTuple.hpp"

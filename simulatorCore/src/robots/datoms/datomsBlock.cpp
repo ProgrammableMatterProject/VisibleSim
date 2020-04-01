@@ -6,11 +6,11 @@
  */
 
 #include <iostream>
-#include "datomsBlock.h"
-#include "buildingBlock.h"
-#include "datomsWorld.h"
-#include "datomsSimulator.h"
-#include "trace.h"
+#include "robots/datoms/datomsBlock.h"
+#include "base/buildingBlock.h"
+#include "robots/datoms/datomsWorld.h"
+#include "robots/datoms/datomsSimulator.h"
+#include "utils/trace.h"
 
 using namespace std;
 

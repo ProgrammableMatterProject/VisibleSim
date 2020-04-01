@@ -12,7 +12,7 @@
 #include "../sync/sync.h"
 #include "../sync/syncPlane.h"
 #include "neighborhood.h"
-#include "blockCode.h"
+#include "base/blockCode.h"
 
 #define NEW_CATOM_MSG_ID	9001
 #define NEW_CATOM_PARENT_MSG_ID	9002

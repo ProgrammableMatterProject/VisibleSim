@@ -1,6 +1,6 @@
 #include "neighborhood.h"
 #include "neighborRestriction.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 #define MSG_TIME 0//rand()%10
 #define MSG_TIME_ADD 1//100+rand()%10

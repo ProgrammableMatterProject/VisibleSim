@@ -12,13 +12,13 @@
 #define LOOKUP_LINE_LEFT_SYNC_MESSAGE_ID   8002
 
 #include <set>
-#include "catoms3DBlock.h"
+#include "robots/catoms3D/catoms3DBlock.h"
 #include "../directions.h"
 #include "../reconf.h"
 #include "syncResponse.h"
 
 class SyncLeft {
-	Catoms3D::Catoms3DBlock *catom;
+    Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
     SyncResponseModel *syncResponseModel;
     SyncResponse *syncResponse;

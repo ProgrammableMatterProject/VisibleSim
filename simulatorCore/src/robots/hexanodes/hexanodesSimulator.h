@@ -8,47 +8,47 @@
  *
  */
 
-#ifndef HEXANODESIMULATOR_H_
-#define HEXANODESIMULATOR_H_
+#ifndef HEXANODESSIMULATOR_H_
+#define HEXANODESSIMULATOR_H_
 
-#include "simulator.h"
-#include "hexanodeBlockCode.h"
-#include "hexanodeWorld.h"
-#include "trace.h"
+#include "base/simulator.h"
+#include "robots/hexanodes/hexanodesBlockCode.h"
+#include "robots/hexanodes/hexanodesWorld.h"
+#include "utils/trace.h"
 
 using namespace std;
 
-namespace Hexanode {
+namespace Hexanodes {
 
-class HexanodeSimulator : public BaseSimulator::Simulator {
+class HexanodesSimulator : public BaseSimulator::Simulator {
 protected:
 
-    HexanodeSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
-    virtual ~HexanodeSimulator();
+    HexanodesSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
+    virtual ~HexanodesSimulator();
 
 public:
     bool testMode;
 
     static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
 
-    static HexanodeSimulator* getSimulator() {
+    static HexanodesSimulator* getSimulator() {
         assert(simulator != NULL);
-        return((HexanodeSimulator*)simulator);
+        return((HexanodesSimulator*)simulator);
     }
 
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                int argc, char *argv[]) override;
     virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
                            const Cell3DPosition &pos, const Color &color, bool master) override;
-    virtual void printInfo() override { OUTPUT << "I'm a HexanodeSimulator" << endl; }
+    virtual void printInfo() override { OUTPUT << "I'm a HexanodesSimulator" << endl; }
     void help();
 };
 
 inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
-    HexanodeSimulator::createSimulator(argc, argv, bcb);
+    HexanodesSimulator::createSimulator(argc, argv, bcb);
 }
 
-inline HexanodeSimulator* getSimulator() { return(HexanodeSimulator::getSimulator()); }
+inline HexanodesSimulator* getSimulator() { return(HexanodesSimulator::getSimulator()); }
 
-} // Hexanode namespace
-#endif /* HEXANODESIMULATOR_H_ */
+} // Hexanodes namespace
+#endif /* HEXANODESSIMULATOR_H_ */

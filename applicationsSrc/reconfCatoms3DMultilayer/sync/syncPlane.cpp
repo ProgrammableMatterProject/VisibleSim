@@ -1,5 +1,5 @@
 #include "syncPlane.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 #define DEBUG 0
 

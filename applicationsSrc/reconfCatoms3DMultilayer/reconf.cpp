@@ -1,5 +1,5 @@
 #include "reconf.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {

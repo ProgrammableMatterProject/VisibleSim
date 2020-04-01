@@ -8,7 +8,7 @@
 #ifndef RECONFCATOMS3DBLOCKCODE_H_
 #define RECONFCATOMS3DBLOCKCODE_H_
 
-#include "catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 #include "directions.h"
 #include "reconf.h"
 #include "neighborhood/neighborhood.h"

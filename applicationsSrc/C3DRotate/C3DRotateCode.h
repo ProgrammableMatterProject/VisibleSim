@@ -1,8 +1,8 @@
 #ifndef C3DRotateCode_H_
 #define C3DRotateCode_H_
-#include "catoms3DSimulator.h"
-#include "catoms3DBlockCode.h"
-#include "catoms3DMotionRules.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DMotionRules.h"
 
 static const int LOCK_MSG=1001;
 static const int UNLOCK_MSG=1002;

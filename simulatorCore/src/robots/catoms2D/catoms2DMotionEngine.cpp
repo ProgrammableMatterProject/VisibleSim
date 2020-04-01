@@ -2,14 +2,14 @@
 #include <iostream>
 #include <cassert>
 
-#include "catoms2DMotionEngine.h"
+#include "robots/catoms2D/catoms2DMotionEngine.h"
 
 //#define SPEED_DEBUG
 
 using namespace std;
 
 namespace BaseSimulator {
-  
+
 Catoms2DMotionEngine::Catoms2DMotionEngine() {
   speed = new StaticRate(DEFAULT_MOTION_SPEED);
 }
@@ -28,7 +28,7 @@ void Catoms2DMotionEngine::setSpeed(Rate *s) {
   delete speed;
   speed = s;
 }
-  
+
 double Catoms2DMotionEngine::getSpeed() {
   return speed->get();
 }
@@ -36,12 +36,12 @@ double Catoms2DMotionEngine::getSpeed() {
 Time Catoms2DMotionEngine::getDuration(Distance distance) {
   double speed = getSpeed(); // mm/s
   double time = distance/speed; // s
-  
+
 #ifdef SPEED_DEBUG
   cerr << "speed (mm/s) = " << speed << ", distance (mm) = " << distance
        << ", time (s) = " << time << endl;
 #endif
-  
+
   Time t = time*pow(10,6); // us
   return t;
 }

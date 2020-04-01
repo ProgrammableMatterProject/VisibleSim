@@ -6,8 +6,8 @@
  */
 
 #include <iostream>
-#include "smartBlocksBlock.h"
-#include "smartBlocksWorld.h"
+#include "robots/smartBlocks/smartBlocksBlock.h"
+#include "robots/smartBlocks/smartBlocksWorld.h"
 
 using namespace std;
 

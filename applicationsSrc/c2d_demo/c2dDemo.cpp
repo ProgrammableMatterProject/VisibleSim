@@ -9,8 +9,8 @@
  */
 
 #include <iostream>
-#include "catoms2DSimulator.h"
-#include "catoms2DBlockCode.h"
+#include "robots/catoms2D/catoms2DSimulator.h"
+#include "robots/catoms2D/catoms2DBlockCode.h"
 #include "c2dDemoBlockCode.hpp"
 
 using namespace std;

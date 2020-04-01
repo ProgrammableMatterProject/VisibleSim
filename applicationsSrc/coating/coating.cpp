@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "catoms3DSimulator.h"
-#include "catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 
 #include "coatingBlockCode.hpp"
 

@@ -8,8 +8,8 @@
 #ifndef SMARTBLOCKSGLBLOCK_H_
 #define SMARTBLOCKSGLBLOCK_H_
 #include <string>
-#include <objLoader.h>
-#include "glBlock.h"
+#include "gui/objLoader.h"
+#include "base/glBlock.h"
 
 namespace SmartBlocks {
 class SmartBlocksGlBlock:public GlBlock {

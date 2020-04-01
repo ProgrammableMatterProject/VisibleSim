@@ -11,9 +11,9 @@
 #include <thread>
 #include <functional>
 
-#include "scheduler.h"
-#include "network.h"
-#include "trace.h"
+#include "events/scheduler.h"
+#include "comm/network.h"
+#include "utils/trace.h"
 
 namespace MeldInterpret {
 

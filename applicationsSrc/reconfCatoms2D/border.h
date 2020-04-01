@@ -1,15 +1,15 @@
 #ifndef BORDER_H_
 #define BORDER_H_
 
-#include "catoms2DBlock.h"
-#include "network.h"
+#include "robots/catoms2D/catoms2DBlock.h"
+#include "comm/network.h"
 
 class Border {
  private:
   Catoms2D::Catoms2DBlock* catom;
-  
+
  public:
-  Border(Catoms2D::Catoms2DBlock *c); 
+  Border(Catoms2D::Catoms2DBlock *c);
   Border(const Border &b);
   ~Border();
 

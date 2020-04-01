@@ -10,9 +10,9 @@
 
 #include "meshRuleMatcher.hpp"
 
-#include "network.h"
-#include "utils.h"
-#include "catoms3DWorld.h"
+#include "comm/network.h"
+#include "utils/utils.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 using namespace MeshCoating;
 using namespace BaseSimulator;

@@ -13,17 +13,17 @@
 #include <sstream>
 #include <cstring>
 
-#include "tDefs.h"
+#include "utils/tDefs.h"
 
 #define LOGFILE
 
 #ifdef LOGFILE
-	extern std::ofstream log_file;
-	#define OUTPUT log_file
-	#define ERRPUT log_file
+    extern std::ofstream log_file;
+    #define OUTPUT log_file
+    #define ERRPUT log_file
 #else
-	#define OUTPUT cout
-	#define ERRPUT cerr
+    #define OUTPUT cout
+    #define ERRPUT cerr
 #endif
 
 using namespace std;
@@ -33,7 +33,7 @@ class Scheduler;
 }
 
 class ConsoleStream {
-	BaseSimulator::Scheduler *scheduler;
+    BaseSimulator::Scheduler *scheduler;
     bID blockId;
     stringstream stream;
 public:
@@ -45,7 +45,7 @@ public:
     }
 
     void flush();
-	
+
     ConsoleStream& operator<<(const char* value ) {
         int l=strlen(value);
         if (value[l-1]=='\n') {

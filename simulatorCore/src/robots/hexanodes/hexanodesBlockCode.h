@@ -8,27 +8,27 @@
  *
  */
 
-#ifndef HEXANODEBLOCKCODE_H_
-#define HEXANODEBLOCKCODE_H_
+#ifndef HEXANODESBLOCKCODE_H_
+#define HEXANODESBLOCKCODE_H_
 
 #include <ostream>
 
-#include "blockCode.h"
-#include "hexanodeBlock.h"
-#include "network.h"
-#include "scheduler.h"
+#include "base/blockCode.h"
+#include "robots/hexanodes/hexanodesBlock.h"
+#include "comm/network.h"
+#include "events/scheduler.h"
 
 using namespace BaseSimulator;
 
-namespace Hexanode {
+namespace Hexanodes {
 
-class HexanodeBlock;
+class HexanodesBlock;
 
-class HexanodeBlockCode : public BaseSimulator::BlockCode {
+class HexanodesBlockCode : public BaseSimulator::BlockCode {
 public:
 
-    HexanodeBlockCode(HexanodeBlock *host);
-    virtual ~HexanodeBlockCode();
+    HexanodesBlockCode(HexanodesBlock *host);
+    virtual ~HexanodesBlockCode();
 
     virtual void processLocalEvent(EventPtr pev) override;
     virtual void onMotionEnd() override {};
@@ -38,4 +38,4 @@ public:
 
 }
 
-#endif /* HEXANODEBLOCKCODE_H_ */
+#endif /* HEXANODESBLOCKCODE_H_ */

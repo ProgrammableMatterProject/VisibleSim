@@ -8,8 +8,8 @@
 #ifndef RECONF_H_
 #define RECONF_H_
 #include <queue>
-#include "catoms3DBlockCode.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 #include "directions.h"
 #include "border.h"
 

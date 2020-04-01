@@ -8,9 +8,9 @@
 #ifndef BLINKYBLOCKSEVENTS_H_
 #define BLINKYBLOCKSEVENTS_H_
 
-#include "blinkyBlocksBlock.h"
-#include "events.h"
-#include "network.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
+#include "events/events.h"
+#include "comm/network.h"
 
 namespace BlinkyBlocks {
 

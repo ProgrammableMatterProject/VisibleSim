@@ -8,7 +8,7 @@
 #ifndef SYNCPLANEMANAGER_H_
 #define SYNCPLANEMANAGER_H_
 
-#include "catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 #include "../reconf.h"
 #include "syncPlane.h"
 #include "../neighborhood/neighborhood.h"
@@ -36,4 +36,3 @@ public:
 };
 
 #endif /* SYNCPLANEMANAGER_H_ */
-

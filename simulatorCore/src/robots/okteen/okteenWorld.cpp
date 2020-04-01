@@ -12,10 +12,10 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "okteenWorld.h"
-#include "okteenBlock.h"
-#include "trace.h"
-#include "configExporter.h"
+#include "robots/okteen/okteenWorld.h"
+#include "robots/okteen/okteenBlock.h"
+#include "utils/trace.h"
+#include "utils/configExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

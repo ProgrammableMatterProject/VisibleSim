@@ -12,7 +12,7 @@
 #ifndef MESHASSEMBLYLOCALRULES_HPP__
 #define MESHASSEMBLYLOCALRULES_HPP__
 
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 
 #include <bitset>
 #include <utility>
@@ -358,12 +358,12 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x808, Cell3DPosition(-1, -3, 4), 2), Cell3DPosition(0, 0, 1) }, // LZ_EPL2
     { LRKeyTuple(0x050, Cell3DPosition(-1, -3, 4), 3), Cell3DPosition(-1, 0, 1) }, // LZ_EPL3
     { LRKeyTuple(0x180, Cell3DPosition(-1, -3, 4), 4), Cell3DPosition(-1, -1, 1) }, // LZ_EPL4
-    
+
     { LRKeyTuple(0x220, Cell3DPosition(-3, -1, 4), 1), Cell3DPosition(-1, -1, 2) }, // RZ_EPL1
     { LRKeyTuple(0x220, Cell3DPosition(-3, -1, 4), 2), Cell3DPosition(-1, -1, 1) }, // RZ_EPL2
     { LRKeyTuple(0x005, Cell3DPosition(-3, -1, 4), 3), Cell3DPosition(0, -1, 1) }, // RZ_EPL3
     { LRKeyTuple(0x402, Cell3DPosition(-3, -1, 4), 4), Cell3DPosition(0, 0, 1) }, // RZ_EPL4
-    
+
     { LRKeyTuple(0x110, Cell3DPosition(-1, -1, 4), 1), Cell3DPosition(-1, -1, 2) }, //RevZ_EPL1
     { LRKeyTuple(0x110, Cell3DPosition(-1, -1, 4), 2), Cell3DPosition(-1, 0, 1) }, // RevZ_EPL2
     { LRKeyTuple(0xA0, Cell3DPosition(-1, -1, 4), 3), Cell3DPosition(-1, -1, 1) }, // RevZ_EPL3

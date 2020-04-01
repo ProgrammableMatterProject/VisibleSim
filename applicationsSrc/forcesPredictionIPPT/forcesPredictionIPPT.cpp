@@ -1,6 +1,6 @@
 #include <iostream>
-#include "blinkyBlocksSimulator.h"
-#include "blinkyBlocksBlockCode.h"
+#include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
 #include "forcesPredictionIPPTCode.h"
 
 using namespace std;

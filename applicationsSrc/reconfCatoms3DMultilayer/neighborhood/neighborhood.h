@@ -28,7 +28,7 @@
 #define NEXTPLANECONFIRMATION_EASTLEFT_MESSAGE_ID 12106
 #define NEXTPLANECONFIRMATION_EASTRIGHT_MESSAGE_ID 12107
 
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
 #include "../sync/syncNext.h"

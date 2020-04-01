@@ -1,7 +1,7 @@
 #ifndef NEIGHBOR_H_
 #define NEIGHBOR_H_
 
-#include "network.h"
+#include "comm/network.h"
 #include "coordinate.h"
 
 class Neighbor {

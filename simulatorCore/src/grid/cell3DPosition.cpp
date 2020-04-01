@@ -1,4 +1,4 @@
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 #include <sstream>
 
 Cell3DPosition::Cell3DPosition() {

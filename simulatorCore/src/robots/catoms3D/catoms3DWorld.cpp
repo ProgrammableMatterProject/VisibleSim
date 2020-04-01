@@ -12,14 +12,14 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "catoms3DWorld.h"
-#include "catoms3DBlock.h"
-#include "catoms3DMotionEngine.h"
-#include "trace.h"
-#include "configExporter.h"
-#include "catoms3DRotationEvents.h"
-#include "simulator.h"
-#include "catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "robots/catoms3D/catoms3DMotionEngine.h"
+#include "utils/trace.h"
+#include "utils/configExporter.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "base/simulator.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

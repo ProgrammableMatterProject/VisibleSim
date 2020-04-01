@@ -10,12 +10,12 @@
 
 #include <vector>
 
-#include "openglViewer.h"
-#include "world.h"
-#include "vector3D.h"
-#include "catoms2DBlock.h"
-#include "objLoader.h"
-#include "trace.h"
+#include "gui/openglViewer.h"
+#include "base/world.h"
+#include "math/vector3D.h"
+#include "robots/catoms2D/catoms2DBlock.h"
+#include "gui/objLoader.h"
+#include "utils/trace.h"
 
 namespace Catoms2D {
 

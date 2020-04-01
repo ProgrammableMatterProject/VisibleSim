@@ -6,12 +6,12 @@
  */
 
 #include <iostream>
-#include "catoms3DBlock.h"
-#include "buildingBlock.h"
-#include "catoms3DWorld.h"
-#include "catoms3DSimulator.h"
-#include "trace.h"
-#include "catoms3DMotionEngine.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "base/buildingBlock.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "utils/trace.h"
+#include "robots/catoms3D/catoms3DMotionEngine.h"
 
 using namespace std;
 

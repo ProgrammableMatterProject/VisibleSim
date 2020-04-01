@@ -12,11 +12,11 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "blinkyBlocksWorld.h"
-#include "blinkyBlocksBlock.h"
-#include "blinkyBlocksEvents.h"
-#include "configExporter.h"
-#include "trace.h"
+#include "robots/blinkyBlocks/blinkyBlocksWorld.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
+#include "robots/blinkyBlocks/blinkyBlocksEvents.h"
+#include "utils/configExporter.h"
+#include "utils/trace.h"
 
 using namespace std;
 

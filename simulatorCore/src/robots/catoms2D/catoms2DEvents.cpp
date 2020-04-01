@@ -5,10 +5,10 @@
  *      Author: Benoît
  */
 
-#include "catoms2DEvents.h"
-#include "catoms2DScheduler.h"
-#include "catoms2DWorld.h"
-#include "catoms2DMove.h"
+#include "robots/catoms2D/catoms2DEvents.h"
+#include "robots/catoms2D/catoms2DScheduler.h"
+#include "robots/catoms2D/catoms2DWorld.h"
+#include "robots/catoms2D/catoms2DMove.h"
 
 const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;
@@ -26,7 +26,7 @@ namespace Catoms2D {
   MotionStartEvent::MotionStartEvent(Time t, Catoms2DBlock *block, Catoms2DMove &m): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_START;
-    
+
     pivot.set(m.getPivot()->ptrGlBlock->position[0],m.getPivot()->ptrGlBlock->position[1],m.getPivot()->ptrGlBlock->position[2]);
     angle = 60;
     sens = m.getDirection();
@@ -143,7 +143,7 @@ namespace Catoms2D {
     */
     rb->setPosition(gridPos);
     wrld->setGridPtr(gridPos.pt[0],gridPos.pt[1],gridPos.pt[2],rb);
-    
+
 
     stringstream info;
     info.str("");

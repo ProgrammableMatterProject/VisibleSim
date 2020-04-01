@@ -11,15 +11,15 @@
 #include <iostream>
 #include <set>
 
-#include "catoms3DWorld.h"
-#include "scheduler.h"
-#include "events.h"
-#include "trace.h"
-#include "tDefs.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "events/scheduler.h"
+#include "events/events.h"
+#include "utils/trace.h"
+#include "utils/tDefs.h"
 
-#include "teleportationEvents.h"
-#include "catoms3DRotationEvents.h"
-#include "catoms3DMotionEngine.h"
+#include "motion/teleportationEvents.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DMotionEngine.h"
 
 #include "meshAssemblyBlockCode.hpp"
 

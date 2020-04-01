@@ -2,17 +2,17 @@
  * @file   messages.hpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Tue Jul 10 13:47:20 2018
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 
 #ifndef MC3D_MESSAGES_H_
 #define MC3D_MESSAGES_H_
 
-#include "network.h"
+#include "comm/network.h"
 
 #include "meshRuleMatcher.hpp"
 
@@ -75,7 +75,7 @@ public:
     virtual string getName() const { return "TileNotReady"; }
 };
 
-class TileInsertionReadyMessage : public HandleableMessage {    
+class TileInsertionReadyMessage : public HandleableMessage {
 public:
     TileInsertionReadyMessage() : HandleableMessage() {};
     virtual ~TileInsertionReadyMessage() {};
@@ -91,13 +91,13 @@ public:
 
 /**
  * This message should be routed through the line until it reaches the dstPos, which as a pivot
- *  module must check whether its light is on and either give a go, or wait until its status 
+ *  module must check whether its light is on and either give a go, or wait until its status
  *  clears and send a go at that time.
  */
 class ProbePivotLightStateMessage : public HandleableMessage {
     const Cell3DPosition srcPos;
     const Cell3DPosition targetPos; // Next position the module is seeking to reach
-    /** 
+    /**
      * Final component to be reached by a series of intermediate motions such as this one
      */
     const MeshComponent finalComponent;
@@ -107,7 +107,7 @@ public:
                                 const Cell3DPosition& _targetPos,
                                 const MeshComponent _finalComponent)
                                 // const Cell3DPosition& _finalPos)
-        : HandleableMessage(), srcPos(_srcPos), 
+        : HandleableMessage(), srcPos(_srcPos),
           targetPos(_targetPos), finalComponent(_finalComponent) {};
     virtual ~ProbePivotLightStateMessage() {};
 

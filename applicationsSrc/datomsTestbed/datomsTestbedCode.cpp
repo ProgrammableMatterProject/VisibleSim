@@ -1,7 +1,7 @@
 #include <queue>
 #include <climits>
 #include "datomsTestbedCode.h"
-#include "datomsMotionEngine.h"
+#include "robots/datoms/datomsMotionEngine.h"
 
 void DatomsTestbedCode::initTabDistances() {
     if (tabDistances == NULL) {

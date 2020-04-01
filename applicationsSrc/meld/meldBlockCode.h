@@ -1,9 +1,9 @@
 #ifndef MELDBLOCKCODE_H_
 #define MELDBLOCKCODE_H_
 
-#include "meldInterpretVM.h"
-#include "slidingCubesBlockCode.h"
-#include "slidingCubesSimulator.h"
+#include "meld/meldInterpretVM.h"
+#include "robots/slidingCubes/slidingCubesBlockCode.h"
+#include "robots/slidingCubes/slidingCubesSimulator.h"
 
 class MeldBlockCode : public BlockCode {
 private:

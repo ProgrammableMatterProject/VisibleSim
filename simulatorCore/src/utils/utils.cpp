@@ -9,7 +9,7 @@
  */
 
 
-#include "utils.h"
+#include "utils/utils.h"
 
 #include <fstream>
 #include <ctime>
@@ -19,8 +19,8 @@
 #include <string>
 #include <cstdlib>
 
-#include "scheduler.h"
-#include "world.h"
+#include "events/scheduler.h"
+#include "base/world.h"
 
 using namespace BaseSimulator;
 using namespace utils;

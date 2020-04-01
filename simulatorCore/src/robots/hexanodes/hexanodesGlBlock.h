@@ -8,28 +8,28 @@
  *
  */
 
-#ifndef HEXANODEGLBLOCK_H_
-#define HEXANODEGLBLOCK_H_
+#ifndef HEXANODESGLBLOCK_H_
+#define HEXANODESGLBLOCK_H_
 
 #include <string>
-#include <objLoader.h>
+#include "gui/objLoader.h"
 
-#include "matrix44.h"
-#include "glBlock.h"
+#include "math/matrix44.h"
+#include "base/glBlock.h"
 
-namespace Hexanode {
-class HexanodeGlBlock:public GlBlock {
+namespace Hexanodes {
+class HexanodesGlBlock:public GlBlock {
     int displayedValue;
 public :
     Matrix mat{};
 
-    HexanodeGlBlock(bID id);
-    virtual ~HexanodeGlBlock() {};
+    HexanodesGlBlock(bID id);
+    virtual ~HexanodesGlBlock() {};
 
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
-		void glDrawShadows(ObjLoader::ObjLoader *ptrObj) override;
+        void glDrawShadows(ObjLoader::ObjLoader *ptrObj) override;
     void glDrawId(ObjLoader::ObjLoader *ptrObj, int n) override;
     void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj, int &n) override;
 };
 }
-#endif /* HEXANODEGLBLOCK_H_ */
+#endif /* HEXANODESGLBLOCK_H_ */

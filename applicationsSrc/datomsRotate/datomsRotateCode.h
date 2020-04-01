@@ -1,10 +1,10 @@
 #ifndef datomsRotateCode_H_
 #define datomsRotateCode_H_
 #include <queue>
-#include "datomsSimulator.h"
-#include "datomsBlockCode.h"
-#include "datomsMotionRules.h"
-#include "teleportationEvents.h"
+#include "robots/datoms/datomsSimulator.h"
+#include "robots/datoms/datomsBlockCode.h"
+#include "robots/datoms/datomsMotionRules.h"
+#include "motion/teleportationEvents.h"
 
 using namespace Datoms;
 

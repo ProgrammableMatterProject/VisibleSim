@@ -8,52 +8,52 @@
  *
  */
 
-#ifndef HEXANODEWORLD_H_
-#define HEXANODEWORLD_H_
+#ifndef HEXANODESWORLD_H_
+#define HEXANODESWORLD_H_
 
 #include <vector>
 
-#include "buildingBlock.h"
-#include "openglViewer.h"
-#include "world.h"
-#include "vector3D.h"
-#include "cell3DPosition.h"
-#include "hexanodeBlock.h"
-#include "objLoader.h"
-#include "trace.h"
+#include "base/buildingBlock.h"
+#include "gui/openglViewer.h"
+#include "base/world.h"
+#include "math/vector3D.h"
+#include "grid/cell3DPosition.h"
+#include "robots/hexanodes/hexanodesBlock.h"
+#include "gui/objLoader.h"
+#include "utils/trace.h"
 
-//!< \namespace Hexanode
-namespace Hexanode {
+//!< \namespace Hexanodes
+namespace Hexanodes {
 
 static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
 
-class HexanodeMotionEngine;
-class HexanodeMotion;
+class HexanodesMotionEngine;
+class HexanodesMotion;
 
 /**
- * \class HexanodeWorld nodeWorld.h
+ * \class HexanodesWorld nodeWorld.h
  */
-class HexanodeWorld : public BaseSimulator::World {
+class HexanodesWorld : public BaseSimulator::World {
 protected:
     ObjLoader::ObjLoader *objConnector = NULL;           //!< Object loader for a block
-		HexanodeMotionEngine *nodeMotionEngine;
-    virtual ~HexanodeWorld();
+        HexanodesMotionEngine *nodeMotionEngine;
+    virtual ~HexanodesWorld();
 public:
-    HexanodeWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+    HexanodesWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                   int argc, char *argv[]);
 
     static void deleteWorld();
-    static HexanodeWorld* getWorld() {
+    static HexanodesWorld* getWorld() {
         assert(world != NULL);
-        return((HexanodeWorld*)world);
+        return((HexanodesWorld*)world);
     }
 
     void printInfo() {
-        OUTPUT << "I'm a HexanodeWorld" << endl;
+        OUTPUT << "I'm a HexanodesWorld" << endl;
     }
 
-    virtual HexanodeBlock* getBlockById(int bId) override {
-        return((HexanodeBlock*)World::getBlockById(bId));
+    virtual HexanodesBlock* getBlockById(int bId) override {
+        return((HexanodesBlock*)World::getBlockById(bId));
     }
 
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
@@ -67,26 +67,26 @@ public:
      */
     virtual void linkBlock(const Cell3DPosition &pos) override;
 
-		virtual void glDraw() override;
-		virtual void glDrawShadows() override;
-		virtual void glDrawId() override;
+        virtual void glDraw() override;
+        virtual void glDrawShadows() override;
+        virtual void glDrawId() override;
     virtual void glDrawIdByMaterial() override;
     void updateGlData(BuildingBlock *bb) override;
-    void updateGlData(HexanodeBlock*blc,const Color &color);
-    void updateGlData(HexanodeBlock*blc, bool visible);
-    void updateGlData(HexanodeBlock*blc, const Cell3DPosition &position);
-    void updateGlData(HexanodeBlock*blc, const Vector3D &position);
-    void updateGlData(HexanodeBlock*blc, const Matrix &mat);
+    void updateGlData(HexanodesBlock*blc,const Color &color);
+    void updateGlData(HexanodesBlock*blc, bool visible);
+    void updateGlData(HexanodesBlock*blc, const Cell3DPosition &position);
+    void updateGlData(HexanodesBlock*blc, const Vector3D &position);
+    void updateGlData(HexanodesBlock*blc, const Matrix &mat);
     virtual void setSelectedFace(int n) override;
     virtual void exportConfiguration() override;
 
     virtual void disconnectBlock(BuildingBlock *block);
-		virtual void glDrawSpecificBg() override;
-		
-		virtual void createPopupMenu(int ix, int iy) override;
-		virtual void menuChoice(int n) override;
-		
-		vector<HexanodeMotion*>getAllMotionsForModule(HexanodeBlock*nb);
+        virtual void glDrawSpecificBg() override;
+
+        virtual void createPopupMenu(int ix, int iy) override;
+        virtual void menuChoice(int n) override;
+
+        vector<HexanodesMotion*>getAllMotionsForModule(HexanodesBlock*nb);
 /**
  * \brief load the background textures (internal)
  */
@@ -94,12 +94,12 @@ public:
 };
 
 inline void deleteWorld() {
-    HexanodeWorld::deleteWorld();
+    HexanodesWorld::deleteWorld();
 }
 
-inline HexanodeWorld* getWorld() { return(HexanodeWorld::getWorld()); }
+inline HexanodesWorld* getWorld() { return(HexanodesWorld::getWorld()); }
 
 
-} // Hexanode namespace
+} // Hexanodes namespace
 
-#endif /* HEXANODEWORLD_H_ */
+#endif /* HEXANODESWORLD_H_ */

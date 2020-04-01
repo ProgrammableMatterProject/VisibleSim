@@ -10,14 +10,14 @@
 
 #include <vector>
 
-#include "buildingBlock.h"
-#include "openglViewer.h"
-#include "world.h"
-#include "vector3D.h"
-#include "cell3DPosition.h"
-#include "okteenBlock.h"
-#include "objLoader.h"
-#include "trace.h"
+#include "base/buildingBlock.h"
+#include "gui/openglViewer.h"
+#include "base/world.h"
+#include "math/vector3D.h"
+#include "grid/cell3DPosition.h"
+#include "robots/okteen/okteenBlock.h"
+#include "gui/objLoader.h"
+#include "utils/trace.h"
 
 //!< \namespace Okteen
 namespace Okteen {

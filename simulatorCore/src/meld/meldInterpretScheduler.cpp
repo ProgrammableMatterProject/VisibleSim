@@ -10,15 +10,15 @@
 #include <algorithm>
 #include <chrono>
 
-#include "meldInterpretScheduler.h"
-#include "meldInterpretVM.h"
-//#include "meldInterpretDebugger.h"
-#include "meldInterpretEvents.h"
-#include "simulator.h"
-#include "world.h"
-#include "buildingBlock.h"
-#include "blockCode.h"
-#include "trace.h"
+#include "meld/meldInterpretScheduler.h"
+#include "meld/meldInterpretVM.h"
+//#include "meld/meldInterpretDebugger.h"
+#include "meld/meldInterpretEvents.h"
+#include "base/simulator.h"
+#include "base/world.h"
+#include "base/buildingBlock.h"
+#include "base/blockCode.h"
+#include "utils/trace.h"
 
 using namespace std;
 using us = chrono::microseconds;

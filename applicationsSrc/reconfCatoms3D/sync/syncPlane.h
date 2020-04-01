@@ -8,7 +8,7 @@
 #ifndef SYNCPLANE_H_
 #define SYNCPLANE_H_
 
-#include "catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 #include "../reconf.h"
 #include <vector>
 
@@ -54,4 +54,3 @@ public:
 };
 
 #endif /* SYNCPLANE_H_ */
-

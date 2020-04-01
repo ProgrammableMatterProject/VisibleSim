@@ -1,4 +1,4 @@
-SUBDIRS = C3DRotate hexanode_demo meld reconfCatoms3DMultilayer scaffolding_pyramid_async simpleColorC2D csgCatoms3D lightWalkCatoms3D musicPlayer robot02 scaffolding_pyramid_sync simpleColorOkteen simpleOkteenMotion c2d_demo datomsRotate maxFlowSC node_demo sbReconf simpleColorSC sinkSource c2srCatoms2D distanceSC reconfCatoms3D scaffolding_cube simpleColorBB simpleColorSB molding coating scaffolding_csg datomsTestbed
+SUBDIRS = C3DRotate hexanodes_demo meld reconfCatoms3DMultilayer scaffolding_pyramid_async simpleColorC2D csgCatoms3D lightWalkCatoms3D musicPlayer robot02 scaffolding_pyramid_sync simpleColorOkteen simpleOkteenMotion c2d_demo datomsRotate maxFlowSC nodes2D_demo sbReconf simpleColorSC sinkSource c2srCatoms2D distanceSC reconfCatoms3D scaffolding_cube simpleColorBB simpleColorSB molding coating scaffolding_csg datomsTestbed
 
 .PHONY: subdirs $(SUBDIRS) test
 
@@ -9,12 +9,6 @@ $(SUBDIRS):
 	@mkdir -p ../applicationsBin/$@
 	@echo "Checking $@ block code"
 	@$(MAKE) -C $@ APPDIR=../../applicationsBin/$@ GLOBAL_INCLUDES="$(GLOBAL_INCLUDES)" GLOBAL_LIBS="$(GLOBAL_LIBS)" GLOBAL_CCFLAGS="$(GLOBAL_CCFLAGS)"
-
-#subdirs:
-#	@for dir in $(SUBDIRS); do \
-#	mkdir -p ../applicationsBin/$$dir; \
-#	$(MAKE) -C $$dir autoinstall APPDIR=../../applicationsBin/$$dir; \
-#	done
 
 test:
 	@echo "\nBlockCodes Regression Testing:"

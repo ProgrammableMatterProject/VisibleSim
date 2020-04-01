@@ -1,6 +1,6 @@
 #ifndef sinkSourceCode_H_
 #define sinkSourceCode_H_
-#include "smartBlocksBlockCode.h"
+#include "robots/smartBlocks/smartBlocksBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
 static const int DISTANCE_MSG=1002;

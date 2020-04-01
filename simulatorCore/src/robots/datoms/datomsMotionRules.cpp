@@ -1,7 +1,7 @@
-#include "datomsMotionRules.h"
+#include "robots/datoms/datomsMotionRules.h"
 #include "deformationEvents.h"
-#include "datomsWorld.h"
-#include "datomsMotionEngine.h"
+#include "robots/datoms/datomsWorld.h"
+#include "robots/datoms/datomsMotionEngine.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

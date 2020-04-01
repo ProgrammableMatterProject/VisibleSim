@@ -1,4 +1,4 @@
-#include "slidingCubesGlBlock.h"
+#include "robots/slidingCubes/slidingCubesGlBlock.h"
 
 namespace SlidingCubes {
 

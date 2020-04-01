@@ -11,8 +11,8 @@
 #ifndef ROTATION2DEVENTS_H_
 #define ROTATION2DEVENTS_H_
 
-#include "events.h"
-#include "catoms2DBlock.h"
+#include "events/events.h"
+#include "robots/catoms2D/catoms2DBlock.h"
 
 using namespace Catoms2D;
 

@@ -10,10 +10,10 @@
 
 #include <pthread.h>
 
-#include "shaders.h"
-#include "matrix44.h"
-#include "camera.h"
-#include "glBlock.h"
+#include "gui/shaders.h"
+#include "math/matrix44.h"
+#include "gui/camera.h"
+#include "base/glBlock.h"
 #include "interface.h"
 
 #ifndef GLUT

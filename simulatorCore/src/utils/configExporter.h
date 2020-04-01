@@ -8,12 +8,12 @@
 #define CONFIGEXPORTER_H__
 
 #define TIXML_USE_STL	1
-#include "TinyXML/tinyxml.h"
+#include "deps/TinyXML/tinyxml.h"
 
-#include "world.h"
-#include "buildingBlock.h"
-#include "openglViewer.h"
-#include "camera.h"
+#include "base/world.h"
+#include "base/buildingBlock.h"
+#include "gui/openglViewer.h"
+#include "gui/camera.h"
 
 using namespace std;
 
@@ -258,33 +258,33 @@ public:
 };
 
 /**
- * @brief Node Configuration Exporter
+ * @brief Nodes2D Configuration Exporter
  */
-class NodeConfigExporter : public ConfigExporter {
+class Nodes2DConfigExporter : public ConfigExporter {
 public:
     /**
-     * @brief Node Configuration Exporter constructor
+     * @brief Nodes2D Configuration Exporter constructor
      */
-    NodeConfigExporter(World *_world) : ConfigExporter(_world) {};
+    Nodes2DConfigExporter(World *_world) : ConfigExporter(_world) {};
     /**
-     * @brief Node Configuration Exporter destructor
+     * @brief Nodes2D Configuration Exporter destructor
      */
-    virtual ~NodeConfigExporter() { };
+    virtual ~Nodes2DConfigExporter() { };
 };
 
 /**
- * @brief Hexanode Configuration Exporter
+ * @brief Hexanodes Configuration Exporter
  */
-class HexanodeConfigExporter : public ConfigExporter {
+class HexanodesConfigExporter : public ConfigExporter {
 public:
     /**
      * @brief Node Configuration Exporter constructor
      */
-    HexanodeConfigExporter(World *_world) : ConfigExporter(_world) {};
+    HexanodesConfigExporter(World *_world) : ConfigExporter(_world) {};
     /**
      * @brief Node Configuration Exporter destructor
      */
-    virtual ~HexanodeConfigExporter() { };
+    virtual ~HexanodesConfigExporter() { };
 };
 
 } // BASESIMULATOR_NAMESPACE

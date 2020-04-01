@@ -6,8 +6,8 @@
  */
 
 #include <iostream>
-#include "catoms3DSimulator.h"
-#include "catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 #include "csgCatoms3DBlockCode.h"
 #include <ctime>
 
@@ -15,18 +15,18 @@ using namespace std;
 using namespace Catoms3D;
 
 int main(int argc, char **argv) {
-	cout << "\033[1;33m" << "Starting Catom3D simulation (main) ..." << "\033[0m" << endl;
+    cout << "\033[1;33m" << "Starting Catom3D simulation (main) ..." << "\033[0m" << endl;
 
-	createSimulator(argc, argv, CsgCatoms3DBlockCode::buildNewBlockCode);
-	getSimulator()->printInfo();
-	BaseSimulator::getWorld()->printInfo();
+    createSimulator(argc, argv, CsgCatoms3DBlockCode::buildNewBlockCode);
+    getSimulator()->printInfo();
+    BaseSimulator::getWorld()->printInfo();
 /*
-	scheduler->start(SCHEDULER_MODE_FASTEST);
-	scheduler->waitForSchedulerEnd();
+    scheduler->start(SCHEDULER_MODE_FASTEST);
+    scheduler->waitForSchedulerEnd();
 */
-	deleteSimulator();
+    deleteSimulator();
 
-	cout << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
+    cout << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
     cout << "Difference stoy = " << CsgCatoms3DStats::difference_stoy << endl;
     cout << "Difference mesh = " << CsgCatoms3DStats::difference_mesh << endl;
     cout << "Difference bitmap = " << CsgCatoms3DStats::difference_bitmap << endl;
@@ -51,5 +51,5 @@ int main(int argc, char **argv) {
     }
     bitmapFile.close();
 */
-	return(0);
+    return(0);
 }

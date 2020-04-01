@@ -1,6 +1,6 @@
 #include "simpleOkteenMotionCode.h"
-//#include "okteenEvents.h"
-#include "teleportationEvents.h"
+//#include "robots/okteen/okteenEvents.h"
+#include "motion/teleportationEvents.h"
 
 void SimpleOkteenMotionCode::startup() {
     console << "start " << module->blockId << " pos=" << module->position << "\n";

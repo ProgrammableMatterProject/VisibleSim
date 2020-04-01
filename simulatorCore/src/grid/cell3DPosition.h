@@ -11,7 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include "vector3D.h"
+#include "math/vector3D.h"
 
 using namespace std;
 

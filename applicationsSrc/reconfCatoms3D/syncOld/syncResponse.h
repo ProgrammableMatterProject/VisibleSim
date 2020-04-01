@@ -10,14 +10,14 @@
 
 #define SYNC_RESPONSE_MESSAGE_ID   8101
 
-#include "catoms3DBlock.h"
+#include "robots/catoms3D/catoms3DBlock.h"
 #include "../directions.h"
 #include "syncModel.h"
 
 class Sync_response_message;
 
 class SyncResponse {
-	Catoms3D::Catoms3DBlock *catom;
+    Catoms3D::Catoms3DBlock *catom;
     SyncResponseModel *syncResponseModel;
 
 public:

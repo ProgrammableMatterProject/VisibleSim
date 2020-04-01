@@ -1,7 +1,7 @@
 #include "map.h"
 
-#include "catoms2DWorld.h"
-#include "vector3D.h"
+#include "robots/catoms2D/catoms2DWorld.h"
+#include "math/vector3D.h"
 
 //#define MAP_DEBUG
 
@@ -36,12 +36,12 @@ void Map::assumeCoordinates() {
 }
 
 void Map::connectToHost() {
-  
+
   if(!isConnected){
     isConnected = true;
     connectedToHost = true;
     toHost = NULL;
-    
+
 #ifdef VIRTUAL_COORDINATES
     // virtual coordinate
     Coordinate c = Coordinate(0,0);
@@ -87,8 +87,8 @@ bool Map::handleMessage(MessagePtr message) {
       waiting = 0;
       buildMap();
       if (waiting==0) {
-	mapBuilt(toHost);
-	return true;
+    mapBuilt(toHost);
+    return true;
       }
     } else {
       mapBuilt(recv_interface);
@@ -124,7 +124,7 @@ void Map::buildMap() {
     if( (p2p == toHost) || !p2p->connectedInterface) {
       continue;
     }
-    Coordinate c = getPosition(p2p); 
+    Coordinate c = getPosition(p2p);
     GoMapMessage * msg = new GoMapMessage(getPosition(p2p));
     p2p->send(msg);
     waiting++;
@@ -287,7 +287,7 @@ P2PNetworkInterface* Map::getNeighbor(Coordinate &p, P2PNetworkInterface *i) {
     if(p2p->connectedInterface) {
       Coordinate pos = getPosition(p2p);
       if ((p2p != i) && (pos != p) && Map::areNeighbors(pos,p)) {
-	return p2p;
+    return p2p;
       }
     }
   }
@@ -315,11 +315,10 @@ vector<Neighbor> Map::getNeighbors() {
   for (int i = 0; i < 6; i++) {
     P2PNetworkInterface *p = catom2D->getInterface(i);
     if (p->connectedInterface) {
-	Coordinate c = getPosition(p);  
-	Neighbor n(p,c);
-	neighbors.push_back(n);
+    Coordinate c = getPosition(p);
+    Neighbor n(p,c);
+    neighbors.push_back(n);
     }
   }
   return neighbors;
 }
-

@@ -12,10 +12,10 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "slidingCubesWorld.h"
-#include "slidingCubesBlock.h"
-#include "trace.h"
-#include "configExporter.h"
+#include "robots/slidingCubes/slidingCubesWorld.h"
+#include "robots/slidingCubes/slidingCubesBlock.h"
+#include "utils/trace.h"
+#include "utils/configExporter.h"
 
 using namespace std;
 

@@ -11,9 +11,9 @@
 #include <memory>
 #include <map>
 
-#include "catoms2DWorld.h"
-#include "scheduler.h"
-#include "events.h"
+#include "robots/catoms2D/catoms2DWorld.h"
+#include "events/scheduler.h"
+#include "events/events.h"
 #include "c2sr.h"
 #include "c2srMsg.h"
 #include "catom2D1BlockCode.h"

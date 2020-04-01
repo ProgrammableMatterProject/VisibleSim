@@ -1,4 +1,3 @@
-
 /*
  * blinkyBlocksBlock.cpp
  *
@@ -8,19 +7,19 @@
 
 #include <iostream>
 
-#include "tDefs.h"
-#include "blinkyBlocksBlock.h"
-#include "buildingBlock.h"
-#include "blinkyBlocksWorld.h"
-#include "blinkyBlocksSimulator.h"
-#include "blinkyBlocksEvents.h"
-#include "trace.h"
-#include "clock.h"
-#include "meldInterpretEvents.h"
-#include "lattice.h"
+#include "utils/tDefs.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
+#include "base/buildingBlock.h"
+#include "robots/blinkyBlocks/blinkyBlocksWorld.h"
+#include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
+#include "robots/blinkyBlocks/blinkyBlocksEvents.h"
+#include "utils/trace.h"
+#include "clock/clock.h"
+#include "meld/meldInterpretEvents.h"
+#include "grid/lattice.h"
 
 #ifdef ENABLE_MELDPROCESS
-#include "meldProcessEvents.h"
+#include "meld/meldProcessEvents.h"
 #endif
 
 using namespace std;
@@ -36,7 +35,7 @@ namespace BlinkyBlocks {
 #ifdef DEBUG_OBJECT_LIFECYCLE
       OUTPUT << "BlinkyBlocksBlock constructor" << endl;
 #endif
-    
+
     double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8) / (BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
     double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)  / (BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
 
@@ -56,14 +55,14 @@ void BlinkyBlocksBlock::pauseClock(Time delay, Time start) {
     //while(BaseSimulator::getScheduler()->now()<delay+start){
 
 }
-    
+
 int BlinkyBlocksBlock::getDirection(P2PNetworkInterface *given_interface) const {
     if( !given_interface) {
-		return SCLattice::Direction(0);
+        return SCLattice::Direction(0);
     }
 
-	for(int i(0); i < 6; ++i) {
-		if(P2PNetworkInterfaces[i] == given_interface) return SCLattice::Direction(i);
+    for(int i(0); i < 6; ++i) {
+        if(P2PNetworkInterfaces[i] == given_interface) return SCLattice::Direction(i);
     }
 
     return SCLattice::Direction(0);
@@ -80,41 +79,41 @@ void BlinkyBlocksBlock::shake(Time date, int f) {
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(
-		new AddNeighborEvent(getScheduler()->now(), this,
-							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
+        new AddNeighborEvent(getScheduler()->now(), this,
+                             getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+           << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
 #endif
     getScheduler()->schedule(
-		new RemoveNeighborEvent(getScheduler()->now(), this,
-								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
+        new RemoveNeighborEvent(getScheduler()->now(), this,
+                                getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
 
 void BlinkyBlocksBlock::stopBlock(Time date, State s) {
     OUTPUT << "Simulator: stop scheduled" << endl;
     setState(s);
     if (s == STOPPED) {
-		// patch en attendant l'objet 3D qui modelise un BB stopped
-		color = Color(0.1, 0.1, 0.1, 0.5);
+        // patch en attendant l'objet 3D qui modelise un BB stopped
+        color = Color(0.1, 0.1, 0.1, 0.5);
     }
 
-	getWorld()->updateGlData(this);
+    getWorld()->updateGlData(this);
 
 #ifdef ENABLE_MELDPROCESS
     if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
-		getScheduler()->schedule(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
-    } 
+        getScheduler()->schedule(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
+    }
 #endif
 
-	if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
-		getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
+    if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
+        getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
     }
 }
 

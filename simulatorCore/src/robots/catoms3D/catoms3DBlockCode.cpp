@@ -6,9 +6,9 @@
  */
 
 #include <iostream>
-#include "catoms3DBlockCode.h"
-#include "trace.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "utils/trace.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 using namespace std;
 
@@ -49,9 +49,9 @@ void Catoms3DBlockCode::processLocalEvent(EventPtr pev) {
             c3d->setPositionAndOrientation(c3d->position,c3d->orientationCode);
             onMotionEnd();
         }  break;
-				case EVENT_TELEPORTATION_END: {
-					onMotionEnd();
-				}
+                case EVENT_TELEPORTATION_END: {
+                    onMotionEnd();
+                }
     }
 }
 

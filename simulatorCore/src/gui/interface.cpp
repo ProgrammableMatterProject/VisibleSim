@@ -6,9 +6,9 @@
  */
 
 #include "interface.h"
-#include "trace.h"
-#include "scheduler.h"
-#include "catoms3DMotionRules.h"
+#include "utils/trace.h"
+#include "events/scheduler.h"
+#include "robots/catoms3D/catoms3DMotionRules.h"
 
 #define __STDC_FORMAT_MACROS
 #include <cinttypes>
@@ -26,94 +26,94 @@ const int SLIDING_WINDOW_STANDARD_WIDTH=400;
 const int SLIDING_WINDOW_LARGE_WIDTH=600;
 
 GlutWindow::GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,
-					   GLint pw,GLint ph,const char *titreTexture)
+                       GLint pw,GLint ph,const char *titreTexture)
 :id(pid) {
-	if (parent) parent->addChild(this);
-	isVisible=true;
-	setGeometry(px,py,pw,ph);
-	if (titreTexture) {
-		if (pw==0||ph==0) { idTexture=loadTexture(titreTexture,w,h);
-		} else {
-			int iw,ih;
-			idTexture=loadTexture(titreTexture,iw,ih);
-		}
-	} else {
-		idTexture=0;
-	}
+    if (parent) parent->addChild(this);
+    isVisible=true;
+    setGeometry(px,py,pw,ph);
+    if (titreTexture) {
+        if (pw==0||ph==0) { idTexture=loadTexture(titreTexture,w,h);
+        } else {
+            int iw,ih;
+            idTexture=loadTexture(titreTexture,iw,ih);
+        }
+    } else {
+        idTexture=0;
+    }
 }
 
 GlutWindow::~GlutWindow() {
-	clearChildren();
+    clearChildren();
 }
 
 void GlutWindow::addChild(GlutWindow *child) {
-	children.push_back(child);
+    children.push_back(child);
 }
 
 void GlutWindow::clearChildren() {
-	vector <GlutWindow*>::const_iterator cw = children.begin();
-	while (cw!=children.end()) {
-		delete (*cw);
-		cw++;
-	}
-	children.clear();
+    vector <GlutWindow*>::const_iterator cw = children.begin();
+    while (cw!=children.end()) {
+        delete (*cw);
+        cw++;
+    }
+    children.clear();
 }
 
 void GlutWindow::glDraw() {
-	vector <GlutWindow*>::const_iterator cw = children.begin();
-	while (cw!=children.end()) {
-		if ((*cw)->isVisible) {
-			  glPushMatrix();
+    vector <GlutWindow*>::const_iterator cw = children.begin();
+    while (cw!=children.end()) {
+        if ((*cw)->isVisible) {
+              glPushMatrix();
         glTranslatef(x,y,0);
         (*cw)->glDraw();
         glPopMatrix();
     }
     cw++;
-	}
+    }
 }
 
 int GlutWindow::keyFunc(int charcode) {
-	int id=0;
+    int id=0;
 
-	vector <GlutWindow*>::const_iterator cw = children.begin();
-	while (cw!=children.end()) {
+    vector <GlutWindow*>::const_iterator cw = children.begin();
+    while (cw!=children.end()) {
         id = (*cw)->keyFunc(charcode);
-		if (id!=0) return id;
-		cw++;
-	}
-	return id;
+        if (id!=0) return id;
+        cw++;
+    }
+    return id;
 }
 
 
 int GlutWindow::mouseFunc(int button,int state,int mx,int my) {
-	int id=0;
+    int id=0;
 
-	if (mx>=x && mx<=x+w && my>=y && my<=y+h) {
-		vector <GlutWindow*>::const_iterator cw = children.begin();
-		while (cw!=children.end()) {
-			id = (*cw)->mouseFunc(button,state,mx-x,my-y);
-			if (id!=0) return id;
-			cw++;
-		}
-		return id;
-	}
-	return 0;
+    if (mx>=x && mx<=x+w && my>=y && my<=y+h) {
+        vector <GlutWindow*>::const_iterator cw = children.begin();
+        while (cw!=children.end()) {
+            id = (*cw)->mouseFunc(button,state,mx-x,my-y);
+            if (id!=0) return id;
+            cw++;
+        }
+        return id;
+    }
+    return 0;
 }
 
 bool GlutWindow::passiveMotionFunc(int mx,int my) {
-	vector <GlutWindow*>::const_iterator cw = children.begin();
-	while (cw!=children.end()) {
-		if ((*cw)->passiveMotionFunc(mx-x,my-y)) return true;
-		cw++;
-	}
-	return false;
+    vector <GlutWindow*>::const_iterator cw = children.begin();
+    while (cw!=children.end()) {
+        if ((*cw)->passiveMotionFunc(mx-x,my-y)) return true;
+        cw++;
+    }
+    return false;
 }
 
 
 void GlutWindow::bindTexture() {
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D,idTexture);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,idTexture);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 }
 
 /***************************************************************************************/
@@ -123,17 +123,17 @@ void GlutWindow::bindTexture() {
 /** /param mode : glutBitmapCharacter decoration mode, default is GLUT_BITMAP_8_BY_13  */
 /** /param height : height of lines for multiline texts, default is 13				   */
 GLfloat GlutWindow::drawString(GLfloat x,GLfloat y,const char *str,void *mode,GLint height) {
-	glRasterPos2f(x,y);
-	while (*str) {
-		if (*str=='\n') {
-		y-=height;
-		glRasterPos2f(x,y);
-		} else {
-			glutBitmapCharacter(mode,*str);
-		}
-		str++;
-	}
-	return y-height;
+    glRasterPos2f(x,y);
+    while (*str) {
+        if (*str=='\n') {
+        y-=height;
+        glRasterPos2f(x,y);
+        } else {
+            glutBitmapCharacter(mode,*str);
+        }
+        str++;
+    }
+    return y-height;
 }
 
 
@@ -146,21 +146,21 @@ GLfloat GlutWindow::drawString(GLfloat x0,GLfloat y,const char *str, TextMode mo
     glRasterPos2f(x0,y);
     void *tm = (currentTextSize==TextSize::TEXTSIZE_STANDARD)?GLUT_BITMAP_9_BY_15:GLUT_BITMAP_TIMES_ROMAN_24;
     GLint height = (currentTextSize==TextSize::TEXTSIZE_STANDARD)?15:24;
-	GLfloat x=x0;
+    GLfloat x=x0;
 
-	bool isBold = (mode==TextMode::TEXTMODE_BOLD || mode==TextMode::TEXTMODE_TITLE || mode==TextMode::TEXTMODE_POPUP);
+    bool isBold = (mode==TextMode::TEXTMODE_BOLD || mode==TextMode::TEXTMODE_TITLE || mode==TextMode::TEXTMODE_POPUP);
     while (*str) {
-		if (*str=='\n') {
+        if (*str=='\n') {
             y-=height;
             glRasterPos2f(x0,y);
         } else {
             glRasterPos2d(x,y);
-			glutBitmapCharacter(tm,*str);
-			if (isBold) {
-				glRasterPos2d(x+1,y);
-				glutBitmapCharacter(tm,*str);
-			}
-			x+= glutBitmapWidth(tm,*str);
+            glutBitmapCharacter(tm,*str);
+            if (isBold) {
+                glRasterPos2d(x+1,y);
+                glutBitmapCharacter(tm,*str);
+            }
+            x+= glutBitmapWidth(tm,*str);
         }
         str++;
     }
@@ -176,75 +176,75 @@ void GlutWindow::setTextSize(TextSize ts) {
 /***************************************************************************************/
 GlutSlidingMainWindow::GlutSlidingMainWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture):
 GlutWindow(NULL,1,px,py,pw,ph,titreTexture) {
-	openningLevel=0;
-	buttonOpen = new GlutButton(this,ID_SW_BUTTON_OPEN,5,68,32,32,
-								"../../simulatorCore/resources/textures/UITextures/boutons_fg.tga");
-	buttonClose = new GlutButton(this,ID_SW_BUTTON_CLOSE,5,26,32,32,
-								 "../../simulatorCore/resources/textures/UITextures/boutons_fd.tga",false);
-	buttonSize = new GlutButton(this,ID_SW_BUTTON_SIZE,pw+SLIDING_WINDOW_STANDARD_WIDTH-40,ph-40,32,32,
-								 "../../simulatorCore/resources/textures/UITextures/boutons_zoom.tga");
-	slider = new GlutSlider(this,ID_SW_SLD,pw+SLIDING_WINDOW_STANDARD_WIDTH-20,5,ph-60,
-							"../../simulatorCore/resources/textures/UITextures/slider.tga",(ph-60)/13);
-	selectedGlBlock=NULL;
-	slider->isVisible=false;
-	buttonSize->isVisible=false;
+    openningLevel=0;
+    buttonOpen = new GlutButton(this,ID_SW_BUTTON_OPEN,5,68,32,32,
+                                "../../simulatorCore/resources/textures/UITextures/boutons_fg.tga");
+    buttonClose = new GlutButton(this,ID_SW_BUTTON_CLOSE,5,26,32,32,
+                                 "../../simulatorCore/resources/textures/UITextures/boutons_fd.tga",false);
+    buttonSize = new GlutButton(this,ID_SW_BUTTON_SIZE,pw+SLIDING_WINDOW_STANDARD_WIDTH-40,ph-40,32,32,
+                                 "../../simulatorCore/resources/textures/UITextures/boutons_zoom.tga");
+    slider = new GlutSlider(this,ID_SW_SLD,pw+SLIDING_WINDOW_STANDARD_WIDTH-20,5,ph-60,
+                            "../../simulatorCore/resources/textures/UITextures/slider.tga",(ph-60)/13);
+    selectedGlBlock=NULL;
+    slider->isVisible=false;
+    buttonSize->isVisible=false;
 }
 
 GlutSlidingMainWindow::~GlutSlidingMainWindow() {
-	// clean the map
-	multimap<Time,BlockDebugData*>::iterator it = traces.begin();
-	while (it != traces.end()) {
-		delete (*it).second;
-		++it;
-	}
-	traces.clear();
+    // clean the map
+    multimap<Time,BlockDebugData*>::iterator it = traces.begin();
+    while (it != traces.end()) {
+        delete (*it).second;
+        ++it;
+    }
+    traces.clear();
 }
 
 void GlutSlidingMainWindow::glDraw() {
     // drawing of the tab
-	bindTexture();
-	glPushMatrix();
-	glTranslatef(x,y,0.0);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0,0.0);
-	glVertex2i(0,0);
-	glTexCoord2f(0.3125,0.);
-	glVertex2i(40,0);
-	glTexCoord2f(0.3125,1);
-	glVertex2i(40,128);
-	glTexCoord2f(0,1);
-	glVertex2i(0,128);
-	glEnd();
+    bindTexture();
+    glPushMatrix();
+    glTranslatef(x,y,0.0);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0,0.0);
+    glVertex2i(0,0);
+    glTexCoord2f(0.3125,0.);
+    glVertex2i(40,0);
+    glTexCoord2f(0.3125,1);
+    glVertex2i(40,128);
+    glTexCoord2f(0,1);
+    glVertex2i(0,128);
+    glEnd();
 
-	if (openningLevel) {
-		glDisable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
-		glColor4f(0.25,0.25,0.25,0.75);
-		glBegin(GL_QUADS);
-		//glTexCoord2f(0.3125,0.);
-		glVertex2i(40,0);
-		//glTexCoord2f(1.0,0.);
-		glVertex2i(w,0);
-		//glTexCoord2f(1.0,1.0);
-		glVertex2i(w,h);
-		//glTexCoord2f(0.3125,1.0);
-		glVertex2i(40,h);
-		glEnd();
-		char str[256];
-		Time t = BaseSimulator::getScheduler()->now();
-		if (t < 10*1000*1000) { //10sec
-			sprintf(str,"Current time : %d:%d ms",int(t/1000),int((t%1000))); // ms
-		} else {
-			sprintf(str,"Current time : %d:%d s",int(t/1000000),int((t%1000000)/10000)); // s
-		}
-		glColor3f(1.0,1.0,0.0);
-		drawString(42.0,h-20.0,str,TextMode::TEXTMODE_TITLE);
-		glColor3f(1.0,1.0,1.0);
-		if (selectedGlBlock) {
+    if (openningLevel) {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glColor4f(0.25,0.25,0.25,0.75);
+        glBegin(GL_QUADS);
+        //glTexCoord2f(0.3125,0.);
+        glVertex2i(40,0);
+        //glTexCoord2f(1.0,0.);
+        glVertex2i(w,0);
+        //glTexCoord2f(1.0,1.0);
+        glVertex2i(w,h);
+        //glTexCoord2f(0.3125,1.0);
+        glVertex2i(40,h);
+        glEnd();
+        char str[256];
+        Time t = BaseSimulator::getScheduler()->now();
+        if (t < 10*1000*1000) { //10sec
+            sprintf(str,"Current time : %d:%d ms",int(t/1000),int((t%1000))); // ms
+        } else {
+            sprintf(str,"Current time : %d:%d s",int(t/1000000),int((t%1000000)/10000)); // s
+        }
+        glColor3f(1.0,1.0,0.0);
+        drawString(42.0,h-20.0,str,TextMode::TEXTMODE_TITLE);
+        glColor3f(1.0,1.0,1.0);
+        if (selectedGlBlock) {
             GLfloat posy = h-40;
             int ss = 0; // index of slice start
             unsigned int str_length;
-			sprintf(str,"Selected Block : %s",selectedGlBlock->getInfo().c_str());
+            sprintf(str,"Selected Block : %s",selectedGlBlock->getInfo().c_str());
             str_length = strlen(str);
             for (unsigned int i = 0; i < str_length + 1; i++) { // draw lines one at a time
                 if (str[i] == '\n' || str[i] == '\0') {
@@ -253,51 +253,51 @@ void GlutSlidingMainWindow::glDraw() {
                     ss = i + 1;
                 }
             }
-			multimap<Time,BlockDebugData*>::iterator it = traces.begin();
-			//GLfloat posy = h-65;
-			stringstream line;
-			int pos=slider->getPosition();
-			int s,cs;
-			while (it != traces.end() && posy>0) {
-				if (((*it).second)->blockId==selectedGlBlock->blockId) {
-					if (pos) {
-						pos--;
-					} else {
-						((*it).second)->color.glColor();
-						line.str("");
-						s = (*it).first/1000;
-						cs = ((*it).first%1000);
-						line << "[" << s << ":" << cs << "] " << ((*it).second)->str;
-						posy = drawString(42.0,posy,line.str().c_str(),TextMode::TEXTMODE_STANDARD);
-					}
-				}
-				++it;
-			}
-		} else {
-			sprintf(str, "Selected Block : None (use [Ctrl]+click)");
-			drawString(42.0,h-40.0,str,TextMode::TEXTMODE_TITLE);
-			multimap<Time,BlockDebugData*>::iterator it = traces.begin();
-			GLfloat posy = h-65;
-			stringstream line;
-			int pos=slider->getPosition();
-			while (it != traces.end() && pos--) {
-				it++;
-			};
+            multimap<Time,BlockDebugData*>::iterator it = traces.begin();
+            //GLfloat posy = h-65;
+            stringstream line;
+            int pos=slider->getPosition();
+            int s,cs;
+            while (it != traces.end() && posy>0) {
+                if (((*it).second)->blockId==selectedGlBlock->blockId) {
+                    if (pos) {
+                        pos--;
+                    } else {
+                        ((*it).second)->color.glColor();
+                        line.str("");
+                        s = (*it).first/1000;
+                        cs = ((*it).first%1000);
+                        line << "[" << s << ":" << cs << "] " << ((*it).second)->str;
+                        posy = drawString(42.0,posy,line.str().c_str(),TextMode::TEXTMODE_STANDARD);
+                    }
+                }
+                ++it;
+            }
+        } else {
+            sprintf(str, "Selected Block : None (use [Ctrl]+click)");
+            drawString(42.0,h-40.0,str,TextMode::TEXTMODE_TITLE);
+            multimap<Time,BlockDebugData*>::iterator it = traces.begin();
+            GLfloat posy = h-65;
+            stringstream line;
+            int pos=slider->getPosition();
+            while (it != traces.end() && pos--) {
+                it++;
+            };
 
-			int s,cs;
-			while (it != traces.end() && posy>0) {
-				((*it).second)->color.glColor();
-				line.str("");
-				s = (*it).first/1000;
-				cs = ((*it).first%1000);
-				line << "[" << s << ":" << cs << "] #" << ((*it).second)->blockId << ":" << ((*it).second)->str;
-				posy = drawString(42.0,posy,line.str().c_str(),TextMode::TEXTMODE_STANDARD);
-				++it;
-			}
-		}
-	}
-	glPopMatrix();
-	GlutWindow::glDraw();
+            int s,cs;
+            while (it != traces.end() && posy>0) {
+                ((*it).second)->color.glColor();
+                line.str("");
+                s = (*it).first/1000;
+                cs = ((*it).first%1000);
+                line << "[" << s << ":" << cs << "] #" << ((*it).second)->blockId << ":" << ((*it).second)->str;
+                posy = drawString(42.0,posy,line.str().c_str(),TextMode::TEXTMODE_STANDARD);
+                ++it;
+            }
+        }
+    }
+    glPopMatrix();
+    GlutWindow::glDraw();
 }
 
 int GlutSlidingMainWindow::mouseFunc(int button,int state,int mx,int my) {
@@ -330,15 +330,15 @@ void GlutSlidingMainWindow::setOpenCloseButtonPosition(bool openning) {
     int sliding = (currentTextSize==TextSize::TEXTSIZE_STANDARD)?SLIDING_WINDOW_STANDARD_WIDTH:SLIDING_WINDOW_LARGE_WIDTH;
     if (openning) {
         openningLevel++;
-		x-=sliding;
-		w+=sliding;
-		if (openningLevel==2) buttonOpen->activate(false);
-		buttonClose->activate(true);
-	} else {
+        x-=sliding;
+        w+=sliding;
+        if (openningLevel==2) buttonOpen->activate(false);
+        buttonClose->activate(true);
+    } else {
         openningLevel--;
-		x+=sliding;
-		w-=sliding;
-		buttonOpen->activate(true);
+        x+=sliding;
+        w-=sliding;
+        buttonOpen->activate(true);
         if (openningLevel==0) buttonClose->activate(false);
     }
     updateSliderWindow();
@@ -362,30 +362,30 @@ void GlutSlidingMainWindow::updateSliderWindow() {
 }
 
 void GlutSlidingMainWindow::addTrace(bID id,const string &str,const Color &color) {
-	BlockDebugData *bdd = new BlockDebugData(id,str,color);
-	traces.insert(pair<Time,BlockDebugData*>(BaseSimulator::getScheduler()->now(),bdd));
-	if (selectedGlBlock) {
-		if (selectedGlBlock->blockId==id) slider->incDataTextLines();
-	} else {
-		slider->incDataTextLines();
-	}
+    BlockDebugData *bdd = new BlockDebugData(id,str,color);
+    traces.insert(pair<Time,BlockDebugData*>(BaseSimulator::getScheduler()->now(),bdd));
+    if (selectedGlBlock) {
+        if (selectedGlBlock->blockId==id) slider->incDataTextLines();
+    } else {
+        slider->incDataTextLines();
+    }
 }
 
 void GlutSlidingMainWindow::select(GlBlock *sb) {
-	selectedGlBlock=sb;
-	if (selectedGlBlock) {
-		int n=0;
-		multimap<Time,BlockDebugData*>::iterator it = traces.begin();
-		while (it != traces.end()) {
-			if (((*it).second)->blockId==selectedGlBlock->blockId) {
-				n++;
-			}
-			++it;
-		}
-		slider->setDataTextLines(n);
-	} else {
-		slider->setDataTextLines(traces.size());
-	}
+    selectedGlBlock=sb;
+    if (selectedGlBlock) {
+        int n=0;
+        multimap<Time,BlockDebugData*>::iterator it = traces.begin();
+        while (it != traces.end()) {
+            if (((*it).second)->blockId==selectedGlBlock->blockId) {
+                n++;
+            }
+            ++it;
+        }
+        slider->setDataTextLines(n);
+    } else {
+        slider->setDataTextLines(traces.size());
+    }
 };
 
 void GlutSlidingMainWindow::setTextSize(TextSize ts) {
@@ -409,84 +409,84 @@ void GlutSlidingMainWindow::setTextSize(TextSize ts) {
 /***************************************************************************************/
 GlutSlidingDebugWindow::GlutSlidingDebugWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture):
 GlutWindow(NULL,2,px,py,pw,ph,titreTexture) {
-	openningLevel=0;
-	buttonOpen = new GlutButton(this,ID_SD_BUTTON_OPEN,5,168,32,32,
-								"../../simulatorCore/resources/textures/UITextures/boutons_fg.tga");
-	buttonClose = new GlutButton(this,ID_SD_BUTTON_CLOSE,5,126,32,32,
-								 "../../simulatorCore/resources/textures/UITextures/boutons_fd.tga",false);
-	slider = new GlutSlider(this,ID_SD_SLD,pw+400-20,5,ph-75,
-							"../../simulatorCore/resources/textures/UITextures/slider.tga",(ph-60)/13);
-	input = new GlutInputWindow(this,ID_SD_INPUT,pw+10,ph-66,380,36);
-	debugId=1;
+    openningLevel=0;
+    buttonOpen = new GlutButton(this,ID_SD_BUTTON_OPEN,5,168,32,32,
+                                "../../simulatorCore/resources/textures/UITextures/boutons_fg.tga");
+    buttonClose = new GlutButton(this,ID_SD_BUTTON_CLOSE,5,126,32,32,
+                                 "../../simulatorCore/resources/textures/UITextures/boutons_fd.tga",false);
+    slider = new GlutSlider(this,ID_SD_SLD,pw+400-20,5,ph-75,
+                            "../../simulatorCore/resources/textures/UITextures/slider.tga",(ph-60)/13);
+    input = new GlutInputWindow(this,ID_SD_INPUT,pw+10,ph-66,380,36);
+    debugId=1;
 }
 
 GlutSlidingDebugWindow::~GlutSlidingDebugWindow() {
-	// clean the vector
-	vector<BlockDebugData*>::iterator it = tabDebug.begin();
-	while (it != tabDebug.end()) {
-		delete (*it);
-		++it;
-	}
-	tabDebug.clear();
+    // clean the vector
+    vector<BlockDebugData*>::iterator it = tabDebug.begin();
+    while (it != tabDebug.end()) {
+        delete (*it);
+        ++it;
+    }
+    tabDebug.clear();
 }
 
 void GlutSlidingDebugWindow::glDraw() {
     // drawing of the tab
-	bindTexture();
-	glPushMatrix();
-	glTranslatef(x,y,0.0);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0,0.0);
-	glVertex2i(0,100);
-	glTexCoord2f(0.3125,0.);
-	glVertex2i(40,100);
-	glTexCoord2f(0.3125,1);
-	glVertex2i(40,228);
-	glTexCoord2f(0,1);
-	glVertex2i(0,228);
-	glEnd();
+    bindTexture();
+    glPushMatrix();
+    glTranslatef(x,y,0.0);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0,0.0);
+    glVertex2i(0,100);
+    glTexCoord2f(0.3125,0.);
+    glVertex2i(40,100);
+    glTexCoord2f(0.3125,1);
+    glVertex2i(40,228);
+    glTexCoord2f(0,1);
+    glVertex2i(0,228);
+    glEnd();
 
-	if (openningLevel) {
-		glDisable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
-		glColor4f(0.7,0.1,0.1,0.75);
-		glBegin(GL_QUADS);
-		glVertex2i(40,0);
-		glVertex2i(w,0);
-		glVertex2i(w,h);
-		glVertex2i(40,h);
-		glEnd();
+    if (openningLevel) {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glColor4f(0.7,0.1,0.1,0.75);
+        glBegin(GL_QUADS);
+        glVertex2i(40,0);
+        glVertex2i(w,0);
+        glVertex2i(w,h);
+        glVertex2i(40,h);
+        glEnd();
 
         glColor3f(0.25,0.25,0.25);
         glBegin(GL_QUADS);
-		glVertex2i(50,5);
-		glVertex2i(w-25,5);
-		glVertex2i(w-25,h-70);
-		glVertex2i(50,h-70);
-		glEnd();
+        glVertex2i(50,5);
+        glVertex2i(w-25,5);
+        glVertex2i(w-25,h-70);
+        glVertex2i(50,h-70);
+        glEnd();
 
-		char str[256];
-		Time t = BaseSimulator::getScheduler()->now();
-		sprintf(str,"Current time : %d:%d",int(t/1000),int((t%1000)));
+        char str[256];
+        Time t = BaseSimulator::getScheduler()->now();
+        sprintf(str,"Current time : %d:%d",int(t/1000),int((t%1000)));
         glColor3f(1.0,1.0,0.0);
-		drawString(45.0,h-20.0,str);
-		if (input->hasFocus) {
+        drawString(45.0,h-20.0,str);
+        if (input->hasFocus) {
             drawString(w-85,h-20.0,"DEBUG MODE");
             char c[6];
             sprintf(c,"%" PRIu64,debugId);
             drawString(w/2-45,h-20.0,c);
-		}
+        }
 
         GLfloat posy = h-80;
         vector<BlockDebugData*>::reverse_iterator ci = tabDebug.rbegin();
         while (ci!=tabDebug.rend() && posy>0) {
             (*ci)->color.glColor();
             posy = drawString(55.0,posy,(*ci)->str.c_str());
-			ci++;
+            ci++;
         }
-	}
-	glPopMatrix();
-	GlutWindow::glDraw();
+    }
+    glPopMatrix();
+    GlutWindow::glDraw();
 }
 
 int GlutSlidingDebugWindow::mouseFunc(int button,int state,int mx,int my) {
@@ -516,11 +516,11 @@ int GlutSlidingDebugWindow::mouseFunc(int button,int state,int mx,int my) {
 int GlutSlidingDebugWindow::keyFunc(int charcode) {
     bID id=0;
 
-	vector <GlutWindow*>::const_iterator cw = children.begin();
-	while (cw!=children.end()) {
+    vector <GlutWindow*>::const_iterator cw = children.begin();
+    while (cw!=children.end()) {
         id = (*cw)->keyFunc(charcode);
-		if (id==1) return id;
-		if (id==2) { // validation
+        if (id==1) return id;
+        if (id==2) { // validation
             string str = input->getTextAndClear();
             if (!str.empty()) {
                 string result;
@@ -530,10 +530,10 @@ int GlutSlidingDebugWindow::keyFunc(int charcode) {
                 bdd = new BlockDebugData(debugId,str,YELLOW);
                 tabDebug.push_back(bdd);
             }
-		}
-		cw++;
-	}
-	return id;
+        }
+        cw++;
+    }
+    return id;
 }
 
 void GlutSlidingDebugWindow::reshapeFunc(int mx,int my,int mw,int mh) {
@@ -549,14 +549,14 @@ void GlutSlidingDebugWindow::reshapeFunc(int mx,int my,int mw,int mh) {
 /***************************************************************************************/
 
 GlutButton::GlutButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool pia) :
-		GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
-	isActive = pia;
-	isDown=false;
-	isHighlighted=false;
+        GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
+    isActive = pia;
+    isDown=false;
+    isHighlighted=false;
 }
 
 void GlutButton::addSubMenu(GlutWindow *child) {
-	addChild(child);
+    addChild(child);
   child->isVisible = false;
 }
 
@@ -566,42 +566,42 @@ void GlutButton::glDraw()
 
     bindTexture();
     if (isActive) {
-    	if (isDown) {
-    		tx=0.0; ty=0.0;
-    	} else if (isHighlighted){
-    		tx=0.5; ty=0.0;
-    	} else {
-    		tx=0.5;	ty=0.5;
-    	}
+        if (isDown) {
+            tx=0.0; ty=0.0;
+        } else if (isHighlighted){
+            tx=0.5; ty=0.0;
+        } else {
+            tx=0.5;	ty=0.5;
+        }
     }
     glPushMatrix();
-		glTranslatef(x,y,0.0f);
-		glBegin(GL_QUADS);
-		glTexCoord2f(tx,ty);
-		glVertex2i(0,0);
-		glTexCoord2f(tx+0.5f,ty);
-		glVertex2i(w,0);
-		glTexCoord2f(tx+0.5f,ty+0.5f);
-		glVertex2i(w,h);
-		glTexCoord2f(tx,ty+0.5f);
-  	glVertex2i(0,h);
-  	glEnd();
-  	glPopMatrix();
+        glTranslatef(x,y,0.0f);
+        glBegin(GL_QUADS);
+        glTexCoord2f(tx,ty);
+        glVertex2i(0,0);
+        glTexCoord2f(tx+0.5f,ty);
+        glVertex2i(w,0);
+        glTexCoord2f(tx+0.5f,ty+0.5f);
+        glVertex2i(w,h);
+        glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0,h);
+    glEnd();
+    glPopMatrix();
 }
 
 int GlutButton::mouseFunc(int button,int state,int mx,int my) {
-	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
-	isDown=false;
-	if (isHighlighted) {
-	  isDown=(state==GLUT_DOWN);
-	  return (isActive && state==GLUT_UP)? id:0;
-	}
-	return 0;
+    isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+    isDown=false;
+    if (isHighlighted) {
+      isDown=(state==GLUT_DOWN);
+      return (isActive && state==GLUT_UP)? id:0;
+    }
+    return 0;
 }
 
 bool GlutButton::passiveMotionFunc(int mx,int my) {
-	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
-	return isHighlighted;
+    isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+    return isHighlighted;
 }
 
 /***************************************************************************************/
@@ -609,74 +609,74 @@ bool GlutButton::passiveMotionFunc(int mx,int my) {
 /***************************************************************************************/
 
 GlutRotationButton::GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw) : GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
-	isBlue = blue;
-	id0 = idSrc;
-	id1 = idDest;
-	isHighlighted = false;
-	finalPosition=pos;
-	finalOrientation=orientation;
-	characterWidth=cw;
+    isBlue = blue;
+    id0 = idSrc;
+    id1 = idDest;
+    isHighlighted = false;
+    finalPosition=pos;
+    finalOrientation=orientation;
+    characterWidth=cw;
 }
 
 void GlutRotationButton::glDraw() {
-	GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
-	ty=0.0;
+    GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
+    ty=0.0;
 
-	// draw background
-	bindTexture();
-	glPushMatrix();
-	glTranslatef(x,y,0.0f);
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0,0);
-	glTexCoord2f(tx+0.25f,ty);
-	glVertex2i(w,0);
-	glTexCoord2f(tx+0.25f,ty+0.5f);
-	glVertex2i(w,h);
-	glTexCoord2f(tx,ty+0.5f);
-	glVertex2i(0,h);
-	glEnd();
-	// draw X->Y
-	glDisable(GL_DEPTH_TEST);
-	// first id
-	tx = id0*characterWidth;
-	ty=0.5;
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0.125*w,0);
-	glTexCoord2f(tx+characterWidth,ty);
-	glVertex2i(0.375*w,0);
-	glTexCoord2f(tx+characterWidth,ty+0.5f);
-	glVertex2i(0.375*w,h);
-	glTexCoord2f(tx,ty+0.5f);
-	glVertex2i(0.125*w,h);
-	glEnd();
-	// second id
-	tx = id1*characterWidth;
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0.625*w,0);
-	glTexCoord2f(tx+characterWidth,ty);
-	glVertex2i(0.875*w,0);
-	glTexCoord2f(tx+characterWidth,ty+0.5f);
-	glVertex2i(0.875*w,h);
-	glTexCoord2f(tx,ty+0.5f);
-	glVertex2i(0.625*w,h);
-	glEnd();
+    // draw background
+    bindTexture();
+    glPushMatrix();
+    glTranslatef(x,y,0.0f);
+    glBegin(GL_QUADS);
+    glTexCoord2f(tx,ty);
+    glVertex2i(0,0);
+    glTexCoord2f(tx+0.25f,ty);
+    glVertex2i(w,0);
+    glTexCoord2f(tx+0.25f,ty+0.5f);
+    glVertex2i(w,h);
+    glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0,h);
+    glEnd();
+    // draw X->Y
+    glDisable(GL_DEPTH_TEST);
+    // first id
+    tx = id0*characterWidth;
+    ty=0.5;
+    glBegin(GL_QUADS);
+    glTexCoord2f(tx,ty);
+    glVertex2i(0.125*w,0);
+    glTexCoord2f(tx+characterWidth,ty);
+    glVertex2i(0.375*w,0);
+    glTexCoord2f(tx+characterWidth,ty+0.5f);
+    glVertex2i(0.375*w,h);
+    glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0.125*w,h);
+    glEnd();
+    // second id
+    tx = id1*characterWidth;
+    glBegin(GL_QUADS);
+    glTexCoord2f(tx,ty);
+    glVertex2i(0.625*w,0);
+    glTexCoord2f(tx+characterWidth,ty);
+    glVertex2i(0.875*w,0);
+    glTexCoord2f(tx+characterWidth,ty+0.5f);
+    glVertex2i(0.875*w,h);
+    glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0.625*w,h);
+    glEnd();
 
-	glPopMatrix();
-	glEnable(GL_DEPTH_TEST);
+    glPopMatrix();
+    glEnable(GL_DEPTH_TEST);
 
 }
 
 int GlutRotationButton::mouseFunc(int button,int state,int mx,int my) {
-	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
-	return (isHighlighted && state==GLUT_UP)? id:0;
+    isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+    return (isHighlighted && state==GLUT_UP)? id:0;
 }
 
 bool GlutRotationButton::passiveMotionFunc(int mx,int my) {
-	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
-	return isHighlighted;
+    isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+    return isHighlighted;
 }
 
 /***************************************************************************************/
@@ -684,73 +684,73 @@ bool GlutRotationButton::passiveMotionFunc(int mx,int my) {
 /***************************************************************************************/
 
 GlutRBMotionButton::GlutRBMotionButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool isRotation,uint8_t idDest,Cell3DPosition &pos,float cw): GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
-	isBlue = isRotation;
-	actionID = 6+isRotation;
-	directionID = idDest;
-	isHighlighted = false;
-	finalPosition=pos;
-	characterWidth=cw;
+    isBlue = isRotation;
+    actionID = 6+isRotation;
+    directionID = idDest;
+    isHighlighted = false;
+    finalPosition=pos;
+    characterWidth=cw;
 }
 
 void GlutRBMotionButton::glDraw() {
-	GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
-	ty=0.0;
+    GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
+    ty=0.0;
 
-	// draw background
-	bindTexture();
-	glPushMatrix();
-	glTranslatef(x,y,0.0f);
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0,0);
-	glTexCoord2f(tx+0.25f,ty);
-	glVertex2i(w,0);
-	glTexCoord2f(tx+0.25f,ty+0.5f);
-	glVertex2i(w,h);
-	glTexCoord2f(tx,ty+0.5f);
-	glVertex2i(0,h);
-	glEnd();
-	// draw -> X
-	glDisable(GL_DEPTH_TEST);
-	// first id
-	tx = actionID*characterWidth;
-	ty=0.5;
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0.125*w,0);
-	glTexCoord2f(tx+characterWidth,ty);
-	glVertex2i(0.375*w,0);
-	glTexCoord2f(tx+characterWidth,ty+0.5f);
-	glVertex2i(0.375*w,h);
-	glTexCoord2f(tx,ty+0.5f);
-	glVertex2i(0.125*w,h);
-	glEnd();
-	// second id
-	tx = directionID*characterWidth;
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0.625*w,0);
-	glTexCoord2f(tx+characterWidth,ty);
-	glVertex2i(0.875*w,0);
-	glTexCoord2f(tx+characterWidth,ty+0.5f);
-	glVertex2i(0.875*w,h);
-	glTexCoord2f(tx,ty+0.5f);
-	glVertex2i(0.625*w,h);
-	glEnd();
+    // draw background
+    bindTexture();
+    glPushMatrix();
+    glTranslatef(x,y,0.0f);
+    glBegin(GL_QUADS);
+    glTexCoord2f(tx,ty);
+    glVertex2i(0,0);
+    glTexCoord2f(tx+0.25f,ty);
+    glVertex2i(w,0);
+    glTexCoord2f(tx+0.25f,ty+0.5f);
+    glVertex2i(w,h);
+    glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0,h);
+    glEnd();
+    // draw -> X
+    glDisable(GL_DEPTH_TEST);
+    // first id
+    tx = actionID*characterWidth;
+    ty=0.5;
+    glBegin(GL_QUADS);
+    glTexCoord2f(tx,ty);
+    glVertex2i(0.125*w,0);
+    glTexCoord2f(tx+characterWidth,ty);
+    glVertex2i(0.375*w,0);
+    glTexCoord2f(tx+characterWidth,ty+0.5f);
+    glVertex2i(0.375*w,h);
+    glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0.125*w,h);
+    glEnd();
+    // second id
+    tx = directionID*characterWidth;
+    glBegin(GL_QUADS);
+    glTexCoord2f(tx,ty);
+    glVertex2i(0.625*w,0);
+    glTexCoord2f(tx+characterWidth,ty);
+    glVertex2i(0.875*w,0);
+    glTexCoord2f(tx+characterWidth,ty+0.5f);
+    glVertex2i(0.875*w,h);
+    glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0.625*w,h);
+    glEnd();
 
-	glPopMatrix();
-	glEnable(GL_DEPTH_TEST);
+    glPopMatrix();
+    glEnable(GL_DEPTH_TEST);
 
 }
 
 int GlutRBMotionButton::mouseFunc(int button,int state,int mx,int my) {
-	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
-	return (isHighlighted && state==GLUT_UP)? id:0;
+    isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+    return (isHighlighted && state==GLUT_UP)? id:0;
 }
 
 bool GlutRBMotionButton::passiveMotionFunc(int mx,int my) {
-	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
-	return isHighlighted;
+    isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+    return isHighlighted;
 }
 
 /***************************************************************************************/
@@ -758,105 +758,105 @@ bool GlutRBMotionButton::passiveMotionFunc(int mx,int my) {
 /***************************************************************************************/
 
 GlutRotation2DButton::GlutRotation2DButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw) : GlutWindow(parent,pid,px,py,pw,ph,titreTexture) {
-	isBlue = blue;
-	id0 = idSrc;
-	id1 = idDest;
-	isHighlighted = false;
-	finalPosition=pos;
-	finalOrientation=orientation;
-	characterWidth=cw;
+    isBlue = blue;
+    id0 = idSrc;
+    id1 = idDest;
+    isHighlighted = false;
+    finalPosition=pos;
+    finalOrientation=orientation;
+    characterWidth=cw;
 }
 
 void GlutRotation2DButton::glDraw() {
-	GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
-	ty=0.0;
+    GLfloat tx= 0.5*(isBlue)+0.25*(isHighlighted),
+    ty=0.0;
 
-	// draw background
-	bindTexture();
-	glPushMatrix();
-	glTranslatef(x,y,0.0f);
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0,0);
-	glTexCoord2f(tx+0.25f,ty);
-	glVertex2i(w,0);
-	glTexCoord2f(tx+0.25f,ty+0.5f);
-	glVertex2i(w,h);
-	glTexCoord2f(tx,ty+0.5f);
-	glVertex2i(0,h);
-	glEnd();
-	// draw X->Y
-	glDisable(GL_DEPTH_TEST);
-	// first id
-	tx = id0*characterWidth;
-	ty=0.5;
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0.125*w,0);
-	glTexCoord2f(tx+characterWidth,ty);
-	glVertex2i(0.375*w,0);
-	glTexCoord2f(tx+characterWidth,ty+0.5f);
-	glVertex2i(0.375*w,h);
-	glTexCoord2f(tx,ty+0.5f);
-	glVertex2i(0.125*w,h);
-	glEnd();
-	// second id
-	tx = id1*characterWidth;
-	glBegin(GL_QUADS);
-	glTexCoord2f(tx,ty);
-	glVertex2i(0.625*w,0);
-	glTexCoord2f(tx+characterWidth,ty);
-	glVertex2i(0.875*w,0);
-	glTexCoord2f(tx+characterWidth,ty+0.5f);
-	glVertex2i(0.875*w,h);
-	glTexCoord2f(tx,ty+0.5f);
-	glVertex2i(0.625*w,h);
-	glEnd();
+    // draw background
+    bindTexture();
+    glPushMatrix();
+    glTranslatef(x,y,0.0f);
+    glBegin(GL_QUADS);
+    glTexCoord2f(tx,ty);
+    glVertex2i(0,0);
+    glTexCoord2f(tx+0.25f,ty);
+    glVertex2i(w,0);
+    glTexCoord2f(tx+0.25f,ty+0.5f);
+    glVertex2i(w,h);
+    glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0,h);
+    glEnd();
+    // draw X->Y
+    glDisable(GL_DEPTH_TEST);
+    // first id
+    tx = id0*characterWidth;
+    ty=0.5;
+    glBegin(GL_QUADS);
+    glTexCoord2f(tx,ty);
+    glVertex2i(0.125*w,0);
+    glTexCoord2f(tx+characterWidth,ty);
+    glVertex2i(0.375*w,0);
+    glTexCoord2f(tx+characterWidth,ty+0.5f);
+    glVertex2i(0.375*w,h);
+    glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0.125*w,h);
+    glEnd();
+    // second id
+    tx = id1*characterWidth;
+    glBegin(GL_QUADS);
+    glTexCoord2f(tx,ty);
+    glVertex2i(0.625*w,0);
+    glTexCoord2f(tx+characterWidth,ty);
+    glVertex2i(0.875*w,0);
+    glTexCoord2f(tx+characterWidth,ty+0.5f);
+    glVertex2i(0.875*w,h);
+    glTexCoord2f(tx,ty+0.5f);
+    glVertex2i(0.625*w,h);
+    glEnd();
 
-	glPopMatrix();
-	glEnable(GL_DEPTH_TEST);
+    glPopMatrix();
+    glEnable(GL_DEPTH_TEST);
 
 }
 
 int GlutRotation2DButton::mouseFunc(int button,int state,int mx,int my) {
-	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
-	return (isHighlighted && state==GLUT_UP)? id:0;
+    isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+    return (isHighlighted && state==GLUT_UP)? id:0;
 }
 
 bool GlutRotation2DButton::passiveMotionFunc(int mx,int my) {
-	isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
-	return isHighlighted;
+    isHighlighted=(mx>x && mx<x+w && my>y && my<y+h);
+    return isHighlighted;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // loadTextures
 // lecture de l'identifiant de texture
 GLuint GlutWindow::loadTexture(const char *titre,int &tw,int &th) {
-	unsigned char *image;
-	GLuint id=0;
+    unsigned char *image;
+    GLuint id=0;
 #ifdef DEBUG_GRAPHICS
     OUTPUT << "loading " << titre << endl;
 #endif
-	if (!(image=lectureTarga(titre,tw,th))) {
-		ERRPUT << "Error : can't open " << titre << endl;
-	} else {
-		glGenTextures(1,&id);
-		glBindTexture(GL_TEXTURE_2D,id);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,tw,th,GL_RGBA,GL_UNSIGNED_BYTE,image);
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-		delete [] image;
-	}
-	return id;
+    if (!(image=lectureTarga(titre,tw,th))) {
+        ERRPUT << "Error : can't open " << titre << endl;
+    } else {
+        glGenTextures(1,&id);
+        glBindTexture(GL_TEXTURE_2D,id);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,tw,th,GL_RGBA,GL_UNSIGNED_BYTE,image);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        delete [] image;
+    }
+    return id;
 }
 
 unsigned char *GlutWindow::lectureTarga(const char *titre, int& width, int& height ,bool retourner)
 {
-	#define DEF_targaHeaderLength			12
-	#define DEF_targaHeaderContent		"\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    #define DEF_targaHeaderLength			12
+    #define DEF_targaHeaderContent		"\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00"
 
   ifstream fin;
   char *pData;
@@ -878,58 +878,58 @@ unsigned char *GlutWindow::lectureTarga(const char *titre, int& width, int& heig
 
   fin.close();
 
-	int commentOffset = int( (unsigned char)*pData );
-	if( memcmp( pData + 1, DEF_targaHeaderContent, DEF_targaHeaderLength - 1 ) != 0 )
-	{ ERRPUT << "Format non reconnu : " << titre << endl;
-	  return 0;
+    int commentOffset = int( (unsigned char)*pData );
+    if( memcmp( pData + 1, DEF_targaHeaderContent, DEF_targaHeaderLength - 1 ) != 0 )
+    { ERRPUT << "Format non reconnu : " << titre << endl;
+      return 0;
     }
-	unsigned char smallArray[ 2 ];
+    unsigned char smallArray[ 2 ];
 
-	memcpy( smallArray, pData + DEF_targaHeaderLength + 0, 2 );
-	width = smallArray[ 0 ] + smallArray[ 1 ] * 0x0100;
+    memcpy( smallArray, pData + DEF_targaHeaderLength + 0, 2 );
+    width = smallArray[ 0 ] + smallArray[ 1 ] * 0x0100;
 
-	memcpy( smallArray, pData + DEF_targaHeaderLength + 2, 2 );
-	height = smallArray[ 0 ] + smallArray[ 1 ] * 0x0100;
+    memcpy( smallArray, pData + DEF_targaHeaderLength + 2, 2 );
+    height = smallArray[ 0 ] + smallArray[ 1 ] * 0x0100;
 
-	memcpy( smallArray, pData + DEF_targaHeaderLength + 4, 2 );
-	int depth = smallArray[ 0 ];
+    memcpy( smallArray, pData + DEF_targaHeaderLength + 4, 2 );
+    int depth = smallArray[ 0 ];
 //	int pixelBitFlags = smallArray[ 1 ];
 
-	if( ( width <= 0 ) || ( height <= 0 ) )
-		return 0;
+    if( ( width <= 0 ) || ( height <= 0 ) )
+        return 0;
 
-	// Only allow 24-bit and 32-bit!
-	bool is24Bit( depth == 24 );
-	bool is32Bit( depth == 32 );
-	if( !( is24Bit || is32Bit ) )
-		return 0;
+    // Only allow 24-bit and 32-bit!
+    bool is24Bit( depth == 24 );
+    bool is32Bit( depth == 32 );
+    if( !( is24Bit || is32Bit ) )
+        return 0;
 
-	// Make it a BGRA array for now.
-	int bodySize( width * height * 4 );
-	unsigned char * pBuffer = new unsigned char[ bodySize ];
-	if( is32Bit )
-	{
-		// Easy, just copy it.
-		memcpy( pBuffer, pData + DEF_targaHeaderLength + 6 + commentOffset, bodySize );
-	}
-	else if( is24Bit )
-	{
-		int bytesRead = DEF_targaHeaderLength + 6 + commentOffset;
-		for( int loop = 0; loop < bodySize; loop += 4, bytesRead += 3 )
-		{
-			memcpy( pBuffer + loop, pData + bytesRead, 3 );
-			pBuffer[ loop + 3 ] = 255;			// Force alpha to max.
-		}
-	}
-	else return NULL;
+    // Make it a BGRA array for now.
+    int bodySize( width * height * 4 );
+    unsigned char * pBuffer = new unsigned char[ bodySize ];
+    if( is32Bit )
+    {
+        // Easy, just copy it.
+        memcpy( pBuffer, pData + DEF_targaHeaderLength + 6 + commentOffset, bodySize );
+    }
+    else if( is24Bit )
+    {
+        int bytesRead = DEF_targaHeaderLength + 6 + commentOffset;
+        for( int loop = 0; loop < bodySize; loop += 4, bytesRead += 3 )
+        {
+            memcpy( pBuffer + loop, pData + bytesRead, 3 );
+            pBuffer[ loop + 3 ] = 255;			// Force alpha to max.
+        }
+    }
+    else return NULL;
 
-	// Swap R & B (convert to RGBA).
-	for( int loop = 0; loop < bodySize; loop += 4 )
-	{
-		unsigned char tempC = pBuffer[ loop + 0 ];
-		pBuffer[ loop + 0 ] = pBuffer[ loop + 2 ];
-		pBuffer[ loop + 2 ] = tempC;
-	}
+    // Swap R & B (convert to RGBA).
+    for( int loop = 0; loop < bodySize; loop += 4 )
+    {
+        unsigned char tempC = pBuffer[ loop + 0 ];
+        pBuffer[ loop + 0 ] = pBuffer[ loop + 2 ];
+        pBuffer[ loop + 2 ] = tempC;
+    }
 
   delete [] pData;
 
@@ -937,16 +937,16 @@ unsigned char *GlutWindow::lectureTarga(const char *titre, int& width, int& heig
   if (retourner)
   { unsigned char * pBufferRet = new unsigned char[ bodySize ],
                   *ptr1=pBuffer+width*(height-1)*4,*ptr2=pBufferRet;
-	for (int loop=0; loop<height; loop++)
-	{ memcpy(ptr2,ptr1,width*4);
-	  ptr2+=width*4;
-	  ptr1-=width*4;
-	}
-	delete [] pBuffer;
-	return pBufferRet;
+    for (int loop=0; loop<height; loop++)
+    { memcpy(ptr2,ptr1,width*4);
+      ptr2+=width*4;
+      ptr1-=width*4;
+    }
+    delete [] pBuffer;
+    return pBufferRet;
   }
-	// Ownership moves out.
-	return pBuffer;
+    // Ownership moves out.
+    return pBuffer;
 }
 
 /***************************************************************************************/
@@ -955,26 +955,26 @@ unsigned char *GlutWindow::lectureTarga(const char *titre, int& width, int& heig
 
 GlutPopupWindow::GlutPopupWindow(GlutWindow *parent,GLint px,GLint py,GLint pw,GLint ph)
 :GlutWindow(parent,99,px,py,pw,ph,NULL) {
-	isVisible=false;
+    isVisible=false;
 }
 
 void GlutPopupWindow::glDraw() {
-	if (isVisible) {
-		glDisable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
-		glColor4f(1.0,1.0,0.0,0.9);
-		glPushMatrix();
-		glTranslatef(x,y,0);
-		glBegin(GL_QUADS);
-		glVertex2i(0,0);
-		glVertex2i(w,0);
-		glVertex2i(w,h);
-		glVertex2i(0,h);
-		glEnd();
-		glColor4f(0.0,0.0,0.5,1.0);
-		drawString(5.0,h-20.0,info.c_str(),TextMode::TEXTMODE_POPUP);
-		glPopMatrix();
-	}
+    if (isVisible) {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glColor4f(1.0,1.0,0.0,0.9);
+        glPushMatrix();
+        glTranslatef(x,y,0);
+        glBegin(GL_QUADS);
+        glVertex2i(0,0);
+        glVertex2i(w,0);
+        glVertex2i(w,h);
+        glVertex2i(0,h);
+        glEnd();
+        glColor4f(0.0,0.0,0.5,1.0);
+        drawString(5.0,h-20.0,info.c_str(),TextMode::TEXTMODE_POPUP);
+        glPopMatrix();
+    }
 }
 
 /***************************************************************************************/
@@ -983,78 +983,78 @@ void GlutPopupWindow::glDraw() {
 
 GlutPopupMenuWindow::GlutPopupMenuWindow(GlutWindow *parent,GLint px,GLint py,GLint pw,GLint ph)
 :GlutWindow(parent,49,px,py,pw,ph,NULL) {
-	isVisible=false;
+    isVisible=false;
 }
 
 void GlutPopupMenuWindow::addButton(int i,const char *titre,GlutPopupMenuWindow *subMenuWindow) {
-	int py=0;
-	std::vector <GlutWindow*>::const_iterator cb=children.begin();
-	while (cb!=children.end()) {
-		if ((*cb)->isVisible) py+=(*cb)->h+5;
-		cb++;
-	}
-	GlutButton *button = new GlutButton(this,i,0,0,0,0,titre);
-	button->setGeometry(10,h-5-button->h/2-py,button->w/2,button->h/2);
-	if (subMenuWindow) {
-		button->addSubMenu(subMenuWindow);
-	}
+    int py=0;
+    std::vector <GlutWindow*>::const_iterator cb=children.begin();
+    while (cb!=children.end()) {
+        if ((*cb)->isVisible) py+=(*cb)->h+5;
+        cb++;
+    }
+    GlutButton *button = new GlutButton(this,i,0,0,0,0,titre);
+    button->setGeometry(10,h-5-button->h/2-py,button->w/2,button->h/2);
+    if (subMenuWindow) {
+        button->addSubMenu(subMenuWindow);
+    }
 }
 
 void GlutPopupMenuWindow::addButton(GlutWindow *button) {
-	int py=0;
-	std::vector <GlutWindow*>::const_iterator cb=children.begin();
-	while (cb!=children.end()) {
-		if ((*cb)->isVisible) py+=(*cb)->h+5;
-		cb++;
-	}
-	addChild(button);
-	button->setGeometry(10,h-5-button->h/2-py,button->w/4,button->h/2);
+    int py=0;
+    std::vector <GlutWindow*>::const_iterator cb=children.begin();
+    while (cb!=children.end()) {
+        if ((*cb)->isVisible) py+=(*cb)->h+5;
+        cb++;
+    }
+    addChild(button);
+    button->setGeometry(10,h-5-button->h/2-py,button->w/4,button->h/2);
 }
 
 
 void GlutPopupMenuWindow::glDraw() {
-	if (isVisible) {
-		glDisable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
-		glColor4f(1.0,1.0,0.0,0.75);
-		glPushMatrix();
-		glTranslatef(x,y,0);
-		glBegin(GL_QUADS);
-		glVertex2i(0,0);
-		glVertex2i(w,0);
-		glVertex2i(w,h);
-		glVertex2i(0,h);
-		glEnd();
-		glPopMatrix();
-		GlutWindow::glDraw();
-	}
+    if (isVisible) {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glColor4f(1.0,1.0,0.0,0.75);
+        glPushMatrix();
+        glTranslatef(x,y,0);
+        glBegin(GL_QUADS);
+        glVertex2i(0,0);
+        glVertex2i(w,0);
+        glVertex2i(w,h);
+        glVertex2i(0,h);
+        glEnd();
+        glPopMatrix();
+        GlutWindow::glDraw();
+    }
 }
 
 int GlutPopupMenuWindow::mouseFunc(int button,int state,int mx,int my) {
-	if (!isVisible) return 0;
-	int n = GlutWindow::mouseFunc(button,state,mx,my);
-	return n;
+    if (!isVisible) return 0;
+    int n = GlutWindow::mouseFunc(button,state,mx,my);
+    return n;
 }
 
 void GlutPopupMenuWindow::activate(unsigned int id,bool value) {
-	std::vector <GlutWindow*>::const_iterator cb=children.begin();
-	while (cb!=children.end() && (*cb)->id!=id) {
-		cb++;
-	}
-	if (cb!=children.end()) {
-		((GlutButton*)(*cb))->activate(value);
-	}
+    std::vector <GlutWindow*>::const_iterator cb=children.begin();
+    while (cb!=children.end() && (*cb)->id!=id) {
+        cb++;
+    }
+    if (cb!=children.end()) {
+        ((GlutButton*)(*cb))->activate(value);
+    }
 }
 
 GlutWindow *GlutPopupMenuWindow::getButton(unsigned int id) {
-	std::vector <GlutWindow*>::const_iterator cb=children.begin();
-	while (cb!=children.end() && (*cb)->id!=id) {
-		cb++;
-	}
-	if (cb!=children.end()) {
-		return (*cb);
-	}
-	return NULL;
+    std::vector <GlutWindow*>::const_iterator cb=children.begin();
+    while (cb!=children.end() && (*cb)->id!=id) {
+        cb++;
+    }
+    if (cb!=children.end()) {
+        return (*cb);
+    }
+    return NULL;
 }
 
 
@@ -1063,65 +1063,65 @@ GlutWindow *GlutPopupMenuWindow::getButton(unsigned int id) {
 /***************************************************************************************/
 GlutHelpWindow::GlutHelpWindow(GlutWindow *parent,GLint px,GLint py,GLint pw,GLint ph,const char *textFile)
 :GlutWindow(parent,-1,px,py,pw,ph,NULL) {
-	isVisible=false;
-	text=NULL;
+    isVisible=false;
+    text=NULL;
 
-	//GlutButton *btn = new GlutButton(this, 999,pw-35,ph-35,32,32,"../../simulatorCore/resources/textures/UITextures/close.tga");
+    //GlutButton *btn = new GlutButton(this, 999,pw-35,ph-35,32,32,"../../simulatorCore/resources/textures/UITextures/close.tga");
 
-	ifstream fin(textFile);
-	if(!fin) {
-		cerr << "cannot open file " << textFile << endl;
-	} else {
-		stringstream out;
-	    out << fin.rdbuf();
-	    string strout = out.str();
-	    text=(unsigned char*)new char[strout.size()+1];
-	    memcpy(text,strout.c_str(),strout.size());
-	    text[strout.size()-1]=0; // end of string
-	}
+    ifstream fin(textFile);
+    if(!fin) {
+        cerr << "cannot open file " << textFile << endl;
+    } else {
+        stringstream out;
+        out << fin.rdbuf();
+        string strout = out.str();
+        text=(unsigned char*)new char[strout.size()+1];
+        memcpy(text,strout.c_str(),strout.size());
+        text[strout.size()-1]=0; // end of string
+    }
 }
 
 GlutHelpWindow::~GlutHelpWindow() {
-	delete [] text;
+    delete [] text;
 }
 
 void GlutHelpWindow::glDraw() {
-	if (isVisible) {
-		glDisable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
-		glColor4f(0.5,0.5,0.5,0.75);
-		glPushMatrix();
-		glTranslatef(x,y,0);
-		glBegin(GL_QUADS);
-		glVertex2i(0,h-40);
-		glVertex2i(w,h-40);
-		glVertex2i(w,h);
-		glVertex2i(0,h);
-		glEnd();
-		glColor4f(1.0,1.0,0.0,0.75);
-		glBegin(GL_QUADS);
-		glVertex2i(0,0);
-		glVertex2i(w,0);
-		glVertex2i(w,h-40);
-		glVertex2i(0,h-40);
-		glEnd();
-		glColor4f(0.0,0.0,0.0,1.0);
-		glRasterPos2f(10,h-32);
-		glutBitmapString(GLUT_BITMAP_HELVETICA_18,text);
-		glPopMatrix();
-		GlutWindow::glDraw();
-	}
+    if (isVisible) {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glColor4f(0.5,0.5,0.5,0.75);
+        glPushMatrix();
+        glTranslatef(x,y,0);
+        glBegin(GL_QUADS);
+        glVertex2i(0,h-40);
+        glVertex2i(w,h-40);
+        glVertex2i(w,h);
+        glVertex2i(0,h);
+        glEnd();
+        glColor4f(1.0,1.0,0.0,0.75);
+        glBegin(GL_QUADS);
+        glVertex2i(0,0);
+        glVertex2i(w,0);
+        glVertex2i(w,h-40);
+        glVertex2i(0,h-40);
+        glEnd();
+        glColor4f(0.0,0.0,0.0,1.0);
+        glRasterPos2f(10,h-32);
+        glutBitmapString(GLUT_BITMAP_HELVETICA_18,text);
+        glPopMatrix();
+        GlutWindow::glDraw();
+    }
 }
 
 int GlutHelpWindow::mouseFunc(int button,int state,int mx,int my) {
-	if (!isVisible) return 0;
-	int n = GlutWindow::mouseFunc(button,state,mx,my);
-	switch (n) {
-		case 999 :
-			isVisible=false;
-		break;
-	}
-	return n;
+    if (!isVisible) return 0;
+    int n = GlutWindow::mouseFunc(button,state,mx,my);
+    switch (n) {
+        case 999 :
+            isVisible=false;
+        break;
+    }
+    return n;
 }
 
 /***************************************************************************************/
@@ -1129,10 +1129,10 @@ int GlutHelpWindow::mouseFunc(int button,int state,int mx,int my) {
 /***************************************************************************************/
 GlutSlider::GlutSlider(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint ph,const char *titreTexture,int ntl)
 :GlutWindow(parent,pid,px,py,11,ph,titreTexture) {
-	dataTextLines=0;
-	dataPosition=0;
-	nbreTextLines = ntl;
-	update();
+    dataTextLines=0;
+    dataPosition=0;
+    nbreTextLines = ntl;
+    update();
 }
 
 GlutSlider::~GlutSlider() {
@@ -1140,133 +1140,133 @@ GlutSlider::~GlutSlider() {
 }
 
 void GlutSlider::update() {
-	bool isFull = (dataTextLines==0 || nbreTextLines>=dataTextLines);
-	double s=isFull?1.0:nbreTextLines/double(dataTextLines);
-	buttonHeight=int(s*(h-20));
-	buttonY=isFull?10:int((dataTextLines-dataPosition-nbreTextLines)*(h-20)/double(dataTextLines))+10;
+    bool isFull = (dataTextLines==0 || nbreTextLines>=dataTextLines);
+    double s=isFull?1.0:nbreTextLines/double(dataTextLines);
+    buttonHeight=int(s*(h-20));
+    buttonY=isFull?10:int((dataTextLines-dataPosition-nbreTextLines)*(h-20)/double(dataTextLines))+10;
 }
 
 void GlutSlider::glDraw() {
-	int byhy = buttonY+buttonHeight,
-	    byhy_2=buttonY+buttonHeight/2;
-	glPushMatrix();
-	glTranslatef(x,y,0);
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
-	glColor3f(0.5,0.5,0.5);
-	// free area inf
-	glBegin(GL_QUADS);
-	glVertex2i(0,10);
-	glVertex2i(w,10);
-	glVertex2i(w,buttonY);
-	glVertex2i(0,buttonY);
-	glEnd();
-	// free area sup
-	glBegin(GL_QUADS);
-	glVertex2i(0,byhy);
-	glVertex2i(w,byhy);
-	glVertex2i(w,h-10);
-	glVertex2i(0,h-10);
-	glEnd();
-	bindTexture();
-	// button inf
-	glBegin(GL_QUADS);
-	glTexCoord2f(0,0);
-	glVertex2i(0,0);
-	glTexCoord2f(1,0);
-	glVertex2i(w,0);
-	glTexCoord2f(1,10.0/35.0);
-	glVertex2i(w,10);
-	glTexCoord2f(0,10.0/35.0);
-	glVertex2i(0,10);
-	glEnd();
-	// button sup
-	glBegin(GL_QUADS);
-	glTexCoord2f(0,25.0/35.0);
-	glVertex2i(0,h-10);
-	glTexCoord2f(1,25.0/35.0);
-	glVertex2i(w,h-10);
-	glTexCoord2f(1,1);
-	glVertex2i(w,h);
-	glTexCoord2f(0,1);
-	glVertex2i(0,h);
-	glEnd();
+    int byhy = buttonY+buttonHeight,
+        byhy_2=buttonY+buttonHeight/2;
+    glPushMatrix();
+    glTranslatef(x,y,0);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_LIGHTING);
+    glColor3f(0.5,0.5,0.5);
+    // free area inf
+    glBegin(GL_QUADS);
+    glVertex2i(0,10);
+    glVertex2i(w,10);
+    glVertex2i(w,buttonY);
+    glVertex2i(0,buttonY);
+    glEnd();
+    // free area sup
+    glBegin(GL_QUADS);
+    glVertex2i(0,byhy);
+    glVertex2i(w,byhy);
+    glVertex2i(w,h-10);
+    glVertex2i(0,h-10);
+    glEnd();
+    bindTexture();
+    // button inf
+    glBegin(GL_QUADS);
+    glTexCoord2f(0,0);
+    glVertex2i(0,0);
+    glTexCoord2f(1,0);
+    glVertex2i(w,0);
+    glTexCoord2f(1,10.0/35.0);
+    glVertex2i(w,10);
+    glTexCoord2f(0,10.0/35.0);
+    glVertex2i(0,10);
+    glEnd();
+    // button sup
+    glBegin(GL_QUADS);
+    glTexCoord2f(0,25.0/35.0);
+    glVertex2i(0,h-10);
+    glTexCoord2f(1,25.0/35.0);
+    glVertex2i(w,h-10);
+    glTexCoord2f(1,1);
+    glVertex2i(w,h);
+    glTexCoord2f(0,1);
+    glVertex2i(0,h);
+    glEnd();
 
-	glBegin(GL_QUAD_STRIP);
-	glTexCoord2f(0,11.0/35.0);
-	glVertex2i(0,buttonY);
-	glTexCoord2f(1,11.0/35.0);
-	glVertex2i(w,buttonY);
-	glTexCoord2f(0,12.0/35.0);
-	glVertex2i(0,byhy_2-4);
-	glTexCoord2f(1,12.0/35.0);
-	glVertex2i(w,byhy_2-4);
-	glTexCoord2f(0,23.0/35.0);
-	glVertex2i(0,byhy_2+4);
-	glTexCoord2f(1,23.0/35.0);
-	glVertex2i(w,byhy_2+4);
-	glTexCoord2f(0,24.0/35.0);
-	glVertex2i(0,byhy);
-	glTexCoord2f(1,24.0/35.0);
-	glVertex2i(w,byhy);
-	glTexCoord2f(0,25.0/35.0);
-	glVertex2i(0,byhy);
-	glTexCoord2f(1,25.0/35.0);
-	glVertex2i(w,byhy);
-	glEnd();
-	glPopMatrix();
+    glBegin(GL_QUAD_STRIP);
+    glTexCoord2f(0,11.0/35.0);
+    glVertex2i(0,buttonY);
+    glTexCoord2f(1,11.0/35.0);
+    glVertex2i(w,buttonY);
+    glTexCoord2f(0,12.0/35.0);
+    glVertex2i(0,byhy_2-4);
+    glTexCoord2f(1,12.0/35.0);
+    glVertex2i(w,byhy_2-4);
+    glTexCoord2f(0,23.0/35.0);
+    glVertex2i(0,byhy_2+4);
+    glTexCoord2f(1,23.0/35.0);
+    glVertex2i(w,byhy_2+4);
+    glTexCoord2f(0,24.0/35.0);
+    glVertex2i(0,byhy);
+    glTexCoord2f(1,24.0/35.0);
+    glVertex2i(w,byhy);
+    glTexCoord2f(0,25.0/35.0);
+    glVertex2i(0,byhy);
+    glTexCoord2f(1,25.0/35.0);
+    glVertex2i(w,byhy);
+    glEnd();
+    glPopMatrix();
 }
 
 int GlutSlider::mouseFunc(int button,int state,int mx,int my) {
-	if (mouseDown) {
-		bool isFull = (dataTextLines==0 || nbreTextLines>=dataTextLines);
-		if (!isFull) {
-			buttonY+=my-currentMousePos;
-			currentMousePos=my;
-			dataPosition = dataTextLines-nbreTextLines-int((buttonY-10)*dataTextLines/(h-20));
-			if (dataPosition<=0) {
-				dataPosition=0;
-				buttonY=int((dataTextLines-nbreTextLines)*(h-20)/double(dataTextLines))+10;;
-			} else if (dataPosition>dataTextLines-nbreTextLines) {
-				dataPosition=dataTextLines-nbreTextLines;
-				buttonY = 10;
-			}
-		}
-	} else {
-		if (mx<x || mx>x+w || my<y || my>y+h) return 0;
-		if (state==GLUT_DOWN) {
-			mouseDown=true;
-			if (my<10) {
-				// upper button
-				dataPosition++;
-				if (dataPosition>dataTextLines-nbreTextLines) dataPosition=dataTextLines-nbreTextLines;
-				update();
-			} else if (my>h-10){
-				// lower button
-				dataPosition--;
-				if (dataPosition>dataTextLines-nbreTextLines) dataPosition=dataTextLines-nbreTextLines;
-				update();
-			} else if (my<y+buttonY) {
-				// upper area
-				dataPosition+=5;
-				if (dataPosition>dataTextLines-nbreTextLines) dataPosition=dataTextLines-nbreTextLines;
-				update();
-			} else if (my>y+buttonY+buttonHeight) {
-				// lower area
-				dataPosition-=5;
-				if (dataPosition<0) dataPosition=0;
-				update();
-			} else {
-				// button
-				currentMousePos=my;
-			}
-		}
-		return 1;
-	}
-	if (state==GLUT_UP) {
-		mouseDown=false;
-	}
-	return 3;
+    if (mouseDown) {
+        bool isFull = (dataTextLines==0 || nbreTextLines>=dataTextLines);
+        if (!isFull) {
+            buttonY+=my-currentMousePos;
+            currentMousePos=my;
+            dataPosition = dataTextLines-nbreTextLines-int((buttonY-10)*dataTextLines/(h-20));
+            if (dataPosition<=0) {
+                dataPosition=0;
+                buttonY=int((dataTextLines-nbreTextLines)*(h-20)/double(dataTextLines))+10;;
+            } else if (dataPosition>dataTextLines-nbreTextLines) {
+                dataPosition=dataTextLines-nbreTextLines;
+                buttonY = 10;
+            }
+        }
+    } else {
+        if (mx<x || mx>x+w || my<y || my>y+h) return 0;
+        if (state==GLUT_DOWN) {
+            mouseDown=true;
+            if (my<10) {
+                // upper button
+                dataPosition++;
+                if (dataPosition>dataTextLines-nbreTextLines) dataPosition=dataTextLines-nbreTextLines;
+                update();
+            } else if (my>h-10){
+                // lower button
+                dataPosition--;
+                if (dataPosition>dataTextLines-nbreTextLines) dataPosition=dataTextLines-nbreTextLines;
+                update();
+            } else if (my<y+buttonY) {
+                // upper area
+                dataPosition+=5;
+                if (dataPosition>dataTextLines-nbreTextLines) dataPosition=dataTextLines-nbreTextLines;
+                update();
+            } else if (my>y+buttonY+buttonHeight) {
+                // lower area
+                dataPosition-=5;
+                if (dataPosition<0) dataPosition=0;
+                update();
+            } else {
+                // button
+                currentMousePos=my;
+            }
+        }
+        return 1;
+    }
+    if (state==GLUT_UP) {
+        mouseDown=false;
+    }
+    return 3;
 }
 
 /***************************************************************************************/
@@ -1275,7 +1275,7 @@ int GlutSlider::mouseFunc(int button,int state,int mx,int my) {
 
 GlutInputWindow::GlutInputWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph):
 GlutWindow(parent,pid,px,py,pw,ph,NULL) {
-	hasFocus=false;
+    hasFocus=false;
 }
 
 GlutInputWindow::~GlutInputWindow() {
@@ -1285,32 +1285,32 @@ GlutInputWindow::~GlutInputWindow() {
 void GlutInputWindow::glDraw() {
     glDisable(GL_TEXTURE_2D);
     glPushMatrix();
-	glTranslatef(x,y,0.0);
-	if (hasFocus) {
+    glTranslatef(x,y,0.0);
+    if (hasFocus) {
         glColor3f(0.5,0.5,0.5);
     } else {
         glColor3f(0.25,0.25,0.25);
     }
     // petite fenetre de saisie
-	glBegin(GL_QUADS);
-	glVertex2i(0,0);
-	glVertex2i(w,0);
-	glVertex2i(w,h);
-	glVertex2i(0,h);
-	glEnd();
-
-	// tour de la fenetre
-    glBegin(GL_LINES);
-	glColor3f(0.0,0.0,0.0);
-    glVertex2i(0,h);
-	glVertex2i(0,0);
-	glVertex2i(w,h);
-	glVertex2i(0,h);
-	glColor3f(1.0,1.0,1.0);
+    glBegin(GL_QUADS);
+    glVertex2i(0,0);
     glVertex2i(w,0);
-	glVertex2i(w,h);
-	glVertex2i(0,0);
-	glVertex2i(w,0);
+    glVertex2i(w,h);
+    glVertex2i(0,h);
+    glEnd();
+
+    // tour de la fenetre
+    glBegin(GL_LINES);
+    glColor3f(0.0,0.0,0.0);
+    glVertex2i(0,h);
+    glVertex2i(0,0);
+    glVertex2i(w,h);
+    glVertex2i(0,h);
+    glColor3f(1.0,1.0,1.0);
+    glVertex2i(w,0);
+    glVertex2i(w,h);
+    glVertex2i(0,0);
+    glVertex2i(w,0);
     glEnd();
 
     glColor3f(1.0f,1.0f,0);
@@ -1325,8 +1325,8 @@ void GlutInputWindow::glDraw() {
         glEnd();
 
     }
-	glPopMatrix();
-	GlutWindow::glDraw();
+    glPopMatrix();
+    GlutWindow::glDraw();
 }
 
 int GlutInputWindow::mouseFunc(int button,int state,int mx,int my) {

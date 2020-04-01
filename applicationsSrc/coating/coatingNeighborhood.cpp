@@ -1,6 +1,6 @@
 #include "coatingNeighborhood.hpp"
 
-#include "world.h"
+#include "base/world.h"
 
 Neighborhood::Neighborhood(std::function<bool(const Cell3DPosition&)> _isInG)
     : isInG(_isInG) {

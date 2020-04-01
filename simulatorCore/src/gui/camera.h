@@ -23,8 +23,8 @@
 #endif
 
 #include <math.h>
-#include "vector3D.h"
-#include "matrix44.h"
+#include "math/vector3D.h"
+#include "math/matrix44.h"
 
 #ifndef M_PI
 #define M_PI	3.1415926535897932384626433832795

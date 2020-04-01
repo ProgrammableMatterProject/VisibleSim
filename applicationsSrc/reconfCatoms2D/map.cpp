@@ -3,8 +3,8 @@
 #include "tuple.hpp"
 #include "contextTuple.hpp"
 
-#include "catoms2DWorld.h"
-#include "vector3D.h"
+#include "robots/catoms2D/catoms2DWorld.h"
+#include "math/vector3D.h"
 
 //#define VIRTUAL_COORDINATES
 #define REAL_COORDINATES
@@ -38,7 +38,7 @@ void Map::connectToHost() {
     isConnected = true;
     connectedToHost = true;
     toHost = NULL;
-    
+
 #ifdef VIRTUAL_COORDINATES
     // virtual coordinate
     Coordinate c = Coordinate(0,0);
@@ -101,8 +101,8 @@ bool Map::handleMessage(MessagePtr message) {
       waiting = 0;
       buildMap();
       if (waiting==0) {
-	mapBuilt(toHost);
-	return true;
+    mapBuilt(toHost);
+    return true;
       }
     } else {
       mapBuilt(recv_interface);
@@ -137,7 +137,7 @@ void Map::buildMap() {
     if( (p2p == toHost) || !p2p->connectedInterface) {
       continue;
     }
-    Coordinate c = getPosition(p2p); 
+    Coordinate c = getPosition(p2p);
     GoMapMessage * msg = new GoMapMessage(getPosition(p2p));
     p2p->send(msg);
     waiting++;

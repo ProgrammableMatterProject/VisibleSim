@@ -10,7 +10,7 @@
 
 #define EVENT_START_C2SR 15000
 
-#include "events.h"
+#include "events/events.h"
 #include <memory>
 
 class StartC2SREvent : public BlockEvent {

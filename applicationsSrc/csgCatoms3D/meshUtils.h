@@ -1,6 +1,6 @@
 #ifndef MESHUTILS_H_
 #define MESHUTILS_H_
-#include "vector3D.h"
+#include "math/vector3D.h"
 #include "mesh/world.h"
 
 class MeshUtils

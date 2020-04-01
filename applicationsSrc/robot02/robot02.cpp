@@ -6,8 +6,8 @@
  */
 
 #include <iostream>
-#include "slidingCubesSimulator.h"
-#include "slidingCubesBlockCode.h"
+#include "robots/slidingCubes/slidingCubesSimulator.h"
+#include "robots/slidingCubes/slidingCubesBlockCode.h"
 #include "robot02BlockCode.h"
 
 using namespace std;

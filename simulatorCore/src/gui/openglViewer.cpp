@@ -5,7 +5,7 @@
  *      Author: Ben
  */
 
-#include "openglViewer.h"
+#include "gui/openglViewer.h"
 
 #include <string>
 #include <chrono>
@@ -13,14 +13,14 @@
 #include <sys/stat.h>
 #include <future>
 
-#include "world.h"
-#include "scheduler.h"
-#include "simulator.h"
-#include "events.h"
-#include "trace.h"
-#include "catoms3DRotationEvents.h"
-#include "utils.h"
-#include "catoms3DWorld.h"
+#include "base/world.h"
+#include "events/scheduler.h"
+#include "base/simulator.h"
+#include "events/events.h"
+#include "utils/trace.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "utils/utils.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 // #define showStatsFPS	0
 

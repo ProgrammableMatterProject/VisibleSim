@@ -6,13 +6,13 @@
  */
 
 #include <iostream>
-#include "catoms2DBlock.h"
-#include "buildingBlock.h"
-#include "catoms2DWorld.h"
-#include "catoms2DSimulator.h"
+#include "robots/catoms2D/catoms2DBlock.h"
+#include "base/buildingBlock.h"
+#include "robots/catoms2D/catoms2DWorld.h"
+#include "robots/catoms2D/catoms2DSimulator.h"
 
-#include "catoms2DRotationEvents.h"
-#include "trace.h"
+#include "robots/catoms2D/catoms2DRotationEvents.h"
+#include "utils/trace.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

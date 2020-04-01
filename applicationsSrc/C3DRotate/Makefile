@@ -40,6 +40,8 @@ else
 INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 endif
 
+INCLUDES += $(LOCAL_INCLUDES)
+
 ifeq ($(GLOBAL_LIBS), )
 	ifeq ($(OS),Darwin)
 LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(MODULELIB)

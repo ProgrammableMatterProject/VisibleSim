@@ -14,10 +14,10 @@
 
 #include <array>
 
-#include "network.h"
-#include "cell3DPosition.h"
-#include "catoms3DBlockCode.h"
-#include "color.h"
+#include "comm/network.h"
+#include "grid/cell3DPosition.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "utils/color.h"
 
 #define MSG_DELAY_MC 5000
 
@@ -30,7 +30,7 @@ enum BranchIndex { ZBranch, RevZBranch, LZBranch,
                    RZBranch, XBranch, YBranch, N_BRANCHES };
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam, ActiveBeamTip, Support};
 enum MeshComponent { R, S_Z, S_RevZ, S_LZ, S_RZ,
-                     X_1, X_2, X_3, X_4, X_5, X_6, 
+                     X_1, X_2, X_3, X_4, X_5, X_6,
                      Y_1, Y_2, Y_3, Y_4, Y_5, Y_6,
                      Z_1, Z_2, Z_3, Z_4, Z_5, Z_6,
                      RevZ_1, RevZ_2, RevZ_3, RevZ_4, RevZ_5, RevZ_6,

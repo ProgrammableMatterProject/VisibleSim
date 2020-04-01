@@ -17,9 +17,9 @@
 #include <map>
 #include <climits>
 
-#include "catoms2DBlockCode.h"
-#include "catoms2DSimulator.h"
-#include "catoms2DBlock.h"
+#include "robots/catoms2D/catoms2DBlockCode.h"
+#include "robots/catoms2D/catoms2DSimulator.h"
+#include "robots/catoms2D/catoms2DBlock.h"
 
 using namespace Catoms2D;
 

@@ -9,10 +9,10 @@
 #include <stdlib.h>
 #include <string>
 
-#include "smartBlocksWorld.h"
-#include "smartBlocksBlock.h"
-#include "scheduler.h"
-#include "configExporter.h"
+#include "robots/smartBlocks/smartBlocksWorld.h"
+#include "robots/smartBlocks/smartBlocksBlock.h"
+#include "events/scheduler.h"
+#include "utils/configExporter.h"
 
 using namespace std;
 

@@ -1,6 +1,6 @@
 #include <iostream>
-#include "datomsSimulator.h"
-#include "datomsBlockCode.h"
+#include "robots/datoms/datomsSimulator.h"
+#include "robots/datoms/datomsBlockCode.h"
 #include "datomsRotateCode.h"
 
 using namespace std;

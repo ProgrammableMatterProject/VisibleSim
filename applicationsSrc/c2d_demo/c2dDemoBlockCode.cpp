@@ -10,11 +10,11 @@
 
 #include "c2dDemoBlockCode.hpp"
 
-#include "catoms2DWorld.h"
+#include "robots/catoms2D/catoms2DWorld.h"
 
-#include "scheduler.h"
-#include "events.h"
-#include "trace.h"
+#include "events/scheduler.h"
+#include "events/events.h"
+#include "utils/trace.h"
 
 using namespace Catoms2D;
 

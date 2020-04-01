@@ -8,10 +8,10 @@
 #ifndef DATOMSSIMULATOR_H_
 #define DATOMSSIMULATOR_H_
 
-#include "simulator.h"
-#include "datomsBlockCode.h"
-#include "datomsWorld.h"
-#include "trace.h"
+#include "base/simulator.h"
+#include "robots/datoms/datomsBlockCode.h"
+#include "robots/datoms/datomsWorld.h"
+#include "utils/trace.h"
 
 using namespace std;
 

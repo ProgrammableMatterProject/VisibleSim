@@ -1,7 +1,7 @@
 #ifndef STOYUTILS_H_
 #define STOYUTILS_H_
 #include <vector>
-#include "vector3D.h"
+#include "math/vector3D.h"
 
 class Brick
 {
@@ -23,4 +23,3 @@ public:
 };
 
 #endif /* STOYUTILS_H_ */
-

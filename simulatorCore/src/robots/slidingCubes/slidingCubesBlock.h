@@ -10,10 +10,10 @@
 
 #include <stdexcept>
 
-#include "buildingBlock.h"
-#include "slidingCubesBlockCode.h"
-#include "slidingCubesGlBlock.h"
-#include "lattice.h"
+#include "base/buildingBlock.h"
+#include "robots/slidingCubes/slidingCubesBlockCode.h"
+#include "robots/slidingCubes/slidingCubesGlBlock.h"
+#include "grid/lattice.h"
 
 namespace SlidingCubes {
 

@@ -8,11 +8,11 @@
 #ifndef MAP_H_
 #define MAP_H_
 
-#include "catoms2DBlockCode.h"
-#include "catoms2DSimulator.h"
+#include "robots/catoms2D/catoms2DBlockCode.h"
+#include "robots/catoms2D/catoms2DSimulator.h"
 
-#include "catoms2DBlock.h"
-#include "network.h"
+#include "robots/catoms2D/catoms2DBlock.h"
+#include "comm/network.h"
 #include <memory>
 #include "coordinate.h"
 #include "border.h"
@@ -29,10 +29,10 @@
 
 
 class Map {
- public:  
+ public:
   // Map construction
   static Coordinate ccth;
-  static bool isConnected;  
+  static bool isConnected;
 
   Catoms2D::Catoms2DBlock* catom2D;
   bool connectedToHost;
@@ -90,18 +90,18 @@ class GoMapMessage : public Message {
  protected:
   Coordinate position;
  public:
-  
 
- GoMapMessage(Coordinate p) : Message() { 
+
+ GoMapMessage(Coordinate p) : Message() {
     type = GO_MAP_MSG;
     position = p;
   };
 
- GoMapMessage(GoMapMessage *m) : Message() { 
+ GoMapMessage(GoMapMessage *m) : Message() {
     type = m->type;
     position = m->position;
   };
-  
+
   ~GoMapMessage() {};
   Coordinate getPosition() {return position;};
   unsigned int size() { return 17;};
@@ -112,14 +112,14 @@ typedef std::shared_ptr<BackMapMessage> BackMapMessage_ptr;
 
 class BackMapMessage : public Message {
  public:
- BackMapMessage() : Message() { 
+ BackMapMessage() : Message() {
     type = BACK_MAP_MSG;
   };
 
- BackMapMessage(BackMapMessage *m) : Message() { 
+ BackMapMessage(BackMapMessage *m) : Message() {
     type = m->type;
   };
-  
+
   ~BackMapMessage() {};
   unsigned int size() { return 17;};
 };

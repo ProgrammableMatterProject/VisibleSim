@@ -45,4 +45,3 @@ Triangle::is_point_in_polygon(const Point &p)
     double v = (dot00*dot12 - dot01*dot02)*invDenom;
     return (u >= 0) && (v >= 0) && (u + v < 1);
 }
-

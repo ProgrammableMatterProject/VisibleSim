@@ -11,9 +11,9 @@
 #ifndef ROTATION3DEVENTS_H_
 #define ROTATION3DEVENTS_H_
 
-#include "matrix44.h"
-#include "catoms3DBlock.h"
-#include "events.h"
+#include "math/matrix44.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "events/events.h"
 
 #include <random>
 using namespace Catoms3D;

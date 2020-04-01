@@ -11,12 +11,12 @@
 #include <stdexcept>
 #include <bitset>
 
-#include "buildingBlock.h"
-#include "catoms3DBlockCode.h"
-#include "catoms3DGlBlock.h"
-#include "cell3DPosition.h"
-//#include "catoms3DCapabilities.h"
-#include "utils.h"
+#include "base/buildingBlock.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DGlBlock.h"
+#include "grid/cell3DPosition.h"
+//#include "robots/catoms3D/catoms3DCapabilities.h"
+#include "utils/utils.h"
 
 using namespace BaseSimulator::utils;
 

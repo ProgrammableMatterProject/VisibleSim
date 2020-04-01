@@ -10,11 +10,11 @@
 
 #include <vector>
 
-#include "world.h"
-#include "openglViewer.h"
-#include "vector3D.h"
-#include "blinkyBlocksBlock.h"
-#include "trace.h"
+#include "base/world.h"
+#include "gui/openglViewer.h"
+#include "math/vector3D.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
+#include "utils/trace.h"
 
 namespace BlinkyBlocks {
 

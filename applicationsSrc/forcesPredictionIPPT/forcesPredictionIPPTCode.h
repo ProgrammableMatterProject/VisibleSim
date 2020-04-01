@@ -1,7 +1,7 @@
 #ifndef forcesPredictionIPPTCode_H_
 #define forcesPredictionIPPTCode_H_
-#include "blinkyBlocksSimulator.h"
-#include "blinkyBlocksBlockCode.h"
+#include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
 #include "kMatrixes.h"
 
 /* Message types (size of data vector in parenthesis) */

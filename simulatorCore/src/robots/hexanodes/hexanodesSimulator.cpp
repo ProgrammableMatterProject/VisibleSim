@@ -1,5 +1,5 @@
 /**
- * @file   HexanodeSimulator.cpp
+ * @file   HexanodesSimulator.cpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Wed Jun 19 14:10:11 2019
  *
@@ -8,47 +8,47 @@
  *
  */
 
-#include "hexanodeSimulator.h"
+#include "hexanodesSimulator.h"
 
 #include <iostream>
 #include <string.h>
 
-#include "trace.h"
-#include "utils.h"
+#include "utils/trace.h"
+#include "utils/utils.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
 
-namespace Hexanode {
+namespace Hexanodes {
 
-void HexanodeSimulator::help() {
+void HexanodesSimulator::help() {
     cerr << "VisibleSim:" << endl;
-    cerr << "Hexanode" << endl;
+    cerr << "Hexanodes" << endl;
     exit(EXIT_SUCCESS);
 }
 
-HexanodeSimulator::HexanodeSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
+HexanodesSimulator::HexanodesSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
     : BaseSimulator::Simulator(argc, argv, bcb) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor << "HexanodeSimulator constructor" << TermColor::Reset << endl;
+    OUTPUT << TermColor::LifecycleColor << "HexanodesSimulator constructor" << TermColor::Reset << endl;
 #endif
 }
 
-HexanodeSimulator::~HexanodeSimulator() {
+HexanodesSimulator::~HexanodesSimulator() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
-    OUTPUT << TermColor::LifecycleColor << "HexanodeSimulator destructor" << TermColor::Reset <<endl;
+    OUTPUT << TermColor::LifecycleColor << "HexanodesSimulator destructor" << TermColor::Reset <<endl;
 #endif
 }
 
-void HexanodeSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
-    simulator =  new HexanodeSimulator(argc, argv, bcb);
+void HexanodesSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+    simulator =  new HexanodesSimulator(argc, argv, bcb);
     simulator->parseConfiguration(argc, argv);
     simulator->startSimulation();
 }
 
-void HexanodeSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+void HexanodesSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                       int argc, char *argv[]) {
-    world = new HexanodeWorld(gridSize, gridScale, argc, argv);
+    world = new HexanodesWorld(gridSize, gridScale, argc, argv);
 
     if (GlutContext::GUIisEnabled)
         world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
@@ -56,7 +56,7 @@ void HexanodeSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
     World::setWorld(world);
 }
 
-void HexanodeSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
+void HexanodesSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
                                   const Cell3DPosition &pos, const Color &color, bool master) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
@@ -73,7 +73,7 @@ void HexanodeSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCode
     }
 
     // Finally, add block to the world
-    ((HexanodeWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    ((HexanodesWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
 }
 
-} // Hexanode namespace
+} // Hexanodes namespace

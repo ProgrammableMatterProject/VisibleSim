@@ -1,7 +1,7 @@
-#include "slidingCubesMotionRules.h"
-#include "catoms3DRotationEvents.h"
-#include "slidingCubesWorld.h"
-//#include "slidingCubesMotionEngine.h"
+#include "robots/slidingCubes/slidingCubesMotionRules.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/slidingCubes/slidingCubesWorld.h"
+//#include "robots/slidingCubes/slidingCubesMotionEngine.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

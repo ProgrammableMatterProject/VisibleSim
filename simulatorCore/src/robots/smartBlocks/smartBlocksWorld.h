@@ -8,11 +8,11 @@
 #ifndef SMARTBLOCKSWORLD_H_
 #define SMARTBLOCKSWORLD_H_
 
-#include "openglViewer.h"
-#include "world.h"
-#include "vector3D.h"
-#include "smartBlocksBlock.h"
-#include "scheduler.h"
+#include "gui/openglViewer.h"
+#include "base/world.h"
+#include "math/vector3D.h"
+#include "robots/smartBlocks/smartBlocksBlock.h"
+#include "events/scheduler.h"
 
 namespace SmartBlocks {
 

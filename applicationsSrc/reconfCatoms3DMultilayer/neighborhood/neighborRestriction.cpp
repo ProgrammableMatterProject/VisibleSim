@@ -1,5 +1,5 @@
 #include "neighborRestriction.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 using namespace Catoms3D;
 

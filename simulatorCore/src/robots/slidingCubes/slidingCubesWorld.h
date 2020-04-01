@@ -10,14 +10,14 @@
 
 #include <vector>
 
-#include "openglViewer.h"
-#include "world.h"
-#include "vector3D.h"
-#include "slidingCubesBlock.h"
-#include "objLoader.h"
-#include "scheduler.h"
-#include "trace.h"
-#include "slidingCubesMotionRules.h"
+#include "gui/openglViewer.h"
+#include "base/world.h"
+#include "math/vector3D.h"
+#include "robots/slidingCubes/slidingCubesBlock.h"
+#include "gui/objLoader.h"
+#include "events/scheduler.h"
+#include "utils/trace.h"
+#include "robots/slidingCubes/slidingCubesMotionRules.h"
 
 namespace SlidingCubes {
 

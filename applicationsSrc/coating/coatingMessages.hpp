@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "network.h"
+#include "comm/network.h"
 
 static const uint MSG_DELAY = 0;
 

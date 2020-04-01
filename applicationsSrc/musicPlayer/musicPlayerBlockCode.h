@@ -11,10 +11,10 @@
 #define SYNC_MSG_ID	9002
 #define SCORE_MSG_ID	9001
 
-#include "blinkyBlocksBlockCode.h"
-#include "blinkyBlocksSimulator.h"
+#include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
+#include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
 
-#include "color.h"
+#include "utils/color.h"
 #include <vector>
 
 class SynchroMessage;

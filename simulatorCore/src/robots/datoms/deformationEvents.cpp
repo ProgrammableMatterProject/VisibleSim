@@ -8,7 +8,7 @@
  */
 
 #include "deformationEvents.h"
-#include "datomsWorld.h"
+#include "robots/datoms/datomsWorld.h"
 
 using namespace BaseSimulator::utils;
 

@@ -11,7 +11,7 @@
 #define EVENT_TUPLE_QUERY_RESPONSE 15001
 #define EVENT_TRY_TO_MOVE 15000
 
-#include "events.h"
+#include "events/events.h"
 #include <memory>
 #include "contextTuple.hpp"
 
@@ -22,37 +22,37 @@ class TryToMoveEvent : public BlockEvent {
     eventType = EVENT_TRY_TO_MOVE;
     randomNumber = conBlock->getRandomUint();
   }
-	
+
  TryToMoveEvent(TryToMoveEvent *ev) : BlockEvent(ev) {
     randomNumber = ev->randomNumber;
   }
-	
+
   ~TryToMoveEvent() {};
-	
+
   void consumeBlockEvent() {
     concernedBlock->scheduleLocalEvent(EventPtr(new TryToMoveEvent(this)));
   }
-	
+
   const string getEventName() { return "TRY_TO_MOVE EVENT"; }
 };
 
 class TupleQueryResponseEvent : public BlockEvent {
  public:
   ContextTuple *tuple;
-  
+
  TupleQueryResponseEvent(Time t, BaseSimulator::BuildingBlock *conBlock, ContextTuple *tu): BlockEvent(t, conBlock) {
     eventType =  EVENT_TUPLE_QUERY_RESPONSE;
     randomNumber = conBlock->getRandomUint();
     tuple = tu;
   }
-	
+
  TupleQueryResponseEvent(TupleQueryResponseEvent *ev) : BlockEvent(ev) {
     randomNumber = ev->randomNumber;
     tuple = ev->tuple;
   }
-	
+
   ~TupleQueryResponseEvent() {};
-	
+
   void consumeBlockEvent() {
     concernedBlock->scheduleLocalEvent(EventPtr(new TupleQueryResponseEvent(this)));
   }

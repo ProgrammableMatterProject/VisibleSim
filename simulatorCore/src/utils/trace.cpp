@@ -4,9 +4,9 @@
  *  Created on: June 22, 2013
  *      Author: Andre
  */
- 
-#include "trace.h"
-#include "scheduler.h"
+
+#include "utils/trace.h"
+#include "events/scheduler.h"
 
 std::ofstream log_file{};
 

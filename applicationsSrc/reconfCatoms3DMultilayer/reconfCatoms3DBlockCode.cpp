@@ -1,6 +1,6 @@
 #include <iostream>
 #include "reconfCatoms3DBlockCode.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 #define CONSTRUCT_WAIT_TIME 10
 #define SYNC_WAIT_TIME 0

@@ -5,9 +5,9 @@
 #include <random>
 
 #include "coordinate.h"
-#include "tDefs.h"
-#include "network.h"
-#include "events.h"
+#include "utils/tDefs.h"
+#include "comm/network.h"
+#include "events/events.h"
 #include <memory>
 
 #include "catom2D1BlockCode.h"
@@ -29,7 +29,7 @@ class Landmark {
   Landmark(int seed);
   Landmark(const Landmark &l);
   ~Landmark();
-  
+
   static void setProbability(double p);
   void randomDraw();
 };
@@ -41,14 +41,14 @@ class LandmarkEntry {
   int distance;
   Coordinate position;
   Time time;
-    
+
   LandmarkEntry();
   LandmarkEntry(int i, int d, Coordinate p, Time t);
   LandmarkEntry(const LandmarkEntry &l);
   ~LandmarkEntry();
 
   void update(int i, int d, Coordinate p, Time t);
-  
+
  protected:
   void set(int i, int d, Coordinate p, Time t);
 };
@@ -59,7 +59,7 @@ class Landmarks {
   Landmark *landmark;
   vector<LandmarkEntry> landmarks;
 
-  Catoms2D1BlockCode *blockCode; // access to map, host, ... 
+  Catoms2D1BlockCode *blockCode; // access to map, host, ...
 
   Landmarks(Catoms2D1BlockCode *bc);
   Landmarks(const Landmarks &l);
@@ -88,17 +88,17 @@ class LandmarkBeaconEvent : public BlockEvent {
     eventType = LANDMARK_BEACON_EVENT;
     randomNumber = conBlock->getRandomUint();
   }
-	
+
  LandmarkBeaconEvent(LandmarkBeaconEvent *ev) : BlockEvent(ev) {
     randomNumber = ev->randomNumber;
   }
-	
+
   ~LandmarkBeaconEvent() {};
-	
+
   void consumeBlockEvent() {
     concernedBlock->scheduleLocalEvent(EventPtr(new LandmarkBeaconEvent(this)));
   }
-	
+
   const string getEventName() { return "LANDMARK_BEACON_EVENT"; }
 };
 
@@ -109,26 +109,26 @@ class LandmarkBeaconMessage;
 typedef std::shared_ptr<LandmarkBeaconMessage> LandmarkBeaconMessage_ptr;
 
 class LandmarkBeaconMessage : public Message {
-  
+
  public:
   int id;
   Coordinate position;
   int distance;
-  
- LandmarkBeaconMessage(int i, Coordinate p, int d) : Message() { 
+
+ LandmarkBeaconMessage(int i, Coordinate p, int d) : Message() {
     type = LANDMARK_BEACON_MSG;
     id = i;
     position = p;
     distance = d;
   };
 
- LandmarkBeaconMessage(LandmarkBeaconMessage *m) : Message() { 
+ LandmarkBeaconMessage(LandmarkBeaconMessage *m) : Message() {
     type = m->type;
     id = m->id;
     position = m->position;
     distance = m->distance;
   };
-  
+
   ~LandmarkBeaconMessage() {};
   unsigned int size() { return 17;};
 };

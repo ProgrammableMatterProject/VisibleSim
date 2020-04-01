@@ -11,8 +11,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "utils.h"
-#include "catoms3DRotationEvents.h"
+#include "utils/utils.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
 
 #include "lightWalkCatoms3DBlockCode.hpp"
 #include "lightWalkCatoms3DMessages.hpp"

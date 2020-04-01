@@ -1,5 +1,5 @@
 #include <iostream>
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 #include "moldingBlockCode.h"
 
 using namespace std;

@@ -11,9 +11,9 @@
 
 #include <limits.h>
 #include <assert.h>
-#include "objLoader.h"
-#include "trace.h"
-#include "vector3D.h"
+#include "gui/objLoader.h"
+#include "utils/trace.h"
+#include "math/vector3D.h"
 //#define DEBUG	1
 
 using namespace std;
