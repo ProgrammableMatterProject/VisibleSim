@@ -4,6 +4,19 @@
 
 bool first=true;
 
+void DatomsRotateCode::initTabLockedCells() {
+    if (tabLockedCells == nullptr) {
+        const Cell3DPosition& gs = lattice->gridSize;
+        int n = gs.pt[0]*gs.pt[1]*gs.pt[2];
+        tabLockedCells = new bool[n];
+        // initialisation of tabLockedCells with value false
+        bool *ptr = tabLockedCells;
+        while (n--) {
+            *ptr++ = false;
+        }
+    }
+}
+
 void DatomsRotateCode::initTabDistances() {
     if (tabDistances == NULL) {
         const Cell3DPosition& gs = lattice->gridSize;
@@ -30,6 +43,7 @@ void DatomsRotateCode::startup() {
     lattice = (SkewFCCLattice*)(Datoms::getWorld()->lattice);
 
     if (module->blockId==1) {
+        initTabLockedCells();
         initTabDistances();
         setDistance(module->position,0);
         initDistances();

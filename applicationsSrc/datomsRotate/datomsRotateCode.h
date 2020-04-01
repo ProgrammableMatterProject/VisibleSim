@@ -14,27 +14,30 @@ private:
     queue <Cell3DPosition> cellsList;
     SkewFCCLattice *lattice;
     bool distanceCalculated = false;
-    inline static unsigned short *tabDistances;
-    inline static bool *tabLockedCells;
+    inline static unsigned short *tabDistances = nullptr;
+    inline static bool *tabLockedCells  = nullptr;
     inline static vector<Cell3DPosition> ptsLine;
     inline static bool showDistance = false;
 public :
     DatomsRotateCode(DatomsBlock *host):DatomsBlockCode(host) {
         module = host;
-        tabDistances = new unsigned short[lattice->gridSize[0]
-                                          * lattice->gridSize[1]
-                                          * lattice->gridSize[2]]();
-        tabLockedCells = new bool[lattice->gridSize[0]
-                                  * lattice->gridSize[1] * lattice->gridSize[2]]();
     };
 
     ~DatomsRotateCode() {
-        delete [] tabDistances;
-        delete [] tabLockedCells;
+        if (tabDistances) {
+            delete [] tabDistances;
+            tabDistances = nullptr;
+        }
+
+        if (tabLockedCells) {
+            delete [] tabLockedCells;
+            tabLockedCells = nullptr;
+        }
     };
 
     void initDistances();
     void initTabDistances();
+    void initTabLockedCells();
     unsigned short getDistance(const Cell3DPosition &pos);
     void setDistance(const Cell3DPosition &pos,unsigned short d);
 
