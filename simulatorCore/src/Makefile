@@ -52,12 +52,6 @@ SMARTBLOCKS_SRCS = $(SMARTBLOCKS_SRCS_NODIR:%=$(SMARTBLOCKS_DIR)/%)
 SMARTBLOCKS_OBJS = $(SMARTBLOCKS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 SMARTBLOCKS_DEPS = $(SMARTBLOCKS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-OKTEEN_DIR = robots/okteen
-OKTEEN_SRCS_NODIR = okteenSimulator.cpp okteenBlock.cpp okteenBlockCode.cpp okteenWorld.cpp okteenGlBlock.cpp okteenEvents.cpp
-OKTEEN_SRCS = $(OKTEEN_SRCS_NODIR:%=$(OKTEEN_DIR)/%)
-OKTEEN_OBJS = $(OKTEEN_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
-OKTEEN_DEPS = $(OKTEEN_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
-
 DATOMS_DIR = robots/datoms
 DATOMS_SRCS_NODIR = datomsSimulator.cpp datomsBlock.cpp datomsBlockCode.cpp datomsWorld.cpp datomsGlBlock.cpp deformationEvents.cpp datomsMotionRules.cpp datomsMotionEngine.cpp
 DATOMS_SRCS = $(DATOMS_SRCS_NODIR:%=$(DATOMS_DIR)/%)
@@ -76,13 +70,13 @@ HEXANODES_SRCS = $(HEXANODES_SRCS_NODIR:%=$(HEXANODES_DIR)/%)
 HEXANODES_OBJS = $(HEXANODES_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 HEXANODES_DEPS = $(HEXANODES_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(SLIDINGCUBES_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(OKTEEN_SRCS) $(DATOMS_SRCS) $(NODES2D_SRCS) $(HEXANODES_SRCS)
+SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(SLIDINGCUBES_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(DATOMS_SRCS) $(NODES2D_SRCS) $(HEXANODES_SRCS)
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
-OUT = $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNodes2D.a $(LDIR)/libsimHexanodes.a
+OUT = $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNodes2D.a $(LDIR)/libsimHexanodes.a
 
 CORE_DIRS = base/ clock/ comm/ deps/ grid/ gui/ math/ meld/ motion/ stats/ robots/ events/ utils/
-CORE_INC_DIRS = $(CORE_DIRS) $(BLINKYBLOCKS_DIR) $(SLIDINGCUBES_DIR) $(CATOMS2D_DIR) $(CATOMS3D_DIR) $(SMARTBLOCKS_DIR) $(OKTEEN_DIR) $(DATOMS_DIR) $(NODES2D_DIR) $(HEXANODES_DIR) $(MELD_DIR)
+CORE_INC_DIRS = $(CORE_DIRS) $(BLINKYBLOCKS_DIR) $(SLIDINGCUBES_DIR) $(CATOMS2D_DIR) $(CATOMS3D_DIR) $(SMARTBLOCKS_DIR) $(DATOMS_DIR) $(NODES2D_DIR) $(HEXANODES_DIR) $(MELD_DIR)
 
 OUTDIRS += $(CORE_INC_DIRS:%=$(DEPDIR)/%) $(CORE_INC_DIRS:%=$(OBJDIR)/%)
 INCLUDES = $(GLOBAL_INCLUDES) -I. # $(CORE_INC_DIRS:%=-I%)
@@ -116,7 +110,7 @@ $(OBJDIR)/%.o: %.cpp
 	$(POSTCOMPILE)
 
 
-all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimOkteen.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNodes2D.a $(LDIR)/libsimHexanodes.a
+all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNodes2D.a $(LDIR)/libsimHexanodes.a
 
 ${OUTDIRS}:
 	@mkdir -p $@
@@ -140,10 +134,6 @@ $(LDIR)/libsimCatoms3D.a: $(CATOMS3D_OBJS)
 $(LDIR)/libsimSmartBlocks.a: $(SMARTBLOCKS_OBJS)
 	@echo "Archiving SmartBlocks library..."
 	@ar rcs $(LDIR)/libsimSmartBlocks.a $(SMARTBLOCKS_OBJS)
-
-$(LDIR)/libsimOkteen.a: $(OKTEEN_OBJS)
-	@echo "Archiving Okteen library..."
-	@ar rcs $(LDIR)/libsimOkteen.a $(OKTEEN_OBJS)
 
 $(LDIR)/libsimDatoms.a: $(DATOMS_OBJS)
 	@echo "Archiving Datoms library..."
