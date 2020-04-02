@@ -8,8 +8,8 @@
 #ifndef BORDER_H_
 #define BORDER_H_
 
-#include "catoms3DWorld.h"
-#include "cell3DPosition.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "grid/cell3DPosition.h"
 
 class Border {
 private:

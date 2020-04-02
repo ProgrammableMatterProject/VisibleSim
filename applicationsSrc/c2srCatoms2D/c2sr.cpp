@@ -11,9 +11,9 @@
 #include <memory>
 #include <map>
 
-#include "catoms2DWorld.h"
-#include "scheduler.h"
-#include "events.h"
+#include "robots/catoms2D/catoms2DWorld.h"
+#include "events/scheduler.h"
+#include "events/events.h"
 #include "c2sr.h"
 #include "c2srMsg.h"
 #include "catom2D1BlockCode.h"
@@ -103,10 +103,10 @@ std::string C2SR::toString(C2SRState_t s) {
     break;
   case UNKNOWN:
     return "UNKNOWN";
-    break;  
+    break;
   case BLOCKED:
     return "BLOCKED";
-    break; 
+    break;
   case WAITING:
     return "WAITING";
     break;
@@ -127,10 +127,10 @@ void C2SR::handleStopMovingEvent() {
 
   // Update Position
   map->setPosition(currentClearance.dest);
-  
+
   // Verif
   assert(isFree());
-  
+
   setState(WAITING);
 
   // Verif2
@@ -138,7 +138,7 @@ void C2SR::handleStopMovingEvent() {
   removeMovings(catom);
   assert(checkSpace());
 #endif
-  
+
   // send end of move to ?
   Neighbor n = map->getBorder(ROTATION_DIRECTION);
   Message *m = new C2SREndMoveMsg(currentClearance,1);
@@ -177,7 +177,7 @@ void C2SR::handle(MessagePtr m) {
 
   //MY_CERR << "hop count: " << rm->hopCounter << endl;
   //MY_CERR << "size: " << rm->size() << endl;
-  
+
 #ifdef CHECK_SPACE
   assert(checkSpace());
 #endif
@@ -185,9 +185,9 @@ void C2SR::handle(MessagePtr m) {
   if (!started) {
     start();
   }
-  
+
   switch(rm->subtype) {
-    
+
   case C2SRMsg::CLEARANCE_REQUEST: {
     C2SRClearanceRequestMsg_ptr crm = std::static_pointer_cast<C2SRClearanceRequestMsg>(m);
 
@@ -199,11 +199,11 @@ void C2SR::handle(MessagePtr m) {
 #ifdef C2SR_MSG_DEBUG
     printMoving();
 #endif
-    
+
     if (next.interface != recv && Map::areNeighbors(crm->request.dest,next.position)) {
-      hasNext = true; 
+      hasNext = true;
     }
-         
+
     // Rules
     if (state == WAITING) {
       // false can't move, this module will move first
@@ -226,10 +226,10 @@ void C2SR::handle(MessagePtr m) {
     if (state == BLOCKED || state == GOAL) {
       crm->request.cnt++;
       if (crm->request.cnt == 4) {
-	// wait for this module to move,
-	// send delayed ClearanceRequest to previous
-	crm->request.cnt--;
-	delayed = true;
+    // wait for this module to move,
+    // send delayed ClearanceRequest to previous
+    crm->request.cnt--;
+    delayed = true;
       }
     }
 
@@ -243,7 +243,7 @@ void C2SR::handle(MessagePtr m) {
 #ifdef C2SR_MSG_DEBUG
       MY_CERR << "CLEARANCE_REQUEST forwarded to : " << next.interface->connectedInterface->hostBlock->blockId << endl;
 #endif
-      send(m, next.interface);      
+      send(m, next.interface);
     } else {
       // clearance granted
       Clearance c(crm->request.src,crm->request.dest);
@@ -254,7 +254,7 @@ void C2SR::handle(MessagePtr m) {
     break;
   case C2SRMsg::CLEARANCE: {
     C2SRClearanceMsg_ptr cm = std::static_pointer_cast<C2SRClearanceMsg>(m);
-        
+
     // Find the right condition!
     if (map->getPosition() == cm->clearance.src) {
       // move
@@ -262,14 +262,14 @@ void C2SR::handle(MessagePtr m) {
       Message *m = new C2SRStartMoveMsg(1);
       send(m,recv);
     } else {
-      forwardClearance(cm->clearance, recv,rm->hopCounter+1);      
+      forwardClearance(cm->clearance, recv,rm->hopCounter+1);
     }
   }
     break;
   case C2SRMsg::DELAYED_CLEARANCE_REQUEST: {
     C2SRDelayedClearanceRequestMsg_ptr dcrm = std::static_pointer_cast<C2SRDelayedClearanceRequestMsg>(m);
-    
-    if (dcrm->request.src != map->getPosition()) {  
+
+    if (dcrm->request.src != map->getPosition()) {
 #ifdef RECONFIGURATION_CLEARANCE_DEBUG
       MY_CERR << dcrm->request.toString()  << " delayed!" << endl;
 #endif
@@ -292,30 +292,30 @@ void C2SR::handle(MessagePtr m) {
     // Remove movings and forward end_of_move
     removeMoving(emm->clearance.dest);
     removeMoving(emm->clearance.src);
-        
+
     forwardEndMove(emm->clearance,recv,rm->hopCounter+1);
 
     // and now:
     if (isInStream()) {
       setState(WAITING);
       assert(pendingRequests.size() == 0);
-      
+
       requestClearance();
     } else {
-      
+
       if (isAPendingRequestDestNeighborWith(emm->clearance.src)) {
-	ClearanceRequest cr = getPendingRequestDestNeighborWith(emm->clearance.src);
-	Neighbor next = map->getNeighbor(ROTATION_DIRECTION,cr.dest);
-	if (Map::areNeighbors(next.position,cr.dest)) {
-	  Message *m = new C2SRClearanceRequestMsg(cr,1);
-	  send(m,next.interface);
-	} else { // clearance granted!
-	  Clearance c(cr.src,cr.dest);
-	  insertMoving(c.dest);
-	  forwardClearance(c,NULL,1);
-	}
+    ClearanceRequest cr = getPendingRequestDestNeighborWith(emm->clearance.src);
+    Neighbor next = map->getNeighbor(ROTATION_DIRECTION,cr.dest);
+    if (Map::areNeighbors(next.position,cr.dest)) {
+      Message *m = new C2SRClearanceRequestMsg(cr,1);
+      send(m,next.interface);
+    } else { // clearance granted!
+      Clearance c(cr.src,cr.dest);
+      insertMoving(c.dest);
+      forwardClearance(c,NULL,1);
+    }
       }
-      
+
     }
   }
     break;
@@ -330,8 +330,8 @@ void C2SR::move(Clearance &c) {
   //Coordinate &src = map->getPosition();
 
   Catoms2DBlock* piv= (Catoms2DBlock*)pivot.interface->connectedInterface->hostBlock;
-  Rotation2DMove m(piv,ROTATION_DIRECTION);
-  
+  Catoms2DRotationMove m(piv,ROTATION_DIRECTION);
+
   assert(isFree());
   assert(dest == c.dest); // otherwise, it's not the good clearance!
 
@@ -339,7 +339,7 @@ void C2SR::move(Clearance &c) {
   insertMovings(catom);
   assert(checkSpace());
 #endif
-  
+
   currentClearance = c;
 
 #ifdef RECONFIGURATION_MOVES_DEBUG
@@ -347,7 +347,7 @@ void C2SR::move(Clearance &c) {
 #endif
 
   setState(MOVING);
-  
+
   // start to move around the pivot
   catom->startMove(m);
 }
@@ -362,7 +362,7 @@ void C2SR::requestClearance() {
   Neighbor pivot = map->getBorder(ROTATION_DIRECTION);
   Coordinate dest = getPositionAfterRotationAround(pivot);
   Coordinate &src = map->getPosition();
- 
+
   Neighbor b = map->getBorder(ROTATION_DIRECTION);
   ClearanceRequest cr(src,dest,0);
   Message *m = new C2SRClearanceRequestMsg(cr,1);
@@ -384,7 +384,7 @@ bool C2SR::isInStream() {
     return true;
   } else if (!Map::isInTarget(src) && (dest.y <= src.y)) { // descent over I
     return true;
-  } else if (!Map::isInTarget(src) && Map::isInTarget(pivot.position)) { // 
+  } else if (!Map::isInTarget(src) && Map::isInTarget(pivot.position)) { //
     return true;
   } else if (Map::isInTarget(src) && Map::isInTarget(dest) && (dest.y <= src.y)) {
     return true;
@@ -412,14 +412,14 @@ bool C2SR::isFree() {
 }
 
 void C2SR::start() {
-  
+
   if (!started) {
-    
+
 #ifdef RECONFIGURATION_NEIGHBORHOOD_DEBUG
     printNeighbors();
 #endif
-    
-    started = true; 
+
+    started = true;
     if (Map::isInTarget(map->position)) { // seed
       hasConverged();
     } else if (isInStream()) {
@@ -520,7 +520,7 @@ void C2SR::send(Message *m, P2PNetworkInterface *i) {
   assert(i);
   assert(i->connectedInterface);
   assert(m);
-  
+
   i->send(m);
 }
 
@@ -583,12 +583,12 @@ void C2SR::removeMovings(Catoms2D::Catoms2DBlock *c) {
 bool C2SR::checkSpace() {
 #ifdef CHECKSPACE_V1
   Catoms2DBlock *m1, *m2;
-  
+
   double epsilon = 0.001;
   double limit = 3*CATOMS_RADIUS;
   std::list<Catoms2DBlock*>::iterator it1;
   std::list<Catoms2DBlock*>::iterator it2;
-  
+
   for(it1 = movingModules.begin(); it1 != movingModules.end(); ++it1) {
     for(it2 = movingModules.begin(); it2 != movingModules.end(); ++it2) {
      if (*it1 == *it2) { continue;}
@@ -597,7 +597,7 @@ bool C2SR::checkSpace() {
      Vector3D p1 = m1->ptrGlBlock->getPosition();
      Vector3D p2 = m2->ptrGlBlock->getPosition();
      double d = distance(p1,p2) + epsilon;
-     
+
      if (d < limit) {
 #ifdef RECONFIGURATION_CHECKSPACE_DEBUG
        Catoms2D1BlockCode *bc1, *bc2;
@@ -605,11 +605,11 @@ bool C2SR::checkSpace() {
        bc2 = (Catoms2D1BlockCode*) m2->blockCode;
        cout.precision(17);
        MY_CERR << "SPACE Condition violated by modules "
-	       << m1->blockId << "(" << bc1->c2sr->currentClearance.toString() << ")"
-	       << " and "
-	       << m2->blockId << "(" << bc2->c2sr->currentClearance.toString() << ")"
-	       << " at distance " << fixed << d << " vs " << fixed << limit
-	       << endl;
+           << m1->blockId << "(" << bc1->c2sr->currentClearance.toString() << ")"
+           << " and "
+           << m2->blockId << "(" << bc2->c2sr->currentClearance.toString() << ")"
+           << " at distance " << fixed << d << " vs " << fixed << limit
+           << endl;
        getchar();
 #endif
         return false;
@@ -618,15 +618,15 @@ bool C2SR::checkSpace() {
   }
   return true;
 #endif
- 
+
 #ifdef CHECKSPACE_V2
   Catoms2DBlock *m1, *m2;
   Catoms2D1BlockCode *bc1, *bc2;
   C2SR *r1, *r2;
-    
+
   std::list<Catoms2DBlock*>::iterator it1;
   std::list<Catoms2DBlock*>::iterator it2;
-  
+
   for(it1 = movingModules.begin(); it1 != movingModules.end(); ++it1) {
     m1 = *it1;
     bc1 = (Catoms2D1BlockCode*) m1->blockCode;
@@ -634,38 +634,38 @@ bool C2SR::checkSpace() {
     vector<Coordinate> safetyZone = r1->getSafetyZone();
 
     assert(safetyZone.size() > 0);
-    
+
     for(it2 = movingModules.begin(); it2 != movingModules.end(); ++it2) {
       if (*it1 == *it2) { continue;}
-     
+
       m2 = *it2;
       bc2 = (Catoms2D1BlockCode*) m2->blockCode;
       r2 = bc2->c2sr;
-      
+
       for (std::vector<Coordinate>::iterator it = safetyZone.begin(); it != safetyZone.end();
-	   ++it) {
-	if ( (r2->currentClearance.src == *it) ||
-	     (r2->currentClearance.dest == *it)) {
+       ++it) {
+    if ( (r2->currentClearance.src == *it) ||
+         (r2->currentClearance.dest == *it)) {
 #ifdef RECONFIGURATION_CHECKSPACE_DEBUG
-	  Vector3D p1 = m1->ptrGlBlock->getPosition();
-	  Vector3D p2 = m2->ptrGlBlock->getPosition();
-	  cout.precision(17);
-	  MY_CERR << "SPACE Condition violated by modules "
-		  << m1->blockId << "(" << r1->currentClearance.toString() << ")"
-		  << " and "
-		  << m2->blockId << "(" << r2->currentClearance.toString() << ")"
-		  << " at distance " << fixed << distance(p1,p2)
-		  << endl;
-	  getchar();
+      Vector3D p1 = m1->ptrGlBlock->getPosition();
+      Vector3D p2 = m2->ptrGlBlock->getPosition();
+      cout.precision(17);
+      MY_CERR << "SPACE Condition violated by modules "
+          << m1->blockId << "(" << r1->currentClearance.toString() << ")"
+          << " and "
+          << m2->blockId << "(" << r2->currentClearance.toString() << ")"
+          << " at distance " << fixed << distance(p1,p2)
+          << endl;
+      getchar();
 #endif
-	  return false;
-	}
+      return false;
+    }
       }
     }
   }
   return true;
 #endif
-  
+
 }
 
 double C2SR::distance(Vector3D &p1, Vector3D &p2) {
@@ -684,16 +684,16 @@ vector<Coordinate> C2SR::getSafetyZone() {
   vector<Cell3DPosition> destNeighborhood = l->getNeighborhood(destP);
   vector<Coordinate> safetyZone;
   vector<Cell3DPosition> safetyZoneP = srcNeighborhood;
-  
+
   safetyZoneP.insert(safetyZoneP.end(), destNeighborhood.begin(), destNeighborhood.end());
-  
+
   for (std::vector<Cell3DPosition>::iterator it = safetyZoneP.begin();
        it != safetyZoneP.end(); ++it) {
     safetyZone.push_back(Coordinate((*it)[0],(*it)[2]));
   }
   return safetyZone;
 }
- 
+
 bool C2SR::isDone() {
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
   Cell3DPosition gridSize = world->lattice->gridSize;
@@ -701,9 +701,9 @@ bool C2SR::isDone() {
     for (int ix = 0; ix < gridSize[0]; ix++) {
       Cell3DPosition c(ix,0,iy);
       if (BlockCode::target->isInTarget(c)) {
-	if (!world->lattice->getBlock(c)) {
-	  return false;
-	}
+    if (!world->lattice->getBlock(c)) {
+      return false;
+    }
       }
     }
   }
@@ -711,7 +711,7 @@ bool C2SR::isDone() {
 }
 
 void C2SR::hasConverged() {
-  setState(GOAL);  
+  setState(GOAL);
 }
 
 void C2SR::setState(C2SRState_t s) {
@@ -721,14 +721,14 @@ void C2SR::setState(C2SRState_t s) {
   if (state == GOAL) {
     Coordinate p = map->getPosition();
     assert(Map::isInTarget(p));
-    Cell3DPosition c(p.x,0,p.y); 
+    Cell3DPosition c(p.x,0,p.y);
     catom->setColor(BlockCode::target->getTargetColor(c));
   }
 #endif
 
 #ifdef RECONFIGURATION_PARALLELISM_COLOR
   if (s == UNKNOWN) return;
-  
+
   switch(s) {
   case GOAL:
     catom->setColor(GREEN);
@@ -746,6 +746,5 @@ void C2SR::setState(C2SRState_t s) {
   default:
     ;;
   }
-#endif    
+#endif
 }
-

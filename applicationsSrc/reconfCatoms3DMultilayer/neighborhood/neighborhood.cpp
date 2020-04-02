@@ -1,6 +1,6 @@
 #include "neighborhood.h"
 #include "neighborRestriction.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 #define MSG_TIME 0//rand()%10
 #define MSG_TIME_ADD 1//1000+rand()%100
@@ -19,7 +19,7 @@ Neighborhood::Neighborhood(Catoms3D::Catoms3DBlock *c, Reconf *r, SyncNext *sn, 
 
 void Neighborhood::addNeighborToLeft()
 {
-    Cell3DPosition pos = catom->position.addX(-1);
+    Cell3DPosition pos = catom->position.offsetX(-1);
     if (BlockCode::target->isInTarget(pos) && !catom->getInterface(pos)->isConnected()) {
         if (!Scheduler::getScheduler()->hasEvent(ADDLEFTBLOCK_EVENT_ID, catom->blockId)) {
             getScheduler()->schedule(new AddLeftBlock_event(getScheduler()->now()+MSG_TIME_ADD, catom));
@@ -30,7 +30,7 @@ void Neighborhood::addNeighborToLeft()
 
 void Neighborhood::addNeighborToRight()
 {
-    Cell3DPosition pos = catom->position.addX(1);
+    Cell3DPosition pos = catom->position.offsetX(1);
     if (BlockCode::target->isInTarget(pos) && !catom->getInterface(pos)->isConnected()) {
         if (!Scheduler::getScheduler()->hasEvent(ADDRIGHTBLOCK_EVENT_ID, catom->blockId)) {
             getScheduler()->schedule(new AddRightBlock_event(getScheduler()->now()+MSG_TIME_ADD, catom));
@@ -41,10 +41,10 @@ void Neighborhood::addNeighborToRight()
 
 void Neighborhood::addNextLineNeighbor()
 {
-    if (BlockCode::target->isInTarget(catom->position.addY(1)) &&
-        !catom->getInterface(catom->position.addY(1))->isConnected()) {
+    if (BlockCode::target->isInTarget(catom->position.offsetY(1)) &&
+        !catom->getInterface(catom->position.offsetY(1))->isConnected()) {
         if (!Scheduler::getScheduler()->hasEvent(ADDNEXTLINE_EVENT_ID, catom->blockId)
-                && !catom->getInterface(catom->position.addY(1))->isConnected()) {
+                && !catom->getInterface(catom->position.offsetY(1))->isConnected()) {
             AddNextLine_event *evt = new AddNextLine_event(getScheduler()->now()+MSG_TIME_ADD, catom);
             getScheduler()->schedule(evt);
             reconf->nChildren++;
@@ -54,10 +54,10 @@ void Neighborhood::addNextLineNeighbor()
 
 void Neighborhood::addPreviousLineNeighbor()
 {
-    if (BlockCode::target->isInTarget(catom->position.addY(-1)) &&
-        !catom->getInterface(catom->position.addY(-1))->isConnected()) {
+    if (BlockCode::target->isInTarget(catom->position.offsetY(-1)) &&
+        !catom->getInterface(catom->position.offsetY(-1))->isConnected()) {
         if (!Scheduler::getScheduler()->hasEvent(ADDPREVIOUSLINE_EVENT_ID, catom->blockId)
-                && !catom->getInterface(catom->position.addY(-1))->isConnected()) {
+                && !catom->getInterface(catom->position.offsetY(-1))->isConnected()) {
             AddPreviousLine_event *evt = new AddPreviousLine_event(getScheduler()->now()+MSG_TIME_ADD, catom);
             getScheduler()->schedule(evt);
             reconf->nChildren++;
@@ -67,7 +67,7 @@ void Neighborhood::addPreviousLineNeighbor()
 
 void Neighborhood::addNeighborToNextPlane()
 {
-    Cell3DPosition pos = catom->position.addZ(1);
+    Cell3DPosition pos = catom->position.offsetZ(1);
     if (BlockCode::target->isInTarget(pos) && !catom->getInterface(pos)->isConnected()) {
         if (!Scheduler::getScheduler()->hasEvent(ADDNEXTPLANE_EVENT_ID, catom->blockId)) {
             getScheduler()->schedule(new AddNextPlane_event(getScheduler()->now()+MSG_TIME_ADD, catom));
@@ -77,7 +77,7 @@ void Neighborhood::addNeighborToNextPlane()
 
 void Neighborhood::addNeighborToPreviousPlane()
 {
-    Cell3DPosition pos = catom->position.addZ(-1);
+    Cell3DPosition pos = catom->position.offsetZ(-1);
     if (BlockCode::target->isInTarget(pos) && !catom->getInterface(pos)->isConnected()) {
         if (!Scheduler::getScheduler()->hasEvent(ADDPREVIOUSPLANE_EVENT_ID, catom->blockId)) {
             getScheduler()->schedule(new AddPreviousPlane_event(getScheduler()->now()+MSG_TIME_ADD, catom));
@@ -87,8 +87,8 @@ void Neighborhood::addNeighborToPreviousPlane()
 
 bool Neighborhood::isFirstCatomOfLine()
 {
-    if (!catom->getInterface(catom->position.addX(-1))->isConnected() &&
-            !catom->getInterface(catom->position.addX(1))->isConnected())
+    if (!catom->getInterface(catom->position.offsetX(-1))->isConnected() &&
+        !catom->getInterface(catom->position.offsetX(1))->isConnected())
         return true;
     return false;
 }
@@ -96,8 +96,8 @@ bool Neighborhood::isFirstCatomOfLine()
 bool Neighborhood::isFirstCatomOfPlane()
 {
     if (isFirstCatomOfLine() &&
-            !catom->getInterface(catom->position.addY(-1))->isConnected() &&
-            !catom->getInterface(catom->position.addY(1))->isConnected())
+            !catom->getInterface(catom->position.offsetY(-1))->isConnected() &&
+            !catom->getInterface(catom->position.offsetY(1))->isConnected())
         return true;
     return false;
 }
@@ -120,11 +120,11 @@ void Neighborhood::addNextPlane() {
 
 void Neighborhood::addLeft() {
     // Position exists and is free.
-    if(BlockCode::target->isInTarget(catom->position.addX(-1)) &&
-       !catom->getInterface(catom->position.addX(-1))->isConnected()) {
+    if(BlockCode::target->isInTarget(catom->position.offsetX(-1)) &&
+       !catom->getInterface(catom->position.offsetX(-1))->isConnected()) {
         // Check if can block previous line or not.
-        if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1))
-                || !catom->getInterface(catom->position.addY(-1))->isConnected()
+        if (!BlockCode::target->isInTarget(catom->position.offsetY(-1).offsetX(-1))
+                || !catom->getInterface(catom->position.offsetY(-1))->isConnected()
                 || reconf->canFillLeft) {
 
             // Do not block previous floor
@@ -140,11 +140,11 @@ void Neighborhood::addLeft() {
 
 void Neighborhood::addRight() {
     // Position exists and is free.
-    if(BlockCode::target->isInTarget(catom->position.addX(1)) &&
-       !catom->getInterface(catom->position.addX(1))->isConnected()) {
+    if(BlockCode::target->isInTarget(catom->position.offsetX(1)) &&
+       !catom->getInterface(catom->position.offsetX(1))->isConnected()) {
         // Check if can block previous line or not.
-        if (!BlockCode::target->isInTarget(catom->position.addY(1).addX(1))
-            || !catom->getInterface(catom->position.addY(1))->isConnected()
+        if (!BlockCode::target->isInTarget(catom->position.offsetY(1).offsetX(1))
+            || !catom->getInterface(catom->position.offsetY(1))->isConnected()
             || reconf->canFillRight) {
 
             // Do not block previous floor
@@ -161,32 +161,32 @@ void Neighborhood::addRight() {
 }
 
 void Neighborhood::addNext() {
-    if (BlockCode::target->isInTarget(catom->position.addY(1)) &&
+    if (BlockCode::target->isInTarget(catom->position.offsetY(1)) &&
             reconf->isSeedNext() && ((reconf->confirmNorthLeft && reconf->confirmNorthRight) || reconf->floor == 0 || reconf->parentPlaneFinished) && !syncNext->needSyncToRight()) {
         addNextLineNeighbor();
     }
 }
 void Neighborhood::addPrevious() {
-    if (BlockCode::target->isInTarget(catom->position.addY(-1)) &&
+    if (BlockCode::target->isInTarget(catom->position.offsetY(-1)) &&
         reconf->isSeedPrevious() && ((reconf->confirmSouthLeft && reconf->confirmSouthRight) || reconf->floor == 0 || reconf->parentPlaneFinished) && !syncPrevious->needSyncToLeft()) {
         addPreviousLineNeighbor();
     }
 }
 
 void Neighborhood::sendResponseMessageToAddLeft() {
-    if (catom->getInterface(catom->position.addY(1))->isConnected() &&
-            catom->getInterface(catom->position.addX(-1))->isConnected()) {
+    if (catom->getInterface(catom->position.offsetY(1))->isConnected() &&
+            catom->getInterface(catom->position.offsetX(-1))->isConnected()) {
         CanFillLeftResponse_message *msg = new CanFillLeftResponse_message();
-        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.offsetY(1))));
         numberMessagesToAddBlock++;
     }
 }
 
 void Neighborhood::sendResponseMessageToAddRight() {
-    if (catom->getInterface(catom->position.addX(1))->isConnected() &&
-            catom->getInterface(catom->position.addY(-1))->isConnected()) {
+    if (catom->getInterface(catom->position.offsetX(1))->isConnected() &&
+            catom->getInterface(catom->position.offsetY(-1))->isConnected()) {
         CanFillRightResponse_message *msg = new CanFillRightResponse_message();
-        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(-1))));
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.offsetY(-1))));
         numberMessagesToAddBlock++;
     }
 }
@@ -234,6 +234,7 @@ bool Neighborhood::addNeighbor(Cell3DPosition pos)
             numberBlockedModules++;
             cout << "number of blocked modules = " << numberBlockedModules << endl;
             cout << "---- ERROR ----\nPosition " << pos << " blocked" << endl;
+            world->lattice->highlightCell(pos, RED);
 
             //std::this_thread::sleep_for(std::chrono::milliseconds(100000));
         }
@@ -250,43 +251,43 @@ bool Neighborhood::addNeighbor(Cell3DPosition pos)
 
 void Neighborhood::checkDependencies() {
     if (catom->position[2]%2) {
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(2))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(2))))
             reconf->confirmNorthLeft = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(2).addX(1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(2).offsetX(1))))
             reconf->confirmNorthRight = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addX(-1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetX(-1))))
             reconf->confirmWestLeft = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(1).addX(-1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(1).offsetX(-1))))
             reconf->confirmWestRight = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(-1).addX(1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(-1).offsetX(1))))
             reconf->confirmSouthLeft = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(-1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(-1))))
             reconf->confirmSouthRight = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(1).addX(2))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(1).offsetX(2))))
             reconf->confirmEastLeft = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addX(2))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetX(2))))
             reconf->confirmEastRight = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetX(-1).offsetY(-1))))
             reconf->canFillNextFloor = true;
     }
     else {
-        if (!BlockCode::target->isInTarget(catom->position.addZ(-1).addY(1).addX(-1)))
+        if (!BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(1).offsetX(-1)))
             reconf->confirmNorthLeft = true;
-        if (!BlockCode::target->isInTarget(catom->position.addZ(-1).addY(1)))
+        if (!BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(1)))
             reconf->confirmNorthRight = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addX(-2).addY(-1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetX(-2).offsetY(-1))))
             reconf->confirmWestLeft = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addX(-2))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetX(-2))))
             reconf->confirmWestRight = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(-2))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(-2))))
             reconf->confirmSouthLeft = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(-2).addX(-1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetY(-2).offsetX(-1))))
             reconf->confirmSouthRight = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addX(1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetX(1))))
             reconf->confirmEastLeft = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addX(1).addY(-1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetZ(-1).offsetX(1).offsetY(-1))))
             reconf->confirmEastRight = true;
-        if (!(BlockCode::target->isInTarget(catom->position.addX(1).addY(1))))
+        if (!(BlockCode::target->isInTarget(catom->position.offsetX(1).offsetY(1))))
             reconf->canFillNextFloor = true;
     }
 }

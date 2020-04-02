@@ -1,20 +1,23 @@
 #include <iostream>
-#include "datomsSimulator.h"
-#include "datomsBlockCode.h"
+#include "robots/datoms/datomsSimulator.h"
+#include "robots/datoms/datomsBlockCode.h"
 #include "datomsRotateCode.h"
 
 using namespace std;
 using namespace Datoms;
 
 int main(int argc, char **argv) {
-	cout << "\033[1;33m" << "Starting Catom3D simulation (main) ..." << "\033[0m" << endl;
+    try
+    {
+        createSimulator(argc, argv, DatomsRotateCode::buildNewBlockCode);
+        getSimulator()->printInfo();
+        BaseSimulator::getWorld()->printInfo();
+        deleteSimulator();
+    }
+    catch(std::exception const& e)
+    {
+        cerr << "Uncaught exception: " << e.what();
+    }
 
-	createSimulator(argc, argv, DatomsRotateCode::buildNewBlockCode);
-	Scheduler *scheduler = getScheduler();
-
-	getSimulator()->printInfo();
-	scheduler->printInfo();
-	BaseSimulator::getWorld()->printInfo();
-	deleteSimulator();
-	return(0);
+    return(0);
 }

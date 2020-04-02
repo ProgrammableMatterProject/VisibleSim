@@ -1,5 +1,5 @@
 #include "reconf.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {
@@ -20,11 +20,11 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 
 bool Reconf::isInternalSeedNext()
 {
-    if (catom->getInterface(catom->position.addY(1))->isConnected())
+    if (catom->getInterface(catom->position.offsetY(1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(1).addY(1)) &&
-            BlockCode::target->isInTarget(catom->position.addY(1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.offsetX(1).offsetY(1)) &&
+            BlockCode::target->isInTarget(catom->position.offsetY(1)) ){
         return true;
     }
     return false;
@@ -32,11 +32,11 @@ bool Reconf::isInternalSeedNext()
 
 bool Reconf::isInternalSeedPrevious()
 {
-    if (catom->getInterface(catom->position.addY(-1))->isConnected())
+    if (catom->getInterface(catom->position.offsetY(-1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1)) &&
-            BlockCode::target->isInTarget(catom->position.addY(-1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.offsetX(-1).offsetY(-1)) &&
+            BlockCode::target->isInTarget(catom->position.offsetY(-1)) ){
         return true;
     }
     return false;
@@ -44,11 +44,11 @@ bool Reconf::isInternalSeedPrevious()
 
 bool Reconf::isBorderSeedNext()
 {
-    if (catom->getInterface(catom->position.addY(1))->isConnected())
+    if (catom->getInterface(catom->position.offsetY(1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(1)) &&
-        BlockCode::target->isInTarget(catom->position.addY(1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.offsetX(1)) &&
+        BlockCode::target->isInTarget(catom->position.offsetY(1)) ){
         return true;
     }
     return false;
@@ -56,11 +56,11 @@ bool Reconf::isBorderSeedNext()
 
 bool Reconf::isBorderSeedPrevious()
 {
-    if (catom->getInterface(catom->position.addY(-1))->isConnected())
+    if (catom->getInterface(catom->position.offsetY(-1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(-1)) &&
-        BlockCode::target->isInTarget(catom->position.addY(-1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.offsetX(-1)) &&
+        BlockCode::target->isInTarget(catom->position.offsetY(-1)) ){
         return true;
     }
     return false;
@@ -87,10 +87,10 @@ bool Reconf::isOnBorder()
 {
     Cell3DPosition pos = catom->position;
     if (BlockCode::target->isInTarget(pos) &&
-        (!BlockCode::target->isInTarget(pos.addX(-1)) ||
-        !BlockCode::target->isInTarget(pos.addX(1)) ||
-        !BlockCode::target->isInTarget(pos.addY(-1)) ||
-        !BlockCode::target->isInTarget(pos.addY(1))))
+        (!BlockCode::target->isInTarget(pos.offsetX(-1)) ||
+        !BlockCode::target->isInTarget(pos.offsetX(1)) ||
+        !BlockCode::target->isInTarget(pos.offsetY(-1)) ||
+        !BlockCode::target->isInTarget(pos.offsetY(1))))
         return true;
     return false;
 }
@@ -98,13 +98,13 @@ bool Reconf::isOnBorder()
 bool Reconf::areNeighborsPlaced()
 {
     Cell3DPosition pos = catom->position;
-    if (BlockCode::target->isInTarget(pos.addX(-1)) && !catom->getInterface(pos.addX(-1))->isConnected())
+    if (BlockCode::target->isInTarget(pos.offsetX(-1)) && !catom->getInterface(pos.offsetX(-1))->isConnected())
         return false;
-    if (BlockCode::target->isInTarget(pos.addX(1)) && !catom->getInterface(pos.addX(1))->isConnected())
+    if (BlockCode::target->isInTarget(pos.offsetX(1)) && !catom->getInterface(pos.offsetX(1))->isConnected())
         return false;
-    if (BlockCode::target->isInTarget(pos.addY(-1)) && !catom->getInterface(pos.addY(-1))->isConnected())
+    if (BlockCode::target->isInTarget(pos.offsetY(-1)) && !catom->getInterface(pos.offsetY(-1))->isConnected())
         return false;
-    if (BlockCode::target->isInTarget(pos.addY(1)) && !catom->getInterface(pos.addY(1))->isConnected())
+    if (BlockCode::target->isInTarget(pos.offsetY(1)) && !catom->getInterface(pos.offsetY(1))->isConnected())
         return false;
     return true;
 }

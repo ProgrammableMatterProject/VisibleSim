@@ -14,12 +14,12 @@
 
 #include <queue>
 
-#include "catoms3DBlockCode.h"
-#include "catoms3DSimulator.h"
-#include "catoms3DMotionRules.h"
-#include "rotation3DEvents.h"
-#include "catoms3DBlock.h"
-#include "cell3DPosition.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DMotionRules.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "grid/cell3DPosition.h"
 
 #include "meshAssemblyMessages.hpp"
 #include "meshRuleMatcher.hpp"
@@ -79,8 +79,8 @@ public:
     };
 
     inline static Time getRoundDuration() {
-        return (Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
-                + Rotations3D::COM_DELAY) + 20128;// + (getScheduler()->now() / 1000);
+        return (Catoms3DRotation::ANIMATION_DELAY * Catoms3DRotation::rotationDelayMultiplier
+                + Catoms3DRotation::COM_DELAY) + 20128;// + (getScheduler()->now() / 1000);
     }
 
     inline const Cell3DPosition& getEntryPointRelativePos(MeshComponent mc) const {

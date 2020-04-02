@@ -28,7 +28,7 @@
 #define NEXTPLANECONFIRMATION_EASTLEFT_MESSAGE_ID 12106
 #define NEXTPLANECONFIRMATION_EASTRIGHT_MESSAGE_ID 12107
 
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
 #include "../sync/syncNext.h"
@@ -94,11 +94,11 @@ public:
     AddNextLine_event(AddNextLine_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddNextLine_event(this)));
     }
 
-    const string getEventName() { return "Add next line block event"; }
+    const string getEventName() override { return "Add next line block event"; }
 };
 
 class AddPreviousLine_event : public BlockEvent {
@@ -109,11 +109,11 @@ public:
     AddPreviousLine_event(AddPreviousLine_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddPreviousLine_event(this)));
     }
 
-    const string getEventName() { return "Add previous line block event"; }
+    const string getEventName() override { return "Add previous line block event"; }
 };
 
 class AddLeftBlock_event : public BlockEvent {
@@ -124,11 +124,11 @@ public:
     AddLeftBlock_event(AddLeftBlock_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddLeftBlock_event(this)));
     }
 
-    const string getEventName() { return "Add left block event"; }
+    const string getEventName() override { return "Add left block event"; }
 };
 
 class AddRightBlock_event : public BlockEvent {
@@ -139,11 +139,11 @@ public:
     AddRightBlock_event(AddRightBlock_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddRightBlock_event(this)));
     }
 
-    const string getEventName() { return "Add right block event"; }
+    const string getEventName() override { return "Add right block event"; }
 };
 
 class AddNextPlane_event : public BlockEvent {
@@ -154,11 +154,11 @@ public:
     AddNextPlane_event(AddNextPlane_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddNextPlane_event(this)));
     }
 
-    const string getEventName() { return "Add next plane block event"; }
+    const string getEventName() override { return "Add next plane block event"; }
 };
 
 class AddPreviousPlane_event : public BlockEvent {
@@ -169,11 +169,11 @@ public:
     AddPreviousPlane_event(AddPreviousPlane_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddPreviousPlane_event(this)));
     }
 
-    const string getEventName() { return "Add previous plane block event"; }
+    const string getEventName() override { return "Add previous plane block event"; }
 };
 
 class CanFillLeftResponse_message : public Message {

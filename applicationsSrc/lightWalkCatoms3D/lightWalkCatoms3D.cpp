@@ -2,26 +2,28 @@
  * @file   lightWalkCatoms3D.cpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Mon Dec 10 15:27:06 2018
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <iostream>
-#include "catoms3DSimulator.h"
-#include "catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
 #include "lightWalkCatoms3DBlockCode.hpp"
 
 using namespace std;
 using namespace Catoms3D;
 
 int main(int argc, char **argv) {
-	cout << "\033[1;33m" << "Starting Catom3D simulation (main) ..." << "\033[0m" << endl;
+    cout << "\033[1;33m" << "Starting Catom3D simulation (main) ..." << "\033[0m" << endl;
 
     try
     {
-        createSimulator(argc, argv, LightWalkCatoms3DBlockCode::buildNewBlockCode);
+        createSimulator(argc, argv, LightWalkCatoms3DBlockCode::buildNewBlockCode,
+                        // useSkewedFCCLattice
+                        true);
         getSimulator()->printInfo();
         BaseSimulator::getWorld()->printInfo();
         deleteSimulator();
@@ -38,8 +40,8 @@ int main(int argc, char **argv) {
     {
         cerr << msg;
     }
-    
+
     cout << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
 
-	return 0;
+    return 0;
 }

@@ -11,16 +11,16 @@
 #define CSG_MSG_ID	9001
 #define DISTANCE_MSG_ID	9002
 
-#include "catoms3DBlockCode.h"
-#include "catoms3DSimulator.h"
-#include "catoms3DBlock.h"
-#include "scheduler.h"
-#include "events.h"
-#include "csgUtils.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "events/scheduler.h"
+#include "events/events.h"
+#include "csg/csgUtils.h"
 #include "stoyUtils.h"
 #include "meshUtils.h"
 #include "bitmapUtils.h"
-#include "target.h"
+#include "grid/target.h"
 
 class CSG_message;
 
@@ -42,8 +42,8 @@ public:
     CsgCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
     ~CsgCatoms3DBlockCode();
 
-    void startup();
-    void processLocalEvent(EventPtr pev);
+    void startup() override;
+    void processLocalEvent(EventPtr pev) override;
     void createCSG();
     void sendCSGMessage();
 

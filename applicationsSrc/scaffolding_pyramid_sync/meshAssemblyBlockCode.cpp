@@ -11,15 +11,15 @@
 #include <iostream>
 #include <set>
 
-#include "catoms3DWorld.h"
-#include "scheduler.h"
-#include "events.h"
-#include "trace.h"
-#include "tDefs.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "events/scheduler.h"
+#include "events/events.h"
+#include "utils/trace.h"
+#include "utils/tDefs.h"
 
-#include "teleportationEvents.h"
-#include "rotation3DEvents.h"
-#include "catoms3DMotionEngine.h"
+#include "motion/teleportationEvents.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DMotionEngine.h"
 
 #include "meshAssemblyBlockCode.hpp"
 
@@ -166,7 +166,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     // // cout << "isInMesh: " << ruleMatcher->isInMesh(norm(catom->position)) << endl;
 
     // // cout << "Possible Rotations: " << endl;
-    // // const vector<std::pair<const Catoms3DMotionRulesLink*, Rotations3D>> allRotations =
+    // // const vector<std::pair<const Catoms3DMotionRulesLink*, Catoms3DRotation>> allRotations =
     // //     Catoms3DMotionEngine::getAllRotationsForModule(catom);
 
     // // for (const auto& rotation : allRotations) {
@@ -628,7 +628,7 @@ void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos) {
     try {
         OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
         // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
-        scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
+        scheduler->schedule(new Catoms3DRotationStartEvent(getScheduler()->now(),
                                                      catom, pos,
                                                      RotationLinkType::OctaFace, false));
 #ifdef INTERACTIVE_MODE

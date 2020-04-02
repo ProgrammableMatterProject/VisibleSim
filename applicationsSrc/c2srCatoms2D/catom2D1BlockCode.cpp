@@ -11,10 +11,10 @@
 #include <float.h>
 
 #include "catom2D1BlockCode.h"
-#include "scheduler.h"
-#include "events.h"
-#include "rotation2DEvents.h"
-#include "rate.h"
+#include "events/scheduler.h"
+#include "events/events.h"
+#include "robots/catoms2D/catoms2DRotationEvents.h"
+#include "comm/rate.h"
 
 #include "c2srMsg.h"
 #include "c2srEvents.h"
@@ -47,7 +47,7 @@ Catoms2D1BlockCode::~Catoms2D1BlockCode() {
     C2SRMsg::printHopCountStats();
     statsPrinted = true;
   }
-  
+
   delete c2sr;
   delete map;
 }
@@ -82,16 +82,16 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   switch (pev->eventType) {
   case EVENT_NI_RECEIVE: {
     MessagePtr message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-    P2PNetworkInterface * recv_interface = message->destinationInterface;
+    // P2PNetworkInterface * recv_interface = message->destinationInterface;
     switch(message->type) {
     case GO_MAP_MSG:
     case BACK_MAP_MSG: {
       bool finished = map->handleMessage(message);
       if (finished) {
-	scheduleC2SRStart();
-	if (map->connectedToHost) {
-	  cout << "@" << catom2D->blockId << " has created the coordinate system" << endl;
-	}
+    scheduleC2SRStart();
+    if (map->connectedToHost) {
+      cout << "@" << catom2D->blockId << " has created the coordinate system" << endl;
+    }
       }
     }
       break;
@@ -107,7 +107,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   case EVENT_START_C2SR: {
     c2sr->start();
   }
-    break;  
+    break;
   case  EVENT_ROTATION2D_END: {
     #ifdef RECONFIGURATION_DEBUG
     cout << "@" << catom2D->blockId << " motion end: " << catom2D->position << endl;
@@ -127,13 +127,11 @@ void Catoms2D1BlockCode::setSimulationParameters() {
 
 void Catoms2D1BlockCode::setCommunicationRate() {
   double mean = simParams.commRateMean;
-  
+
   if (mean > 0) {
     double sd = mean*DEFAULT_SD_FACTOR;
-    vector<P2PNetworkInterface*>& interfaces = catom2D->getP2PNetworkInterfaces();
-    vector<P2PNetworkInterface*>::iterator it;
-    for (it = interfaces.begin() ; it != interfaces.end(); ++it) {
-      P2PNetworkInterface* p2p = *it;
+    const vector<P2PNetworkInterface*>& interfaces = catom2D->getP2PNetworkInterfaces();
+    for (P2PNetworkInterface* p2p : interfaces) {
       doubleRNG g = Random::getNormalDoubleRNG(catom2D->getRandomUint(),mean,sd);
       RandomRate *rate = new RandomRate(g);
       p2p->setDataRate(rate);

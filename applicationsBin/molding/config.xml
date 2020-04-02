@@ -1,0 +1,84 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="81,81,81">
+  <blockList color="128,128,128" blocksize="10,10,10">
+    <csg offset="false" content="cube(79,79,55)"/>
+  </blockList>
+<targetList>
+    <target format="surface">
+        <method meth="nurbs">
+                <scale scale="40"/>
+                <sorder order="3"/>
+                <sknot knot="0"/>
+                <sknot knot="0.125"/>
+                <sknot knot="0.250"/>
+                <sknot knot="0.375"/>
+                <sknot knot="0.5"/>
+                <sknot knot="0.625"/>
+                <sknot knot="0.75"/>
+                <sknot knot="0.875"/>
+                <sknot knot="1"/>
+                <torder order="3"/>
+                <tknot knot="0"/>
+                <tknot knot="0.1"/>
+                <tknot knot="0.2"/>
+                <tknot knot="0.3"/>
+                <tknot knot="0.4"/>
+                <tknot knot="0.5"/>
+                <tknot knot="0.6"/>
+                <tknot knot="0.7"/>
+                <tknot knot="0.8"/>
+                <tknot knot="0.9"/>
+                <tknot knot="1"/>
+                <ctlpoint coord="15.802,6.132,2.914,1"/>
+                <ctlpoint coord="14.144,6.132,2.193,1"/>
+                <ctlpoint coord="12.487,6.132,1.483,1"/>
+                <ctlpoint coord="10.829,6.132,0.881,1"/>
+                <ctlpoint coord="9.171,6.132,0.408,1"/>
+                <ctlpoint coord="7.513,6.132,0.192,1"/>
+                <ctlpoint coord="5.856,6.132,0.068,1"/>
+                <ctlpoint coord="4.198,6.132,0,1"/>
+                <ctlpoint coord="15.802,7.6792,5.402,1"/>
+                <ctlpoint coord="14.144,7.6792,8.383,1"/>
+                <ctlpoint coord="12.487,7.6792,8.459,1"/>
+                <ctlpoint coord="10.829,7.6792,8.102,1"/>
+                <ctlpoint coord="9.171,7.6792,7.353,1"/>
+                <ctlpoint coord="7.513,7.6792,6.414,1"/>
+                <ctlpoint coord="5.856,7.6792,5.031,1"/>
+                <ctlpoint coord="4.198,7.6792,1.356,1"/>
+                <ctlpoint coord="15.802,9.2264,5,1"/>
+                <ctlpoint coord="14.144,9.2264,5,1"/>
+                <ctlpoint coord="12.487,9.2264,5,1"/>
+                <ctlpoint coord="10.829,9.2264,5,1"/>
+                <ctlpoint coord="9.171,9.2264,5,1"/>
+                <ctlpoint coord="7.513,9.2264,5,1"/>
+                <ctlpoint coord="5.856,9.2264,5.652,1"/>
+                <ctlpoint coord="4.198,9.2264,2.135,1"/>
+                <ctlpoint coord="15.802,10.7736,5,1"/>
+                <ctlpoint coord="14.144,10.7736,5,1"/>
+                <ctlpoint coord="12.487,10.7736,5,1"/>
+                <ctlpoint coord="10.829,10.7736,5,1"/>
+                <ctlpoint coord="9.171,10.7736,5,1"/>
+                <ctlpoint coord="7.513,10.7736,5,1"/>
+                <ctlpoint coord="5.856,10.7736,5.691,1"/>
+                <ctlpoint coord="4.198,10.7736,2.134,1"/>
+                <ctlpoint coord="15.802,12.3208,5.772,1"/>
+                <ctlpoint coord="14.144,12.3208,8.067,1"/>
+                <ctlpoint coord="12.487,12.3208,8.042,1"/>
+                <ctlpoint coord="10.829,12.3208,7.71,1"/>
+                <ctlpoint coord="9.171,12.3208,7.12,1"/>
+                <ctlpoint coord="7.513,12.3208,6.306,1"/>
+                <ctlpoint coord="5.856,12.3208,4.862,1"/>
+                <ctlpoint coord="4.198,12.3208,1.354,1"/>
+                <ctlpoint coord="15.802,13.868,2.918,1"/>
+                <ctlpoint coord="14.144,13.868,2.191,1"/>
+                <ctlpoint coord="12.487,13.868,1.498,1"/>
+                <ctlpoint coord="10.829,13.868,0.86,1"/>
+                <ctlpoint coord="9.171,13.868,0.42,1"/>
+                <ctlpoint coord="7.513,13.868,0.157,1"/>
+                <ctlpoint coord="5.856,13.868,0.034,1"/>
+                <ctlpoint coord="4.198,13.868,0,1"/>
+        </method>
+    </target>
+</targetList>
+
+</world>

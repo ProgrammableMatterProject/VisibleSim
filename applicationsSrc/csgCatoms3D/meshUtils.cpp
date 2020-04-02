@@ -12,4 +12,3 @@ bool MeshUtils::isInside(Vector3D catomPosition) {
     while ((ret = w.point_in_polygon(p, w.get_random_point())) == 1);
     return ret;
 }
-

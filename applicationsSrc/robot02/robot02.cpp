@@ -6,25 +6,25 @@
  */
 
 #include <iostream>
-#include "robotBlocksSimulator.h"
-#include "robotBlocksBlockCode.h"
+#include "robots/slidingCubes/slidingCubesSimulator.h"
+#include "robots/slidingCubes/slidingCubesBlockCode.h"
 #include "robot02BlockCode.h"
 
 using namespace std;
-using namespace RobotBlocks;
+using namespace SlidingCubes;
 
 int main(int argc, char **argv) {
-	cout << "\033[1;33m" << "Starting RobotBlocks simulation (main) ..." << "\033[0m" << endl;
+    cout << "\033[1;33m" << "Starting SlidingCubes simulation (main) ..." << "\033[0m" << endl;
 
-	createSimulator(argc, argv, Robot02BlockCode::buildNewBlockCode);
-	getSimulator()->printInfo();
-	BaseSimulator::getWorld()->printInfo();
+    createSimulator(argc, argv, Robot02BlockCode::buildNewBlockCode);
+    getSimulator()->printInfo();
+    BaseSimulator::getWorld()->printInfo();
 /*
-	scheduler->start(SCHEDULER_MODE_FASTEST);
+    scheduler->start(SCHEDULER_MODE_FASTEST);
 
-	scheduler->waitForSchedulerEnd();
+    scheduler->waitForSchedulerEnd();
 */
-	deleteSimulator();
+    deleteSimulator();
 
-	return(0);
+    return(0);
 }

@@ -10,10 +10,10 @@
 OS = $(shell uname -s)
 
 # VisibleSim local libraries
-VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen -lsimDatoms
+VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks -lsimOkteen -lsimDatoms -lsimNodes2D -lsimHexanodes
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL
+TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -Wsuggest-override -fno-stack-protector
 # TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 
 ifeq ($(CXX),g++)
@@ -32,7 +32,7 @@ endif
 # You can add any of the following debug flags to get a more verbose output
 # TEMP_CCFLAGS += -DDEBUG_EVENTS #          : trace creation and destruction of all events
 # TEMP_CCFLAGS += -DDEBUG_CONSUME_EVENTS #  : trace the consomption of all events
-TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of messages
+# TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of messages
 # TEMP_CCFLAGS += -DDEBUG_VM_MESSAGES #     : trace the messages sent to the multicores VM
 # TEMP_CCFLAGS += -DDEBUG_OBJECT_LIFECYCLE #: trace objects construction and destruction
 # TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates
@@ -84,15 +84,12 @@ GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 .PHONY: subdirs $(SUBDIRS) test doc
 #.PHONY: subdirs $(SUBDIRS) test doc
 
+.NOTPARALLEL: applicationsSrc/
+
 subdirs: $(SUBDIRS)
 
 $(SUBDIRS):
-	@$(MAKE) -C $@ APPDIR=../../applicationsBin/ GLOBAL_INCLUDES=$(GLOBAL_INCLUDES) GLOBAL_LIBS=$(GLOBAL_LIBS) GLOBAL_CCFLAGS=$(GLOBAL_CCFLAGS)
-
-#subdirs:
-#	@for dir in $(SUBDIRS); do \
-#	$(MAKE) -C $$dir; \
-#	done
+	@$(MAKE) -C $@ APPDIR=../../applicationsBin/ GLOBAL_INCLUDES=$(GLOBAL_INCLUDES) GLOBAL_LIBS=$(GLOBAL_LIBS) GLOBAL_CCFLAGS=$(GLOBAL_CCFLAGS) LOCAL_INCLUDES=$(LOCAL_INCLUDES)
 
 test: subdirs
 	@$(MAKE) -C applicationsSrc test;

@@ -14,10 +14,10 @@
 
 #include <array>
 
-#include "network.h"
-#include "cell3DPosition.h"
-#include "catoms3DBlockCode.h"
-#include "color.h"
+#include "comm/network.h"
+#include "grid/cell3DPosition.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "utils/color.h"
 
 #define MSG_DELAY_MC 5000
 
@@ -323,6 +323,7 @@ public:
      * @return dimension of the h-pyramid, or -1 if undefined
      */
     int getPyramidDimension() const;
+
 };
 
 }

@@ -15,12 +15,12 @@
 #include <deque>
 #include <unordered_set>
 
-#include "catoms3DBlockCode.h"
-#include "catoms3DSimulator.h"
-#include "catoms3DMotionRules.h"
-#include "rotation3DEvents.h"
-#include "catoms3DBlock.h"
-#include "cell3DPosition.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DMotionRules.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "grid/cell3DPosition.h"
 
 #include "meshAssemblyMessages.hpp"
 #include "meshRuleMatcher.hpp"
@@ -58,7 +58,7 @@ public:
     static int nbCatomsInPlace;
     static int nbMessages;
     static Time t0;
-    inline static const bool NO_FLOODING = false;
+    inline static const bool NO_FLOODING = true;
 
     // For stats export
     pair<int, string> maxBitrate;
@@ -78,8 +78,8 @@ public:
         Time duration = 0;
 
         // Simulate actual motion of a catom
-        for (int i = 0; i < 2 * Rotations3D::nbRotationSteps; i++) {
-            duration += Rotations3D::getNextRotationEventDelay();
+        for (int i = 0; i < 2 * Catoms3DRotation::nbRotationSteps; i++) {
+            duration += Catoms3DRotation::getNextRotationEventDelay();
         }
 
         return duration;
@@ -208,7 +208,7 @@ public:
     /**
      * Dynamically builds the construction queue based on the position of the tile.
      */
-    void buildConstructionQueue();
+    std::deque<std::pair<MeshComponent, MeshComponent>> buildConstructionQueue(const Cell3DPosition& pos) const;
 
     /**
      * Indicates whether an EPL pivot module has received a TileInsertionReady message

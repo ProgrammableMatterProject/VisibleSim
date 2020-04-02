@@ -14,12 +14,12 @@ class SyncPrevious : public Sync {
 public:
     SyncPrevious(Catoms3D::Catoms3DBlock *c, Reconf *r) : Sync(c,r) {};
     ~SyncPrevious(){};
-    void sync();
-    void response(Cell3DPosition origin);
-    void handleMessage(shared_ptr<Message> message);
-    void handleMessageResponse(shared_ptr<Message> message);
-    bool needSyncToLeft();
-    bool needSyncToRight();
+    void sync() override;
+    void response(Cell3DPosition origin) override;
+    void handleMessage(shared_ptr<Message> message) override;
+    void handleMessageResponse(shared_ptr<Message> message) override;
+    bool needSyncToLeft() override;
+    bool needSyncToRight() override;
 };
 
 class SyncPrevious_message : public Sync_message {
@@ -37,4 +37,3 @@ public:
 };
 
 #endif /* SYNCPREVIOUS_H_ */
-

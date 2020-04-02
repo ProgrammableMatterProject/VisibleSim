@@ -5,11 +5,11 @@
     <blockList color="128,128,128" blocksize="1,1,1">
 
         <!--<block position="10,25,9" orientation="0"/>-->
-		<block position="40,30,10" orientation="0"/>
-	</blockList>
+                <block position="40,30,10" orientation="0"/>
+        </blockList>
   <targetList>
     <target format="csg">
-        <csg content="
+        <csg offset="true" content="
             scale([2.01,2.01,2.01]) union(){
 color([0,0,0.5]) translate([-7.5,-7,0]) rotate([0,0,140]) cube([10.1,1.5,13.1], true);
 

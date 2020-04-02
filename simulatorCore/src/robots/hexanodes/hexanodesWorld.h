@@ -1,0 +1,105 @@
+/**
+ * @file   nodeWorld.h
+ * @author pthalamy <pthalamy@p3520-pthalamy-linux>
+ * @date   Wed Jun 19 13:59:04 2019
+ *
+ * @brief
+ *
+ *
+ */
+
+#ifndef HEXANODESWORLD_H_
+#define HEXANODESWORLD_H_
+
+#include <vector>
+
+#include "base/buildingBlock.h"
+#include "gui/openglViewer.h"
+#include "base/world.h"
+#include "math/vector3D.h"
+#include "grid/cell3DPosition.h"
+#include "robots/hexanodes/hexanodesBlock.h"
+#include "gui/objLoader.h"
+#include "utils/trace.h"
+
+//!< \namespace Hexanodes
+namespace Hexanodes {
+
+static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
+
+class HexanodesMotionEngine;
+class HexanodesMotion;
+
+/**
+ * \class HexanodesWorld nodeWorld.h
+ */
+class HexanodesWorld : public BaseSimulator::World {
+protected:
+    ObjLoader::ObjLoader *objConnector = NULL;           //!< Object loader for a block
+        HexanodesMotionEngine *nodeMotionEngine;
+    virtual ~HexanodesWorld();
+public:
+    HexanodesWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+                  int argc, char *argv[]);
+
+    static void deleteWorld();
+    static HexanodesWorld* getWorld() {
+        assert(world != NULL);
+        return((HexanodesWorld*)world);
+    }
+
+    void printInfo() {
+        OUTPUT << "I'm a HexanodesWorld" << endl;
+    }
+
+    virtual HexanodesBlock* getBlockById(int bId) override {
+        return((HexanodesBlock*)World::getBlockById(bId));
+    }
+
+    virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+                          short orientation, bool master) override;
+
+    GLuint idTextureWall, idTextureDigits;
+
+    /**
+     * \brief Connects block on grid cell pos to its neighbor
+     * \param pos : Position of the block to connect
+     */
+    virtual void linkBlock(const Cell3DPosition &pos) override;
+
+        virtual void glDraw() override;
+        virtual void glDrawShadows() override;
+        virtual void glDrawId() override;
+    virtual void glDrawIdByMaterial() override;
+    void updateGlData(BuildingBlock *bb) override;
+    void updateGlData(HexanodesBlock*blc,const Color &color);
+    void updateGlData(HexanodesBlock*blc, bool visible);
+    void updateGlData(HexanodesBlock*blc, const Cell3DPosition &position);
+    void updateGlData(HexanodesBlock*blc, const Vector3D &position);
+    void updateGlData(HexanodesBlock*blc, const Matrix &mat);
+    virtual void setSelectedFace(int n) override;
+    virtual void exportConfiguration() override;
+
+    virtual void disconnectBlock(BuildingBlock *block);
+        virtual void glDrawSpecificBg() override;
+
+        virtual void createPopupMenu(int ix, int iy) override;
+        virtual void menuChoice(int n) override;
+
+        vector<HexanodesMotion*>getAllMotionsForModule(HexanodesBlock*nb);
+/**
+ * \brief load the background textures (internal)
+ */
+    void loadTextures(const string &str) override;
+};
+
+inline void deleteWorld() {
+    HexanodesWorld::deleteWorld();
+}
+
+inline HexanodesWorld* getWorld() { return(HexanodesWorld::getWorld()); }
+
+
+} // Hexanodes namespace
+
+#endif /* HEXANODESWORLD_H_ */

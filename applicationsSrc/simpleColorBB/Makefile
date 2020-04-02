@@ -15,7 +15,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS =  simpleColor.cpp  simpleColorCode.cpp
+SRCS =  simpleColorBB.cpp  simpleColorCodeBB.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/simpleColorBB
@@ -54,7 +54,7 @@ ifeq ($(GLOBAL_CCFLAGS),)
 CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 	ifeq ($(OS), Darwin)
 	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
-	endif 
+	endif
 else
 CCFLAGS = $(GLOBAL_CCFLAGS)
 endif

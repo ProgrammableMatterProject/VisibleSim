@@ -1,7 +1,7 @@
 #ifndef BITMAPUTILS_H_
 #define BITMAPUTILS_H_
 #include <vector>
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 
 class BitmapUtils
 {
@@ -16,4 +16,3 @@ public:
 };
 
 #endif /* BITMAPUTILS_H_ */
-

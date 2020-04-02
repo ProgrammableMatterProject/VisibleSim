@@ -1,0 +1,32 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 09.03.2019 13:21:12
+
+newmtl texture
+	Ns 56.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000
+	illum 2
+	Ka 0.1000 0.1000 0.1000
+	Kd 0.1000 0.1000 0.1000
+#	Ka 1.0000 1.0000 1.0000
+#	Kd 1.0000 1.0000 1.0000
+	Ks 0.6660 0.6660 0.6660
+	Ke 0.0000 0.0000 0.0000
+#	map_Ka textureDatomGrey.tga
+#	map_Kd textureDatomGrey.tga
+
+newmtl lighted
+	Ns 18.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.7200 0.7200 0.7200
+	Ke 0.0000 0.0000 0.0000
+#	map_Ka textureDatom.tga
+#	map_Kd textureDatom.tga

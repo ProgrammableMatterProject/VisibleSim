@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="60,60,60">
+
+  <blockList color="128,128,128" blocksize="10,10,10">
+    <block position="5,5,2" color="0,255,255" orientation="11" />
+  </blockList>
+
+  <targetList>
+    <target format="csg">
+
+      <!-- <csg boundingBox="true" -->
+      <!--      translate="5,5,2" -->
+      <!--      content="scale([2,2,2]) -->
+      <!--               difference() { -->
+      <!--               cube([20,20,10],true); -->
+      <!--               translate([0,0,0]) -->
+      <!--               sphere(10,true); -->
+      <!--               }" /> -->
+
+      <csg boundingBox="true"
+           translate="5,5,2"
+           content="scale([2,2,2])
+                    difference() {
+                    cube([15,15,15],true);
+                    translate([0,0,5])
+                    sphere(7,true);
+                    }" />
+
+      </target>
+    </targetList>
+
+</world>

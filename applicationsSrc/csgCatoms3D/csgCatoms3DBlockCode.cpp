@@ -8,9 +8,9 @@
 #include <iostream>
 #include <sstream>
 #include "csgCatoms3DBlockCode.h"
-#include "catoms3DBlock.h"
-#include "scheduler.h"
-#include "events.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "events/scheduler.h"
+#include "events/events.h"
 #include <chrono>
 #include <fstream>
 #define MAX 1

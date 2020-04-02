@@ -5,7 +5,7 @@ OUT = $(APPDIR)/robot02
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
-INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES) 
+INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 #-I/usr/local/include -I/opt/local/include
 
 #for macOSX
@@ -15,7 +15,7 @@ INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 
 LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
 
-SIMULATORLIB = ../../simulatorCore/lib/libsimRobotBlocks.a
+SIMULATORLIB = ../../simulatorCore/lib/libsimSlidingCubes.a
 
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++
@@ -34,7 +34,7 @@ all: $(OUT)
 test:
 	@$(TESTS)
 
-autoinstall: $(OUT) 
+autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)
 
 $(APPDIR)/$(OUT): $(OUT)
@@ -46,7 +46,7 @@ $(APPDIR)/$(OUT): $(OUT)
 #$(APPDIR)/$(OUT): $(OUT)
 #	cp $(OUT) VMEmulator $(APPDIR)
 
-$(OUT): $(SIMULATORLIB) $(OBJS) 
+$(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 

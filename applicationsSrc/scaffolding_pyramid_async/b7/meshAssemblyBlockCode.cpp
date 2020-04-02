@@ -11,15 +11,15 @@
 #include <iostream>
 #include <set>
 
-#include "catoms3DWorld.h"
-#include "scheduler.h"
-#include "events.h"
-#include "trace.h"
-#include "tDefs.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "events/scheduler.h"
+#include "events/events.h"
+#include "utils/trace.h"
+#include "utils/tDefs.h"
 
-#include "teleportationEvents.h"
-#include "rotation3DEvents.h"
-#include "catoms3DMotionEngine.h"
+#include "motion/teleportationEvents.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DMotionEngine.h"
 
 #include "meshAssemblyBlockCode.hpp"
 
@@ -397,9 +397,9 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     ruleMatcher->getComponentForPosition(
                         catom->position - coordinatorPos) == S_RevZ) {
                     int ts = round(getScheduler()->now()
-                                   / ((Rotations3D::ANIMATION_DELAY *
-                                       Rotations3D::rotationDelayMultiplier +
-                                       Rotations3D::COM_DELAY) + 20128));
+                                   / ((Catoms3DRotation::ANIMATION_DELAY *
+                                       Catoms3DRotation::rotationDelayMultiplier +
+                                       Catoms3DRotation::COM_DELAY) + 20128));
                     cerr << ruleMatcher->getPyramidDimension()
                          << "-PYRAMID CONSTRUCTION OVER AT TimeStep = "
                          << ts << " with " << lattice->nbModules << " modules" << endl;
@@ -417,10 +417,10 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
                     branch = bi;
 
-                    stringstream info;                   
+                    stringstream info;
                     info << " assigned to branch " << ruleMatcher->branch_to_string(bi);
                     scheduler->trace(info.str(),catom->blockId, CYAN);
-                        
+
                     return;
                 }
 
@@ -432,11 +432,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     BranchIndex bi =
                         ruleMatcher->getBranchIndexForNonRootPosition(norm(targetPosition));
                     branch = bi;
-                    
-                    stringstream info;                   
+
+                    stringstream info;
                     info << " assigned to branch " << ruleMatcher->branch_to_string(bi);
                     scheduler->trace(info.str(),catom->blockId, CYAN);
-                        
+
                     const Cell3DPosition& nextPosAlongBranch =
                         catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
@@ -515,12 +515,12 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // Only introduce catoms if on the lower tile level
                     if (catom->position[2] == meshSeedPosition[2]) {
                         feedIncidentBranches();
-                        
+
                         if (not constructionOver)
                             getScheduler()->schedule(
                                 new InterruptionEvent(getScheduler()->now() +
                                                       (getRoundDuration()),
-                                                      catom, IT_MODE_TILEROOT_ACTIVATION));   
+                                                      catom, IT_MODE_TILEROOT_ACTIVATION));
                     }
                 } break;
 
@@ -663,7 +663,7 @@ void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
 
         OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
         // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
-        scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
+        scheduler->schedule(new Catoms3DRotationStartEvent(getScheduler()->now(),
                                                      catom, pivot, pos,
                                                      RotationLinkType::HexaFace, false));
 #ifdef INTERACTIVE_MODE
@@ -933,10 +933,10 @@ void MeshAssemblyBlockCode::matchRulesAndProbeGreenLight() {
         notFindingPivot = false; // FIXME: TODO:
         matchingLocalRule = false;
 
-        int finalComponent = ruleMatcher->getComponentForPosition(targetPosition - 
+        int finalComponent = ruleMatcher->getComponentForPosition(targetPosition -
                                                                   coordinatorPos);
         VS_ASSERT(finalComponent != -1);
-        sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos, 
+        sendMessage(new ProbePivotLightStateMessage(catom->position, stepTargetPos,
                                                     static_cast<MeshComponent>(finalComponent))
                     , catom->getInterface(pivot->position), MSG_DELAY_MC, 0);
     } else {

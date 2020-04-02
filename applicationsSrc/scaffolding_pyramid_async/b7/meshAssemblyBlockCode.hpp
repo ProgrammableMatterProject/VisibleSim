@@ -15,12 +15,12 @@
 #include <deque>
 #include <unordered_set>
 
-#include "catoms3DBlockCode.h"
-#include "catoms3DSimulator.h"
-#include "catoms3DMotionRules.h"
-#include "rotation3DEvents.h"
-#include "catoms3DBlock.h"
-#include "cell3DPosition.h"
+#include "robots/catoms3D/catoms3DBlockCode.h"
+#include "robots/catoms3D/catoms3DSimulator.h"
+#include "robots/catoms3D/catoms3DMotionRules.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "grid/cell3DPosition.h"
 
 #include "meshAssemblyMessages.hpp"
 #include "meshRuleMatcher.hpp"
@@ -74,8 +74,8 @@ public:
     };
 
     inline static Time getRoundDuration() {
-        return (Rotations3D::ANIMATION_DELAY * Rotations3D::rotationDelayMultiplier
-                + Rotations3D::COM_DELAY) + 20128;// + (getScheduler()->now() / 1000);
+        return (Catoms3DRotation::ANIMATION_DELAY * Catoms3DRotation::rotationDelayMultiplier
+                + Catoms3DRotation::COM_DELAY) + 20128;// + (getScheduler()->now() / 1000);
     }
 
     inline const Cell3DPosition& getEntryPointRelativePos(MeshComponent mc) const {
@@ -227,20 +227,20 @@ public:
      */
     int addNeighborToProcess = 0;
 
-    /** 
+    /**
      * Use to limit interruption events after top level S_RevZ arrived
      *  so that the simulation ends nicely for stat export
      */
     static bool constructionOver;
 
-    /** 
+    /**
      * Used to ensure that only one module on the RevZBranch train can claim the R position.
      *  This is stored in RevZ pivots from Z_EPL to the R position. It is set to true
      *  when a pivot responds to a ProbePivotLight for the R position, and all further
      *  requests for a motion to R will be ignored
      */
     bool RModuleRequestedMotion = false;
-    
+
 #define SET_GREEN_LIGHT(x) setGreenLight(x, __LINE__)
     /**
      * Changes the light state of a pivot and take the appriopriate action

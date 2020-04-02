@@ -11,15 +11,15 @@
 #include <iostream>
 #include <set>
 
-#include "catoms3DWorld.h"
-#include "scheduler.h"
-#include "events.h"
-#include "trace.h"
-#include "tDefs.h"
+#include "robots/catoms3D/catoms3DWorld.h"
+#include "events/scheduler.h"
+#include "events/events.h"
+#include "utils/trace.h"
+#include "utils/tDefs.h"
 
-#include "teleportationEvents.h"
-#include "rotation3DEvents.h"
-#include "catoms3DMotionEngine.h"
+#include "motion/teleportationEvents.h"
+#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "robots/catoms3D/catoms3DMotionEngine.h"
 
 #include "meshAssemblyBlockCode.hpp"
 
@@ -659,7 +659,7 @@ void MeshAssemblyBlockCode::scheduleRotationTo(const Cell3DPosition& pos,
 
         OUTPUT << "mvmt: " << round((scheduler->now()) / getRoundDuration()) << "\t" << endl;
         // cout << "[t-" << scheduler->now() << "] rotation scheduled" << endl;
-        scheduler->schedule(new Rotation3DStartEvent(getScheduler()->now(),
+        scheduler->schedule(new Catoms3DRotationStartEvent(getScheduler()->now(),
                                                      catom, pivot, pos,
                                                      RotationLinkType::HexaFace, false));
 #ifdef INTERACTIVE_MODE

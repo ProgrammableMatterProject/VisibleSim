@@ -1,1 +1,0 @@
-dists/quicklisp/software/ieee-floats-20140713-git/ieee-floats.asd

@@ -1,57 +1,62 @@
 #ifndef datomsRotateCode_H_
 #define datomsRotateCode_H_
-#include "datomsSimulator.h"
-#include "datomsBlockCode.h"
-#include "datomsMotionRules.h"
-
-static const int LOCK_MSG=1001;
-static const int ANSLOCK_MSG=1002;
-static const int UNLOCK_MSG=1003;
+#include <queue>
+#include "robots/datoms/datomsSimulator.h"
+#include "robots/datoms/datomsBlockCode.h"
+#include "robots/datoms/datomsMotionRules.h"
+#include "motion/teleportationEvents.h"
 
 using namespace Datoms;
-
-class Motions {
-public :
-    vector <Cell3DPosition> tabCells;
-    DatomsBlock *mobile,*fixed;
-    DatomsMotionRulesLink *MRlist;
-
-    Motions(DatomsBlock *m,DatomsBlock *f,DatomsMotionRulesLink *mrl);
-    ~Motions();
-};
-
 
 class DatomsRotateCode : public DatomsBlockCode {
 private:
     DatomsBlock *module;
-    bool isLocked;
-    Motions *currentMotion;
-	SkewFCCLattice *lattice;
+    queue <Cell3DPosition> cellsList;
+    SkewFCCLattice *lattice;
+    bool distanceCalculated = false;
+    inline static unsigned short *tabDistances = nullptr;
+    inline static bool *tabLockedCells  = nullptr;
+    inline static vector<Cell3DPosition> ptsLine;
+    inline static bool showDistance = false;
 public :
-	DatomsRotateCode(DatomsBlock *host):DatomsBlockCode(host) { module = host; };
-	~DatomsRotateCode() {};
+    DatomsRotateCode(DatomsBlock *host):DatomsBlockCode(host) {
+        module = host;
+    };
 
-	void initDistances();
+    ~DatomsRotateCode() {
+        if (tabDistances) {
+            delete [] tabDistances;
+            tabDistances = nullptr;
+        }
 
-	void startup();
-	bool tryToMove();
-	void myLockFunc(const MessageOf<Motions>*msg,P2PNetworkInterface *sender);
-	void myAnsLockFunc(const MessageOf<bool>*msg,P2PNetworkInterface *sender);
-    void myUnlockFunc(P2PNetworkInterface *sender);
-    void onMotionEnd();
-    void onTap(int);
-	
-	//void parseUserElements(TiXmlDocument *config);
+        if (tabLockedCells) {
+            delete [] tabLockedCells;
+            tabLockedCells = nullptr;
+        }
+    };
+
+    void initDistances();
+    void initTabDistances();
+    void initTabLockedCells();
+    unsigned short getDistance(const Cell3DPosition &pos);
+    void setDistance(const Cell3DPosition &pos,unsigned short d);
+
+    bool lockCell(const Cell3DPosition &pos);
+    bool unlockCell(const Cell3DPosition &pos);
+
+    void startup() override;
+    bool tryToMove();
+    void onMotionEnd() override;
+    void onTap(int) override {}
+    void onGlDraw() override;
+
+    //void parseUserElements(TiXmlDocument *config);
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-		return(new DatomsRotateCode((DatomsBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return(new DatomsRotateCode((DatomsBlock*)host));
+    };
 /*****************************************************************************/
 };
-
-void _myLockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-void _myAnsLockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-void _myUnlockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 
 #endif /* datomsRotateCode_H_ */

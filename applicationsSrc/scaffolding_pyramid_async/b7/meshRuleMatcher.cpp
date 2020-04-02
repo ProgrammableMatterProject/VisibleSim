@@ -12,9 +12,9 @@
 
 #include "meshAssemblyLocalRules.hpp" // for B2
 
-#include "network.h"
-#include "utils.h"
-#include "catoms3DWorld.h"
+#include "comm/network.h"
+#include "utils/utils.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 using namespace MeshCoating;
 using namespace BaseSimulator;
@@ -41,14 +41,14 @@ std::array<Cell3DPosition, 53> MeshRuleMatcher::componentPosition = {
     Cell3DPosition(0, 3, 0), // Y3
     Cell3DPosition(0, 4, 0), // Y4
     Cell3DPosition(0, 5, 0), // Y5
-    Cell3DPosition(0, 6, 0), // Y6        
+    Cell3DPosition(0, 6, 0), // Y6
 
     Cell3DPosition(0, 0, 1), // Z1
     Cell3DPosition(0, 0, 2), // Z2
     Cell3DPosition(0, 0, 3), // Z3
     Cell3DPosition(0, 0, 4), // Z4
     Cell3DPosition(0, 0, 5), // Z5
-    Cell3DPosition(0, 0, 6), // Z6        
+    Cell3DPosition(0, 0, 6), // Z6
 
     Cell3DPosition(-1, -1, 1), // RevZ1
     Cell3DPosition(-2, -2, 2), // RevZ2
@@ -440,7 +440,7 @@ Cell3DPosition MeshRuleMatcher::getBranchUnitOffset(int bi) const {
         case LZBranch: return Cell3DPosition(-1,0,1);
         case XBranch: return Cell3DPosition(1,0,0);
         case YBranch: return Cell3DPosition(0,1,0);
-        default: 
+        default:
             cerr << "bi: " << bi << endl;
             VS_ASSERT_MSG(false, "invalid branch index");
     }
@@ -597,7 +597,7 @@ short MeshRuleMatcher::determineBranchForPosition(const Cell3DPosition& pos) con
         if (isOnXBranch(pos)) return XBranch;
         if (isOnYBranch(pos)) return YBranch;
     }
-    
+
     return -1;
 }
 
@@ -676,7 +676,7 @@ const Cell3DPosition MeshRuleMatcher::getPositionForMeshComponent(MeshComponent 
             return Cell3DPosition(-1 * (mc - RevZ_1 + 1), -1 * (mc - RevZ_1 + 1),
                                   1 * (mc - RevZ_1 + 1));
 
-        case LZ_1: case LZ_2: case LZ_3: case LZ_4: case LZ_5: case LZ_6: 
+        case LZ_1: case LZ_2: case LZ_3: case LZ_4: case LZ_5: case LZ_6:
             return Cell3DPosition(-1 * (mc - LZ_1 + 1), 0, 1 * (mc - LZ_1 + 1));
 
         case RZ_1: case RZ_2: case RZ_3: case RZ_4: case RZ_5: case RZ_6:

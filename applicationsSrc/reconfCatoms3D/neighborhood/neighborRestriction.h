@@ -1,4 +1,4 @@
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 
 class NeighborRestriction {
     Cell3DPosition simulatedBlockPosition;

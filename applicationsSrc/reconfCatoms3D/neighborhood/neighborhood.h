@@ -17,7 +17,7 @@
 #define ADDLEFTBLOCK_EVENT_ID 12007
 #define ADDRIGHTBLOCK_EVENT_ID 12008
 
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
 #include "../sync/syncNext.h"
@@ -71,11 +71,11 @@ public:
     AddNextLine_event(AddNextLine_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddNextLine_event(this)));
     }
 
-    const string getEventName() { return "Add next line block event"; }
+    const string getEventName() override { return "Add next line block event"; }
 };
 
 class AddPreviousLine_event : public BlockEvent {
@@ -86,11 +86,11 @@ public:
     AddPreviousLine_event(AddPreviousLine_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddPreviousLine_event(this)));
     }
 
-    const string getEventName() { return "Add previous line block event"; }
+    const string getEventName() override { return "Add previous line block event"; }
 };
 
 class AddLeftBlock_event : public BlockEvent {
@@ -101,11 +101,11 @@ public:
     AddLeftBlock_event(AddLeftBlock_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddLeftBlock_event(this)));
     }
 
-    const string getEventName() { return "Add left block event"; }
+    const string getEventName() override { return "Add left block event"; }
 };
 
 class AddRightBlock_event : public BlockEvent {
@@ -116,11 +116,11 @@ public:
     AddRightBlock_event(AddRightBlock_event *conBlock) : BlockEvent(conBlock) {
     }
 
-    void consumeBlockEvent() {
+    void consumeBlockEvent() override {
         concernedBlock->scheduleLocalEvent(EventPtr(new AddRightBlock_event(this)));
     }
 
-    const string getEventName() { return "Add right block event"; }
+    const string getEventName() override { return "Add right block event"; }
 };
 
 class CanFillLeft_message : public Message {

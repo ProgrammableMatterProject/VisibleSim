@@ -1,6 +1,6 @@
 #ifndef sinkSourceCode_H_
 #define sinkSourceCode_H_
-#include "smartBlocksBlockCode.h"
+#include "robots/smartBlocks/smartBlocksBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
 static const int DISTANCE_MSG=1002;
@@ -19,26 +19,26 @@ private:
     P2PNetworkInterface *answerPath;
     P2PNetworkInterface *movePath;
 public :
-	SinkSourceCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {};
-	~SinkSourceCode() {};
+    SinkSourceCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {};
+    ~SinkSourceCode() {};
 
-	void startup();
-	void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
-	void myDistanceFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
-	void myProposeFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
-	void myAnswerFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
-	void myMoveFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void startup() override;
+    void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void myDistanceFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void myProposeFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void myAnswerFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void myMoveFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-	    return (new SinkSourceCode((SmartBlocksBlock*)host));
-	};
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return (new SinkSourceCode((SmartBlocksBlock*)host));
+    };
 /*****************************************************************************/
 };
-	void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-	void _myDistanceFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-	void _myProposeFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-	void _myAnswerFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-	void _myMoveFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+    void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+    void _myDistanceFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+    void _myProposeFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+    void _myAnswerFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+    void _myMoveFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* sinkSourceCode_H_ */

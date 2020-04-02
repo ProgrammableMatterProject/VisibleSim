@@ -8,16 +8,16 @@
 #include <iostream>
 #include <sstream>
 
-#include "scheduler.h"
-#include "network.h"
+#include "events/scheduler.h"
+#include "comm/network.h"
 
 #include "meldBlockCode.h"
-#include "meldInterpretEvents.h"
-#include "meldInterpretMessages.h"
-#include "meldInterpretVM.h"
-#include "lattice.h"
+#include "meld/meldInterpretEvents.h"
+#include "meld/meldInterpretMessages.h"
+#include "meld/meldInterpretVM.h"
+#include "grid/lattice.h"
 
-#include "trace.h"
+#include "utils/trace.h"
 
 using namespace std;
 using namespace MeldInterpret;
@@ -25,79 +25,79 @@ using namespace MeldInterpret;
 ModuleType MeldBlockCode::moduleType;
 
 MeldBlockCode::MeldBlockCode(BuildingBlock *host): BlockCode(host) {
-	OUTPUT << "MeldBlockCode constructor" << endl;
-	vm = new MeldInterpretVM(hostBlock);
-	hasWork = true; // mode fastest
-	polling = false; // mode fastest
-	currentLocalDate = 0; // mode fastest	
+    OUTPUT << "MeldBlockCode constructor" << endl;
+    vm = new MeldInterpretVM(hostBlock);
+    hasWork = true; // mode fastest
+    polling = false; // mode fastest
+    currentLocalDate = 0; // mode fastest
 }
 
 MeldBlockCode::~MeldBlockCode() {
-	delete vm;
-	OUTPUT << "MeldBlockCode destructor" << endl;
+    delete vm;
+    OUTPUT << "MeldBlockCode destructor" << endl;
 }
 
 void MeldBlockCode::init() {
-	stringstream info;
-	
-	if((vm != NULL)) {	   
-		for (int i = 0; i < hostBlock->getNbInterfaces(); i++) {
-			vm->neighbors[i] = vm->get_neighbor_ID(i);
-			OUTPUT << "Adding neighbor " << vm->neighbors[i] << " on face " << i << endl;
-			vm->enqueue_face(vm->neighbors[i], i, 1);
-		}
+    stringstream info;
+
+    if((vm != NULL)) {
+        for (int i = 0; i < hostBlock->getNbInterfaces(); i++) {
+            vm->neighbors[i] = vm->get_neighbor_ID(i);
+            OUTPUT << "Adding neighbor " << vm->neighbors[i] << " on face " << i << endl;
+            vm->enqueue_face(vm->neighbors[i], i, 1);
+        }
 
         // Initialize position facts
-		vm->enqueue_at((meld_int)hostBlock->position.pt[0], (meld_int)hostBlock->position.pt[1],
-					   (meld_int)hostBlock->position.pt[2], 1);
-		
-		BaseSimulator::getScheduler()->schedule(
-			new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), hostBlock));
+        vm->enqueue_at((meld_int)hostBlock->position.pt[0], (meld_int)hostBlock->position.pt[1],
+                       (meld_int)hostBlock->position.pt[2], 1);
 
-		if((getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) && !vm->deterministicSet) {
-			vm->deterministicSet = true;
-			/*SetDeterministicModeVMCommand determinismCommand(c, hostBlock->blockId);
-			  vm->sendCommand(determinismCommand);*/
-			info << "deterministic mode set";
-			getScheduler()->trace(info.str(),hostBlock->blockId);
-			OUTPUT << "deterministic mode enable on the VM " << hostBlock->blockId << endl;
-		}
-	}
+        BaseSimulator::getScheduler()->schedule(
+            new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), hostBlock));
+
+        if((getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) && !vm->deterministicSet) {
+            vm->deterministicSet = true;
+            /*SetDeterministicModeVMCommand determinismCommand(c, hostBlock->blockId);
+              vm->sendCommand(determinismCommand);*/
+            info << "deterministic mode set";
+            getScheduler()->trace(info.str(),hostBlock->blockId);
+            OUTPUT << "deterministic mode enable on the VM " << hostBlock->blockId << endl;
+        }
+    }
 }
 
 void MeldBlockCode::startup() {
-	stringstream info;
+    stringstream info;
 
-	currentLocalDate = BaseSimulator::getScheduler()->now();
-	info << "  Starting MeldBlockCode in block " << hostBlock->blockId;
-	getScheduler()->trace(info.str(),hostBlock->blockId);
-	init();
+    currentLocalDate = BaseSimulator::getScheduler()->now();
+    info << "  Starting MeldBlockCode in block " << hostBlock->blockId;
+    getScheduler()->trace(info.str(),hostBlock->blockId);
+    init();
 }
 
 void MeldBlockCode::handleDeterministicMode(/*VMCommand &command*/){
-	currentLocalDate = max(BaseSimulator::getScheduler()->now(), currentLocalDate);
-	/*if(!hasWork && (command.getType() != VM_COMMAND_STOP)) {
-	  hasWork = true;
-	  #ifdef TEST_DETER
-	  //cout << hostBlock->blockId << " has work again at " << BaseSimulator::getScheduler()->now() << endl;
-	  #endif
-	  }*/
+    currentLocalDate = max(BaseSimulator::getScheduler()->now(), currentLocalDate);
+    /*if(!hasWork && (command.getType() != VM_COMMAND_STOP)) {
+      hasWork = true;
+      #ifdef TEST_DETER
+      //cout << hostBlock->blockId << " has work again at " << BaseSimulator::getScheduler()->now() << endl;
+      #endif
+      }*/
 }
 
 void MeldBlockCode::processLocalEvent(EventPtr pev) {
-	stringstream info;
-	assert(vm != NULL);
-	info.str("");
-	OUTPUT << hostBlock->blockId << " processLocalEvent: date: "<< BaseSimulator::getScheduler()->now()
-		   << " process event " << pev->getEventName() << "(" << pev->eventType << ")"
-		   << ", random number : " << pev->randomNumber << endl;
+    stringstream info;
+    assert(vm != NULL);
+    info.str("");
+    OUTPUT << hostBlock->blockId << " processLocalEvent: date: "<< BaseSimulator::getScheduler()->now()
+           << " process event " << pev->getEventName() << "(" << pev->eventType << ")"
+           << ", random number : " << pev->randomNumber << endl;
 
 #ifdef TEST_DETER
-	cout << hostBlock->blockId << " processLocalEvent: date: "<< BaseSimulator::getScheduler()->now()
-		 << " process event " << pev->getEventName() << "(" << pev->eventType << ")"
-		 << ", random number : " << pev->randomNumber << endl;
+    cout << hostBlock->blockId << " processLocalEvent: date: "<< BaseSimulator::getScheduler()->now()
+         << " process event " << pev->getEventName() << "(" << pev->eventType << ")"
+         << ", random number : " << pev->randomNumber << endl;
 #endif
-	switch (pev->eventType) {
+    switch (pev->eventType) {
         case EVENT_COMPUTE_PREDICATE:
         {
             //Call the VM function to process one rule
@@ -229,7 +229,7 @@ void MeldBlockCode::processLocalEvent(EventPtr pev) {
             info << "Polling time period ended";
         }
         break;
-    	case EVENT_TRANSLATION_START:
+        case EVENT_TRANSLATION_START:
             vm->enqueue_at((meld_int)hostBlock->position.pt[0], (meld_int)hostBlock->position.pt[1],
                            (meld_int)hostBlock->position.pt[2], -1);
             BaseSimulator::getScheduler()->schedule(
@@ -259,12 +259,12 @@ void MeldBlockCode::processLocalEvent(EventPtr pev) {
         default:
             ERRPUT << "*** ERROR *** : unknown local event";
             break;
-	}
-	if(info.str() != "") {
-		getScheduler()->trace(info.str(),hostBlock->blockId);
-	}
+    }
+    if(info.str() != "") {
+        getScheduler()->trace(info.str(),hostBlock->blockId);
+    }
 }
 
 BlockCode* MeldBlockCode::buildNewBlockCode(BuildingBlock *host) {
-	return(new MeldBlockCode(host));
+    return(new MeldBlockCode(host));
 }

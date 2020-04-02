@@ -1,5 +1,5 @@
 #include "neighborRestriction.h"
-#include "catoms3DWorld.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 using namespace Catoms3D;
 
@@ -72,8 +72,8 @@ bool NeighborRestriction::isPositionUnblockedYZ(const Cell3DPosition &pos) {
             sideOne = sideOneEvenYZ[i];
             sideTwo = sideTwoEvenYZ[i];
         }
-        position1.set(pos[0]+sideOne[0], pos[1] + sideOne[1], pos[2] + sideOne[2]); 
-        position2.set(pos[0]+sideTwo[0], pos[1] + sideTwo[1], pos[2] + sideTwo[2]); 
+        position1.set(pos[0]+sideOne[0], pos[1] + sideOne[1], pos[2] + sideOne[2]);
+        position2.set(pos[0]+sideTwo[0], pos[1] + sideTwo[1], pos[2] + sideTwo[2]);
         if (cellHasBlock(position1))
             isInSide1 = true;
         if (cellHasBlock(position2))
@@ -97,8 +97,8 @@ bool NeighborRestriction::isPositionUnblockedXZ(const Cell3DPosition &pos) {
             sideOne = sideOneEvenXZ[i];
             sideTwo = sideTwoEvenXZ[i];
         }
-        position1.set(pos[0]+sideOne[0], pos[1] + sideOne[1], pos[2] + sideOne[2]); 
-        position2.set(pos[0]+sideTwo[0], pos[1] + sideTwo[1], pos[2] + sideTwo[2]); 
+        position1.set(pos[0]+sideOne[0], pos[1] + sideOne[1], pos[2] + sideOne[2]);
+        position2.set(pos[0]+sideTwo[0], pos[1] + sideTwo[1], pos[2] + sideTwo[2]);
         if (cellHasBlock(position1))
             isInSide1 = true;
         if (cellHasBlock(position2))
@@ -124,9 +124,9 @@ bool NeighborRestriction::isPositionBlockable(const Cell3DPosition &pos) {
     int *direction;
     for (int i = 0; i < 12; i++) {
         direction = pos[2]%2 ? neighborDirectionsOdd[i] : neighborDirectionsEven[i];
-        neighborPos.set(pos[0]+direction[0], pos[1] + direction[1], pos[2] + direction[2]); 
+        neighborPos.set(pos[0]+direction[0], pos[1] + direction[1], pos[2] + direction[2]);
         if (world->lattice->isFree(neighborPos) && !isPositionBlocked(neighborPos)) {
-           simulatedBlockPosition = pos; 
+           simulatedBlockPosition = pos;
            if (isPositionBlocked(neighborPos))
                return true;
            simulatedBlockPosition.set(0,0,0);

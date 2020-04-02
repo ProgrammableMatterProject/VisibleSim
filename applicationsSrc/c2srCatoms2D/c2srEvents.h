@@ -10,7 +10,7 @@
 
 #define EVENT_START_C2SR 15000
 
-#include "events.h"
+#include "events/events.h"
 #include <memory>
 
 class StartC2SREvent : public BlockEvent {
@@ -20,18 +20,18 @@ class StartC2SREvent : public BlockEvent {
     eventType = EVENT_START_C2SR;
     randomNumber = conBlock->getRandomUint();
   }
-	
+
  StartC2SREvent(StartC2SREvent *ev) : BlockEvent(ev) {
     randomNumber = ev->randomNumber;
   }
-	
+
   ~StartC2SREvent() {};
-	
-  void consumeBlockEvent() {
+
+  void consumeBlockEvent() override {
     concernedBlock->scheduleLocalEvent(EventPtr(new StartC2SREvent(this)));
   }
-	
-  const string getEventName() { return "START_C2SR EVENT"; }
+
+  const string getEventName() override { return "START_C2SR EVENT"; }
 };
 
 #endif // RECONFCATOMS2DEVENTS_H_

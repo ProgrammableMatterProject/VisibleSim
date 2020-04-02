@@ -2,17 +2,17 @@
  * @file   meshAssemblyLocalRules.hpp
  * @author pthalamy <pthalamy@p3520-pthalamy-linux>
  * @date   Thu Oct 18 22:49:43 2018
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 
 #ifndef MESHASSEMBLYLOCALRULES_HPP__
 #define MESHASSEMBLYLOCALRULES_HPP__
 
-#include "cell3DPosition.h"
+#include "grid/cell3DPosition.h"
 
 #include <bitset>
 #include <utility>
@@ -31,7 +31,7 @@ public:
     constexpr LRKeyTuple(const bitset<12>& _lnBitset, const Cell3DPosition& _tPos,
                          const short _step)
         : lnBitset(bitset<12>(_lnBitset)), tPos(_tPos), step(_step) {}
-    
+
     bool operator<(const LRKeyTuple &lrkt) const {
         if (lnBitset.to_ulong() < lrkt.lnBitset.to_ulong()) return true;
         else if (lnBitset.to_ulong() > lrkt.lnBitset.to_ulong()) return false;
@@ -40,14 +40,14 @@ public:
         else return tPos < lrkt.tPos;
     }
 
-    bool operator==(const LRKeyTuple &lrkt) const {       
+    bool operator==(const LRKeyTuple &lrkt) const {
         return lnBitset.to_ulong() == lrkt.lnBitset.to_ulong()
             and tPos == lrkt.tPos
             and step == lrkt.step;
     }
 };
 
-static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules = 
+static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules =
 {
     // Corner XY Cases
     { LRKeyTuple(0x400, Cell3DPosition(-1, -1, 0), 3), Cell3DPosition(0, 1, -1) }, // S_RevZ 3
@@ -57,12 +57,12 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x380, Cell3DPosition(0, 0, 2), 3), Cell3DPosition(0, -1, 1) }, // Z2 3
 
     // Border OppY Cases
-    { LRKeyTuple(0x940, Cell3DPosition(0, -2, 2), 3), Cell3DPosition(-1, -1, 1) }, // RZ2 3    
+    { LRKeyTuple(0x940, Cell3DPosition(0, -2, 2), 3), Cell3DPosition(-1, -1, 1) }, // RZ2 3
 
     // Pyramid Corner cases
     { LRKeyTuple(0x100, Cell3DPosition(1, 1, 0), 3), Cell3DPosition(1, 0, -1) }, // S_Z 3
-    { LRKeyTuple(0x3C0, Cell3DPosition(1, 1, 0), 4), Cell3DPosition(1, 0, 0) }, // S_Z 4    
-    
+    { LRKeyTuple(0x3C0, Cell3DPosition(1, 1, 0), 4), Cell3DPosition(1, 0, 0) }, // S_Z 4
+
     // Normal Cases
     { LRKeyTuple(0x840, Cell3DPosition(0, 0, 0), 1), Cell3DPosition(-1, 0, 1) }, // R 1
     { LRKeyTuple(0x100, Cell3DPosition(0, 0, 0), 2), Cell3DPosition(-1, -1, 0) }, // R 2
@@ -184,7 +184,7 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x808, Cell3DPosition(0, -4, 5), 2), Cell3DPosition(0, 0, 1) }, // LZ_R_EPL2
     { LRKeyTuple(0x050, Cell3DPosition(0, -4, 5), 3), Cell3DPosition(0, -1, 1) }, // LZ_R_EPL3
     { LRKeyTuple(0x050, Cell3DPosition(0, -4, 5), 4), Cell3DPosition(-1, -1, 2) }, // LZ_R_EPL4
-    
+
 
     { LRKeyTuple(0x404, Cell3DPosition(-5, -4, 5), 1), Cell3DPosition(-1, -1, 2) }, // Z_L_EPL1
     { LRKeyTuple(0x404, Cell3DPosition(-5, -4, 5), 2), Cell3DPosition(-1, 0, 1) }, // Z_L_EPL2
@@ -194,7 +194,7 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x404, Cell3DPosition(-4, -5, 5), 1), Cell3DPosition(-1, -1, 2) }, // Z_R_EPL1
     { LRKeyTuple(0x404, Cell3DPosition(-4, -5, 5), 2), Cell3DPosition(0, -1, 1) }, // Z_R_EPL2
     { LRKeyTuple(0xA, Cell3DPosition(-4, -5, 5), 3), Cell3DPosition(-1, -1, 1) }, // Z_R_EPL3
-    { LRKeyTuple(0xA, Cell3DPosition(-4, -5, 5), 4), Cell3DPosition(-1, -1, 2) }, // Z_R_EPL4  
+    { LRKeyTuple(0xA, Cell3DPosition(-4, -5, 5), 4), Cell3DPosition(-1, -1, 2) }, // Z_R_EPL4
 
     { LRKeyTuple(0x808, Cell3DPosition(-1, -4, 5), 1), Cell3DPosition(-1, -1, 2) }, // LZ_EPL1
     { LRKeyTuple(0x808, Cell3DPosition(-1, -4, 5), 2), Cell3DPosition(0, 0, 1) }, // LZ_EPL2
@@ -212,15 +212,15 @@ static const std::map <const LRKeyTuple, const Cell3DPosition> localMotionRules 
     { LRKeyTuple(0x404, Cell3DPosition(-4, -4, 5), 2), Cell3DPosition(0, -1, 1) }, // Z_EPL2
     { LRKeyTuple(0xA, Cell3DPosition(-4, -4, 5), 3), Cell3DPosition(-1, -1, 2) }, // Z_EPL3
     { LRKeyTuple(0x840, Cell3DPosition(-4, -4, 5), 4), Cell3DPosition(-1, 0, 1) }, // Z_EPL4
-    
+
 };
 
 
-/** 
- * Search for the next action among the local rules library 
- * @param localNeighborhood a bitset representing the local neighborhood 
+/**
+ * Search for the next action among the local rules library
+ * @param localNeighborhood a bitset representing the local neighborhood
  *  of module at position pos
- * @param pos position of the rule matching module 
+ * @param pos position of the rule matching module
  * @param tPos final target position of the module awaiting action
  * @param tileRootPos the position of the nearest tile root, for normalizing the coordinates
  * @param nextPos next position that the moving module has occupy
@@ -234,7 +234,7 @@ inline static bool matchLocalRules(const std::bitset<12>& localNeighborhood,
                                    Cell3DPosition& nextPos) {
     auto match = localMotionRules.find(LRKeyTuple(localNeighborhood,
                                                   tPos - tileRootPos, step));
-        
+
     if (match != localMotionRules.end()) {
         nextPos =  match->second + pos;
         // cout << match->second << endl;
@@ -243,10 +243,9 @@ inline static bool matchLocalRules(const std::bitset<12>& localNeighborhood,
              << int_to_hex_str((int)localNeighborhood.to_ulong(), 3) << ")"
              << ", " << tPos - tileRootPos << ", " << step << " }" << " -> ";
         cout << "NO MATCH" << endl;
-    }        
+    }
 
     return match != localMotionRules.end();
 }
 
 #endif /* MESHASSEMBLYLOCALRULES_HPP__ */
-    
