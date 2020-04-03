@@ -81,11 +81,7 @@ CORE_INC_DIRS = $(CORE_DIRS) $(BLINKYBLOCKS_DIR) $(SLIDINGCUBES_DIR) $(CATOMS2D_
 OUTDIRS += $(CORE_INC_DIRS:%=$(DEPDIR)/%) $(CORE_INC_DIRS:%=$(OBJDIR)/%)
 INCLUDES = $(GLOBAL_INCLUDES) -I. # $(CORE_INC_DIRS:%=-I%)
 
-#for macOSX
-#LIBS = -L./ -L/usr/local/lib -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib -lboost_thread-mt
-
 #for linux
-#LIBS = -L./ -L/usr/local/lib  -L/usr/X11/lib -lboost_thread-mt
 LIBS = $(GLOBAL_LIBS)
 
 #for debug version

@@ -18,9 +18,8 @@
 #include "base/simulator.h"
 #include "events/events.h"
 #include "utils/trace.h"
-#include "robots/catoms3D/catoms3DRotationEvents.h"
 #include "utils/utils.h"
-#include "robots/catoms3D/catoms3DWorld.h"
+#include "utils/global.h"
 
 // #define showStatsFPS	0
 
@@ -456,29 +455,28 @@ void GlutContext::specialFunc(int key, int x, int y)
     switch(key) {
 
         case GLUT_KEY_PAGE_UP: {
-            Catoms3DRotation::rotationDelayMultiplier /= 1.5f;
+            BaseSimulator::motionDelayMultiplier /= 1.5f;
             const float minRotationDelayMultiplier = 0.001f;
-            if (Catoms3DRotation::rotationDelayMultiplier < minRotationDelayMultiplier) {
-                Catoms3DRotation::rotationDelayMultiplier = minRotationDelayMultiplier;
+            if (BaseSimulator::motionDelayMultiplier < minRotationDelayMultiplier) {
+                BaseSimulator::motionDelayMultiplier = minRotationDelayMultiplier;
                 cout << "Max rotation speed reached: "
-                     << Catoms3DRotation::rotationDelayMultiplier << endl;
+                     << BaseSimulator::motionDelayMultiplier << endl;
             } else {
                 cout << "Increased rotation speed: "
-                     << Catoms3DRotation::rotationDelayMultiplier << endl;
+                     << BaseSimulator::motionDelayMultiplier << endl;
             }
         } break;
 
         case GLUT_KEY_PAGE_DOWN: {
-            // PTHA: #TODO Should consider creating a configuration variables system
-            Catoms3DRotation::rotationDelayMultiplier *= 1.5f;
+            BaseSimulator::motionDelayMultiplier *= 1.5f;
             const float maxRotationDelayMultiplier = 10.0f;
-            if (Catoms3DRotation::rotationDelayMultiplier > maxRotationDelayMultiplier) {
-                Catoms3DRotation::rotationDelayMultiplier = maxRotationDelayMultiplier;
+            if (BaseSimulator::motionDelayMultiplier > maxRotationDelayMultiplier) {
+                BaseSimulator::motionDelayMultiplier = maxRotationDelayMultiplier;
                 cout << "Min rotation speed reached: "
-                     << Catoms3DRotation::rotationDelayMultiplier << endl;
+                     << BaseSimulator::motionDelayMultiplier << endl;
             } else {
                 cout << "Decreased rotation speed: "
-                     << Catoms3DRotation::rotationDelayMultiplier << endl;
+                     << BaseSimulator::motionDelayMultiplier << endl;
             }
         } break;
     }

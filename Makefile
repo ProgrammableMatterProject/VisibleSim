@@ -14,7 +14,6 @@ VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsi
 
 #for debug version
 TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -Wsuggest-override -fno-stack-protector
-# TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 
 ifeq ($(CXX),g++)
   TEMP_CCFLAGS += -Wsuggest-override
@@ -45,26 +44,15 @@ TEMP_CCFLAGS += -DshowStatsFPS
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"
 
-#for TEST VERSION
-#TEMP_CCFLAGS = "-g -Wall -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES -DTEST_DETER"
-
 ifeq ($(OS),Darwin)
 #MacOS (Assuming you are using the Clang compiler)
 OSX_CCFLAGS = -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
-
-ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
-INC_BOOST_IF_NEEDED = -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt
-endif
 
 GLOBAL_LIBS = "-L./ -L/usr/local/lib /usr/local/lib/libmuparser.dylib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(VSIM_LIBS) $(INC_BOOST_IF_NEEDED)"
 
 else
 
 #Linux, Solaris, ... (gcc)
-ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
-INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono
-endif
-
 GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lmuparser -lglut -lGL -lGLEW -lGLU -lpthread -ldl -lstdc++ -lm $(INC_BOOST_IF_NEEDED)"
 
 endif

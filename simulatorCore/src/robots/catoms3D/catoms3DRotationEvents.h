@@ -14,6 +14,7 @@
 #include "math/matrix44.h"
 #include "robots/catoms3D/catoms3DBlock.h"
 #include "events/events.h"
+#include "utils/global.h"
 
 #include <random>
 using namespace Catoms3D;
@@ -24,7 +25,6 @@ class Catoms3DRotation {
     static std::mt19937 rng;
     static uniform_int_distribution<mt19937::result_type> randomAnimationDelay;
 public:
-    static float rotationDelayMultiplier;
     static const int ANIMATION_DELAY;
     static const int COM_DELAY;
     static const int nbRotationSteps; //<! @attention MUST BE AN EVEN NUMBER!!!
@@ -43,7 +43,7 @@ public:
 #endif
         // cout << rad << endl;
 
-        return rotationDelayMultiplier *
+        return BaseSimulator::motionDelayMultiplier *
             ((ANIMATION_DELAY + rad) / (2 * nbRotationSteps));
     }
 

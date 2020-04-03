@@ -1,8 +1,8 @@
 #ifndef <<appName>>BlockCode_H_
 #define <<appName>>BlockCode_H_
 
-#include "<<moduleNameLc>>World.h"
-#include "<<moduleNameLc>>BlockCode.h"
+#include "robots/<<moduleNameLc>>/<<moduleNameLc>>World.h"
+#include "robots/<<moduleNameLc>>/<<moduleNameLc>>BlockCode.h"
 
 static const int SAMPLE_MSG_ID = 1000;
 

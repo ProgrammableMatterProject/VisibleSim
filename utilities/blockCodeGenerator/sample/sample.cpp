@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "<<moduleNameLc>>Simulator.h"
-#include "<<moduleNameLc>>BlockCode.h"
+#include "robots/<<moduleNameLc>>/<<moduleNameLc>>Simulator.h"
+#include "robots/<<moduleNameLc>>/<<moduleNameLc>>BlockCode.h"
 
 #include "<<appNameLc>>BlockCode.hpp"
 

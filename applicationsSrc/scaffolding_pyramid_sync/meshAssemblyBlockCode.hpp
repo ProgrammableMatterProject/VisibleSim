@@ -20,6 +20,7 @@
 #include "robots/catoms3D/catoms3DRotationEvents.h"
 #include "robots/catoms3D/catoms3DBlock.h"
 #include "grid/cell3DPosition.h"
+#include "utils/global.h"
 
 #include "meshAssemblyMessages.hpp"
 #include "meshRuleMatcher.hpp"
@@ -79,7 +80,7 @@ public:
     };
 
     inline static Time getRoundDuration() {
-        return (Catoms3DRotation::ANIMATION_DELAY * Catoms3DRotation::rotationDelayMultiplier
+        return (Catoms3DRotation::ANIMATION_DELAY * BaseSimulator::motionDelayMultiplier
                 + Catoms3DRotation::COM_DELAY) + 20128;// + (getScheduler()->now() / 1000);
     }
 

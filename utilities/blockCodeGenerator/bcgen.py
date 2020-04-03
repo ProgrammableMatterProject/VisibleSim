@@ -27,8 +27,8 @@ def createSourceFile(tagsFile, outFile):
 # Main variables
 appName = None
 module = None
-moduleOptions = ["Catoms3D", "Catoms2D", "CatomsR", "Datoms", "BlinkyBlocks",
-                 "SmartBlocks", "RobotBlocks", "Okteen", "MultiRobots"]
+moduleOptions = ["Catoms3D", "Catoms2D", "Datoms", "BlinkyBlocks",
+                 "SmartBlocks", "SlidingCubes", "Nodes2D", "Hexanodes"]
 
 # Parse arguments
 text = 'This program creates a sample application in the applicationsSrc directory for a given module type. It takes an application name and a module type.'
@@ -73,7 +73,7 @@ appMakefile = os.path.join(srcPath, "Makefile")
 
 # Create target directories
 makeDir(srcPath)
-#makeDir(binPath)
+makeDir(binPath)
 
 # Create app sources
 createSourceFile("sample/sample.cpp", appCpp)
