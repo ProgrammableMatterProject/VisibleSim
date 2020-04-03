@@ -21,6 +21,7 @@
 #include "csg/csg.h"
 #include "csg/csgParser.h"
 #include "csg/csgUtils.h"
+#include "utils/global.h"
 
 using namespace std;
 
@@ -1029,16 +1030,14 @@ void Simulator::parseObstacles() {
 void Simulator::parseCustomizations() {
     TiXmlNode *customizationNode = xmlWorldNode->FirstChild("customization");
     if (customizationNode) {
-        TiXmlNode *rotationDelayNode = customizationNode->FirstChild("rotationDelay");
+        TiXmlNode *rotationDelayNode = customizationNode->FirstChild("motionDelay");
 
         if (rotationDelayNode) {
             TiXmlElement* element = rotationDelayNode->ToElement();
             const char *attr= element->Attribute("multiplier");
 
             if (attr != NULL) {
-                Catoms3DRotation::rotationDelayMultiplier = atof(attr);
-            } else {
-                cout << "wut" << endl;
+                motionDelayMultiplier = atof(attr);
             }
         }
     }

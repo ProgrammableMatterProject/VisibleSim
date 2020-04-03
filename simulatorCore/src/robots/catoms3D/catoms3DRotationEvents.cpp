@@ -22,7 +22,6 @@ Catoms3DRotation::randomAnimationDelay = uniform_int_distribution<std::mt19937::
 const int Catoms3DRotation::ANIMATION_DELAY = 400000;
 const int Catoms3DRotation::COM_DELAY = 0;//2000;
 const int Catoms3DRotation::nbRotationSteps = 20;
-float Catoms3DRotation::rotationDelayMultiplier = 1.0f;
 
 std::ostream& Catoms3D::operator<<(std::ostream &stream, Catoms3DRotation const& rots) {
     stream << rots.axe1 << "/" << rots.angle1 << " -- " << rots.axe2 << "/" << rots.angle2;

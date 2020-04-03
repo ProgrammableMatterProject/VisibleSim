@@ -53,7 +53,7 @@ LIBS = $(GLOBAL_LIBS) -L../../../simulatorCore/lib
 endif				#GLOBAL_LIBS
 
 ifeq ($(GLOBAL_CCFLAGS),)
-CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
+CCFLAGS = -g -Wall -std=c++17 -Wsuggest-override -fno-stack-protector
 	ifeq ($(OS), Darwin)
 	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
 	endif

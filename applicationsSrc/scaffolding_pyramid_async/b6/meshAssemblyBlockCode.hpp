@@ -21,6 +21,7 @@
 #include "robots/catoms3D/catoms3DRotationEvents.h"
 #include "robots/catoms3D/catoms3DBlock.h"
 #include "grid/cell3DPosition.h"
+#include "utils/global.h"
 
 #include "meshAssemblyMessages.hpp"
 #include "meshRuleMatcher.hpp"
