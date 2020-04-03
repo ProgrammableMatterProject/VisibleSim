@@ -15,6 +15,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
+# SRCS contains all the sources of your codeBlocks
 SRCS = <<appNameLc>>.cpp <<appNameLc>>BlockCode.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
@@ -24,6 +25,9 @@ OUT = $(APPDIR)/<<appNameLc>>
 MODULELIB = -lsim<<moduleName>>
 # TESTS contains the commands that will be executed when `make test` is called
 TESTS = ../../utilities/blockCodeTest.sh <<appNameLc>> $(OUT)
+#
+# CUSTOM_LIBS are the external dependencies of your blockcode, empty by default
+CUSTOM_LIBS =
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -42,16 +46,18 @@ endif
 
 ifeq ($(GLOBAL_LIBS), )
 	ifeq ($(OS),Darwin)
-LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(MODULELIB)
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib /usr/local/lib/libmuparser.dylib $(MODULELIB)
 	else
-LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lm -L/usr/X11/lib  -lglut -lGL -lGLU -lGLEW -lpthread $(MODULELIB)
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -L/usr/X11/lib -lglut -lGL -lGLU -lGLEW -lpthread -lm -ldl -lmuparser $(MODULELIB)
 	endif				#OS
 else
 LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
 endif				#GLOBAL_LIBS
 
+LIBS += $(CUSTOM_LIBS)
+
 ifeq ($(GLOBAL_CCFLAGS),)
-CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
+CCFLAGS = -g -Wall -std=c++17 -Wsuggest-override -fno-stack-protector
 	ifeq ($(OS), Darwin)
 	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
 	endif
