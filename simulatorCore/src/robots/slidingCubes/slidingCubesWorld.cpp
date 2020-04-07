@@ -26,8 +26,8 @@ SlidingCubesWorld::SlidingCubesWorld(const Cell3DPosition &gridSize, const Vecto
     OUTPUT << TermColor::LifecycleColor << "SlidingCubesWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","robotBlock.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","robotBlockPicking.obj");
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","slidingCube.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","slidingCubePicking.obj");
         objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
     }
 

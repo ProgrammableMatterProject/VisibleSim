@@ -87,7 +87,7 @@ string GlBlock::getPopupInfo() {
 void GlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int n) {
     glPushMatrix();
     glTranslatef(position[0],position[1],position[2]);
-    ptrObj->glDrawId(n);
+			ptrObj->glDrawId(n);
     glPopMatrix();
 }
 
