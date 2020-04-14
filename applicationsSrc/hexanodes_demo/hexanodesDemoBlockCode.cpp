@@ -70,5 +70,6 @@ void HexanodesDemoBlockCode::onMotionEnd() {
 }
 
 string HexanodesDemoBlockCode::onInterfaceDraw() {
-    return "Number of motions: " + to_string(nMotions);
+    return "Number of motions: " + to_string(nMotions)
+        + "\nNumber of peanuts: " + to_string(0);
 }
