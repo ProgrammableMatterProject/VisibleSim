@@ -25,7 +25,6 @@
 using namespace Hexanodes;
 
 class HexanodesDemoBlockCode : public Hexanodes::HexanodesBlockCode {
-    HHLattice::Direction previousPivot;
 public:
     Scheduler *scheduler;
     Hexanodes::HexanodesBlock *node;

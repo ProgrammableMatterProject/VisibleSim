@@ -20,23 +20,24 @@ vector<HexanodesMotion*> HexanodesMotionEngine::getAllMotionsForModule(BuildingB
     Cell3DPosition pos,neighborPos,finalPos;
     vector<HexanodesMotion*>res;
 
-    cout << "Get All Motions:=========================" << endl;
+    //cout << "Get All Motions:=========================" << endl;
     for (HexanodesMotion *nm:tabHexanodesMotions) {
         neighborPos = sl->getCellInDirection(nb->position,nm->fromConId);
         finalPos = nm->getFinalPos(nb->position);
-        cout << "neighborPos=" << neighborPos << "->" << finalPos << " (" << sl->isFree(neighborPos) << "," << sl->isInGrid(neighborPos) << ")->(" << sl->isFree(finalPos) << "," << sl->isInGrid(finalPos) << ")" << endl;
+        //cout << "neighborPos=" << neighborPos << "->" << finalPos << " (" << sl->isFree(neighborPos) << "," << sl->isInGrid(neighborPos) << ")->(" << sl->isFree(finalPos) << "," << sl->isInGrid(finalPos) << ")" << endl;
         if (!sl->isFree(neighborPos) && sl->isInGrid(neighborPos) && sl->isFree(finalPos) && sl->isInGrid((finalPos))) {
             auto obsIt = nm->obstacleDirs.begin();
-            while (obsIt!=nm->obstacleDirs.end() && (!sl->isInGrid(nb->position) || sl->isFree(sl->getCellInDirection(nb->position,*obsIt)))) {
+						while (obsIt!=nm->obstacleDirs.end() && 
+							(!sl->isInGrid(sl->getCellInDirection(nb->position,*obsIt)) || sl->isFree(sl->getCellInDirection(nb->position,*obsIt)))) {
                 obsIt++;
             }
             if (obsIt==nm->obstacleDirs.end()) {
-                cout << "ok: " << nm->direction << "/" << nm->fromConId << endl;
+                //cout << "ok: " << nm->direction << "/" << nm->fromConId << endl;
                 res.push_back(nm);
             }
         }
     }
-    cout << "Get All Motions:--------------------------" << endl;
+    //cout << "Get All Motions:--------------------------" << endl;
     return res;
 }
 
