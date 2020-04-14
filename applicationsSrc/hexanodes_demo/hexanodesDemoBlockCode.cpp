@@ -57,10 +57,13 @@ void HexanodesDemoBlockCode::onMotionEnd() {
     while (ci!=tab.end() && !((*ci)->direction==motionDirection::CW && (*ci)->fromConId==previousPivot)) {
         ci++;
     }
+
     if (ci!=tab.end()) {
         Cell3DPosition destination = (*ci)->getFinalPos(node->position);
         previousPivot = (*ci)->getToConId();
         cout << "previousPivot=" << previousPivot << " md=" << (*ci)->direction << endl;
         scheduler->schedule(new HexanodesMotionStartEvent(scheduler->now()+1000000, node,destination,previousPivot));
+    } else {
+        cout << "no possible motions..." << endl;
     }
 }
