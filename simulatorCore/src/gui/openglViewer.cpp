@@ -50,6 +50,7 @@ GlutHelpWindow *GlutContext::helpWindow=NULL;
 int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
+bool GlutContext::enableShowFPS = false;
 unsigned int GlutContext::nbModules = 0;
 long unsigned int GlutContext::timestep = 0;
 
@@ -432,6 +433,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                 cout << "Cannot change color: No selected block" << endl;
             }
         } break;
+        case ',': enableShowFPS = !enableShowFPS; break;
         default: { // Pass on key press to user blockcode handler
             // NOTE: Since C++ does not handle static virtual functions, we need
             //  to get a pointer to a blockcode and call onUserKeyPressed from
@@ -491,9 +493,9 @@ void GlutContext::idleFunc(void) {
     std::chrono::milliseconds timespan(20);
     std::this_thread::sleep_for(timespan);
 
-// #ifdef showStatsFPS
-    calculateFPS();
-// #endif
+
+    if (enableShowFPS) calculateFPS();
+
     if (saveScreenMode) {
         static int num=0;
         char title[32], title2[32];
@@ -625,13 +627,11 @@ void GlutContext::drawFunc(void) {
     }
     if (helpWindow) helpWindow->glDraw();
 
-// #ifdef showStatsFPS
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
-    showFPS();
+    if (enableShowFPS) showFPS();
     showSimulationInfo();
-// #endif
 
     glFlush();
     glEnable(GL_DEPTH_TEST);
