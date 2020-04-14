@@ -71,7 +71,6 @@ private :
     static bool saveScreen(const char *title);
     static void *lanceScheduler(void *param);
     static void calculateFPS(void);
-    static void calculateSimulationInfo(void);
     static void showFPS(void);
     static void showSimulationInfo(void);
 };

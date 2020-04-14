@@ -202,11 +202,18 @@ public:
     virtual void onUserKeyPressed(unsigned char c, int x, int y) {};
 
     /**
-     * Call by world during GL drawing phase, can be used by a user
+     * Called by world during GL drawing phase, can be used by a user
      *  to draw custom Gl content into the simulated world
      * @note call is made from World::GlDraw
      */
     virtual void onGlDraw() {};
+
+    /**
+     * Called by openglviewer during interface drawing phase, can be used by a user
+     *  to draw a custom Gl string onto the bottom-left corner of the GUI
+     * @note call is made from OpenGlViewer::drawFunc
+     */
+    virtual string onInterfaceDraw();
 };
 
 } // BaseSimulator namespace
