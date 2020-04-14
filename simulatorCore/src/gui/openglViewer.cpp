@@ -591,8 +591,15 @@ void GlutContext::showSimulationInfo(void) {
     // sprintf(str,"Timestep: %lu", timestep);
     // GlutWindow::drawString(50, 50, str, font);
 
-    sprintf(str,"Nb modules: %u", nbModules);
-    GlutWindow::drawString(50, 25, str, font);
+    //sprintf(str,"Nb modules: %u", nbModules);
+    //GlutWindow::drawString(50, 25, str, font);
+		
+		World *wrl = getWorld();
+		BuildingBlock *bb = wrl->getSelectedBuildingBlock() ?: wrl->getMap().begin()->second;
+		if (bb) {
+			string info = bb->blockCode->onInterfaceDraw();
+			GlutWindow::drawString(50, 25, info.c_str(), font);
+		}
 }
 
 void GlutContext::drawFunc(void) {
