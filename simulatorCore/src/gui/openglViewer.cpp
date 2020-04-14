@@ -491,9 +491,9 @@ void GlutContext::idleFunc(void) {
     std::chrono::milliseconds timespan(20);
     std::this_thread::sleep_for(timespan);
 
-#ifdef showStatsFPS
+// #ifdef showStatsFPS
     calculateFPS();
-#endif
+// #endif
     if (saveScreenMode) {
         static int num=0;
         char title[32], title2[32];
@@ -551,17 +551,6 @@ void GlutContext::calculateFPS(void) {
     }
 }
 
-void GlutContext::calculateSimulationInfo(void) {
-    // // Compute rotation time
-    // Time motionDuration = Rotations3D::rotationDelayMultiplier * Rotations3D::ANIMATION_DELAY;
-
-    // // Calculate time step
-    // timestep = round(getScheduler()->now() / (motionDuration));
-
-    // Update number of modules (disregard deletions, compensate for moving modules)
-    nbModules = BaseSimulator::getWorld()->lattice->nbModules;
-}
-
 void GlutContext::showFPS(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     char str[32];
@@ -579,7 +568,7 @@ void GlutContext::showFPS(void) {
     sprintf(str, "FPS: %4.2f", fps);
     glColor4f(0.0,0.0,0.0,0.75);
     GlutWindow::drawString(50, 75, str, font);
-    cout << str << endl;
+    // cout << str << endl;
 }
 
 void GlutContext::showSimulationInfo(void) {
@@ -590,8 +579,8 @@ void GlutContext::showSimulationInfo(void) {
     // sprintf(str,"Timestep: %lu", timestep);
     // GlutWindow::drawString(50, 50, str, font);
 
-    //sprintf(str,"Nb modules: %u", nbModules);
-    //GlutWindow::drawString(50, 25, str, font);
+    // sprintf(str,"Nb modules: %u", nbModules);
+    // GlutWindow::drawString(50, 25, str, font);
 
     World *wrl = getWorld();
     BuildingBlock *bb = wrl->getSelectedBuildingBlock() ?: wrl->getMap().begin()->second;
@@ -637,14 +626,13 @@ void GlutContext::drawFunc(void) {
     }
     if (helpWindow) helpWindow->glDraw();
 
-#ifdef showStatsFPS
+// #ifdef showStatsFPS
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
-    //showFPS();
-    calculateSimulationInfo();
+    showFPS();
     showSimulationInfo();
-#endif
+// #endif
 
     glFlush();
     glEnable(GL_DEPTH_TEST);
