@@ -555,37 +555,21 @@ void GlutContext::showFPS(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     char str[32];
 
-    glColor4f(1.0,1.0,1.0,0.75);
-    glPushMatrix();
-    glTranslatef(50,75,0);
-    glBegin(GL_QUADS);
-    glVertex2i(0,0);
-    glVertex2i(200,0);
-    glVertex2i(200,30);
-    glVertex2i(0,30);
-    glEnd();
-    glPopMatrix();
     sprintf(str, "FPS: %4.2f", fps);
-    glColor4f(0.0,0.0,0.0,0.75);
-    GlutWindow::drawString(50, 75, str, font);
-    // cout << str << endl;
+    glColor4f(1.0,1.0,0.0,0.75);
+    GlutWindow::drawString(30, screenHeight-40, str, font);
 }
 
 void GlutContext::showSimulationInfo(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     glColor4f(1.0,1.0,1.0,0.75);
 
-    // sprintf(str,"Timestep: %lu", timestep);
-    // GlutWindow::drawString(50, 50, str, font);
-
-    // sprintf(str,"Nb modules: %u", nbModules);
-    // GlutWindow::drawString(50, 25, str, font);
-
     World *wrl = getWorld();
     BuildingBlock *bb = wrl->getSelectedBuildingBlock() ?: wrl->getMap().begin()->second;
     if (bb) {
         string info = bb->blockCode->onInterfaceDraw();
-        GlutWindow::drawString(50, 25, info.c_str(), font);
+				int n = count(info.begin(),info.end(),'\n');
+				GlutWindow::drawString(40, 25+n*20, info.c_str(), font,20);
     }
 }
 
