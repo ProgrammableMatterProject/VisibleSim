@@ -1,5 +1,6 @@
 #ifndef simpleColorCode_H_
 #define simpleColorCode_H_
+
 #include "robots/slidingCubes/slidingCubesBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
@@ -14,7 +15,7 @@ public :
     ~SimpleColorCode() {};
 
     void startup() override;
-    void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void myBroadcastFunc(std::shared_ptr<Message> msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
@@ -23,5 +24,4 @@ public :
     };
 /*****************************************************************************/
 };
-    void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* simpleColorCode_H_ */
