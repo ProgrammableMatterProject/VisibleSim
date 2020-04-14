@@ -57,7 +57,6 @@ void HexanodesDemoBlockCode::onMotionEnd() {
     vector<HexanodesMotion*> tab = wrl->getAllMotionsForModule(node);
     vector<HexanodesMotion*>::const_iterator ci=tab.begin();
     while (ci!=tab.end() && !((*ci)->direction==motionDirection::CW && (*ci)->fromConId==previousPivot)) {
-			cout << (*ci)->direction
         ci++;
     }
     if (ci!=tab.end()) {
@@ -69,7 +68,6 @@ void HexanodesDemoBlockCode::onMotionEnd() {
         cout << "no possible motions..." << endl;
     }
 }
-
 
 string HexanodesDemoBlockCode::onInterfaceDraw() {
     return "Number of motions: " + to_string(nMotions);

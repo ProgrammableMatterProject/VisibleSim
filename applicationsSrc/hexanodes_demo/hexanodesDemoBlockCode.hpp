@@ -37,7 +37,7 @@ public:
     void startup() override;
     //void processLocalEvent(EventPtr pev) override;
     void onMotionEnd() override;
-    string onInterfaceDraw() override;
+    // string onInterfaceDraw() override;
 
     void processReceivedMessage(MessagePtr msg, P2PNetworkInterface* sender);
 

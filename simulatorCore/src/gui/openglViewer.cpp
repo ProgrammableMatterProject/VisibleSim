@@ -584,7 +584,6 @@ void GlutContext::showFPS(void) {
 
 void GlutContext::showSimulationInfo(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
-    char str[32];
 
     glColor4f(1.0,1.0,1.0,0.75);
 
@@ -593,13 +592,13 @@ void GlutContext::showSimulationInfo(void) {
 
     //sprintf(str,"Nb modules: %u", nbModules);
     //GlutWindow::drawString(50, 25, str, font);
-		
-		World *wrl = getWorld();
-		BuildingBlock *bb = wrl->getSelectedBuildingBlock() ?: wrl->getMap().begin()->second;
-		if (bb) {
-			string info = bb->blockCode->onInterfaceDraw();
-			GlutWindow::drawString(50, 25, info.c_str(), font);
-		}
+
+    World *wrl = getWorld();
+    BuildingBlock *bb = wrl->getSelectedBuildingBlock() ?: wrl->getMap().begin()->second;
+    if (bb) {
+        string info = bb->blockCode->onInterfaceDraw();
+        GlutWindow::drawString(50, 25, info.c_str(), font);
+    }
 }
 
 void GlutContext::drawFunc(void) {
@@ -624,7 +623,7 @@ void GlutContext::drawFunc(void) {
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glMatrixMode(GL_PROJECTION);
-    //glPushMatrix(); // update BPI, no glPopMatrix ! 
+    //glPushMatrix(); // update BPI, no glPopMatrix !
     glLoadIdentity();
     gluOrtho2D(0,screenWidth,0,screenHeight);
     glMatrixMode(GL_MODELVIEW);
