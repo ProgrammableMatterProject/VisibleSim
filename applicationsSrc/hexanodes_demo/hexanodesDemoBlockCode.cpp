@@ -55,9 +55,9 @@ void HexanodesDemoBlockCode::onMotionEnd() {
     vector<HexanodesMotion*> tab = wrl->getAllMotionsForModule(node);
     vector<HexanodesMotion*>::const_iterator ci=tab.begin();
     while (ci!=tab.end() && !((*ci)->direction==motionDirection::CW && (*ci)->fromConId==previousPivot)) {
+			cout << (*ci)->direction
         ci++;
     }
-
     if (ci!=tab.end()) {
         Cell3DPosition destination = (*ci)->getFinalPos(node->position);
         previousPivot = (*ci)->getToConId();

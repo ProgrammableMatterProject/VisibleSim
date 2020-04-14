@@ -594,10 +594,11 @@ void GlutContext::showSimulationInfo(void) {
     //sprintf(str,"Nb modules: %u", nbModules);
     //GlutWindow::drawString(50, 25, str, font);
 		
+		World *wrl = getWorld();
+		BuildingBlock *bb = wrl->getSelectedBuildingBlock() ?: wrl->getMap().begin()->second;
 		if (bb) {
-			BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
 			string info = bb->blockCode->onInterfaceDraw();
-			GlutWindow::drawString(50, 25, info.c_str, font);
+			GlutWindow::drawString(50, 25, info.c_str(), font);
 		}
 }
 
