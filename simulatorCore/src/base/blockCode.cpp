@@ -205,4 +205,8 @@ bool BlockCode::loadNextTarget() {
     return target != NULL;
 }
 
+string BlockCode::onInterfaceDraw() {
+    return "#Modules: " + to_string(BaseSimulator::getWorld()->lattice->nbModules);
+}
+
 } // BaseSimulator namespace

@@ -50,6 +50,8 @@ void HexanodesDemoBlockCode::startup() {
 }
 
 void HexanodesDemoBlockCode::onMotionEnd() {
+    nMotions++;
+
     // turn clockwise from previousPivot attachment
     HexanodesWorld *wrl = Hexanodes::getWorld();
     vector<HexanodesMotion*> tab = wrl->getAllMotionsForModule(node);
@@ -66,4 +68,9 @@ void HexanodesDemoBlockCode::onMotionEnd() {
     } else {
         cout << "no possible motions..." << endl;
     }
+}
+
+
+string HexanodesDemoBlockCode::onInterfaceDraw() {
+    return "Number of motions: " + to_string(nMotions);
 }
