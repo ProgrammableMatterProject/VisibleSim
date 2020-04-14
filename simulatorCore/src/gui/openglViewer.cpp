@@ -573,7 +573,6 @@ void GlutContext::showFPS(void) {
 
 void GlutContext::showSimulationInfo(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
-
     glColor4f(1.0,1.0,1.0,0.75);
 
     // sprintf(str,"Timestep: %lu", timestep);
