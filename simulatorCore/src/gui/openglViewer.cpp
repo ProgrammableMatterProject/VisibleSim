@@ -567,9 +567,9 @@ void GlutContext::showSimulationInfo(void) {
     World *wrl = getWorld();
     BuildingBlock *bb = wrl->getSelectedBuildingBlock() ?: wrl->getMap().begin()->second;
     if (bb) {
-        string info = bb->blockCode->onInterfaceDraw();
-				int n = count(info.begin(),info.end(),'\n');
-				GlutWindow::drawString(40, 25+n*20, info.c_str(), font,20);
+      string info = bb->blockCode->onInterfaceDraw();
+      int n = count(info.begin(),info.end(),'\n');
+      GlutWindow::drawString(40, 25+n*20, info.c_str(), font,20);
     }
 }
 

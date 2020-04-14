@@ -323,7 +323,12 @@ int GlutSlidingMainWindow::mouseFunc(int button,int state,int mx,int my) {
 }
 
 void GlutSlidingMainWindow::openClose() {
-    setOpenCloseButtonPosition(openningLevel==0);
+	  if (openningLevel==2) {
+			setOpenCloseButtonPosition(false);
+			setOpenCloseButtonPosition(false);
+		} else {
+			setOpenCloseButtonPosition(true);
+		}
 }
 
 void GlutSlidingMainWindow::setOpenCloseButtonPosition(bool openning) {
