@@ -595,6 +595,7 @@ void GlutContext::showSimulationInfo(void) {
     //GlutWindow::drawString(50, 25, str, font);
 		
 		if (bb) {
+			BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
 			string info = bb->blockCode->onInterfaceDraw();
 			GlutWindow::drawString(50, 25, info.c_str, font);
 		}
