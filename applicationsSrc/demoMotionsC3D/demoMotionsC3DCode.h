@@ -11,23 +11,23 @@ using namespace Catoms3D;
 
 class DemoMotionsCode : public Catoms3DBlockCode {
 private:
-	Catoms3DBlock *module;
-	FCCLattice *lattice;
+    Catoms3DBlock *module;
+    FCCLattice *lattice;
 public :
-	DemoMotionsCode(Catoms3DBlock *host):Catoms3DBlockCode(host) { module = host; };
-	~DemoMotionsCode() {};
+    DemoMotionsCode(Catoms3DBlock *host):Catoms3DBlockCode(host) { module = host; };
+    ~DemoMotionsCode() {};
 
-	void startup();
-	void initDistances();
-	bool tryToMove();
+    void startup() override;
+    void initDistances();
+    bool tryToMove();
 
-	void onMotionEnd() override;
-	/*****************************************************************************/
-	/** needed to associate code to module                                      **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-		return(new DemoMotionsCode((Catoms3DBlock*)host));
-	};
-	/*****************************************************************************/
+    void onMotionEnd() override;
+    /*****************************************************************************/
+    /** needed to associate code to module                                      **/
+    static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+        return(new DemoMotionsCode((Catoms3DBlock*)host));
+    };
+    /*****************************************************************************/
 };
 
 #endif /* DemoMotionsCode_H_ */
