@@ -47,6 +47,7 @@ public :
     static int frameCount;
     static int previousTime;
     static float fps;
+    static bool enableShowFPS;
     static unsigned int nbModules;
     static long unsigned int timestep;
 //	bool showLinks;
