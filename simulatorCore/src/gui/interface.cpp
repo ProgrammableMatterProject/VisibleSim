@@ -323,7 +323,7 @@ int GlutSlidingMainWindow::mouseFunc(int button,int state,int mx,int my) {
 }
 
 void GlutSlidingMainWindow::openClose() {
-	  if (openningLevel==2) {
+	  if (openningLevel==2) { // close if open twice
 			setOpenCloseButtonPosition(false);
 			setOpenCloseButtonPosition(false);
 		} else {
