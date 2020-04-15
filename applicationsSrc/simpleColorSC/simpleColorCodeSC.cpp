@@ -18,10 +18,10 @@ void SimpleColorCode::startup() {
     }
 }
 
-void SimpleColorCode::myBroadcastFunc(std::shared_ptr<Message> msgPtr,
+void SimpleColorCode::myBroadcastFunc(const std::shared_ptr<Message> _msg,
                                       P2PNetworkInterface* sender) {
-    MessageOf<int>*msg = static_cast<MessageOf<int>*>(msgPtr.get());
-    int d = *msg->getData() + 1;
+    MessageOf<int>*msg = static_cast<MessageOf<int>*>(_msg.get());
+    int d = *msg->getData()+1;
     console << "receives d=" << d << " from " << sender->getConnectedBlockId() << "\n";
     if (distance==-1 || distance>d) {
         console << "update distance=" << d << "\n";

@@ -14,7 +14,8 @@ public:
     ~DistanceSCCode() {};
 
     void startup() override;
-    void myBROADCAST_MSGFunc(const MessageOf<uint16_t>*msg,P2PNetworkInterface *sender);
+    void myBROADCAST_MSGFunc(const std::shared_ptr<Message> msg,
+                             P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
@@ -23,7 +24,5 @@ public:
     };
 /*****************************************************************************/
 };
-
-void _myBROADCAST_MSGFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 
 #endif /* distanceSCCode_H_ */

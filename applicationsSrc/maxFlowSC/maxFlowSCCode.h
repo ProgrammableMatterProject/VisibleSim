@@ -38,12 +38,12 @@ public :
     ~MaxFlowSCCode() {};
 
     void startup() override;
-    void ProcBFS(const MessageOf<bID>*msg,P2PNetworkInterface *sender);
-    void ProcConfirmEdge(P2PNetworkInterface *sender);
-    void ProcCutOff(P2PNetworkInterface *sender);
-    void ProcAvailable(P2PNetworkInterface *sender);
-    void ProcConfirmPath(P2PNetworkInterface *sender);
-    void ProcConfirmStreamline(P2PNetworkInterface *sender);
+    void ProcBFS(std::shared_ptr<Message> msg, P2PNetworkInterface *sender);
+    void ProcConfirmEdge(std::shared_ptr<Message> msg, P2PNetworkInterface *sender);
+    void ProcCutOff(std::shared_ptr<Message> msg, P2PNetworkInterface *sender);
+    void ProcAvailable(std::shared_ptr<Message> msg, P2PNetworkInterface *sender);
+    void ProcConfirmPath(std::shared_ptr<Message> msg, P2PNetworkInterface *sender);
+    void ProcConfirmStreamline(std::shared_ptr<Message> msg, P2PNetworkInterface *sender);
 
     void sendMessageToPath(const string &str, int msgType,vector<bID> &path,bID exception);
 /*****************************************************************************/
@@ -53,13 +53,6 @@ public :
     };
 /*****************************************************************************/
 };
-
-void _BFSFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
-void _ConfirmEdgeFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
-void _CutOffFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
-void _AvailableFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
-void _ConfirmPathFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
-void _ConfirmStreamlineFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 
 template <typename T> void operator+=(std::vector<T> &v1, const std::vector<T> &v2);
 template <typename T> bool isIn(const std::vector<T> &v,T value);

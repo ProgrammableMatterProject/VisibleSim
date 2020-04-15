@@ -23,11 +23,11 @@ public :
     ~SinkSourceCode() {};
 
     void startup() override;
-    void myBroadcastFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
-    void myDistanceFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
-    void myProposeFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
-    void myAnswerFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
-    void myMoveFunc(const MessageOf<int>*msg,P2PNetworkInterface *sender);
+    void myBroadcastFunc(const std::shared_ptr<Message> msg,P2PNetworkInterface *sender);
+    void myDistanceFunc(const std::shared_ptr<Message> msg,P2PNetworkInterface *sender);
+    void myProposeFunc(const std::shared_ptr<Message> msg,P2PNetworkInterface *sender);
+    void myAnswerFunc(const std::shared_ptr<Message> msg,P2PNetworkInterface *sender);
+    void myMoveFunc(const std::shared_ptr<Message> msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
@@ -36,9 +36,4 @@ public :
     };
 /*****************************************************************************/
 };
-    void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-    void _myDistanceFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-    void _myProposeFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-    void _myAnswerFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
-    void _myMoveFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* sinkSourceCode_H_ */

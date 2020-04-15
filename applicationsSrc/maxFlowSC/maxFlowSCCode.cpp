@@ -5,12 +5,23 @@ const int messageDelayError=5;
 const int messageDelayCons=1;
 
 void MaxFlowSCCode::startup() {
-    addMessageEventFunc(BFS_MSG,_BFSFunc);
-    addMessageEventFunc(CONFIRM_EDGE_MSG,_ConfirmEdgeFunc);
-    addMessageEventFunc(CUT_OFF_MSG,_CutOffFunc);
-    addMessageEventFunc(AVAILABLE_MSG,_AvailableFunc);
-    addMessageEventFunc(CONFIRM_PATH_MSG,_ConfirmPathFunc);
-    addMessageEventFunc(CONFIRM_STREAMLINE_MSG,_ConfirmStreamlineFunc);
+    addMessageEventFunc2(BFS_MSG, std::bind(&MaxFlowSCCode::ProcBFS, this,
+                                            std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(CONFIRM_EDGE_MSG,
+                         std::bind(&MaxFlowSCCode::ProcConfirmEdge, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(CUT_OFF_MSG,
+                         std::bind(&MaxFlowSCCode::ProcCutOff, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(AVAILABLE_MSG,
+                         std::bind(&MaxFlowSCCode::ProcAvailable, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(CONFIRM_PATH_MSG,
+                         std::bind(&MaxFlowSCCode::ProcConfirmPath, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(CONFIRM_STREAMLINE_MSG,
+                         std::bind(&MaxFlowSCCode::ProcConfirmStreamline, this,
+                                   std::placeholders::_1, std::placeholders::_2));
 
     console << "start " << module->blockId << "," << module->color << "\n";
 
@@ -46,7 +57,9 @@ void MaxFlowSCCode::startup() {
 }
 
 /** Processing BFS messages **/
-void MaxFlowSCCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sender) {
+void MaxFlowSCCode::ProcBFS(std::shared_ptr<Message> _msg, P2PNetworkInterface*sender) {
+    MessageOf<bID>*msg = (MessageOf<bID>*)_msg.get();
+
     vector<bID> pathsOld;
     bID msgData = *(msg->getData());
     bID msgFrom = sender->getConnectedBlockBId();
@@ -136,7 +149,8 @@ void MaxFlowSCCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sender
 };
 
 /** Processing ConfirmEdge messages **/
-void MaxFlowSCCode::ProcConfirmEdge(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcConfirmEdge(std::shared_ptr<Message> msg,
+                                    P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
 
     console << "rec. ConfirmEdge\n";
@@ -157,7 +171,8 @@ void MaxFlowSCCode::ProcConfirmEdge(P2PNetworkInterface* sender) {
 }
 
 /** Processing CutOff messages **/
-void MaxFlowSCCode::ProcCutOff(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcCutOff(std::shared_ptr<Message> msg,
+                               P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "rec. CutOff from " << msgFrom << "\n";
 
@@ -210,7 +225,8 @@ void MaxFlowSCCode::ProcCutOff(P2PNetworkInterface* sender) {
 }
 
 /** Processing Available messages **/
-void MaxFlowSCCode::ProcAvailable(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcAvailable(std::shared_ptr<Message> msg,
+                                  P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "rec. Available from " << msgFrom << "\n";
 
@@ -250,7 +266,8 @@ void MaxFlowSCCode::ProcAvailable(P2PNetworkInterface* sender) {
 }
 
 /** Processing the "ConfirmPath" message type **/
-void MaxFlowSCCode::ProcConfirmPath(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcConfirmPath(std::shared_ptr<Message> msg,
+                                    P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "rec. ConfirmPath from " << msgFrom << "\n";
 
@@ -296,7 +313,8 @@ void MaxFlowSCCode::ProcConfirmPath(P2PNetworkInterface* sender) {
 }
 
 /** Processing the "ConfirmStreamline" message type **/
-void MaxFlowSCCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
+void MaxFlowSCCode::ProcConfirmStreamline(std::shared_ptr<Message> msg,
+                                          P2PNetworkInterface* sender) {
     bID msgFrom = sender->getConnectedBlockBId();
     console << "rec. ConfirmStreamline from " << msgFrom << "\n";
     if (mainPathState==ConfPath && msgFrom==mainPathIn) {
@@ -379,36 +397,6 @@ void MaxFlowSCCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
 
 /*************************************************************************************************************/
 /*************************************************************************************************************/
-void _BFSFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
-    MessageOf<bID>*msgType = (MessageOf<bID>*)msg.get();
-    cb->ProcBFS(msgType,sender);
-}
-
-void _ConfirmEdgeFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
-    cb->ProcConfirmEdge(sender);
-}
-
-void _CutOffFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
-    cb->ProcCutOff(sender);
-}
-
-void _AvailableFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
-    cb->ProcAvailable(sender);
-}
-
-void _ConfirmPathFunc(BlockCode*codebloc, MessagePtr msg, P2PNetworkInterface* sender) {
-    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
-    cb->ProcConfirmPath(sender);
-}
-
-void _ConfirmStreamlineFunc(BlockCode*codebloc, MessagePtr msg, P2PNetworkInterface* sender) {
-    MaxFlowSCCode *cb = (MaxFlowSCCode*)codebloc;
-    cb->ProcConfirmStreamline(sender);
-}
 
 template <typename T>
 void operator+=(std::vector<T> &v1, const std::vector<T> &v2) {

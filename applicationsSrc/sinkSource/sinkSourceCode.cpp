@@ -3,11 +3,22 @@
 Color myTabColors[8]={RED,ORANGE,YELLOW,GREEN,CYAN,BLUE,MAGENTA,GREY};
 
 void SinkSourceCode::startup() {
-    addMessageEventFunc(BROADCAST_MSG,_myBroadcastFunc);
-    addMessageEventFunc(DISTANCE_MSG,_myDistanceFunc);
-    addMessageEventFunc(PROPOSE_MSG,_myProposeFunc);
-    addMessageEventFunc(ANSWER_MSG,_myAnswerFunc);
-    addMessageEventFunc(MOVE_MSG,_myMoveFunc);
+    addMessageEventFunc2(BROADCAST_MSG,
+                         std::bind(&SinkSourceCode::myBroadcastFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(DISTANCE_MSG,
+                         std::bind(&SinkSourceCode::myDistanceFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(PROPOSE_MSG,
+                         std::bind(&SinkSourceCode::myProposeFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(ANSWER_MSG,
+                         std::bind(&SinkSourceCode::myAnswerFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+    addMessageEventFunc2(MOVE_MSG,
+                         std::bind(&SinkSourceCode::myMoveFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
     console << "start\n";
     srand(time(NULL));
         wait = false;
@@ -110,7 +121,8 @@ void SinkSourceCode::startup() {
     }
 }
 
-void SinkSourceCode::myBroadcastFunc(const MessageOf<int>*msg, P2PNetworkInterface*sender) {
+void SinkSourceCode::myBroadcastFunc(const std::shared_ptr<Message> _msg, P2PNetworkInterface*sender) {
+    MessageOf<int>*msg = (MessageOf<int>*)_msg.get();
     int d = *msg->getData()+1;
     console << "receives d=" << d << " from " << sender->getConnectedBlockId() << "\n";
     if (distance==-1 || distance>d) {
@@ -122,7 +134,8 @@ void SinkSourceCode::myBroadcastFunc(const MessageOf<int>*msg, P2PNetworkInterfa
     }
 };
 
-void SinkSourceCode::myDistanceFunc(const MessageOf<int>*msg, P2PNetworkInterface*sender) {
+void SinkSourceCode::myDistanceFunc(const std::shared_ptr<Message> _msg, P2PNetworkInterface*sender) {
+    MessageOf<int>*msg = (MessageOf<int>*)_msg.get();
     int d = *msg->getData()+1;
 /*    if (distance==0){
     sendMessageToAllNeighbors("Distance",new MessageOf<int>(DISTANCE_MSG,distance),100,200,0);
@@ -143,7 +156,8 @@ void SinkSourceCode::myDistanceFunc(const MessageOf<int>*msg, P2PNetworkInterfac
     }
 };
 
-void SinkSourceCode::myProposeFunc(const MessageOf<int>*msg, P2PNetworkInterface*sender) {
+void SinkSourceCode::myProposeFunc(const std::shared_ptr<Message> _msg, P2PNetworkInterface*sender) {
+    MessageOf<int>*msg = (MessageOf<int>*)_msg.get();
     int proposed = *msg->getData();
     if (proposePath == NULL) {
         int taken = min(abs(value),proposed);
@@ -172,7 +186,8 @@ void SinkSourceCode::myProposeFunc(const MessageOf<int>*msg, P2PNetworkInterface
     }*/
 };
 
-void SinkSourceCode::myAnswerFunc(const MessageOf<int>*msg, P2PNetworkInterface*sender) {
+void SinkSourceCode::myAnswerFunc(const std::shared_ptr<Message> _msg, P2PNetworkInterface*sender) {
+    MessageOf<int>*msg = (MessageOf<int>*)_msg.get();
     int taken = *msg->getData();
     if (answerPath == NULL){
         value -= taken;
@@ -202,7 +217,8 @@ void SinkSourceCode::myAnswerFunc(const MessageOf<int>*msg, P2PNetworkInterface*
     }
 };
 
-void SinkSourceCode::myMoveFunc(const MessageOf<int>*msg, P2PNetworkInterface*sender) {
+void SinkSourceCode::myMoveFunc(const std::shared_ptr<Message> _msg, P2PNetworkInterface*sender) {
+    MessageOf<int>*msg = (MessageOf<int>*)_msg.get();
     int taken = *msg->getData();
     //value += taken;
     if (movePath == NULL){
@@ -228,33 +244,3 @@ void SinkSourceCode::myMoveFunc(const MessageOf<int>*msg, P2PNetworkInterface*se
         distance = -1;
     }
 };
-
-void _myBroadcastFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    SinkSourceCode *cb = (SinkSourceCode*)codebloc;
-    MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
-    cb->myBroadcastFunc(msgType,sender);
-}
-
-void _myDistanceFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    SinkSourceCode *cb = (SinkSourceCode*)codebloc;
-    MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
-    cb->myDistanceFunc(msgType,sender);
-}
-
-void _myProposeFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    SinkSourceCode *cb = (SinkSourceCode*)codebloc;
-    MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
-    cb->myProposeFunc(msgType,sender);
-}
-
-void _myAnswerFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    SinkSourceCode *cb = (SinkSourceCode*)codebloc;
-    MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
-    cb->myAnswerFunc(msgType,sender);
-}
-
-void _myMoveFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    SinkSourceCode *cb = (SinkSourceCode*)codebloc;
-    MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
-    cb->myMoveFunc(msgType,sender);
-}
