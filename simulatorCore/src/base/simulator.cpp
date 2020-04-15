@@ -537,24 +537,24 @@ void Simulator::parseWorld(int argc, char*argv[]) {
                  << " please use the command line option [-s <maxTime>]" << endl;
         }
 
-        // Get Blocksize
-        float blockSize[3] = {0.0,0.0,0.0};
+//         // Get Blocksize
+//         float blockSize[3] = {0.0,0.0,0.0};
         xmlBlockListNode = xmlWorldNode->FirstChild("blockList");
-        if (xmlBlockListNode) {
-            TiXmlElement *blockListElement = xmlBlockListNode->ToElement();
-            attr = blockListElement->Attribute("blockSize");
-            if (attr) {
-                string str(attr);
-                int pos1 = str.find_first_of(','),
-                    pos2 = str.find_last_of(',');
-                blockSize[0] = atof(str.substr(0,pos1).c_str());
-                blockSize[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-#ifdef DEBUG_CONF_PARSING
-                OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
-#endif
-            }
-        } else {
+//         // if (xmlBlockListNode) {
+//             TiXmlElement *blockListElement = xmlBlockListNode->ToElement();
+//             attr = blockListElement->Attribute("blockSize");
+//             if (attr) {
+//                 string str(attr);
+//                 int pos1 = str.find_first_of(','),
+//                     pos2 = str.find_last_of(',');
+//                 blockSize[0] = atof(str.substr(0,pos1).c_str());
+//                 blockSize[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+//                 blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+// #ifdef DEBUG_CONF_PARSING
+//                 OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
+// #endif
+//             }
+        if (not xmlBlockListNode)  {
             stringstream error;
             error << "No blockList element in XML configuration file" << "\n";
             throw ParsingException(error.str());
@@ -562,7 +562,8 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 
         // Create the simulation world and lattice
         loadWorld(Cell3DPosition(lx,ly,lz),
-                  Vector3D(blockSize[0], blockSize[1], blockSize[2]), argc, argv);
+                  Vector3D(0, 0, 0), // Always use default blocksize
+                  argc, argv);
     } else {
         stringstream error;
         error << "No world in XML configuration file" << "\n";
