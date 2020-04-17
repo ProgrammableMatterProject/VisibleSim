@@ -96,11 +96,11 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 }
 
 void SmartBlocksWorld::glDraw() {
-        /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
-          -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
         glDisable(GL_TEXTURE_2D);
         lock();
-        for (const auto& pair : mapGlBlocks) {
+				BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+				if (bb) bb->blockCode->onGlDraw();
+				for (const auto& pair : mapGlBlocks) {
             ((SmartBlocksGlBlock*)pair.second)->glDraw(objBlock);
         }
         unlock();
@@ -108,10 +108,6 @@ void SmartBlocksWorld::glDraw() {
         /*// drawing the mobiles
           Physics::glDraw();
         */
-        glPopMatrix();
-
-        BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
-        if (bb) bb->blockCode->onGlDraw();
 
         glDrawBackground();
 }

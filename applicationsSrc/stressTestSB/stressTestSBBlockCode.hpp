@@ -97,7 +97,7 @@ public :
      *  to draw custom Gl content into the simulated world
      * @note call is made from World::GlDraw
      */
-    void onGlDraw() override {}
+    void onGlDraw() override;
 
     /**
      * @brief This function is called when a module is tapped by the user. Prints a message to the console by default.

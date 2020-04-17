@@ -36,10 +36,11 @@ void StressTestSBBlockCode::startup() {
     // Leader initiates activation
     if (module->blockId == 1) { // Master ID is 1
         module->setColor(BLUE);
-        sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
+				setLockedCell(module->position, true);
+				sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
         wait();
     } else {
-        hostBlock->setColor(LIGHTGREY);
+        hostBlock->setColor(YELLOW);
         setLockedCell(module->position, true);
     }
 }
@@ -169,3 +170,28 @@ void StressTestSBBlockCode::onBlockSelected() {
         cout << "Pick: " << candidates.front() << endl;
     }
 }
+
+void StressTestSBBlockCode::onGlDraw() {
+	static const float color[4]={0.2f,0.2f,0.2f,1.0f};
+	if (lockedCells) {
+		const Cell3DPosition& gs = lattice->gridSize;
+		const Vector3D gl = lattice->gridScale;
+		bool *ptr=lockedCells;
+		glDisable(GL_TEXTURE);
+		glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,color);
+		for (int iy=0; iy<gs[1]; iy++) {
+			for (int ix=0; ix<gs[0]; ix++) {
+				if (*ptr) {
+					glPushMatrix();
+					glTranslatef((ix+0.5f)*gl[0],(iy+0.5f)*gl[1],10.0);
+					glScalef(3,3,10);
+					glutSolidCube(1.0);
+					glPopMatrix();
+				}
+				ptr++;	
+			}
+		}
+		
+	}
+}
+
