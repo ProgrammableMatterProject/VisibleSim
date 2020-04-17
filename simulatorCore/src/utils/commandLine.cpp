@@ -196,8 +196,7 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                 default:
                     // Simulate static virtual function call, through a (actually static)
                     //  class member function
-                    // @warning this is a very hacky method as it requires the user blockcode
-                    //  to check whether or not the constructor's argument is NULL
+                    // @warning this is a very hacky method as it requires the user blockcode                    //  to check whether or not the constructor's argument is NULL
                     BlockCode *bc = bcb(NULL);
                     bool parsed = bc->parseUserCommandLineArgument(argc, &argv);
                     delete bc;

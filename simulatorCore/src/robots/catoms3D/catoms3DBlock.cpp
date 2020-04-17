@@ -147,12 +147,6 @@ short Catoms3DBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos
     return getConnectorId(projectedPos);
 }
 
-
-std::ostream& Catoms3D::operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
-    stream << "#" << bb.blockId;
-    return stream;
-}
-
 bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const {
     Vector3D realPos;
 

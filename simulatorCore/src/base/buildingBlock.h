@@ -292,6 +292,8 @@ public:
     void setBlinkMode(bool b) { ptrGlBlock->isHighlighted=b; };
 };
 
+std::ostream& operator<<(std::ostream &stream, BuildingBlock const& bb);
+
 } // BaseSimulator namespace
 
 #endif /* BUILDINGBLOCK_H_ */

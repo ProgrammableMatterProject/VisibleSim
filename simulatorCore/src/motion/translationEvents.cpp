@@ -13,7 +13,7 @@
 
 using namespace BaseSimulator::utils;
 
-const int ANIMATION_DELAY=40000;
+const int ANIMATION_DELAY=100000;
 const int COM_DELAY=2000;
 
 namespace BaseSimulator {
@@ -50,7 +50,7 @@ void TranslationStartEvent::consume() {
     Scheduler *scheduler = getScheduler();
     BuildingBlock *bb = concernedBlock;
     World::getWorld()->disconnectBlock(bb, false);
-    bb->setColor(DARKGREY);
+    // bb->setColor(DARKGREY);
 
     Time t = scheduler->now() + ANIMATION_DELAY;
     Vector3D motionPosition = bb->getPositionVector();

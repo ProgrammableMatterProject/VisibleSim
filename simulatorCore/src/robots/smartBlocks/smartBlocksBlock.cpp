@@ -8,6 +8,7 @@
 #include <iostream>
 #include "robots/smartBlocks/smartBlocksBlock.h"
 #include "robots/smartBlocks/smartBlocksWorld.h"
+#include "motion/translationEvents.h"
 
 using namespace std;
 
@@ -102,5 +103,22 @@ void SmartBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
         new RemoveNeighborEvent(getScheduler()->now(), this,
                                 getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
+
+bool SmartBlocksBlock::canMoveTo(const Cell3DPosition& dest) const {
+    Lattice *lattice = getWorld()->lattice;
+
+    return lattice->isInGrid(dest)
+        and lattice->cellsAreAdjacent(position, dest)
+        and lattice->isFree(dest);
+}
+
+bool SmartBlocksBlock::moveTo(const Cell3DPosition& dest) {
+    if (not canMoveTo(dest)) return false;
+
+    getScheduler()->schedule(new TranslationStartEvent(getScheduler()->now(), this, dest));\
+
+    return true;
+}
+
 
 }

@@ -297,6 +297,11 @@ Time BuildingBlock::getSimulationTime(Time localTime) const {
     return clock->getSimulationTime(localTime);
 }
 
+std::ostream& operator<<(std::ostream &stream, BuildingBlock const& bb) {
+    stream << "#" << bb.blockId;
+    return stream;
+}
+
 /*************************************************
  *            MeldInterpreter Functions
  *************************************************/

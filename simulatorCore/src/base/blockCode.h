@@ -60,7 +60,8 @@ public:
 
 /**
  * @brief BlockCode constructor
- * @para, host The block on which this instance of the blockCode will be executed
+ * @param host The block on which this instance of the blockCode will be executed
+ * @warning DERIVED BLOCKCODE MUST ALWAYS CHECK FOR host == NULL, AND RETURN IF THAT'S THE CASE. THAT'S FOR CLI PARSING THROUGH DUMMY BLOCKCODE, WHICH USES BlockCode with a NULL host.
  */
     BlockCode(BuildingBlock *host);
 
@@ -212,6 +213,7 @@ public:
      * Called by openglviewer during interface drawing phase, can be used by a user
      *  to draw a custom Gl string onto the bottom-left corner of the GUI
      * @note call is made from OpenGlViewer::drawFunc
+     * @return a string (can be multi-line with `\n`) to display on the GUI
      */
     virtual string onInterfaceDraw();
 };

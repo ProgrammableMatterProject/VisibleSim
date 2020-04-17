@@ -209,8 +209,6 @@ public:
     void exportMatrix() const;
 };
 
-std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb);
-
 }
 
 #endif /* CATOMS3DBLOCK_H_ */

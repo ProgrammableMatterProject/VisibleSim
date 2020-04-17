@@ -43,6 +43,20 @@ public:
      * @copydoc BuildingBlock::removeNeighbor
      */
     virtual void removeNeighbor(P2PNetworkInterface *ni) override;
+
+    /**
+     * @param dest
+     * @return true if the module can move to position dest
+     *         (it is in the grid, adjacent and free)
+     */
+    bool canMoveTo(const Cell3DPosition& dest) const;
+
+    /**
+     * @brief Moves the current module to dest if possible (it is in the grid, adjacent and free)
+     * @param dest
+     * @return true module has initiated a motion to dest, false if it is not possible
+     */
+    bool moveTo(const Cell3DPosition& dest);
 };
 
 }
