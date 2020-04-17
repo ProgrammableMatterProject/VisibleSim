@@ -11,6 +11,7 @@ using namespace SmartBlocks;
 
 class StressTestSBBlockCode : public SmartBlocksBlockCode {
 private:
+    Cell3DPosition lastPos;
     Lattice *lattice;
     bool activated = false;
     SmartBlocksBlock *module;

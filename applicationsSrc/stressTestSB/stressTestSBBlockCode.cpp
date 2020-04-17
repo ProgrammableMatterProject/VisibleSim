@@ -31,14 +31,16 @@ StressTestSBBlockCode::StressTestSBBlockCode(SmartBlocksBlock *host) : SmartBloc
 void StressTestSBBlockCode::startup() {
     rng.seed(BaseSimulator::Simulator::getSimulator()->getCmdLine().getSimulationSeed());
 
+    initLockedCells();
+
     // Leader initiates activation
     if (module->blockId == 1) { // Master ID is 1
-        initLockedCells();
         module->setColor(BLUE);
         sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
         wait();
     } else {
         hostBlock->setColor(LIGHTGREY);
+        setLockedCell(module->position, true);
     }
 }
 
@@ -60,7 +62,7 @@ void StressTestSBBlockCode::handleActivationMessage(std::shared_ptr<Message> _ms
 
 void StressTestSBBlockCode::onMotionEnd() {
     console << " finished random motion to " << module->position << "\n";
-    setLockedCell(module->position, false);
+    setLockedCell(lastPos, false);
     sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
 
     wait();
@@ -117,6 +119,7 @@ bool StressTestSBBlockCode::randomWalk() {
 
     // Lock cell and move
     const Cell3DPosition& dest = candidates.front();
+    lastPos = module->position;
     setLockedCell(dest, true);
     module->moveTo(dest);
 
