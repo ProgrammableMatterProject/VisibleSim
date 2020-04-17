@@ -20,7 +20,7 @@ void <<appName>>BlockCode::startup() {
     console << "start";
 
     // Sample distance coloring algorithm below
-    if (module->blockId==1) { // Master ID is 1
+    if (module->blockId == 1) { // Master ID is 1
         module->setColor(RED);
         distance = 0;
         sendMessageToAllNeighbors("Sample Broadcast",
@@ -34,8 +34,9 @@ void <<appName>>BlockCode::startup() {
     // ...
 }
 
-void <<appName>>BlockCode::handleSampleMessage(MessagePtr msgPtr, P2PNetworkInterface* sender) {
-    MessageOf<int>* msg = static_cast<MessageOf<int>*>(msgPtr.get());
+void <<appName>>BlockCode::handleSampleMessage(std::shared_ptr<Message> _msg,
+                                               P2PNetworkInterface* sender) {
+    MessageOf<int>* msg = static_cast<MessageOf<int>*>(_msg.get());
 
     int d = *msg->getData() + 1;
     console << " received d =" << d << " from " << sender->getConnectedBlockId() << "\n";
@@ -59,7 +60,7 @@ void <<appName>>BlockCode::onMotionEnd() {
 }
 
 void <<appName>>BlockCode::processLocalEvent(EventPtr pev) {
-    MessagePtr message;
+    std::shared_ptr<Message> message;
     stringstream info;
 
     // Do not remove line below
@@ -92,36 +93,47 @@ void <<appName>>BlockCode::onAssertTriggered() {
     // ...
 }
 
-// bool <<appName>>BlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
-//     /* Reading the command line */
-//     if ((argc > 0) && ((*argv)[0][0] == '-')) {
-//         switch((*argv)[0][1]) {
+bool <<appName>>BlockCode::parseUserCommandLineArgument(int &argc, char **argv[]) {
+    /* Reading the command line */
+    if ((argc > 0) && ((*argv)[0][0] == '-')) {
+        switch((*argv)[0][1]) {
 
-//             // Single character example: -b
-//             case 'b':   {
-//                 cout << "-b option provided" << endl;
-//                 return true;
-//             } break;
+            // Single character example: -b
+            case 'b':   {
+                cout << "-b option provided" << endl;
+                return true;
+            } break;
 
-//             // Composite argument example: --foo 13
-//             case '-': {
-//                 string varg = string((*argv)[0] + 2); // argv[0] without "--"
-//                 if (varg == string("foo")) { //
-//                     try {
-//                         int fooArg = stoi((*argv)[1]);
-//                         argc--;
-//                         (*argv)++;
-//                     } catch(std::logic_error&) {}
+            // Composite argument example: --foo 13
+            case '-': {
+                string varg = string((*argv)[0] + 2); // argv[0] without "--"
+                if (varg == string("foo")) { //
+                    int fooArg;
+                    try {
+                        fooArg = stoi((*argv)[1]);
+                        argc--;
+                        (*argv)++;
+                    } catch(std::logic_error&) {
+                        stringstream err;
+                        err << "foo must be an integer. Found foo = " << argv[1] << endl;
+                        throw CLIParsingError(err.str());
+                    }
 
-//                     cout << "--foo option provided with value: " << fooArg << endl;
-//                 } else return false;
+                    cout << "--foo option provided with value: " << fooArg << endl;
+                } else return false;
 
-//                 return true;
-//             }
+                return true;
+            }
 
-//             default: cerr << "Unrecognized command line argument: " << (*argv)[0] << endl;
-//         }
-//     }
+            default: cerr << "Unrecognized command line argument: " << (*argv)[0] << endl;
+        }
+    }
 
-//     return false;
-// }
+    return false;
+}
+
+string <<appName>>BlockCode::onInterfaceDraw() {
+    stringstream trace;
+    trace << "Some value " << 123;
+    return trace.str();
+}

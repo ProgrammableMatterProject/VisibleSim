@@ -36,9 +36,9 @@ public :
 
     /**
      * @brief Sample message handler for this instance of the blockcode
-     * @param msgPtr Pointer to the message received by the module
+     * @param _msg Pointer to the message received by the module, requires casting
      * @param sender Connector of the module that has received the message and that is connected to the sender */
-    void handleSampleMessage(MessagePtr msgPtr, P2PNetworkInterface *sender);
+    void handleSampleMessage(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /// Advanced blockcode handlers below
 
@@ -84,8 +84,21 @@ public :
      * @param face face that has been tapped */
     void onTap(int face) override {}
 
-    // NOT YET IMPLEMENTED ON GIT/DEV
-    // bool parseUserCommandLineArgument(int& argc, char **argv[]) override;
+
+    /**
+     * User-implemented keyboard handler function that gets called when
+     *  a key press event could not be caught by openglViewer
+     * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
+     */
+    bool parseUserCommandLineArgument(int& argc, char **argv[]) override;
+
+    /**
+     * Called by openglviewer during interface drawing phase, can be used by a user
+     *  to draw a custom Gl string onto the bottom-left corner of the GUI
+     * @note call is made from OpenGlViewer::drawFunc
+     * @return a string (can be multi-line with `\n`) to display on the GUI
+     */
+    string onInterfaceDraw() override;
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
