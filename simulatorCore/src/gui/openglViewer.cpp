@@ -498,11 +498,11 @@ void GlutContext::idleFunc(void) {
 
     if (saveScreenMode) {
         static int num=0;
-        char title[32], title2[32];
-        strncpy(title, animationDirName.c_str(), sizeof(title));
-        strncat(title, "/save%04d.ppm", sizeof(title) - strlen(title) - 1);
+        char title[32], titleFormat[32];
+        strncpy(titleFormat, animationDirName.c_str(), sizeof(titleFormat));
+        strncat(titleFormat, "/save%04d.ppm", sizeof(titleFormat) - strlen(titleFormat) - 1);
 
-        sprintf(title,title2,num++);
+        sprintf(title,titleFormat,num++);
 
         string titleStr = string(title);
         string titleJpg = titleStr;
