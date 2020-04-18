@@ -14,6 +14,7 @@ private:
     Cell3DPosition lastPos;
     Lattice *lattice;
     bool activated = false;
+		bool isMoving=false;
     SmartBlocksBlock *module;
     inline static bool *lockedCells  = nullptr;
     std::mt19937 rng;

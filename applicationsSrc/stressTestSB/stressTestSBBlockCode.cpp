@@ -47,11 +47,11 @@ void StressTestSBBlockCode::startup() {
 
 void StressTestSBBlockCode::handleActivationMessage(std::shared_ptr<Message> _msg,
                                                     P2PNetworkInterface* sender) {
-    if (not activated) {
+    if (not activated && not isMoving) {
         activated = true;
         module->setColor(BLUE);
 
-        console << " received ACTIVATE from "
+        console << " Received ACTIVATE from "
                 << sender->getConnectedBlockId() << "\n";
 
         // Broadcast to all neighbors but ignore sender
@@ -62,6 +62,7 @@ void StressTestSBBlockCode::handleActivationMessage(std::shared_ptr<Message> _ms
 }
 
 void StressTestSBBlockCode::onMotionEnd() {
+    isMoving=false;
     console << " finished random motion to " << module->position << "\n";
     setLockedCell(lastPos, false);
     sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
@@ -94,7 +95,7 @@ void StressTestSBBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
             switch(itev->mode) {
                 case AGITATE_IT_ID:
                     console << " agitate" << "\n";
-                    randomWalk();
+                    if (!isMoving) randomWalk();
                     break;
             }
         } break;
@@ -122,6 +123,8 @@ bool StressTestSBBlockCode::randomWalk() {
     const Cell3DPosition& dest = candidates.front();
     lastPos = module->position;
     setLockedCell(dest, true);
+		console << "Moveto" << dest << "\n";
+		isMoving=true;
     module->moveTo(dest);
 
     return true;
