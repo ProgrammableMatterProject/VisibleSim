@@ -32,6 +32,7 @@ void StressTestSBBlockCode::startup() {
 
     initLockedCells();
 
+		module->setDisplayedValue(-1);
     // Leader initiates activation
     if (module->blockId == 1) { // Master ID is 1
         module->setColor(BLUE);
@@ -39,7 +40,7 @@ void StressTestSBBlockCode::startup() {
 				sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
         wait();
     } else {
-        hostBlock->setColor(YELLOW);
+        //hostBlock->setColor(YELLOW);
         setLockedCell(module->position, true);
     }
 }
@@ -54,8 +55,8 @@ void StressTestSBBlockCode::handleActivationMessage(std::shared_ptr<Message> _ms
                 << sender->getConnectedBlockId() << "\n";
 
         // Broadcast to all neighbors but ignore sender
-        sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,
-                                  1,sender); // ignore sender
+        /*sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,
+                                  1,sender); // ignore sender*/
         wait();
     }
 }
@@ -177,7 +178,7 @@ void StressTestSBBlockCode::onBlockSelected() {
 }
 
 void StressTestSBBlockCode::onGlDraw() {
-	static const float color[4]={0.2f,0.2f,0.2f,1.0f};
+	/*static const float color[4]={0.2f,0.2f,0.2f,1.0f};
 	if (lockedCells) {
 		const Cell3DPosition& gs = lattice->gridSize;
 		const Vector3D gl = lattice->gridScale;
@@ -197,6 +198,6 @@ void StressTestSBBlockCode::onGlDraw() {
 			}
 		}
 		
-	}
+	}*/
 }
 

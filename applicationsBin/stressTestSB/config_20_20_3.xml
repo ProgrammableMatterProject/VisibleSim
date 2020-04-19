@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="20,20,1">
+	<blockList color="0,255,0" blockSize="25.0,25.0,11.0">
+		<blocksLine line="0" values="11111111111111101111"/>
+		<blocksLine line="1" values="01010101010100010001"/>
+		<blocksLine line="2" values="00110001001110111011"/>
+		<blocksLine line="3" values="00010110111001010101"/>
+		<blocksLine line="4" values="00001010000111111111"/>
+		<blocksLine line="5" values="00011111101101010101"/>
+		<blocksLine line="6" values="00100010010110111011"/>
+		<blocksLine line="7" values="01110111011001010001"/>
+		<blocksLine line="8" values="10101010101001111110"/>
+		<blocksLine line="9" values="11111111111110010101"/>
+		<blocksLine line="10" values="10101010101010111001"/>
+		<blocksLine line="11" values="01110111011100010101"/>
+		<blocksLine line="12" values="00100010001011111111"/>
+		<blocksLine line="13" values="00011111110001010101"/>
+		<blocksLine line="14" values="00101010101000111011"/>
+		<blocksLine line="15" values="01100111001101010001"/>
+		<blocksLine line="16" values="10101010101001111110"/>
+		<blocksLine line="17" values="11111111111110010100"/>
+		<blocksLine line="18" values="10101010101010111000"/>
+		<blocksLine line="19" values="01110111011100010000"/>
+	</blockList>
+</world>
