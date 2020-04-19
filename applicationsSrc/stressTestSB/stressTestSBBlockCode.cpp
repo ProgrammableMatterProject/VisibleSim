@@ -5,8 +5,7 @@
 using namespace SmartBlocks;
 
 template <typename T>
-void print(std::vector<T> const &input)
-{
+void print(std::vector<T> const &input) {
     std::copy(input.begin(),
               input.end(),
               std::experimental::make_ostream_joiner(std::cout, ", "));
@@ -114,8 +113,11 @@ bool StressTestSBBlockCode::randomWalk() {
                  [this](const Cell3DPosition& p){
                      return not isLockedCell(p) and module->canMoveTo(p); });
 
-    if (candidates.empty()) return false;
-
+    if (candidates.empty()) {
+			module->setColor(RED);
+			activated = false;
+			return false;
+		}
     // Randomly pick one candidate
     std::random_shuffle ( candidates.begin(), candidates.end() );
 
