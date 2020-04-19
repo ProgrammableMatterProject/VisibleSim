@@ -25,7 +25,7 @@ StressTestSBBlockCode::StressTestSBBlockCode(SmartBlocksBlock *host) : SmartBloc
     // Set the module pointer
     module = static_cast<SmartBlocksBlock*>(hostBlock);
     lattice = BaseSimulator::getWorld()->lattice;
-  }
+}
 
 void StressTestSBBlockCode::startup() {
     rng.seed(BaseSimulator::Simulator::getSimulator()->getCmdLine().getSimulationSeed());
@@ -36,8 +36,8 @@ void StressTestSBBlockCode::startup() {
     // Leader initiates activation
     if (module->blockId == 1) { // Master ID is 1
         module->setColor(BLUE);
-				setLockedCell(module->position, true);
-				sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
+        setLockedCell(module->position, true);
+        sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
         wait();
     } else {
         //hostBlock->setColor(YELLOW);
@@ -95,7 +95,13 @@ void StressTestSBBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
             switch(itev->mode) {
                 case AGITATE_IT_ID:
                     console << " agitate" << "\n";
-                    if (!isMoving) randomWalk();
+                    if (!isMoving) {
+                        if (not randomWalk()) { // Wait .5s and try moving again
+                            wait();
+                        } else {
+                            module->setColor(BLUE);
+                        }
+                    }
                     break;
             }
         } break;
@@ -115,10 +121,10 @@ bool StressTestSBBlockCode::randomWalk() {
                      return not isLockedCell(p) and module->canMoveTo(p); });
 
     if (candidates.empty()) {
-			module->setColor(RED);
-			activated = false;
-			return false;
-		}
+        module->setColor(RED);
+        return false;
+    }
+
     // Randomly pick one candidate
     std::random_shuffle ( candidates.begin(), candidates.end() );
 
@@ -126,8 +132,8 @@ bool StressTestSBBlockCode::randomWalk() {
     const Cell3DPosition& dest = candidates.front();
     lastPos = module->position;
     setLockedCell(dest, true);
-		console << "Moveto" << dest << "\n";
-		isMoving=true;
+    console << "Moveto" << dest << "\n";
+    isMoving = true;
     module->moveTo(dest);
 
     return true;
@@ -200,4 +206,3 @@ void StressTestSBBlockCode::onGlDraw() {
 		
 	}*/
 }
-
