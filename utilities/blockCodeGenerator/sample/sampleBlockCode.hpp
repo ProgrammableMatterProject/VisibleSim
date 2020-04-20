@@ -51,6 +51,13 @@ public :
     void parseUserElements(TiXmlDocument *config) override {}
 
     /**
+     * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from each block config. Has to be overriden in the child class.
+     * @param config : pointer to the TiXmlElement representing the block configuration file, all information related to concerned block have already been parsed
+     *
+     */
+    void parseUserBlockElements(TiXmlElement *config) override {}
+
+    /**
      * User-implemented debug function that gets called when a module is selected in the GUI
      */
     void onBlockSelected() override;
