@@ -611,14 +611,15 @@ void GlutContext::drawFunc(void) {
     }
     if (helpWindow) helpWindow->glDraw();
 
-    glDisable(GL_LIGHTING);
+    /*glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
     if (enableShowFPS) showFPS();
-    showSimulationInfo();
-
+    showSimulationInfo();*/
+		
+		glEnable(GL_DEPTH_TEST);
+		
     glFlush();
-    glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
 }
 

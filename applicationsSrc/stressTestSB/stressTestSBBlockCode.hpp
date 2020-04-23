@@ -107,7 +107,7 @@ public :
     void onTap(int face) override {}
 
     bool parseUserCommandLineArgument(int& argc, char **argv[]) override { return false; };
-
+		string onInterfaceDraw() override;
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
