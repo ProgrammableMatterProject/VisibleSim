@@ -34,7 +34,7 @@ void StressTestSBBlockCode::startup() {
 
 		module->setDisplayedValue(-1);
     // Leader initiates activation
-    if (module->blockId == 1) { // Master ID is 1
+    if (isLeader) { 
         module->setColor(BLUE);
         setLockedCell(module->position, true);
         sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
@@ -182,6 +182,13 @@ void StressTestSBBlockCode::onBlockSelected() {
         cout << "Pick: " << candidates.front() << endl;
     }
 }
+
+void StressTestSBBlockCode::parseUserBlockElements(TiXmlElement *config) {
+	const char *attr = config->Attribute("leader");
+	isLeader=(attr!=nullptr);
+	if (isLeader) cout << module->blockId << " is leader!" << endl;
+}
+
 
 void StressTestSBBlockCode::onGlDraw() {
 	/*static const float color[4]={0.2f,0.2f,0.2f,1.0f};

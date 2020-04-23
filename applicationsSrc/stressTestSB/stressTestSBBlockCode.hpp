@@ -15,6 +15,7 @@ private:
     Lattice *lattice;
     bool activated = false;
 		bool isMoving=false;
+		bool isLeader=false;
     SmartBlocksBlock *module;
     inline static bool *lockedCells  = nullptr;
     std::mt19937 rng;
@@ -44,7 +45,14 @@ public :
      * @brief Callback function executed whenever the module finishes a motion
      */
     void onMotionEnd() override;
-
+		
+		/**
+		 * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from each block config. Has to be overriden in the child class.
+		 * @param config : pointer to the TiXmlElement representing the block configuration file, all information related to concerned block have already been parsed
+		 *
+		 */
+		void parseUserBlockElements(TiXmlElement *config) override;
+		
     /**
      * @brief Activation message handler for this instance of the blockcode
      * @param _msg Pointer to the (abstracted) message received by the module
@@ -63,14 +71,6 @@ public :
     bool randomWalk();
 
     /// Advanced blockcode handlers below
-
-    /**
-     * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it.
-     * @param config : pointer to the TiXmlDocument representing the configuration file, all information related to VisibleSim's core have already been parsed
-     *
-     * Called from BuildingBlock constructor, only once.
-     */
-    void parseUserElements(TiXmlDocument *config) override {}
 
     /**
      * User-implemented debug function that gets called when a module is selected in the GUI
