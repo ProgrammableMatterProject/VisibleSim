@@ -15,11 +15,8 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         c[2]=color[2]*n;
         c[3]=1.0;
         ptrObj->setLightedColor(c);
-//      glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,c);
     } else {
-//		GLfloat gray[]={0.2,0.2,0.2,1.0};
         ptrObj->setLightedColor(color);
-//		glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,color);
     }
     ptrObj->glDraw();
     if (displayedValue>=0) {

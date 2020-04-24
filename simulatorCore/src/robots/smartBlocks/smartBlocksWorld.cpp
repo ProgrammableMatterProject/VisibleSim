@@ -98,9 +98,9 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 void SmartBlocksWorld::glDraw() {
         glDisable(GL_TEXTURE_2D);
         lock();
-				BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
-				if (bb) bb->blockCode->onGlDraw();
-				for (const auto& pair : mapGlBlocks) {
+        BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+        if (bb) bb->blockCode->onGlDraw();
+        for (const auto& pair : mapGlBlocks) {
             ((SmartBlocksGlBlock*)pair.second)->glDraw(objBlock);
         }
         unlock();
@@ -154,11 +154,11 @@ void SmartBlocksWorld::glDrawSpecificBg() {
     glBegin(GL_QUADS);
     glTexCoord2f(0,0);
     glVertex3f(0.0f,0.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[0],0);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,0); // textureCarre is a used as a 4x4 square texture
     glVertex3f(1.0f,0.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+    glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[1]/4.0f);
     glVertex3f(1.0,1.0,0.0f);
-    glTexCoord2f(0,lattice->gridSize[1]);
+    glTexCoord2f(0,lattice->gridSize[1]/4.0f);
     glVertex3f(0.0,1.0,0.0f);
     glEnd();
     glPopMatrix();
@@ -170,8 +170,7 @@ void SmartBlocksWorld::glDrawSpecificBg() {
 
 void SmartBlocksWorld::loadTextures(const string &str) {
     if (GlutContext::GUIisEnabled) {
-        //string path = str+"/circuit.tga";
-        string path = str+"/bois.tga";
+        string path = str+"/textureCarre.tga";
         int lx,ly;
         idTextureFloor = GlutWindow::loadTexture(path.c_str(),lx,ly);
 
@@ -189,8 +188,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     else if (name == "Material__71") numSelectedFace = SLattice::West;
     else if (name == "Material__68") numSelectedFace = SLattice::North;
     else {
-        numSelectedFace = 4;	// Top
-        return;
+        numSelectedFace = 4;  // Top
     }
 
     // cerr << "SET " << name << " = " << numSelectedFace << " = "
