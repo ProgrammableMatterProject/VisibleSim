@@ -3,6 +3,8 @@
 #include <cassert>
 #include <random>
 #include <list>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -35,26 +37,30 @@ public :
         set(x,y);
     }
     void addFreeNeighbors(int x,int y,list<pair<int ,int>> &res) {
+        vector<pair<int,int>> solutions;
         if (x<width-1 and (not get(x+1,y)) and neighborCount(x+1,y)<=12) {
             set(x+1,y,true);
-            res.push_back(make_pair(x+1,y));
+            solutions.emplace_back(x+1,y);
         }
         // right
         if (x>0 and (not get(x-1,y)) and neighborCount(x-1,y)<=12) {
             set(x-1,y);
-            res.push_back(make_pair(x-1,y));
+            solutions.emplace_back(x-1,y);
         }
         // top
         if (y<height-1 and (not get(x,y+1)) and neighborCount(x,y+1)<=12) {
             set(x,y+1);
-            res.push_back(make_pair(x,y+1));
+            solutions.emplace_back(x,y+1);
         }
         // bottom
         if (y>0 and (not get(x,y-1)) and neighborCount(x,y-1)<=13) {
             set(x,y-1);
-            res.push_back(make_pair(x,y-1));
+            solutions.emplace_back(x,y-1);
         }
+        // random shuffle
+        random_shuffle ( solutions.begin(), solutions.end() );
 
+        copy(solutions.begin(), solutions.end(),back_inserter(res));
     }
     int neighborCount(int x,int y) {
         int n=0;
@@ -69,21 +75,7 @@ public :
         return n;
     }
 
-    void print() {
-        cout << "<?xml version=\"1.0\" standalone=\"no\" ?>" << endl;
-        cout << "<world gridSize=\"" << width << "," << height << ",1\">" << endl;
-        cout << "\t<blockList color=\"0,255,0\" blockSize=\"25.0,25.0,11.0\">" << endl;
-        for (int l=0; l<height; l++) {
-            cout << "\t\t<blocksLine line=\"" << l << "\" values=\"";
-            for (int c=0; c<width; c++) {
-                cout << (int)get(c,l);
-            }
-            cout << "\"/>" << endl;
-        }
-
-        cout << "\t</blockList>" << endl;
-        cout << "</world>" << endl;
-
+    void print(int parts) {
         // count number of true
         bool *ptr=grid;
         int n=width*height;
@@ -92,6 +84,43 @@ public :
             nbok+=(int)(*ptr++);
         }
         cerr << "Nb modules=" << nbok << "/" << width*height << endl;
+
+        cout << "<?xml version=\"1.0\" standalone=\"no\" ?>" << endl;
+        cout << "<world gridSize=\"" << width << "," << height << ",1\" windowSize=\"1920,1080\" >" << endl;
+        cout << "<camera target=\"" << width*12.5f << "," << height*12.5f << ",10\" directionSpherical=\"0,60," << width*40.0f << "\" angle=\"45\" near=\"" << width*20.0f << "\" far=\"" << width*50.0f << "\" />" << endl;
+        cout << "\t<blockList color=\"0,255,0\" blockSize=\"25.0,25.0,11.0\">" << endl;
+        int wp=width/parts;
+        int hp=height/parts;
+        int yp=hp/2;
+        int l=0;
+        for (int k=0; k<parts+1; k++) {
+            while (l < yp) {
+                cout << "\t\t<blocksLine line=\"" << l << "\" values=\"";
+                for (int c = 0; c < width; c++) {
+                    cout << (int) get(c, l);
+                }
+                cout << "\"/>" << endl;
+                l++;
+            }
+            if (l<height) {
+                int xp=wp/2;
+                for (int c = 0; c < width; c++) {
+                    if (get(c, l)) {
+                        if (xp>0) {
+                            cout << "\t\t<block position=\"" << c << "," << l << "," << "0\" />" << endl;
+                        } else {
+                            xp+=wp;
+                            cout << "\t\t<block position=\"" << c << "," << l << "," << "0\" leader=\"1\" />" << endl;
+                        }
+                    }
+                    xp--;
+                }
+            }
+            l++;
+            yp = min(yp+hp+1,height);
+        }
+        cout << "\t</blockList>" << endl;
+        cout << "</world>" << endl;
     }
 
 };
@@ -111,7 +140,8 @@ int main(int argc, char **argv) {
     list<pair<int ,int>> res;
 
     mt19937 rng;
-    int randSeed=(argc==5)?atoi(argv[4]):1;
+    int randSeed=(argc>=5)?atoi(argv[4]):1;
+    int parts=(argc==6)?atoi(argv[5]):1;
     int x,y;
     rng.seed(randSeed);
     for (int i=0; i<nbSources; i++) {
@@ -128,7 +158,7 @@ int main(int argc, char **argv) {
         res.pop_front();
         grid.addFreeNeighbors(pos.first,pos.second,res);
     }
-    grid.print();
+    grid.print(parts);
 
 
     return 0;

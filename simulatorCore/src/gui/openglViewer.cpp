@@ -21,7 +21,7 @@
 #include "utils/utils.h"
 #include "utils/global.h"
 
-// #define showStatsFPS	0
+// #define showStatsFPS  0
 
 //===========================================================================================================
 //
@@ -246,7 +246,6 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
                 camera->mouseZoom(10);
                 break;
         }
-        //cout << *camera << endl;
     } else { // selection of the clicked block
         if (state==GLUT_UP) {
             int n=selectFunc(x,y);
@@ -257,7 +256,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             if (n) {
                 GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n);
                 glB->toggleHighlight();
-                glB->fireSelectedTrigger();
+                // glB->fireSelectedTrigger(); for Catoms3D only
             } else BaseSimulator::getWorld()->setselectedGlBlock(-1);
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
@@ -616,9 +615,10 @@ void GlutContext::drawFunc(void) {
 
     if (enableShowFPS) showFPS();
     showSimulationInfo();
-
-    glFlush();
+    
     glEnable(GL_DEPTH_TEST);
+    
+    glFlush();
     glutSwapBuffers();
 }
 
@@ -719,7 +719,7 @@ void GlutContext::mainLoop() {
         std::this_thread::sleep_for(timespan);
 /*    char c='r';
       cin >> c;*/
-//		Scheduler *s = getScheduler();
+//    Scheduler *s = getScheduler();
 //    if (c=='r') {
         cout << "Run simulation..." << endl;
         cout.flush();

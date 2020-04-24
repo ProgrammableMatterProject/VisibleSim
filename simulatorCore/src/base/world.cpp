@@ -281,7 +281,7 @@ void World::createPopupMenu(int ix, int iy) {
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
-cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
+		cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
          << " selected" << endl;
     // cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
 

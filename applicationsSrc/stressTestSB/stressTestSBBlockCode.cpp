@@ -4,6 +4,8 @@
 
 using namespace SmartBlocks;
 
+static int nbUnmarked;
+
 template <typename T>
 void print(std::vector<T> const &input) {
     std::copy(input.begin(),
@@ -28,13 +30,20 @@ StressTestSBBlockCode::StressTestSBBlockCode(SmartBlocksBlock *host) : SmartBloc
 }
 
 void StressTestSBBlockCode::startup() {
+	if (module->blockId==1) {
+		nbUnmarked=SmartBlocksWorld::getWorld()->getNbBlocks();
+		cout << "#blocks=" << nbUnmarked <<endl;
+	}
+	
     rng.seed(BaseSimulator::Simulator::getSimulator()->getCmdLine().getSimulationSeed());
 
     initLockedCells();
 
     module->setDisplayedValue(-1);
     // Leader initiates activation
-    if (module->blockId == 1) { // Master ID is 1
+    if (isLeader) { 
+				nbUnmarked--;
+				activated=true;
         module->setColor(BLUE);
         setLockedCell(module->position, true);
         sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
@@ -50,9 +59,9 @@ void StressTestSBBlockCode::handleActivationMessage(std::shared_ptr<Message> _ms
     if (not activated && not isMoving) {
         activated = true;
         module->setColor(BLUE);
-
+				nbUnmarked--;
         console << " Received ACTIVATE from "
-                << sender->getConnectedBlockId() << "\n";
+                << sender->getConnectedBlockId() << "(" << nbUnmarked << ")\n";
 
         // Broadcast to all neighbors but ignore sender
         /*sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,
@@ -95,7 +104,7 @@ void StressTestSBBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
             switch(itev->mode) {
                 case AGITATE_IT_ID:
                     console << " agitate" << "\n";
-                    if (!isMoving) {
+                    if (!isMoving && nbUnmarked>0) {
                         if (not randomWalk()) { // Wait .5s and try moving again
                             wait();
                         } else {
@@ -132,7 +141,7 @@ bool StressTestSBBlockCode::randomWalk() {
     const Cell3DPosition& dest = candidates.front();
     lastPos = module->position;
     setLockedCell(dest, true);
-    console << "Moveto" << dest << "\n";
+    //console << "Moveto" << dest << "\n";
     isMoving = true;
     module->moveTo(dest);
 
@@ -183,6 +192,14 @@ void StressTestSBBlockCode::onBlockSelected() {
     }
 }
 
+void StressTestSBBlockCode::parseUserBlockElements(TiXmlElement *config) {
+	
+	const char *attr = config->Attribute("leader");
+	isLeader=(attr!=nullptr);
+	if (isLeader) cout << module->blockId << " is leader!" << endl;
+}
+
+
 void StressTestSBBlockCode::onGlDraw() {
     /*static const float color[4]={0.2f,0.2f,0.2f,1.0f};
     if (lockedCells) {
@@ -205,4 +222,8 @@ void StressTestSBBlockCode::onGlDraw() {
         }
 
     }*/
+}
+
+string StressTestSBBlockCode::onInterfaceDraw() {
+	return "#Unmarked:" + to_string(nbUnmarked);
 }

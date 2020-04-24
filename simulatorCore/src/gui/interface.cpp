@@ -566,8 +566,8 @@ void GlutButton::addSubMenu(GlutWindow *child) {
 }
 
 
-void GlutButton::glDraw()
-{	GLfloat tx=0,ty=0.5;
+void GlutButton::glDraw() {	
+    GLfloat tx=0,ty=0.5;
 
     bindTexture();
     if (isActive) {
@@ -589,8 +589,8 @@ void GlutButton::glDraw()
         glTexCoord2f(tx+0.5f,ty+0.5f);
         glVertex2i(w,h);
         glTexCoord2f(tx,ty+0.5f);
-    glVertex2i(0,h);
-    glEnd();
+        glVertex2i(0,h);
+        glEnd();
     glPopMatrix();
 }
 

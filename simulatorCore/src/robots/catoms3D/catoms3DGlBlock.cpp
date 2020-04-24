@@ -1,4 +1,6 @@
 #include "robots/catoms3D/catoms3DGlBlock.h"
+#include "robots/catoms3D/catoms3DBlock.h"
+#include "robots/catoms3D/catoms3DWorld.h"
 
 namespace Catoms3D {
 
@@ -35,5 +37,15 @@ void Catoms3DGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
     ptrObj->glDrawIdByMaterial(n);
     glPopMatrix();
 }
+
+void Catoms3DGlBlock::fireSelectedTrigger() { 
+    Lattice *lattice = World::getWorld()->lattice;
+    const Cell3DPosition& bbPos = lattice->worldToGridPosition(getPosition());
+    Catoms3DBlock* catom = static_cast<Catoms3DBlock*>(lattice->getBlock(bbPos));
+ 
+    // custom user debug procedure
+    if (catom and catom->blockCode) catom->blockCode->onBlockSelected();
+}
+
 
 }
