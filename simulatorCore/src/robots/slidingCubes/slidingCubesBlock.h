@@ -43,6 +43,16 @@ public:
      */
     virtual void removeNeighbor(P2PNetworkInterface *ni) override;
     int getDirection(P2PNetworkInterface*) const override;
+
+    /**
+     * @copydoc BuildingBlock::canMoveTo
+     */
+    virtual bool canMoveTo(const Cell3DPosition& dest) const override;
+
+    /**
+     * @copydoc BuildingBlock::moveTo
+     */
+    virtual bool moveTo(const Cell3DPosition& dest) override;
 };
 
 std::ostream& operator<<(std::ostream &stream, SlidingCubesBlock const& bb);

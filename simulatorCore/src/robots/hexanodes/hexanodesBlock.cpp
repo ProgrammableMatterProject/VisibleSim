@@ -14,6 +14,9 @@
 #include "base/buildingBlock.h"
 #include "robots/hexanodes/hexanodesWorld.h"
 #include "robots/hexanodes/hexanodesSimulator.h"
+#include "robots/hexanodes/hexanodesBlock.h"
+#include "robots/hexanodes/hexanodesMotionEngine.h"
+#include "robots/hexanodes/hexanodesMotionEvents.h"
 #include "utils/trace.h"
 
 using namespace std;
@@ -146,6 +149,32 @@ Matrix HexanodesBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition 
     M2.setTranslation(V);
     M = M2*M1;
     return M;
+}
+
+bool HexanodesBlock::canMoveTo(const Cell3DPosition& dest) const {
+    vector<HexanodesMotion*> motions =
+        Hexanodes::getWorld()->getAllMotionsForModule(const_cast<HexanodesBlock*>(this));
+    for (const auto* motion : motions) {
+        if (motion->getFinalPos(position) == dest)
+            return true;
+    }
+
+    return false;
+}
+
+bool HexanodesBlock::moveTo(const Cell3DPosition& dest) {
+    vector<HexanodesMotion*> motions = Hexanodes::getWorld()->getAllMotionsForModule(this);
+
+    for (const auto* motion : motions) {
+        if (motion->getFinalPos(position) == dest) {
+            getScheduler()->schedule(
+                new HexanodesMotionStartEvent(getScheduler()->now(), this,
+                                              dest, motion->getToConId()));
+            return true;
+        }
+    }
+
+    return false;
 }
 
 }

@@ -290,6 +290,19 @@ public:
      */
     int getFaceForNeighborID(int nId) const;
     void setBlinkMode(bool b) { ptrGlBlock->isHighlighted=b; };
+
+    /**
+     * @param dest destination of the candidate motion
+     * @return true if the module can move to cell dest
+     */
+    virtual bool canMoveTo(const Cell3DPosition& dest) const = 0;
+
+    /**
+     * Moves module to lattice cell dest if possible
+     * @param dest destination of the motion
+     * @return true if motion is possible and has been scheduled, false otherwise
+     */
+    virtual bool moveTo(const Cell3DPosition& dest) = 0;
 };
 
 std::ostream& operator<<(std::ostream &stream, BuildingBlock const& bb);

@@ -17,10 +17,7 @@
 #include "clock/clock.h"
 #include "meld/meldInterpretEvents.h"
 #include "grid/lattice.h"
-
-#ifdef ENABLE_MELDPROCESS
-#include "meld/meldProcessEvents.h"
-#endif
+#include "motion/teleportationEvents.h"
 
 using namespace std;
 
@@ -115,6 +112,16 @@ void BlinkyBlocksBlock::stopBlock(Time date, State s) {
     if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
         getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
     }
+}
+
+bool BlinkyBlocksBlock::moveTo(const Cell3DPosition& dest)  {
+    cerr << "(warning) " << *this << " attempting to move to " << dest
+         << " even though BlinkyBlocks has no motion capability. Teleporting... " << endl;
+
+    getScheduler()->schedule(
+        new TeleportationStartEvent(getScheduler()->now(), this, dest));
+
+    return true;
 }
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {

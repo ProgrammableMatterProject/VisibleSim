@@ -92,4 +92,13 @@ std::ostream& operator<<(std::ostream &stream, SlidingCubesBlock const& bb) {
     return stream;
 }
 
+
+bool SlidingCubesBlock::canMoveTo(const Cell3DPosition& dest) const {
+    throw NotImplementedException("canMoveTo not implemented yet");
+}
+
+bool SlidingCubesBlock::moveTo(const Cell3DPosition& dest) {
+    throw NotImplementedException("moveTo not implemented yet");
+}
+
 }

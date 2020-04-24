@@ -41,6 +41,17 @@ public:
     void removeNeighbor(P2PNetworkInterface *ni) override;
     void stopBlock(Time date, State s);
     void pauseClock(Time delay, Time start);
+
+
+    /**
+     * @copydoc BuildingBlock::canMoveTo
+     */
+    virtual bool canMoveTo(const Cell3DPosition& dest) const override { return false; }
+
+    /**
+     * @copydoc BuildingBlock::moveTo
+     */
+    virtual bool moveTo(const Cell3DPosition& dest) override;
 };
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);

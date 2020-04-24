@@ -15,6 +15,8 @@
 #include "robots/nodes2D/nodes2DWorld.h"
 #include "robots/nodes2D/nodes2DSimulator.h"
 #include "utils/trace.h"
+#include "robots/nodes2D/nodes2DMotionEngine.h"
+#include "robots/nodes2D/nodes2DMotionEvents.h"
 
 using namespace std;
 
@@ -141,5 +143,34 @@ Matrix Nodes2DBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &p
     M = M2*M1;
     return M;
 }
+
+bool Nodes2DBlock::canMoveTo(const Cell3DPosition& dest) const {
+    const vector<Nodes2DMotion*> motions =
+        Nodes2D::getWorld()->getAllMotionsForModule(const_cast<Nodes2DBlock*>(this));
+
+    for (const auto* motion : motions) {
+        if (motion->finalPos == dest)
+            return true;
+    }
+
+    return false;
+}
+
+bool Nodes2DBlock::moveTo(const Cell3DPosition& dest) {
+    vector<Nodes2DMotion*> motions =
+        Nodes2D::getWorld()->getAllMotionsForModule(this);
+
+    for (const auto* motion : motions) {
+        if (motion->finalPos == dest) {
+            getScheduler()->schedule(
+                new Nodes2DMotionStartEvent(getScheduler()->now(), this,
+                                            dest, motion->toConId));
+            return true;
+        }
+    }
+
+    return false;
+}
+
 
 }
