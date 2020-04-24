@@ -256,7 +256,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             if (n) {
                 GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n);
                 glB->toggleHighlight();
-                // glB->fireSelectedTrigger(); for Catoms3D only
+							  glB->fireSelectedTrigger();
             } else BaseSimulator::getWorld()->setselectedGlBlock(-1);
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {

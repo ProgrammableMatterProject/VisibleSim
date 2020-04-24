@@ -100,6 +100,7 @@ void SmartBlocksWorld::glDraw() {
         lock();
         BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
         if (bb) bb->blockCode->onGlDraw();
+
         for (const auto& pair : mapGlBlocks) {
             ((SmartBlocksGlBlock*)pair.second)->glDraw(objBlock);
         }
@@ -128,7 +129,6 @@ void SmartBlocksWorld::glDrawIdByMaterial() {
 
 void SmartBlocksWorld::glDrawId() {
     glPushMatrix();
-    glDisable(GL_TEXTURE_2D);
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((SmartBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
@@ -164,8 +164,6 @@ void SmartBlocksWorld::glDrawSpecificBg() {
     glPopMatrix();
     // draw the axes
     objRepere->glDraw();
-
-    glPushMatrix();
 }
 
 void SmartBlocksWorld::loadTextures(const string &str) {
