@@ -25,7 +25,7 @@
 //!< \namespace Hexanodes
 namespace Hexanodes {
 
-static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
+static const Vector3D defaultBlockSize{50, 50, 12.5};
 
 class HexanodesMotionEngine;
 class HexanodesMotion;
