@@ -135,4 +135,13 @@ void OkteenBlock::removeNeighbor(P2PNetworkInterface *ni) {
     getWorld()->updateGlData(this,getDirection(ni),0);
 }
 
+bool OkteenBlock::canMoveTo(const Cell3DPosition& dest) const {
+    throw NotImplementedException("canMoveTo not implemented yet");
+}
+
+bool OkteenBlock::moveTo(const Cell3DPosition& dest) {
+    throw NotImplementedException("moveTo not implemented yet");
+}
+
+
 }

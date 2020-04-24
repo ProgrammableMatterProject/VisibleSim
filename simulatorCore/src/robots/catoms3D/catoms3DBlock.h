@@ -184,6 +184,16 @@ public:
                              RotationLinkType faceReq = RotationLinkType::Any) const;
 
     /**
+     * @copydoc BuildingBlock::canMoveTo
+     */
+    virtual bool canMoveTo(const Cell3DPosition& dest) const override;
+
+    /**
+     * @copydoc BuildingBlock::moveTo
+     */
+    virtual bool moveTo(const Cell3DPosition& dest) override;
+
+    /**
      * Queries each of the module interface to determine the state of the local neighborhood.
      *  i.e., for each connector, if one module is connected or not
      * @return a 12-bit bitset where the n-th bit is set to true if interface in direction n

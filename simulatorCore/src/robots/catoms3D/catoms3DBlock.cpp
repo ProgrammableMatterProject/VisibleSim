@@ -275,3 +275,17 @@ void Catoms3DBlock::exportMatrix() const {
            << "[" << m.m[3] << "," << m.m[7] << "," << m.m[11] << "])"
            << endl;
 }
+
+bool Catoms3DBlock::canMoveTo(const Cell3DPosition& dest) const {
+    return canRotateToPosition(dest);
+}
+
+bool Catoms3DBlock::moveTo(const Cell3DPosition& dest) {
+    if (not canRotateToPosition(dest))
+        return false;
+
+    getScheduler()->schedule(
+        new Catoms3DRotationStartEvent(getScheduler()->now(), this, dest));
+
+    return true;
+}

@@ -69,6 +69,16 @@ public:
 
     bool canRotate(RelativeDirection::Direction d) const;
     void rotate(RelativeDirection::Direction d, Time t = 0);
+    /**
+     * @copydoc BuildingBlock::canMoveTo
+     */
+    virtual bool canMoveTo(const Cell3DPosition& dest) const override;
+
+    /**
+     * @copydoc BuildingBlock::moveTo
+     */
+    virtual bool moveTo(const Cell3DPosition& dest) override;
+
 
     // MeldInterpreter
     /**

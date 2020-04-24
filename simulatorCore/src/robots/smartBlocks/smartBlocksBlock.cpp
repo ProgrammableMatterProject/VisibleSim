@@ -115,7 +115,7 @@ bool SmartBlocksBlock::canMoveTo(const Cell3DPosition& dest) const {
 bool SmartBlocksBlock::moveTo(const Cell3DPosition& dest) {
     if (not canMoveTo(dest)) return false;
 
-    getScheduler()->schedule(new TranslationStartEvent(getScheduler()->now(), this, dest));\
+    getScheduler()->schedule(new TranslationStartEvent(getScheduler()->now(), this, dest));
 
     return true;
 }

@@ -239,4 +239,12 @@ void DatomsBlock::removeNeighbor(P2PNetworkInterface *ni) {
 //     return Catoms3DMotionEngine::findMotionPivot(this, pos, faceReq) != NULL;
 // }
 
+bool DatomsBlock::canMoveTo(const Cell3DPosition& dest) const {
+    throw NotImplementedException("canMoveTo not implemented yet");
+}
+
+bool DatomsBlock::moveTo(const Cell3DPosition& dest) {
+    throw NotImplementedException("moveTo not implemented yet");
+}
+
 }
