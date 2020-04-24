@@ -194,7 +194,13 @@ public:
      */
     inline Time now() { return(currentDate); };
 
-        void toggle_pause();
+    /**
+     * Pauses the scheduler and processing of events, or resumes it if scheduler state
+     *  was PAUSED
+     * @warning only works in Realtime mode scheduler ('r').
+     * @note can be triggered from the GUI using the <SPACE> key
+     */
+    void toggle_pause();
 
     /** @brief Print a block-relative colored message to the console
      *  @param message String to print

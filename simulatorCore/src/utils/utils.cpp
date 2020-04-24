@@ -33,6 +33,10 @@ int utils::m_mod(int l, int mod) {
     return l < 0 and l % mod != 0 ? mod - (-l % mod) : l % mod;
 }
 
+void utils::toggleSchedulerPause() {
+    BaseSimulator::getScheduler()->toggle_pause();
+}
+
 bool utils::assert_handler(bool cond, const char *file, const int line,
                            const char *func, const char* msg) {
 

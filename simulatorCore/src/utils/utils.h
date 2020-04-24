@@ -35,6 +35,15 @@ int m_mod(int l, int mod);
 void awaitKeyPressed();
 
 /**
+ * @brief Wrapper function for Scheduler::toggle_pause
+ * Pauses the scheduler and processing of events, or resumes it if scheduler state
+ *  was PAUSED
+ * @warning only works in Realtime mode scheduler ('r').
+ * @note can be triggered from the GUI using the <SPACE> key
+ */
+void toggleSchedulerPause();
+
+/**
  * For a given triggered assert, display its location and freeze current simulation until user provides an input
  * @return always true
  */

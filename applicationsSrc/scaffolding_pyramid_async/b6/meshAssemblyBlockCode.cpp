@@ -350,7 +350,6 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             if (not rotating) {
                 if (role != FreeAgent) {
                     uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<RemoveNeighborEvent>(pev))->face);
-
                     Cell3DPosition pos;
                     if (catom->getNeighborPos(face, pos)
                         // catom not actuating
