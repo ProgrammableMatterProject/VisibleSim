@@ -30,20 +30,20 @@ StressTestSBBlockCode::StressTestSBBlockCode(SmartBlocksBlock *host) : SmartBloc
 }
 
 void StressTestSBBlockCode::startup() {
-	if (module->blockId==1) {
-		nbUnmarked=SmartBlocksWorld::getWorld()->getNbBlocks();
-		cout << "#blocks=" << nbUnmarked <<endl;
-	}
-	
+    if (module->blockId==1) {
+        nbUnmarked=SmartBlocksWorld::getWorld()->getNbBlocks();
+        cout << "#blocks=" << nbUnmarked <<endl;
+    }
+
     rng.seed(BaseSimulator::Simulator::getSimulator()->getCmdLine().getSimulationSeed());
 
     initLockedCells();
 
     module->setDisplayedValue(-1);
     // Leader initiates activation
-    if (isLeader) { 
-				nbUnmarked--;
-				activated=true;
+    if (isLeader) {
+        nbUnmarked--;
+        activated=true;
         module->setColor(BLUE);
         setLockedCell(module->position, true);
         sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
@@ -59,13 +59,13 @@ void StressTestSBBlockCode::handleActivationMessage(std::shared_ptr<Message> _ms
     if (not activated && not isMoving) {
         activated = true;
         module->setColor(BLUE);
-				nbUnmarked--;
+        nbUnmarked--;
         console << " Received ACTIVATE from "
                 << sender->getConnectedBlockId() << "(" << nbUnmarked << ")\n";
 
         // Broadcast to all neighbors but ignore sender
         /*sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,
-                                  1,sender); // ignore sender*/
+          1,sender); // ignore sender*/
         wait();
     }
 }
@@ -193,37 +193,37 @@ void StressTestSBBlockCode::onBlockSelected() {
 }
 
 void StressTestSBBlockCode::parseUserBlockElements(TiXmlElement *config) {
-	
-	const char *attr = config->Attribute("leader");
-	isLeader=(attr!=nullptr);
-	if (isLeader) cout << module->blockId << " is leader!" << endl;
+
+    const char *attr = config->Attribute("leader");
+    isLeader=(attr!=nullptr);
+    if (isLeader) cout << module->blockId << " is leader!" << endl;
 }
 
 
 void StressTestSBBlockCode::onGlDraw() {
     /*static const float color[4]={0.2f,0.2f,0.2f,1.0f};
-    if (lockedCells) {
-        const Cell3DPosition& gs = lattice->gridSize;
-        const Vector3D gl = lattice->gridScale;
-        bool *ptr=lockedCells;
-        glDisable(GL_TEXTURE);
-        glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,color);
-        for (int iy=0; iy<gs[1]; iy++) {
-            for (int ix=0; ix<gs[0]; ix++) {
-                if (*ptr) {
-                    glPushMatrix();
-                    glTranslatef((ix+0.5f)*gl[0],(iy+0.5f)*gl[1],10.0);
-                    glScalef(3,3,10);
-                    glutSolidCube(1.0);
-                    glPopMatrix();
-                }
-                ptr++;
-            }
-        }
+      if (lockedCells) {
+      const Cell3DPosition& gs = lattice->gridSize;
+      const Vector3D gl = lattice->gridScale;
+      bool *ptr=lockedCells;
+      glDisable(GL_TEXTURE);
+      glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,color);
+      for (int iy=0; iy<gs[1]; iy++) {
+      for (int ix=0; ix<gs[0]; ix++) {
+      if (*ptr) {
+      glPushMatrix();
+      glTranslatef((ix+0.5f)*gl[0],(iy+0.5f)*gl[1],10.0);
+      glScalef(3,3,10);
+      glutSolidCube(1.0);
+      glPopMatrix();
+      }
+      ptr++;
+      }
+      }
 
-    }*/
+      }*/
 }
 
 string StressTestSBBlockCode::onInterfaceDraw() {
-	return "#Unmarked:" + to_string(nbUnmarked);
+    return "#Unactivated:" + to_string(nbUnmarked);
 }

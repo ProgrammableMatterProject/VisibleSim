@@ -39,9 +39,7 @@ typedef std::shared_ptr<Message> MessagePtr;
 class Message {
 protected:
     static bID nextId;
-    //static unsigned int nextId;
-    static bID nbMessages;
-    //static unsigned int nbMessages;
+    static size_t nbMessages;
 public:
     bID id;
     //unsigned int id;
@@ -55,7 +53,7 @@ public:
     static uint64_t getNbMessages();
     virtual string getMessageName() const;
     static void incrementMessageCounts() { nextId++; nbMessages++; }
-
+    static inline void adjustClonedMessageCount() { nbMessages++; }
 
     virtual unsigned int size() const { return(4); }
     /**

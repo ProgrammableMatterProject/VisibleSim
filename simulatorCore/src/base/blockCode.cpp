@@ -157,7 +157,9 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
         }
     }
 
+    Message::adjustClonedMessageCount();
     delete msg;
+
     return n;
 }
 

@@ -347,7 +347,10 @@ void ProbePivotLightStateMessage::handle(BaseSimulator::BlockCode* bc) {
                 and not mabc.lattice->isFree(mabc.catom->position + Cell3DPosition(-1,-1,2))
                 // And if targetPos is that position at (-1,-1,2) above Support
                 and (targetPos - srcPos) == Cell3DPosition(-1,-1,2)) {
-                // If thats the case, forward to ?Z_1, that will then forward to
+
+                adjustClonedMessageCount();
+// If thats the case, forward to ?Z_1, that will then forward t
+                o
                 //  light module at ?Z_2
                 P2PNetworkInterface* tipItf = mabc.catom->getInterface
                     (mabc.catom->position +

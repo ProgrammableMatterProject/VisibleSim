@@ -182,7 +182,10 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         mabc.sendMessage(this->clone(), itf, MSG_DELAY_MC, 0);
         mabc.log_send_message();
     } else {
-        mabc.targetPosition = tPos;
+
+        adjustClonedMessageCount();
+        mabc.targetPosition = tPos
+            ;
         // cout << "Target position for #" << mabc.catom->blockId << " is " << tPos << endl;
 
         mabc.matchRulesAndProbeGreenLight();

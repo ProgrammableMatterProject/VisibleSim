@@ -115,7 +115,10 @@ public:
     Plane_finished_message() { id = PLANE_FINISHED_MSG_ID; };
 
     void handle(BlockCode *blockCode) override;
-    virtual Message* clone() const override { return new Plane_finished_message(*this); }
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new Plane_finished_message(*this);
+    }
     virtual string getName() const override { return "Plane Finished"; }
 };
 
@@ -125,7 +128,10 @@ public:
 
     void handle(BlockCode *blockCode) override;
 
-    virtual Message* clone() const override { return new Plane_finished_ack_message(*this); }
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new Plane_finished_ack_message(*this);
+    }
     virtual string getName() const override { return "Plane Finished Ack"; }
 };
 

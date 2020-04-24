@@ -57,6 +57,7 @@ Message* Message::clone() const {
     ptr->sourceInterface = sourceInterface;
     ptr->destinationInterface = destinationInterface;
     ptr->type = type;
+    adjustClonedMessageCount();
     return ptr;
 }
 

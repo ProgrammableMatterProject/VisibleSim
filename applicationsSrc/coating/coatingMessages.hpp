@@ -20,7 +20,10 @@ public:
     virtual ~SupportSegmentCompleteMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
-    virtual Message* clone() const override { return new SupportSegmentCompleteMessage(*this);}
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new SupportSegmentCompleteMessage(*this);
+    }
     virtual string getName() const override { return "SupportSegmentComplete"; }
 };
 
@@ -35,7 +38,10 @@ public:
     virtual ~SegmentCompleteWrongSupport() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
-    virtual Message* clone() const override { return new SegmentCompleteWrongSupport(*this);}
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new SegmentCompleteWrongSupport(*this);
+    }
     virtual string getName() const override { return "SegmentCompleteWrongSupport"; }
 };
 
@@ -53,7 +59,10 @@ public:
     virtual ~BorderCompletionMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
-    virtual Message* clone() const override { return new BorderCompletionMessage(*this);}
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new BorderCompletionMessage(*this);
+    }
     virtual string getName() const override { return "BorderCompletionMessage("
             + string(stopAtCorner ? "true" : "false") + ")";
     }
@@ -74,7 +83,10 @@ public:
     virtual void handle(BaseSimulator::BlockCode*) override;
 
     virtual Message* clone() const override {
-        return new NextPlaneSupportsReadyMessage(*this);
+
+        adjustClonedMessageCount();
+        return new NextPlaneSupportsReadyMessage(*this)
+            ;
     }
 
     virtual string getName() const override {
@@ -96,7 +108,10 @@ public:
     virtual void handle(BaseSimulator::BlockCode*) override;
 
     virtual Message* clone() const override {
-        return new NextPlaneSupportsReadyReturn(*this);
+
+        adjustClonedMessageCount();
+        return new NextPlaneSupportsReadyReturn(*this)
+            ;
     }
 
     virtual string getName() const override {
@@ -112,7 +127,10 @@ public:
 
     virtual void handle(BaseSimulator::BlockCode*) override;
 
-    virtual Message* clone() const override { return new SupportReadyRequest(*this); }
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new SupportReadyRequest(*this);
+    }
     virtual string getName() const override { return "SupportReadyRequest"; }
 };
 
@@ -124,7 +142,10 @@ public:
 
     virtual void handle(BaseSimulator::BlockCode*) override;
 
-    virtual Message* clone() const override { return new SupportReadyResponse(*this); }
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new SupportReadyResponse(*this);
+    }
     virtual string getName() const override { return "SupportReadyResponse("
             + string(hasSegments ? "true" : "false") + ")"; }
 };
