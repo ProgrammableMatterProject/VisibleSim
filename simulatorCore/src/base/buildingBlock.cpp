@@ -240,20 +240,23 @@ void BuildingBlock::processLocalEvent() {
 void BuildingBlock::setColor(int idColor) {
     const GLfloat *col = tabColors[idColor%12];
     color.set(col[0],col[1],col[2],col[3]);
-    getWorld()->updateGlData(this);
+    // getWorld()->updateGlData(this); // separate update color and update position
+    getWorld()->updateGlData(this,color);
 }
 
 void BuildingBlock::setColor(const Color &c) {
     if (state.load() >= ALIVE) {
         color = c;
-        getWorld()->updateGlData(this);
+				// getWorld()->updateGlData(this); // separate update color and update position
+				getWorld()->updateGlData(this,color);
     }
 }
 
 void BuildingBlock::setPosition(const Cell3DPosition &p) {
     if (state.load() >= ALIVE) {
         position = p;
-        getWorld()->updateGlData(this);
+				// getWorld()->updateGlData(this); // separate update color and update position
+				getWorld()->updateGlData(this,p);
     }
 }
 

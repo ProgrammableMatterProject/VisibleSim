@@ -87,7 +87,7 @@ void HexanodesMotionStopEvent::consume() {
     Hexanodes::HexanodesBlock *bb = (Hexanodes::HexanodesBlock*)concernedBlock;
     World *wrld = getWorld();
     bb->setPositionAndOrientation(finalPosition,finalOrientation);
-    wrld->updateGlData(bb);
+    wrld->updateGlData(bb,bb->position);
 
 #ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);

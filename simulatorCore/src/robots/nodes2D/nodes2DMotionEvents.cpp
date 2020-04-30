@@ -87,7 +87,7 @@ void Nodes2DMotionStopEvent::consume() {
     Nodes2D::Nodes2DBlock *bb = (Nodes2D::Nodes2DBlock*)concernedBlock;
     World *wrld = getWorld();
     bb->setPositionAndOrientation(finalPosition,finalOrientation);
-    wrld->updateGlData(bb);
+    wrld->updateGlData(bb,bb->position);
 
 #ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);
