@@ -103,12 +103,6 @@ void BlinkyBlocksBlock::stopBlock(Time date, State s) {
 		}
 
 
-#ifdef ENABLE_MELDPROCESS
-    if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
-        getScheduler()->schedule(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
-    }
-#endif
-
     if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
         getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
     }

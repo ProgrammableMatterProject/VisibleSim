@@ -97,15 +97,6 @@ Simulator::~Simulator() {
 #endif
     delete xmlDoc;
 
-#ifdef ENABLE_MELDPROCESS
-    if (getType() == MELDPROCESS) {
-        if(MeldProcess::MeldProcessVM::isInDebuggingMode()) {
-            MeldProcess::deleteDebugger();
-        }
-        MeldProcess::deleteVMServer();
-    }
-#endif
-
     deleteWorld();
 }
 
@@ -434,35 +425,6 @@ void Simulator::initializeIDPool() {
 }
 
 void Simulator::readSimulationType(int argc, char*argv[]) {
-#ifdef ENABLE_MELDPROCESS
-    if (getType() == MELDPROCESS) {
-        string vmPath = cmdLine.getVMPath();
-        string programPath = cmdLine.getProgramPath();
-        int vmPort = cmdLine.getVMPort();
-        bool debugging = cmdLine.getMeldDebugger();
-
-        if (vmPath == "") {
-            cerr << "error: no path defined for Meld VM" << endl;
-            exit(1);
-        } else if (!vmPort) {
-            cerr << "error: no port defined for Meld VM" << endl;
-            exit(1);
-        } else if (!file_exists(programPath)) {
-            cerr << "error: no Meld program was provided, or default file \"./program.bb\" does not exist"
-                 << endl;
-            exit(1);
-        }
-
-        MeldProcess::setVMConfiguration(vmPath, programPath, debugging);
-        MeldProcess::createVMServer(vmPort);
-        if(debugging) {
-            MeldProcess::createDebugger();
-        }
-
-        return;
-    }
-#endif
-
     if(getType() == MELDINTERPRET) {
         string programPath = cmdLine.getProgramPath();
         bool debugging = cmdLine.getMeldDebugger();
