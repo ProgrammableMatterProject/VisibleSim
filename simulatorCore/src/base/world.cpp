@@ -108,18 +108,18 @@ void World::updateGlData(BuildingBlock *bb) {
 void World::updateGlData(BuildingBlock *bb, const Color &c) {
 	GlBlock *glblc = bb->getGlBlock();
 	if (glblc) {
-		lock();
+		//lock();
 		glblc->setColor(bb->color);
-		unlock();
+		//unlock();
 	}
 }
 
 void World::updateGlData(BuildingBlock *bb, const Cell3DPosition &p) {
 	GlBlock *glblc = bb->getGlBlock();
 	if (glblc) {
-		lock();
+		//lock();
 		glblc->setPosition(lattice->gridToWorldPosition(p));
-		unlock();
+		//unlock();
 	}
 }
 
@@ -127,9 +127,9 @@ void World::updateGlData(BuildingBlock *bb, const Cell3DPosition &p) {
 void World::updateGlData(BuildingBlock*blc, Vector3D &p) {
     GlBlock *glblc = blc->getGlBlock();
     if (glblc) {
-        lock();
+        //lock();
         glblc->setPosition(p);
-        unlock();
+        //unlock();
     }
 }
 
