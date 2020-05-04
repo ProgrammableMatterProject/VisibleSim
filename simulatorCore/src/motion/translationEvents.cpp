@@ -149,7 +149,7 @@ void TranslationStopEvent::consume() {
     BuildingBlock *bb = concernedBlock;
     World *wrld = getWorld();
     bb->setPosition(Cell3DPosition(finalPosition.pt[0], finalPosition.pt[1], finalPosition.pt[2]));
-    wrld->updateGlData(bb);
+    wrld->updateGlData(bb,bb->position);
 
 #ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);

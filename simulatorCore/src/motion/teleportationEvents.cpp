@@ -85,7 +85,7 @@ void TeleportationStopEvent::consume() {
     BuildingBlock *bb = concernedBlock;
     World *wrld = getWorld();
     bb->setPosition(finalPosition);
-    wrld->updateGlData(bb);
+    wrld->updateGlData(bb,bb->position);
 
 #ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);

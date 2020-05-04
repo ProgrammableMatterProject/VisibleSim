@@ -4,7 +4,7 @@
 
 using namespace SmartBlocks;
 
-static int nbUnmarked;
+static unsigned int nbUnmarked;
 
 template <typename T>
 void print(std::vector<T> const &input) {
@@ -22,7 +22,7 @@ StressTestSBBlockCode::StressTestSBBlockCode(SmartBlocksBlock *host) : SmartBloc
     // Registers a callback (handleSampleMessage) to the message of type SAMPLE_MSG_ID
     addMessageEventFunc2(ACTIVATION_MSG_ID,
                          std::bind(&StressTestSBBlockCode::handleActivationMessage, this,
-                                   std::placeholders::_1, std::placeholders::_2));
+                         std::placeholders::_1, std::placeholders::_2));
 
     // Set the module pointer
     module = static_cast<SmartBlocksBlock*>(hostBlock);
@@ -60,6 +60,7 @@ void StressTestSBBlockCode::handleActivationMessage(std::shared_ptr<Message> _ms
         activated = true;
         module->setColor(BLUE);
         nbUnmarked--;
+				cout << nbUnmarked << endl;
         console << " Received ACTIVATE from "
                 << sender->getConnectedBlockId() << "(" << nbUnmarked << ")\n";
 

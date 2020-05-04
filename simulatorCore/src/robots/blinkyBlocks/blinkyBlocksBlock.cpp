@@ -99,9 +99,9 @@ void BlinkyBlocksBlock::stopBlock(Time date, State s) {
     if (s == STOPPED) {
         // patch en attendant l'objet 3D qui modelise un BB stopped
         color = Color(0.1, 0.1, 0.1, 0.5);
-    }
+				getWorld()->updateGlData(this,color);
+		}
 
-    getWorld()->updateGlData(this);
 
     if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
         getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));

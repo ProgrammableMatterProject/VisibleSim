@@ -152,17 +152,33 @@ public:
      *
      * @param bb : Block to update
      */
-    virtual void updateGlData(BuildingBlock *bb);
+    [[deprecated]] virtual void updateGlData(BuildingBlock *bb);
     /**
-     * @brief Set position p to glBlock associated with block blc
+     * @brief Set color c to glBlock associated with block bb
      *
-     * Used when glBlocks and their corresponding BuildingBlock have different positions,
-     *  as it is the case during motion events
+     * Used by setColor
      *
      * @param blc : Block to update
      * @param p : Position to set to blc's glBlock
      */
-    virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
+		virtual void updateGlData(BuildingBlock *bb, const Color &c);
+		/**
+		 * @brief Set position p to glBlock associated with block blc
+		 *	 *
+		 * @param blc : Block to update
+		 * @param p : Position in the grid to set to blc's glBlock
+		 */
+		virtual void updateGlData(BuildingBlock *bb, const Cell3DPosition &p);
+		/**
+		 * @brief Set position p to glBlock associated with block blc
+		 *
+		 * Used when glBlocks and their corresponding BuildingBlock have different positions,
+		 *  as it is the case during motion events
+		 *
+		 * @param blc : Block to update
+		 * @param p : Position to set to blc's glBlock
+		 */
+		virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
     /**
      * @brief Creates a block and adds it to the simulation
      *
