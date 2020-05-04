@@ -58,8 +58,11 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
     if (contextModule) {
         cerr << TermColor::BWhite << "#"
              << contextModule->blockId << " at " << contextModule->position;
-        contextModule->setColor(BLACK);
-        getWorld()->getCamera()->setTarget(contextModule->ptrGlBlock->getPosition());
+
+        if (GlutContext::GUIisEnabled) {
+            contextModule->setColor(BLACK);
+            getWorld()->getCamera()->setTarget(contextModule->ptrGlBlock->getPosition());
+        }
     } else
         cerr << TermColor::BWhite << "NULL";
     cerr << std::endl << TermColor::Reset;
