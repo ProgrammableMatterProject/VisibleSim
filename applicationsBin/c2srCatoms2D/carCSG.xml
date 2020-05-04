@@ -1,7 +1,5 @@
 <?xml version="1.0" standalone="no" ?>
 <world gridSize="40,1,12">
-  <camera target="8,6,0" directionSpherical="0,25,18" angle="45"/>
-  <spotlight target="8,6,0" directionSpherical="0,25,18" angle="30"/>
   <blockList color="100,100,100">
     <block position="9,0,6" color="100,100,100"/>
     <block position="9,0,7" color="100,100,100"/>
@@ -121,17 +119,17 @@ cube([3,1,2],true);
 color([1,0,0])
 translate([0,1/2,1/2])
 cube([2,1,1],true);
-    
+
 difference() {
     color([1.0,0,0])
     translate([15/2,1/2,10*2/3/2])
     cube([15,1,10*2/3],true);
-    
+
      union() {
         translate([0.5,1/2,5])
         color([1.0,0,0])
         sphere(3);
-    
+
         translate([5.5,1/2,6])
         color([1.0,0,0])
         cube([20,2,2],true);
