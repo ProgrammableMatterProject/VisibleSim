@@ -11,17 +11,18 @@
 #include <climits>
 #include <unordered_set>
 
-#include "utils/trace.h"
-#include "meld/meldInterpretVM.h"
-#include "meld/meldInterpretScheduler.h"
-#include "events/cppScheduler.h"
-#include "gui/openglViewer.h"
-#include "utils/utils.h"
-#include "robots/catoms3D/catoms3DRotationEvents.h"
-#include "csg/csg.h"
-#include "csg/csgParser.h"
-#include "csg/csgUtils.h"
-#include "utils/global.h"
+#include "../grid/cell3DPosition.h"
+#include "../utils/trace.h"
+#include "../meld/meldInterpretVM.h"
+#include "../meld/meldInterpretScheduler.h"
+#include "../events/cppScheduler.h"
+#include "../gui/openglViewer.h"
+#include "../utils/utils.h"
+#include "../robots/catoms3D/catoms3DRotationEvents.h"
+#include "../csg/csg.h"
+#include "../csg/csgParser.h"
+#include "../csg/csgUtils.h"
+#include "../utils/global.h"
 
 using namespace std;
 
@@ -309,9 +310,9 @@ bID Simulator::countNumberOfModules() {
             string str(attr);
             int pos1 = str.find_first_of(','),
   pos2 = str.find_last_of(',');
-            boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
-            boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-            boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            boxOrigin.pt[0] = stof(str.substr(0,pos1));
+            boxOrigin.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+            boxOrigin.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
         }
         Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
                          world->lattice->gridSize[1]*world->lattice->gridScale[1],
@@ -321,9 +322,9 @@ bID Simulator::countNumberOfModules() {
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
-            boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-            boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            boxDest.pt[0] = boxOrigin.pt[0] + stof(str.substr(0,pos1));
+            boxDest.pt[1] = boxOrigin.pt[1] + stof(str.substr(pos1+1,pos2-pos1-1));
+            boxDest.pt[2] = boxOrigin.pt[2] + stof(str.substr(pos2+1,str.length()-pos1-1));
             cout << "boxDest" << endl;
         }
         Vector3D pos;
@@ -459,9 +460,9 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             string str=attr;
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            lx = atoi(str.substr(0,pos1).c_str());
-            ly = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
-            lz = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            lx = stoi(str.substr(0,pos1));
+            ly = stoi(str.substr(pos1+1,pos2-pos1-1));
+            lz = stoi(str.substr(pos2+1,str.length()-pos1-1));
 #ifdef DEBUG_CONF_PARSING
             OUTPUT << "grid size : " << lx << " x " << ly << " x " << lz << endl;
 #endif
@@ -475,8 +476,8 @@ void Simulator::parseWorld(int argc, char*argv[]) {
         if (attr) {
             string str=attr;
             int pos = str.find_first_of(',');
-            GlutContext::initialScreenWidth = atoi(str.substr(0,pos).c_str());
-            GlutContext::initialScreenHeight = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
+            GlutContext::initialScreenWidth = stoi(str.substr(0,pos));
+            GlutContext::initialScreenHeight = stoi(str.substr(pos+1,str.length()-pos-1));
             GlutContext::screenWidth = GlutContext::initialScreenWidth;
             GlutContext::screenHeight = GlutContext::initialScreenHeight;
         }
@@ -484,7 +485,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
         attr=worldElement->Attribute("maxSimulationTime");
         if (attr) {
             string str=attr;
-            Time t = atoi(attr);
+            Time t = atol(attr);
             int l = strlen(attr);
             if (str.substr(l-2,2)=="mn") {
                 t*=60000000;
@@ -559,9 +560,9 @@ void Simulator::parseCameraAndSpotlight() {
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
                 Vector3D target;
-                target.pt[0] = atof(str.substr(0,pos1).c_str());
-                target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                target.pt[0] = stof(str.substr(0,pos1));
+                target.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+                target.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
                 world->getCamera()->setTarget(target);
             }
 
@@ -577,9 +578,9 @@ void Simulator::parseCameraAndSpotlight() {
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
                 float az,ele,dist;
-                az = -90.0+atof(str.substr(0,pos1).c_str());
-                ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                az = -90.0+stof(str.substr(0,pos1));
+                ele = stof(str.substr(pos1+1,pos2-pos1-1));
+                dist = stof(str.substr(pos2+1,str.length()-pos1-1));
                 world->getCamera()->setDirection(az,ele);
                 world->getCamera()->setDistance(dist);
                 // az = dist*sin(angle*M_PI/180.0);
@@ -611,9 +612,9 @@ void Simulator::parseCameraAndSpotlight() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                target.pt[0] = atof(str.substr(0,pos1).c_str());
-                target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                target.pt[0] = stof(str.substr(0,pos1));
+                target.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+                target.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
             }
 
             attr=lightElement->Attribute("directionSpherical");
@@ -621,9 +622,9 @@ void Simulator::parseCameraAndSpotlight() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                az = -90.0+atof(str.substr(0,pos1).c_str());
-                ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                az = -90.0+stof(str.substr(0,pos1));
+                ele = stof(str.substr(pos1+1,pos2-pos1-1));
+                dist = stof(str.substr(pos2+1,str.length()-pos1-1));
             }
 
             attr=lightElement->Attribute("angle");
@@ -657,9 +658,9 @@ void Simulator::parseBlockList() {
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-            defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-            defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+            defaultColor.rgba[0] = stof(str.substr(0,pos1))/255.0;
+            defaultColor.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
+            defaultColor.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
 #ifdef DEBUG_CONF_PARSING
             OUTPUT << "new default color :" << defaultColor << endl;
 #endif
@@ -679,9 +680,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.set(atof(str.substr(0,pos1).c_str())/255.0,
-                          atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
-                          atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+                color.set(stof(str.substr(0,pos1))/255.0,
+                          stof(str.substr(pos1+1,pos2-pos1-1))/255.0,
+                          stof(str.substr(pos2+1,str.length()-pos1-1))/255.0);
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new color :" << defaultColor << endl;
 #endif
@@ -691,9 +692,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos = str.find_first_of(',');
                 int pos2 = str.find_last_of(',');
-                int ix = atof(str.substr(0,pos).c_str()),
-                    iy = atoi(str.substr(pos+1,pos2-pos-1).c_str()),
-                    iz = atoi(str.substr(pos2+1,str.length()-pos2-1).c_str());
+                int ix = stoi(str.substr(0,pos)),
+                    iy = stoi(str.substr(pos+1,pos2-pos-1)),
+                    iz = stoi(str.substr(pos2+1,str.length()-pos2-1));
 
                 // cerr << ix << "," << iy << "," << iz << endl;
 
@@ -747,9 +748,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-                color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-                color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+                color.rgba[0] = stof(str.substr(0,pos1))/255.0;
+                color.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
+                color.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "line color :" << color << endl;
 #endif
@@ -796,9 +797,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-                color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-                color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+                color.rgba[0] = stof(str.substr(0,pos1))/255.0;
+                color.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
+                color.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "box color :" << color << endl;
 #endif
@@ -810,9 +811,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
-                boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                boxOrigin.pt[0] = stof(str.substr(0,pos1));
+                boxOrigin.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+                boxOrigin.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new boxOrigine:" << boxOrigin << endl;
 #endif
@@ -826,9 +827,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
-                boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                boxDest.pt[0] = boxOrigin.pt[0] + stof(str.substr(0,pos1));
+                boxDest.pt[1] = boxOrigin.pt[1] + stof(str.substr(pos1+1,pos2-pos1-1));
+                boxDest.pt[2] = boxOrigin.pt[2] + stof(str.substr(pos2+1,str.length()-pos1-1));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new boxDest:" << boxDest << endl;
 #endif
@@ -871,15 +872,14 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                translate.pt[0] = atof(str.substr(0,pos1).c_str());
-                translate.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                translate.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                translate.pt[0] = stof(str.substr(0,pos1));
+                translate.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+                translate.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
 
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "csg translate :" << translate << endl;
 #endif
             }
-
 
             BoundingBox bb;
             bool boundingBox = true;
@@ -887,9 +887,8 @@ void Simulator::parseBlockList() {
             bool offsetBoundingBox = true;
             element->QueryBoolAttribute("offset", &offsetBoundingBox);
 
-            char* csgBin = CSGParser::parseCsg(str);
-            CsgUtils csgUtils;
-            CSGNode *csgRoot = csgUtils.readCSGBuffer(csgBin);
+            CSGParser parser;
+            CSGNode *csgRoot = parser.parseCSG(str);
             csgRoot->toString();
 
             if (boundingBox) csgRoot->boundingBox(bb);
@@ -948,9 +947,9 @@ void Simulator::parseObstacles() {
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-            defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-            defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+            defaultColor.rgba[0] = stof(str.substr(0,pos1))/255.0;
+            defaultColor.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
+            defaultColor.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
         }
 
         nodeObstacle = nodeObstacle->FirstChild("obstacle");
@@ -964,9 +963,9 @@ void Simulator::parseObstacles() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.set(atof(str.substr(0,pos1).c_str())/255.0,
-                          atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
-                          atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+                color.set(stof(str.substr(0,pos1))/255.0,
+                          stof(str.substr(pos1+1,pos2-pos1-1))/255.0,
+                          stof(str.substr(pos2+1,str.length()-pos1-1))/255.0);
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "color :" << color << endl;
 #endif
@@ -976,9 +975,9 @@ void Simulator::parseObstacles() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                position.pt[0] = atoi(str.substr(0,pos1).c_str());
-                position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
-                position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                position.pt[0] = stoi(str.substr(0,pos1));
+                position.pt[1] = stoi(str.substr(pos1+1,pos2-pos1-1));
+                position.pt[2] = stoi(str.substr(pos2+1,str.length()-pos1-1));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "position : " << position << endl;
 #endif

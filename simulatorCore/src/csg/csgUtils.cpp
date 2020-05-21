@@ -1,10 +1,10 @@
 #include "csgUtils.h"
-
+/*
 CsgUtils::~CsgUtils() {
     delete csgBuffer;
 }
 
-CSGNode* CsgUtils::readFile(string path_to_file) {
+CSGNode* CsgUtils::readFile(const string &path_to_file) {
     fstream csgFile;
     csgFile.open(path_to_file, ios::binary | ios::in | ios::ate);
     int csgBufferSize = csgFile.tellg();
@@ -33,7 +33,7 @@ CSGNode* CsgUtils::readCSGNode() {
         case CSG_T::Difference: {
             CSGDifference *csgDifference = new CSGDifference();
             CSGNode *child;
-            while ((child = readCSGNode()) != NULL) {
+            while ((child = readCSGNode()) != nullptr) {
                 csgDifference->addChild(child);
             }
             return csgDifference;
@@ -41,7 +41,7 @@ CSGNode* CsgUtils::readCSGNode() {
         case CSG_T::Union: {
             CSGUnion *csgUnion = new CSGUnion();
             CSGNode *child;
-            while ((child = readCSGNode()) != NULL) {
+            while ((child = readCSGNode()) != nullptr) {
                 csgUnion->addChild(child);
             }
             return csgUnion;
@@ -49,7 +49,7 @@ CSGNode* CsgUtils::readCSGNode() {
         case CSG_T::Intersection: {
             CSGIntersection *csgIntersection = new CSGIntersection();
             CSGNode *child;
-            while ((child = readCSGNode()) != NULL) {
+            while ((child = readCSGNode()) != nullptr) {
                 csgIntersection->addChild(child);
             }
             return csgIntersection;
@@ -127,7 +127,7 @@ CSGNode* CsgUtils::readCSGNode() {
             csgBufferPos += sizeof(float);
             memcpy(&f2, csgBuffer + csgBufferPos, sizeof(float));
             csgBufferPos += sizeof(float);
-            CSGCylinder *csgCylinder =  new CSGCylinder(f1, f2);
+            CSGCylinder *csgCylinder =  new CSGCylinder(f1, f2,true);
             return csgCylinder;
         }
         case CSG_T::Sphere: {
@@ -138,11 +138,12 @@ CSGNode* CsgUtils::readCSGNode() {
             return csgSphere;
         }
         case CSG_T::END: {
-            return NULL;
+            return nullptr;
         }
         default: {
             cout << "Unrecognized code" << endl;
-            return NULL;
+            return nullptr;
         }
     }
 }
+*/

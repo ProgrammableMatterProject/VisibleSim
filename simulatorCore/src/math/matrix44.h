@@ -12,15 +12,15 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
-#include "math/vector3D.h"
+#include "vector3D.h"
 #if !defined(M_PI)
 #define M_PI	3.1415926535897932384626433832795
 #endif
 
 using namespace std;
 
-class Matrix
-{ public :
+class Matrix {
+public :
   double m[16];
 
   Matrix() { identity(); };

@@ -332,9 +332,8 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     offsetBoundingBox = false;
     element->QueryBoolAttribute("offset", &offsetBoundingBox);
 
-    char* csgBin = CSGParser::parseCsg(str);
-    CsgUtils csgUtils;
-    csgRoot = csgUtils.readCSGBuffer(csgBin);
+    CSGParser parser;
+    csgRoot = parser.parseCSG(str);
     csgRoot->toString();
 
     const char *attr = element->Attribute("translate");

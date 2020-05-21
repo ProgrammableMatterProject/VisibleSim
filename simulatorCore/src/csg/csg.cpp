@@ -1,9 +1,9 @@
 #include "csg.h"
-#include "utils/color.h"
-#include "grid/cell3DPosition.h"
-#include "base/world.h"
-
-#include "grid/target.h"
+#include "../base/blockCode.h"
+#include "../utils/color.h"
+#include "../grid/cell3DPosition.h"
+#include "../base/world.h"
+#include "../grid/target.h"
 
 #define EPS 1e-10
 
@@ -12,10 +12,10 @@ void CSGNode::glDraw() {
 }
 
 /******************************************************************/
-CSGCube::CSGCube (double x, double y, double z) : size_x(x), size_y(y), size_z(z), center(true) {};
+CSGCube::CSGCube (const Vector3D &p_vec,bool p_center) : size_x(p_vec[0]), size_y(p_vec[1]), size_z(p_vec[2]), center(p_center) {};
 
 void CSGCube::toString() const {
-    printf("cube([%lf, %lf, %lf], true);\n", size_x, size_y, size_z);
+    cout << "cube([" << size_x << "," << size_y << "," <<  size_z << "]," << (center?"true":"false") << ")" << endl;
 }
 
 bool CSGCube::isInside(const Vector3D &p, Color &color) const {
@@ -143,7 +143,7 @@ void CSGSphere::boundingBox(BoundingBox &bb) {
 }
 
 /******************************************************************/
-CSGCylinder::CSGCylinder (double h, double r) : height(h), radius(r), center(true) {};
+CSGCylinder::CSGCylinder (double h, double r, bool p_center) : height(h), radius(r), center(p_center) {};
 
 void CSGCylinder::toString() const {
     printf("cylinder(%lf, %lf, %lf, %s);\n", height, radius, radius,
@@ -204,6 +204,79 @@ void CSGCylinder::boundingBox(BoundingBox &bb) {
 }
 
 /******************************************************************/
+CSGCone::CSGCone(double p_height, double p_bottomRadius, double p_topRadius, bool p_center) : height(p_height), bottomRadius(p_bottomRadius), topRadius(p_topRadius), center(p_center) {};
+
+void CSGCone::toString() const {
+    cout << "cylinder(" << height << "," << bottomRadius << "," << topRadius << "," << (center ? "true" : "false") << endl;
+}
+
+bool CSGCone::isInside(const Vector3D &p, Color &color) const {
+    double dist = sqrt(pow(p.pt[0], 2) + pow(p.pt[1], 2));
+    double y = center?p.pt[2]+height/2.0:p.pt[2];
+    if (y>=0 && y<=height) {
+        return (dist <= (bottomRadius+y*(topRadius-bottomRadius)/height));
+    }
+    return false;
+}
+
+bool CSGCone::isInBorder(const Vector3D &p, Color &color, double border) const {
+    double dist = sqrt(pow(p.pt[0], 2) + pow(p.pt[1], 2));
+    double y = center?p.pt[2]+height/2.0:p.pt[2];
+    double r = (bottomRadius+y*(topRadius-bottomRadius)/height);
+    if (y>=0 && y<=height) {
+        return (dist <=r  && dist>r-border);
+    }
+    if (y>=0 && y<=border) {
+        return (dist <= r);
+    }
+    if (y>=height-border && y<=height) {
+        return (dist <= r);
+    }
+    return false;
+}
+
+void CSGCone::boundingBox(BoundingBox &bb) {
+    double r = max(bottomRadius,topRadius);
+    if (center) {
+        bb.P0.set(-r, -r, -height/2,1);
+        bb.P1.set(r, r, height/2, 1);
+    } else {
+        bb.P0.set(-r, -r, 0, 1);
+        bb.P1.set(r, r, height, 1);
+    }
+}
+
+/******************************************************************/
+CSGTorus::CSGTorus(double p_radius1, double p_radius2) : radius1(p_radius1), radius2(p_radius2) {};
+
+void CSGTorus::toString() const {
+    cout << "torus(" << radius1 << "," << radius2 << ")" << endl;
+}
+
+bool CSGTorus::isInside(const Vector3D &p, Color &color) const {
+    double X = sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]);
+
+    double r2 = (X-radius1)*(X-radius1) + p[2]*p[2];
+    if (r2<radius2*radius2) return true;
+    r2 = (X+radius1)*(X+radius1) + p[2]*p[2];
+    return (r2<radius2*radius2);
+}
+
+bool CSGTorus::isInBorder(const Vector3D &p, Color &color, double border) const {
+    double X = sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]);
+
+    double r = sqrt((X-radius1)*(X-radius1) + p[2]*p[2]);
+    if (r<radius2 && r>(radius2-border)) return true;
+    r = sqrt((X-radius1)*(X-radius1) + p[2]*p[2]);
+    return (r<radius2 && r>(radius2-border));
+}
+
+void CSGTorus::boundingBox(BoundingBox &bb) {
+    bb.P0.set(-radius1, -radius1, -radius2,1);
+    bb.P1.set(radius1, radius1, radius2,1);
+}
+
+/******************************************************************/
 void CSGTranslate::toString() const {
     printf("translate([%lf, %lf, %lf]) ", translate[0], translate[1], translate[2]);
     for (unsigned int i = 0; i < children.size(); i++)
@@ -236,14 +309,13 @@ void CSGTranslate::boundingBox(BoundingBox &bb) {
 }
 
 /******************************************************************/
-CSGRotate::CSGRotate(float x, float y, float z) {
-    vec.set(x,y,z,1.0);
+CSGRotate::CSGRotate(const Vector3D &p_vec):vec(p_vec) {
     Matrix mat;
-    mat.setRotationX(x);
+    mat.setRotationX(vec[0]);
     rotate = rotate*mat;
-    mat.setRotationY(y);
+    mat.setRotationY(vec[1]);
     rotate = rotate*mat;
-    mat.setRotationZ(z);
+    mat.setRotationZ( vec[2]);
     rotate = rotate*mat;
     rotate.inverse(rotate_1);
 }
@@ -373,7 +445,7 @@ bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) c
     if (children.size() > 0 and isInside(p, color)) {
         if (children[0]->isInBorder(p, color, border)) return true;
         else if (children[0]->isInside(p, color)) {
-            const Cell3DPosition pPos = static_cast<TargetCSG*>(BlockCode::target)->
+            const Cell3DPosition pPos = static_cast<BaseSimulator::TargetCSG*>(BaseSimulator::BlockCode::target)->
                 CSGToGridPosition(p);
 
             // cout << "\t" << pPos << " - p: " << p << endl;
