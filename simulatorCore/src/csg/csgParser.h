@@ -66,6 +66,7 @@ private:
     static std::size_t extractChildrenString(const std::string &line, std::size_t pos, std::string &str);
     std::size_t readCylinderParameters(const std::string &line, double &height, double &radiusBase, double &radiusTop, bool &center);
     std::size_t readCubeParameters(const std::string &line, Vector3D &v, bool &center);
+    std::size_t readTorusParameters(const std::string &line, double &radius1, double &radius2);
     std::size_t readVector(const std::string &line, std::size_t pos1, std::size_t pos2, Vector3D &v);
     std::size_t readKeyword(const std::string &line, std::size_t initialPos, std::size_t &keywordId);
     std::size_t createModule(const std::string &line, std::size_t initialPos);

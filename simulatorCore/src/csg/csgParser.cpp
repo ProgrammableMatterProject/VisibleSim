@@ -1,7 +1,9 @@
 #include "csgParser.h"
 #include <algorithm>
-const size_t CSGParser::keywordsCount = 12;
-const string CSGParser::keywords[keywordsCount] = {"union","intersection","difference","translate","rotate","scale","cube","cylinder","sphere","color","=","module"};
+
+enum KEYWORDS {KW_UNION,KW_INTERSECTION,KW_DIFFERENCE,KW_TRANSLATE,KW_ROTATE,KW_SCALE,KW_CUBE,KW_CYLINDER,KW_SPHERE,KW_TORUS,KW_COLOR,KW_AFFECT,KW_MODULE};
+const size_t CSGParser::keywordsCount = 13;
+const string CSGParser::keywords[keywordsCount] = {"union","intersection","difference","translate","rotate","scale","cube","cylinder","sphere","torus","color","=","module"};
 static const std::string whitespaces (" \t\f\v\n\r");
 
 size_t CSGParser::readCubeParameters(const string &line, Vector3D &v,bool &center) {
@@ -38,6 +40,18 @@ size_t CSGParser::readCylinderParameters(const string &line, double &height, dou
     }
     return endKeyword;
 }
+
+size_t CSGParser::readTorusParameters(const string &line, double &radius1, double &radius2) {
+    size_t endKeyword = line.length();
+    size_t exprPos = line.find_first_of(',',0);
+    string expr = line.substr(0, exprPos);
+    radius1 = readExpression(expr);
+    size_t beginKeyword = exprPos+1;
+    expr = line.substr(beginKeyword);
+    radius2 = readExpression(expr);
+    return endKeyword;
+}
+
 
 size_t CSGParser::readVector(const string &line, size_t pos1, size_t pos2, Vector3D &v) {
     size_t beginKeyword = line.find_first_of('[', pos1)+1;
@@ -177,7 +191,7 @@ size_t CSGParser::readKeyword(const string &line, size_t initialPos, size_t &key
     while (keywordId<keywordsCount && keyword.find(keywords[keywordId])== string::npos) {
         keywordId++;
     }
-    if (keywordId==11) {  // special case Module
+    if (keywordId==KW_MODULE) {  // special case Module
         endKeyword = line.find_first_of(whitespaces, beginKeyword);
         endKeyword = line.find_first_not_of(whitespaces, endKeyword);
     } else if (keywordId==keywordsCount) { // try module function call
@@ -199,7 +213,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
     while ((pos = readKeyword(str, pos, keywordId)) != string::npos) {
         cout << "KeywordId=" << keywordId << "  pos=" << pos << "|" << str.substr(std::max(0,int(pos-2)),5) << endl;
         switch (keywordId) {
-            case 0: { // union
+            case KW_UNION: { // union
                 string subline;
                 pos = extractParametersString(str, pos, subline);
                 pos = extractChildrenString(str, pos, subline);
@@ -216,7 +230,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 1: { // intersection
+            case KW_INTERSECTION: { // intersection
                 string subline;
                 pos = extractParametersString(str, pos, subline);
                 pos = extractChildrenString(str, pos, subline);
@@ -233,7 +247,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 2: { //difference
+            case KW_DIFFERENCE: { //difference
                 string subline;
                 pos = extractParametersString(str, pos, subline);
                 pos = extractChildrenString(str, pos, subline);
@@ -250,7 +264,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 3: { //ŧranslate
+            case KW_TRANSLATE: { //ŧranslate
                 Vector3D v;
                 string subline;
                 pos = extractParametersString(str, pos, subline);
@@ -264,7 +278,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 4: { //rotate
+            case KW_ROTATE: { //rotate
                 Vector3D v;
                 string subline;
                 pos = extractParametersString(str, pos, subline);
@@ -278,7 +292,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 5: { //scale
+            case KW_SCALE: { //scale
                 Vector3D v;
                 string subline;
                 pos = extractParametersString(str, pos, subline);
@@ -292,7 +306,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 6: { //cube
+            case KW_CUBE: { //cube
                 Vector3D v;
                 bool center;
                 string subline;
@@ -306,7 +320,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 7: { //cylinder
+            case KW_CYLINDER: { //cylinder
                 double height, baseRadius, topRadius;
                 bool center;
                 string subline;
@@ -324,7 +338,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 8: { //sphere
+            case KW_SPHERE: { //sphere
                 string subline;
                 pos = extractParametersString(str, pos, subline);
                 double radius = readExpression(subline);
@@ -336,7 +350,20 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 9: { // color
+            case KW_TORUS: { //sphere
+                double radius1, radius2;
+                string subline;
+                pos = extractParametersString(str, pos, subline);
+                readTorusParameters(subline, radius1,radius2);
+#ifdef DEBUG_CSG
+                cout << "torus(" << radius1 << "," << radius2 << "); " << endl;
+#endif
+                node = new CSGTorus(radius1,radius2);
+                pos = str.find(';',pos);
+                return node;
+            }
+                break;
+            case KW_COLOR: { // color
                 Vector3D v;
                 string subline;
                 pos = extractParametersString(str, pos, subline);
@@ -350,7 +377,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 return node;
             }
                 break;
-            case 10: { // = create id and affectation
+            case KW_AFFECT: { // = create id and affectation
                 string subline;
                 size_t endInstr = str.find_first_of(';',pos);
                 subline = str.substr(pos,endInstr-pos);
@@ -361,7 +388,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = endInstr+1;
             }
             break;
-            case 11: { // module
+            case KW_MODULE: { // module
                 pos = createModule(str,pos);
 #ifdef DEBUG_CSG
                 cout << "New module:" << pos << endl;
@@ -372,7 +399,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
             default: {
                 if (keywordId!=reinterpret_cast<size_t>(numeric_limits<size_t>::max)) {
                     auto m_it = modules.begin();
-                    size_t i=keywordId-12;
+                    size_t i=keywordId-keywordsCount;
                     while (m_it!=modules.end() && i) {
                         m_it++;
                         i--;
