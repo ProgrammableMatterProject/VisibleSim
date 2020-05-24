@@ -21,7 +21,7 @@
 #include "../robots/catoms3D/catoms3DRotationEvents.h"
 #include "../csg/csg.h"
 #include "../csg/csgParser.h"
-#include "../csg/csgUtils.h"
+//#include "../csg/csgUtils.h"
 #include "../utils/global.h"
 
 using namespace std;

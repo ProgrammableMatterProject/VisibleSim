@@ -14,7 +14,7 @@ MELD_DIR = meld
 MELDINTERPRET_SRCS_NODIR = meldInterpretScheduler.cpp meldInterpretVM.cpp meldInterpretMessages.cpp meldInterpretEvents.cpp
 MELDINTERPRET_SRCS = $(MELDINTERPRET_SRCS_NODIR:%=$(MELD_DIR)/%)
 
-TARGETENCODING_SRCS = csg/csg.cpp csg/csgParser.cpp csg/csgUtils.cpp
+TARGETENCODING_SRCS = csg/csg.cpp csg/csgParser.cpp # csg/csgUtils.cpp
 OUTDIRS += $(OBJDIR)/csg $(DEPDIR)/csg
 
 BASESIMULATOR_SRCS = $(MELDINTERPRET_SRCS) $(TINYXMLSRCS) $(TARGETENCODING_SRCS) base/simulator.cpp base/buildingBlock.cpp base/blockCode.cpp events/scheduler.cpp base/world.cpp comm/network.cpp events/events.cpp base/glBlock.cpp gui/interface.cpp gui/openglViewer.cpp gui/shaders.cpp math/vector3D.cpp math/matrix44.cpp utils/color.cpp gui/camera.cpp gui/objLoader.cpp gui/vertexArray.cpp utils/trace.cpp clock/clock.cpp clock/qclock.cpp clock/clockNoise.cpp stats/configStat.cpp utils/commandLine.cpp events/cppScheduler.cpp grid/cell3DPosition.cpp utils/configExporter.cpp grid/lattice.cpp grid/target.cpp stats/statsCollector.cpp motion/translationEvents.cpp stats/statsIndividual.cpp utils/random.cpp comm/rate.cpp motion/teleportationEvents.cpp utils/utils.cpp
