@@ -89,20 +89,20 @@ void CSGParser::updateVariable(const string &instr) {
 }
 
 std::size_t CSGParser::createModule(const string &line, size_t initialPos) {
-    cout << "createModule: '" << line.substr(initialPos,10) << "'" << endl;
+    //cout << "createModule: '" << line.substr(initialPos,10) << "'" << endl;
     // extract moduleId
     size_t posInstr=line.find_first_not_of(whitespaces,initialPos);
     size_t endInstr=line.find_first_of('(',posInstr+1);
     string moduleId =line.substr(posInstr,endInstr-posInstr);
-    cout << "moduleId=" << moduleId << endl;
+    //cout << "moduleId=" << moduleId << endl;
     // extract parameters
     string moduleParam;
     posInstr = extractParametersString(line,endInstr,moduleParam);
-    cout << "moduleParam=" << moduleParam << endl;
+    //cout << "moduleParam=" << moduleParam << endl;
     // extract code
     string moduleCode;
     posInstr = extractChildrenString(line,posInstr,moduleCode);
-    cout << "moduleInstr=" << moduleCode << endl;
+    //cout << "moduleInstr=" << moduleCode << endl;
     // add module
     auto *pm = new CSGParserModule(moduleCode);
     // add parameters
@@ -182,7 +182,7 @@ size_t CSGParser::readKeyword(const string &line, size_t initialPos, size_t &key
     //size_t endKeyword = line.find_first_of(" =(\t", beginKeyword);
     size_t endKeyword = line.find_first_of("=(", beginKeyword);
     if (line[endKeyword] == '=') { // special case of declaration and initialization of a variable
-        keywordId = 10;
+        keywordId = KW_AFFECT;
         return beginKeyword;
     }
 
@@ -211,7 +211,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
 
     //cout << "parseCSG(" << str << "," << pos << ")" << endl;
     while ((pos = readKeyword(str, pos, keywordId)) != string::npos) {
-        cout << "KeywordId=" << keywordId << "  pos=" << pos << "|" << str.substr(std::max(0,int(pos-2)),5) << endl;
+        //cout << "KeywordId=" << keywordId << "  pos=" << pos << "|" << str.substr(std::max(0,int(pos-2)),5) << endl;
         switch (keywordId) {
             case KW_UNION: { // union
                 string subline;
@@ -410,7 +410,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                     // add parameter in variables ! and init
                     string moduleParam;
                     extractParametersString(str,pos,moduleParam);
-                    cout << "moduleParam:" << moduleParam << endl;
+                    //cout << "moduleParam:" << moduleParam << endl;
                     // first parameters
                     size_t posP=0,posId=0,endId;
                     i=0;
