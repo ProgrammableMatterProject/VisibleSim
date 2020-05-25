@@ -602,3 +602,52 @@ void GameOfLifeCode::processLocalEvent(std::shared_ptr<Event> pev)
     break;
     }
 };
+
+void GameOfLifeCode::parseUserBlockElements(TiXmlElement *blockElt) {
+    if (not randomAliveInit) {
+        blockElt->QueryBoolAttribute("alive", &alive);
+        console << " is alive!" << "\n";
+    }
+
+    // (pour parsing cf.  simulatorCore/src/base/simulator.cpp)
+}
+
+bool GameOfLifeCode::parseUserCommandLineArgument(int& argc, char **argv[]) {
+    /* Reading the command line */
+    if ((argc > 0) && ((*argv)[0][0] == '-')) {
+        switch((*argv)[0][1]) {
+
+            // Single character example: -b
+            case 'I':   {
+                cout << "-I option provided: random initialization" << endl;
+                randomAliveInit = true;
+                return true;
+            } break;
+
+            //     // Composite argument example: --foo 13
+            // case '-': {
+            //     string varg = string((*argv)[0] + 2); // argv[0] without "--"
+            //     if (varg == string("foo")) { //
+            //         int fooArg;
+            //         try {
+            //             fooArg = stoi((*argv)[1]);
+            //             argc--;
+            //             (*argv)++;
+            //         } catch(std::logic_error&) {
+            //             stringstream err;
+            //             err << "foo must be an integer. Found foo = " << argv[1] << endl;
+            //             throw CLIParsingError(err.str());
+            //         }
+
+            //         cout << "--foo option provided with value: " << fooArg << endl;
+            //     } else return false;
+
+            //     return true;
+            // }
+
+            default: cerr << "Unrecognized command line argument: " << (*argv)[0] << endl;
+        }
+    }
+
+    return false;
+}
