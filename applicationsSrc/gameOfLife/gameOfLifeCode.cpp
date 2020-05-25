@@ -607,6 +607,13 @@ void GameOfLifeCode::parseUserBlockElements(TiXmlElement *blockElt) {
     if (not randomAliveInit) {
         blockElt->QueryBoolAttribute("alive", &alive);
         console << " is alive!" << "\n";
+
+        if (alive) {
+            stringstream ss;
+            ss << " is alive because it has been init with alive = "
+               << alive << "!";
+            scheduler->trace(ss.str(), module->blockId, CYAN);
+        }
     }
 
     // (pour parsing cf.  simulatorCore/src/base/simulator.cpp)
