@@ -406,7 +406,6 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case 'B' : {
             World *world = BaseSimulator::getWorld();
             world->toggleBackground();
-            cout << "background toggled" << endl;
         } break;
         case 32: { // SPACE
             Scheduler *scheduler = getScheduler();
