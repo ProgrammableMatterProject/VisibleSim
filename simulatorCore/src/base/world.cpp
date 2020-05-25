@@ -106,21 +106,21 @@ void World::updateGlData(BuildingBlock *bb) {
 }
 
 void World::updateGlData(BuildingBlock *bb, const Color &c) {
-	GlBlock *glblc = bb->getGlBlock();
-	if (glblc) {
-		//lock();
-		glblc->setColor(bb->color);
-		//unlock();
-	}
+    GlBlock *glblc = bb->getGlBlock();
+    if (glblc) {
+        //lock();
+        glblc->setColor(bb->color);
+        //unlock();
+    }
 }
 
 void World::updateGlData(BuildingBlock *bb, const Cell3DPosition &p) {
-	GlBlock *glblc = bb->getGlBlock();
-	if (glblc) {
-		//lock();
-		glblc->setPosition(lattice->gridToWorldPosition(p));
-		//unlock();
-	}
+    GlBlock *glblc = bb->getGlBlock();
+    if (glblc) {
+        //lock();
+        glblc->setPosition(lattice->gridToWorldPosition(p));
+        //unlock();
+    }
 }
 
 
@@ -265,7 +265,7 @@ void World::menuChoice(int n) {
 void World::createHelpWindow() {
     if (GlutContext::helpWindow)
         delete GlutContext::helpWindow;
-    GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/resources/help/genericHelp.txt");
+    GlutContext::helpWindow = new GlutHelpWindow(NULL,10,50,570,750,"../../simulatorCore/resources/help/genericHelp.txt");
 }
 
 void World::tapBlock(Time date, bID bId, int face) {
@@ -300,7 +300,7 @@ void World::createPopupMenu(int ix, int iy) {
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
-		cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
+        cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
          << " selected" << endl;
     // cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
 
