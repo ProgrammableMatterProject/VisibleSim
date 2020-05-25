@@ -26,7 +26,12 @@ static const int ALIVE = 2 ;
 static const int DEAD = 1 ;
 static const int ABSENT = 0 ;
 
-static const std::vector<int> initAlives{14,15,16,25};
+// Rules of game of life
+static const std::vector<int> RuleToSurvive{2,3,4} ; //nb of neighbors necessary to survive. regular game of life : 2,3
+static const std::vector<int> RuleToBeBorn{3} ; //nb of neighbors necessary to be born. regular game of life : 3
+
+//Random initialization
+static const float propAlive = 1.0/3 ; //proportion of alive modules
 
 //indices of the neighbors in neighborsStatus & updatedNeighbors
 static const int topId = 0 ;
@@ -57,7 +62,8 @@ private:
     std::vector<bool> readyNeighbors ; // true if all status were recieved and the neighbor's ready to update its status
     std::vector<bool> syncNeighbors ; //true if the neighbor's status is updated and it's ready to send and recieve status
     int nb_updates=0;
-    bool alive = false;
+    bool sync_time = false ; //true if time was synchronized after the last update
+    bool alive = false; // to initialize
     static inline bool randomAliveInit = false;
 public :
     GameOfLifeCode(BlinkyBlocksBlock *host);
@@ -69,6 +75,12 @@ public :
  * @note this can be thought of as the main function of the module
  */
     void startup() override;
+
+/**
+ * @brief initializes all variables, except status : useful to "restart" 
+ */
+    void initialization();
+
 /**
  * @brief Sends the status of this to its neighbors
  */

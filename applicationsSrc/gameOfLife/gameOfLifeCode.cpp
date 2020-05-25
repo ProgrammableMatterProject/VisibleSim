@@ -82,8 +82,19 @@ void GameOfLifeCode::startup()
     //initialization of time
     sendMessageToAllNeighbors("Ask for Time", new Message(ASK_INIT_TIME_MSG_ID), 0, 0, 0);
 
-    auto result = std::find(initAlives.begin(), initAlives.end(), module->blockId);
-    if (result != initAlives.end())
+    if (randomAliveInit)
+    {
+        float r = rand();
+        if (r < (RAND_MAX * propAlive))
+        {
+            alive = true;
+        }
+        else
+        {
+            alive = false;
+        }
+    }
+    if (alive)
     {
         status = ALIVE;
         module->setColor(RED);
@@ -96,6 +107,12 @@ void GameOfLifeCode::startup()
     bottomItf = module->getInterface(SCLattice::Direction::Bottom);
     rightItf = module->getInterface(SCLattice::Direction::Right);
     leftItf = module->getInterface(SCLattice::Direction::Left);
+
+    initialization();
+}
+
+void GameOfLifeCode::initialization()
+{
     for (int i = 0; i < 8; i++)
     {
         neighborsStatus.push_back(DEAD);
@@ -106,9 +123,9 @@ void GameOfLifeCode::startup()
         readyNeighbors.push_back(false);
         syncNeighbors.push_back(false);
     }
-    // checkConnectedNeighbors();
-    // sendSelfStatus();
-}
+    checkConnectedNeighbors();
+    sendSelfStatus();
+};
 
 void GameOfLifeCode::sendSelfStatus()
 {
@@ -138,14 +155,22 @@ void GameOfLifeCode::readyForUpdate()
 void GameOfLifeCode::statusUpdate()
 {
     console << " status update \n";
+
+    stringstream strstm;
+    strstm << "CHECK status : " << neighborsStatus.at(0) << neighborsStatus.at(1) << neighborsStatus.at(2) << neighborsStatus.at(3) << neighborsStatus.at(4) << neighborsStatus.at(5) << neighborsStatus.at(6) << neighborsStatus.at(7) << "\n";
+    scheduler->trace(strstm.str(), module->blockId, GREEN);
+
     time++;
 
-    int alives = std::count(neighborsStatus.begin(), neighborsStatus.end(), ALIVE);
-    if (status == DEAD && alives == 3)
+    int nbNghbAlive = std::count(neighborsStatus.begin(), neighborsStatus.end(), ALIVE);
+
+    auto survive = std::find(RuleToBeBorn.begin(),RuleToBeBorn.end(),nbNghbAlive);
+    if (status == DEAD && survive != RuleToBeBorn.end()) //if the module respects the rule to be born, it is born
     {
         status = ALIVE;
     }
-    if (status == ALIVE && (alives < 2 || alives > 3))
+    auto beborn = std::find(RuleToSurvive.begin(),RuleToSurvive.end(),nbNghbAlive);
+    if (status == ALIVE && beborn == RuleToSurvive.end()) //if the module doesn't respect the rule to survive, it dies
     {
         status = DEAD;
     }
@@ -267,11 +292,8 @@ void GameOfLifeCode::checkConnectedNeighbors()
         updatedNeighbors.at(bottomLeftId) = true;
     }
 
-    if (module->blockId == 10 || module->blockId == 2)
-    {
-        console << "CHECK status : " << neighborsStatus.at(0) << neighborsStatus.at(1) << neighborsStatus.at(2) << neighborsStatus.at(3) << neighborsStatus.at(4) << neighborsStatus.at(5) << neighborsStatus.at(6) << neighborsStatus.at(7) << "\n";
-        console << "CHECK updated : " << updatedNeighbors.at(0) << updatedNeighbors.at(1) << updatedNeighbors.at(2) << updatedNeighbors.at(3) << updatedNeighbors.at(4) << updatedNeighbors.at(5) << updatedNeighbors.at(6) << updatedNeighbors.at(7) << "\n";
-    }
+    // console << "CHECK status : " << neighborsStatus.at(0) << neighborsStatus.at(1) << neighborsStatus.at(2) << neighborsStatus.at(3) << neighborsStatus.at(4) << neighborsStatus.at(5) << neighborsStatus.at(6) << neighborsStatus.at(7) << "\n";
+    // console << "CHECK updated : " << updatedNeighbors.at(0) << updatedNeighbors.at(1) << updatedNeighbors.at(2) << updatedNeighbors.at(3) << updatedNeighbors.at(4) << updatedNeighbors.at(5) << updatedNeighbors.at(6) << updatedNeighbors.at(7) << "\n";
 };
 
 void GameOfLifeCode::myTopRightLivesFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
@@ -557,9 +579,12 @@ void GameOfLifeCode::myInitTimeFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
 {
     MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
     int msgData = *msg->getData();
-    time = msgData;
-    checkConnectedNeighbors();
-    sendSelfStatus();
+    if (!sync_time)
+    {
+        time = msgData;
+        sync_time = true ;
+        sendMessageToAllNeighbors("Update sync time Message", new MessageOf<int>(UPDATE_MSG_ID, time), 0, 0, 0);
+    }
 };
 
 void GameOfLifeCode::myUpdateFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
@@ -570,6 +595,10 @@ void GameOfLifeCode::myUpdateFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
     if (nb_updates < msgData)
     {
         nb_updates = msgData;
+        sync_time = false;
+        stringstream strstm;
+        strstm << "UPDATE : " << nb_updates;
+        scheduler->trace(strstm.str(), module->blockId, MAGENTA);
         sendMessageToAllNeighbors("Update Message", new MessageOf<int>(UPDATE_MSG_ID, nb_updates), 0, 0, 0);
         checkConnectedNeighbors();
         sendSelfStatus();
@@ -592,44 +621,52 @@ void GameOfLifeCode::processLocalEvent(std::shared_ptr<Event> pev)
 
     case EVENT_REMOVE_NEIGHBOR:
     {
-        console << "###### NEIGHBOR LEFT #############################\n";
+        stringstream strstm;
+        strstm << "###### NEIGHBOR LEFT #############################";
+        scheduler->trace(strstm.str(), module->blockId, RED);
         nb_updates++;
-        sendMessageToAllNeighbors("Update Message", new MessageOf<int>(UPDATE_MSG_ID, nb_updates), 0, 0, 0);
+        // sendMessageToAllNeighbors("Update Message", new MessageOf<int>(UPDATE_MSG_ID, nb_updates), 0, 0, 0);
+        // init();
+
         checkConnectedNeighbors();
-        sendSelfStatus();
         break;
     }
     break;
     }
 };
 
-void GameOfLifeCode::parseUserBlockElements(TiXmlElement *blockElt) {
-    if (not randomAliveInit) {
-        blockElt->QueryBoolAttribute("alive", &alive);
-        console << " is alive!" << "\n";
+void GameOfLifeCode::parseUserBlockElements(TiXmlElement *blockElt)
+{
 
-        if (alive) {
-            stringstream ss;
-            ss << " is alive because it has been init with alive = "
+    blockElt->QueryBoolAttribute("alive", &alive);
+
+    if (alive)
+    {
+        stringstream strstm;
+        strstm << " is alive because it has been init with alive = "
                << alive << "!";
-            scheduler->trace(ss.str(), module->blockId, CYAN);
-        }
+        scheduler->trace(strstm.str(), module->blockId, CYAN);
     }
 
     // (pour parsing cf.  simulatorCore/src/base/simulator.cpp)
 }
 
-bool GameOfLifeCode::parseUserCommandLineArgument(int& argc, char **argv[]) {
+bool GameOfLifeCode::parseUserCommandLineArgument(int &argc, char **argv[])
+{
     /* Reading the command line */
-    if ((argc > 0) && ((*argv)[0][0] == '-')) {
-        switch((*argv)[0][1]) {
+    if ((argc > 0) && ((*argv)[0][0] == '-'))
+    {
+        switch ((*argv)[0][1])
+        {
 
-            // Single character example: -b
-            case 'I':   {
-                cout << "-I option provided: random initialization" << endl;
-                randomAliveInit = true;
-                return true;
-            } break;
+        // Single character example: -b
+        case 'I':
+        {
+            cout << "-I option provided: random initialization" << endl;
+            randomAliveInit = true;
+            return true;
+        }
+        break;
 
             //     // Composite argument example: --foo 13
             // case '-': {
@@ -652,7 +689,8 @@ bool GameOfLifeCode::parseUserCommandLineArgument(int& argc, char **argv[]) {
             //     return true;
             // }
 
-            default: cerr << "Unrecognized command line argument: " << (*argv)[0] << endl;
+        default:
+            cerr << "Unrecognized command line argument: " << (*argv)[0] << endl;
         }
     }
 
