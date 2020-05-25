@@ -316,7 +316,8 @@ void World::glDrawBackground() {
         glDrawSpecificBg();
     }
     else {
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClearColor(0.85f, 0.85f, 0.85f, 1.0f);
+        // glClearColor(0.3f, 0.3f, 0.8f, 1.0f);
     }
 }
 

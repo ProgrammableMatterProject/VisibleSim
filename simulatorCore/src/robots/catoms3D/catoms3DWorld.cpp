@@ -409,8 +409,11 @@ void Catoms3DWorld::glDraw() {
         glPushMatrix();
         objRepere->glDraw();
         glPopMatrix();
+
+        lattice->glDraw();
+    } else {
+        World::glDrawBackground();
     }
-    lattice->glDraw();
 
     // if (BlockCode::target and dynamic_cast<TargetCSG*>(BlockCode::target)) {
     //     glScalef(lattice->gridScale[0], lattice->gridScale[1], lattice->gridScale[2]);
