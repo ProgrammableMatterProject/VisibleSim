@@ -1,4 +1,5 @@
 #include "gameOfLifeCode.hpp"
+#include "utils/random.h"
 #include <vector>
 #include <algorithm>
 #include <unistd.h>
@@ -74,6 +75,9 @@ GameOfLifeCode::GameOfLifeCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(
     addMessageEventFunc2(UPDATE_MSG_ID,
                          std::bind(&GameOfLifeCode::myUpdateFunc, this,
                                    std::placeholders::_1, std::placeholders::_2));
+
+    // Initialization of random numbers generator
+    srand(Random::getSimulationSeed());
 }
 
 void GameOfLifeCode::startup()

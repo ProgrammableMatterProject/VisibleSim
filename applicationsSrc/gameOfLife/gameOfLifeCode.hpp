@@ -6,6 +6,26 @@
 #include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
 #include <vector>
 
+/* README :
+
+In the shell, -I enables the random initialization and -a <seed> allows to choose the seed to initialize the random numbers generator.
+
+The only case this code doesn't work, is if there are missing modules in the config in diagonals :
+XO
+OX X module, O missing
+In this case, the two modules are neighbors but they don't communicate with each other, so the rules of game of life aren't respected.
+*/
+
+// Rules of game of life
+static const std::vector<int> RuleToSurvive{2,3} ; //nb of neighbors necessary to survive. regular game of life : 2,3
+static const std::vector<int> RuleToBeBorn{3} ; //nb of neighbors necessary to be born. regular game of life : 3
+
+//Random initialization
+static const float propAlive = 1.0/3 ; //proportion of alive modules
+
+static const int ALIVE = 2 ;
+static const int DEAD = 1 ;
+static const int ABSENT = 0 ;
 
 //To be able to make a difference between all recieved status, different messages are used.
 static const int TOPRIGHTLIVES_MSG_ID = 1001;
@@ -21,17 +41,6 @@ static const int SYNCHRONIZED_MSG_ID = 1010;
 static const int ASK_INIT_TIME_MSG_ID = 1011;
 static const int INIT_TIME_MSG_ID = 1012;
 static const int UPDATE_MSG_ID = 1013;
-
-static const int ALIVE = 2 ;
-static const int DEAD = 1 ;
-static const int ABSENT = 0 ;
-
-// Rules of game of life
-static const std::vector<int> RuleToSurvive{2,3,4} ; //nb of neighbors necessary to survive. regular game of life : 2,3
-static const std::vector<int> RuleToBeBorn{3} ; //nb of neighbors necessary to be born. regular game of life : 3
-
-//Random initialization
-static const float propAlive = 1.0/3 ; //proportion of alive modules
 
 //indices of the neighbors in neighborsStatus & updatedNeighbors
 static const int topId = 0 ;
