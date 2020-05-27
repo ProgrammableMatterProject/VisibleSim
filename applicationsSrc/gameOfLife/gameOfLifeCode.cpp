@@ -182,7 +182,7 @@ void GameOfLifeCode::statusUpdate()
         updatedNeighbors.at(i) = false;
         neighborsStatus.at(i) = DEAD;
     }
-    usleep(10000);
+    // usleep(1000);
 
     sendMessageToAllNeighbors("Status Ready Message", new MessageOf<int>(SYNCHRONIZED_MSG_ID, time), 0, 0, 0);
 };
