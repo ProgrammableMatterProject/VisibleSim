@@ -101,11 +101,11 @@ void GameOfLifeCode::startup()
     if (alive)
     {
         status = ALIVE;
-        module->setColor(RED);
+        module->setColor(COLOR_ALIVE);
     }
     else
     {
-        module->setColor(GOLD);
+        module->setColor(COLOR_DEAD);
     }
     topItf = module->getInterface(SCLattice::Direction::Top);
     bottomItf = module->getInterface(SCLattice::Direction::Bottom);
@@ -202,11 +202,11 @@ void GameOfLifeCode::statusSynchronized()
     }
     if (status == ALIVE)
     {
-        module->setColor(RED);
+        module->setColor(COLOR_ALIVE);
     }
     else if (status == DEAD)
     {
-        module->setColor(GOLD);
+        module->setColor(COLOR_DEAD);
     }
     console << "status synchronized : \n";
     sendSelfStatus();

@@ -4,6 +4,7 @@
 #include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
 #include "robots/blinkyBlocks/blinkyBlocksWorld.h"
 #include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
+
 #include <vector>
 
 /* README :
@@ -26,6 +27,9 @@ static const float propAlive = 1.0/3 ; //proportion of alive modules
 static const int ALIVE = 2 ;
 static const int DEAD = 1 ;
 static const int ABSENT = 0 ;
+
+static const Color COLOR_ALIVE = BLACK;
+static const Color COLOR_DEAD = WHITE;
 
 //To be able to make a difference between all recieved status, different messages are used.
 static const int TOPRIGHTLIVES_MSG_ID = 1001;
@@ -86,7 +90,7 @@ public :
     void startup() override;
 
 /**
- * @brief initializes all variables, except status : useful to "restart" 
+ * @brief initializes all variables, except status : useful to "restart"
  */
     void initialization();
 
