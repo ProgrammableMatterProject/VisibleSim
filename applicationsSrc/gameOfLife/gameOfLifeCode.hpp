@@ -90,16 +90,12 @@ public:
  */
     void startup() override;
 
-<<<<<<< HEAD
 /**
  * @brief initializes all variables, except status : useful to "restart"
  */
     void initialization();
 
 /**
-=======
-    /**
->>>>>>> bc907b30804a2aa497e331137c49ef60db9e68ff
  * @brief Sends the status of this to its neighbors
  */
     void sendSelfStatus();
