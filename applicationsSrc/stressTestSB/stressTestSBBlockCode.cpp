@@ -3,8 +3,34 @@
 #include <experimental/iterator>
 
 using namespace SmartBlocks;
-
 static unsigned int nbUnmarked;
+
+void printProgress() {
+    static unsigned int lastPrint=nbUnmarked;
+    bool active=false;
+    if (nbUnmarked>10000000) {
+        active=nbUnmarked<=lastPrint;
+        if (active) lastPrint=(nbUnmarked/1000000-1)*1000000;
+    } else if (nbUnmarked>1000000) {
+        active=nbUnmarked<=lastPrint;
+        if (active) lastPrint=(nbUnmarked/100000-1)*100000;
+    } else if (nbUnmarked>100000) {
+        active=nbUnmarked<=lastPrint;
+        if (active) lastPrint=(nbUnmarked/10000-1)*10000;
+    } else if (nbUnmarked>10000) {
+        active=nbUnmarked<=lastPrint;
+        if (active) lastPrint=(nbUnmarked/1000-1)*1000;
+    } else if (nbUnmarked>1000) {
+        active=nbUnmarked<=lastPrint;
+        if (active) lastPrint=(nbUnmarked/100-1)*100;
+    } else if (nbUnmarked>100) {
+        active=nbUnmarked<=lastPrint;
+        if (active) lastPrint=(nbUnmarked/10-1)*10;
+    } else {
+        active=true;
+    }
+    if (active) cout << "#" << nbUnmarked <<endl;
+}
 
 template <typename T>
 void print(std::vector<T> const &input) {
@@ -32,7 +58,8 @@ StressTestSBBlockCode::StressTestSBBlockCode(SmartBlocksBlock *host) : SmartBloc
 void StressTestSBBlockCode::startup() {
     if (module->blockId==1) {
         nbUnmarked=SmartBlocksWorld::getWorld()->getNbBlocks();
-        cout << "#blocks=" << nbUnmarked <<endl;
+        cout << "#block =" << nbUnmarked << endl;
+        printProgress();
     }
 
     rng.seed(BaseSimulator::Simulator::getSimulator()->getCmdLine().getSimulationSeed());
@@ -60,10 +87,11 @@ void StressTestSBBlockCode::handleActivationMessage(std::shared_ptr<Message> _ms
         activated = true;
         module->setColor(BLUE);
         nbUnmarked--;
-				cout << nbUnmarked << endl;
+		/*		cout << nbUnmarked << endl;
         console << " Received ACTIVATE from "
                 << sender->getConnectedBlockId() << "(" << nbUnmarked << ")\n";
-
+*/
+		printProgress();
         // Broadcast to all neighbors but ignore sender
         /*sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,
           1,sender); // ignore sender*/
@@ -73,7 +101,7 @@ void StressTestSBBlockCode::handleActivationMessage(std::shared_ptr<Message> _ms
 
 void StressTestSBBlockCode::onMotionEnd() {
     isMoving=false;
-    console << " finished random motion to " << module->position << "\n";
+    //console << " finished random motion to " << module->position << "\n";
     setLockedCell(lastPos, false);
     sendMessageToAllNeighbors("Activate", new Message(ACTIVATION_MSG_ID),100,200,0);
 
@@ -104,7 +132,7 @@ void StressTestSBBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
 
             switch(itev->mode) {
                 case AGITATE_IT_ID:
-                    console << " agitate" << "\n";
+                    //console << " agitate" << "\n";
                     if (!isMoving && nbUnmarked>0) {
                         if (not randomWalk()) { // Wait .5s and try moving again
                             wait();

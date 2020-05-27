@@ -402,6 +402,24 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             cout << "Screenshot saved to files: " << ssName
                  << " and " << ssNameJpg << endl;
         } break;
+        case 'm' : {
+            const string& bsname = myBasename(Simulator::configFileName);
+            const string& ssName = generateTimestampedFilename("capture_" + bsname.substr(0, bsname.size()-4), "ppm");
+            string ssNamePNG = ssName;
+            ssNamePNG.replace(ssName.length() - 3, 3, "png");
+            saveScreen(ssName.c_str());
+#ifndef WIN32
+            (void)std::async([ssNamePNG, ssName](){
+                int r = system(string("convert " + ssName + " PNG:" + ssNamePNG
+                                      + " >/dev/null 2>/dev/null").c_str());
+                if (r == 0)
+                    system(string("rm -rf " + ssName
+                                  + " >/dev/null 2>/dev/null").c_str());
+            });
+#endif
+            cout << "Screenshot saved to files: " << ssName
+                 << " and " << ssNamePNG << endl;
+        } break;
 
         case 'B' : {
             World *world = BaseSimulator::getWorld();

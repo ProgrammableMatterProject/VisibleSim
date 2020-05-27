@@ -57,11 +57,11 @@ void CsgCatoms3DBlockCode::startup() {
         cerr << "No target in configuration file" << endl;
     }
     if (BlockCode::target->isInTarget(catom->position)) {
-        //catom->setColor(RED);
-        catom->setColor(BlockCode::target->getTargetColor(catom->position));
+        catom->setColor(RED);
+        //catom->setColor(BlockCode::target->getTargetColor(catom->position));
     }
     else {
-        BaseSimulator::getWorld()->deleteBlock(catom);
+        //BaseSimulator::getWorld()->deleteBlock(catom);
     }
 }
 
