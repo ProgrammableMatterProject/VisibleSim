@@ -1,6 +1,5 @@
 #include "gameOfLifeCode.hpp"
 #include "utils/random.h"
-#include <vector>
 #include <algorithm>
 #include <unistd.h>
 
@@ -112,11 +111,6 @@ void GameOfLifeCode::startup()
     rightItf = module->getInterface(SCLattice::Direction::Right);
     leftItf = module->getInterface(SCLattice::Direction::Left);
 
-    initialization();
-}
-
-void GameOfLifeCode::initialization()
-{
     for (int i = 0; i < 8; i++)
     {
         neighborsStatus.push_back(DEAD);
@@ -168,12 +162,12 @@ void GameOfLifeCode::statusUpdate()
 
     int nbNghbAlive = std::count(neighborsStatus.begin(), neighborsStatus.end(), ALIVE);
 
-    auto survive = std::find(RuleToBeBorn.begin(),RuleToBeBorn.end(),nbNghbAlive);
+    auto survive = std::find(RuleToBeBorn.begin(), RuleToBeBorn.end(), nbNghbAlive);
     if (status == DEAD && survive != RuleToBeBorn.end()) //if the module respects the rule to be born, it is born
     {
         status = ALIVE;
     }
-    auto beborn = std::find(RuleToSurvive.begin(),RuleToSurvive.end(),nbNghbAlive);
+    auto beborn = std::find(RuleToSurvive.begin(), RuleToSurvive.end(), nbNghbAlive);
     if (status == ALIVE && beborn == RuleToSurvive.end()) //if the module doesn't respect the rule to survive, it dies
     {
         status = DEAD;
@@ -309,10 +303,6 @@ void GameOfLifeCode::myTopRightLivesFunc(std::shared_ptr<Message> _msg, P2PNetwo
     {
         neighborsStatus.at(topRightId) = msgData;
         updatedNeighbors.at(topRightId) = true;
-        if (module->blockId == 2 || module->blockId == 10)
-        {
-            console << "UPDATE TR status = " << msgData << "\n";
-        }
         auto result = std::find(updatedNeighbors.begin(), updatedNeighbors.end(), false);
         if (result == updatedNeighbors.end())
         {
@@ -338,10 +328,6 @@ void GameOfLifeCode::myRightLivesFunc(std::shared_ptr<Message> _msg, P2PNetworkI
             sendMessage("Status TR Message", new MessageOf<int>(TOPRIGHTLIVES_MSG_ID, msgData), bottomItf, 0, 0);
         }
         updatedNeighbors.at(rightId) = true;
-        if (module->blockId == 2 || module->blockId == 10)
-        {
-            console << "UPDATE R status = " << msgData << "\n";
-        }
         auto result = std::find(updatedNeighbors.begin(), updatedNeighbors.end(), false);
         if (result == updatedNeighbors.end())
         {
@@ -359,10 +345,6 @@ void GameOfLifeCode::myBottomRightLivesFunc(std::shared_ptr<Message> _msg, P2PNe
     {
         neighborsStatus.at(bottomRightId) = msgData;
         updatedNeighbors.at(bottomRightId) = true;
-        if (module->blockId == 2 || module->blockId == 10)
-        {
-            console << "UPDATE BR status = " << msgData << "\n";
-        }
         auto result = std::find(updatedNeighbors.begin(), updatedNeighbors.end(), false);
         if (result == updatedNeighbors.end())
         {
@@ -388,10 +370,6 @@ void GameOfLifeCode::myBottomLivesFunc(std::shared_ptr<Message> _msg, P2PNetwork
         }
         neighborsStatus.at(bottomId) = msgData;
         updatedNeighbors.at(bottomId) = true;
-        if (module->blockId == 2 || module->blockId == 10)
-        {
-            console << "UPDATE B status = " << msgData << "\n";
-        }
         auto result = std::find(updatedNeighbors.begin(), updatedNeighbors.end(), false);
         if (result == updatedNeighbors.end())
         {
@@ -409,10 +387,6 @@ void GameOfLifeCode::myBottomLeftLivesFunc(std::shared_ptr<Message> _msg, P2PNet
     {
         neighborsStatus.at(bottomLeftId) = msgData;
         updatedNeighbors.at(bottomLeftId) = true;
-        if (module->blockId == 2 || module->blockId == 10)
-        {
-            console << "UPDATE BL status = " << msgData << "\n";
-        }
         auto result = std::find(updatedNeighbors.begin(), updatedNeighbors.end(), false);
         if (result == updatedNeighbors.end())
         {
@@ -438,10 +412,6 @@ void GameOfLifeCode::myLeftLivesFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
         }
         neighborsStatus.at(leftId) = msgData;
         updatedNeighbors.at(leftId) = true;
-        if (module->blockId == 2 || module->blockId == 10)
-        {
-            console << "UPDATE L status = " << msgData << "\n";
-        }
         auto result = std::find(updatedNeighbors.begin(), updatedNeighbors.end(), false);
         if (result == updatedNeighbors.end())
         {
@@ -459,10 +429,6 @@ void GameOfLifeCode::myTopLeftLivesFunc(std::shared_ptr<Message> _msg, P2PNetwor
     {
         neighborsStatus.at(topLeftId) = msgData;
         updatedNeighbors.at(topLeftId) = true;
-        if (module->blockId == 2 || module->blockId == 10)
-        {
-            console << "UPDATE TL status = " << msgData << "\n";
-        }
         auto result = std::find(updatedNeighbors.begin(), updatedNeighbors.end(), false);
         if (result == updatedNeighbors.end())
         {
@@ -488,10 +454,6 @@ void GameOfLifeCode::myTopLivesFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         neighborsStatus.at(topId) = msgData;
         updatedNeighbors.at(topId) = true;
-        if (module->blockId == 2 || module->blockId == 10)
-        {
-            console << "UPDATE T status = " << msgData << "\n";
-        }
         auto result = std::find(updatedNeighbors.begin(), updatedNeighbors.end(), false);
         if (result == updatedNeighbors.end())
         {
@@ -586,7 +548,7 @@ void GameOfLifeCode::myInitTimeFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
     if (!sync_time)
     {
         time = msgData;
-        sync_time = true ;
+        sync_time = true;
         sendMessageToAllNeighbors("Update sync time Message", new MessageOf<int>(UPDATE_MSG_ID, time), 0, 0, 0);
     }
 };
@@ -625,13 +587,7 @@ void GameOfLifeCode::processLocalEvent(std::shared_ptr<Event> pev)
 
     case EVENT_REMOVE_NEIGHBOR:
     {
-        stringstream strstm;
-        strstm << "###### NEIGHBOR LEFT #############################";
-        scheduler->trace(strstm.str(), module->blockId, RED);
         nb_updates++;
-        // sendMessageToAllNeighbors("Update Message", new MessageOf<int>(UPDATE_MSG_ID, nb_updates), 0, 0, 0);
-        // init();
-
         checkConnectedNeighbors();
         break;
     }
@@ -641,17 +597,7 @@ void GameOfLifeCode::processLocalEvent(std::shared_ptr<Event> pev)
 
 void GameOfLifeCode::parseUserBlockElements(TiXmlElement *blockElt)
 {
-
     blockElt->QueryBoolAttribute("alive", &alive);
-
-    if (alive)
-    {
-        stringstream strstm;
-        strstm << " is alive because it has been init with alive = "
-               << alive << "!";
-        scheduler->trace(strstm.str(), module->blockId, CYAN);
-    }
-
     // (pour parsing cf.  simulatorCore/src/base/simulator.cpp)
 }
 
