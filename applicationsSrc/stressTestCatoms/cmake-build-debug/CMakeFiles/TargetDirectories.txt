@@ -1,3 +1,0 @@
-/home/bpiranda/Documents/VisibleSim3/VisibleSim/applicationsSrc/stressTestCatoms/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/bpiranda/Documents/VisibleSim3/VisibleSim/applicationsSrc/stressTestCatoms/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/bpiranda/Documents/VisibleSim3/VisibleSim/applicationsSrc/stressTestCatoms/cmake-build-debug/CMakeFiles/stressTestCatoms.dir

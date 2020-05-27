@@ -53,7 +53,7 @@ int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
 bool GlutContext::enableShowFPS = false;
-float GlutContext::bgColor[3] = {0.3,0.3,0.1};
+float GlutContext::bgColor[3] = {0.3,0.3,0.8};
 unsigned int GlutContext::nbModules = 0;
 long unsigned int GlutContext::timestep = 0;
 
