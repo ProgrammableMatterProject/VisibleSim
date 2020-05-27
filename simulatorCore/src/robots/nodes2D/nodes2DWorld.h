@@ -67,9 +67,9 @@ public:
      */
     virtual void linkBlock(const Cell3DPosition &pos) override;
 
-        virtual void glDraw() override;
-        virtual void glDrawShadows() override;
-        virtual void glDrawId() override;
+    virtual void glDraw() override;
+    virtual void glDrawShadows(bool enableBG) override;
+    virtual void glDrawId() override;
     virtual void glDrawIdByMaterial() override;
     void updateGlData(BuildingBlock *bb) override;
     void updateGlData(Nodes2DBlock*blc,const Color &color);

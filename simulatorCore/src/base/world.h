@@ -277,9 +277,9 @@ public:
      */
         virtual void glDraw() {};
         /**
-         * @brief Draws all blocks for shadows
+         * @brief Draws all blocks for shadows, list of objects that produce shadows
          */
-        virtual void glDrawShadows() { glDraw(); };
+        virtual void glDrawShadows(bool activateBG) { glDraw(); };
         /**
          * @brief Draws the block ids of the block contained in the world
          */

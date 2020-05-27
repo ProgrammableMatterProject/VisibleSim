@@ -17,17 +17,18 @@
 #include <GL/glu.h>
 #endif
 
-#include "math/matrix44.h"
-#include "gui/camera.h"
+#include "../math/matrix44.h"
+#include "../gui/camera.h"
 
 using namespace std;
 
 GLint shaderCompilationStatus(GLhandleARB shader);
-void initShaders();
+void initShaders(bool enableShadows);
 void enableTexture(bool enable);
-//void drawShadowedScene();
 void shadowedRenderingStep1(Camera *camera);
 void shadowedRenderingStep2(int w,int h);
 void shadowedRenderingStep3(Camera *camera);
 void shadowedRenderingStep4();
+void noshadowRenderingStart(Camera *camera);
+void noshadowRenderingStop();
 #endif

@@ -254,15 +254,14 @@ void HexanodesWorld::glDraw() {
     glDrawBackground();
 }
 
-void HexanodesWorld::glDrawShadows() {
+void HexanodesWorld::glDrawShadows(bool enableBG) {
     glDisable(GL_TEXTURE_2D);
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((HexanodesGlBlock*)pair.second)->glDrawShadows(objBlockForPicking);
     }
     unlock();
-
-    glPopMatrix();
+    if (enableBG) glDrawBackground();
 }
 
 void HexanodesWorld::glDrawId() {

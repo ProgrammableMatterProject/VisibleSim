@@ -1,6 +1,6 @@
-#include "gui/shaders.h"
-#include "utils/trace.h"
-#include "utils/color.h"
+#include "../gui/shaders.h"
+#include "../utils/trace.h"
+#include "../utils/color.h"
 
 GLuint depth_tex,id_fb,color_rb;
 bool useShaders=true;
@@ -85,21 +85,25 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
     return prog;
 }
 
-void initShaders() {
+void initShaders(bool activateShadows) {
 #ifdef DEBUG_GRAPHICS
     OUTPUT << "initShaders" << endl;
 #endif
   glewInit();
 
-  glClearColor (0.6f, 0.6f, 0.6f, 1.0f);	// Black Background
   glClearDepth (1.0f);						// Depth Buffer Setup
   glDepthFunc (GL_LEQUAL);					// The Type Of Depth Testing (Less Or Equal)
   glEnable (GL_DEPTH_TEST);					// Enable Depth Testing
   glShadeModel (GL_SMOOTH);					// Select Smooth Shading
   glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Set Perspective Calculations To Most Accurate
 
-  shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
-                              "../../simulatorCore/resources/shaders/pointtex.frag");
+  if (activateShadows) {
+      shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtexShadows.vert",
+                                  "../../simulatorCore/resources/shaders/pointtexShadows.frag");
+  } else {
+      shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
+                                  "../../simulatorCore/resources/shaders/pointtex.frag");
+  }
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
 
@@ -107,19 +111,22 @@ void initShaders() {
   if (locTex==-1) {
       ERRPUT << "erreur affectation : tex\n";
   }
-  locShadowMap = glGetUniformLocationARB(shadersProgram, "shadowMap");
-  if (locShadowMap ==-1) {
-      ERRPUT << "erreur affectation : shadowMap\n";
-  }
+
   locTextureEnable = glGetUniformLocationARB(shadersProgram, "textureEnable");
   if (locTextureEnable  ==-1) {
       ERRPUT << "erreur affectation : textureEnable\n";
   }
 
-  // texture pour le shadow mapping
-  glGenFramebuffersEXT(1, &id_fb);	// identifiant pour la texture
-  glGenTextures(1, &depth_tex);													// and a new texture used as a color buffer
-  glGenRenderbuffersEXT(1, &color_rb);											// And finaly a new depthbuffer
+    if (activateShadows) {
+        locShadowMap = glGetUniformLocationARB(shadersProgram, "shadowMap");
+        if (locShadowMap == -1) {
+            ERRPUT << "erreur affectation : shadowMap\n";
+        }
+        // texture pour le shadow mapping
+        glGenFramebuffersEXT(1, &id_fb);	// id for the gram
+        glGenTextures(1, &depth_tex);		// and a new texture used as a color buffer
+        glGenRenderbuffersEXT(1, &color_rb); // And finaly a new depthbuffer
+    }
 
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,id_fb);	// switch to the new framebuffer
   // initialize color texture
@@ -175,7 +182,6 @@ void shadowedRenderingStep2(int w,int h) {
 
     glClearDepth (1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 }
 
 void shadowedRenderingStep3(Camera *camera) {
@@ -280,3 +286,48 @@ GLint shaderCompilationStatus(GLhandleARB shader) {
     }
     return compile_status;
 }
+
+void noshadowRenderingStart(Camera *camera) {
+    glClearDepth (1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    camera->glProjection();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    camera->glLookAt();
+    glColor3f(1,1,1);												// set the color to white
+
+    // placement de la source de lumière
+    glLightfv(GL_LIGHT0, GL_POSITION, camera->ls.pos);
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, camera->ls.dir );
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle);
+
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE.rgba);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, WHITE.rgba);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE.rgba);
+
+// activation du programme de shader
+    if(useShaders && shadersProgram) {
+        glUseProgramObjectARB(shadersProgram);
+    } else {
+        glEnable(GL_LIGHTING);
+    }
+
+    glUniform1iARB(locTex, 0);
+
+    glActiveTextureARB(GL_TEXTURE0_ARB);
+    glEnable(GL_TEXTURE_2D);
+}
+
+void noshadowRenderingStop() {
+    glActiveTextureARB(GL_TEXTURE0);
+    glDisable(GL_TEXTURE_2D);
+
+    if(useShaders) glUseProgramObjectARB(0);
+
+    glFlush ();	// Flush The GL Rendering Pipeline
+}
+
+

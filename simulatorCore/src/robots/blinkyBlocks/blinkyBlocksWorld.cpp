@@ -112,13 +112,34 @@ void BlinkyBlocksWorld::glDraw() {
         isBlinkingBlocks |= ((BlinkyBlocksGlBlock*)pair.second)->isHighlighted;
     }
     unlock();
+    glPopMatrix();
 
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
 
     glDrawBackground();
-
     lattice->glDraw();
+}
+
+void BlinkyBlocksWorld::glDrawShadows(bool enableBG) {
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+    glDisable(GL_TEXTURE_2D);
+    lock();
+    for (const auto& pair : mapGlBlocks) {
+        ((BlinkyBlocksGlBlock*)pair.second)->glDraw(objBlock);
+        isBlinkingBlocks |= ((BlinkyBlocksGlBlock*)pair.second)->isHighlighted;
+    }
+    unlock();
+    glPopMatrix();
+
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
+
+    if (enableBG) {
+        glDrawBackground();
+        lattice->glDraw();
+    }
 }
 
 void BlinkyBlocksWorld::glDrawId() {

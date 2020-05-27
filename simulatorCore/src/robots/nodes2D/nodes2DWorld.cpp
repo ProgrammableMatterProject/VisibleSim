@@ -250,7 +250,7 @@ void Nodes2DWorld::glDraw() {
     glDrawBackground();
 }
 
-void Nodes2DWorld::glDrawShadows() {
+void Nodes2DWorld::glDrawShadows(bool enableBG) {
     glDisable(GL_TEXTURE_2D);
     lock();
     for (const auto& pair : mapGlBlocks) {
@@ -258,7 +258,7 @@ void Nodes2DWorld::glDrawShadows() {
     }
     unlock();
 
-    glPopMatrix();
+    if (enableBG) glDrawBackground();
 }
 
 void Nodes2DWorld::glDrawId() {

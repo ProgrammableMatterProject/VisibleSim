@@ -52,6 +52,7 @@ public:
     virtual void loadTextures(const string &str) override;
 
     virtual void glDraw() override;
+    virtual void glDrawShadows(bool enableBG) override;
     virtual void glDrawId() override;
     virtual void glDrawIdByMaterial() override;
     virtual void glDrawSpecificBg() override;
