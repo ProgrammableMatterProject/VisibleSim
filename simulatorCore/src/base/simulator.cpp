@@ -57,7 +57,6 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
     xmlDoc = new TiXmlDocument(confFileName.c_str());
     bool isLoaded = xmlDoc->LoadFile();
 
-
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> dis(1,INT_MAX); // [1,intmax]
@@ -73,7 +72,7 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
     cerr << TermColor::BWhite << "Simulation Seed: " << seed << TermColor::Reset << endl;
 
     if (!isLoaded) {
-        cerr << "error: Could not load configuration file :" << confFileName << endl;
+        cerr << "error: Could not load configuration file: " << confFileName << endl;
         exit(EXIT_FAILURE);
     } else {
         xmlWorldNode = xmlDoc->FirstChild("world");
@@ -922,7 +921,11 @@ void Simulator::parseBlockList() {
                         }
 
                         if (world->lattice->isInGrid(position)
-                            and csgRoot->isInside(csgPos, color)) {
+                            and csgRoot->isInside(csgPos, color)
+                            // @note Ignore position already filled through other means
+                            // this can be used to initialize some parameters on select
+                            // modules using `<block>` elements
+                            and not world->lattice->cellHasBlock(position)) {
                             loadBlock(element,
                                       ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
                                       bcb, position, color, false);
