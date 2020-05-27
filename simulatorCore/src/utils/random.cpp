@@ -8,7 +8,7 @@ namespace BaseSimulator {
 namespace utils {
 
 int Random::getSimulationSeed() {
-    return Simulator::getSimulator()->getCmdLine().getSimulationSeed();
+    return Simulator::getSimulator()->getSimulationSeed();
 }
 
 doubleRNG Random::getUniformDoubleRNG(ruint seed, rdouble min, rdouble max) {

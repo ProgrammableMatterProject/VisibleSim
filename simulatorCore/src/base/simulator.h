@@ -20,8 +20,6 @@
 
 using namespace std;
 
-#define DEFAULT_SIMULATION_SEED 50 //!< Default simulation seed
-
 namespace BaseSimulator {
 
 class Simulator;
@@ -79,14 +77,16 @@ public:
     ruint getRandomUint();
 
     /*
-     * @brief Sets the simulation seed
+     * @brief Getter for the simulation seed
+     * @return The global simulation seed
+     * @warning do not use cmdLine->getSimulationSeed() instead of this one
      */
-    //inline void setSeed(int s) { seed = s; }
+    inline int getSimulationSeed() { return seed; }
 
 protected:
     static Type type;			//!< Type of simulation, i.e. language of the user program
 
-    int seed = DEFAULT_SIMULATION_SEED; //!< Simulation seed, used for every randomized operation
+    int seed; //!< Simulation seed, used for every randomized operation
     uintRNG generator; //!< Simulation random generator, used for every randomized operation, except for the id distribution
 
     static Simulator *simulator; //!< Static member for accessing *this* simulator
