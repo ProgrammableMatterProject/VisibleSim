@@ -40,7 +40,7 @@ int GlutContext::lastMotionTime=0;
 int GlutContext::lastMousePos[2];
 //bool GlutContext::showLinks=false;
 bool GlutContext::fullScreenMode=false;
-bool GlutContext::shadowsMode=true;
+bool GlutContext::enableShadows=true;
 bool GlutContext::saveScreenMode=false;
 GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
 // GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
@@ -80,7 +80,7 @@ void GlutContext::init(int argc, char **argv) {
             glutFullScreen();
         }
 
-        initShaders(shadowsMode);
+        initShaders(enableShadows);
 
         ////// GL parameters /////////////////////////////////////
         glEnable(GL_DEPTH_TEST);
@@ -96,7 +96,7 @@ void GlutContext::init(int argc, char **argv) {
         glEnable(GL_NORMALIZE);
 
         glutReshapeFunc(reshapeFunc);
-        if (shadowsMode) {
+        if (enableShadows) {
             glutDisplayFunc(drawFunc);
         } else {
             glutDisplayFunc(drawFuncNoShadows);
@@ -335,9 +335,9 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             }
             break;
         case 'g' : // enable/disable shadows
-            shadowsMode = !shadowsMode;
-            initShaders(shadowsMode);
-            if (shadowsMode) {
+            enableShadows = !enableShadows;
+            initShaders(enableShadows);
+            if (enableShadows) {
                 glutDisplayFunc(drawFunc);
             } else {
                 glutDisplayFunc(drawFuncNoShadows);
@@ -908,5 +908,5 @@ void GlutContext::setFullScreenMode(bool b) {
 }
 
 void GlutContext::setShadowsMode(bool b) {
-    shadowsMode = b;
+    enableShadows = b;
 }

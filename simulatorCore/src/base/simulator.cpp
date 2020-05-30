@@ -460,12 +460,11 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             GlutContext::screenHeight = GlutContext::initialScreenHeight;
         }
 
-        attr= visualElement->Attribute("shadowMode");
+        attr= visualElement->Attribute("enableShadows");
         if (attr) {
             string str(attr);
             toLowercase(str);
-            GlutContext::shadowsMode = (str == "true");
-            cout << "shadowMode: " << GlutContext::shadowsMode << endl;
+            GlutContext::enableShadows = (str == "true");
         }
 
         attr= visualElement->Attribute("showGrid");
@@ -473,7 +472,6 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             string str(attr);
             toLowercase(str);
             GlutContext::showGrid = (str == "true");
-            cout << "shadowMode: " << GlutContext::showGrid << endl;
         }
 
         attr= visualElement->Attribute("backgroundColor");

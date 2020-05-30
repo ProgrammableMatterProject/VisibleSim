@@ -39,7 +39,7 @@ public :
     static int initialScreenWidth, initialScreenHeight;
     static bool fullScreenMode;
     static bool showGrid;
-    static bool shadowsMode;
+    static bool enableShadows;
     static bool saveScreenMode;
     static int lastMotionTime;
     static int lastMousePos[2];
