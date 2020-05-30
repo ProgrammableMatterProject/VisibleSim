@@ -57,24 +57,22 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
     xmlDoc = new TiXmlDocument(confFileName.c_str());
     bool isLoaded = xmlDoc->LoadFile();
 
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1,INT_MAX); // [1,intmax]
     if (cmdLine.isSimulationSeedSet()) {
         seed = cmdLine.getSimulationSeed();
-    }
-    int rseed = 0;
-    if (seed < 0) {
-        random_device rd;
-        mt19937 gen(rd());
-        uniform_int_distribution<> dis(1,INT_MAX); // [1,intmax]
-        rseed = dis(gen);
-        generator = uintRNG((ruint)rseed);
     } else {
-        rseed = seed;
-        generator = uintRNG((ruint)rseed);
+        // Set random seed
+        seed = dis(gen);
     }
-    cerr << "Seed: " << rseed << endl;
+
+    generator = uintRNG((ruint)seed);
+
+    cerr << TermColor::BWhite << "Simulation Seed: " << seed << TermColor::Reset << endl;
 
     if (!isLoaded) {
-        cerr << "error: Could not load configuration file :" << confFileName << endl;
+        cerr << "error: Could not load configuration file: " << confFileName << endl;
         exit(EXIT_FAILURE);
     } else {
         xmlWorldNode = xmlDoc->FirstChild("world");
@@ -204,9 +202,13 @@ Simulator::IDScheme Simulator::determineIDScheme() {
     return ORDERED;
 }
 
+// Seed for ID generation:
+// USES: idseed blocklist XML attribute if specified,
+//       OR otherwise, simulation seed if specified,
+//       OR otherwise, a random seed
 int Simulator::parseRandomIdSeed() {
     TiXmlElement *element = xmlBlockListNode->ToElement();
-    const char *attr = element->Attribute("seed");
+    const char *attr = element->Attribute("idseed");
     if (attr) {				// READ Seed
         try {
             string str(attr);
@@ -261,18 +263,26 @@ void Simulator::generateRandomIDs(const int n, const int idSeed, const int step)
     IDPool = vector<bID>(n);
     std::iota(begin(IDPool), end(IDPool), inc);
 
+    // Seed for ID generation:
+    // USES: idseed blocklist XML attribute if specified,
+    //       OR otherwise, simulation seed if specified,
+    //       OR otherwise, a random seed
+
     // Properly seed random number generator
     std::mt19937 gen;
-    if (seed == -1) {
+    if (idSeed == -1) {
         OUTPUT << "Generating fully random contiguous ID distribution" <<  endl;
-        gen = std::mt19937(std::random_device{}());
+        gen = std::mt19937(seed);
+        cerr << TermColor::BWhite << "ID Seed: " << seed << TermColor::Reset << endl;
     } else {
-        OUTPUT << "Generating random contiguous ID distribution with seed: " << idSeed <<  endl;
+        OUTPUT << "Generating random contiguous ID distribution with seed: "
+               << idSeed <<  endl;
         gen = std::mt19937(idSeed);
+        cerr << TermColor::BWhite << "ID Seed: " << idSeed << TermColor::Reset << endl;
     }
 
     // Shuffle the elements using the rng
-    std::shuffle(begin(IDPool), end(IDPool), generator);
+    std::shuffle(begin(IDPool), end(IDPool), gen);
 }
 
 bID Simulator::countNumberOfModules() {
@@ -358,7 +368,6 @@ void Simulator::initializeIDPool() {
 
     // Count number of modules in configuration file
     bID numModules = countNumberOfModules();
-
     cerr << "There are " << numModules << " modules in the configuration" << endl;
 
     switch (ids) {
@@ -969,7 +978,11 @@ void Simulator::parseBlockList() {
                         }
 
                         if (world->lattice->isInGrid(position)
-                            and csgRoot->isInside(csgPos, color)) {
+                            and csgRoot->isInside(csgPos, color)
+                            // @note Ignore position already filled through other means
+                            // this can be used to initialize some parameters on select
+                            // modules using `<block>` elements
+                            and not world->lattice->cellHasBlock(position)) {
                             loadBlock(element,
                                       ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
                                       bcb, position, color, false);

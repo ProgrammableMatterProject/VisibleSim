@@ -299,8 +299,8 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             break;
         /*case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
         case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;*/
-        case '+' : camera->mouseZoom(0.5); break;
-        case '-' : camera->mouseZoom(-0.5); break;
+        case '+' : camera->mouseZoom(2.5); break;
+        case '-' : camera->mouseZoom(-2.5); break;
         case 'T' : case 't' :
             if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
                 mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
@@ -314,7 +314,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
 //          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
 //          case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
-        case 'd' : getScheduler()->stop(getScheduler()->now()); break;
+        // case 'd' : getScheduler()->stop(getScheduler()->now()); break;
         case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
             //case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
         case 'z' : {

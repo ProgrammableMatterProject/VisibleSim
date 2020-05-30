@@ -221,10 +221,10 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (catom->blockId, (BaseSimulator::BuildingBlock*)catom));
 
-    // FIXME: Adversarial start, randomly initiate start event
-    std::mt19937 rng;
-    rng.seed(Simulator::getSimulator()->getCmdLine().getSimulationSeed());
-    std::uniform_int_distribution<std::mt19937::result_type> u500(0,500);
+    // // FIXME: Adversarial start, randomly initiate start event
+    // std::mt19937 rng;
+    // rng.seed(Simulator::getSimulator()->getSimulationSeed());
+    // std::uniform_int_distribution<std::mt19937::result_type> u500(0,500);
     // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + u500(rng), catom));
     // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + 1000, catom));

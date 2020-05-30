@@ -1,21 +1,31 @@
-Interface Help 
+Interface Help
 
 Keyboard:
-          [z]: center camera focus on the selected block
-      [w]/[W]: toggle full screen / window mode
-          [r]: start in realtime mode
-          [R]: start in fastest mode 
+      [SPACE]: pause/resume the simulation (REALTIME mode only)
+          [z]: center camera focus on the selected module
+      [w]/[W]: toggle full screen/window mode
+      [r]/[R]: start in realtime/fastest mode
           [h]: show/hide help window
-     	  [s]: enable/disable screen saving mode
+          [i]: show/enlarge/hide console window
+          [s]: save a screenshot to the app folder
+          [S]: starts/ends a video capture to the app folder
+          [B]: toggle background
+          [!]: export an STL model of the configuration
+          [,]: show FPS
+        [1-9]: set the color of the selected module
+      [f]/[F]: toggle OpenGL line/fill drawing mode
+      [+]/[-]: zoom in/out
+      [T]/[t]: toggle large/small console font
+[PgUp]/[PgDw]: Increase/Decrease module motion speed
 [q]/[Q]/[ESC]: quit
 
 Mouse:
-        <MLB>: change the point of view, tap on a selected block
+        <MLB>: change the point of view, tap on a selected module
         <MRB>: change the focus point
-        [Ctrl]+<MLB> : select a block
-        [Ctrl]+<MRB> : context menu
-            {Add block} add a block connected to the selected face
-            {Delete block} delete the selected block
-            {Tap} schedule a tap event for the selected block
+ [Ctrl]+<MLB>: select a module
+ [Ctrl]+<MRB>: context menu
+            {Add module} add a module connected to the selected face
+            {Delete module} delete the selected module
+            {Tap} schedule a tap event for the selected module
             {Save} save the current configuration in the config file.
             {Cancel} close the menu

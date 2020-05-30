@@ -68,15 +68,15 @@ Cell3DPosition Lattice::getGridUpperBounds(int z) const {
 
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
     // try {
-        int index = getIndex(p);
-        if (not isInGrid(p))
-            throw OutOfLatticeInsertionException(p);
-        else if (not isFree(p))
-            throw DoubleInsertionException(p);
-        else {
-            grid[index] = bb;
-            if (count) nbModules++;
-        }
+    int index = getIndex(p);
+    if (not isInGrid(p))
+        throw OutOfLatticeInsertionException(p);
+    else if (not isFree(p))
+        throw DoubleInsertionException(p);
+    else {
+        grid[index] = bb;
+        if (count) nbModules++;
+    }
     // } catch (DoubleInsertionException const& e) {
     //     cerr << e.what();
     //     VS_ASSERT(false);//FIXME: should be handled by the user, but catch clauses in main are not catching the exceptions for some reason.
@@ -331,37 +331,38 @@ Cell3DPosition HLattice::getCellInDirection(const Cell3DPosition &pRef, int dire
  ************************************************************/
 
 const string HLattice::directionName[] = {"Right","TopRight","TopLeft",
-                                                             "Left","BottomLeft","BottomRight"};
+                                          "Left","BottomLeft","BottomRight"};
 
 short HLattice::getOppositeDirection(short d) const {
     switch (Direction(d)) {
-    case BottomLeft:
-        return TopRight;
-        break;
-    case Left:
-        return Right;
-        break;
-    case TopLeft:
-        return BottomRight;
-        break;
-    case BottomRight:
-        return TopLeft;
-        break;
-    case Right:
-        return Left;
-        break;
-    case TopRight:
-        return BottomLeft;
-        break;
-    default:
-        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-        return -1;
-        break;
+        case BottomLeft:
+            return TopRight;
+            break;
+        case Left:
+            return Right;
+            break;
+        case TopLeft:
+            return BottomRight;
+            break;
+        case BottomRight:
+            return TopLeft;
+            break;
+        case Right:
+            return Left;
+            break;
+        case TopRight:
+            return BottomLeft;
+            break;
+        default:
+            ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+            return -1;
+            break;
     }
 }
 
 string HLattice::getDirectionString(short d) const {
-    return directionName[d];
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
 }
 
 /********************* HHLattice *********************/
@@ -417,13 +418,15 @@ Cell3DPosition HHLattice::getCellInDirection(const Cell3DPosition &pRef, int dir
 
 const string HHLattice::directionName[] = {"East","NorthEast","NorthWest","West","SouthWest","SouthEst"};
 
-    short HHLattice::getOppositeDirection(short d) const {
-        return (d+3)%6;
-    }
+short HHLattice::getOppositeDirection(short d) const {
+    return (d+3)%6;
+}
 
-    string HHLattice::getDirectionString(short d) const {
-        return directionName[d];
-    }
+string HHLattice::getDirectionString(short d) const {
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
+
+}
 
 
 /********************* SLattice *********************/
@@ -461,27 +464,29 @@ const string SLattice::directionName[] = {"North","East","South","West"};
 
 short SLattice::getOppositeDirection(short d) const {
     switch(d) {
-    case North :
-        return South;
-        break;
-    case East :
-        return West;
-        break;
-    case South :
-        return North;
-        break;
-    case West :
-        return East;
-        break;
-    default:
-        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-        return -1;
-        break;
+        case North :
+            return South;
+            break;
+        case East :
+            return West;
+            break;
+        case South :
+            return North;
+            break;
+        case West :
+            return East;
+            break;
+        default:
+            ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+            return -1;
+            break;
     }
 }
 
 string SLattice::getDirectionString(short d) const {
-    return directionName[d];
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
+
 }
 
 
@@ -573,27 +578,29 @@ const string FCCLattice::directionName[] =
 
 short FCCLattice::getOppositeDirection(short d) const {
     switch (Direction(d)) {
-    case C0East:	return C6West; break;
-    case C1North:	return C7South; break;
-    case C2TopNE:	return C8BottomSW; break;
-    case C3TopNW:	return C9BottomSE; break;
-    case C4TopSW:	return C10BottomNE; break;
-    case C5TopSE:	return C11BottomNW; break;
-    case C6West:	return C0East; break;
-    case C7South:	return C1North; break;
-    case C8BottomSW:	return C2TopNE; break;
-    case C9BottomSE:	return C3TopNW; break;
-    case C10BottomNE:	return C4TopSW; break;
-    case C11BottomNW:	return C5TopSE; break;
-    default:
-        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-        return -1;
-        break;
+        case C0East:	return C6West; break;
+        case C1North:	return C7South; break;
+        case C2TopNE:	return C8BottomSW; break;
+        case C3TopNW:	return C9BottomSE; break;
+        case C4TopSW:	return C10BottomNE; break;
+        case C5TopSE:	return C11BottomNW; break;
+        case C6West:	return C0East; break;
+        case C7South:	return C1North; break;
+        case C8BottomSW:	return C2TopNE; break;
+        case C9BottomSE:	return C3TopNW; break;
+        case C10BottomNE:	return C4TopSW; break;
+        case C11BottomNW:	return C5TopSE; break;
+        default:
+            ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+            return -1;
+            break;
     }
 }
 
 string FCCLattice::getDirectionString(short d) const {
-    return directionName[d];
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
+
 }
 
 Cell3DPosition FCCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const
@@ -870,21 +877,23 @@ Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) const {
 
 short SCLattice::getOppositeDirection(short d) const {
     switch (Direction(d)) {
-    case Front:	return Back; break;
-    case Back:	return Front; break;
-    case Left:	return Right; break;
-    case Right:	return Left; break;
-    case Top:	return Bottom; break;
-    case Bottom:	return Top; break;
-    default:
-        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-        return -1;
-        break;
+        case Front:	return Back; break;
+        case Back:	return Front; break;
+        case Left:	return Right; break;
+        case Right:	return Left; break;
+        case Top:	return Bottom; break;
+        case Bottom:	return Top; break;
+        default:
+            ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+            return -1;
+            break;
     }
 }
 
 string SCLattice::getDirectionString(short d) const {
-    return directionName[d];
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
+
 }
 
 Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
