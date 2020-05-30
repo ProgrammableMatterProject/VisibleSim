@@ -1,5 +1,6 @@
 <?xml version="1.0" standalone="no" ?>
-<visuals shadowMode="ON" showBox="YES" backgroundColor="#222222" backgroundGradientColor="#EEEEEE" windowSize="1800,1000"/>
+<visuals shadowMode="false" showGrid="false" windowSize="1800,1000"
+         backgroundColor="#4444" backgroundGradientColor="#eeeeee" />
 <world gridSize="30,22,40">
   <blockList format="csg">
          <csg offset="false" boundingBox="false" content="
