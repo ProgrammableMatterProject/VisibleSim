@@ -12,10 +12,10 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/slidingCubes/slidingCubesWorld.h"
-#include "robots/slidingCubes/slidingCubesBlock.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
+#include "slidingCubesWorld.h"
+#include "slidingCubesBlock.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
 
 using namespace std;
 
@@ -207,100 +207,18 @@ void SlidingCubesWorld::linkBlock(const Cell3DPosition &pos) {
 }
 
 void SlidingCubesWorld::glDraw() {
-    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-        gray[]={0.2f,0.2f,0.2f,1.0f};
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+    glDisable(GL_TEXTURE_2D);
+    lock();
+    for (const auto& pair : mapGlBlocks) {
+        ((SlidingCubesGlBlock*)pair.second)->glDraw(objBlock);
+    }
+    unlock();
 
-        glPushMatrix();
-        glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-        glDisable(GL_TEXTURE_2D);
-        lock();
-        for (const auto& pair : mapGlBlocks) {
-            ((SlidingCubesGlBlock*)pair.second)->glDraw(objBlock);
-        }
-        unlock();
-        glPopMatrix();
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-        glPushMatrix();
-        enableTexture(true);
-        glBindTexture(GL_TEXTURE_2D,idTextureWall);
-        glScalef(lattice->gridSize[0]*lattice->gridScale[0],
-                 lattice->gridSize[1]*lattice->gridScale[1],
-                 lattice->gridSize[2]*lattice->gridScale[2]);
-        glBegin(GL_QUADS);
-        // bottom
-        glNormal3f(0,0,1.0f);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,0.0f);
-        glTexCoord2f(0,lattice->gridSize[1]);
-        glVertex3f(0.0,1.0,0.0f);
-        // top
-        glNormal3f(0,0,-1.0f);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,1.0f);
-        glTexCoord2f(0,lattice->gridSize[1]);
-        glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,1.0f);
-        // left
-        glNormal3f(1.0,0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[1],0);
-        glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-        glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(0.0,0.0,1.0f);
-        // right
-        glNormal3f(-1.0,0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(1.0,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-        glVertex3f(1.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[1],0);
-        glVertex3f(1.0f,1.0f,0.0f);
-        // back
-        glNormal3f(0,-1.0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-        glVertex3f(1.0f,1.0,1.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(0.0,1.0,1.0f);
-        // front
-        glNormal3f(0,1.0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(0.0,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-        glVertex3f(1.0f,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glEnd();
-        glPopMatrix();
-        // draw the axes
-        glPushMatrix();
-        glScalef(0.2f,0.2f,0.2f);
-        objRepere->glDraw();
-        glPopMatrix();
-
-        BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
-        if (bb) bb->blockCode->onGlDraw();
-        lattice->glDraw();
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
+    lattice->glDraw();
 }
 
 void SlidingCubesWorld::glDrawId() {
@@ -328,11 +246,9 @@ void SlidingCubesWorld::glDrawIdByMaterial() {
     }
     unlock();
     glPopMatrix();
-
-    glDrawBackground();
 }
 
-void SlidingCubesWorld::glDrawSpecificBg() {
+void SlidingCubesWorld::glDrawBackground() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
         gray[]={0.2f,0.2f,0.2f,1.0f};
 

@@ -38,8 +38,8 @@ public :
     static int screenWidth, screenHeight;
     static int initialScreenWidth, initialScreenHeight;
     static bool fullScreenMode;
+    static bool showBox;
     static bool shadowsMode;
-    static bool shadowsBGMode;
     static bool saveScreenMode;
     static int lastMotionTime;
     static int lastMousePos[2];
@@ -49,7 +49,9 @@ public :
     static int previousTime;
     static float fps;
     static bool enableShowFPS;
+    static bool hasGradientBackground;
     static float bgColor[3];
+    static float bgColor2[3];
     static unsigned int nbModules;
     static long unsigned int timestep;
 //	bool showLinks;

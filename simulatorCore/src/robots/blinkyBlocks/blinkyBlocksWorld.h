@@ -10,11 +10,11 @@
 
 #include <vector>
 
-#include "base/world.h"
-#include "gui/openglViewer.h"
-#include "math/vector3D.h"
-#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
-#include "utils/trace.h"
+#include "../../base/world.h"
+#include "../../gui/openglViewer.h"
+#include "../../math/vector3D.h"
+#include "blinkyBlocksBlock.h"
+#include "../../utils/trace.h"
 
 namespace BlinkyBlocks {
 
@@ -41,23 +41,23 @@ public:
         OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
     }
 
-    virtual BlinkyBlocksBlock* getBlockById(int bId) override {
-        return((BlinkyBlocksBlock*)World::getBlockById(bId));
+    BlinkyBlocksBlock* getBlockById(int bId) override {
+        return ((BlinkyBlocksBlock*)World::getBlockById(bId));
     }
 
-    virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+    void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false) override;
 
-    virtual void linkBlock(const Cell3DPosition &pos) override;
-    virtual void loadTextures(const string &str) override;
+    void linkBlock(const Cell3DPosition &pos) override;
+    void loadTextures(const string &str) override;
 
-    virtual void glDraw() override;
-    virtual void glDrawShadows(bool enableBG) override;
-    virtual void glDrawId() override;
-    virtual void glDrawIdByMaterial() override;
-    virtual void glDrawSpecificBg() override;
-    virtual void setSelectedFace(int n) override;
-    virtual void exportConfiguration() override;
+    void glDraw() override;
+    void glDrawShadows() override;
+    void glDrawId() override;
+    void glDrawIdByMaterial() override;
+    void glDrawBackground() override;
+    void setSelectedFace(int n) override;
+    void exportConfiguration() override;
 
     /* Sends the appropriate message (tap, ...) to the VM associated to id block (through the scheduler)*/
     void accelBlock(Time date, bID id, int x, int y, int z);

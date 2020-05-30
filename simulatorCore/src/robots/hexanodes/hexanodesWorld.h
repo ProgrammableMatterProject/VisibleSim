@@ -65,29 +65,28 @@ public:
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
      */
-    virtual void linkBlock(const Cell3DPosition &pos) override;
+    void linkBlock(const Cell3DPosition &pos) override;
 
-    virtual void glDraw() override;
-    virtual void glDrawShadows(bool enableBG) override;
+    void glDraw() override;
+    void glDrawShadows() override;
+    void glDrawBackground() override;
+    void glDrawId() override;
+    void glDrawIdByMaterial() override;
 
-    virtual void glDrawId() override;
-    virtual void glDrawIdByMaterial() override;
     void updateGlData(BuildingBlock *bb) override;
     void updateGlData(HexanodesBlock*blc,const Color &color);
     void updateGlData(HexanodesBlock*blc, bool visible);
     void updateGlData(HexanodesBlock*blc, const Cell3DPosition &position);
     void updateGlData(HexanodesBlock*blc, const Vector3D &position);
     void updateGlData(HexanodesBlock*blc, const Matrix &mat);
-    virtual void setSelectedFace(int n) override;
-    virtual void exportConfiguration() override;
+    void setSelectedFace(int n) override;
+    void exportConfiguration() override;
 
     virtual void disconnectBlock(BuildingBlock *block);
-        virtual void glDrawSpecificBg() override;
+    void createPopupMenu(int ix, int iy) override;
+    void menuChoice(int n) override;
 
-        virtual void createPopupMenu(int ix, int iy) override;
-        virtual void menuChoice(int n) override;
-
-        vector<HexanodesMotion*>getAllMotionsForModule(HexanodesBlock*nb);
+    vector<HexanodesMotion*>getAllMotionsForModule(HexanodesBlock*nb);
 /**
  * \brief load the background textures (internal)
  */

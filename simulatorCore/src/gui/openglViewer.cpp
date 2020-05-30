@@ -41,7 +41,6 @@ int GlutContext::lastMousePos[2];
 //bool GlutContext::showLinks=false;
 bool GlutContext::fullScreenMode=false;
 bool GlutContext::shadowsMode=true;
-bool GlutContext::shadowsBGMode=true;
 bool GlutContext::saveScreenMode=false;
 GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
 // GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
@@ -53,13 +52,17 @@ int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
 bool GlutContext::enableShowFPS = false;
+bool GlutContext::showBox = true;
+bool GlutContext::hasGradientBackground = false;
 float GlutContext::bgColor[3] = {0.3,0.3,0.8};
+float GlutContext::bgColor2[3] = {0.8,0.8,0.8};
 unsigned int GlutContext::nbModules = 0;
 long unsigned int GlutContext::timestep = 0;
 
 std::string animationDirName;
 
 void GlutContext::init(int argc, char **argv) {
+    cout << "initGlut" << endl;
     if (GUIisEnabled) {
         glutInit(&argc,argv);
         glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
@@ -93,7 +96,11 @@ void GlutContext::init(int argc, char **argv) {
         glEnable(GL_NORMALIZE);
 
         glutReshapeFunc(reshapeFunc);
-        glutDisplayFunc(drawFunc);
+        if (shadowsMode) {
+            glutDisplayFunc(drawFunc);
+        } else {
+            glutDisplayFunc(drawFuncNoShadows);
+        }
         glutMouseFunc(mouseFunc);
         glutMotionFunc(motionFunc);
         glutPassiveMotionFunc(passiveMotionFunc);
@@ -336,9 +343,6 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                 glutDisplayFunc(drawFuncNoShadows);
             }
             break;
-        case 'G'  : // enable shadows on the background model
-            if (shadowsMode) shadowsBGMode = !shadowsBGMode;
-            break;
         case 'h' :
             if (!helpWindow) {
                 BaseSimulator::getWorld()->createHelpWindow();
@@ -436,9 +440,10 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                  << " and " << ssNamePNG << endl;
         } break;
 
-        case 'B' : {
-            World *world = BaseSimulator::getWorld();
-            world->toggleBackground();
+        case 'B' : case 'b' : {
+            /*World *world = BaseSimulator::getWorld();
+            world->toggleBackground();*/
+            showBox = !showBox;
         } break;
         case 32: { // SPACE
             Scheduler *scheduler = getScheduler();
@@ -613,16 +618,41 @@ void GlutContext::drawFunc(void) {
 
     shadowedRenderingStep1(camera);
     glPushMatrix();
-    wrl->glDrawShadows(shadowsBGMode);
+    wrl->glDrawShadows();
     glPopMatrix();
 
     shadowedRenderingStep2(screenWidth,screenHeight);
 
+    /* Clear and background */
+    if (hasGradientBackground) {
+        glDisable(GL_LIGHTING);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glDisable(GL_DEPTH_TEST);
+        glBegin(GL_QUADS);
+        glColor3fv(bgColor);
+        glVertex2f(-1.0,-1.0);
+        glVertex2f(1.0,-1.0);
+        glColor3fv(bgColor2);
+        glVertex2f(1.0, 1.0);
+        glVertex2f(-1.0, 1.0);
+        glEnd();
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
     shadowedRenderingStep3(camera);
     glPushMatrix();
     wrl->glDraw();
-    glPopMatrix();
 
+    if (showBox) {
+        wrl->glDrawBackground();
+    }
+    glPopMatrix();
 
     shadowedRenderingStep4();
 
@@ -661,9 +691,35 @@ void GlutContext::drawFuncNoShadows() {
     World *wrl = BaseSimulator::getWorld();
     Camera*camera=wrl->getCamera();
 
+    /* Clear and background */
+    if (hasGradientBackground) {
+        glDisable(GL_LIGHTING);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glDisable(GL_DEPTH_TEST);
+        glBegin(GL_QUADS);
+        glColor3fv(bgColor);
+        glVertex2f(-1.0,-1.0);
+        glVertex2f(1.0,-1.0);
+        glColor3fv(bgColor2);
+        glVertex2f(1.0, 1.0);
+        glVertex2f(-1.0, 1.0);
+        glEnd();
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
     noshadowRenderingStart(camera);
     glPushMatrix();
     wrl->glDraw();
+
+    if (showBox) {
+        wrl->glDrawBackground();
+    }
     glPopMatrix();
     noshadowRenderingStop();
 

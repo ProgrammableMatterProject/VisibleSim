@@ -15,11 +15,11 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/nodes2D/nodes2DWorld.h"
-#include "robots/nodes2D/nodes2DBlock.h"
-#include "robots/nodes2D/nodes2DMotionEngine.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
+#include "nodes2DWorld.h"
+#include "nodes2DBlock.h"
+#include "nodes2DMotionEngine.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -246,19 +246,15 @@ void Nodes2DWorld::glDraw() {
 
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
-
-    glDrawBackground();
 }
 
-void Nodes2DWorld::glDrawShadows(bool enableBG) {
+void Nodes2DWorld::glDrawShadows() {
     glDisable(GL_TEXTURE_2D);
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((Nodes2DGlBlock*)pair.second)->glDrawShadows(objBlockForPicking);
     }
     unlock();
-
-    if (enableBG) glDrawBackground();
 }
 
 void Nodes2DWorld::glDrawId() {
@@ -285,7 +281,7 @@ void Nodes2DWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void Nodes2DWorld::glDrawSpecificBg() {
+void Nodes2DWorld::glDrawBackground() {
     static const GLfloat white[]={1.0,1.0,1.0,1.0},
     gray[]={0.2,0.2,0.2,1.0};
 

@@ -10,13 +10,13 @@
 #define SIMULATOR_H_
 
 #define TIXML_USE_STL	1
-#include "deps/TinyXML/tinyxml.h"
+#include "../deps/TinyXML/tinyxml.h"
 
-#include "utils/tDefs.h"
-#include "events/scheduler.h"
-#include "base/world.h"
-#include "utils/commandLine.h"
-#include "base/blockCode.h"
+#include "../utils/tDefs.h"
+#include "../events/scheduler.h"
+#include "world.h"
+#include "../utils/commandLine.h"
+#include "../base/blockCode.h"
 
 using namespace std;
 
@@ -71,7 +71,7 @@ public:
      *   (i.e. link the blocks, start the scheduler if needed, and enter the GLUT main loop)
      *
      */
-    void startSimulation(void);
+    void startSimulation();
 
     /*!
      *  @brief Generates a random unsigned int (ruint)
