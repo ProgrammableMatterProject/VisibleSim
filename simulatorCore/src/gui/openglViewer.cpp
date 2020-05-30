@@ -52,7 +52,7 @@ int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
 bool GlutContext::enableShowFPS = false;
-bool GlutContext::showBox = true;
+bool GlutContext::showGrid = true;
 bool GlutContext::hasGradientBackground = false;
 float GlutContext::bgColor[3] = {0.3,0.3,0.8};
 float GlutContext::bgColor2[3] = {0.8,0.8,0.8};
@@ -266,7 +266,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             if (n) {
                 GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n);
                 glB->toggleHighlight();
-							  glB->fireSelectedTrigger();
+                              glB->fireSelectedTrigger();
             } else BaseSimulator::getWorld()->setselectedGlBlock(-1);
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
@@ -443,7 +443,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case 'B' : case 'b' : {
             /*World *world = BaseSimulator::getWorld();
             world->toggleBackground();*/
-            showBox = !showBox;
+            showGrid = !showGrid;
         } break;
         case 32: { // SPACE
             Scheduler *scheduler = getScheduler();
@@ -649,7 +649,7 @@ void GlutContext::drawFunc(void) {
     glPushMatrix();
     wrl->glDraw();
 
-    if (showBox) {
+    if (showGrid) {
         wrl->glDrawBackground();
     }
     glPopMatrix();
@@ -680,9 +680,9 @@ void GlutContext::drawFunc(void) {
 
     if (enableShowFPS) showFPS();
     showSimulationInfo();
-    
+
     glEnable(GL_DEPTH_TEST);
-    
+
     glFlush();
     glutSwapBuffers();
 }
@@ -717,7 +717,7 @@ void GlutContext::drawFuncNoShadows() {
     glPushMatrix();
     wrl->glDraw();
 
-    if (showBox) {
+    if (showGrid) {
         wrl->glDrawBackground();
     }
     glPopMatrix();

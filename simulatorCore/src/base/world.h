@@ -49,7 +49,7 @@ public:
     /************************************************************
      *   Graphical / UI Attributes
      ************************************************************/
-    //bool background = true; //!< Option for visible background /// replaced by showBox
+    //bool background = true; //!< Option for visible background /// replaced by showGrid
     GlBlock *selectedGlBlock; //!< A pointer to the GlBlock selected by the user
     GLushort numSelectedFace; //!< The id of the face (NeighborDirection) selected by the user
     GLuint numSelectedGlBlock; //!< The index of the block selected by the user in the tabGlBlock
@@ -163,24 +163,24 @@ public:
      * @param blc : Block to update
      * @param p : Position to set to blc's glBlock
      */
-		virtual void updateGlData(BuildingBlock *bb, const Color &c);
-		/**
-		 * @brief Set position p to glBlock associated with block blc
-		 *	 *
-		 * @param blc : Block to update
-		 * @param p : Position in the grid to set to blc's glBlock
-		 */
-		virtual void updateGlData(BuildingBlock *bb, const Cell3DPosition &p);
-		/**
-		 * @brief Set position p to glBlock associated with block blc
-		 *
-		 * Used when glBlocks and their corresponding BuildingBlock have different positions,
-		 *  as it is the case during motion events
-		 *
-		 * @param blc : Block to update
-		 * @param p : Position to set to blc's glBlock
-		 */
-		virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
+        virtual void updateGlData(BuildingBlock *bb, const Color &c);
+        /**
+         * @brief Set position p to glBlock associated with block blc
+         *	 *
+         * @param blc : Block to update
+         * @param p : Position in the grid to set to blc's glBlock
+         */
+        virtual void updateGlData(BuildingBlock *bb, const Cell3DPosition &p);
+        /**
+         * @brief Set position p to glBlock associated with block blc
+         *
+         * Used when glBlocks and their corresponding BuildingBlock have different positions,
+         *  as it is the case during motion events
+         *
+         * @param blc : Block to update
+         * @param p : Position to set to blc's glBlock
+         */
+        virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
     /**
      * @brief Creates a block and adds it to the simulation
      *
@@ -367,7 +367,7 @@ public:
     /**
      * @brief Toggle world background
      */
-    // void toggleBackground() { background = !background; } // replaced by showBox
+    // void toggleBackground() { background = !background; } // replaced by showGrid
 
     /**
      * \brief Export a 3D model in STL format to print the whole configuration

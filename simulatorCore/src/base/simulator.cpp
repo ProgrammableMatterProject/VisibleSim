@@ -463,13 +463,17 @@ void Simulator::parseWorld(int argc, char*argv[]) {
         attr= visualElement->Attribute("shadowMode");
         if (attr) {
             string str(attr);
-            GlutContext::shadowsMode= (str=="ON" || str=="on" || str=="On" || str=="1");
+            toLowercase(str);
+            GlutContext::shadowsMode = (str == "true");
+            cout << "shadowMode: " << shadowMode << endl;
         }
 
-        attr= visualElement->Attribute("showBox");
+        attr= visualElement->Attribute("showGrid");
         if (attr) {
             string str(attr);
-            GlutContext::showBox = (str=="YES" || str!="yes" || str=="Yes" || str=="1");
+            toLowercase(str);
+            GlutContext::showGrid = (str == "true");
+            cout << "shadowMode: " << shadowMode << endl;
         }
 
         attr= visualElement->Attribute("backgroundColor");
@@ -553,7 +557,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             cerr << "warning: maxSimulationTime in the configuration is not supported anymore,"
                  << " please use the command line option [-s <maxTime>]" << endl;
         }
-        
+
 //         // Get Blocksize
 //         float blockSize[3] = {0.0,0.0,0.0};
         xmlBlockListNode = xmlWorldNode->FirstChild("blockList");
