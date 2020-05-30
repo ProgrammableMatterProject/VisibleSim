@@ -85,3 +85,8 @@ applicationsBin/*/Screenshots/
 # User-generated files
 applicationsBin/*/*.m
 TAGS
+
+# CMake files
+applicationsSrc/*/CMakeLists.txt
+applicationsSrc/*/cmake-build-debug/
+applicationsSrc/*/.idea
