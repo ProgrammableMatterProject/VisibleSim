@@ -453,14 +453,11 @@ void Simulator::readSimulationType(int argc, char*argv[]) {
 }
 
 void Simulator::parseWorld(int argc, char*argv[]) {
-    cout << "parseVisuals" << endl;
     TiXmlNode *xmlVisualNode = xmlDoc->FirstChild("visuals");
     if (xmlVisualNode) {
-        cout << "Visuals...ok" << endl;
         TiXmlElement* visualElement = xmlVisualNode->ToElement();
         const char *attr= visualElement->Attribute("windowSize");
         if (attr) {
-            cout << "windowSize" << endl;
             string str=attr;
             int pos = str.find_first_of(",x");
             GlutContext::initialScreenWidth = stoi(str.substr(0,pos));
@@ -480,7 +477,8 @@ void Simulator::parseWorld(int argc, char*argv[]) {
         if (attr) {
             string str(attr);
             toLowercase(str);
-            GlutContext::showGrid = (str == "true");
+            GlutContext::showGrid = (str=="true" || str=="yes");
+            cout << "showGrid:" << str<< ": "<<GlutContext::showGrid << endl;
         }
 
         attr= visualElement->Attribute("backgroundColor");
@@ -492,7 +490,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             GlutContext::bgColor[0] = static_cast<float>(c/65236)/256.0f;
             GlutContext::bgColor[1] = static_cast<float>((c/256)%256)/256.0f;
             GlutContext::bgColor[2] = static_cast<float>(c%256)/256.0f;
-            cout << str << "=" << GlutContext::bgColor[0] << "," << GlutContext::bgColor[1] << "," << GlutContext::bgColor[2] << endl;
+            //cout << str << "=" << GlutContext::bgColor[0] << "," << GlutContext::bgColor[1] << "," << GlutContext::bgColor[2] << endl;
         }
 
         attr= visualElement->Attribute("backgroundGradientColor");
@@ -505,7 +503,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             GlutContext::bgColor2[0] = static_cast<float>(c/65236)/256.0f;
             GlutContext::bgColor2[1] = static_cast<float>((c/256)%256)/256.0f;
             GlutContext::bgColor2[2] = static_cast<float>(c%256)/256.0f;
-            cout << str << "=" << GlutContext::bgColor[0] << "," << GlutContext::bgColor[1] << "," << GlutContext::bgColor[2] << endl;
+            //cout << str << "=" << GlutContext::bgColor[0] << "," << GlutContext::bgColor[1] << "," << GlutContext::bgColor[2] << endl;
         }
 
     }
