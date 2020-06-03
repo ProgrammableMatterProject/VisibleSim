@@ -35,6 +35,7 @@ public :
     static GlutPopupMenuWindow *popupMenu;
     static GlutPopupMenuWindow *popupSubMenu;
     static GlutHelpWindow *helpWindow;
+    static GLint mainWinId,consoleWinId;
     static int screenWidth, screenHeight;
     static int initialScreenWidth, initialScreenHeight;
     static bool fullScreenMode;
@@ -43,7 +44,7 @@ public :
     static bool saveScreenMode;
     static int lastMotionTime;
     static int lastMousePos[2];
-    static bool mustSaveImage;
+//    static bool mustSaveImage;
 // FPS counter
     static int frameCount;
     static int previousTime;

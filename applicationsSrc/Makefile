@@ -1,4 +1,4 @@
-SUBDIRS = rainbow changingDistance gameOfLife stressTestCatoms
+SUBDIRS = rainbow changingDistance gameOfLife stressTestCatoms stressTestSB
 
 .PHONY: subdirs $(SUBDIRS) test
 

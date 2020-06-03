@@ -56,6 +56,8 @@ bool GlutContext::showGrid = true;
 bool GlutContext::hasGradientBackground = false;
 float GlutContext::bgColor[3] = {0.3,0.3,0.8};
 float GlutContext::bgColor2[3] = {0.8,0.8,0.8};
+GLint GlutContext::mainWinId=0;
+GLint GlutContext::consoleWinId=0;
 unsigned int GlutContext::nbModules = 0;
 long unsigned int GlutContext::timestep = 0;
 
@@ -71,14 +73,19 @@ void GlutContext::init(int argc, char **argv) {
         // creation of a new graphic window
         glutInitWindowPosition(0, 0);
         glutInitWindowSize(screenWidth,screenHeight);
-        if (glutCreateWindow("VisibleSim") == GL_FALSE) {
+        if ((mainWinId=glutCreateWindow("VisibleSim")) == GL_FALSE) {
             puts("ERREUR : echec à la création de la fenêtre graphique");
             exit(EXIT_FAILURE);
         }
-
         if(fullScreenMode) {
             glutFullScreen();
         }
+        /*glutInitWindowPosition(screenWidth+10,0);
+        glutInitWindowSize(200.0, screenHeight);           // set a window size
+        if ((consoleWinId=glutCreateWindow("console")) == GL_FALSE) {
+            puts("ERREUR : echec à la création de la fenêtre de console");
+            exit(EXIT_FAILURE);
+        }*/
 
         initShaders(enableShadows);
 
@@ -351,6 +358,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             break;
         case 'i' : case 'I' :
             mainWindow->openClose();
+            //glutPostRedisplay();
             break;
         case 'S' : {
             if (not saveScreenMode) {

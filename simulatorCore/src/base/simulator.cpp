@@ -470,7 +470,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
         if (attr) {
             string str(attr);
             toLowercase(str);
-            GlutContext::enableShadows = (str == "true");
+            GlutContext::enableShadows = (str=="true" || str=="yes");
         }
 
         attr= visualElement->Attribute("showGrid");
@@ -607,7 +607,7 @@ void Simulator::parseCameraAndSpotlight() {
         world->getCamera()->setTarget(target);
         double d=target.norme();
         world->getCamera()->setDistance(3.0*d);
-        world->getCamera()->setDirection(45.0,30.0);
+        world->getCamera()->setDirection(-30.0-90.0,30.0);
         world->getCamera()->setNearFar(0.25*d,5.0*d);
         world->getCamera()->setAngle(35.0);
         world->getCamera()->setLightParameters(target,-30.0,30.0,3.0*d,30.0,0.25*d,4.0*d);
