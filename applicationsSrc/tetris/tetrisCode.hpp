@@ -7,6 +7,8 @@
 
 static const int HEIGHTMSG_MSG_ID = 1001;
 static const int WIDTHMSG_MSG_ID = 1002;
+static const int MAXHEIGHTMSG_MSG_ID = 1003;
+static const int MAXWIDTHMSG_MSG_ID = 1004;
 
 using namespace BlinkyBlocks;
 
@@ -14,12 +16,14 @@ class TetrisCode : public BlinkyBlocksBlockCode
 {
 private:
     BlinkyBlocksBlock *module = nullptr;
-    P2PNetworkInterface *topItf;
-    P2PNetworkInterface *bottomItf;
-    P2PNetworkInterface *rightItf;
-    P2PNetworkInterface *leftItf;
+    P2PNetworkInterface *topItf = nullptr;
+    P2PNetworkInterface *bottomItf = nullptr;
+    P2PNetworkInterface *rightItf = nullptr;
+    P2PNetworkInterface *leftItf = nullptr;
     int height = 0; //"vertical" coordinate of the module -> to initialize
     int width = 0;  //"horizontal" coordinate of the module -> to initialize
+    int maxHeight = 0 ; //maximum height of the BBs set
+    int maxWidth = 0; //maximum width of the BBs set
 
 public:
     TetrisCode(BlinkyBlocksBlock *host);
@@ -43,6 +47,14 @@ public:
     void sendWidth();
 
     /**
+    @brief Message sender of int to all neighbors
+    @param MSG_ID int of the id of the message
+    @param i int that has to be sent
+    
+    */
+    void sendIntToAll(int MSG_ID,int i);
+
+    /**
   * @brief Message handler for the message 'heightMsg'
   * @param _msg Pointer to the message received by the module, requires casting
   * @param sender Connector of the module that has received the message and that is connected to the sender
@@ -55,6 +67,20 @@ public:
   * @param sender Connector of the module that has received the message and that is connected to the sender
   */
     void myWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+        /**
+  * @brief Message handler for the message 'maxheightMsg'
+  * @param _msg Pointer to the message received by the module, requires casting
+  * @param sender Connector of the module that has received the message and that is connected to the sender
+  */
+    void myMaxHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+  * @brief Message handler for the message 'widthMsg'
+  * @param _msg Pointer to the message received by the module, requires casting
+  * @param sender Connector of the module that has received the message and that is connected to the sender
+  */
+    void myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
   * @brief Handler for all events received by the host block

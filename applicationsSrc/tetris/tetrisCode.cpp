@@ -1,4 +1,5 @@
 #include "tetrisCode.hpp"
+#include <iostream>
 
 TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), module(host)
 {
@@ -16,21 +17,30 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
     addMessageEventFunc2(WIDTHMSG_MSG_ID,
                          std::bind(&TetrisCode::myWidthMsgFunc, this,
                                    std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myMaxHeightMsgFunc) to the message of type ?
+    addMessageEventFunc2(MAXHEIGHTMSG_MSG_ID,
+                         std::bind(&TetrisCode::myMaxHeightMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myMaxWidthMsgFunc) to the message of type ?
+    addMessageEventFunc2(MAXWIDTHMSG_MSG_ID,
+                         std::bind(&TetrisCode::myMaxWidthMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
 }
 
 void TetrisCode::startup()
 {
     console << "start " << module->blockId << "\n";
-
-    P2PNetworkInterface *topItf = module->getInterface(SCLattice::Direction::Top);
-    P2PNetworkInterface *bottomItf = module->getInterface(SCLattice::Direction::Bottom);
-    P2PNetworkInterface *rightItf = module->getInterface(SCLattice::Direction::Right);
-    P2PNetworkInterface *leftItf = module->getInterface(SCLattice::Direction::Left);
+    topItf = module->getInterface(SCLattice::Direction::Top);
+    bottomItf = module->getInterface(SCLattice::Direction::Bottom);
+    rightItf = module->getInterface(SCLattice::Direction::Right);
+    leftItf = module->getInterface(SCLattice::Direction::Left);
 
     sendHeight();
     sendWidth();
 
-    module->setColor(Colors[(height+width)%NB_COLORS]);
+    module->setColor(Colors[(height + width) % NB_COLORS]);
 }
 
 void TetrisCode::sendHeight()
@@ -72,6 +82,27 @@ void TetrisCode::sendWidth()
         sendMessage("Width Message", new MessageOf<int>(WIDTHMSG_MSG_ID, width - 1), leftItf, 0, 0);
     }
 }
+
+void TetrisCode::sendIntToAll(int MSG_ID, int i)
+{
+    if (topItf != nullptr and topItf->isConnected())
+    {
+        sendMessage("int Message", new MessageOf<int>(MSG_ID, i), topItf, 0, 0);
+    }
+    if (bottomItf != nullptr and bottomItf->isConnected())
+    {
+        sendMessage("int Message", new MessageOf<int>(MSG_ID, i), bottomItf, 0, 0);
+    }
+    if (rightItf != nullptr and rightItf->isConnected())
+    {
+        sendMessage("int Message", new MessageOf<int>(MSG_ID, i), rightItf, 0, 0);
+    }
+    if (leftItf != nullptr and leftItf->isConnected()) // negative width is not send
+    {
+        sendMessage("int Message", new MessageOf<int>(MSG_ID, i), leftItf, 0, 0);
+    }
+}
+
 void TetrisCode::myHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
 
@@ -80,8 +111,13 @@ void TetrisCode::myHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
     if (height < msgData)
     {
         height = msgData;
-        module->setColor(Colors[(height+width)%NB_COLORS]);
         sendHeight();
+    }
+    if (height > maxHeight)
+    {
+        maxHeight = height ;
+        module->setColor(Colors[(maxHeight + maxWidth) % NB_COLORS]);
+        sendIntToAll(MAXHEIGHTMSG_MSG_ID,maxHeight);
     }
 };
 
@@ -94,8 +130,40 @@ void TetrisCode::myWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
     if (width < msgData)
     {
         width = msgData;
-        module->setColor(Colors[(height+width)%NB_COLORS]);
         sendWidth();
+    }
+    if(width>maxWidth)
+    {
+        maxWidth = width;
+        module->setColor(Colors[(maxHeight + maxWidth) % NB_COLORS]);
+        sendIntToAll(MAXWIDTHMSG_MSG_ID,maxWidth);
+    }
+};
+
+void TetrisCode::myMaxHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+
+    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
+    int msgData = *msg->getData();
+    if (maxHeight < msgData)
+    {
+        maxHeight = msgData;
+        module->setColor(Colors[(maxHeight + maxWidth) % NB_COLORS]);
+        sendIntToAll(MAXHEIGHTMSG_MSG_ID, maxHeight);
+    }
+};
+
+void TetrisCode::myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+
+    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
+    int msgData = *msg->getData();
+
+    if (maxWidth < msgData)
+    {
+        maxWidth = msgData;
+        module->setColor(Colors[(maxHeight + maxWidth) % NB_COLORS]);
+        sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
     }
 };
 
