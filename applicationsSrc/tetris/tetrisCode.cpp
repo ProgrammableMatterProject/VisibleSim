@@ -103,6 +103,67 @@ void TetrisCode::sendIntToAll(int MSG_ID, int i)
     }
 }
 
+int TetrisCode::pixelCalculation()
+{
+    if (maxHeight < MIN_HEIGHT || maxWidth < MIN_WIDTH) //The set is too small to display a tetris game
+    {
+        return 0 ;
+    }
+
+    int sizeOfPixel = maxHeight / MIN_HEIGHT;
+    if (sizeOfPixel == 1)
+    {
+        pixelHCoord = height;
+        pixelWCoord = width;
+        roleInPixel = ALONE;
+    }
+    else
+    {
+        pixelHCoord = height / sizeOfPixel;
+        pixelWCoord = width / sizeOfPixel;
+        int hPosition = height % sizeOfPixel;
+        int wPosition = width % sizeOfPixel;
+        if (hPosition == 0 && wPosition == 0)
+        {
+            roleInPixel = BOTTOM_LEFT_CORNER;
+        }
+        else if (hPosition == 0 && wPosition == sizeOfPixel - 1)
+        {
+            roleInPixel = BOTTOM_RIGHT_CORNER;
+        }
+        else if (hPosition == sizeOfPixel - 1 && wPosition == 0)
+        {
+            roleInPixel = TOP_LEFT_CORNER;
+        }
+        else if (hPosition == sizeOfPixel - 1 && wPosition == sizeOfPixel - 1)
+        {
+            roleInPixel = TOP_RIGHT_CORNER;
+        }
+        else if (hPosition == 0)
+        {
+            roleInPixel = LEFT_BORDER;
+        }
+        else if (hPosition == sizeOfPixel - 1)
+        {
+            roleInPixel = RIGHT_BORDER;
+        }
+        else if (wPosition == 0)
+        {
+            roleInPixel = BOTTOM_BORDER;
+        }
+        else if (wPosition == sizeOfPixel - 1)
+        {
+            roleInPixel = TOP_BORDER;
+        }
+        else
+        {
+            roleInPixel = CORE;
+        }
+    }
+    module->setColor(Colors[(pixelHCoord + pixelWCoord) % NB_COLORS]);
+    return 1 ;
+}
+
 void TetrisCode::myHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
 
@@ -115,9 +176,8 @@ void TetrisCode::myHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
     }
     if (height > maxHeight)
     {
-        maxHeight = height ;
-        module->setColor(Colors[(maxHeight + maxWidth) % NB_COLORS]);
-        sendIntToAll(MAXHEIGHTMSG_MSG_ID,maxHeight);
+        maxHeight = height;
+        sendIntToAll(MAXHEIGHTMSG_MSG_ID, maxHeight);
     }
 };
 
@@ -132,11 +192,10 @@ void TetrisCode::myWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
         width = msgData;
         sendWidth();
     }
-    if(width>maxWidth)
+    if (width > maxWidth)
     {
         maxWidth = width;
-        module->setColor(Colors[(maxHeight + maxWidth) % NB_COLORS]);
-        sendIntToAll(MAXWIDTHMSG_MSG_ID,maxWidth);
+        sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
     }
 };
 
@@ -148,8 +207,8 @@ void TetrisCode::myMaxHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
     if (maxHeight < msgData)
     {
         maxHeight = msgData;
-        module->setColor(Colors[(maxHeight + maxWidth) % NB_COLORS]);
         sendIntToAll(MAXHEIGHTMSG_MSG_ID, maxHeight);
+        pixelCalculation();
     }
 };
 
@@ -162,8 +221,8 @@ void TetrisCode::myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     if (maxWidth < msgData)
     {
         maxWidth = msgData;
-        module->setColor(Colors[(maxHeight + maxWidth) % NB_COLORS]);
         sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
+        pixelCalculation();
     }
 };
 

@@ -5,6 +5,23 @@
 #include "robots/blinkyBlocks/blinkyBlocksWorld.h"
 #include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
 
+// Possible roles of modules in a pixel
+static const int ALONE = 0 ; //if the pixel's size is 1x1
+static const int CORE = 1; //all modules that are not on the border of the pixel
+static const int TOP_BORDER = 2;
+static const int TOP_RIGHT_CORNER = 3;
+static const int RIGHT_BORDER = 4;
+static const int BOTTOM_RIGHT_CORNER = 5;
+static const int BOTTOM_BORDER = 6;
+static const int BOTTOM_LEFT_CORNER = 7;
+static const int LEFT_BORDER = 8;
+static const int TOP_LEFT_CORNER = 9;
+
+//Minimum size of the BB set to display a tetris game (& min nb of pixels on each dimension)
+static const int MIN_HEIGHT = 10 ; 
+static const int MIN_WIDTH = 3 ;
+
+//Message IDs
 static const int HEIGHTMSG_MSG_ID = 1001;
 static const int WIDTHMSG_MSG_ID = 1002;
 static const int MAXHEIGHTMSG_MSG_ID = 1003;
@@ -20,10 +37,13 @@ private:
     P2PNetworkInterface *bottomItf = nullptr;
     P2PNetworkInterface *rightItf = nullptr;
     P2PNetworkInterface *leftItf = nullptr;
-    int height = 0; //"vertical" coordinate of the module -> to initialize
-    int width = 0;  //"horizontal" coordinate of the module -> to initialize
-    int maxHeight = 0 ; //maximum height of the BBs set
-    int maxWidth = 0; //maximum width of the BBs set
+    int height = 0;        //"vertical" coordinate of the module -> to initialize
+    int width = 0;         //"horizontal" coordinate of the module -> to initialize
+    int maxHeight = 0;     //maximum height of the BBs set
+    int maxWidth = 0;      //maximum width of the BBs set
+    int pixelHCoord = 0;   //"vertical" coordinate of the pixel the module belongs to
+    int pixelWCoord = 0;   //"horizontal" coordinate of the pixel the module belongs to
+    int roleInPixel = 100; // role of the module in the pixel (core, border, corner)
 
 public:
     TetrisCode(BlinkyBlocksBlock *host);
@@ -52,7 +72,15 @@ public:
     @param i int that has to be sent
     
     */
-    void sendIntToAll(int MSG_ID,int i);
+    void sendIntToAll(int MSG_ID, int i);
+
+    /**
+    @brief height and width are the coordinates of this module in the BB set. This function calculates 
+    the size of the pixels in the set and wich pixel this module belongs to.
+    @return 0 if the set is too small to display a tetris game, 1 if the pixel's coords and role have been calculated.
+    
+    */
+    int pixelCalculation();
 
     /**
   * @brief Message handler for the message 'heightMsg'
@@ -68,7 +96,7 @@ public:
   */
     void myWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
-        /**
+    /**
   * @brief Message handler for the message 'maxheightMsg'
   * @param _msg Pointer to the message received by the module, requires casting
   * @param sender Connector of the module that has received the message and that is connected to the sender
