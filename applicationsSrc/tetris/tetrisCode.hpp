@@ -103,11 +103,20 @@ static const int WEST = 4;        //the top of the tetramino is on the left
 static const int NO_COLOR = 6; //color if the module doesn't belong to any tetramino => WHITE
 
 //Message IDs
-static const int HEIGHTMSG_MSG_ID = 1001;
-static const int WIDTHMSG_MSG_ID = 1002;
-static const int MAXHEIGHTMSG_MSG_ID = 1003;
-static const int MAXWIDTHMSG_MSG_ID = 1004;
-static const int TMN1_MSG_ID = 1005;
+static const int COORDSMSG_ID = 1001;
+static const int SPANTREE_ID = 1002;
+static const int READYMSG_ID = 1003;
+static const int MAXHEIGHTMSG_MSG_ID = 1004;
+static const int MAXWIDTHMSG_MSG_ID = 1005;
+static const int NEWTMNMSG_ID = 1006;
+static const int TMN1_MSG_ID = 1007;
+static const int TMN2_MSG_ID = 1008;
+
+//IDs of the interfaces, to order them depending on the rotation of the tetramino (the north itf is always at the top of the tetramino)
+static const int northId = 0;
+static const int eastId = 1;
+static const int southId = 2;
+static const int westId = 3;
 
 using namespace BlinkyBlocks;
 
@@ -119,14 +128,20 @@ private:
     P2PNetworkInterface *bottomItf = nullptr;
     P2PNetworkInterface *rightItf = nullptr;
     P2PNetworkInterface *leftItf = nullptr;
-    int height = 0;             //"vertical" coordinate of the module -> to initialize
-    int width = 0;              //"horizontal" coordinate of the module -> to initialize
-    int maxHeight = 0;          //maximum height of the BBs set
-    int maxWidth = 0;           //maximum width of the BBs set
-    int pixelHCoord = 0;        //"vertical" coordinate of the pixel the module belongs to
-    int pixelWCoord = 0;        //"horizontal" coordinate of the pixel the module belongs to
-    int roleInPixel = 100;      // role of the module in the pixel (core, border, corner)
+    int height = 0;                   //"vertical" coordinate of the module -> to initialize
+    int width = 0;                    //"horizontal" coordinate of the module -> to initialize
+    int nbSpanTree = module->blockId; //nb of the spanning tree the module belongs to
+    int spanNeighbors = 0;            //nb of neighbors that need to confirm that they belong to the same spanning tree than this module
+    bool ready = false;               //true when all neighbors belongs to the same spanning tree as this module
+    int nbReadyNghb = 0;              //nb of ready neighbors
+    int maxHeight = 0;                //maximum height of the BBs set
+    int maxWidth = 0;                 //maximum width of the BBs set
+    int pixelHCoord = 0;              //"vertical" coordinate of the pixel the module belongs to
+    int pixelWCoord = 0;              //"horizontal" coordinate of the pixel the module belongs to
+    int roleInPixel = 100;            // role of the module in the pixel (core, border, corner)
+
     bool appear_module = false; //true if the module is the one which picks the form, rotation and color of the new tetramino
+    int nbTmn = 0;              //number of the current moving tetramino
 
     bool belongsToTmn = false;  //true if the module is part of a tetramino
     int tmn = NO_TMN;           // represents the type of tetramino the module is part of
@@ -145,14 +160,40 @@ public:
     void startup() override;
 
     /**
-  * @brief Message sender of height to all neighbors -> to initialize
+  * @brief Message sender of height,width and nbSpanTree to all neighbors -> to initialize
   */
-    void sendHeight();
+    void sendCoords();
 
     /**
-  * @brief Message sender of width to all neighbors -> to initialize
+  * @brief Message handler for the message 'CoordsMsg'
+  * @param _msg Pointer to the message received by the module, requires casting
+  * @param sender Connector of the module that has received the message and that is connected to the sender
   */
-    void sendWidth();
+    void myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    @brief Message sender to all neighbors of the number of the spanning tree the module belongs to    
+    */
+    void sendSpanTree();
+
+    /**
+  * @brief Message handler for the message 'SpanTreeMsg'
+  * @param _msg Pointer to the message received by the module, requires casting
+  * @param sender Connector of the module that has received the message and that is connected to the sender
+  */
+    void mySpanTreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    @brief Message sender to all neighbors that the module is ready to start the game : all of its neighbors belong to the same spanning tree as itself
+    */
+    void sendReady();
+
+    /**
+  * @brief Message handler for the message 'ReadyMsg'
+  * @param _msg Pointer to the message received by the module, requires casting
+  * @param sender Connector of the module that has received the message and that is connected to the sender
+  */
+    void myReadyMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     @brief Message sender of int to all neighbors
@@ -161,34 +202,6 @@ public:
     
     */
     void sendIntToAll(int MSG_ID, int i);
-
-    /**
-    @brief height and width are the coordinates of this module in the BB set. This function calculates 
-    the size of the pixels in the set and wich pixel this module belongs to.
-    @return 0 if the set is too small to display a tetris game, 1 if the pixel's coords and role have been calculated.
-    
-    */
-    int pixelCalculation();
-
-    /**
-    @brief creates a tetramino and starts to spread it
-    
-    */
-    void tmnAppearance();
-
-    /**
-  * @brief Message handler for the message 'heightMsg'
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
-    void myHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
-
-    /**
-  * @brief Message handler for the message 'widthMsg'
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
-    void myWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
   * @brief Message handler for the message 'maxheightMsg'
@@ -205,7 +218,27 @@ public:
     void myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
-  * @brief spread the first tetramino
+    @brief height and width are the coordinates of this module in the BB set. This function calculates 
+    the size of the pixels in the set and wich pixel this module belongs to.
+    @return 0 if the set is too small to display a tetris game, 1 if the pixel's coords and role have been calculated.
+    
+    */
+    int pixelCalculation();
+
+/**
+  * @brief Message handler for the message 'newTmnMsg' : spreads that a new tetramino can be created, or start its creation
+  * @param _msg Pointer to the message received by the module, requires casting
+  * @param sender Connector of the module that has received the message and that is connected to the sender
+  */
+    void myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    @brief creates a tetramino and starts to spread it
+    */
+    void tmnAppearance();
+
+    /**
+  * @brief spread the first tetramino (square)
   */
     void sendTmn1();
 
@@ -215,6 +248,18 @@ public:
   * @param sender Connector of the module that has received the message and that is connected to the sender
   */
     void myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+  * @brief spread the second tetramino (column)
+  */
+    void sendTmn2();
+
+    /**
+  * @brief Message handler for the message 'tmn2'
+  * @param _msg Pointer to the message received by the module, requires casting
+  * @param sender Connector of the module that has received the message and that is connected to the sender
+  */
+    void myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
   * @brief Handler for all events received by the host block
