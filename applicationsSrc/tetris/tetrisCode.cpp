@@ -1,5 +1,6 @@
 #include "tetrisCode.hpp"
 #include "utils/random.h"
+#include "utils.cpp"
 #include <iostream>
 #include <array>
 
@@ -16,9 +17,9 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
                                    std::placeholders::_1, std::placeholders::_2));
 
     // Registers a callback (mySpanTreeMsgFunc) to the message of type ?
-    addMessageEventFunc2(SPANTREE_ID,
-                         std::bind(&TetrisCode::mySpanTreeMsgFunc, this,
-                                   std::placeholders::_1, std::placeholders::_2));
+    // addMessageEventFunc2(SPANTREE_ID,
+    //                      std::bind(&TetrisCode::mySpanTreeMsgFunc, this,
+    //                                std::placeholders::_1, std::placeholders::_2));
 
     // Registers a callback (myReadyMsgFun) to the message of type ?
     addMessageEventFunc2(READYMSG_ID,
@@ -47,8 +48,8 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
 
     // Registers a callback (myTmn2Func) to the message of type E
     addMessageEventFunc2(TMN2_MSG_ID,
-                             std::bind(&TetrisCode::myTmn2Func, this,
-                                       std::placeholders::_1, std::placeholders::_2));
+                         std::bind(&TetrisCode::myTmn2Func, this,
+                                   std::placeholders::_1, std::placeholders::_2));
 
     // Initialization of random numbers generator
     srand(Random::getSimulationSeed());
@@ -63,132 +64,137 @@ void TetrisCode::startup()
     leftItf = module->getInterface(SCLattice::Direction::Left);
 
     sendCoords();
+    pixelCalculation();
     module->setColor(Colors[color]);
 }
 
 void TetrisCode::sendCoords()
 {
+    stringstream strstm;
+    strstm << "coords : " << height << "," << width << "max dims : " << maxHeight << "," << maxWidth << " tree : " << nbSpanTree;
+    scheduler->trace(strstm.str(), module->blockId, MAGENTA);
     if (topItf != nullptr and topItf->isConnected())
     {
-        int data[3] = {height + 1, width, nbSpanTree};
-        sendMessage("Height Message", new MessageOf<int[3]>(COORDSMSG_ID, data), topItf, 0, 0);
+        CoordsData *data = new CoordsData(height + 1, width, nbSpanTree);
+        sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), topItf, 0, 0);
     }
-    if (bottomItf != nullptr and bottomItf->isConnected() and height > 0) // negative height is not sent
+    if (height > 0 and bottomItf != nullptr and bottomItf->isConnected()) // negative height is not sent
     {
-        int data[3] = {height - 1, width, nbSpanTree};
-        sendMessage("Height Message", new MessageOf<int[3]>(COORDSMSG_ID, data), bottomItf, 0, 0);
+        CoordsData *data = new CoordsData(height - 1, width, nbSpanTree);
+        sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), bottomItf, 0, 0);
     }
     if (rightItf != nullptr and rightItf->isConnected())
     {
-        int data[3] = {height, width + 1, nbSpanTree};
-        sendMessage("Coords Message", new MessageOf<int[3]>(COORDSMSG_ID, data), rightItf, 0, 0);
+        CoordsData *data = new CoordsData(height, width + 1, nbSpanTree);
+        sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), rightItf, 0, 0);
     }
-    if (leftItf != nullptr and leftItf->isConnected() and width > 0) // negative width is not sent
+    if (width > 0 and leftItf != nullptr and leftItf->isConnected()) // negative width is not sent
     {
-        int data[3] = {height, width - 1, nbSpanTree};
-        sendMessage("Coords Message", new MessageOf<int[3]>(COORDSMSG_ID, data), leftItf, 0, 0);
+        CoordsData *data = new CoordsData(height, width - 1, nbSpanTree);
+        sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), leftItf, 0, 0);
     }
 }
 
 void TetrisCode::myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
-    MessageOf<int[3]> *msg = static_cast<MessageOf<int[3]> *>(_msg.get());
-    int msgData[3] = *msg->getData();
-    bool changedCoords = false;
-    if (height < msgData[0] || width < msgData[1])
+    MessageOf<CoordsData *> *msg = static_cast<MessageOf<CoordsData *> *>(_msg.get());
+    CoordsData *msgData = *msg->getData();
+    if (height < msgData->height || width < msgData->width)
     {
-        height = msgData[0];
-        width = msgData[1];
-        changedCoords = true;
+        height = msgData->height;
+        width = msgData->width;
+        nbSpanTree = msgData->nbTree;
         sendCoords();
+
+        if (height > maxHeight)
+        {
+            maxHeight = height;
+            sendIntToAll(MAXHEIGHTMSG_MSG_ID, maxHeight);
+            pixelCalculation();
+        }
+        if (width > maxWidth)
+        {
+            maxWidth = width;
+            sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
+            pixelCalculation();
+        }
     }
-    if (height > maxHeight)
+    else
     {
-        maxHeight = height;
-        sendIntToAll(MAXHEIGHTMSG_MSG_ID, maxHeight);
-        pixelCalculation();
-    }
-    if (width > maxWidth)
-    {
-        maxWidth = width;
-        sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
-        pixelCalculation();
-    }
-    if (changedCoords && nbSpanTree != msgData[2])
-    {
-        nbSpanTree = msgData[2];
-        sendSpanTree();
+        stringstream strstm;
+        strstm << "coords refused : my coords " << height << "," << width << " VS proposed coords : " << msgData->height << "," << msgData->width;
+        scheduler->trace(strstm.str(), module->blockId, CYAN);
     }
 };
 
-void TetrisCode::sendSpanTree()
-{
-    spanNeighbors = 0;
-    if (topItf != nullptr and topItf->isConnected())
-    {
-        sendMessage("Spanning tree Message", new MessageOf<int>(SPANTREE_ID, nbSpanTree), topItf, 0, 0);
-        spanNeighbors += 1;
-    }
-    if (bottomItf != nullptr and bottomItf->isConnected())
-    {
-        sendMessage("Spanning tree Message", new MessageOf<int>(SPANTREE_ID, nbSpanTree), bottomItf, 0, 0);
-        spanNeighbors += 1;
-    }
-    if (rightItf != nullptr and rightItf->isConnected())
-    {
-        sendMessage("Spanning tree Message", new MessageOf<int>(SPANTREE_ID, nbSpanTree), rightItf, 0, 0);
-        spanNeighbors += 1;
-    }
-    if (leftItf != nullptr and leftItf->isConnected())
-    {
-        sendMessage("Spanning tree Message", new MessageOf<int>(SPANTREE_ID, nbSpanTree), leftItf, 0, 0);
-        spanNeighbors += 1;
-    }
-}
+// void TetrisCode::sendSpanTree()
+// {
+//     spanNeighbors = 0;
+//     if (topItf != nullptr and topItf->isConnected())
+//     {
+//         sendMessage("Spanning tree Message", new MessageOf<unsigned int>(SPANTREE_ID, nbSpanTree), topItf, 0, 0);
+//         spanNeighbors += 1;
+//     }
+//     if (bottomItf != nullptr and bottomItf->isConnected())
+//     {
+//         sendMessage("Spanning tree Message", new MessageOf<unsigned int>(SPANTREE_ID, nbSpanTree), bottomItf, 0, 0);
+//         spanNeighbors += 1;
+//     }
+//     if (rightItf != nullptr and rightItf->isConnected())
+//     {
+//         sendMessage("Spanning tree Message", new MessageOf<unsigned int>(SPANTREE_ID, nbSpanTree), rightItf, 0, 0);
+//         spanNeighbors += 1;
+//     }
+//     if (leftItf != nullptr and leftItf->isConnected())
+//     {
+//         sendMessage("Spanning tree Message", new MessageOf<unsigned int>(SPANTREE_ID, nbSpanTree), leftItf, 0, 0);
+//         spanNeighbors += 1;
+//     }
+// }
 
-void TetrisCode::mySpanTreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
-{
-    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
-    int msgData = *msg->getData();
-    if (nbSpanTree == msgData)
-    {
-        spanNeighbors -= 1;
-    }
-    if (spanNeighbors <= 0)
-    {
-        ready = true;
-        sendReady();
-    }
-}
+// void TetrisCode::mySpanTreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+// {
+//     MessageOf<unsigned int> *msg = static_cast<MessageOf<unsigned int> *>(_msg.get());
+//     unsigned int msgData = *msg->getData();
+//     if (nbSpanTree == msgData)
+//     {
+//         spanNeighbors -= 1;
+//     }
+//     if (spanNeighbors <= 0)
+//     {
+//         ready = true;
+//         sendReady();
+//     }
+// }
 
 void TetrisCode::sendReady()
 {
     nbReadyNghb = 0;
     if (topItf != nullptr and topItf->isConnected())
     {
-        sendMessage("Ready Message", new MessageOf<int>(READYMSG_ID, nbSpanTree), topItf, 0, 0);
+        sendMessage("Ready Message", new MessageOf<unsigned int>(READYMSG_ID, nbSpanTree), topItf, 0, 0);
         nbReadyNghb += 1;
     }
     if (bottomItf != nullptr and bottomItf->isConnected())
     {
-        sendMessage("Ready Message", new MessageOf<int>(READYMSG_ID, nbSpanTree), bottomItf, 0, 0);
+        sendMessage("Ready Message", new MessageOf<unsigned int>(READYMSG_ID, nbSpanTree), bottomItf, 0, 0);
         nbReadyNghb += 1;
     }
     if (rightItf != nullptr and rightItf->isConnected())
     {
-        sendMessage("Ready Message", new MessageOf<int>(READYMSG_ID, nbSpanTree), rightItf, 0, 0);
+        sendMessage("Ready Message", new MessageOf<unsigned int>(READYMSG_ID, nbSpanTree), rightItf, 0, 0);
         nbReadyNghb += 1;
     }
     if (leftItf != nullptr and leftItf->isConnected())
     {
-        sendMessage("Ready Message", new MessageOf<int>(READYMSG_ID, nbSpanTree), leftItf, 0, 0);
+        sendMessage("Ready Message", new MessageOf<unsigned int>(READYMSG_ID, nbSpanTree), leftItf, 0, 0);
         nbReadyNghb += 1;
     }
 }
 void TetrisCode::myReadyMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
-    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
-    int msgData = *msg->getData();
+    MessageOf<unsigned int> *msg = static_cast<MessageOf<unsigned int> *>(_msg.get());
+    unsigned int msgData = *msg->getData();
     if (msgData == nbSpanTree)
     {
         nbReadyNghb -= 1;
@@ -250,6 +256,7 @@ void TetrisCode::myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
 
 int TetrisCode::pixelCalculation()
 {
+    module->setColor(Colors[(pixelHCoord + pixelWCoord) % NB_COLORS]);
     if (maxHeight < MIN_HEIGHT || maxWidth < MIN_WIDTH) //The set is too small to display a tetris game
     {
         return 0;
@@ -312,6 +319,7 @@ int TetrisCode::pixelCalculation()
     if (height == (totalHNbPixels - 1) * sizeOfPixel && width == (totalWNbPixels / 2) * sizeOfPixel)
     {
         appear_module = true;
+        module->setColor(CYAN);
     }
     else
     {
@@ -358,22 +366,22 @@ void TetrisCode::tmnAppearance()
 
 void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
 {
-    int data[3] = {rotation, position, color};
+    TmnData *data = new TmnData(rotation, position, color);
     if (roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER)
     {
         if (position == 3)
         {
-            data[1] = 1; //If the position is 3, the position sent to the top pixel is 1.
+            data->position = 1; //If the position is 3, the position sent to the top pixel is 1.
         }
         else if (position == 4)
         {
-            data[1] = 2;
+            data->position = 2;
         }
         if (position == 3 || position == 4) //The pixels in position 1 and 2 doesn't spread the data to their top pixel
         {
             if (topItf != nullptr and topItf->isConnected())
             {
-                sendMessage("Tmn 1 Message", new MessageOf<int[3]>(TMN1_MSG_ID, data), topItf, 0, 0);
+                sendMessage("Tmn 1 Message", new MessageOf<TmnData *>(TMN1_MSG_ID, data), topItf, 0, 0);
             }
         }
     }
@@ -381,25 +389,25 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
     {
         if (topItf != nullptr and topItf->isConnected())
         {
-            sendMessage("Tmn 1 Message", new MessageOf<int[3]>(TMN1_MSG_ID, data), topItf, 0, 0);
+            sendMessage("Tmn 1 Message", new MessageOf<TmnData *>(TMN1_MSG_ID, data), topItf, 0, 0);
         }
     }
-    data[1] = position;
+    data->position = position;
     if (roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER)
     {
         if (position == 1)
         {
-            data[1] = 3; //If the position is 1, the position sent to the bottom pixel is 3.
+            data->position = 3; //If the position is 1, the position sent to the bottom pixel is 3.
         }
         else if (position == 2)
         {
-            data[1] = 4;
+            data->position = 4;
         }
         if (position == 1 || position == 2) //The pixels in position 3 and 4 doesn't spread the data to their bottom pixel
         {
             if (bottomItf != nullptr and bottomItf->isConnected())
             {
-                sendMessage("Tmn 1 Message", new MessageOf<int[3]>(TMN1_MSG_ID, data), bottomItf, 0, 0);
+                sendMessage("Tmn 1 Message", new MessageOf<TmnData *>(TMN1_MSG_ID, data), bottomItf, 0, 0);
             }
         }
     }
@@ -407,25 +415,25 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
     {
         if (bottomItf != nullptr and bottomItf->isConnected())
         {
-            sendMessage("Tmn 1 Message", new MessageOf<int[3]>(TMN1_MSG_ID, data), bottomItf, 0, 0);
+            sendMessage("Tmn 1 Message", new MessageOf<TmnData *>(TMN1_MSG_ID, data), bottomItf, 0, 0);
         }
     }
-    data[1] = position;
+    data->position = position;
     if (roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER)
     {
         if (position == 1)
         {
-            data[1] = 2;
+            data->position = 2;
         }
         else if (position == 3)
         {
-            data[1] = 4;
+            data->position = 4;
         }
         if (position == 1 || position == 3)
         {
             if (rightItf != nullptr and rightItf->isConnected())
             {
-                sendMessage("Tmn 1 Message", new MessageOf<int[3]>(TMN1_MSG_ID, data), rightItf, 0, 0);
+                sendMessage("Tmn 1 Message", new MessageOf<TmnData *>(TMN1_MSG_ID, data), rightItf, 0, 0);
             }
         }
     }
@@ -433,25 +441,25 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
     {
         if (rightItf != nullptr and rightItf->isConnected())
         {
-            sendMessage("Tmn 1 Message", new MessageOf<int[3]>(TMN1_MSG_ID, data), rightItf, 0, 0);
+            sendMessage("Tmn 1 Message", new MessageOf<TmnData *>(TMN1_MSG_ID, data), rightItf, 0, 0);
         }
     }
-    data[1] = position;
+    data->position = position;
     if (roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER)
     {
         if (position == 2)
         {
-            data[1] = 1;
+            data->position = 1;
         }
         else if (position == 4)
         {
-            data[1] = 3;
+            data->position = 3;
         }
         if (position == 2 || position == 4)
         {
             if (leftItf != nullptr and leftItf->isConnected())
             {
-                sendMessage("Tmn 1 Message", new MessageOf<int[3]>(TMN1_MSG_ID, data), leftItf, 0, 0);
+                sendMessage("Tmn 1 Message", new MessageOf<TmnData *>(TMN1_MSG_ID, data), leftItf, 0, 0);
             }
         }
     }
@@ -459,7 +467,7 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
     {
         if (leftItf != nullptr and leftItf->isConnected())
         {
-            sendMessage("Tmn 1 Message", new MessageOf<int[3]>(TMN1_MSG_ID, data), leftItf, 0, 0);
+            sendMessage("Tmn 1 Message", new MessageOf<TmnData *>(TMN1_MSG_ID, data), leftItf, 0, 0);
         }
     }
 }
@@ -467,17 +475,17 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
 void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
 
-    MessageOf<int[3]> *msg = static_cast<MessageOf<int[3]> *>(_msg.get());
-    int msgData[3] = *msg->getData();
+    MessageOf<TmnData *> *msg = static_cast<MessageOf<TmnData *> *>(_msg.get());
+    TmnData *msgData = *msg->getData();
     if (tmn != 1)
     {
-        tmn == 1;
+        tmn = 1;
     }
-    if (rotation != msgData[0] || position != msgData[1] || color != msgData[2])
+    if (rotation != msgData->rotation || position != msgData->rotation || color != msgData->color)
     {
-        rotation = msgData[0];
-        position = msgData[1];
-        color = msgData[2];
+        rotation = msgData->rotation;
+        position = msgData->position;
+        color = msgData->color;
         module->setColor(Colors[color]);
         sendTmn1();
     }
@@ -485,8 +493,8 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
 
 void TetrisCode::sendTmn2()
 {
-    int data[3] = {rotation, position, color};
-    P2PNetworkInterface* itf[4];
+    TmnData *data = new TmnData(rotation, position, color);
+    P2PNetworkInterface *itf[4];
     bool northBool = false;
     bool eastBool = false;
     bool southBool = false;
@@ -540,17 +548,17 @@ void TetrisCode::sendTmn2()
 void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
 
-    MessageOf<int[3]> *msg = static_cast<MessageOf<int[3]> *>(_msg.get());
-    int msgData[3] = *msg->getData();
+    MessageOf<TmnData *> *msg = static_cast<MessageOf<TmnData *> *>(_msg.get());
+    TmnData *msgData = *msg->getData();
     if (tmn != 2)
     {
-        tmn == 2;
+        tmn = 2;
     }
-    if (rotation != msgData[0] || position != msgdata[1] || color != msgData[2])
+    if (rotation != msgData->rotation || position != msgData->position || color != msgData->color)
     {
-        rotation = msgData[0];
-        position = msgData[1];
-        color = msgData[2];
+        rotation = msgData->rotation;
+        position = msgData->position;
+        color = msgData->color;
         module->setColor(Colors[color]);
         sendTmn2();
     }

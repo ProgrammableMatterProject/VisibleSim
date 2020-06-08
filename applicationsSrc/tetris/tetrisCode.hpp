@@ -104,7 +104,7 @@ static const int NO_COLOR = 6; //color if the module doesn't belong to any tetra
 
 //Message IDs
 static const int COORDSMSG_ID = 1001;
-static const int SPANTREE_ID = 1002;
+// static const int SPANTREE_ID = 1002;
 static const int READYMSG_ID = 1003;
 static const int MAXHEIGHTMSG_MSG_ID = 1004;
 static const int MAXWIDTHMSG_MSG_ID = 1005;
@@ -128,17 +128,17 @@ private:
     P2PNetworkInterface *bottomItf = nullptr;
     P2PNetworkInterface *rightItf = nullptr;
     P2PNetworkInterface *leftItf = nullptr;
-    int height = 0;                   //"vertical" coordinate of the module -> to initialize
-    int width = 0;                    //"horizontal" coordinate of the module -> to initialize
-    int nbSpanTree = module->blockId; //nb of the spanning tree the module belongs to
-    int spanNeighbors = 0;            //nb of neighbors that need to confirm that they belong to the same spanning tree than this module
-    bool ready = false;               //true when all neighbors belongs to the same spanning tree as this module
-    int nbReadyNghb = 0;              //nb of ready neighbors
-    int maxHeight = 0;                //maximum height of the BBs set
-    int maxWidth = 0;                 //maximum width of the BBs set
-    int pixelHCoord = 0;              //"vertical" coordinate of the pixel the module belongs to
-    int pixelWCoord = 0;              //"horizontal" coordinate of the pixel the module belongs to
-    int roleInPixel = 100;            // role of the module in the pixel (core, border, corner)
+    int height = 0;                            //"vertical" coordinate of the module -> to initialize
+    int width = 0;                             //"horizontal" coordinate of the module -> to initialize
+    unsigned int nbSpanTree = module->blockId; //nb of the spanning tree the module belongs to
+    int spanNeighbors = 0;                     //nb of neighbors that need to confirm that they belong to the same spanning tree than this module
+    bool ready = false;                        //true when all neighbors belongs to the same spanning tree as this module
+    int nbReadyNghb = 0;                       //nb of ready neighbors
+    int maxHeight = 0;                         //maximum height of the BBs set
+    int maxWidth = 0;                          //maximum width of the BBs set
+    int pixelHCoord = 0;                       //"vertical" coordinate of the pixel the module belongs to
+    int pixelWCoord = 0;                       //"horizontal" coordinate of the pixel the module belongs to
+    int roleInPixel = 100;                     // role of the module in the pixel (core, border, corner)
 
     bool appear_module = false; //true if the module is the one which picks the form, rotation and color of the new tetramino
     int nbTmn = 0;              //number of the current moving tetramino
@@ -153,35 +153,35 @@ public:
     ~TetrisCode(){};
 
     /**
-  * This function is called on startup of the blockCode, it can be used to perform initial
-  *  configuration of the host or this instance of the program.
-  * @note this can be thought of as the main function of the module
-  */
+    * This function is called on startup of the blockCode, it can be used to perform initial
+    *  configuration of the host or this instance of the program.
+    * @note this can be thought of as the main function of the module
+    */
     void startup() override;
 
     /**
-  * @brief Message sender of height,width and nbSpanTree to all neighbors -> to initialize
-  */
+    * @brief Message sender of height,width and nbSpanTree to all neighbors -> to initialize
+    */
     void sendCoords();
 
     /**
-  * @brief Message handler for the message 'CoordsMsg'
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
+    * @brief Message handler for the message 'CoordsMsg'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
     void myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     @brief Message sender to all neighbors of the number of the spanning tree the module belongs to    
     */
-    void sendSpanTree();
+    // void sendSpanTree();
 
     /**
-  * @brief Message handler for the message 'SpanTreeMsg'
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
-    void mySpanTreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+    * @brief Message handler for the message 'SpanTreeMsg'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    // void mySpanTreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     @brief Message sender to all neighbors that the module is ready to start the game : all of its neighbors belong to the same spanning tree as itself
@@ -189,10 +189,10 @@ public:
     void sendReady();
 
     /**
-  * @brief Message handler for the message 'ReadyMsg'
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
+    * @brief Message handler for the message 'ReadyMsg'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
     void myReadyMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
@@ -204,17 +204,17 @@ public:
     void sendIntToAll(int MSG_ID, int i);
 
     /**
-  * @brief Message handler for the message 'maxheightMsg'
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
+    * @brief Message handler for the message 'maxheightMsg'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
     void myMaxHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
-  * @brief Message handler for the message 'widthMsg'
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
+    * @brief Message handler for the message 'widthMsg'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
     void myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
@@ -225,11 +225,11 @@ public:
     */
     int pixelCalculation();
 
-/**
-  * @brief Message handler for the message 'newTmnMsg' : spreads that a new tetramino can be created, or start its creation
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
+    /**
+    * @brief Message handler for the message 'newTmnMsg' : spreads that a new tetramino can be created, or start its creation
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
     void myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
@@ -238,43 +238,43 @@ public:
     void tmnAppearance();
 
     /**
-  * @brief spread the first tetramino (square)
-  */
+    * @brief spread the first tetramino (square)
+    */
     void sendTmn1();
 
     /**
-  * @brief Message handler for the message 'tmn1'
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
+    * @brief Message handler for the message 'tmn1'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
     void myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
-  * @brief spread the second tetramino (column)
-  */
+    * @brief spread the second tetramino (column)
+    */
     void sendTmn2();
 
     /**
-  * @brief Message handler for the message 'tmn2'
-  * @param _msg Pointer to the message received by the module, requires casting
-  * @param sender Connector of the module that has received the message and that is connected to the sender
-  */
+    * @brief Message handler for the message 'tmn2'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
     void myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
-  * @brief Handler for all events received by the host block
-  * @param pev pointer to the received event
-  */
+    * @brief Handler for all events received by the host block
+    * @param pev pointer to the received event
+    */
     void processLocalEvent(std::shared_ptr<Event> pev) override;
 
     /**
-  * User-implemented keyboard handler function that gets called when
-  *  a key press event could not be caught by openglViewer
-  * @param c key that was pressed (see openglViewer.cpp)
-  * @param x location of the pointer on the x axis
-  * @param y location of the pointer on the y axis
-  * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
-  */
+    * User-implemented keyboard handler function that gets called when
+    *  a key press event could not be caught by openglViewer
+    * @param c key that was pressed (see openglViewer.cpp)
+    * @param x location of the pointer on the x axis
+    * @param y location of the pointer on the y axis
+    * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
+    */
     void onUserKeyPressed(unsigned char c, int x, int y) override;
 
     /*****************************************************************************/
