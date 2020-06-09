@@ -119,6 +119,7 @@ void BlinkyBlocksWorld::glDraw() {
     glDrawBackground();
 
     lattice->glDraw();
+    glPopMatrix();
 }
 
 void BlinkyBlocksWorld::glDrawId() {
