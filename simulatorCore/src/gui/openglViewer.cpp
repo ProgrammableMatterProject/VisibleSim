@@ -596,7 +596,7 @@ void GlutContext::drawFunc(void) {
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glMatrixMode(GL_PROJECTION);
-    //glPushMatrix(); // update BPI, no glPopMatrix !
+    //glPushMatrix(); // update BPI, no glPopMatrix without !
     glLoadIdentity();
     gluOrtho2D(0,screenWidth,0,screenHeight);
     glMatrixMode(GL_MODELVIEW);
