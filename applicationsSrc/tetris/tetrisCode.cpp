@@ -227,72 +227,45 @@ int TetrisCode::pixelCalculation()
         if (hPosition == 0 && wPosition == 0)
         {
             roleInPixel = BOTTOM_LEFT_CORNER;
-            stringstream strstm;
-            strstm << "Role is BL corner, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
         }
         else if (hPosition == 0 && wPosition == sizeOfPixel - 1)
         {
             roleInPixel = BOTTOM_RIGHT_CORNER;
-            stringstream strstm;
-            strstm << "Role is BR corner, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
         }
         else if (hPosition == sizeOfPixel - 1 && wPosition == 0)
         {
             roleInPixel = TOP_LEFT_CORNER;
-            stringstream strstm;
-            strstm << "Role is TL corner, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
         }
         else if (hPosition == sizeOfPixel - 1 && wPosition == sizeOfPixel - 1)
         {
             roleInPixel = TOP_RIGHT_CORNER;
-            stringstream strstm;
-            strstm << "Role is TR corner, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
         }
         else if (hPosition == 0)
         {
             roleInPixel = LEFT_BORDER;
-            stringstream strstm;
-            strstm << "Role is L border, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
         }
         else if (hPosition == sizeOfPixel - 1)
         {
             roleInPixel = RIGHT_BORDER;
-            stringstream strstm;
-            strstm << "Role is R border, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
         }
         else if (wPosition == 0)
         {
             roleInPixel = BOTTOM_BORDER;
-            stringstream strstm;
-            strstm << "Role is B border, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
         }
         else if (wPosition == sizeOfPixel - 1)
         {
             roleInPixel = TOP_BORDER;
-            stringstream strstm;
-            strstm << "Role is T border, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
         }
         else
         {
             roleInPixel = CORE;
-            stringstream strstm;
-            strstm << "Role is core, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
         }
     }
 
     int totalHNbPixels = maxHeight / sizeOfPixel; //the number of (full) pixels that are displayed on height
     int totalWNbPixels = maxWidth / sizeOfPixel;  //the number of (full) pixels that are displayed on width
     //The tetraminos appear at the top of the set, in the middle
-    if (height == (totalHNbPixels - 1) * sizeOfPixel && width == (totalWNbPixels / 2) * sizeOfPixel)
+    if (height == (totalHNbPixels - 2) * sizeOfPixel && width == (totalWNbPixels / 2) * sizeOfPixel)
     {
         appear_module = true;
     }
@@ -336,9 +309,17 @@ void TetrisCode::tmnAppearance()
     position = 1;
     update = 1;
     int r = (int)rand();
-    tmn = 1; // r % 7 + 1;
+    tmn = 2; // r % 7 + 1;
     r = (int)rand();
     rotation = r % 4 + 1;
+    if (tmn == 2)
+    {
+        if (rotation == SOUTH) //The tetramino is too big to start upside down
+        {
+            rotation = NORTH;
+        }
+    }
+    console<<"rotation = "<<rotation<<"\n";
     while (color == NO_COLOR)
     {
         r = (int)rand();
@@ -348,6 +329,10 @@ void TetrisCode::tmnAppearance()
     if (tmn == 1)
     {
         sendTmn1();
+    }
+    else if (tmn == 2)
+    {
+        sendTmn2();
     }
 }
 
@@ -382,7 +367,6 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
     data.position = position;
     if (roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
     {
-        console << "sends bottom pixel. position = " << position << "\n";
         if (position == 1)
         {
             data.position = 3; //If the position is 1, the position sent to the bottom pixel is 3.
@@ -396,7 +380,6 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
             if (bottomItf != nullptr and bottomItf->isConnected())
             {
                 sendMessage("Tmn 1 Message", new MessageOf<TmnData>(TMN1_MSG_ID, data), bottomItf, 0, 0);
-                console << "sent position = " << data.position << " rotation : " << data.rotation << "\n";
             }
         }
     }
@@ -410,7 +393,6 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
     data.position = position;
     if (roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
     {
-        console<<"send right pixel ";
         if (position == 1)
         {
             data.position = 2;
@@ -424,7 +406,6 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
             if (rightItf != nullptr and rightItf->isConnected())
             {
                 sendMessage("Tmn 1 Message", new MessageOf<TmnData>(TMN1_MSG_ID, data), rightItf, 0, 0);
-                console<<"sent position = "<<data.position<<"\n";
             }
         }
     }
@@ -468,36 +449,16 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
 
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    char exp = '0';
-    if (sender == topItf)
-    {
-        exp = 'T';
-    }
-    else if (sender == bottomItf)
-    {
-        exp = 'B';
-    }
-    else if (sender == rightItf)
-    {
-        exp = 'R';
-    }
-    else if (sender == leftItf)
-    {
-        exp = 'L';
-    }
-    console << "recieved Tmn 1 | update = " << update << " recieved update = " << msgData.nbupdate << " from " << exp << "\n";
-    console << "recieved position = " << msgData.position;
     if (update < msgData.nbupdate && (tmn != 1 || rotation != msgData.rotation || position != msgData.rotation || color != msgData.color))
     {
+        tmn = 1;
         update = msgData.nbupdate;
         rotation = msgData.rotation;
         position = msgData.position;
         color = msgData.color;
         module->setColor(Colors[color]);
-        console << ". my position = " << position << "\n";
         sendTmn1();
     }
-    console << "recieved rotation = " << msgData.rotation << " my rotation : " << rotation << "\n";
 };
 
 void TetrisCode::sendTmn2()
@@ -514,10 +475,10 @@ void TetrisCode::sendTmn2()
         itf[eastId] = rightItf;
         itf[southId] = bottomItf;
         itf[westId] = leftItf;
-        northBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER;
-        eastBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER;
-        southBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER;
-        westBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER;
+        northBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
     }
     else if (rotation == EAST)
     {
@@ -525,10 +486,10 @@ void TetrisCode::sendTmn2()
         itf[eastId] = bottomItf;
         itf[southId] = leftItf;
         itf[westId] = topItf;
-        northBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER;
-        eastBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER;
-        southBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER;
-        westBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER;
+        northBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
     }
     else if (rotation == SOUTH)
     {
@@ -536,10 +497,10 @@ void TetrisCode::sendTmn2()
         itf[eastId] = leftItf;
         itf[southId] = topItf;
         itf[westId] = rightItf;
-        northBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER;
-        eastBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER;
-        southBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER;
-        westBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER;
+        northBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
     }
     else if (rotation == WEST)
     {
@@ -547,10 +508,90 @@ void TetrisCode::sendTmn2()
         itf[eastId] = topItf;
         itf[southId] = rightItf;
         itf[westId] = bottomItf;
-        northBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER;
-        eastBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER;
-        southBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER;
-        westBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER;
+        northBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+    }
+    if (northBool)
+    {
+        if (position == 1)
+        {
+            data.position = 2;
+        }
+        else if (position == 3)
+        {
+            data.position = 1;
+        }
+        else if (position == 4)
+        {
+            data.position = 3;
+        }
+        if (position != 2)
+        {
+            P2PNetworkInterface *i = itf[northId];
+            if (i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+            }
+        }
+    }
+    else
+    {
+        P2PNetworkInterface *i = itf[northId];
+        if (i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+        }
+    }
+    data.position = position;
+    if (southBool)
+    {
+        if (position == 1)
+        {
+            data.position = 3;
+        }
+        else if (position == 2)
+        {
+            data.position = 1;
+        }
+        else if (position == 3)
+        {
+            data.position = 4;
+        }
+        if (position != 4)
+        {
+            P2PNetworkInterface *i = itf[southId];
+            if (i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+            }
+        }
+    }
+    else
+    {
+        P2PNetworkInterface *i = itf[southId];
+        if (i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+        }
+    }
+    data.position = position ;
+    if (!eastBool)
+    {
+        P2PNetworkInterface *i = itf[eastId];
+        if (i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+        }
+    }
+    if (!westBool)
+    {
+        P2PNetworkInterface *i = itf[westId];
+        if (i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+        }
     }
 }
 
@@ -559,14 +600,14 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
 
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    if (tmn != 2)
+    console<<"update = "<<update<<" recieved update = "<<msgData.nbupdate<<"\n";
+    if (update<msgData.nbupdate && (tmn != 2 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
     {
-        tmn = 2;
-    }
-    if (rotation != msgData.rotation || position != msgData.position || color != msgData.color)
-    {
+        tmn = 2 ;
+        update = msgData.nbupdate;
         rotation = msgData.rotation;
         position = msgData.position;
+        console<<"position = "<<position<<"\n";
         color = msgData.color;
         module->setColor(Colors[color]);
         sendTmn2();
