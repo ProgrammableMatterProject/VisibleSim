@@ -26,16 +26,16 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 //
 //===========================================================================================================
 
-  BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
+BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "BuildingBlock constructor (id:" << nextId << ")" << endl;
 #endif
 
     if (bId < 0) {
-      blockId = nextId;
-      nextId++;
+        blockId = nextId;
+        nextId++;
     } else {
-      blockId = bId;
+        blockId = bId;
     }
 
     state.store(ALIVE);
@@ -48,7 +48,7 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
     buildNewBlockCode = bcb;
 
     if (utils::StatsIndividual::enable) {
-      stats = new StatsIndividual();
+        stats = new StatsIndividual();
     }
 
     for (int i = 0; i < nbInterfaces; i++) {
@@ -61,8 +61,8 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 
     // Parse user configuration from configuration file, only performed once
     if (!userConfigHasBeenParsed) {
-      userConfigHasBeenParsed = true;
-      blockCode->parseUserElements(Simulator::getSimulator()->getConfigDocument());
+        userConfigHasBeenParsed = true;
+        blockCode->parseUserElements(Simulator::getSimulator()->getConfigDocument());
     }
 
     isMaster = false;
@@ -79,7 +79,7 @@ BuildingBlock::~BuildingBlock() {
     }
 
     if (stats != NULL) {
-            delete stats;
+        delete stats;
     }
 
     for (P2PNetworkInterface *p2p : P2PNetworkInterfaces)
@@ -160,35 +160,35 @@ P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destB
 }
 
 unsigned short BuildingBlock::getNbNeighbors() const {
-  unsigned short n = 0;
+    unsigned short n = 0;
 /*  P2PNetworkInterface *p;
-  vector<P2PNetworkInterface*>::const_iterator it;
-  for (it = P2PNetworkInterfaces.begin(); it != P2PNetworkInterfaces.end(); ++it) {
+    vector<P2PNetworkInterface*>::const_iterator it;
+    for (it = P2PNetworkInterfaces.begin(); it != P2PNetworkInterfaces.end(); ++it) {
     p = *it;
     if (p->isConnected()) {
-      n++;
+    n++;
     }
-  }*/
+    }*/
     for (const P2PNetworkInterface* p2p : P2PNetworkInterfaces) {
         n+=p2p->isConnected();
     }
 
-  return n;
+    return n;
 }
 
 vector<BuildingBlock*> BuildingBlock::getNeighbors() const {
     vector<BuildingBlock*> res;
     for (P2PNetworkInterface* p2p:P2PNetworkInterfaces) {
-      if (p2p->isConnected()) {
-          res.push_back(p2p->connectedInterface->hostBlock);
-      }
+        if (p2p->isConnected()) {
+            res.push_back(p2p->connectedInterface->hostBlock);
+        }
     }
     return res;
 }
 
 
 bool BuildingBlock::getNeighborPos(short connectorId,Cell3DPosition &pos) const {
-  Lattice *lattice = getWorld()->lattice;
+    Lattice *lattice = getWorld()->lattice;
     vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(position);
     pos = position + nCells[connectorId];
     return lattice->isInGrid(pos);
@@ -228,7 +228,7 @@ void BuildingBlock::processLocalEvent() {
     }
 
     if (pev->eventType == EVENT_NI_RECEIVE ) {
-      utils::StatsIndividual::decIncommingMessageQueueSize(stats);
+        utils::StatsIndividual::decIncommingMessageQueueSize(stats);
     }
 
     if (blockCode->availabilityDate < getScheduler()->now()) blockCode->availabilityDate = getScheduler()->now();
@@ -247,16 +247,16 @@ void BuildingBlock::setColor(int idColor) {
 void BuildingBlock::setColor(const Color &c) {
     if (state.load() >= ALIVE) {
         color = c;
-				// getWorld()->updateGlData(this); // separate update color and update position
-				getWorld()->updateGlData(this,color);
+        // getWorld()->updateGlData(this); // separate update color and update position
+        getWorld()->updateGlData(this,color);
     }
 }
 
 void BuildingBlock::setPosition(const Cell3DPosition &p) {
     if (state.load() >= ALIVE) {
         position = p;
-				// getWorld()->updateGlData(this); // separate update color and update position
-				getWorld()->updateGlData(this,p);
+        // getWorld()->updateGlData(this); // separate update color and update position
+        getWorld()->updateGlData(this,p);
     }
 }
 
@@ -270,32 +270,32 @@ ruint BuildingBlock::getRandomUint() {
 }
 
 void BuildingBlock::setClock(Clock *c) {
-  if (clock != NULL) {
-    delete clock;
-  }
-  clock = c;
+    if (clock != NULL) {
+        delete clock;
+    }
+    clock = c;
 }
 
 Time BuildingBlock::getLocalTime(Time simTime) const {
-  if (clock == NULL) {
-    cerr << "device has no internal clock" << endl;
-    return 0;
-  }
-  return clock->getTime(simTime);
+    if (clock == NULL) {
+        cerr << "device has no internal clock" << endl;
+        return 0;
+    }
+    return clock->getTime(simTime);
 }
 
 Time BuildingBlock::getLocalTime() const {
     if (clock == NULL) {
-      cerr << "device has no internal clock" << endl;
-      return 0;
+        cerr << "device has no internal clock" << endl;
+        return 0;
     }
     return clock->getTime();
 }
 
 Time BuildingBlock::getSimulationTime(Time localTime) const {
     if (clock == NULL) {
-      cerr << "device has no internal clock" << endl;
-      return localTime;
+        cerr << "device has no internal clock" << endl;
+        return localTime;
     }
     return clock->getSimulationTime(localTime);
 }
@@ -323,5 +323,14 @@ int BuildingBlock::getFaceForNeighborID(int nId) const {
 
     return -1;
 }
+
+void BuildingBlock::serialize(std::ofstream &bStream) {
+    throw NotImplementedException(); // @TODO BP
+}
+
+void BuildingBlock::serialize_cleartext(std::ofstream &dbStream) {
+    throw NotImplementedException(); // @TODO BP
+}
+
 
 } // BaseSimulator namespace

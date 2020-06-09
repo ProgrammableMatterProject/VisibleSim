@@ -120,5 +120,21 @@ bool SmartBlocksBlock::moveTo(const Cell3DPosition& dest) {
     return true;
 }
 
+void SmartBlocksBlock::serialize(std::ofstream &bStream) {
+    BuildingBlock::serialize(bStream);
+
+    // Then serialize extra attributes
+
+    throw NotImplementedException(); // @TODO BP
+}
+
+void SmartBlocksBlock::serialize_cleartext(std::ofstream &dbStream) {
+    BuildingBlock::serialize(dbStream);
+
+    // Then serialize extra attributes
+
+    throw NotImplementedException(); // @TODO BP
+}
+
 
 }

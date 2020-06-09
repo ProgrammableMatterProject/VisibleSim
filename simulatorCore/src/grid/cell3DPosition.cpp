@@ -1,5 +1,8 @@
-#include "grid/cell3DPosition.h"
 #include <sstream>
+
+#include "grid/cell3DPosition.h"
+
+#include "utils/exceptions.h" //@TODO BP REMOVE
 
 Cell3DPosition::Cell3DPosition() {
     set(0,0,0);
@@ -132,4 +135,12 @@ const Cell3DPosition operator *(int n, const Cell3DPosition& p)
     r.pt[1] = n*p.pt[1];
     r.pt[2] = n*p.pt[2];
     return r;
+}
+
+void Cell3DPosition::serialize(std::ofstream &bStream) {
+    throw BaseSimulator::NotImplementedException(); // @TODO BP
+}
+
+void Cell3DPosition::serialize_cleartext(std::ofstream &dbStream) {
+    throw BaseSimulator::NotImplementedException(); // @TODO BP
 }

@@ -95,6 +95,7 @@ Simulator::~Simulator() {
     OUTPUT << TermColor::LifecycleColor  << "Simulator destructor" << TermColor::Reset << endl;
 #endif
     delete xmlDoc;
+    delete ReplayExporter::getInstance();
 
     deleteWorld();
 }
@@ -1085,8 +1086,10 @@ void Simulator::startSimulation(void) {
         scheduler->start(scheduler->getSchedulerMode());
 
     // Start replay export if enabled
-    if (cmdLine.isReplayEnabled())
-        (void)ReplayExporter::getInstance();
+    if (cmdLine.isReplayEnabled()) {
+        ReplayExporter::getInstance()->writeHeader();
+        // ReplayExporter::getInstance()->exportKeyframe();
+    }
 
     // Enter graphical main loop
     GlutContext::mainLoop();

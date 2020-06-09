@@ -12,6 +12,8 @@
 
 #include <fstream>
 
+#include "utils/exceptions.h"
+
 using namespace std;
 
 /**
@@ -45,21 +47,66 @@ public:
      */
     ReplayExporter();
     virtual ~ReplayExporter() {
-        if (exportFile) {
-            exportFile->close();
-            delete exportFile;
-        }
-
-        if (debugFile) {
-            debugFile->close();
-            delete debugFile;
-        }
+        endExport();
     }
 
+    /**
+     * @return the binary export file instance
+     */
+    std::ofstream& getExportFile() const {
+        if (exportFile == nullptr)
+            throw BaseSimulator::VisibleSimException("(error) ReplayExporter::getExportFile(): ReplayExporter has not been initialized");
+
+        return *exportFile;
+    }
+
+    /**
+     * @return the clear-text export file instance
+     */
+    std::ofstream& getDebugFile() const {
+        if (exportFile == nullptr)
+            throw BaseSimulator::VisibleSimException("(error) ReplayExporter::getDebugFile(): ReplayExporter has not been initialized");
+
+        return *debugFile;
+    }
+
+    /**
+     * [HEADER]
+     * Writes the replay file's header, using the following format:
+     *
+     * [VS_MAGIC][MODULE_TYPE][GRID DIMENSIONS XYZ]
+     *
+     * @TODO
+     */
+    void writeHeader();
+
+
+    /**
+     * Writes an index with the position of all keyframes in the replay file,
+     *  indexed by their time
+     */
+    void writeKeyframesIndex();
+
+
+    /**
+     * Terminates simulation replay export and properly closes associated files
+     * @note Is called at scheduler end by default, or when simulator is deleted
+     */
+    void endExport();
+
+    /**
+     * Singleton getter
+     * @return the singleton instance
+     */
     static ReplayExporter* getInstance() {
         if (not singleton)
             singleton = new ReplayExporter();
 
         return singleton;
     }
+
+    /**
+     * @return true if simulation data is being exported for this instance of the simulation
+     */
+    static bool isReplayEnabled();
 };

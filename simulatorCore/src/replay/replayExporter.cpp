@@ -10,6 +10,8 @@
 
 #include "replayExporter.h"
 
+#include "replayTags.h"
+
 #include "../utils/utils.h"
 #include "../base/simulator.h"
 
@@ -58,5 +60,32 @@ string ReplayExporter::buildExportFilename() const {
 
 string ReplayExporter::debugFilenameFromExportFilename(const string& exportFn) const {
     string str = string(exportFn);
-    return str.replace(str.end() - extension.size(), str.end(), "txt");
+
+    // @TODO PTHY: DO NOT ASSUME DEFAULT EXTENSION
+    std::size_t ext = str.find_last_of(".");
+
+    return str.replace(str.begin() + ext, str.end(), ".txt");
+}
+
+
+void ReplayExporter::endExport() {
+    if (exportFile) {
+        exportFile->close();
+        delete exportFile;
+        exportFile = nullptr;
+    }
+
+    if (debugFile) {
+        debugFile->close();
+        delete debugFile;
+        debugFile = nullptr;
+    }
+}
+
+bool ReplayExporter::isReplayEnabled() {
+    return Simulator::getSimulator()->getCmdLine().isReplayEnabled();
+}
+
+void ReplayExporter::writeHeader() {
+    //@TODO PTHY/BP
 }

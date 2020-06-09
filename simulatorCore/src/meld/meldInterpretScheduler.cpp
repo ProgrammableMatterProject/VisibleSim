@@ -19,6 +19,7 @@
 #include "base/buildingBlock.h"
 #include "base/blockCode.h"
 #include "utils/trace.h"
+#include "replay/replayExporter.h"
 
 using namespace std;
 using us = chrono::microseconds;
@@ -266,6 +267,10 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     printStats();
 
     terminate.store(true);
+
+    // Terminate replay export if enabled
+    if (ReplayExporter::getInstance()->isReplayEnabled())
+        ReplayExporter::getInstance()->endExport();
 
     return(NULL);
 }

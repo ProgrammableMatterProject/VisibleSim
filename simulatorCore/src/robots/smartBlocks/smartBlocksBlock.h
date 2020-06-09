@@ -57,6 +57,27 @@ public:
      * @return true module has initiated a motion to dest, false if it is not possible
      */
     bool moveTo(const Cell3DPosition& dest) override;
+
+    /**
+     * Serializes (converts to a stream of bits) relevant data from the SmartBlock object
+     *  for the purpose of simulation replay.
+     *
+     *  Overrides BuildingBlock serializer, serializes as:
+     *   <id><position><orientation><color><display_value>
+     *
+     * @see BuildingBlock::serialize
+     * @param bStream output binary stream
+     */
+    virtual void serialize(std::ofstream &bStream) override;
+
+    /**
+     * Clear-text equivalent of the BuildingBlock::serialize function, for debugging purpose
+     *  Overrides BuildingBlock serializer_cleartext function
+     *
+     * @see SmartBlock::serialize
+     * @param dbStream output binary stream
+     */
+    virtual void serialize_cleartext(std::ofstream &dbStream)  override;
 };
 
 }

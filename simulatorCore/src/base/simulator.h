@@ -10,14 +10,14 @@
 #define SIMULATOR_H_
 
 #define TIXML_USE_STL	1
-#include "../deps/TinyXML/tinyxml.h"
+#include "deps/TinyXML/tinyxml.h"
 
-#include "../utils/tDefs.h"
-#include "../events/scheduler.h"
+#include "utils/tDefs.h"
+#include "events/scheduler.h"
 #include "world.h"
-#include "../utils/commandLine.h"
-#include "../base/blockCode.h"
-#include "../replay/replayExporter.h"
+#include "utils/commandLine.h"
+#include "base/blockCode.h"
+#include "replay/replayExporter.h"
 
 using namespace std;
 

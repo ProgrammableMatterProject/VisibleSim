@@ -35,6 +35,24 @@ public :
     inline bool operator==(const Color &c) const { return (rgba[0] == c.rgba[0] && rgba[1] == c.rgba[1] && rgba[2] == c.rgba[2] && rgba[3] == c.rgba[3]); };
     inline bool operator!=(const Color &c) const { return !(*this==c); };
     friend ostream& operator<<(ostream& f,const Color &c);
+
+    /**
+     * Serializes (converts to a stream of bits) the color object
+     *  for the purpose of simulation replay
+     *
+     *  By default, serializes as: <r><g><b>
+     *
+     * @param bStream output binary stream
+     */
+    virtual void serialize(std::ofstream &bStream);
+
+    /**
+     * Clear-text equivalent of the Color::serialize function, for debugging purpose
+     * @see Color::serialize
+     * @param dbStream output binary stream
+     */
+    virtual void serialize_cleartext(std::ofstream &dbStream);
+
 };
 
 inline static const Color WHITE(1.0f,1.0f,1.0f);

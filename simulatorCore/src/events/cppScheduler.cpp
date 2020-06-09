@@ -16,6 +16,7 @@
 #include "utils/trace.h"
 #include "base/world.h"
 #include "base/simulator.h"
+#include "replay/replayExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -185,6 +186,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 
     terminate.store(true);
     schedulerThread = NULL;	// No need for the scheduler to delete this thread, it will have terminated already
+
+    // Terminate replay export if enabled
+    if (ReplayExporter::getInstance()->isReplayEnabled())
+        ReplayExporter::getInstance()->endExport();
 
     return(NULL);
 }
