@@ -106,9 +106,6 @@ static const int NO_COLOR = 6; //color if the module doesn't belong to any tetra
 //Message IDs
 static const int COORDSMSG_ID = 1001;
 static const int BACKMSG_ID = 1002;
-// static const int SPANTREE_ID = 1002;
-// static const int READYMSG_ID = 1003;
-// static const int CONFMSG_ID = 1002;
 static const int MAXHEIGHTMSG_MSG_ID = 1004;
 static const int MAXWIDTHMSG_MSG_ID = 1005;
 static const int NEWTMNMSG_ID = 1006;
@@ -158,6 +155,7 @@ private:
     int rotation = NO_ROTATION; //represents the rotation of the tetramino the module is part of
     int position = 0;           //reprensents the position of the pixel in the tetramino the module is part of
     int color = NO_COLOR;       //represents the color of the tetramino the module is part of
+    int update = 0;             //number of the update (to prevent infinite loops)
 public:
     TetrisCode(BlinkyBlocksBlock *host);
     ~TetrisCode(){};
