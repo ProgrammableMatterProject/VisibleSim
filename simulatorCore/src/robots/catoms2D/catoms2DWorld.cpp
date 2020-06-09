@@ -12,14 +12,14 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/catoms2D/catoms2DSimulator.h"
-#include "robots/catoms2D/catoms2DWorld.h"
-#include "robots/catoms2D/catoms2DBlock.h"
-#include "robots/catoms2D/catoms2DRotationEvents.h"
+#include "catoms2DSimulator.h"
+#include "catoms2DWorld.h"
+#include "catoms2DBlock.h"
+#include "catoms2DRotationEvents.h"
 
-#include "utils/trace.h"
-#include "utils/utils.h"
-#include "utils/configExporter.h"
+#include "../../utils/trace.h"
+#include "../../utils/utils.h"
+#include "../../utils/configExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -122,8 +122,6 @@ void Catoms2DWorld::glDraw() {
 
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
-
-    glDrawBackground();
 }
 
 
@@ -155,7 +153,7 @@ void Catoms2DWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void Catoms2DWorld::glDrawSpecificBg() {
+void Catoms2DWorld::glDrawBackground() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},gray[]={0.2f,0.2f,0.2f,1.0f};
 
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);

@@ -13,7 +13,7 @@
  LASELDI / Universite de Franche-Comté
  ***************************************************************************/
 
-#include "gui/camera.h"
+#include "camera.h"
 Camera::Camera(double t, double p, double d, double SX,double SY) {
     phi=p;
     theta=t;

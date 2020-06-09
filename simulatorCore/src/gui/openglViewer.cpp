@@ -5,21 +5,21 @@
  *      Author: Ben
  */
 
-#include "gui/openglViewer.h"
+#include "openglViewer.h"
 
 #include <string>
 #include <chrono>
-#include <errno.h>
+#include <cerrno>
 #include <sys/stat.h>
 #include <future>
 
-#include "base/world.h"
-#include "events/scheduler.h"
-#include "base/simulator.h"
-#include "events/events.h"
-#include "utils/trace.h"
-#include "utils/utils.h"
-#include "utils/global.h"
+#include "../base/world.h"
+#include "../events/scheduler.h"
+#include "../base/simulator.h"
+#include "../events/events.h"
+#include "../utils/trace.h"
+#include "../utils/utils.h"
+#include "../utils/global.h"
 
 // #define showStatsFPS  0
 
@@ -40,6 +40,7 @@ int GlutContext::lastMotionTime=0;
 int GlutContext::lastMousePos[2];
 //bool GlutContext::showLinks=false;
 bool GlutContext::fullScreenMode=false;
+bool GlutContext::enableShadows=true;
 bool GlutContext::saveScreenMode=false;
 GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
 // GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
@@ -51,12 +52,19 @@ int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
 bool GlutContext::enableShowFPS = false;
+bool GlutContext::showGrid = true;
+bool GlutContext::hasGradientBackground = false;
+float GlutContext::bgColor[3] = {0.3,0.3,0.8};
+float GlutContext::bgColor2[3] = {0.8,0.8,0.8};
+GLint GlutContext::mainWinId=0;
+GLint GlutContext::consoleWinId=0;
 unsigned int GlutContext::nbModules = 0;
 long unsigned int GlutContext::timestep = 0;
 
 std::string animationDirName;
 
 void GlutContext::init(int argc, char **argv) {
+    cout << "initGlut" << endl;
     if (GUIisEnabled) {
         glutInit(&argc,argv);
         glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
@@ -65,16 +73,21 @@ void GlutContext::init(int argc, char **argv) {
         // creation of a new graphic window
         glutInitWindowPosition(0, 0);
         glutInitWindowSize(screenWidth,screenHeight);
-        if (glutCreateWindow("VisibleSim") == GL_FALSE) {
+        if ((mainWinId=glutCreateWindow("VisibleSim")) == GL_FALSE) {
             puts("ERREUR : echec à la création de la fenêtre graphique");
             exit(EXIT_FAILURE);
         }
-
         if(fullScreenMode) {
             glutFullScreen();
         }
+        /*glutInitWindowPosition(screenWidth+10,0);
+        glutInitWindowSize(200.0, screenHeight);           // set a window size
+        if ((consoleWinId=glutCreateWindow("console")) == GL_FALSE) {
+            puts("ERREUR : echec à la création de la fenêtre de console");
+            exit(EXIT_FAILURE);
+        }*/
 
-        initShaders();
+        initShaders(enableShadows);
 
         ////// GL parameters /////////////////////////////////////
         glEnable(GL_DEPTH_TEST);
@@ -83,14 +96,18 @@ void GlutContext::init(int argc, char **argv) {
         glCullFace(GL_BACK);
         glEnable(GL_NORMALIZE);
 
-        glClearColor(0.3f,0.3f,0.8f,0.0f);
+        glClearColor(bgColor[0],bgColor[1],bgColor[2],1.0f);
 
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
         glEnable(GL_NORMALIZE);
 
         glutReshapeFunc(reshapeFunc);
-        glutDisplayFunc(drawFunc);
+        if (enableShadows) {
+            glutDisplayFunc(drawFunc);
+        } else {
+            glutDisplayFunc(drawFuncNoShadows);
+        }
         glutMouseFunc(mouseFunc);
         glutMotionFunc(motionFunc);
         glutPassiveMotionFunc(passiveMotionFunc);
@@ -287,8 +304,8 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case 27 : case 'q' : case 'Q' : // quit
             glutLeaveMainLoop();
             break;
-        case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
-        case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
+        /*case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
+        case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;*/
         case '+' : camera->mouseZoom(2.5); break;
         case '-' : camera->mouseZoom(-2.5); break;
         case 'T' : case 't' :
@@ -315,13 +332,22 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             }
         }
             break;
-        case 'w' : case 'W' :
+        case 'f' : case 'F' :
             fullScreenMode = !fullScreenMode;
             if (fullScreenMode) {
                 glutFullScreen();
             } else {
                 glutReshapeWindow(initialScreenWidth,initialScreenHeight);
                 glutPositionWindow(0,0);
+            }
+            break;
+        case 'g' : // enable/disable shadows
+            enableShadows = !enableShadows;
+            initShaders(enableShadows);
+            if (enableShadows) {
+                glutDisplayFunc(drawFunc);
+            } else {
+                glutDisplayFunc(drawFuncNoShadows);
             }
             break;
         case 'h' :
@@ -332,6 +358,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             break;
         case 'i' : case 'I' :
             mainWindow->openClose();
+            //glutPostRedisplay();
             break;
         case 'S' : {
             if (not saveScreenMode) {
@@ -402,10 +429,29 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             cout << "Screenshot saved to files: " << ssName
                  << " and " << ssNameJpg << endl;
         } break;
+        case 'm' : {
+            const string& bsname = myBasename(Simulator::configFileName);
+            const string& ssName = generateTimestampedFilename("capture_" + bsname.substr(0, bsname.size()-4), "ppm");
+            string ssNamePNG = ssName;
+            ssNamePNG.replace(ssName.length() - 3, 3, "png");
+            saveScreen(ssName.c_str());
+#ifndef WIN32
+            (void)std::async([ssNamePNG, ssName](){
+                int r = system(string("convert " + ssName + " PNG:" + ssNamePNG
+                                      + " >/dev/null 2>/dev/null").c_str());
+                if (r == 0)
+                    system(string("rm -rf " + ssName
+                                  + " >/dev/null 2>/dev/null").c_str());
+            });
+#endif
+            cout << "Screenshot saved to files: " << ssName
+                 << " and " << ssNamePNG << endl;
+        } break;
 
-        case 'B' : {
-            World *world = BaseSimulator::getWorld();
-            world->toggleBackground();
+        case 'B' : case 'b' : {
+            /*World *world = BaseSimulator::getWorld();
+            world->toggleBackground();*/
+            showGrid = !showGrid;
         } break;
         case 32: { // SPACE
             Scheduler *scheduler = getScheduler();
@@ -585,10 +631,37 @@ void GlutContext::drawFunc(void) {
 
     shadowedRenderingStep2(screenWidth,screenHeight);
 
+    /* Clear and background */
+    if (hasGradientBackground) {
+        glDisable(GL_LIGHTING);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glDisable(GL_DEPTH_TEST);
+        glBegin(GL_QUADS);
+        glColor3fv(bgColor);
+        glVertex2f(-1.0,-1.0);
+        glVertex2f(1.0,-1.0);
+        glColor3fv(bgColor2);
+        glVertex2f(1.0, 1.0);
+        glVertex2f(-1.0, 1.0);
+        glEnd();
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
     shadowedRenderingStep3(camera);
     glPushMatrix();
     wrl->glDraw();
+
+    if (showGrid) {
+        wrl->glDrawBackground();
+    }
     glPopMatrix();
+
     shadowedRenderingStep4();
 
     // drawing of the interface
@@ -597,6 +670,73 @@ void GlutContext::drawFunc(void) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glMatrixMode(GL_PROJECTION);
     //glPushMatrix(); // update BPI, no glPopMatrix without !
+    glLoadIdentity();
+    gluOrtho2D(0,screenWidth,0,screenHeight);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    mainWindow->glDraw();
+    // debugWindow->glDraw();
+    popup->glDraw();
+    if (popupMenu && popupMenu->isVisible) {
+        popupMenu->glDraw();
+        if (popupSubMenu && popupSubMenu->isVisible) popupSubMenu->glDraw();
+    }
+    if (helpWindow) helpWindow->glDraw();
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+
+    if (enableShowFPS) showFPS();
+    showSimulationInfo();
+
+    glEnable(GL_DEPTH_TEST);
+
+    glFlush();
+    glutSwapBuffers();
+}
+
+void GlutContext::drawFuncNoShadows() {
+    World *wrl = BaseSimulator::getWorld();
+    Camera*camera=wrl->getCamera();
+
+    /* Clear and background */
+    if (hasGradientBackground) {
+        glDisable(GL_LIGHTING);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glDisable(GL_DEPTH_TEST);
+        glBegin(GL_QUADS);
+        glColor3fv(bgColor);
+        glVertex2f(-1.0,-1.0);
+        glVertex2f(1.0,-1.0);
+        glColor3fv(bgColor2);
+        glVertex2f(1.0, 1.0);
+        glVertex2f(-1.0, 1.0);
+        glEnd();
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    noshadowRenderingStart(camera);
+    glPushMatrix();
+    wrl->glDraw();
+
+    if (showGrid) {
+        wrl->glDrawBackground();
+    }
+    glPopMatrix();
+    noshadowRenderingStop();
+
+    // drawing of the interface
+    glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glMatrixMode(GL_PROJECTION);
+    //glPushMatrix(); // update BPI, no glPopMatrix !
     glLoadIdentity();
     gluOrtho2D(0,screenWidth,0,screenHeight);
     glMatrixMode(GL_MODELVIEW);
@@ -772,5 +912,9 @@ bool GlutContext::saveScreen(const char *title) {
 }
 
 void GlutContext::setFullScreenMode(bool b) {
-    fullScreenMode = true;
+    fullScreenMode =b;
+}
+
+void GlutContext::setShadowsMode(bool b) {
+    enableShadows = b;
 }

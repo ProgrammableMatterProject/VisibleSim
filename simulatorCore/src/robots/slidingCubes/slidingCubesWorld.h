@@ -10,14 +10,14 @@
 
 #include <vector>
 
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "robots/slidingCubes/slidingCubesBlock.h"
-#include "gui/objLoader.h"
-#include "events/scheduler.h"
-#include "utils/trace.h"
-#include "robots/slidingCubes/slidingCubesMotionRules.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "slidingCubesBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../events/scheduler.h"
+#include "../../utils/trace.h"
+#include "slidingCubesMotionRules.h"
 
 namespace SlidingCubes {
 
@@ -46,39 +46,39 @@ public:
     }
 
     SlidingCubesMotionRules *getMotionRules() { return motionRules; }
-    virtual SlidingCubesBlock* getBlockById(int bId) override {
+    SlidingCubesBlock* getBlockById(int bId) override {
         return((SlidingCubesBlock*)World::getBlockById(bId));
     }
 
     /**
      * @copydoc World::addBlock
      */
-    virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+    void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false) override;
     /**
      * \copydoc World::linkBlock
      */
-    virtual void linkBlock(const Cell3DPosition &pos) override;
+    void linkBlock(const Cell3DPosition &pos) override;
     /**
      * \copydoc World::loadTextures
      */
-    virtual void loadTextures(const string &str) override;
+    void loadTextures(const string &str) override;
     /**
      * @copydoc World::glDraw
      */
-    virtual void glDraw() override;
+    void glDraw() override;
     /**
      * @copydoc World::glDrawId
      */
-    virtual void glDrawId() override;
+    void glDrawId() override;
     /**
      * @copydoc World::glDrawIdByMaterial
      */
-    virtual void glDrawIdByMaterial() override;
+    void glDrawIdByMaterial() override;
     /**
-     * @copydoc World::glDrawSpecificBg
+     * @copydoc World::glDrawBackground
      */
-    virtual void glDrawSpecificBg() override;
+    void glDrawBackground() override;
 
     using World::updateGlData; // Suppresses hiding warning
 
@@ -89,22 +89,21 @@ public:
     /**
      * @copydoc World::setSelectedFace
      */
-    virtual void setSelectedFace(int n) override;
+    void setSelectedFace(int n) override;
     /**
      * @copydoc World::exportConfiguration
      */
-    virtual void exportConfiguration() override;
+    void exportConfiguration() override;
 
-        virtual void createPopupMenu(int ix, int iy) override;
-        virtual void menuChoice(int n) override;
+    void createPopupMenu(int ix, int iy) override;
+    void menuChoice(int n) override;
 
         /**
          * \brief Export a 3D model in STL format to print the whole configuration
          * \param title : title of the STL file
          * \result Returns true if the faces was well written
          */
-        virtual bool exportSTLModel(string title) override;
-
+    bool exportSTLModel(string title) override;
 };
 
 inline void deleteWorld() {

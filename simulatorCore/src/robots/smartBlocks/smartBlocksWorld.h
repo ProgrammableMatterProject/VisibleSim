@@ -8,11 +8,11 @@
 #ifndef SMARTBLOCKSWORLD_H_
 #define SMARTBLOCKSWORLD_H_
 
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "robots/smartBlocks/smartBlocksBlock.h"
-#include "events/scheduler.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "smartBlocksBlock.h"
+#include "../../events/scheduler.h"
 
 namespace SmartBlocks {
 
@@ -47,12 +47,12 @@ public:
 
     void linkBlock(const Cell3DPosition &pos) override;
     void loadTextures(const string &str) override;
-    virtual void glDraw() override;
-    virtual void glDrawId() override;
-    virtual void glDrawIdByMaterial() override;
-    virtual void glDrawSpecificBg() override;
-    virtual void setSelectedFace(int n) override;
-    virtual void exportConfiguration() override;
+    void glDraw() override;
+    void glDrawId() override;
+    void glDrawIdByMaterial() override;
+    void glDrawBackground() override;
+    void setSelectedFace(int n) override;
+    void exportConfiguration() override;
 };
 
 inline void deleteWorld() {

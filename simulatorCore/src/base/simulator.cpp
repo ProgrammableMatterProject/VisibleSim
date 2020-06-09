@@ -28,9 +28,9 @@ using namespace std;
 
 namespace BaseSimulator {
 
-Simulator* simulator = NULL;
+Simulator* simulator = nullptr;
 
-Simulator* Simulator::simulator = NULL;
+Simulator* Simulator::simulator = nullptr;
 
 Simulator::Type	Simulator::type = CPP; // CPP code by default
 bool Simulator::regrTesting = false; // No regression testing by default
@@ -41,7 +41,7 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 #endif
 
     // Ensure that only one instance of simulator is running at once
-    if (simulator == NULL) {
+    if (simulator == nullptr) {
         simulator = this;
         BaseSimulator::simulator = simulator;
     } else {
@@ -100,7 +100,7 @@ Simulator::~Simulator() {
 
 void Simulator::deleteSimulator() {
     delete simulator;
-    simulator = NULL;
+    simulator = nullptr;
 }
 
 void Simulator::loadScheduler(int schedulerMaxDate) {
@@ -453,6 +453,60 @@ void Simulator::readSimulationType(int argc, char*argv[]) {
 }
 
 void Simulator::parseWorld(int argc, char*argv[]) {
+    TiXmlNode *xmlVisualNode = xmlDoc->FirstChild("visuals");
+    if (xmlVisualNode) {
+        TiXmlElement* visualElement = xmlVisualNode->ToElement();
+        const char *attr= visualElement->Attribute("windowSize");
+        if (attr) {
+            string str=attr;
+            int pos = str.find_first_of(",x");
+            GlutContext::initialScreenWidth = stoi(str.substr(0,pos));
+            GlutContext::initialScreenHeight = stoi(str.substr(pos+1,str.length()-pos-1));
+            GlutContext::screenWidth = GlutContext::initialScreenWidth;
+            GlutContext::screenHeight = GlutContext::initialScreenHeight;
+        }
+
+        attr= visualElement->Attribute("enableShadows");
+        if (attr) {
+            string str(attr);
+            toLowercase(str);
+            GlutContext::enableShadows = (str=="true" || str=="yes");
+        }
+
+        attr= visualElement->Attribute("showGrid");
+        if (attr) {
+            string str(attr);
+            toLowercase(str);
+            GlutContext::showGrid = (str=="true" || str=="yes");
+            cout << "showGrid:" << str<< ": "<<GlutContext::showGrid << endl;
+        }
+
+        attr= visualElement->Attribute("backgroundColor");
+        if (attr) {
+            string str(attr);
+            size_t pos=str.find_first_of('#');
+            str.replace(pos,1,"0x");
+            unsigned int c = stoul(str, nullptr, 16);
+            GlutContext::bgColor[0] = static_cast<float>(c/65236)/256.0f;
+            GlutContext::bgColor[1] = static_cast<float>((c/256)%256)/256.0f;
+            GlutContext::bgColor[2] = static_cast<float>(c%256)/256.0f;
+            //cout << str << "=" << GlutContext::bgColor[0] << "," << GlutContext::bgColor[1] << "," << GlutContext::bgColor[2] << endl;
+        }
+
+        attr= visualElement->Attribute("backgroundGradientColor");
+        if (attr) {
+            GlutContext::hasGradientBackground = true;
+            string str(attr);
+            size_t pos=str.find_first_of('#');
+            str.replace(pos,1,"0x");
+            unsigned int c = stoul(str, nullptr, 16);
+            GlutContext::bgColor2[0] = static_cast<float>(c/65236)/256.0f;
+            GlutContext::bgColor2[1] = static_cast<float>((c/256)%256)/256.0f;
+            GlutContext::bgColor2[2] = static_cast<float>(c%256)/256.0f;
+            //cout << str << "=" << GlutContext::bgColor[0] << "," << GlutContext::bgColor[1] << "," << GlutContext::bgColor[2] << endl;
+        }
+
+    }
     /* reading the xml file */
     xmlWorldNode = xmlDoc->FirstChild("world");
 
@@ -488,6 +542,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             GlutContext::initialScreenHeight = stoi(str.substr(pos+1,str.length()-pos-1));
             GlutContext::screenWidth = GlutContext::initialScreenWidth;
             GlutContext::screenHeight = GlutContext::initialScreenHeight;
+            cerr << "warning [DEPRECATED]: place windowSize in visual tag!" << endl;
         }
 
         attr=worldElement->Attribute("maxSimulationTime");
@@ -552,7 +607,7 @@ void Simulator::parseCameraAndSpotlight() {
         world->getCamera()->setTarget(target);
         double d=target.norme();
         world->getCamera()->setDistance(3.0*d);
-        world->getCamera()->setDirection(45.0,30.0);
+        world->getCamera()->setDirection(-30.0-90.0,30.0);
         world->getCamera()->setNearFar(0.25*d,5.0*d);
         world->getCamera()->setAngle(35.0);
         world->getCamera()->setLightParameters(target,-30.0,30.0,3.0*d,30.0,0.25*d,4.0*d);
@@ -843,7 +898,7 @@ void Simulator::parseBlockList() {
 #endif
             }
 
-            assert(world->lattice!=NULL);
+            assert(world->lattice!=nullptr);
 
             Vector3D pos;
             for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
@@ -943,7 +998,7 @@ void Simulator::parseBlockList() {
 void Simulator::parseTarget() {
     Target::targetListNode = xmlWorldNode->FirstChild("targetList");
     if (Target::targetListNode) {
-        // Load initial target (BlockCode::target = NULL if no target specified)
+        // Load initial target (BlockCode::target = nullptr if no target specified)
         BlockCode::target = Target::loadNextTarget();
     }
 }
@@ -1010,7 +1065,7 @@ void Simulator::parseCustomizations() {
             TiXmlElement* element = rotationDelayNode->ToElement();
             const char *attr= element->Attribute("multiplier");
 
-            if (attr != NULL) {
+            if (attr != nullptr) {
                 motionDelayMultiplier = atof(attr);
             }
         }

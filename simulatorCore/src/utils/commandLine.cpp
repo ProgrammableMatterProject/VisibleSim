@@ -150,8 +150,11 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                 } break;
 
                 case 'f' : {
-                    //fullScreen = true;
                     GlutContext::setFullScreenMode(true);
+                } break;
+
+                case 'w' : {
+                    GlutContext::setShadowsMode(false);
                 } break;
 
                 case 'k' : {

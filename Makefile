@@ -34,7 +34,7 @@ endif
 # TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of messages
 # TEMP_CCFLAGS += -DDEBUG_VM_MESSAGES #     : trace the messages sent to the multicores VM
 # TEMP_CCFLAGS += -DDEBUG_OBJECT_LIFECYCLE #: trace objects construction and destruction
-# TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates
+TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates
 # TEMP_CCFLAGS += -DDEBUG_NEIGHBORHOOD #: trace robot neighborhood updates and interface linking
 TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization

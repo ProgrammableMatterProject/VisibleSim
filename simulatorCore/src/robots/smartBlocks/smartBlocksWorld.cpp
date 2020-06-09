@@ -9,10 +9,10 @@
 #include <stdlib.h>
 #include <string>
 
-#include "robots/smartBlocks/smartBlocksWorld.h"
-#include "robots/smartBlocks/smartBlocksBlock.h"
-#include "events/scheduler.h"
-#include "utils/configExporter.h"
+#include "smartBlocksWorld.h"
+#include "smartBlocksBlock.h"
+#include "../../events/scheduler.h"
+#include "../../utils/configExporter.h"
 
 using namespace std;
 
@@ -109,8 +109,6 @@ void SmartBlocksWorld::glDraw() {
         /*// drawing the mobiles
           Physics::glDraw();
         */
-
-        glDrawBackground();
 }
 
 void SmartBlocksWorld::glDrawIdByMaterial() {
@@ -137,7 +135,7 @@ void SmartBlocksWorld::glDrawId() {
     glPopMatrix();
 }
 
-void SmartBlocksWorld::glDrawSpecificBg() {
+void SmartBlocksWorld::glDrawBackground() {
     static const GLfloat white[]={1.0,1.0,1.0,1.0},
         gray[]={0.2,0.2,0.2,1.0};
 

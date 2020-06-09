@@ -15,11 +15,11 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/hexanodes/hexanodesWorld.h"
-#include "robots/hexanodes/hexanodesBlock.h"
-#include "robots/hexanodes/hexanodesMotionEngine.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
+#include "hexanodesWorld.h"
+#include "hexanodesBlock.h"
+#include "hexanodesMotionEngine.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -250,8 +250,6 @@ void HexanodesWorld::glDraw() {
 
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
-
-    glDrawBackground();
 }
 
 void HexanodesWorld::glDrawShadows() {
@@ -261,8 +259,6 @@ void HexanodesWorld::glDrawShadows() {
         ((HexanodesGlBlock*)pair.second)->glDrawShadows(objBlockForPicking);
     }
     unlock();
-
-    glPopMatrix();
 }
 
 void HexanodesWorld::glDrawId() {
@@ -289,7 +285,7 @@ void HexanodesWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void HexanodesWorld::glDrawSpecificBg() {
+void HexanodesWorld::glDrawBackground() {
     static const GLfloat white[]={1.0,1.0,1.0,1.0},
     gray[]={0.2,0.2,0.2,1.0},black[]={0.0,0.0,0.0,1.0};
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);

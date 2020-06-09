@@ -15,14 +15,16 @@
 #include <mutex>
 #include <unordered_map>
 
-#include "assert.h"
-#include "base/buildingBlock.h"
-#include "base/glBlock.h"
-#include "utils/trace.h"
-#include "utils/utils.h"
-#include "grid/lattice.h"
-#include "events/scheduler.h"
-#include "gui/objLoader.h"
+#include <cassert>
+#include "buildingBlock.h"
+#include "glBlock.h"
+#include "../utils/tDefs.h"
+#include "../utils/trace.h"
+#include "../utils/utils.h"
+#include "../grid/cell3DPosition.h"
+#include "../grid/lattice.h"
+#include "../events/scheduler.h"
+#include "../gui/objLoader.h"
 
 using namespace BaseSimulator::utils;
 using namespace std;
@@ -47,18 +49,18 @@ public:
     /************************************************************
      *   Graphical / UI Attributes
      ************************************************************/
-    bool background = true; //!< Option for visible background
+    //bool background = true; //!< Option for visible background /// replaced by showGrid
     GlBlock *selectedGlBlock; //!< A pointer to the GlBlock selected by the user
     GLushort numSelectedFace; //!< The id of the face (NeighborDirection) selected by the user
     GLuint numSelectedGlBlock; //!< The index of the block selected by the user in the tabGlBlock
 
-    ObjLoader::ObjLoader *objBlock = NULL;           //!< Object loader for a block
-    ObjLoader::ObjLoader *objBlockForPicking = NULL; //!< Object loader for a block used during picking
-    ObjLoader::ObjLoader *objRepere = NULL;          //!< Object loader for the frame
+    ObjLoader::ObjLoader *objBlock = nullptr;           //!< Object loader for a block
+    ObjLoader::ObjLoader *objBlockForPicking = nullptr; //!< Object loader for a block used during picking
+    ObjLoader::ObjLoader *objRepere = nullptr;          //!< Object loader for the frame
     GLint menuId;
 
     bool isBlinkingBlocks=false;
-    Camera *camera = NULL; //!< Pointer to the camera object for the graphical simulation, also includes the light source
+    Camera *camera = nullptr; //!< Pointer to the camera object for the graphical simulation, also includes the light source
 
     /************************************************************
      *   Simulation Attributes
@@ -82,7 +84,7 @@ public:
      * @brief Returns the global instance of world, or raises an error if it has not been allocated
      */
     static World* getWorld() {
-        assert(world != NULL);
+        assert(world != nullptr);
         return(world);
     }
 
@@ -99,7 +101,7 @@ public:
      */
     static void deleteWorld() {
         delete(world);
-        world=NULL;
+        world=nullptr;
     }
 
     /**
@@ -138,13 +140,13 @@ public:
     /**
      * @brief Returns a pointer to the block of id BId
      * @param bId : id of the block to get
-     * @return a pointer to block of id bId, or NULL if it does not exist
+     * @return a pointer to block of id bId, or nullptr if it does not exist
      */
     virtual BuildingBlock* getBlockById(int bId);
     /**
      * @brief Returns a pointer to the block of id BId
      * @param pos : position of the block to get
-     * @return a pointer to block of id bId, or NULL if it does not exist
+     * @return a pointer to block of id bId, or nullptr if it does not exist
      */
     BuildingBlock* getBlockByPosition(const Cell3DPosition &pos);
     /**
@@ -161,24 +163,24 @@ public:
      * @param blc : Block to update
      * @param p : Position to set to blc's glBlock
      */
-		virtual void updateGlData(BuildingBlock *bb, const Color &c);
-		/**
-		 * @brief Set position p to glBlock associated with block blc
-		 *	 *
-		 * @param blc : Block to update
-		 * @param p : Position in the grid to set to blc's glBlock
-		 */
-		virtual void updateGlData(BuildingBlock *bb, const Cell3DPosition &p);
-		/**
-		 * @brief Set position p to glBlock associated with block blc
-		 *
-		 * Used when glBlocks and their corresponding BuildingBlock have different positions,
-		 *  as it is the case during motion events
-		 *
-		 * @param blc : Block to update
-		 * @param p : Position to set to blc's glBlock
-		 */
-		virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
+        virtual void updateGlData(BuildingBlock *bb, const Color &c);
+        /**
+         * @brief Set position p to glBlock associated with block blc
+         *	 *
+         * @param blc : Block to update
+         * @param p : Position in the grid to set to blc's glBlock
+         */
+        virtual void updateGlData(BuildingBlock *bb, const Cell3DPosition &p);
+        /**
+         * @brief Set position p to glBlock associated with block blc
+         *
+         * Used when glBlocks and their corresponding BuildingBlock have different positions,
+         *  as it is the case during motion events
+         *
+         * @param blc : Block to update
+         * @param p : Position to set to blc's glBlock
+         */
+        virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
     /**
      * @brief Creates a block and adds it to the simulation
      *
@@ -224,7 +226,7 @@ public:
     /**
      * @brief Getter for selectedGlBlock
      *
-     * @return pointer to the block selected by the user, or NULL
+     * @return pointer to the block selected by the user, or nullptr
      */
     virtual GlBlock* getselectedGlBlock() { return selectedGlBlock; };
     /**
@@ -235,7 +237,7 @@ public:
     inline GlBlock* setselectedGlBlock(int n) {
         auto const &glBlock = mapGlBlocks.find(n);
 
-        selectedGlBlock= (glBlock != mapGlBlocks.end()) ? (*glBlock).second : NULL;
+        selectedGlBlock= (glBlock != mapGlBlocks.end()) ? (*glBlock).second : nullptr;
 
         if (selectedGlBlock) numSelectedGlBlock = n;
 
@@ -256,7 +258,7 @@ public:
      */
     inline GlBlock* getBlockByNum(bID n) {
         auto const &glBlock = mapGlBlocks.find(n);
-        return glBlock != mapGlBlocks.end() ? (*glBlock).second : NULL;
+        return glBlock != mapGlBlocks.end() ? (*glBlock).second : nullptr;
     };
 
     /**
@@ -277,7 +279,7 @@ public:
      */
         virtual void glDraw() {};
         /**
-         * @brief Draws all blocks for shadows
+         * @brief Draws all blocks for shadows, list of objects that produce shadows
          */
         virtual void glDrawShadows() { glDraw(); };
         /**
@@ -291,11 +293,7 @@ public:
     /**
      * @brief Draws the world background
      */
-    void glDrawBackground();
-    /**
-     * @brief Draws the background for different types of world
-     */
-    virtual void glDrawSpecificBg() {};
+    virtual void glDrawBackground() {};
     /**
      * @brief Linearly scans the grid for blocks and calls linkBlock to connect the interfaces of neighbors
      */
@@ -342,11 +340,11 @@ public:
 
     /**
      * @brief Returns the BuildingBlock corresponding to the selected GlBlock
-     * @return a pointer to the BuildingBlock corresponding to the selected GlBlock, or NULL if there is none
+     * @return a pointer to the BuildingBlock corresponding to the selected GlBlock, or nullptr if there is none
      */
     inline BuildingBlock *getSelectedBuildingBlock() {
         auto const &glBlock = mapGlBlocks.find(numSelectedGlBlock);
-        return glBlock != mapGlBlocks.end() ? getBlockById((*glBlock).second->blockId) : NULL;
+        return glBlock != mapGlBlocks.end() ? getBlockById((*glBlock).second->blockId) : nullptr;
     };
 
     /**
@@ -369,7 +367,7 @@ public:
     /**
      * @brief Toggle world background
      */
-    void toggleBackground() { background = !background; }
+    // void toggleBackground() { background = !background; } // replaced by showGrid
 
     /**
      * \brief Export a 3D model in STL format to print the whole configuration

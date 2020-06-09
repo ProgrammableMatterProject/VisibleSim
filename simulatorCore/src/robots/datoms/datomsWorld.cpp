@@ -12,12 +12,12 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/datoms/datomsWorld.h"
-#include "robots/datoms/datomsBlock.h"
-#include "robots/datoms/datomsMotionEngine.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
+#include "datomsWorld.h"
+#include "datomsBlock.h"
+#include "datomsMotionEngine.h"
 #include "deformationEvents.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -244,10 +244,6 @@ void DatomsWorld::linkBlock(const Cell3DPosition& pos) {
  */
 void DatomsWorld::glDraw() {
 // material for the grid walls
-    if (background) {
-        glDrawBackground();
-    }
-
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
 

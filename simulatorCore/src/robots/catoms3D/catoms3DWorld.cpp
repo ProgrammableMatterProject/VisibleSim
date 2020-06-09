@@ -12,14 +12,15 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/catoms3D/catoms3DWorld.h"
-#include "robots/catoms3D/catoms3DBlock.h"
-#include "robots/catoms3D/catoms3DMotionEngine.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
-#include "robots/catoms3D/catoms3DRotationEvents.h"
-#include "base/simulator.h"
-#include "robots/catoms3D/catoms3DSimulator.h"
+#include "catoms3DWorld.h"
+#include "catoms3DBlock.h"
+#include "catoms3DGlBlock.h"
+#include "catoms3DMotionEngine.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
+#include "catoms3DRotationEvents.h"
+#include "../../base/simulator.h"
+#include "catoms3DSimulator.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -284,45 +285,11 @@ void Catoms3DWorld::glDraw() {
     unlock();
     glPopMatrix();
 
-    // draw the goal surface
-    /*if (buildingBlocksMap.begin()!=buildingBlocksMap.end()) {
-        map<bID, BuildingBlock*>::iterator it = buildingBlocksMap.begin();
-        it->second->blockCode->target->glDraw();
-    }*/
-/*	GLfloat mat_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
-    GLfloat mat_diffuse[] = { 0.8, 0.2, 0.8, 1.0 };
-    GLfloat mat_specular[] = { 0.8, 0.8, 0.8, 1.0 };
-    GLfloat mat_shininess[] = { 50.0 };
-
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-    enableTexture(false);
-    glPushMatrix();
-        // Nurbs surface
-    //glScalef(45,45,45);
-        //Nurbs car
-        //glScalef(33.33,33.33,33.33);
-        //Nurbs mirror
-        glScalef(10,10,10);
-    gluBeginSurface(theNurb);
-    gluNurbsSurface(theNurb,
-        S_NUMKNOTS, sknots,
-        T_NUMKNOTS, tknots,
-        4 * T_NUMPOINTS,
-        4,
-        &ctlpoints[0][0][0],
-        S_ORDER, T_ORDER,
-        GL_MAP2_VERTEX_4);
-    gluEndSurface(theNurb);
-    glPopMatrix();
-*/
-
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
 
 // material for the grid walls
+/*
     if (background) {
         static const GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f},
                 gray[] = {0.2f, 0.2f, 0.2f, 1.0f};
@@ -409,11 +376,8 @@ void Catoms3DWorld::glDraw() {
         glPushMatrix();
         objRepere->glDraw();
         glPopMatrix();
-
-        lattice->glDraw();
-    } else {
-        World::glDrawBackground();
-    }
+    }*/
+    lattice->glDraw();
 
     // if (BlockCode::target and dynamic_cast<TargetCSG*>(BlockCode::target)) {
     //     glScalef(lattice->gridScale[0], lattice->gridScale[1], lattice->gridScale[2]);
@@ -445,7 +409,7 @@ void Catoms3DWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void Catoms3DWorld::glDrawSpecificBg() {
+void Catoms3DWorld::glDrawBackground() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
         gray[]={0.2f,0.2f,0.2f,1.0f};
         glMaterialfv(GL_FRONT,GL_AMBIENT,gray);

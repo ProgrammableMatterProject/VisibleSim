@@ -10,15 +10,15 @@
 
 #include <vector>
 
-#include "base/buildingBlock.h"
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "grid/cell3DPosition.h"
-#include "robots/catoms3D/catoms3DBlock.h"
-#include "gui/objLoader.h"
-#include "utils/trace.h"
-#include "robots/catoms3D/catoms3DMotionRules.h"
+#include "../../base/buildingBlock.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "../../grid/cell3DPosition.h"
+#include "../../robots/catoms3D/catoms3DBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../utils/trace.h"
+#include "catoms3DMotionRules.h"
 
 //!< \namespace Catoms3D
 namespace Catoms3D {
@@ -167,11 +167,11 @@ public:
      */
     virtual void linkBlock(const Cell3DPosition &pos) override;
 
-    virtual void glDraw() override;
-    virtual void glDrawId() override;
-    virtual void glDrawIdByMaterial() override;
-    virtual void glDrawSpecificBg() override;
-    virtual void updateGlData(BuildingBlock *bb) override;
+    void glDraw() override;
+    void glDrawId() override;
+    void glDrawIdByMaterial() override;
+    void glDrawBackground() override;
+    void updateGlData(BuildingBlock *bb) override;
 
     using World::updateGlData; // Suppresses hiding warning
     void updateGlData(Catoms3DBlock*blc, const Vector3D &position);

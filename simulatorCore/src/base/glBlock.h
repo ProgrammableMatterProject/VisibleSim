@@ -8,10 +8,10 @@
 #ifndef GLBLOCK_H_
 #define GLBLOCK_H_
 #include <string>
-#include "gui/shaders.h"
-#include "math/vector3D.h"
-#include "utils/color.h"
-#include "utils/tDefs.h"
+#include "../gui/shaders.h"
+#include "../math/vector3D.h"
+#include "../utils/color.h"
+#include "../utils/tDefs.h"
 
 namespace ObjLoader {
 class ObjLoader;

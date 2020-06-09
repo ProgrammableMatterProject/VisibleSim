@@ -12,11 +12,11 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/blinkyBlocks/blinkyBlocksWorld.h"
-#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
-#include "robots/blinkyBlocks/blinkyBlocksEvents.h"
-#include "utils/configExporter.h"
-#include "utils/trace.h"
+#include "blinkyBlocksWorld.h"
+#include "blinkyBlocksBlock.h"
+#include "blinkyBlocksEvents.h"
+#include "../../utils/configExporter.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 
@@ -112,11 +112,27 @@ void BlinkyBlocksWorld::glDraw() {
         isBlinkingBlocks |= ((BlinkyBlocksGlBlock*)pair.second)->isHighlighted;
     }
     unlock();
+    glPopMatrix();
 
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
 
-    glDrawBackground();
+    lattice->glDraw();
+}
+
+void BlinkyBlocksWorld::glDrawShadows() {
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+    glDisable(GL_TEXTURE_2D);
+    lock();
+    for (const auto& pair : mapGlBlocks) {
+        ((BlinkyBlocksGlBlock*)pair.second)->glDraw(objBlock);
+    }
+    unlock();
+    glPopMatrix();
+
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
 
     lattice->glDraw();
     glPopMatrix();
@@ -149,7 +165,7 @@ void BlinkyBlocksWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void BlinkyBlocksWorld::glDrawSpecificBg() {
+void BlinkyBlocksWorld::glDrawBackground() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
         gray[]={0.2f,0.2f,0.2f,1.0};
     glPopMatrix();

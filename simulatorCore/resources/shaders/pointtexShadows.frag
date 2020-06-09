@@ -1,9 +1,12 @@
 varying vec4 diffuse,specular,ambientGlobal,ambient;
 varying vec3 ecPos,normal;
 uniform sampler2D tex;
+uniform sampler2DShadow shadowMap;
 uniform bool textureEnable;
 
 void main() {
+	float shade = clamp(shadow2DProj(shadowMap, gl_TexCoord[1]).r, 0.5, 1.0);
+
 	vec4 texel;
 	vec4 color = ambientGlobal;
 	if (textureEnable) {
@@ -25,7 +28,7 @@ void main() {
 
 		float NdotL = max(dot(n,L),0.0);
 		float Ispec = min(pow(max(dot(R,E),0.0),0.3*gl_FrontMaterial.shininess),1.0);
-        color += texel * NdotL + Ispec * specular;
+        color += shade*(texel * NdotL + Ispec * specular);
 	}
 	gl_FragColor = vec4(color.rgb,texel.a);
 }

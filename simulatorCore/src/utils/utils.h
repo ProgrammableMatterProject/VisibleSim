@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
+#include<bits/stdc++.h>
 
 #include "utils/tDefs.h"
 
@@ -131,6 +132,14 @@ std::string int_to_hex_str( T i, int width)
 
 char *myBasename(char const *path);
 std::string myBasename(const std::string& path);
+
+inline void toLowercase(std::string& str) {
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+}
+
+inline void toUppercase(std::string& str) {
+    transform(str.begin(), str.end(), str.begin(), ::toupper);
+}
 
 } // namespace utils
 

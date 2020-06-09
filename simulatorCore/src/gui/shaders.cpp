@@ -1,6 +1,6 @@
-#include "gui/shaders.h"
-#include "utils/trace.h"
-#include "utils/color.h"
+#include "../gui/shaders.h"
+#include "../utils/trace.h"
+#include "../utils/color.h"
 
 GLuint depth_tex,id_fb,color_rb;
 bool useShaders=true;
@@ -85,58 +85,66 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
     return prog;
 }
 
-void initShaders() {
+void initShaders(bool activateShadows) {
 #ifdef DEBUG_GRAPHICS
     OUTPUT << "initShaders" << endl;
 #endif
-  glewInit();
+    glewInit();
 
-  glClearColor (0.6f, 0.6f, 0.6f, 1.0f);	// Black Background
-  glClearDepth (1.0f);						// Depth Buffer Setup
-  glDepthFunc (GL_LEQUAL);					// The Type Of Depth Testing (Less Or Equal)
-  glEnable (GL_DEPTH_TEST);					// Enable Depth Testing
-  glShadeModel (GL_SMOOTH);					// Select Smooth Shading
-  glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Set Perspective Calculations To Most Accurate
+    glClearDepth (1.0f);						// Depth Buffer Setup
+    glDepthFunc (GL_LEQUAL);					// The Type Of Depth Testing (Less Or Equal)
+    glEnable (GL_DEPTH_TEST);					// Enable Depth Testing
+    glShadeModel (GL_SMOOTH);					// Select Smooth Shading
+    glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Set Perspective Calculations To Most Accurate
 
-  shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
-                              "../../simulatorCore/resources/shaders/pointtex.frag");
-  glEnable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
+    if (activateShadows) {
+      shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtexShadows.vert",
+                                  "../../simulatorCore/resources/shaders/pointtexShadows.frag");
+    } else {
+      shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
+                                  "../../simulatorCore/resources/shaders/pointtex.frag");
+    }
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
-  locTex = glGetUniformLocationARB(shadersProgram, "tex");
-  if (locTex==-1) {
+    locTex = glGetUniformLocationARB(shadersProgram, "tex");
+    if (locTex==-1) {
       ERRPUT << "erreur affectation : tex\n";
-  }
-  locShadowMap = glGetUniformLocationARB(shadersProgram, "shadowMap");
-  if (locShadowMap ==-1) {
-      ERRPUT << "erreur affectation : shadowMap\n";
-  }
-  locTextureEnable = glGetUniformLocationARB(shadersProgram, "textureEnable");
-  if (locTextureEnable  ==-1) {
+    }
+    locTextureEnable = glGetUniformLocationARB(shadersProgram, "textureEnable");
+    if (locTextureEnable  ==-1) {
       ERRPUT << "erreur affectation : textureEnable\n";
-  }
+    }
 
-  // texture pour le shadow mapping
-  glGenFramebuffersEXT(1, &id_fb);	// identifiant pour la texture
-  glGenTextures(1, &depth_tex);													// and a new texture used as a color buffer
-  glGenRenderbuffersEXT(1, &color_rb);											// And finaly a new depthbuffer
-
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,id_fb);	// switch to the new framebuffer
-  // initialize color texture
-  glBindTexture(GL_TEXTURE_2D, depth_tex);										// Bind the colorbuffer texture
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);				// make it linear filterd
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-  glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL );
-  glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D, depth_tex, 0); // attach it to the framebuffer
-
-  // initialize depth renderbuffer
-  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, color_rb);							// bind the depth renderbuffer
-  glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT,GL_RGBA,2048, 2048);	// get the data space for it
-  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_RENDERBUFFER_EXT, color_rb); // bind it to the renderbuffer
-
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    if (activateShadows) {
+        locShadowMap = glGetUniformLocationARB(shadersProgram, "shadowMap");
+        if (locShadowMap == -1) {
+            ERRPUT << "erreur affectation : shadowMap\n";
+        }
+        // texture pour le shadow mapping
+        glGenFramebuffersEXT(1, &id_fb);	// id for the frameBuffer
+        glGenTextures(1, &depth_tex);		// and a new texture used as a color buffer
+        glGenRenderbuffersEXT(1, &color_rb); // And finaly a new depthbuffer
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,id_fb);	// switch to the new framebuffer
+        // initialize color texture
+        glBindTexture(GL_TEXTURE_2D, depth_tex);										// Bind the colorbuffer texture
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);				// make it linear filterd
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL );
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D, depth_tex, 0); // attach it to the framebuffer
+        // initialize depth renderbuffer
+        glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, color_rb);							// bind the depth renderbuffer
+        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT,GL_RGBA,2048, 2048);	// get the data space for it
+        glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_RENDERBUFFER_EXT, color_rb); // bind it to the renderbuffer
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    } else {
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);				// make it linear filterd
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    }
 
 #ifdef DEBUG_GRAPHICS
   OUTPUT << "Shaders initialized." << endl;
@@ -174,8 +182,7 @@ void shadowedRenderingStep2(int w,int h) {
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0); // d�sactive le rendu en texture
 
     glClearDepth (1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // done by background management
 }
 
 void shadowedRenderingStep3(Camera *camera) {
@@ -198,7 +205,6 @@ void shadowedRenderingStep3(Camera *camera) {
     mat.inverse(mat_1);
 
     glMatrixMode(GL_TEXTURE);
-
     glLoadMatrixf(mBias);			// The bias matrix to convert to a 0 to 1 ratio
 
     glMultMatrixf(camera->ls.matP);
@@ -227,7 +233,6 @@ void shadowedRenderingStep3(Camera *camera) {
     }
 
     glUniform1iARB(locTex, 0);
-
     glUniform1iARB(locShadowMap , 1);
 
     glActiveTextureARB(GL_TEXTURE1_ARB);
@@ -239,13 +244,12 @@ void shadowedRenderingStep3(Camera *camera) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC_ARB, GL_LEQUAL);
 
     glActiveTextureARB(GL_TEXTURE0_ARB);
-    glEnable(GL_TEXTURE_2D);
 }
 
 void shadowedRenderingStep4() {
-    glActiveTextureARB(GL_TEXTURE1);
+    glActiveTextureARB(GL_TEXTURE1_ARB);
     glDisable(GL_TEXTURE_2D);
-    glActiveTextureARB(GL_TEXTURE0);
+    glActiveTextureARB(GL_TEXTURE0_ARB);
     glDisable(GL_TEXTURE_2D);
 
     if(useShaders) glUseProgramObjectARB(0);
@@ -280,3 +284,46 @@ GLint shaderCompilationStatus(GLhandleARB shader) {
     }
     return compile_status;
 }
+
+void noshadowRenderingStart(Camera *camera) {
+    glClearDepth (1.0f);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    camera->glProjection();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    camera->glLookAt();
+    glColor3f(1,1,1);												// set the color to white
+
+    // placement de la source de lumière
+    glLightfv(GL_LIGHT0, GL_POSITION, camera->ls.pos);
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, camera->ls.dir );
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle);
+
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE.rgba);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, WHITE.rgba);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE.rgba);
+
+// activation du programme de shader
+    if(useShaders && shadersProgram) {
+        glUseProgramObjectARB(shadersProgram);
+    } else {
+        glEnable(GL_LIGHTING);
+    }
+
+    glUniform1iARB(locTex, 0);
+    glBindTexture(GL_TEXTURE_2D,0);
+    enableTexture(true);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+}
+
+void noshadowRenderingStop() {
+    glActiveTexture(GL_TEXTURE0);
+    glDisable(GL_TEXTURE_2D);
+
+    if(useShaders) glUseProgramObjectARB(0);
+    glFlush ();	// Flush The GL Rendering Pipeline
+}
+
+
