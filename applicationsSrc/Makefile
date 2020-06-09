@@ -1,4 +1,4 @@
-SUBDIRS = rainbow changingDistance gameOfLife stressTestCatoms stressTestSB
+SUBDIRS = tetris gameOfLife gameOfLife3D
 
 .PHONY: subdirs $(SUBDIRS) test
 
