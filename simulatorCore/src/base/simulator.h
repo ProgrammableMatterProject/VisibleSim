@@ -17,6 +17,7 @@
 #include "world.h"
 #include "../utils/commandLine.h"
 #include "../base/blockCode.h"
+#include "../replay/replayExporter.h"
 
 using namespace std;
 

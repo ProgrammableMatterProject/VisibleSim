@@ -41,6 +41,10 @@ private:
     bool fullScreen = false;
     bool terminalOnly = false;
     string configFile = "config.xml";
+    string appName;
+
+    bool replayEnabled = false;
+    string replayFilename;
 
     bool simulationSeedSet = false;
     int simulationSeed = 0;
@@ -52,6 +56,11 @@ public:
     ~CommandLine() {};
 
     void print() const;
+
+    string getApplicationName() const { return appName; }
+
+    bool isReplayEnabled() const{ return replayEnabled; }
+    string getReplayFilename() const { return replayFilename; }
 
     bool randomWorldRequested() const;
     int getRandomTopology() const { return topology; }

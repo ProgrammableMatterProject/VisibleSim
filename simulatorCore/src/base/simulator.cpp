@@ -23,6 +23,7 @@
 #include "../csg/csgParser.h"
 //#include "../csg/csgUtils.h"
 #include "../utils/global.h"
+#include "../replay/replayExporter.h"
 
 using namespace std;
 
@@ -1082,6 +1083,10 @@ void Simulator::startSimulation(void) {
     scheduler->setState(Scheduler::NOTSTARTED);
     if (scheduler->willAutoStart())
         scheduler->start(scheduler->getSchedulerMode());
+
+    // Start replay export if enabled
+    if (cmdLine.isReplayEnabled())
+        (void)ReplayExporter::getInstance();
 
     // Enter graphical main loop
     GlutContext::mainLoop();

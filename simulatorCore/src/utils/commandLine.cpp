@@ -51,12 +51,44 @@ CommandLine::CommandLine(int argc, char *argv[], BlockCodeBuilder bcb) {
 }
 
 void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
+    appName = argv[0];
+
     try {
         /* Reading the command line */
         argv++;
         argc--;
         while ( (argc > 0) && (argv[0][0] == '-')) {
             switch(argv[0][1]) {
+                // Composite argument example: --foo 13
+                case '-': {
+                    string varg = string(argv[0] + 2); // argv[0] without "--"
+
+                    if (varg == string("replay")) { //
+                        replayEnabled = true;
+
+                        if (argc > 1 and argv[1] and argv[1][0] != '-') { // filename supplied
+                            try {
+                                replayFilename = string(argv[1]);
+                                argc--;
+                                argv++;
+                            } catch(std::logic_error&) {
+                                stringstream err;
+                                err << "replay filename could not be parsed."
+                                    << " Found replayFilename = " << argv[1] << endl;
+                                throw CLIParsingError(err.str());
+                            }
+
+                            cerr << "--replay option provided with value: "
+                                 << replayFilename << endl;
+                        }
+
+                        cout << "--replay option enabled" << endl;
+                    }
+
+                    break;
+                }
+
+
                 case 'p':   {
                     //if (programPath != "")
                     //   help();

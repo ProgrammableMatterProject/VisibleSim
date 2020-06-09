@@ -106,14 +106,26 @@ void utils::awaitKeyPressed() {
 }
 
 const std::string
-utils::generateTimestampedFilename(const std::string& prefix, const std::string& ext) {
+utils::generateTimestampedFilename(const std::string& prefix,
+                                   const std::string& ext,
+                                   bool includeDate) {
     std::ostringstream out;
 
     time_t now = time(0);
     tm *ltm = localtime(&now);
 
-    out << prefix << "_" << ltm->tm_hour << "_"
-        << ltm->tm_min << "_" << ltm->tm_sec << "." << ext;
+    out << prefix;
+
+    if (includeDate)
+        out << '_' << std::setw(2) << std::setfill('0')
+            << ltm->tm_mday << std::setw(2) << std::setfill('0')
+            << (ltm->tm_mon + 1)
+            << (ltm->tm_year + 1900);
+
+    out << "_" << ltm->tm_hour << "_"
+        << ltm->tm_min << "_" << ltm->tm_sec;
+
+    out << "." << ext;
 
     return out.str();
 }
