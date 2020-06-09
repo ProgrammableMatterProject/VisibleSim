@@ -215,8 +215,8 @@ int TetrisCode::pixelCalculation()
         pixelWCoord = width;
         roleInPixel = ALONE;
         stringstream strstm;
-            strstm << "Role is ALONE, pixel is " << pixelHCoord << "," << pixelWCoord;
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
+        strstm << "Role is ALONE, pixel is " << pixelHCoord << "," << pixelWCoord;
+        scheduler->trace(strstm.str(), module->blockId, GREEN);
     }
     else
     {
@@ -299,6 +299,15 @@ int TetrisCode::pixelCalculation()
     else
     {
         appear_module = false;
+    }
+
+    if (pixelHCoord + pixelWCoord == 0)
+    {
+        module->setColor(MAGENTA);
+    }
+    else
+    {
+        module->setColor(WHITE);
     }
     return 1;
 }
@@ -401,6 +410,7 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
     data->position = position;
     if (roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
     {
+        console<<"send right pixel ";
         if (position == 1)
         {
             data->position = 2;
@@ -414,6 +424,7 @@ void TetrisCode::sendTmn1() // NB : the first tetramino doesn't rotate (square)
             if (rightItf != nullptr and rightItf->isConnected())
             {
                 sendMessage("Tmn 1 Message", new MessageOf<TmnData *>(TMN1_MSG_ID, data), rightItf, 0, 0);
+                console<<"sent position = "<<data->position<<"\n";
             }
         }
     }
