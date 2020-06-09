@@ -1,8 +1,7 @@
 #include "tetrisCode.hpp"
 #include "utils/random.h"
 #include "utils.cpp"
-#include <iostream>
-#include <array>
+#include <algorithm>
 
 TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), module(host)
 {
@@ -16,14 +15,9 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
                          std::bind(&TetrisCode::myCoordsMsgFunc, this,
                                    std::placeholders::_1, std::placeholders::_2));
 
-    // Registers a callback (mySpanTreeMsgFunc) to the message of type ?
-    // addMessageEventFunc2(SPANTREE_ID,
-    //                      std::bind(&TetrisCode::mySpanTreeMsgFunc, this,
-    //                                std::placeholders::_1, std::placeholders::_2));
-
-    // Registers a callback (myReadyMsgFun) to the message of type ?
-    addMessageEventFunc2(READYMSG_ID,
-                         std::bind(&TetrisCode::myReadyMsgFunc, this,
+    // Registers a callback (myCoordsMsgFunc) to the message of type ?
+    addMessageEventFunc2(BACKMSG_ID,
+                         std::bind(&TetrisCode::myBackMsgFunc, this,
                                    std::placeholders::_1, std::placeholders::_2));
 
     // Registers a callback (myMaxHeightMsgFunc) to the message of type ?
@@ -70,28 +64,29 @@ void TetrisCode::startup()
 
 void TetrisCode::sendCoords()
 {
-    stringstream strstm;
-    strstm << "coords : " << height << "," << width << "max dims : " << maxHeight << "," << maxWidth << " tree : " << nbSpanTree;
-    scheduler->trace(strstm.str(), module->blockId, MAGENTA);
-    if (topItf != nullptr and topItf->isConnected())
+    if (topItf != parent && topItf != nullptr and topItf->isConnected())
     {
-        CoordsData *data = new CoordsData(height + 1, width, nbSpanTree);
+        CoordsData *data = new CoordsData(height + 1, width, spanTree);
         sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), topItf, 0, 0);
+        nbBackMsg += 1;
     }
-    if (height > 0 and bottomItf != nullptr and bottomItf->isConnected()) // negative height is not sent
+    if (height > 0 and bottomItf !=parent and bottomItf != nullptr and bottomItf->isConnected()) // negative height is not sent
     {
-        CoordsData *data = new CoordsData(height - 1, width, nbSpanTree);
+        CoordsData *data = new CoordsData(height - 1, width, spanTree);
         sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), bottomItf, 0, 0);
+        nbBackMsg += 1;
     }
-    if (rightItf != nullptr and rightItf->isConnected())
+    if (rightItf!=parent and rightItf != nullptr and rightItf->isConnected())
     {
-        CoordsData *data = new CoordsData(height, width + 1, nbSpanTree);
+        CoordsData *data = new CoordsData(height, width + 1, spanTree);
         sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), rightItf, 0, 0);
+        nbBackMsg += 1;
     }
-    if (width > 0 and leftItf != nullptr and leftItf->isConnected()) // negative width is not sent
+    if (width > 0 and leftItf != parent and leftItf != nullptr and leftItf->isConnected()) // negative width is not sent
     {
-        CoordsData *data = new CoordsData(height, width - 1, nbSpanTree);
+        CoordsData *data = new CoordsData(height, width - 1, spanTree);
         sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), leftItf, 0, 0);
+        nbBackMsg += 1;
     }
 }
 
@@ -99,12 +94,22 @@ void TetrisCode::myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
 {
     MessageOf<CoordsData *> *msg = static_cast<MessageOf<CoordsData *> *>(_msg.get());
     CoordsData *msgData = *msg->getData();
-    if (height < msgData->height || width < msgData->width)
+
+    //The coordinates have to be better on at least one of the dimensions, and not worse on the other
+    if ((height < msgData->height && width <= msgData->width) || (height <= msgData->height && width < msgData->width))
     {
         height = msgData->height;
         width = msgData->width;
-        nbSpanTree = msgData->nbTree;
+        spanTree = msgData->nbTree;
+        nbBackMsg = 0 ;
+        parent = sender ;
+
         sendCoords();
+        
+        if (nbBackMsg == 0)
+        {
+            sendMessage("Back Message", new MessageOf<int>(BACKMSG_ID, spanTree), parent, 0, 0);
+        }
 
         if (height > maxHeight)
         {
@@ -119,91 +124,33 @@ void TetrisCode::myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
             pixelCalculation();
         }
     }
-    else
+    else if (msgData->nbTree == spanTree)
     {
-        stringstream strstm;
-        strstm << "coords refused : my coords " << height << "," << width << " VS proposed coords : " << msgData->height << "," << msgData->width;
-        scheduler->trace(strstm.str(), module->blockId, CYAN);
+        sendMessage("Back Message", new MessageOf<int>(BACKMSG_ID, spanTree), sender, 0, 0);
     }
 };
 
-// void TetrisCode::sendSpanTree()
-// {
-//     spanNeighbors = 0;
-//     if (topItf != nullptr and topItf->isConnected())
-//     {
-//         sendMessage("Spanning tree Message", new MessageOf<unsigned int>(SPANTREE_ID, nbSpanTree), topItf, 0, 0);
-//         spanNeighbors += 1;
-//     }
-//     if (bottomItf != nullptr and bottomItf->isConnected())
-//     {
-//         sendMessage("Spanning tree Message", new MessageOf<unsigned int>(SPANTREE_ID, nbSpanTree), bottomItf, 0, 0);
-//         spanNeighbors += 1;
-//     }
-//     if (rightItf != nullptr and rightItf->isConnected())
-//     {
-//         sendMessage("Spanning tree Message", new MessageOf<unsigned int>(SPANTREE_ID, nbSpanTree), rightItf, 0, 0);
-//         spanNeighbors += 1;
-//     }
-//     if (leftItf != nullptr and leftItf->isConnected())
-//     {
-//         sendMessage("Spanning tree Message", new MessageOf<unsigned int>(SPANTREE_ID, nbSpanTree), leftItf, 0, 0);
-//         spanNeighbors += 1;
-//     }
-// }
-
-// void TetrisCode::mySpanTreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
-// {
-//     MessageOf<unsigned int> *msg = static_cast<MessageOf<unsigned int> *>(_msg.get());
-//     unsigned int msgData = *msg->getData();
-//     if (nbSpanTree == msgData)
-//     {
-//         spanNeighbors -= 1;
-//     }
-//     if (spanNeighbors <= 0)
-//     {
-//         ready = true;
-//         sendReady();
-//     }
-// }
-
-void TetrisCode::sendReady()
-{
-    nbReadyNghb = 0;
-    if (topItf != nullptr and topItf->isConnected())
-    {
-        sendMessage("Ready Message", new MessageOf<unsigned int>(READYMSG_ID, nbSpanTree), topItf, 0, 0);
-        nbReadyNghb += 1;
-    }
-    if (bottomItf != nullptr and bottomItf->isConnected())
-    {
-        sendMessage("Ready Message", new MessageOf<unsigned int>(READYMSG_ID, nbSpanTree), bottomItf, 0, 0);
-        nbReadyNghb += 1;
-    }
-    if (rightItf != nullptr and rightItf->isConnected())
-    {
-        sendMessage("Ready Message", new MessageOf<unsigned int>(READYMSG_ID, nbSpanTree), rightItf, 0, 0);
-        nbReadyNghb += 1;
-    }
-    if (leftItf != nullptr and leftItf->isConnected())
-    {
-        sendMessage("Ready Message", new MessageOf<unsigned int>(READYMSG_ID, nbSpanTree), leftItf, 0, 0);
-        nbReadyNghb += 1;
-    }
-}
-void TetrisCode::myReadyMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+void TetrisCode::myBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
     MessageOf<unsigned int> *msg = static_cast<MessageOf<unsigned int> *>(_msg.get());
     unsigned int msgData = *msg->getData();
-    if (msgData == nbSpanTree)
+    
+    if(msgData == spanTree)
     {
-        nbReadyNghb -= 1;
+        nbBackMsg -= 1 ;
     }
-    //if the module is the root of the tree, and all neighbors are ready, a tetramino can be created
-    if (module->blockId == nbSpanTree && nbReadyNghb == 0)
+    if (nbBackMsg == 0)
     {
-        nbTmn += 1;
-        sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+        //if the module is the root of the tree, and all neighbors are ready, a tetramino can be created
+        if (module->blockId == spanTree)
+        {
+            nbTmn += 1;
+            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+        }
+        else
+        {
+            sendMessage("Back Message", new MessageOf<int>(BACKMSG_ID, spanTree), parent, 0, 0);
+        }
     }
 }
 
@@ -256,7 +203,6 @@ void TetrisCode::myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
 
 int TetrisCode::pixelCalculation()
 {
-    module->setColor(Colors[(pixelHCoord + pixelWCoord) % NB_COLORS]);
     if (maxHeight < MIN_HEIGHT || maxWidth < MIN_WIDTH) //The set is too small to display a tetris game
     {
         return 0;
@@ -319,7 +265,6 @@ int TetrisCode::pixelCalculation()
     if (height == (totalHNbPixels - 1) * sizeOfPixel && width == (totalWNbPixels / 2) * sizeOfPixel)
     {
         appear_module = true;
-        module->setColor(CYAN);
     }
     else
     {
@@ -348,6 +293,7 @@ void TetrisCode::myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
 
 void TetrisCode::tmnAppearance()
 {
+    position == 1 ;
     int r = (int)rand();
     tmn = 1; // r % 7 + 1;
     r = (int)rand();

@@ -5,6 +5,7 @@
 #include "robots/blinkyBlocks/blinkyBlocksWorld.h"
 #include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
 #include "utils/color.h"
+#include <vector>
 
 // Possible roles of modules in a pixel
 static const int ALONE = 0; //if the pixel's size is 1x1
@@ -104,13 +105,21 @@ static const int NO_COLOR = 6; //color if the module doesn't belong to any tetra
 
 //Message IDs
 static const int COORDSMSG_ID = 1001;
+static const int BACKMSG_ID = 1002;
 // static const int SPANTREE_ID = 1002;
-static const int READYMSG_ID = 1003;
+// static const int READYMSG_ID = 1003;
+// static const int CONFMSG_ID = 1002;
 static const int MAXHEIGHTMSG_MSG_ID = 1004;
 static const int MAXWIDTHMSG_MSG_ID = 1005;
 static const int NEWTMNMSG_ID = 1006;
 static const int TMN1_MSG_ID = 1007;
 static const int TMN2_MSG_ID = 1008;
+
+//IDs of the interfaces
+static const int topId = 0;
+static const int bottomId = 1;
+static const int rightId = 2;
+static const int leftId = 3;
 
 //IDs of the interfaces, to order them depending on the rotation of the tetramino (the north itf is always at the top of the tetramino)
 static const int northId = 0;
@@ -128,17 +137,18 @@ private:
     P2PNetworkInterface *bottomItf = nullptr;
     P2PNetworkInterface *rightItf = nullptr;
     P2PNetworkInterface *leftItf = nullptr;
-    int height = 0;                            //"vertical" coordinate of the module -> to initialize
-    int width = 0;                             //"horizontal" coordinate of the module -> to initialize
-    unsigned int nbSpanTree = module->blockId; //nb of the spanning tree the module belongs to
-    int spanNeighbors = 0;                     //nb of neighbors that need to confirm that they belong to the same spanning tree than this module
-    bool ready = false;                        //true when all neighbors belongs to the same spanning tree as this module
-    int nbReadyNghb = 0;                       //nb of ready neighbors
-    int maxHeight = 0;                         //maximum height of the BBs set
-    int maxWidth = 0;                          //maximum width of the BBs set
-    int pixelHCoord = 0;                       //"vertical" coordinate of the pixel the module belongs to
-    int pixelWCoord = 0;                       //"horizontal" coordinate of the pixel the module belongs to
-    int roleInPixel = 100;                     // role of the module in the pixel (core, border, corner)
+    int height = 0;                          //"vertical" coordinate of the module -> to initialize
+    int width = 0;                           //"horizontal" coordinate of the module -> to initialize
+    unsigned int spanTree = module->blockId; //nb of the spanning tree the module belongs to
+    int nbBackMsg = 0;                       //number of back messages needed to be ready to start the game
+    P2PNetworkInterface *parent = nullptr;   //interface that sent the current spanning tree
+
+    std::vector<bool> readyNghb; //true if the neighbors has confirmed they're ready to start the game
+    int maxHeight = 0;           //maximum height of the BBs set
+    int maxWidth = 0;            //maximum width of the BBs set
+    int pixelHCoord = 0;         //"vertical" coordinate of the pixel the module belongs to
+    int pixelWCoord = 0;         //"horizontal" coordinate of the pixel the module belongs to
+    int roleInPixel = 100;       // role of the module in the pixel (core, border, corner)
 
     bool appear_module = false; //true if the module is the one which picks the form, rotation and color of the new tetramino
     int nbTmn = 0;              //number of the current moving tetramino
@@ -172,28 +182,11 @@ public:
     void myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
-    @brief Message sender to all neighbors of the number of the spanning tree the module belongs to    
-    */
-    // void sendSpanTree();
-
-    /**
-    * @brief Message handler for the message 'SpanTreeMsg'
+    * @brief Message handler for the message 'BackMsg'
     * @param _msg Pointer to the message received by the module, requires casting
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
-    // void mySpanTreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
-
-    /**
-    @brief Message sender to all neighbors that the module is ready to start the game : all of its neighbors belong to the same spanning tree as itself
-    */
-    void sendReady();
-
-    /**
-    * @brief Message handler for the message 'ReadyMsg'
-    * @param _msg Pointer to the message received by the module, requires casting
-    * @param sender Connector of the module that has received the message and that is connected to the sender
-    */
-    void myReadyMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+    void myBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     @brief Message sender of int to all neighbors
