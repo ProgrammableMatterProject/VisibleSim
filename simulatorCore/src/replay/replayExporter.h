@@ -12,7 +12,7 @@
 
 #include <fstream>
 
-#include "utils/exceptions.h"
+#include "../utils/exceptions.h"
 
 using namespace std;
 

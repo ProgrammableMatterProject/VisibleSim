@@ -21,7 +21,6 @@
 #include "../robots/catoms3D/catoms3DRotationEvents.h"
 #include "../csg/csg.h"
 #include "../csg/csgParser.h"
-//#include "../csg/csgUtils.h"
 #include "../utils/global.h"
 #include "../replay/replayExporter.h"
 
@@ -87,6 +86,10 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
                    << TermColor::Reset << endl;
             exit(EXIT_FAILURE);
         }
+    }
+
+    if (replayEnabled) {
+        ReplayExporter::singleton = new ReplayExporter();
     }
 }
 
