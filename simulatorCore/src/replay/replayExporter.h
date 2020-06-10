@@ -39,6 +39,12 @@ class ReplayExporter {
     streampos keyFramesIndexPosDebug; //!< @see keyFramesIndexPos but for clear-text debug file
 
     /**
+     * Keeps track of all key frames that have been written to the files.
+     *  matching their position in the file to their date in the simulation
+     */
+    std::map<Time, streampos> keyFramesIndex;
+
+    /**
      * @return a filename string with format replay_<appName>_<confName>_timestamp.vs
      */
     string buildExportFilename() const;
@@ -97,7 +103,11 @@ public:
 
 
     /**
-     * Saves a keyFrame
+     * Writes a key frame to the export file and save its location to the index.
+     * Key frame format:
+     * [Number of modules in frame]
+     * > Then for each module:
+     * [BID][Position XYZ][Orientation][Color RGB]
      */
     void writeKeyFrame();
 

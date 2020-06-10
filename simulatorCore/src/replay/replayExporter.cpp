@@ -115,8 +115,29 @@ void ReplayExporter::writeHeader() {
 
 void ReplayExporter::writeKeyFramesIndex() {
     //@TODO PTHY/BP
+
 }
 
 void ReplayExporter::writeKeyFrame() {
-    //@TODO PTHY/BP
+    Time date = BaseSimulator::getScheduler()->now();
+
+    keyFramesIndex.insert(make_pair(date, exportFile->tellp()));
+
+    size_t nbModules = BaseSimulator::getWorld()->lattice->nbModules;
+    exportFile->write((char*)&nbModules, sizeof(size_t));
+    if (debug) {
+        *debugFile << "-- KEY FRAME #" << keyFramesIndex.size()
+                   << " (t = " << date << ") --"  << endl;
+        *debugFile << nbModules << endl;
+    }
+
+    for (const pair<bID, BuildingBlock*>& pair:BaseSimulator::getWorld()->buildingBlocksMap) {
+        pair.second->serialize(*exportFile);
+
+        if (debug) pair.second->serialize_cleartext(*debugFile);
+    }
+
+    if (debug) {
+        *debugFile << "-- END KEY FRAME #" << keyFramesIndex.size() << endl;
+    }
 }
