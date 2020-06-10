@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no" ?>
+
+<world gridSize="11,10,10" windowSize="1800,900">
+	
+	<blockList color="0,255,0" size="1,1,1" blockSize="40,40,41" >
+
+  <!-- This configures a moving pattern -->
+		<blocksLine plane="0" line=" 5" values="1111111111"/>
+		<blocksLine plane="1" line=" 5" values="1111111111"/>
+		<blocksLine plane="2" line=" 5" values="1111111111"/>
+		<blocksLine plane="3" line=" 5" values="1111111111"/>
+		<blocksLine plane="4" line=" 5" values="1111111111"/>
+		<blocksLine plane="5" line=" 5" values="1111111111"/>
+		<blocksLine plane="6" line=" 5" values="1111111111"/>
+		<blocksLine plane="7" line=" 5" values="1111101111"/>
+		<blocksLine plane="7" line=" 5" values="0000010000" isTarget="true" color="255,128,128"/>
+		
+ 
+
+	</blockList>
+</world>
+
+
