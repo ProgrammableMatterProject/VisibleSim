@@ -94,6 +94,10 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     auto pausedTime = systemStartTime - systemStartTime; // zero by default
     cout << TermColor::SchedulerColor << "Scheduler : start order received " << 0 << TermColor::Reset << endl;
 
+    // Write first key frame
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeKeyFrame(0);
+
     switch (schedulerMode) {
     case SCHEDULER_MODE_FASTEST:
         OUTPUT << "fastest mode scheduler\n" << endl;
@@ -102,6 +106,10 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
             do {
                   while (!eventsMap.empty()  || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
                         hasProcessed = true;
+
+                        if (ReplayExporter::isReplayEnabled())
+                            ReplayExporter::getInstance()->writeKeyFrameIfNeeded(currentDate);
+
                         // lock();
                         first = eventsMap.begin();
                         pev = (*first).second;
@@ -204,6 +212,10 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 first=eventsMap.begin();
                 pev = (*first).second;
                 while (!eventsMap.empty() && pev->date <= static_cast<uint64_t>(chrono::duration_cast<us>(systemCurrentTimeMax).count())) {
+
+                    if (ReplayExporter::isReplayEnabled())
+                        ReplayExporter::getInstance()->writeKeyFrameIfNeeded(currentDate);
+
                     first=eventsMap.begin();
                     pev = (*first).second;
                     currentDate = pev->date;
@@ -269,8 +281,11 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     terminate.store(true);
 
     // Terminate replay export if enabled
-    if (ReplayExporter::getInstance()->isReplayEnabled())
+    if (ReplayExporter::isReplayEnabled()) {
+        // Export final key frame
+        ReplayExporter::getInstance()->writeKeyFrame(currentDate);
         ReplayExporter::getInstance()->endExport();
+    }
 
     return(NULL);
 }

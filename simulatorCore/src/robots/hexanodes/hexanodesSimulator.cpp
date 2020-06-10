@@ -74,6 +74,7 @@ void HexanodesSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCod
 
     // Finally, add block to the world
     ((HexanodesWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
 } // Hexanodes namespace
