@@ -95,7 +95,8 @@ Simulator::~Simulator() {
     OUTPUT << TermColor::LifecycleColor  << "Simulator destructor" << TermColor::Reset << endl;
 #endif
     delete xmlDoc;
-    delete ReplayExporter::getInstance();
+    if (ReplayExporter::isReplayEnabled())
+        delete ReplayExporter::getInstance();
 
     deleteWorld();
 }

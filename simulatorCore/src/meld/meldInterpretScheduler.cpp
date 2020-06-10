@@ -269,7 +269,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     terminate.store(true);
 
     // Terminate replay export if enabled
-    if (ReplayExporter::getInstance()->isReplayEnabled())
+    if (ReplayExporter::isReplayEnabled())
         ReplayExporter::getInstance()->endExport();
 
     return(NULL);

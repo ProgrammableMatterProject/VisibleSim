@@ -188,7 +188,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
     schedulerThread = NULL;	// No need for the scheduler to delete this thread, it will have terminated already
 
     // Terminate replay export if enabled
-    if (ReplayExporter::getInstance()->isReplayEnabled())
+    if (ReplayExporter::isReplayEnabled())
         ReplayExporter::getInstance()->endExport();
 
     return(NULL);
