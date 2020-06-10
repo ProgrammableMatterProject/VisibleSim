@@ -114,8 +114,28 @@ void ReplayExporter::writeHeader() {
 }
 
 void ReplayExporter::writeKeyFramesIndex() {
-    //@TODO PTHY/BP
+    // Move write head to previously saved index location
+    exportFile->seekp(keyFramesIndexPos);
+    if (debug) debugFile->seekp(keyFramesIndexPosDebug);
 
+    // Write number of index entries
+    size_t nEntries = keyFramesIndex.size();
+    exportFile->write((char*)&nEntries, sizeof(size_t));
+
+    if (debug) {
+        *debugFile << "-- BEGIN KEY FRAME INDEX --" << endl;
+        *debugFile << nEntries << endl;
+    }
+
+    //  and write all key frame pairs (kfp) to file
+    for (const auto& kfp : keyFramesIndex) {
+        exportFile->write((char*)&kfp.first, sizeof(Time));
+        exportFile->write((char*)&kfp.second, sizeof(streampos));
+
+        if (debug) *debugFile << kfp.first << " " << kfp.second << endl;
+    }
+
+    if (debug) *debugFile << "-- END KEY FRAME INDEX --" << endl;
 }
 
 void ReplayExporter::writeKeyFrame() {
@@ -126,7 +146,7 @@ void ReplayExporter::writeKeyFrame() {
     size_t nbModules = BaseSimulator::getWorld()->lattice->nbModules;
     exportFile->write((char*)&nbModules, sizeof(size_t));
     if (debug) {
-        *debugFile << "-- KEY FRAME #" << keyFramesIndex.size()
+        *debugFile << "-- BEGIN KEY FRAME #" << keyFramesIndex.size()
                    << " (t = " << date << ") --"  << endl;
         *debugFile << nbModules << endl;
     }
