@@ -45,6 +45,11 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
                          std::bind(&TetrisCode::myTmn2Func, this,
                                    std::placeholders::_1, std::placeholders::_2));
 
+    // Registers a callback (myTmn3Func) to the message of type E
+    addMessageEventFunc2(TMN3_MSG_ID,
+                         std::bind(&TetrisCode::myTmn3Func, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
     // Initialization of random numbers generator
     srand(Random::getSimulationSeed());
 }
@@ -309,17 +314,16 @@ void TetrisCode::tmnAppearance()
     position = 1;
     update = 1;
     int r = (int)rand();
-    tmn = 2; // r % 7 + 1;
+    tmn = 3; // r % 7 + 1;
     r = (int)rand();
     rotation = r % 4 + 1;
-    if (tmn == 2)
+    //Some tetramino would exceed the set
+    if ((tmn == 2 && rotation == SOUTH) || (tmn == 3 && rotation == NORTH))
     {
-        if (rotation == SOUTH) //The tetramino is too big to start upside down
-        {
-            rotation = NORTH;
-        }
+        position = 3;
     }
-    console<<"rotation = "<<rotation<<"\n";
+
+    console << "rotation = " << rotation << "\n";
     while (color == NO_COLOR)
     {
         r = (int)rand();
@@ -333,6 +337,9 @@ void TetrisCode::tmnAppearance()
     else if (tmn == 2)
     {
         sendTmn2();
+    } else if (tmn==3)
+    {
+        sendTmn3();
     }
 }
 
@@ -576,7 +583,7 @@ void TetrisCode::sendTmn2()
             sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
         }
     }
-    data.position = position ;
+    data.position = position;
     if (!eastBool)
     {
         P2PNetworkInterface *i = itf[eastId];
@@ -600,19 +607,190 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
 
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    console<<"update = "<<update<<" recieved update = "<<msgData.nbupdate<<"\n";
-    if (update<msgData.nbupdate && (tmn != 2 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
+    if (update < msgData.nbupdate && (tmn != 2 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
     {
-        tmn = 2 ;
+        tmn = 2;
         update = msgData.nbupdate;
         rotation = msgData.rotation;
         position = msgData.position;
-        console<<"position = "<<position<<"\n";
         color = msgData.color;
         module->setColor(Colors[color]);
         sendTmn2();
     }
 };
+
+void TetrisCode::sendTmn3()
+{
+    TmnData data = TmnData(update, rotation, position, color);
+    P2PNetworkInterface *itf[4];
+    bool northBool = false;
+    bool eastBool = false;
+    bool southBool = false;
+    bool westBool = false;
+    if (rotation == NORTH)
+    {
+        itf[northId] = topItf;
+        itf[eastId] = rightItf;
+        itf[southId] = bottomItf;
+        itf[westId] = leftItf;
+        northBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+    }
+    else if (rotation == EAST)
+    {
+        itf[northId] = rightItf;
+        itf[eastId] = bottomItf;
+        itf[southId] = leftItf;
+        itf[westId] = topItf;
+        northBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+    }
+    else if (rotation == SOUTH)
+    {
+        itf[northId] = bottomItf;
+        itf[eastId] = leftItf;
+        itf[southId] = topItf;
+        itf[westId] = rightItf;
+        northBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+    }
+    else if (rotation == WEST)
+    {
+        itf[northId] = leftItf;
+        itf[eastId] = topItf;
+        itf[southId] = rightItf;
+        itf[westId] = bottomItf;
+        northBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+    }
+    if (northBool)
+    {
+        if (position == 3)
+        {
+            data.position = 4;
+        }
+        else if (position == 1)
+        {
+            data.position = 3;
+        }
+        if (position == 3 || position == 1)
+        {
+            P2PNetworkInterface *i = itf[northId];
+            if (i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn 3 Message", new MessageOf<TmnData>(TMN3_MSG_ID, data), i, 0, 0);
+            }
+        }
+    }
+    else
+    {
+        P2PNetworkInterface *i = itf[northId];
+        if (i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn 3 Message", new MessageOf<TmnData>(TMN3_MSG_ID, data), i, 0, 0);
+        }
+    }
+    data.position = position;
+    if(southBool)
+    {
+        if (position == 4)
+        {
+            data.position = 3;
+        }
+        else if (position == 3)
+        {
+            data.position = 1;
+        }
+        if (position == 3 || position == 4)
+        {
+            P2PNetworkInterface *i = itf[southId];
+            if (i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn 3 Message", new MessageOf<TmnData>(TMN3_MSG_ID, data), i, 0, 0);
+            }
+        }
+    }
+    else
+    {
+        P2PNetworkInterface *i = itf[southId];
+        if (i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn 3 Message", new MessageOf<TmnData>(TMN3_MSG_ID, data), i, 0, 0);
+        }
+    }
+    data.position = position;
+    if(eastBool)
+    {
+        if (position == 1)
+        {
+            data.position = 2;
+        }
+        if (position == 1)
+        {
+            P2PNetworkInterface *i = itf[eastId];
+            if (i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn 3 Message", new MessageOf<TmnData>(TMN3_MSG_ID, data), i, 0, 0);
+            }
+        }
+    }
+    else
+    {
+        P2PNetworkInterface *i = itf[eastId];
+        if (i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn 3 Message", new MessageOf<TmnData>(TMN3_MSG_ID, data), i, 0, 0);
+        }
+    }
+    data.position = position;
+    if(westBool)
+    {
+        if (position == 2)
+        {
+            data.position = 1;
+        }
+        if (position == 2)
+        {
+            P2PNetworkInterface *i = itf[westId];
+            if (i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn 3 Message", new MessageOf<TmnData>(TMN3_MSG_ID, data), i, 0, 0);
+            }
+        }
+    }
+    else
+    {
+        P2PNetworkInterface *i = itf[westId];
+        if (i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn 3 Message", new MessageOf<TmnData>(TMN3_MSG_ID, data), i, 0, 0);
+        }
+    }
+}
+
+void TetrisCode::myTmn3Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
+    TmnData msgData = *msg->getData();
+    if (update < msgData.nbupdate && (tmn != 3 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
+    {
+        tmn = 3;
+        update = msgData.nbupdate;
+        rotation = msgData.rotation;
+        position = msgData.position;
+        color = msgData.color;
+        module->setColor(Colors[color]);
+        sendTmn3();
+    }
+}
 
 void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
 {
