@@ -16,21 +16,26 @@
 #include "../base/simulator.h"
 
 using namespace BaseSimulator;
+using namespace ReplayTags;
 
 ReplayExporter::ReplayExporter() {
     const string& fnbin = buildExportFilename();
-    const string& fndebug = debugFilenameFromExportFilename(fnbin);
 
     cout << TermColor::BWhite
          << "(replay) exporting simulation data to file: " << TermColor::Reset
          << fnbin << endl;
 
-    cout << TermColor::BWhite
-         << "(replay) exporting replay debug to file: " << TermColor::Reset
-         << fndebug << endl;
-
     exportFile = new ofstream(fnbin, ios::out | ios::binary);
-    debugFile = new ofstream(fndebug, ios::out);
+
+    if (debug) {
+        const string& fndebug = debugFilenameFromExportFilename(fnbin);
+
+        cout << TermColor::BWhite
+             << "(replay) exporting replay debug to file: " << TermColor::Reset
+             << fndebug << endl;
+
+        debugFile = new ofstream(fndebug, ios::out);
+    }
 }
 
 string ReplayExporter::buildExportFilename() const {
@@ -87,5 +92,31 @@ bool ReplayExporter::isReplayEnabled() {
 }
 
 void ReplayExporter::writeHeader() {
+    exportFile->write((char*)&VS_MAGIC, sizeof(u4));
+    exportFile->write((char*)&MODULE_TYPE_BB, sizeof(u1));
+
+    const Cell3DPosition& gridSize = BaseSimulator::getWorld()->lattice->gridSize;
+    exportFile->write((char*)&gridSize, 3 * sizeof(short)); // xyz
+
+    keyFramesIndexPos = exportFile->tellp();
+
+    // cout << "keyFramesIndexPos: " << keyFramesIndexPos << endl;
+
+    if (debug) {
+        debugFile->write((char*)&VS_MAGIC, sizeof(u4)); *debugFile << endl;
+        *debugFile << (short)MODULE_TYPE_BB << endl;
+        *debugFile << gridSize[0] << " " << gridSize[1] << " " << gridSize[2] << endl; // xyz
+
+        keyFramesIndexPosDebug = debugFile->tellp();
+
+        // cout << "keyFramesIndexPosDebug: " << keyFramesIndexPosDebug << endl;
+    }
+}
+
+void ReplayExporter::writeKeyFramesIndex() {
+    //@TODO PTHY/BP
+}
+
+void ReplayExporter::writeKeyFrame() {
     //@TODO PTHY/BP
 }

@@ -23,11 +23,20 @@ using namespace std;
  * @note To be used as a singleton instance
  */
 class ReplayExporter {
-    static inline ReplayExporter* singleton = nullptr; // the singleton instance
+    static inline ReplayExporter* singleton = nullptr; //!< the singleton instance
+
+    static const bool debug = true; //!< Indicates whether to write the debug file or not
 
     static inline const string extension = "vs";
-    ofstream* exportFile = nullptr;     // binary export file
-    ofstream* debugFile = nullptr;      // corresponding clear text export file for debugging
+    ofstream* exportFile = nullptr;     //!< binary export file
+    ofstream* debugFile = nullptr;      //!< corresponding clear text export file for debugging
+
+    /**
+     * Position of the start of the key frames index in the output file
+     *  Used to create the keyFrame index table at the end of the simulation export
+     */
+    streampos keyFramesIndexPos;
+    streampos keyFramesIndexPosDebug; //!< @see keyFramesIndexPos but for clear-text debug file
 
     /**
      * @return a filename string with format replay_<appName>_<confName>_timestamp.vs
@@ -76,17 +85,21 @@ public:
      *
      * [VS_MAGIC][MODULE_TYPE][GRID DIMENSIONS XYZ]
      *
-     * @TODO
      */
     void writeHeader();
 
 
     /**
-     * Writes an index with the position of all keyframes in the replay file,
+     * Writes an index with the position of all keyFrames in the replay file,
      *  indexed by their time
      */
-    void writeKeyframesIndex();
+    void writeKeyFramesIndex();
 
+
+    /**
+     * Saves a keyFrame
+     */
+    void writeKeyFrame();
 
     /**
      * Terminates simulation replay export and properly closes associated files
