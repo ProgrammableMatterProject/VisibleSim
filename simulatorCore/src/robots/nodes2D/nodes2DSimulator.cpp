@@ -74,6 +74,7 @@ void Nodes2DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeB
 
     // Finally, add block to the world
     ((Nodes2DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
 } // Nodes2D namespace
