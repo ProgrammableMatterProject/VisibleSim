@@ -334,7 +334,7 @@ void TetrisCode::tmnAppearance()
     position = 1;
     update = 1;
     int r = (int)rand();
-    tmn = 7; // r % 7 + 1;
+    tmn = r % 7 + 1;
     r = (int)rand();
     rotation = r % 4 + 1;
     //Some tetramino would exceed the set
