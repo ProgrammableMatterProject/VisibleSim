@@ -74,6 +74,8 @@ string ReplayExporter::debugFilenameFromExportFilename(const string& exportFn) c
 
 
 void ReplayExporter::endExport() {
+    writeKeyFramesIndex();
+
     if (exportFile) {
         exportFile->close();
         delete exportFile;
@@ -138,9 +140,14 @@ void ReplayExporter::writeKeyFramesIndex() {
     if (debug) *debugFile << "-- END KEY FRAME INDEX --" << endl;
 }
 
-void ReplayExporter::writeKeyFrame() {
-    Time date = BaseSimulator::getScheduler()->now();
+void ReplayExporter::writeKeyFrameIfNeeded(Time date) {
+    if (date > (lastKeyFrameExportDate + keyFrameSaveFrequency)) {
+        writeKeyFrame(date);
+        lastKeyFrameExportDate = date;
+    }
+}
 
+void ReplayExporter::writeKeyFrame(Time date) {
     keyFramesIndex.insert(make_pair(date, exportFile->tellp()));
 
     size_t nbModules = BaseSimulator::getWorld()->lattice->nbModules;

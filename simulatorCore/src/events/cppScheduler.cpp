@@ -62,6 +62,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
         auto systemStartTime = get_time::now();
         cout << TermColor::SchedulerColor << "" << "Scheduler : start order received " << 0 << TermColor::Reset << endl;
 
+        // Write first key frame
+        if (ReplayExporter::isReplayEnabled())
+            ReplayExporter::getInstance()->writeKeyFrame(0);
+
         switch (schedulerMode) {
             case SCHEDULER_MODE_FASTEST:
                 while(!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
@@ -75,12 +79,16 @@ void *CPPScheduler::startPaused(/*void *param*/) {
                     //~ cout << endl;
                     //
 
-                    // Check that we have not reached the maximum simulation date, if there is one
+                    // Check that we have not reached the maximum simulation date,
+                    //  if there is one
                     if (currentDate > maximumDate) {
                         cout << TermColor::SchedulerColor << "" << "Scheduler : maximum simulation date (" << maximumDate
                              << ") has been reached. Terminating..." << TermColor::Reset << endl;
                         break;
                     }
+
+                    if (ReplayExporter::isReplayEnabled())
+                        ReplayExporter::getInstance()->writeKeyFrameIfNeeded(currentDate);
 
                     if (!eventsMap.empty()) {
                         first=eventsMap.begin();
@@ -122,6 +130,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
                             globalPauseTime += pauseDuration;
                             // cout << "PAUSED FOR: " << static_cast<uint64_t>(chrono::duration_cast<us>(pauseDuration).count()) << endl;
                             // cout << "globalPauseTime2: " << static_cast<uint64_t>(chrono::duration_cast<us>(globalPauseTime).count()) << endl;
+
+                            if (ReplayExporter::isReplayEnabled())
+                                ReplayExporter::getInstance()->
+                                    writeKeyFrameIfNeeded(currentDate);
 
                             first=eventsMap.begin();
                             pev = (*first).second;
@@ -188,8 +200,11 @@ void *CPPScheduler::startPaused(/*void *param*/) {
     schedulerThread = NULL;	// No need for the scheduler to delete this thread, it will have terminated already
 
     // Terminate replay export if enabled
-    if (ReplayExporter::isReplayEnabled())
+    if (ReplayExporter::isReplayEnabled()) {
+        // Export final key frame
+        ReplayExporter::getInstance()->writeKeyFrame(currentDate);
         ReplayExporter::getInstance()->endExport();
+    }
 
     return(NULL);
 }

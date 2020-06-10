@@ -26,8 +26,16 @@ class ReplayExporter {
     static inline ReplayExporter* singleton = nullptr; //!< the singleton instance
 
     static const bool debug = true; //!< Indicates whether to write the debug file or not
+    static inline const string extension = "vs"; //!< Export file extension
 
-    static inline const string extension = "vs";
+    /**
+     * The frequency of key frame export in MICROSECONDS.
+     * Saves a key frame every <N> MICROSECONDS (us)
+     * @attention In MICROSECONDS
+     */
+    static inline const Time keyFrameSaveFrequency = 50000;
+    Time lastKeyFrameExportDate = 0; //!< Date of the last key frame export
+
     ofstream* exportFile = nullptr;     //!< binary export file
     ofstream* debugFile = nullptr;      //!< corresponding clear text export file for debugging
 
@@ -61,9 +69,7 @@ public:
      * Creates and writes the binary header for the simulation data file
      */
     ReplayExporter();
-    virtual ~ReplayExporter() {
-        endExport();
-    }
+    virtual ~ReplayExporter() {}
 
     /**
      * @return the binary export file instance
@@ -103,16 +109,31 @@ public:
 
 
     /**
+     * Compares the date of the last keyframe export with the current simulation date,
+     *  and calls writeKeyFrame if date > (lastKFDate + kfFrequency) or if date = 0
+     * @see writeKeyFrame
+     * @see saveKeyFrameFrequency
+     * @see // lastKeyFrameExportDate
+     * @param date current simulation date
+     */
+    void writeKeyFrameIfNeeded(Time date);
+
+    /**
      * Writes a key frame to the export file and save its location to the index.
      * Key frame format:
      * [Number of modules in frame]
-     * > Then for each module:
+     * > Then for each module (using BuildingBlock::serialize)):
      * [BID][Position XYZ][Orientation][Color RGB]
+     *
+     *
+     * @param date key frame date
+     * @see BuildingBlock::serialize
      */
-    void writeKeyFrame();
+    void writeKeyFrame(Time date);
 
     /**
-     * Terminates simulation replay export and properly closes associated files
+     * Terminates simulation replay export by exporting key frame index
+     *  and properly closes associated files
      * @note Is called at scheduler end by default, or when simulator is deleted
      */
     void endExport();
