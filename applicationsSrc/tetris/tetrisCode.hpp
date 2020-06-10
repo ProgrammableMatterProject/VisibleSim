@@ -112,6 +112,7 @@ static const int NEWTMNMSG_ID = 1006;
 static const int TMN1_MSG_ID = 1007;
 static const int TMN2_MSG_ID = 1008;
 static const int TMN3_MSG_ID = 1009 ;
+static const int TMN4_MSG_ID = 1010 ;
 
 //IDs of the interfaces
 static const int topId = 0;
@@ -254,7 +255,7 @@ public:
     void myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
-    * @brief spread the second tetramino (L)
+    * @brief spread the third tetramino (L)
     */
     void sendTmn3();
 
@@ -264,6 +265,18 @@ public:
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
     void myTmn3Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief spread the fourth tetramino (L in mirror)
+    */
+    void sendTmn4();
+
+    /**
+    * @brief Message handler for the message 'tmn4'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myTmn4Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     * @brief Handler for all events received by the host block
