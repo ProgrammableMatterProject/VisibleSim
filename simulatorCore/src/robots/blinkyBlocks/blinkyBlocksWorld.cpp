@@ -104,7 +104,6 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 void BlinkyBlocksWorld::glDraw() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-    // glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
     glDisable(GL_TEXTURE_2D);
     lock();
     for (const auto& pair : mapGlBlocks) {

@@ -87,10 +87,6 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
             exit(EXIT_FAILURE);
         }
     }
-
-    if (replayEnabled) {
-        ReplayExporter::singleton = new ReplayExporter();
-    }
 }
 
 Simulator::~Simulator() {
