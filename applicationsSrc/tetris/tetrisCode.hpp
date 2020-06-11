@@ -51,20 +51,20 @@ Tetramino 2
 
 Tetramino 3
  ---
-| 4 |
+| 2 |
  ---
-| 3 |
+| 1 |
  --- ---
-| 1 | 2 |
+| 3 | 4 |
  --- ---
 
 Tetramino 4
      ---
-    | 4 |
+    | 2 |
      ---
-    | 3 |
+    | 1 |
  --- ---
-| 2 | 1 |
+| 4 | 3 |
  --- ---
 
 Tetramino 5
@@ -103,6 +103,12 @@ static const int WEST = 4;        //the top of the tetramino is on the left
 
 static const int NO_COLOR = 6; //color if the module doesn't belong to any tetramino => WHITE
 
+//Types of movements of the tetraminos
+static const int NO_MVT = 0;
+static const int DOWN = 1;
+static const int ROT_CK = 2;         //rotation clockwise
+static const int ROT_COUNTER_CK = 3; // rotation counter clockwise
+
 //Message IDs
 static const int COORDSMSG_ID = 1001;
 static const int BACKMSG_ID = 1002;
@@ -116,6 +122,9 @@ static const int TMN4_MSG_ID = 1010;
 static const int TMN5_MSG_ID = 1011;
 static const int TMN6_MSG_ID = 1012;
 static const int TMN7_MSG_ID = 1013;
+static const int TMNBACK_MSG_ID = 1014;
+static const int REINITPIX_MSG_ID = 1015;
+static const int REINITBACK_MSG_ID = 1016;
 
 //IDs of the interfaces
 static const int topId = 0;
@@ -155,12 +164,15 @@ private:
     bool appear_module = false; //true if the module is the one which picks the form, rotation and color of the new tetramino
     int nbTmn = 0;              //number of the current moving tetramino
 
-    bool belongsToTmn = false;  //true if the module is part of a tetramino
     int tmn = NO_TMN;           // represents the type of tetramino the module is part of
     int rotation = NO_ROTATION; //represents the rotation of the tetramino the module is part of
-    int position = 0;           //reprensents the position of the pixel in the tetramino the module is part of
+    int position = NO_POSITION; //reprensents the position of the pixel in the tetramino the module is part of
     int color = NO_COLOR;       //represents the color of the tetramino the module is part of
-    int update = 0;             //number of the update (to prevent infinite loops)
+    int update = 0;             //"id" of the update (to prevent infinite loops)
+    int nbTmnBackMsg = 0;       //nb of back messages needed to update the tetramino
+    bool init = false;          //true if a reinitialization is needed
+    int nbReinit = 0;           //"id" of the reinitialization (to avoid infinite loops)
+    int nbReinitBackMsg = 0;    //nb of back messages needed to be sure that the message of reinitialization have been sent to everyone
 public:
     TetrisCode(BlinkyBlocksBlock *host);
     ~TetrisCode(){};
@@ -235,8 +247,10 @@ public:
 
     /**
     * @brief spread the first tetramino (square)
+    * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn1();
+    void sendTmn1(bool reinit, int movement);
 
     /**
     * @brief Message handler for the message 'tmn1'
@@ -247,8 +261,10 @@ public:
 
     /**
     * @brief spread the second tetramino (column)
+    * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn2();
+    void sendTmn2(bool reinit, int movement);
 
     /**
     * @brief Message handler for the message 'tmn2'
@@ -259,8 +275,10 @@ public:
 
     /**
     * @brief spread the third tetramino (L)
+    * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn3();
+    void sendTmn3(bool reinit, int movement);
 
     /**
     * @brief Message handler for the message 'tmn3'
@@ -271,8 +289,10 @@ public:
 
     /**
     * @brief spread the fourth tetramino (L in mirror)
+    * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn4();
+    void sendTmn4(bool reinit, int movement);
 
     /**
     * @brief Message handler for the message 'tmn4'
@@ -283,8 +303,10 @@ public:
 
     /**
     * @brief spread the fifth tetramino (T)
+    * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn5();
+    void sendTmn5(bool reinit, int movement);
 
     /**
     * @brief Message handler for the message 'tmn5'
@@ -295,8 +317,10 @@ public:
 
     /**
     * @brief spread the sixth tetramino ("chair")
+    * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn6();
+    void sendTmn6(bool reinit, int movement);
 
     /**
     * @brief Message handler for the message 'tmn6'
@@ -307,8 +331,10 @@ public:
 
     /**
     * @brief spread the seventh tetramino ("chair" in mirror)
+    * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn7();
+    void sendTmn7(bool reinit, int movement);
 
     /**
     * @brief Message handler for the message 'tmn7'
@@ -316,6 +342,30 @@ public:
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
     void myTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'tmnback'. Builds a spanning tree inside of the tetramino, to know
+    * when it can be updated, and handles the update.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'ReinitPix'. Spreads that a reinitialization may be needed, 
+    * and then calculates if a reinitialization is needed by this module. If yes, it reinitializes itself.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'Reinitback'. Builds a spanning tree inside of the tetramino, to know
+    * when the reinitialization message have been sent to everyone.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     * @brief Handler for all events received by the host block

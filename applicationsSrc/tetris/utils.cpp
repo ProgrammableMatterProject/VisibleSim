@@ -30,6 +30,21 @@ public:
     }
 };
 
+class ReinitData
+{
+public:
+    int id;
+    int tmn;
+    int movement;
+
+    ReinitData(int nbReinit,int t, int mvt)
+    {
+        id = nbReinit;
+        tmn = t;
+        movement = mvt;
+    }
+};
+
 /*
 stringstream strstm;
 strstm << "Role is BL corner";
