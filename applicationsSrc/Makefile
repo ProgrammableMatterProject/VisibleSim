@@ -1,4 +1,4 @@
-SUBDIRS = tetris gameOfLife gameOfLife3D rainbow comeBack
+SUBDIRS = tetris gameOfLife stressTestSB
 
 .PHONY: subdirs $(SUBDIRS) test
 

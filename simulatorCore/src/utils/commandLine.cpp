@@ -81,7 +81,6 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                             cerr << "--replay option provided with value: "
                                  << replayFilename << endl;
                         }
-
                         cout << "--replay option enabled" << endl;
                     }
 
