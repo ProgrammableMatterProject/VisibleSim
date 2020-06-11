@@ -23,7 +23,7 @@ using namespace BaseSimulator::utils;
 uint64_t Message::nextId = 0;
 uint64_t Message::nbMessages = 0;
 
-bID P2PNetworkInterface::nextId = 0;
+uint64_t P2PNetworkInterface::nextId = 0;
 int P2PNetworkInterface::defaultDataRate = 1000000;
 
 //===========================================================================================================

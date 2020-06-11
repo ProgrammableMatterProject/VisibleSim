@@ -139,6 +139,17 @@ public:
     void endExport();
 
     /**
+     * Write a color update event to the replay file(s)
+     *
+     * Format: [date][bid][color rgb]
+     *
+     * @param date event date
+     * @param bid concerned module id
+     * @param color new color
+     */
+    void writeColorUpdate(Time date, bID bid, const Color& color);
+
+    /**
      * Singleton getter
      * @return the singleton instance
      */

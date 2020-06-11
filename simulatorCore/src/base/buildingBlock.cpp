@@ -242,6 +242,8 @@ void BuildingBlock::setColor(int idColor) {
     color.set(col[0],col[1],col[2],col[3]);
     // getWorld()->updateGlData(this); // separate update color and update position
     getWorld()->updateGlData(this,color);
+
+    ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(), blockId, color);
 }
 
 void BuildingBlock::setColor(const Color &c) {
@@ -249,6 +251,8 @@ void BuildingBlock::setColor(const Color &c) {
         color = c;
         // getWorld()->updateGlData(this); // separate update color and update position
         getWorld()->updateGlData(this,color);
+
+        ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(), blockId, color);
     }
 }
 

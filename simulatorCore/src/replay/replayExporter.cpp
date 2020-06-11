@@ -168,3 +168,7 @@ void ReplayExporter::writeKeyFrame(Time date) {
         *debugFile << "-- END KEY FRAME #" << keyFramesIndex.size() << endl;
     }
 }
+
+void ReplayExporter::writeColorUpdate(Time date, bID bid, const Color& color) {
+
+}

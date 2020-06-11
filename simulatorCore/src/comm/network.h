@@ -38,10 +38,10 @@ typedef std::shared_ptr<Message> MessagePtr;
 
 class Message {
 protected:
-    static bID nextId;
+    static uint64_t nextId;
     static size_t nbMessages;
 public:
-    bID id;
+    uint64_t id;
     //unsigned int id;
     unsigned int type;
     P2PNetworkInterface *sourceInterface, *destinationInterface;
@@ -100,14 +100,14 @@ public :
 
 class P2PNetworkInterface {
 protected:
-    static bID nextId;
+    static uint64_t nextId;
     static int defaultDataRate;
 
     BaseSimulator::Rate* dataRate;
 public:
 
-    bID globalId;
-    bID localId;
+    uint64_t globalId;
+    uint64_t localId;
     deque<MessagePtr> outgoingQueue;
 
     P2PNetworkInterface *connectedInterface;
