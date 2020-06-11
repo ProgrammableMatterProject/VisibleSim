@@ -264,6 +264,10 @@ void BuildingBlock::setPosition(const Cell3DPosition &p) {
         position = p;
         // getWorld()->updateGlData(this); // separate update color and update position
         getWorld()->updateGlData(this,p);
+
+        if (ReplayExporter::isReplayEnabled())
+            ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                               blockId, position, orientation);
     }
 }
 

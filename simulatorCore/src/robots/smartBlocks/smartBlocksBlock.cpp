@@ -136,5 +136,10 @@ void SmartBlocksBlock::serialize_cleartext(std::ofstream &dbStream) {
     throw NotImplementedException(); // @TODO BP
 }
 
+void SmartBlocksBlock::setDisplayedValue(int n) {
+    static_cast<SmartBlocksGlBlock*>(ptrGlBlock)->setDisplayedValue(n);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeDisplayUpdate(getScheduler()->now(), blockId, n);
+}
 
 }

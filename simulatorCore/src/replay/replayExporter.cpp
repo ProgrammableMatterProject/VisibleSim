@@ -68,7 +68,6 @@ string ReplayExporter::buildExportFilename() const {
 string ReplayExporter::debugFilenameFromExportFilename(const string& exportFn) const {
     string str = string(exportFn);
 
-    // @TODO PTHY: DO NOT ASSUME DEFAULT EXTENSION
     std::size_t ext = str.find_last_of(".");
 
     return str.replace(str.begin() + ext, str.end(), ".txt");

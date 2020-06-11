@@ -71,6 +71,7 @@ public:
     bool isMaster; //!< indicates is the block is a master block
     GlBlock *ptrGlBlock; //!< ptr to the GL object corresponding to this block
     BlockCodeBuilder buildNewBlockCode; //!< function ptr to the block's blockCodeBuilder
+    uint8_t orientation; //!< Identifier of the modules connector's along the x-axis
     utils::StatsIndividual *stats = NULL; //!< Module stats collected during the simulation
     /**
      * @brief BuildingBlock constructor

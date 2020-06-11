@@ -16,6 +16,7 @@
 #include "slidingCubesBlock.h"
 #include "../../utils/trace.h"
 #include "../../utils/configExporter.h"
+#include "replay/replayExporter.h"
 
 using namespace std;
 
@@ -171,6 +172,9 @@ void SlidingCubesWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3D
     robotBlock->setPosition(pos);
     robotBlock->setColor(col);
     robotBlock->isMaster=master;
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), robotBlock);
 
     if (lattice->isInGrid(pos)) {
         lattice->insert(robotBlock, pos);

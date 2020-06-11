@@ -16,6 +16,7 @@
 #include "robots/okteen/okteenBlock.h"
 #include "utils/trace.h"
 #include "utils/configExporter.h"
+#include "replay/replayExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -76,6 +77,10 @@ void OkteenWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
     lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     OUTPUT << "ADD #" << blockId << ", "<< pos << endl;
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), module);
+
 }
 
 /**

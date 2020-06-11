@@ -62,6 +62,9 @@ void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     smartBlock->setPosition(pos);
     smartBlock->setColor(col);
 
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), smartBlock);
+
     if (lattice->isInGrid(pos)) {
         lattice->insert(smartBlock, pos);
     } else {

@@ -18,6 +18,7 @@
 #include "deformationEvents.h"
 #include "../../utils/trace.h"
 #include "../../utils/configExporter.h"
+#include "replay/replayExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -198,6 +199,10 @@ void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
 
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                             (datom->blockId, (BaseSimulator::BuildingBlock*)datom));
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), datom);
+
 
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), datom));
 

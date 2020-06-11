@@ -20,6 +20,7 @@
 #include "nodes2DMotionEngine.h"
 #include "../../utils/trace.h"
 #include "../../utils/configExporter.h"
+#include "replay/replayExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -200,6 +201,9 @@ void Nodes2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosit
     lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     linkBlock(pos);
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), module);
 }
 
 /**

@@ -61,6 +61,10 @@ void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &pos, short c
     Matrix M=getMatrixFromPositionAndOrientation(pos,code);
     getWorld()->updateGlData(this,M);
     getWorld()->updateGlData(this,position);
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                           blockId, position, orientationCode);
 }
 
 short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {

@@ -34,7 +34,7 @@ class ReplayExporter {
      * Saves a key frame every <N> MICROSECONDS (us)
      * @attention In MICROSECONDS
      */
-    static inline const Time keyFrameSaveFrequency = 50000;
+    static inline const Time keyFrameSaveFrequency = 50000; //@TODO: BP changer à un compte d'évènements
     Time lastKeyFrameExportDate = 0; //!< Date of the last key frame export
 
     ofstream* exportFile = nullptr;     //!< binary export file

@@ -237,6 +237,10 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     catom->setColor(col);
     lattice->insert(catom, pos);
 
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), catom);
+
+
     lock();
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     unlock();

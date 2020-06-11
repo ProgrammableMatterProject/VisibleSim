@@ -57,6 +57,7 @@ void TranslationStartEvent::consume() {
     Vector3D motionStep =  finalPosition - motionPosition;
     motionStep.setLength(0.1);
     scheduler->schedule(new TranslationStepEvent(t, bb, finalPosition, motionStep, motionPosition));
+
 }
 
 const string TranslationStartEvent::getEventName() {

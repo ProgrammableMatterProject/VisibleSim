@@ -75,6 +75,9 @@ void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 
     // cerr << "ADDING BLOCK #" << blockId << " pos:" << pos << " color:" << col << endl;
 
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), catom2D);
+
     if (lattice->isInGrid(pos)) {
         lattice->insert(catom2D, pos);
         linkBlock(pos);

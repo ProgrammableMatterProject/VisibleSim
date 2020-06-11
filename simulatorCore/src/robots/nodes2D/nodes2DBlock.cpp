@@ -116,6 +116,11 @@ void Nodes2DBlock::setPositionAndOrientation(const Cell3DPosition &pos, short co
     Matrix M=getMatrixFromPositionAndOrientation(pos,code);
     getWorld()->updateGlData(this,M);
     getWorld()->updateGlData(this,position);
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                           blockId, position, orientation);
+
 }
 
 short Nodes2DBlock::getOrientationFromMatrix(const Matrix &mat) {
@@ -172,5 +177,10 @@ bool Nodes2DBlock::moveTo(const Cell3DPosition& dest) {
     return false;
 }
 
+void Nodes2DBlock::setDisplayedValue(int n) {
+    static_cast<Nodes2DGlBlock*>(ptrGlBlock)->setDisplayedValue(n);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeDisplayUpdate(getScheduler()->now(), blockId, n);
+}
 
 }

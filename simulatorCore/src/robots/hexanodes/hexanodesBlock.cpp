@@ -123,6 +123,10 @@ void HexanodesBlock::setPositionAndOrientation(const Cell3DPosition &pos, short 
     cout << M << endl;
     getWorld()->updateGlData(this,M);
     getWorld()->updateGlData(this,position);
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                           blockId, position, orientationCode);
 }
 
 short HexanodesBlock::getOrientationFromMatrix(const Matrix &mat) {
@@ -175,6 +179,12 @@ bool HexanodesBlock::moveTo(const Cell3DPosition& dest) {
     }
 
     return false;
+}
+
+void HexanodesBlock::setDisplayedValue(int n) {
+    static_cast<HexanodesGlBlock*>(ptrGlBlock)->setDisplayedValue(n);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeDisplayUpdate(getScheduler()->now(), blockId, n);
 }
 
 }

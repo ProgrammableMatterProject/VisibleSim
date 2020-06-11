@@ -17,6 +17,7 @@
 #include "blinkyBlocksEvents.h"
 #include "../../utils/configExporter.h"
 #include "../../utils/trace.h"
+#include "replay/replayExporter.h"
 
 using namespace std;
 
@@ -66,6 +67,9 @@ void BlinkyBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     blinkyBlock->setGlBlock(glBlock);
     blinkyBlock->setPosition(pos);
     blinkyBlock->setColor(col);
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blinkyBlock);
 
     if (lattice->isInGrid(pos)) {
         lattice->insert(blinkyBlock, pos);

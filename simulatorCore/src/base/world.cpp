@@ -10,6 +10,7 @@
 #include "world.h"
 #include "../utils/trace.h"
 #include "../gui/openglViewer.h"
+#include "replay/replayExporter.h"
 
 using namespace std;
 
@@ -211,6 +212,10 @@ void World::deleteBlock(BuildingBlock *bb) {
         selectedGlBlock = nullptr;
         GlutContext::mainWindow->select(nullptr);
     }
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeRemoveModule(getScheduler()->now(), bb->blockId);
+
 
     // remove the associated glBlock
     lock();

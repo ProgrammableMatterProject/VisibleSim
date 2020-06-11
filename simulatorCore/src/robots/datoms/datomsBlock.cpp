@@ -62,6 +62,10 @@ void DatomsBlock::setPositionAndOrientation(const Cell3DPosition &pos, short cod
     Matrix M=getMatrixFromPositionAndOrientation(pos,code);
     getWorld()->updateGlData(this,M);
     getWorld()->updateGlData(this,position); // necessary for picking
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                           blockId, position, orientationCode);
 }
 
 short DatomsBlock::getOrientationFromMatrix(const Matrix &mat) {

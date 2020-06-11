@@ -111,6 +111,8 @@ public:
      *       @param code: orientation code (number of the connector aligned with x axis)*/
     void setPositionAndOrientation(const Cell3DPosition &pos,short code);
 
+    void setDisplayedValue(int n);
+
     /**
      * @copydoc BuildingBlock::canMoveTo
      */

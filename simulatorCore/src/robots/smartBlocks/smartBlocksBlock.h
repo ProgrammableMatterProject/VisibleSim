@@ -13,6 +13,7 @@
 #include "robots/smartBlocks/smartBlocksGlBlock.h"
 #include "comm/network.h"
 #include "grid/lattice.h"
+#include "replay/replayExporter.h"
 
 namespace SmartBlocks {
 
@@ -24,8 +25,10 @@ public:
 
     SmartBlocksBlock(int bId, BlockCodeBuilder bcb);
     ~SmartBlocksBlock();
-    inline void setDisplayedValue(int n) { static_cast<SmartBlocksGlBlock*>(ptrGlBlock)->setDisplayedValue(n); };
-    inline P2PNetworkInterface *getInterface(SLattice::Direction d) const { return P2PNetworkInterfaces[d]; }
+
+    inline P2PNetworkInterface *getInterface(SLattice::Direction d) const {
+        return P2PNetworkInterfaces[d];
+    }
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) const;
     P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(bID id) const;
 
@@ -43,6 +46,8 @@ public:
      * @copydoc BuildingBlock::removeNeighbor
      */
     virtual void removeNeighbor(P2PNetworkInterface *ni) override;
+
+    void setDisplayedValue(int n);
 
     /**
      * @param dest

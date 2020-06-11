@@ -26,8 +26,9 @@ public :
     HexanodesGlBlock(bID id);
     virtual ~HexanodesGlBlock() {};
 
+    void setDisplayedValue(int n) { displayedValue = n; }
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
-        void glDrawShadows(ObjLoader::ObjLoader *ptrObj) override;
+    void glDrawShadows(ObjLoader::ObjLoader *ptrObj) override;
     void glDrawId(ObjLoader::ObjLoader *ptrObj, int n) override;
     void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj, int &n) override;
 };
