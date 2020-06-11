@@ -43,8 +43,8 @@ private:
     string configFile = "config.xml";
     string appName;
 
-    bool replayEnabled = false;
-    string replayFilename;
+    bool replayEnabled = false; //<! indicates if simulation capture for replay is enabled
+    string replayFilename;           //!< name of the replay file, provided with --replay <name>
 
     bool simulationSeedSet = false;
     int simulationSeed = 0;

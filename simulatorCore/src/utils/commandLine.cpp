@@ -82,6 +82,10 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                                  << replayFilename << endl;
                         }
                         cout << "--replay option enabled" << endl;
+                    } else if (varg == string("debug-replay")) {
+                        ReplayExporter::enableDebugging();
+
+                        cout << "--debug-replay option enabled" << endl;
                     }
 
                     break;

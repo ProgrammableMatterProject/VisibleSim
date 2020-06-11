@@ -496,7 +496,7 @@ void GlutSlidingDebugWindow::glDraw() {
         if (input->hasFocus) {
             drawString(w - 85, h - 20.0, "DEBUG MODE");
             char c[6];
-            sprintf(c, "%" PRIu64, debugId);
+            sprintf(c, "%" PRIu32, debugId);
             drawString(w / 2 - 45, h - 20.0, c);
         }
 

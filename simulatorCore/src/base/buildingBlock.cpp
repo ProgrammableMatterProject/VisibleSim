@@ -243,7 +243,8 @@ void BuildingBlock::setColor(int idColor) {
     // getWorld()->updateGlData(this); // separate update color and update position
     getWorld()->updateGlData(this,color);
 
-    ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(), blockId, color);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(), blockId, color);
 }
 
 void BuildingBlock::setColor(const Color &c) {
@@ -252,7 +253,9 @@ void BuildingBlock::setColor(const Color &c) {
         // getWorld()->updateGlData(this); // separate update color and update position
         getWorld()->updateGlData(this,color);
 
-        ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(), blockId, color);
+        if (ReplayExporter::isReplayEnabled())
+            ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(),
+                                                            blockId, color);
     }
 }
 

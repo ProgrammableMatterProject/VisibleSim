@@ -10,7 +10,7 @@
 
 namespace ReplayTags {
 
-typedef std::byte u1;
+typedef std::uint8_t u1;
 typedef std::uint16_t u2;
 typedef std::uint32_t u4;
 typedef std::uint64_t u8;
@@ -39,4 +39,13 @@ const u1 MODULE_TYPE_NODE2D = (u1)5;
 const u1 MODULE_TYPE_OKTEEN = (u1)6;
 const u1 MODULE_TYPE_SLIDINGCUBE = (u1)7;
 const u1 MODULE_TYPE_SMARTBLOCKS = (u1)8;
+
+/* EVENT TYPES */
+const u1 EVENT_COLOR_UPDATE = (u1)0;
+const u1 EVENT_DISPLAY_UPDATE = (u1)1;
+const u1 EVENT_POSITION_UPDATE = (u1)2;
+const u1 EVENT_ADD_MODULE = (u1)3;
+const u1 EVENT_REMOVE_MODULE = (u1)4;
+const u1 EVENT_MOTION = (u1)5;
+const u1 EVENT_CONSOLE_TRACE = (u1)6;
 }

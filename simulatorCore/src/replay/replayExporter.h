@@ -12,7 +12,8 @@
 
 #include <fstream>
 
-#include "../utils/exceptions.h"
+#include "utils/exceptions.h"
+#include "base/buildingBlock.h"
 
 using namespace std;
 
@@ -25,7 +26,7 @@ using namespace std;
 class ReplayExporter {
     static inline ReplayExporter* singleton = nullptr; //!< the singleton instance
 
-    static const bool debug = true; //!< Indicates whether to write the debug file or not
+    static inline bool debug = false; //!< Indicates whether to write the debug file or not
     static inline const string extension = "vs"; //!< Export file extension
 
     /**
@@ -92,6 +93,12 @@ public:
     }
 
     /**
+     * Enables debugging and clear-text file export
+     * @attention must be called before the first getInstance() call
+     */
+    static inline void enableDebugging() { debug = true; }
+
+    /**
      * [HEADER]
      * Writes the replay file's header, using the following format:
      *
@@ -148,6 +155,15 @@ public:
      * @param color new color
      */
     void writeColorUpdate(Time date, bID bid, const Color& color);
+
+    // TODO: doxygen
+    void writeDisplayUpdate(Time date, bID bid, int value);
+    void writePositionUpdate(Time date, bID bid, const Cell3DPosition& pos,uint8_t orientation);
+    void writeAddModule(Time date, BaseSimulator::BuildingBlock* module);
+    void writeRemoveModule(Time date, bID bid);
+    void writeMotion(Time date, bID bid, Time duration_us, const Cell3DPosition& destination);
+    void writeConsoleTrace(Time date, bID bid, const string& trace);
+
 
     /**
      * Singleton getter
