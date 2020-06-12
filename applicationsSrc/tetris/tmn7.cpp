@@ -2,9 +2,6 @@
 
 void TetrisCode::sendTmn7(bool reinit, int movement)
 {
-    console << "send TMN 7\n";
-    console << "rotation = " << rotation << "position = " << position << "\n";
-
     TmnData data = TmnData(update, rotation, position, color);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
     P2PNetworkInterface *itf[4];
@@ -245,10 +242,10 @@ void TetrisCode::myTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         position = msgData.position;
         color = msgData.color;
         parent = sender;
-        nbTmnBackMsg = 0 ;
+        nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
         sendTmn7(false, NO_MVT);
-        if (nbTmnBackMsg == 0)
+        if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
             // parent = nullptr;
@@ -264,7 +261,6 @@ void TetrisCode::myRestartTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInte
 {
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    console << "Restarting Tmn 7\n";
     if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
     {
         parent = nullptr;

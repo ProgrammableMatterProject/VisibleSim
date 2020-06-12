@@ -226,7 +226,6 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
     if (msgData == update)
     {
         nbTmnBackMsg -= 1;
-        console<<"recieved back msg. nb = "<<nbTmnBackMsg<<"\n";
     }
     if (nbTmnBackMsg == 0)
     {
@@ -285,14 +284,12 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
 {
     MessageOf<ReinitData> *msg = static_cast<MessageOf<ReinitData> *>(_msg.get());
     ReinitData msgData = *msg->getData();
-    console<<"recieved reinit "<<msgData.id<<" my reinit nb = "<<nbReinit<<"\n";
     if (msgData.tmn == tmn && msgData.id > nbReinit)
     {
         //The message that a reinitialization may be needed is spread through the current tetramino by
         //the function `sendTmn*(true,msgData.movement)`. Then the module calculates if it needs a
         //reinitialization (init = true if yes)
 
-        console << "recieved reinit, position = " << position << "\n";
         nbReinit = msgData.id;
         parent = sender;
         init = false;
@@ -510,7 +507,6 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
     if (msgData == nbReinit)
     {
         nbReinitBackMsg -= 1;
-        console << "recieved reinit back msg, nb = " << nbReinitBackMsg << "\n";
     }
     if (nbReinitBackMsg == 0)
     {

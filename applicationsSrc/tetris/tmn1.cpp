@@ -5,9 +5,6 @@ void TetrisCode::sendTmn1(bool reinit, int movement) // NB : the first tetramino
     TmnData data = TmnData(update, rotation, position, color);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
 
-    console << "send TMN 1\n";
-    console << "rotation = " << rotation << "position = " << position << "\n";
-
     if (roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE)
     {
         if (position == 3)
@@ -192,17 +189,16 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
     TmnData msgData = *msg->getData();
     if (update < msgData.nbupdate && (tmn != 1 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
     {
-        console<<"in the if \n";
         tmn = 1;
         update = msgData.nbupdate;
         rotation = msgData.rotation;
         position = msgData.position;
         color = msgData.color;
         parent = sender;
-        nbTmnBackMsg = 0 ;
+        nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
         sendTmn1(false, NO_MVT);
-        if (nbTmnBackMsg == 0)
+        if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
             // parent = nullptr;
@@ -218,7 +214,6 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
 {
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    console << "Restarting Tmn 1\n";
     if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
     {
         parent = nullptr;
