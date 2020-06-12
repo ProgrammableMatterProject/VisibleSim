@@ -86,6 +86,41 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
                          std::bind(&TetrisCode::myReinitBackMsgFunc, this,
                                    std::placeholders::_1, std::placeholders::_2));
 
+    // Registers a callback (myRestartTmn1Func) to the message of type E
+    addMessageEventFunc2(START_TMN1_MSG_ID,
+                         std::bind(&TetrisCode::myRestartTmn1Func, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myRestartTmn2Func) to the message of type E
+    addMessageEventFunc2(START_TMN2_MSG_ID,
+                         std::bind(&TetrisCode::myRestartTmn2Func, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myRestartTmn3Func) to the message of type E
+    addMessageEventFunc2(START_TMN3_MSG_ID,
+                         std::bind(&TetrisCode::myRestartTmn3Func, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myRestartTmn4Func) to the message of type E
+    addMessageEventFunc2(START_TMN4_MSG_ID,
+                         std::bind(&TetrisCode::myRestartTmn4Func, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myRestartTmn5Func) to the message of type E
+    addMessageEventFunc2(START_TMN5_MSG_ID,
+                         std::bind(&TetrisCode::myRestartTmn5Func, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myRestartTmn6Func) to the message of type E
+    addMessageEventFunc2(START_TMN6_MSG_ID,
+                         std::bind(&TetrisCode::myRestartTmn6Func, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myRestartTmn7Func) to the message of type E
+    addMessageEventFunc2(START_TMN7_MSG_ID,
+                         std::bind(&TetrisCode::myRestartTmn7Func, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
     // Initialization of random numbers generator
     srand(Random::getSimulationSeed());
 }
@@ -303,7 +338,9 @@ int TetrisCode::pixelCalculation()
     int totalHNbPixels = maxHeight / sizeOfPixel; //the number of (full) pixels that are displayed on height
     int totalWNbPixels = maxWidth / sizeOfPixel;  //the number of (full) pixels that are displayed on width
     //The tetraminos appear at the top of the set, in the middle
-    if (height == (totalHNbPixels - 2) * sizeOfPixel && width == (totalWNbPixels / 2) * sizeOfPixel)
+    //The role of the deciding pixel is the same as in the rest of the game : if the root of the spanning trees
+    //in the tetramino changes, it causes synchronization problems.
+    if (pixelHCoord == totalHNbPixels - 2 && pixelWCoord == totalWNbPixels / 2 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
     {
         appear_module = true;
     }
@@ -343,6 +380,7 @@ void TetrisCode::myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
 
 void TetrisCode::tmnAppearance()
 {
+    parent = nullptr; //The module is the root of the tetramino, it has no parent
     position = 1;
     update = 1;
     nbReinit = 0;
@@ -581,14 +619,16 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
 
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    if (update < msgData.nbupdate && (tmn != 1 || rotation != msgData.rotation || position != msgData.rotation || color != msgData.color))
+    if (update < msgData.nbupdate && (tmn != 1 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
     {
+        console<<"in the if \n";
         tmn = 1;
         update = msgData.nbupdate;
         rotation = msgData.rotation;
         position = msgData.position;
         color = msgData.color;
         parent = sender;
+        nbTmnBackMsg = 0 ;
         module->setColor(Colors[color]);
         sendTmn1(false, NO_MVT);
         if (nbTmnBackMsg == 0)
@@ -602,6 +642,30 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         sendMessage("Tmn Back Message", new MessageOf<int>(TMNBACK_MSG_ID, update), sender, 0, 0);
     }
 };
+
+void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
+    TmnData msgData = *msg->getData();
+    console << "Restarting Tmn 1\n";
+    if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    {
+        parent = nullptr;
+        tmn = 1;
+        update = msgData.nbupdate;
+        nbReinit = msgData.nbReinit;
+        rotation = msgData.rotation;
+        position = msgData.position;
+        color = msgData.color;
+        module->setColor(Colors[color]);
+        sendTmn1(false, NO_MVT);
+    }
+    //Normally the TOP_RIGHT_CORNER recieved it first, so the BOTTOM_RIGHT_CORNER should be under it on the same column
+    else if (bottomItf != nullptr && bottomItf->isConnected())
+    {
+        sendMessage("Restart Tmn 1 Message", new MessageOf<TmnData>(START_TMN1_MSG_ID, msgData), bottomItf, 0, 0);
+    }
+}
 
 void TetrisCode::sendTmn2(bool reinit, int movement)
 {
@@ -809,6 +873,7 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         position = msgData.position;
         color = msgData.color;
         parent = sender;
+        nbTmnBackMsg = 0 ;
         module->setColor(Colors[color]);
         sendTmn2(false, NO_MVT);
         if (nbTmnBackMsg == 0)
@@ -822,6 +887,29 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         sendMessage("Tmn Back Message", new MessageOf<int>(TMNBACK_MSG_ID, update), sender, 0, 0);
     }
 };
+
+void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
+    TmnData msgData = *msg->getData();
+    console << "Restarting Tmn 2\n";
+    if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    {
+        parent = nullptr;
+        tmn = 2;
+        update = msgData.nbupdate;
+        nbReinit = msgData.nbReinit;
+        rotation = msgData.rotation;
+        position = msgData.position;
+        color = msgData.color;
+        module->setColor(Colors[color]);
+        sendTmn2(false, NO_MVT);
+    }
+    else if (bottomItf != nullptr && bottomItf->isConnected())
+    {
+        sendMessage("Restart Tmn 2 Message", new MessageOf<TmnData>(START_TMN2_MSG_ID, msgData), bottomItf, 0, 0);
+    }
+}
 
 void TetrisCode::sendTmn3(bool reinit, int movement)
 {
@@ -1068,6 +1156,7 @@ void TetrisCode::myTmn3Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         position = msgData.position;
         color = msgData.color;
         parent = sender;
+        nbTmnBackMsg = 0 ;
         module->setColor(Colors[color]);
         sendTmn3(false, NO_MVT);
         if (nbTmnBackMsg == 0)
@@ -1079,6 +1168,29 @@ void TetrisCode::myTmn3Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
     else if (update == msgData.nbupdate)
     {
         sendMessage("Tmn Back Message", new MessageOf<int>(TMNBACK_MSG_ID, update), sender, 0, 0);
+    }
+}
+
+void TetrisCode::myRestartTmn3Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
+    TmnData msgData = *msg->getData();
+    console << "Restarting Tmn 3\n";
+    if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    {
+        parent = nullptr;
+        tmn = 3;
+        update = msgData.nbupdate;
+        nbReinit = msgData.nbReinit;
+        rotation = msgData.rotation;
+        position = msgData.position;
+        color = msgData.color;
+        module->setColor(Colors[color]);
+        sendTmn3(false, NO_MVT);
+    }
+    else if (bottomItf != nullptr && bottomItf->isConnected())
+    {
+        sendMessage("Restart Tmn 3 Message", new MessageOf<TmnData>(START_TMN3_MSG_ID, msgData), bottomItf, 0, 0);
     }
 }
 
@@ -1327,6 +1439,7 @@ void TetrisCode::myTmn4Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         position = msgData.position;
         color = msgData.color;
         parent = sender;
+        nbTmnBackMsg = 0 ;
         module->setColor(Colors[color]);
         sendTmn4(false, NO_MVT);
         if (nbTmnBackMsg == 0)
@@ -1338,6 +1451,29 @@ void TetrisCode::myTmn4Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
     else if (update == msgData.nbupdate)
     {
         sendMessage("Tmn Back Message", new MessageOf<int>(TMNBACK_MSG_ID, update), sender, 0, 0);
+    }
+}
+
+void TetrisCode::myRestartTmn4Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
+    TmnData msgData = *msg->getData();
+    console << "Restarting Tmn 4\n";
+    if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    {
+        parent = nullptr;
+        tmn = 4;
+        update = msgData.nbupdate;
+        nbReinit = msgData.nbReinit;
+        rotation = msgData.rotation;
+        position = msgData.position;
+        color = msgData.color;
+        module->setColor(Colors[color]);
+        sendTmn4(false, NO_MVT);
+    }
+    else if (bottomItf != nullptr && bottomItf->isConnected())
+    {
+        sendMessage("Restart Tmn 4 Message", new MessageOf<TmnData>(START_TMN4_MSG_ID, msgData), bottomItf, 0, 0);
     }
 }
 
@@ -1586,6 +1722,7 @@ void TetrisCode::myTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         position = msgData.position;
         color = msgData.color;
         parent = sender;
+        nbTmnBackMsg = 0 ;
         module->setColor(Colors[color]);
         sendTmn5(false, NO_MVT);
         if (nbTmnBackMsg == 0)
@@ -1597,6 +1734,30 @@ void TetrisCode::myTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
     else if (update == msgData.nbupdate)
     {
         sendMessage("Tmn Back Message", new MessageOf<int>(TMNBACK_MSG_ID, update), sender, 0, 0);
+    }
+}
+
+void TetrisCode::myRestartTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
+    TmnData msgData = *msg->getData();
+    console << "Restarting Tmn 5\n";
+
+    if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    {
+        parent = nullptr;
+        tmn = 5;
+        update = msgData.nbupdate;
+        nbReinit = msgData.nbReinit;
+        rotation = msgData.rotation;
+        position = msgData.position;
+        color = msgData.color;
+        module->setColor(Colors[color]);
+        sendTmn5(false, NO_MVT);
+    }
+    else if (bottomItf != nullptr && bottomItf->isConnected())
+    {
+        sendMessage("Restart Tmn 5 Message", new MessageOf<TmnData>(START_TMN5_MSG_ID, msgData), bottomItf, 0, 0);
     }
 }
 
@@ -1845,6 +2006,7 @@ void TetrisCode::myTmn6Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         position = msgData.position;
         color = msgData.color;
         parent = sender;
+        nbTmnBackMsg = 0 ;
         module->setColor(Colors[color]);
         sendTmn6(false, NO_MVT);
         if (nbTmnBackMsg == 0)
@@ -1856,6 +2018,29 @@ void TetrisCode::myTmn6Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
     else if (update == msgData.nbupdate)
     {
         sendMessage("Tmn Back Message", new MessageOf<int>(TMNBACK_MSG_ID, update), sender, 0, 0);
+    }
+}
+
+void TetrisCode::myRestartTmn6Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
+    TmnData msgData = *msg->getData();
+    console << "Restarting Tmn 6\n";
+    if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    {
+        parent = nullptr;
+        tmn = 6;
+        update = msgData.nbupdate;
+        nbReinit = msgData.nbReinit;
+        rotation = msgData.rotation;
+        position = msgData.position;
+        color = msgData.color;
+        module->setColor(Colors[color]);
+        sendTmn6(false, NO_MVT);
+    }
+    else if (bottomItf != nullptr && bottomItf->isConnected())
+    {
+        sendMessage("Restart Tmn 6 Message", new MessageOf<TmnData>(START_TMN6_MSG_ID, msgData), bottomItf, 0, 0);
     }
 }
 
@@ -2104,6 +2289,7 @@ void TetrisCode::myTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         position = msgData.position;
         color = msgData.color;
         parent = sender;
+        nbTmnBackMsg = 0 ;
         module->setColor(Colors[color]);
         sendTmn7(false, NO_MVT);
         if (nbTmnBackMsg == 0)
@@ -2118,6 +2304,29 @@ void TetrisCode::myTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
     }
 }
 
+void TetrisCode::myRestartTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
+    TmnData msgData = *msg->getData();
+    console << "Restarting Tmn 7\n";
+    if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    {
+        parent = nullptr;
+        tmn = 7;
+        update = msgData.nbupdate;
+        nbReinit = msgData.nbReinit;
+        rotation = msgData.rotation;
+        position = msgData.position;
+        color = msgData.color;
+        module->setColor(Colors[color]);
+        sendTmn7(false, NO_MVT);
+    }
+    else if (bottomItf != nullptr && bottomItf->isConnected())
+    {
+        sendMessage("Restart Tmn 7 Message", new MessageOf<TmnData>(START_TMN7_MSG_ID, msgData), bottomItf, 0, 0);
+    }
+}
+
 void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
     MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
@@ -2125,6 +2334,7 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
     if (msgData == update)
     {
         nbTmnBackMsg -= 1;
+        console<<"recieved back msg. nb = "<<nbTmnBackMsg<<"\n";
     }
     if (nbTmnBackMsg == 0)
     {
@@ -2137,7 +2347,7 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
             strstm << "UPDATE OF THE Tetramino";
             scheduler->trace(strstm.str(), module->blockId, GREEN);
             nbReinit += 1;
-            // parent = nullptr ;
+            parent = nullptr;
 
             //If the modules don't belong to the tetramino after the update, they won't be updated by the function `sendTmn1(false,NO_MVT)`
             //That's why we need to reinitialize them 'by hand', by spreading through the current tetramino the message that a reinitialization
@@ -2183,6 +2393,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
 {
     MessageOf<ReinitData> *msg = static_cast<MessageOf<ReinitData> *>(_msg.get());
     ReinitData msgData = *msg->getData();
+    console<<"recieved reinit "<<msgData.id<<" my reinit nb = "<<nbReinit<<"\n";
     if (msgData.tmn == tmn && msgData.id > nbReinit)
     {
         //The message that a reinitialization may be needed is spread through the current tetramino by
@@ -2414,56 +2625,56 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
         //The module that starts the update of the tetramino is on the bottom of the pixel so that it can send the position 1 to the future position 1
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
-            update += 1;
             // parent = nullptr;
-            TmnData data = TmnData(update, rotation, position, color);
+            TmnData data = TmnData(update, rotation, position, color, nbReinit);
+            data.nbupdate += 1;
             if (tmn == 1)
             {
                 if (bottomItf != nullptr && bottomItf->isConnected())
                 {
-                    sendMessage("Update Tmn 1 Message", new MessageOf<TmnData>(TMN1_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 1 Message", new MessageOf<TmnData>(START_TMN1_MSG_ID, data), bottomItf, 0, 0);
                 }
             }
             else if (tmn == 2)
             {
                 if (bottomItf != nullptr && bottomItf->isConnected())
                 {
-                    sendMessage("Update Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 2 Message", new MessageOf<TmnData>(START_TMN2_MSG_ID, data), bottomItf, 0, 0);
                 }
             }
             else if (tmn == 3)
             {
                 if (bottomItf != nullptr && bottomItf->isConnected())
                 {
-                    sendMessage("Update Tmn 3 Message", new MessageOf<TmnData>(TMN3_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 3 Message", new MessageOf<TmnData>(START_TMN3_MSG_ID, data), bottomItf, 0, 0);
                 }
             }
             else if (tmn == 4)
             {
                 if (bottomItf != nullptr && bottomItf->isConnected())
                 {
-                    sendMessage("Update Tmn 4 Message", new MessageOf<TmnData>(TMN4_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 4 Message", new MessageOf<TmnData>(START_TMN4_MSG_ID, data), bottomItf, 0, 0);
                 }
             }
             else if (tmn == 5)
             {
                 if (bottomItf != nullptr && bottomItf->isConnected())
                 {
-                    sendMessage("Update Tmn 5 Message", new MessageOf<TmnData>(TMN5_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 5 Message", new MessageOf<TmnData>(START_TMN5_MSG_ID, data), bottomItf, 0, 0);
                 }
             }
             else if (tmn == 6)
             {
                 if (bottomItf != nullptr && bottomItf->isConnected())
                 {
-                    sendMessage("Update Tmn 6 Message", new MessageOf<TmnData>(TMN6_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 6 Message", new MessageOf<TmnData>(START_TMN6_MSG_ID, data), bottomItf, 0, 0);
                 }
             }
             else if (tmn == 7)
             {
                 if (bottomItf != nullptr && bottomItf->isConnected())
                 {
-                    sendMessage("Update Tmn 7 Message", new MessageOf<TmnData>(TMN7_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 7 Message", new MessageOf<TmnData>(START_TMN7_MSG_ID, data), bottomItf, 0, 0);
                 }
             }
 

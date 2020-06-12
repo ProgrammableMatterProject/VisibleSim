@@ -20,6 +20,7 @@ public:
     int rotation;
     int position;
     int color;
+    int nbReinit = 0 ;
 
     TmnData(int upd, int r, int p, int c)
     {
@@ -27,6 +28,15 @@ public:
         rotation = r;
         position = p;
         color = c;
+    }
+
+    TmnData(int upd, int r, int p, int c, int reinit)
+    {
+        nbupdate = upd;
+        rotation = r;
+        position = p;
+        color = c;
+        nbReinit = reinit ;
     }
 };
 

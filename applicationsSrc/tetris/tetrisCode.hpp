@@ -125,6 +125,14 @@ static const int TMN7_MSG_ID = 1013;
 static const int TMNBACK_MSG_ID = 1014;
 static const int REINITPIX_MSG_ID = 1015;
 static const int REINITBACK_MSG_ID = 1016;
+static const int START_TMN1_MSG_ID = 1017;
+static const int START_TMN2_MSG_ID = 1018;
+static const int START_TMN3_MSG_ID = 1019;
+static const int START_TMN4_MSG_ID = 1020;
+static const int START_TMN5_MSG_ID = 1021;
+static const int START_TMN6_MSG_ID = 1022;
+static const int START_TMN7_MSG_ID = 1023;
+
 
 //IDs of the interfaces
 static const int topId = 0;
@@ -260,6 +268,13 @@ public:
     void myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
+    * @brief Message handler for the message 'RestartTmn1'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
     * @brief spread the second tetramino (column)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
     * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
@@ -272,6 +287,13 @@ public:
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
     void myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'RestartTmn2'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     * @brief spread the third tetramino (L)
@@ -288,6 +310,13 @@ public:
     void myTmn3Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
+    * @brief Message handler for the message 'RestartTmn3'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myRestartTmn3Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
     * @brief spread the fourth tetramino (L in mirror)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
     * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
@@ -300,6 +329,13 @@ public:
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
     void myTmn4Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'RestartTmn4'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myRestartTmn4Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     * @brief spread the fifth tetramino (T)
@@ -316,6 +352,13 @@ public:
     void myTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
+    * @brief Message handler for the message 'RestartTmn5'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myRestartTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
     * @brief spread the sixth tetramino ("chair")
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
     * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
@@ -330,6 +373,13 @@ public:
     void myTmn6Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
+    * @brief Message handler for the message 'RestartTmn6'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myRestartTmn6Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
     * @brief spread the seventh tetramino ("chair" in mirror)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
     * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
@@ -342,6 +392,13 @@ public:
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
     void myTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'RestartTmn7'
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myRestartTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     * @brief Message handler for the message 'tmnback'. Builds a spanning tree inside of the tetramino, to know
