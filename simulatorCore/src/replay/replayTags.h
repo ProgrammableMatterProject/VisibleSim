@@ -7,6 +7,9 @@
  *
  *
  */
+#ifndef REPLAYTAGS_H_
+#define REPLAYTAGS_H_
+
 
 namespace ReplayTags {
 
@@ -49,3 +52,5 @@ const u1 EVENT_REMOVE_MODULE = (u1)4;
 const u1 EVENT_MOTION = (u1)5;
 const u1 EVENT_CONSOLE_TRACE = (u1)6;
 }
+
+#endif

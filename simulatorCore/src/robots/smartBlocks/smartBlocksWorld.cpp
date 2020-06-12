@@ -6,22 +6,26 @@
  */
 
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 
 #include "smartBlocksWorld.h"
 #include "smartBlocksBlock.h"
+#include "smartBlocksGlBlock.h"
 #include "../../events/scheduler.h"
+#include "../../events/events.h"
 #include "../../utils/configExporter.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 
 namespace SmartBlocks {
 
-SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+[[maybe_unused]] SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                                    int argc, char *argv[]):World(argc, argv) {
     cout << TermColor::LifecycleColor << "SmartBlocksWorld constructor" << TermColor::Reset << endl;
-
+    idTextureFloor=0;
+    idTextureDigits=0;
     if (GlutContext::GUIisEnabled) {
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
                                             "smartBlockSimple.obj");
@@ -40,7 +44,7 @@ SmartBlocksWorld::~SmartBlocksWorld() {
 
 void SmartBlocksWorld::deleteWorld() {
     delete((SmartBlocksWorld*)world);
-    world=NULL;
+    world=nullptr;
 }
 
 void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
@@ -51,20 +55,20 @@ void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     else if (blockId == 0)
         blockId = incrementBlockId();
 
-    SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId, bcb);
+    auto *smartBlock = new SmartBlocksBlock(blockId, bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (smartBlock->blockId, (BaseSimulator::BuildingBlock*)smartBlock) );
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), smartBlock));
 
-    SmartBlocksGlBlock *glBlock = new SmartBlocksGlBlock(blockId);
+    auto *glBlock = new SmartBlocksGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     smartBlock->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     smartBlock->setPosition(pos);
     smartBlock->setColor(col);
 
-    if (ReplayExporter::isReplayEnabled())
-        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), smartBlock);
-
+    
     if (lattice->isInGrid(pos)) {
         lattice->insert(smartBlock, pos);
     } else {
@@ -75,7 +79,7 @@ void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 
 void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
     SmartBlocksBlock *ptrNeighbor;
-    SmartBlocksBlock *ptrBlock = (SmartBlocksBlock*)lattice->getBlock(pos);
+    auto *ptrBlock = (SmartBlocksBlock*)lattice->getBlock(pos);
     vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
     Cell3DPosition nPos;
 
@@ -93,7 +97,7 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
                 " to #" << ptrNeighbor->blockId << endl;
 #endif
         } else {
-            (ptrBlock)->getInterface(SLattice::Direction(i))->connect(NULL);
+            (ptrBlock)->getInterface(SLattice::Direction(i))->connect(nullptr);
         }
     }
 }
@@ -155,11 +159,11 @@ void SmartBlocksWorld::glDrawBackground() {
     glBegin(GL_QUADS);
     glTexCoord2f(0,0);
     glVertex3f(0.0f,0.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[0]/4.0f,0); // textureCarre is a used as a 4x4 square texture
+    glTexCoord2f(static_cast<float>(lattice->gridSize[0])/4.0f,0); // textureCarre is a used as a 4x4 square texture
     glVertex3f(1.0f,0.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[1]/4.0f);
+    glTexCoord2f(static_cast<float>(lattice->gridSize[0])/4.0f,static_cast<float>(lattice->gridSize[1])/4.0f);
     glVertex3f(1.0,1.0,0.0f);
-    glTexCoord2f(0,lattice->gridSize[1]/4.0f);
+    glTexCoord2f(0,static_cast<float>(lattice->gridSize[1])/4.0f);
     glVertex3f(0.0,1.0,0.0f);
     glEnd();
     glPopMatrix();
@@ -195,7 +199,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
 }
 
 void SmartBlocksWorld::exportConfiguration() {
-    SmartBlocksConfigExporter exporter = SmartBlocksConfigExporter(this);
+    auto exporter = SmartBlocksConfigExporter(this);
     exporter.exportConfiguration();
 }
 

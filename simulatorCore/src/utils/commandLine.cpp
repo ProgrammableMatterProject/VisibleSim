@@ -65,7 +65,6 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
 
                     if (varg == string("replay")) { //
                         replayEnabled = true;
-
                         if (argc > 1 and argv[1] and argv[1][0] != '-') { // filename supplied
                             try {
                                 replayFilename = string(argv[1]);
@@ -77,20 +76,17 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                                     << " Found replayFilename = " << argv[1] << endl;
                                 throw CLIParsingError(err.str());
                             }
-
                             cerr << "--replay option provided with value: "
                                  << replayFilename << endl;
                         }
                         cout << "--replay option enabled" << endl;
                     } else if (varg == string("debug-replay")) {
+                        replayEnabled = true;
                         ReplayExporter::enableDebugging();
-
                         cout << "--debug-replay option enabled" << endl;
                     }
-
                     break;
                 }
-
 
                 case 'p':   {
                     //if (programPath != "")

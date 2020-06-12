@@ -13,14 +13,14 @@
 
 #include <vector>
 
-#include "base/buildingBlock.h"
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "grid/cell3DPosition.h"
-#include "robots/hexanodes/hexanodesBlock.h"
-#include "gui/objLoader.h"
-#include "utils/trace.h"
+#include "../../base/buildingBlock.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "../../grid/cell3DPosition.h"
+#include "hexanodesBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../utils/trace.h"
 
 //!< \namespace Hexanodes
 namespace Hexanodes {
@@ -47,6 +47,12 @@ public:
         assert(world != NULL);
         return((HexanodesWorld*)world);
     }
+
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_HEXANODE; };
 
     void printInfo() {
         OUTPUT << "I'm a HexanodesWorld" << endl;

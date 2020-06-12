@@ -6,12 +6,13 @@
  */
 
 #include <iostream>
-
-#include "base/buildingBlock.h"
-#include "base/world.h"
+#include "buildingBlock.h"
+#include "world.h"
 #include "simulator.h"
-#include "events/scheduler.h"
-#include "utils/trace.h"
+#include "../events/scheduler.h"
+#include "../utils/trace.h"
+#include "../clock/clock.h"
+#include "../replay/replayExporter.h"
 
 using namespace std;
 
@@ -74,30 +75,31 @@ BuildingBlock::~BuildingBlock() {
     OUTPUT << "BuildingBlock destructor" << endl;
 #endif
 
-    if (clock != NULL) {
-        delete clock;
-    }
-
-    if (stats != NULL) {
-        delete stats;
-    }
+    delete clock;
+    delete stats;
 
     for (P2PNetworkInterface *p2p : P2PNetworkInterfaces)
         delete p2p;
 }
 
-short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
-    for (unsigned short int i = 0; i < P2PNetworkInterfaces.size(); i++) {
-        if (itf == P2PNetworkInterfaces[i]) return i;
+    short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
+        for (unsigned short int i = 0; i < P2PNetworkInterfaces.size(); i++) {
+            if (itf == P2PNetworkInterfaces[i]) return i;
+        }
+        return -1;
     }
 
-    return -1;
-}
+    uint8_t BuildingBlock::getInterfaceBId(const P2PNetworkInterface* itf) const {
+        for (size_t i = 0; i < P2PNetworkInterfaces.size(); i++) {
+            if (itf == P2PNetworkInterfaces[i]) return static_cast<uint8_t>(i);
+        }
+        return static_cast<uint8_t>(255);
+    }
 
-bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {
+    bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {
     P2PNetworkInterface *ni1, *ni2;
-    ni1 = NULL;
-    ni2 = NULL;
+    ni1 = nullptr;
+    ni2 = nullptr;
     if (!getP2PNetworkInterfaceByBlockRef(destBlock)) {
         // creation of the new network interface
         OUTPUT << "adding a new interface to block " << destBlock->blockId << endl;
@@ -112,7 +114,7 @@ bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock)
         destBlock->P2PNetworkInterfaces.push_back(ni2);
     }
 
-    if (ni1!=NULL && ni2!=NULL) {
+    if (ni1!=nullptr && ni2!=nullptr) {
         ni1->connect(ni2);
         return (true);
     } else {
@@ -145,7 +147,7 @@ P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlo
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destBlockId) const {
@@ -156,11 +158,11 @@ P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destB
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
-unsigned short BuildingBlock::getNbNeighbors() const {
-    unsigned short n = 0;
+uint8_t BuildingBlock::getNbNeighbors() const {
+    uint8_t n = 0;
 /*  P2PNetworkInterface *p;
     vector<P2PNetworkInterface*>::const_iterator it;
     for (it = P2PNetworkInterfaces.begin(); it != P2PNetworkInterfaces.end(); ++it) {
@@ -172,7 +174,6 @@ unsigned short BuildingBlock::getNbNeighbors() const {
     for (const P2PNetworkInterface* p2p : P2PNetworkInterfaces) {
         n+=p2p->isConnected();
     }
-
     return n;
 }
 
@@ -187,7 +188,7 @@ vector<BuildingBlock*> BuildingBlock::getNeighbors() const {
 }
 
 
-bool BuildingBlock::getNeighborPos(short connectorId,Cell3DPosition &pos) const {
+bool BuildingBlock::getNeighborPos(uint8_t connectorId,Cell3DPosition &pos) const {
     Lattice *lattice = getWorld()->lattice;
     vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(position);
     pos = position + nCells[connectorId];
@@ -254,8 +255,7 @@ void BuildingBlock::setColor(const Color &c) {
         getWorld()->updateGlData(this,color);
 
         if (ReplayExporter::isReplayEnabled())
-            ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(),
-                                                            blockId, color);
+            ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(),blockId, color);
     }
 }
 
@@ -267,7 +267,7 @@ void BuildingBlock::setPosition(const Cell3DPosition &p) {
 
         if (ReplayExporter::isReplayEnabled())
             ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
-                                                               blockId, position, orientation);
+                                                               blockId, position, orientationCode);
     }
 }
 
@@ -281,14 +281,14 @@ ruint BuildingBlock::getRandomUint() {
 }
 
 void BuildingBlock::setClock(Clock *c) {
-    if (clock != NULL) {
+    if (clock != nullptr) {
         delete clock;
     }
     clock = c;
 }
 
 Time BuildingBlock::getLocalTime(Time simTime) const {
-    if (clock == NULL) {
+    if (clock == nullptr) {
         cerr << "device has no internal clock" << endl;
         return 0;
     }
@@ -296,7 +296,7 @@ Time BuildingBlock::getLocalTime(Time simTime) const {
 }
 
 Time BuildingBlock::getLocalTime() const {
-    if (clock == NULL) {
+    if (clock == nullptr) {
         cerr << "device has no internal clock" << endl;
         return 0;
     }
@@ -304,7 +304,7 @@ Time BuildingBlock::getLocalTime() const {
 }
 
 Time BuildingBlock::getSimulationTime(Time localTime) const {
-    if (clock == NULL) {
+    if (clock == nullptr) {
         cerr << "device has no internal clock" << endl;
         return localTime;
     }

@@ -10,13 +10,16 @@
 
 #include <iostream>
 
-#include "robots/nodes2D/nodes2DBlock.h"
-#include "base/buildingBlock.h"
-#include "robots/nodes2D/nodes2DWorld.h"
-#include "robots/nodes2D/nodes2DSimulator.h"
-#include "utils/trace.h"
-#include "robots/nodes2D/nodes2DMotionEngine.h"
-#include "robots/nodes2D/nodes2DMotionEvents.h"
+#include "../../base/buildingBlock.h"
+#include "../../utils/trace.h"
+#include "../../events/events.h"
+#include "../../replay/replayExporter.h"
+#include "nodes2DBlock.h"
+#include "nodes2DGlBlock.h"
+#include "nodes2DWorld.h"
+#include "nodes2DSimulator.h"
+#include "nodes2DMotionEngine.h"
+#include "nodes2DMotionEvents.h"
 
 using namespace std;
 
@@ -51,7 +54,7 @@ std::ostream& operator<<(std::ostream &stream, Nodes2DBlock const& bb) {
     return stream;
 }
 
-bool Nodes2DBlock::getNeighborPos(short connectorDir,Cell3DPosition &pos) const {
+bool Nodes2DBlock::getNeighborPos(uint8_t connectorDir,Cell3DPosition &pos) const {
     Nodes2DWorld *wrl = getWorld();
         const Vector3D bs = wrl->lattice->gridScale;
         pos = ((SLattice*)(wrl->lattice))->getNeighborRelativePos(SLattice::Direction(connectorDir));
@@ -109,7 +112,7 @@ void Nodes2DBlock::setPosition(const Cell3DPosition &p) {
     setPositionAndOrientation(p, orientationCode);
 }
 
-void Nodes2DBlock::setPositionAndOrientation(const Cell3DPosition &pos, short code) {
+void Nodes2DBlock::setPositionAndOrientation(const Cell3DPosition &pos, uint8_t code) {
     orientationCode = code;
     position = pos;
 
@@ -119,12 +122,12 @@ void Nodes2DBlock::setPositionAndOrientation(const Cell3DPosition &pos, short co
 
     if (ReplayExporter::isReplayEnabled())
         ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
-                                                           blockId, position, orientation);
+                                                           blockId, position, orientationCode);
 
 }
 
-short Nodes2DBlock::getOrientationFromMatrix(const Matrix &mat) {
-    static short tab[3][3]={{-1,2,-1},{3,-1,1},{-1,0,-1}};
+uint8_t Nodes2DBlock::getOrientationFromMatrix(const Matrix &mat) {
+    static uint8_t tab[3][3]={{4,2,4},{3,4,1},{4,0,4}}; // 4 for unknown
     Vector3D V=mat * Vector3D(1,0,0);
     int cx=(int)(V[0]+1.5);
     int cy=(int)(V[1]+1.5);
@@ -138,8 +141,8 @@ short Nodes2DBlock::getOrientationFromMatrix(const Matrix &mat) {
     return (tab[cx][cy]);
 }
 
-Matrix Nodes2DBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos, short code) {
-    short orientation = code;
+Matrix Nodes2DBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos, uint8_t code) {
+    uint8_t orientation = code;
 
     Matrix M1,M2,M;
     M1.setRotationZ(-orientation*90.0);

@@ -26,7 +26,7 @@ public:
                                                        for this type of catom,
                                                        used to deduce selected Block / face */
 
-    SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+    [[maybe_unused]] SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                      int argc, char *argv[]);
 
     GLuint idTextureFloor,idTextureDigits;
@@ -40,6 +40,12 @@ public:
     void printInfo() {
         cout << "I'm a SmartBlocksWorld" << endl;
     }
+
+/**
+ * Return an ID of the type of current Blocks
+ * @return byte value of Block type from 'replayTags.h' list
+ */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_SMARTBLOCKS; };
 
     virtual void addBlock(bID blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
                           const Cell3DPosition &pos, const Color &col,

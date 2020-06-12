@@ -135,7 +135,7 @@ protected:
   {{5.856,12.3208,4.862,1},{5.856,13.868,0.034,1},{4.198,6.132,0,1},{4.198,7.6792,1.356,1},{4.198,9.2264,2.135,1},{4.198,10.7736,2.134,1},{4.198,12.3208,1.354,1},{4.198,13.868,0,1}},
   };
 */
-    GLUnurbsObj *theNurb;
+    //GLUnurbsObj *theNurb;
 
     virtual ~Catoms3DWorld();
 public:
@@ -151,6 +151,12 @@ public:
     void printInfo() {
         OUTPUT << "I'm a Catoms3DWorld" << endl;
     }
+
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_C3D; };
 
     virtual Catoms3DBlock* getBlockById(int bId) override {
         return((Catoms3DBlock*)World::getBlockById(bId));

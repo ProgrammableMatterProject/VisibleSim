@@ -41,6 +41,12 @@ public:
         OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
     }
 
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_BB; };
+
     BlinkyBlocksBlock* getBlockById(int bId) override {
         return ((BlinkyBlocksBlock*)World::getBlockById(bId));
     }
@@ -68,7 +74,6 @@ public:
 
     // Prints information about the blocks
     void dump();
-
 };
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);

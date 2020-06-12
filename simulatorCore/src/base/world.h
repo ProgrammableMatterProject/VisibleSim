@@ -25,6 +25,7 @@
 #include "../grid/lattice.h"
 #include "../events/scheduler.h"
 #include "../gui/objLoader.h"
+#include "../replay/replayTags.h"
 
 using namespace BaseSimulator::utils;
 using namespace std;
@@ -51,7 +52,7 @@ public:
      ************************************************************/
     //bool background = true; //!< Option for visible background /// replaced by showGrid
     GlBlock *selectedGlBlock; //!< A pointer to the GlBlock selected by the user
-    GLushort numSelectedFace; //!< The id of the face (NeighborDirection) selected by the user
+    uint8_t numSelectedFace; //!< The id of the face (NeighborDirection) selected by the user
     GLuint numSelectedGlBlock; //!< The index of the block selected by the user in the tabGlBlock
 
     ObjLoader::ObjLoader *objBlock = nullptr;           //!< Object loader for a block
@@ -105,6 +106,12 @@ public:
     }
 
     /**
+     * Return an ID of the type of current Blocks
+     * @return uint8_t value of Block type from 'replayTags.h' list
+     */
+    virtual ReplayTags::u1 getBlockType()=0;
+
+    /**
      * @brief Getter for the map containing all blocks of the world
      */
     map<bID, BuildingBlock*>& getMap() {
@@ -135,7 +142,7 @@ public:
      * @param numSelectedFace id of face to consider
      * @return true if corresponding cell is free and inside the grid, false otherwise
      */
-    bool canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace);
+    bool canAddBlockToFace(bID numSelectedGlBlock, uint8_t numSelectedFace);
 
     /**
      * @brief Returns a pointer to the block of id BId

@@ -11,9 +11,12 @@
 #pragma once
 
 #include <fstream>
-
-#include "utils/exceptions.h"
-#include "base/buildingBlock.h"
+#include <map>
+#include "../utils/tDefs.h"
+#include "../utils/color.h"
+#include "../utils/exceptions.h"
+#include "../base/buildingBlock.h"
+#include "../grid/cell3DPosition.h"
 
 using namespace std;
 
@@ -159,7 +162,7 @@ public:
     // TODO: doxygen
     void writeDisplayUpdate(Time date, bID bid, int value);
     void writePositionUpdate(Time date, bID bid, const Cell3DPosition& pos,uint8_t orientation);
-    void writeAddModule(Time date, BaseSimulator::BuildingBlock* module);
+    void writeAddModule(Time date, bID bid);
     void writeRemoveModule(Time date, bID bid);
     void writeMotion(Time date, bID bid, Time duration_us, const Cell3DPosition& destination);
     void writeConsoleTrace(Time date, bID bid, const string& trace);

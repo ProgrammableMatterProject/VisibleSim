@@ -7,10 +7,10 @@
 
 #include <iostream>
 #include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <signal.h>
+#include <csignal>
 
 #include "catoms2DSimulator.h"
 #include "catoms2DWorld.h"
@@ -69,14 +69,14 @@ void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     catom2D->setGlBlock(glBlock);
 
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     catom2D->setPosition(pos);
     catom2D->setColor(col);
     catom2D->isMaster=master;
 
     // cerr << "ADDING BLOCK #" << blockId << " pos:" << pos << " color:" << col << endl;
 
-    if (ReplayExporter::isReplayEnabled())
-        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), catom2D);
 
     if (lattice->isInGrid(pos)) {
         lattice->insert(catom2D, pos);

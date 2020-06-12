@@ -7,19 +7,20 @@
 
 #include <iostream>
 #include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <signal.h>
+#include <csignal>
 
+#include "../../base/simulator.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
+#include "../../replay/replayExporter.h"
 #include "catoms3DWorld.h"
 #include "catoms3DBlock.h"
 #include "catoms3DGlBlock.h"
 #include "catoms3DMotionEngine.h"
-#include "../../utils/trace.h"
-#include "../../utils/configExporter.h"
 #include "catoms3DRotationEvents.h"
-#include "../../base/simulator.h"
 #include "catoms3DSimulator.h"
 
 using namespace std;
@@ -40,7 +41,8 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << TermColor::LifecycleColor << "Catoms3DWorld constructor" << TermColor::Reset << endl;
 #endif
-
+    idTextureGrid = 0;
+    idTextureHexa = 0;
     if (GlutContext::GUIisEnabled) {
 /* Toggle to use catoms3D with max connector size (no rotation) but very simple models*/
 #define CATOMS3D_TEXTURE_ID 0
@@ -233,13 +235,11 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
 
     catom->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     catom->setPositionAndOrientation(pos,orientation);
     catom->setColor(col);
     lattice->insert(catom, pos);
-
-    if (ReplayExporter::isReplayEnabled())
-        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), catom);
-
 
     lock();
     mapGlBlocks.insert(make_pair(blockId, glBlock));
@@ -507,7 +507,7 @@ void Catoms3DWorld::loadTextures(const string &str) {
 }
 
 void Catoms3DWorld::updateGlData(BuildingBlock *bb) {
-    Catoms3DGlBlock *glblc = (Catoms3DGlBlock*)bb->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)bb->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -518,7 +518,7 @@ void Catoms3DWorld::updateGlData(BuildingBlock *bb) {
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Color &color) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -528,7 +528,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Color &color) {
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, bool visible) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -538,7 +538,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, bool visible) {
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vector3D &position) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -548,7 +548,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vector3D &position) {
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -558,7 +558,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Cell3DPosition &positi
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrix &mat) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         glblc->mat = mat;
@@ -590,7 +590,7 @@ void Catoms3DWorld::setSelectedFace(int n) {
 }
 
 void Catoms3DWorld::exportConfiguration() {
-    Catoms3DConfigExporter exporter = Catoms3DConfigExporter(this);
+    auto exporter = Catoms3DConfigExporter(this);
     exporter.exportConfiguration();
 }
 
@@ -602,8 +602,7 @@ bool addAdd(ObjLoader::ObjData*obj,const Vector3D &pos) {
     Vector3D center(pos[0]+c->v[0],pos[1]+c->v[1],pos[2]+c->v[2]);
 
     // calculate distance to min center
-    float dmin=1e32;
-    float d;
+    double dmin=1e32,d;
     for(Vector3D v:tabAddCenter) {
         d=(v-center).norme2();
         if (d<dmin) {
@@ -661,10 +660,10 @@ bool Catoms3DWorld::exportSTLModel(string title) {
     // select catom in the border
     vector <Catoms3DBlock*> borderBlocks;
     cout << "step #1: " << endl;
-    for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
+    for (const auto& pair : buildingBlocksMap) {
         if (pair.second->getState() != BuildingBlock::REMOVED
             and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
-            Catoms3DBlock *bb = (Catoms3DBlock *)pair.second;
+            auto *bb = (Catoms3DBlock *)pair.second;
             if (bb->getNbNeighbors()<12) { // soit 12 voisins
                 bb->setColor(RED);
                 borderBlocks.push_back(bb);
@@ -696,7 +695,7 @@ bool Catoms3DWorld::exportSTLModel(string title) {
 
     lock();
     for (auto block: borderBlocks) {
-        GlBlock *glblock = block->getGlBlock();
+        auto *glblock = (Catoms3DGlBlock*)block->getGlBlock();
         file << "solid catom#" << glblock->blockId << endl;
         pos.set(glblock->position[0],glblock->position[1],glblock->position[2]);
         cell = lattice->worldToGridPosition(pos);

@@ -50,6 +50,12 @@ public:
         OUTPUT << "I'm a DatomsWorld" << endl;
     }
 
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_DATOM; };
+
     virtual DatomsBlock* getBlockById(int bId) override {
         return((DatomsBlock*)World::getBlockById(bId));
     }

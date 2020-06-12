@@ -45,6 +45,12 @@ public:
         OUTPUT << "I'm a SlidingCubesWorld" << endl;
     }
 
+/**
+ * Return an ID of the type of current Blocks
+ * @return byte value of Block type from 'replayTags.h' list
+ */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_SLIDINGCUBE; };
+
     SlidingCubesMotionRules *getMotionRules() { return motionRules; }
     SlidingCubesBlock* getBlockById(int bId) override {
         return((SlidingCubesBlock*)World::getBlockById(bId));

@@ -232,7 +232,7 @@ void World::stopSimulation() {
     }
 }
 
-bool World::canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace) {
+bool World::canAddBlockToFace(bID numSelectedGlBlock, uint8_t numSelectedFace) {
     BuildingBlock *bb = getBlockById(mapGlBlocks[numSelectedGlBlock]->blockId);
     Cell3DPosition nPos;
     bool isInGrid = bb->getNeighborPos(numSelectedFace,nPos);

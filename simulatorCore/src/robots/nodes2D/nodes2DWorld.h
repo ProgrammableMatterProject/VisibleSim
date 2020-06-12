@@ -13,14 +13,14 @@
 
 #include <vector>
 
-#include "base/buildingBlock.h"
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "grid/cell3DPosition.h"
-#include "robots/nodes2D/nodes2DBlock.h"
-#include "gui/objLoader.h"
-#include "utils/trace.h"
+#include "../../base/buildingBlock.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "../../grid/cell3DPosition.h"
+#include "nodes2DBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../utils/trace.h"
 
 //!< \namespace Nodes2D
 namespace Nodes2D {
@@ -52,7 +52,13 @@ public:
         OUTPUT << "I'm a Nodes2DWorld" << endl;
     }
 
-    virtual Nodes2DBlock* getBlockById(int bId) override {
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_NODE2D; };
+
+    Nodes2DBlock* getBlockById(int bId) override {
         return((Nodes2DBlock*)World::getBlockById(bId));
     }
 

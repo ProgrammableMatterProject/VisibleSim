@@ -72,15 +72,13 @@ void OkteenWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
     OkteenGlBlock *glBlock = new OkteenGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     module->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     module->setColor(col);
     module->setPosition(pos);
     lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     OUTPUT << "ADD #" << blockId << ", "<< pos << endl;
-
-    if (ReplayExporter::isReplayEnabled())
-        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), module);
-
 }
 
 /**

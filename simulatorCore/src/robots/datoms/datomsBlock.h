@@ -56,7 +56,7 @@ enum PistonId { AllPistonsOff=1, Piston012A, Piston136B, Piston4678, Piston0579,
 */
 class DatomsBlock : public BaseSimulator::BuildingBlock {
 public :
-    short orientationCode; //!< number of the connector that is along the x axis.
+    // uint8_t orientationCode; //!< number of the connector that is along the x axis.
 public:
     /**
        @brief Constructor
@@ -90,20 +90,20 @@ public:
        @param connectorId: id of connector (0..11)
        @param pos: position of the cell (if in the grid)
        @return return true if the cell is in the grid, false otherwise. */
-    bool getNeighborPos(short connectorId,Cell3DPosition &pos) const override;
+    bool getNeighborPos(uint8_t connectorId,Cell3DPosition &pos) const override;
 
      /**
      * Gets a pointer to direct neighbor on connector conId
      * @param connectorId connector identifier
      * @return a pointer to neighbor on connector conId of datom, or NULL if there is none
      */
-    DatomsBlock *getNeighborBlock(short conId) const;
+    DatomsBlock *getNeighborBlock(uint8_t conId) const;
 
     /**
      * Gets a pointer to neighbor (direct neighborhood or distant) at cell nPos
      * @param nPos neighbor cell
      * @attention this function does not check whether nPos is in the local neighborhood of the catom. This is a feature since a neighbor in the second- or nth-neighborhood of the datom could be asked.
-     * Prefer getNeighborBlock(short conId) for local neighborhood.
+     * Prefer getNeighborBlock(uint8_t conId) for local neighborhood.
      * @return a pointer to neighbor at ABSOLUTE position nPos
      */
     DatomsBlock *getNeighborBlock(const Cell3DPosition& nPos) const;
@@ -114,13 +114,13 @@ public:
      * @param nDirection
      * @param includeSelf if true, returns connector if cell on nDirection of nPos is own cell
      * @return connector of the current module is adjacent to cell on direction nDirection of nPos, or -1 if that cell and the current module are not adjacent */
-    short projectAbsoluteNeighborDirection(const Cell3DPosition& nPos, short nDirection) const;
+    uint8_t projectAbsoluteNeighborDirection(const Cell3DPosition& nPos, uint8_t nDirection) const;
 
     /**
        @brief Get the connector of the catom that is next to the position in argument
        @param pos: position of the cell (must be in the grid)
        @return returns the id of the connector next to this pos or -1 if invalid. */
-    short getConnectorId(const Cell3DPosition& pos) const;
+    uint8_t getConnectorId(const Cell3DPosition& pos) const;
 
     /**
      * @attention SHOULD BE getConnector(p2p...)!
@@ -131,9 +131,9 @@ public:
      * @brief For a given connector, returns the direction corresponding to this connector
      *  relative to a catom whose 0 connector is aligned with the x-axis
      * @param connector the connector for which the absolute direction wants to be known
-     * @return a short int in {0..11}, the direction of the connector, or -1 if connector is invalid or adjacent to a cell outside the lattice */
-    short getAbsoluteDirection(short connector) const;
-    short getAbsoluteDirection(const Cell3DPosition& pos) const;
+     * @return a uint8_t int in {0..11}, the direction of the connector, or -1 if connector is invalid or adjacent to a cell outside the lattice */
+    uint8_t getAbsoluteDirection(uint8_t connector) const;
+    uint8_t getAbsoluteDirection(const Cell3DPosition& pos) const;
 
     /**
      * @brief Sets the grid position of the catom, and updates its position matrix
@@ -146,25 +146,25 @@ public:
        @brief Get the orientation code from the transformation matrix of the catom
        @param mat: homogeneous transformation matrix
        @return return orientation code. */
-    static short getOrientationFromMatrix(const Matrix &mat);
+    static uint8_t getOrientationFromMatrix(const Matrix &mat);
     /**
        @brief Get the transformation matrix of the catom from its position in the grid and its orientation code
        @param pos: position of the cell constaining the catom
        @param code: orientation code (number of the connector aligned with x axis)
        @return return homogeneous transformation matrix. */
-    static Matrix getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code);
+    static Matrix getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,uint8_t code);
     /**
        @brief Set the catom in the grid according to a cell position and an orientation code
        @param pos: position of the cell constaining the catom
        @param code: orientation code (number of the connector aligned with x axis)*/
-    void setPositionAndOrientation(const Cell3DPosition &pos,short code);
+    void setPositionAndOrientation(const Cell3DPosition &pos,uint8_t code);
 
     /**
      * @param otherOriCode Some other catom's orientation code
      * @return true if both catoms' orientation are inverted relative to each other
      */
 
-    bool areOrientationsInverted(short otherOriCode) const;
+    bool areOrientationsInverted(uint8_t otherOriCode) const;
     /**
      * @brief If position in argument is adjacent to current module, returns a pointer to the neighbor in that cell
      * @param pos position of the neighbor to retrieve

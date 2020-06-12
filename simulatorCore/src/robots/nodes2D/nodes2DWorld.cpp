@@ -17,10 +17,11 @@
 
 #include "nodes2DWorld.h"
 #include "nodes2DBlock.h"
+#include "nodes2DGlBlock.h"
 #include "nodes2DMotionEngine.h"
 #include "../../utils/trace.h"
 #include "../../utils/configExporter.h"
-#include "replay/replayExporter.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -196,14 +197,14 @@ void Nodes2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosit
     Nodes2DGlBlock *glBlock = new Nodes2DGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     module->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(),blockId);
     module->setColor(col);
-        module->setPositionAndOrientation(pos,orientation);
+    module->setPositionAndOrientation(pos,orientation);
     lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     linkBlock(pos);
 
-    if (ReplayExporter::isReplayEnabled())
-        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), module);
 }
 
 /**
@@ -336,7 +337,7 @@ void Nodes2DWorld::updateGlData(BuildingBlock *bb) {
 }
 
 void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Color &color) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
+    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
     if (glblc) {
             lock();
             //cout << "update pos:" << position << endl;
@@ -346,7 +347,7 @@ void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Color &color) {
 }
 
 void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, bool visible) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
+    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
     if (glblc) {
             lock();
             //cout << "update pos:" << position << endl;
@@ -356,7 +357,7 @@ void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, bool visible) {
 }
 
 void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Vector3D &position) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
+    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -366,7 +367,7 @@ void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Vector3D &position) {
 }
 
 void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Cell3DPosition &position) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
+    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -376,7 +377,7 @@ void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Cell3DPosition &position
 }
 
 void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Matrix &mat) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
+    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         glblc->mat = mat;
@@ -402,7 +403,7 @@ void Nodes2DWorld::setSelectedFace(int n) {
 }
 
 void Nodes2DWorld::exportConfiguration() {
-    Nodes2DConfigExporter exporter = Nodes2DConfigExporter(this);
+    auto exporter = Nodes2DConfigExporter(this);
     exporter.exportConfiguration();
 }
 

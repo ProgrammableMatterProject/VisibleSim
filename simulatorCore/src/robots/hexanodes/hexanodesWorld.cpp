@@ -15,12 +15,14 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "hexanodesWorld.h"
-#include "hexanodesBlock.h"
-#include "hexanodesMotionEngine.h"
 #include "../../utils/trace.h"
 #include "../../utils/configExporter.h"
-#include "replay/replayExporter.h"
+#include "../../replay/replayExporter.h"
+#include "../../events/events.h"
+#include "hexanodesWorld.h"
+#include "hexanodesBlock.h"
+#include "hexanodesGlBlock.h"
+#include "hexanodesMotionEngine.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -198,16 +200,14 @@ void HexanodesWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPos
     HexanodesGlBlock *glBlock = new HexanodesGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     module->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     module->setColor(col);
-        cout << "addBlock(" << pos << ")" << endl;
-        module->setPositionAndOrientation(pos,orientation);
-        cout << "module->position = " << module->position << endl;
-        lattice->insert(module, pos);
+    module->setPositionAndOrientation(pos,orientation);
+    lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     linkBlock(pos);
 
-    if (ReplayExporter::isReplayEnabled())
-        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), module);
 }
 
 /**

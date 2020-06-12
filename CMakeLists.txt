@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(VisibleSim)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(simulatorCore/src/base)
 include_directories(simulatorCore/src/clock)
@@ -66,6 +66,7 @@ include_directories(simulatorCore/src/robots/slidingCubes)
 include_directories(simulatorCore/src/robots/smartBlocks)
 include_directories(simulatorCore/src/stats)
 include_directories(simulatorCore/src/utils)
+include_directories(simulatorCore/src/replay)
 
 add_executable(VisibleSim
         simulatorCore/src/base/blockCode.cpp
@@ -92,8 +93,6 @@ add_executable(VisibleSim
         simulatorCore/src/csg/csg.h
         simulatorCore/src/csg/csgParser.cpp
         simulatorCore/src/csg/csgParser.h
-        simulatorCore/src/csg/csgUtils.cpp
-        simulatorCore/src/csg/csgUtils.h
         simulatorCore/src/deps/Eigen/src/Cholesky/LDLT.h
         simulatorCore/src/deps/Eigen/src/Cholesky/LLT.h
         simulatorCore/src/deps/Eigen/src/Cholesky/LLT_LAPACKE.h
@@ -557,4 +556,7 @@ add_executable(VisibleSim
         simulatorCore/src/utils/trace.cpp
         simulatorCore/src/utils/trace.h
         simulatorCore/src/utils/utils.cpp
-        simulatorCore/src/utils/utils.h)
+        simulatorCore/src/utils/utils.h
+        simulatorCore/src/replay/replayExporter.cpp
+        simulatorCore/src/replay/replayExporter.h
+        simulatorCore/src/replay/replayTags.h)

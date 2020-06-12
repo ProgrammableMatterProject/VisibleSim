@@ -8,6 +8,7 @@
  *
  */
 
+#include <algorithm>
 #include "replayExporter.h"
 
 #include "replayTags.h"
@@ -70,7 +71,8 @@ string ReplayExporter::debugFilenameFromExportFilename(const string& exportFn) c
 
     std::size_t ext = str.find_last_of(".");
 
-    return str.replace(str.begin() + ext, str.end(), ".txt");
+//    return str.replace(str.begin() + ext, str.end(), ".txt");
+    return "debug.txt";
 }
 
 
@@ -96,22 +98,23 @@ bool ReplayExporter::isReplayEnabled() {
 
 void ReplayExporter::writeHeader() {
     exportFile->write((char*)&VS_MAGIC, sizeof(u4));
-    exportFile->write((char*)&MODULE_TYPE_BB, sizeof(u1));
 
+    const u1 moduleType = BaseSimulator::getWorld()->getBlockType();
     const Cell3DPosition& gridSize = BaseSimulator::getWorld()->lattice->gridSize;
-    exportFile->write((char*)&gridSize, 3 * sizeof(short)); // xyz
+
+    exportFile->write((char*)&moduleType, sizeof(u1));
+    exportFile->write((char*)&gridSize, 3*sizeof(short)); // xyz
 
     keyFramesIndexPos = exportFile->tellp();
 
     // cout << "keyFramesIndexPos: " << keyFramesIndexPos << endl;
-
+    cout << "debug:" << debug << endl;
     if (debug) {
         debugFile->write((char*)&VS_MAGIC, sizeof(u4)); *debugFile << endl;
-        *debugFile << MODULE_TYPE_BB << endl;
+        *debugFile << (int)moduleType << endl;
         *debugFile << gridSize[0] << " " << gridSize[1] << " " << gridSize[2] << endl; // xyz
 
         keyFramesIndexPosDebug = debugFile->tellp();
-
         // cout << "keyFramesIndexPosDebug: " << keyFramesIndexPosDebug << endl;
     }
 }
@@ -174,11 +177,14 @@ void ReplayExporter::writeColorUpdate(Time date, bID bid, const Color& color) {
     exportFile->write((char*)&date, sizeof(Time));
     exportFile->write((char*)&EVENT_COLOR_UPDATE, sizeof(u1));
     exportFile->write((char*)&bid, sizeof(bID));
-
-    // @TODO: bid, color
+    u1 u1color[3];
+    for (std::size_t i;i<3; i++) {
+        u1color[i] = clamp(static_cast<int>(color.rgba[i] * 255.0), 0, 255);
+    }
+    exportFile->write((char*)&u1color,3*sizeof(u1));
 
     if (debug) {
-        *debugFile << date << " " << EVENT_COLOR_UPDATE << " " << bid << " TODO" << endl;
+        *debugFile << "Color:" << date << " " << (int)EVENT_COLOR_UPDATE << " " << bid << " " << (int)u1color[0] << " " << (int)u1color[1] << " " << (int)u1color[2] << endl;
     }
 }
 
@@ -188,35 +194,30 @@ void ReplayExporter::writeDisplayUpdate(Time date, bID bid, int value) {
     exportFile->write((char*)&bid, sizeof(bID));
 
     // @TODO: bid, value
-
     if (debug) {
-        *debugFile << date << " " << EVENT_DISPLAY_UPDATE << " " << bid << " TODO" << endl;
+        *debugFile << "Dpy:" << date << " " << EVENT_DISPLAY_UPDATE << " " << bid << " TODO" << endl;
     }
 }
 
-void ReplayExporter::writePositionUpdate(Time date, bID bid, const Cell3DPosition& pos,
-                                         uint8_t orientation) {
+void ReplayExporter::writePositionUpdate(Time date, bID bid, const Cell3DPosition& pos, uint8_t orientation) {
     exportFile->write((char*)&date, sizeof(Time));
     exportFile->write((char*)&EVENT_POSITION_UPDATE, sizeof(u1));
     exportFile->write((char*)&bid, sizeof(bID));
-
-    // @TODO: bid, position, orientation
-
+    exportFile->write((char*)&pos.pt,3*sizeof(u2));
+    exportFile->write((char*)&orientation,sizeof(u1));
     if (debug) {
-        *debugFile << date << " " << EVENT_POSITION_UPDATE << " " << bid << " TODO" << endl;
+        *debugFile << "Pos:" << date << " " << (int)EVENT_POSITION_UPDATE << " " << bid << " " << pos[0] << " " << pos[1] << " " << pos[2] << " " << (int)orientation << endl;
     }
 
 }
 
-void ReplayExporter::writeAddModule(Time date, BuildingBlock* module) {
+void ReplayExporter::writeAddModule(Time date, bID bid) {
     exportFile->write((char*)&date, sizeof(Time));
-    exportFile->write((char*)&EVENT_ADD_MODULE, sizeof(u1));;
-
-    // @TODO: bid, position, orientation, color [, display]
-    // perhaps call BuildingBlock::serialize to handle
+    exportFile->write((char*)&EVENT_ADD_MODULE, sizeof(u1));
+    exportFile->write((char*)&bid, sizeof(u2));
 
     if (debug) {
-        *debugFile << date << " " << EVENT_ADD_MODULE << " TODO" << endl;
+        *debugFile << "Add:" << date << " " << (int)EVENT_ADD_MODULE << " " << bid << endl;
     }
 }
 
@@ -226,7 +227,7 @@ void ReplayExporter::writeRemoveModule(Time date, bID bid) {
     exportFile->write((char*)&bid, sizeof(bID));
 
     if (debug) {
-        *debugFile << date << " " << EVENT_REMOVE_MODULE << " " << bid << endl;
+        *debugFile << "Rmv:" << date << " " << (int)EVENT_REMOVE_MODULE << " " << bid << endl;
     }
 }
 
@@ -239,7 +240,7 @@ void ReplayExporter::writeMotion(Time date, bID bid, Time duration_us,
     // @TODO: bid, duration, destination
 
     if (debug) {
-        *debugFile << date << " " << EVENT_MOTION << " " << bid << endl;
+        *debugFile << "Motion:" << date << " " << (int)EVENT_MOTION << " " << bid << endl;
     }
 }
 
@@ -251,6 +252,6 @@ void ReplayExporter::writeConsoleTrace(Time date, bID bid, const string& trace) 
     // @TODO: bid, trace
 
     if (debug) {
-        *debugFile << date << " " << EVENT_MOTION << " " << bid << " " << trace << endl;
+        *debugFile << "INFO:" << date << " " << EVENT_MOTION << " " << bid << " " << trace << endl;
     }
 }

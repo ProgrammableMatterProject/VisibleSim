@@ -16,7 +16,7 @@
 #include "slidingCubesBlock.h"
 #include "../../utils/trace.h"
 #include "../../utils/configExporter.h"
-#include "replay/replayExporter.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 
@@ -34,7 +34,7 @@ SlidingCubesWorld::SlidingCubesWorld(const Cell3DPosition &gridSize, const Vecto
 
     lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 
-        motionRules = new SlidingCubesMotionRules();
+    motionRules = new SlidingCubesMotionRules();
 }
 
 SlidingCubesWorld::~SlidingCubesWorld() {
@@ -169,12 +169,11 @@ void SlidingCubesWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3D
     SlidingCubesGlBlock *glBlock = new SlidingCubesGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     robotBlock->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     robotBlock->setPosition(pos);
     robotBlock->setColor(col);
     robotBlock->isMaster=master;
-
-    if (ReplayExporter::isReplayEnabled())
-        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), robotBlock);
 
     if (lattice->isInGrid(pos)) {
         lattice->insert(robotBlock, pos);
@@ -223,6 +222,7 @@ void SlidingCubesWorld::glDraw() {
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
     lattice->glDraw();
+    glPopMatrix();
 }
 
 void SlidingCubesWorld::glDrawId() {

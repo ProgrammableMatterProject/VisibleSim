@@ -43,6 +43,12 @@ public:
     OUTPUT << "I'm a Catoms2DWorld" << endl;
     }
 
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_C2D; };
+
     virtual Catoms2DBlock* getBlockById(int bId) override {
     return((Catoms2DBlock*)World::getBlockById(bId));
     }
