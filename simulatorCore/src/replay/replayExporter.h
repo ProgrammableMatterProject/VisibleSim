@@ -31,7 +31,7 @@ class ReplayExporter {
 
     static inline bool debug = false; //!< Indicates whether to write the debug file or not
     static inline const string extension = "vs"; //!< Export file extension
-
+    static inline bool enabled = false;
     /**
      * The frequency of key frame export in MICROSECONDS.
      * Saves a key frame every <N> MICROSECONDS (us)
@@ -75,6 +75,7 @@ public:
     ReplayExporter();
     virtual ~ReplayExporter() {}
 
+    inline static void enable(bool v) { enabled=v; }
     /**
      * @return the binary export file instance
      */

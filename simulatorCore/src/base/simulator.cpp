@@ -13,15 +13,14 @@
 
 #include "../grid/cell3DPosition.h"
 #include "../utils/trace.h"
+#include "../utils/utils.h"
+#include "../utils/global.h"
 #include "../meld/meldInterpretVM.h"
 #include "../meld/meldInterpretScheduler.h"
 #include "../events/cppScheduler.h"
 #include "../gui/openglViewer.h"
-#include "../utils/utils.h"
-#include "../robots/catoms3D/catoms3DRotationEvents.h"
 #include "../csg/csg.h"
 #include "../csg/csgParser.h"
-#include "../utils/global.h"
 #include "../replay/replayExporter.h"
 
 using namespace std;
@@ -1087,7 +1086,9 @@ void Simulator::startSimulation(void) {
 
     // Start replay export if enabled
     if (cmdLine.isReplayEnabled()) {
-        ReplayExporter::getInstance()->writeHeader();
+        auto replay = ReplayExporter::getInstance();
+        replay->enable(true);
+        replay->writeHeader();
         // ReplayExporter::getInstance()->exportKeyframe();
     }
 

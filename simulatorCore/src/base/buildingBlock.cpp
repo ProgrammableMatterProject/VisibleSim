@@ -336,11 +336,20 @@ int BuildingBlock::getFaceForNeighborID(int nId) const {
 }
 
 void BuildingBlock::serialize(std::ofstream &bStream) {
-    throw NotImplementedException(); // @TODO BP
+    bStream.write((char*)&blockId, sizeof(ReplayTags::u4));
+    bStream.write((char*)&position, 3*sizeof(ReplayTags::u2));
+    bStream.write((char*)&orientationCode, sizeof(ReplayTags::u1));
+    ReplayTags::u1 u1color[3];
+    for (std::size_t i;i<3; i++) {
+        u1color[i] = clamp(static_cast<int>(color.rgba[i] * 255.0), 0, 255);
+    }
+    bStream.write((char*)&u1color, 3*sizeof(ReplayTags::u1));
 }
 
 void BuildingBlock::serialize_cleartext(std::ofstream &dbStream) {
-    throw NotImplementedException(); // @TODO BP
+    dbStream << (int)blockId << ";"
+        << position[0] << "," << position[1] << ","<< position[2] << "," << (int) orientationCode << ";"
+        << (int)(color[0]*255) << "," << (int)(color[1]*255) << ","<< (int)(color[2]*255) << endl;
 }
 
 

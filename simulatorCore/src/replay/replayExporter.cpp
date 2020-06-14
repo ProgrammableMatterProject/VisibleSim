@@ -93,7 +93,7 @@ void ReplayExporter::endExport() {
 }
 
 bool ReplayExporter::isReplayEnabled() {
-    return Simulator::getSimulator()->getCmdLine().isReplayEnabled();
+    return (Simulator::getSimulator()->getCmdLine().isReplayEnabled() && enabled);
 }
 
 void ReplayExporter::writeHeader() {
@@ -103,7 +103,7 @@ void ReplayExporter::writeHeader() {
     const Cell3DPosition& gridSize = BaseSimulator::getWorld()->lattice->gridSize;
 
     exportFile->write((char*)&moduleType, sizeof(u1));
-    exportFile->write((char*)&gridSize, 3*sizeof(short)); // xyz
+    exportFile->write((char*)&gridSize, 3*sizeof(u2)); // xyz
 
     keyFramesIndexPos = exportFile->tellp();
 
@@ -121,8 +121,8 @@ void ReplayExporter::writeHeader() {
 
 void ReplayExporter::writeKeyFramesIndex() {
     // Move write head to previously saved index location
-    exportFile->seekp(keyFramesIndexPos);
-    if (debug) debugFile->seekp(keyFramesIndexPosDebug);
+    /*exportFile->seekp(keyFramesIndexPos); // currently at the end !
+    if (debug) debugFile->seekp(keyFramesIndexPosDebug);*/
 
     // Write number of index entries
     size_t nEntries = keyFramesIndex.size();
@@ -245,13 +245,13 @@ void ReplayExporter::writeMotion(Time date, bID bid, Time duration_us,
 }
 
 void ReplayExporter::writeConsoleTrace(Time date, bID bid, const string& trace) {
-    exportFile->write((char*)&date, sizeof(Time));
+    /*exportFile->write((char*)&date, sizeof(Time));
     exportFile->write((char*)&EVENT_CONSOLE_TRACE, sizeof(u1));
     exportFile->write((char*)&bid, sizeof(bID));
+    exportFile->write((char*)&trace.cstr(), trace.length()*sizeof(u1));
 
-    // @TODO: bid, trace
 
     if (debug) {
-        *debugFile << "INFO:" << date << " " << EVENT_MOTION << " " << bid << " " << trace << endl;
-    }
+        *debugFile << "INFO:" << date << " " <<(int) EVENT_MOTION << " " << bid << " " << trace << endl;
+    }*/
 }
