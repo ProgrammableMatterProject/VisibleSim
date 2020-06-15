@@ -9,6 +9,7 @@
 #include "smartBlocksBlock.h"
 #include "smartBlocksWorld.h"
 #include "../../motion/translationEvents.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 
@@ -115,8 +116,10 @@ bool SmartBlocksBlock::canMoveTo(const Cell3DPosition& dest) const {
 bool SmartBlocksBlock::moveTo(const Cell3DPosition& dest) {
     if (not canMoveTo(dest)) return false;
 
-    getScheduler()->schedule(new TranslationStartEvent(getScheduler()->now(), this, dest));
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeMotion(getScheduler()->now(), blockId,102000,dest); // BPi : duration is currently fixed due to translation event implementation
 
+    getScheduler()->schedule(new TranslationStartEvent(getScheduler()->now(), this, dest));
     return true;
 }
 

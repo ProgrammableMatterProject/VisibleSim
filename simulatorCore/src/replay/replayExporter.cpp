@@ -21,8 +21,7 @@ using namespace ReplayTags;
 
 ReplayExporter::ReplayExporter() {
     const string& fnbin = buildExportFilename();
-
-    cout << debug << " rwwa " << endl;
+    nbEventsBeforeKeyframe=NumberOfEventsBetweenKeyFrames;
 
     cout << TermColor::BWhite
          << "(replay) exporting simulation data to file: " << TermColor::Reset
@@ -145,9 +144,10 @@ void ReplayExporter::writeKeyFramesIndex() {
 }
 
 void ReplayExporter::writeKeyFrameIfNeeded(Time date) {
-    if (date > (lastKeyFrameExportDate + keyFrameSaveFrequency)) {
+    //if (date > (lastKeyFrameExportDate + keyFrameSaveFrequency)) {
+    if (nbEventsBeforeKeyframe<=0) {
         writeKeyFrame(date);
-        lastKeyFrameExportDate = date;
+        //lastKeyFrameExportDate = date;
     }
 }
 
@@ -170,6 +170,7 @@ void ReplayExporter::writeKeyFrame(Time date) {
     if (debug) {
         *debugFile << "-- END KEY FRAME #" << keyFramesIndex.size() << endl;
     }
+    nbEventsBeforeKeyframe=NumberOfEventsBetweenKeyFrames;
 }
 
 void ReplayExporter::writeColorUpdate(Time date, bID bid, const Color& color) {
@@ -185,6 +186,7 @@ void ReplayExporter::writeColorUpdate(Time date, bID bid, const Color& color) {
     if (debug) {
         *debugFile << "Color:" << date << " " << (int)EVENT_COLOR_UPDATE << " " << bid << " " << (int)u1color[0] << " " << (int)u1color[1] << " " << (int)u1color[2] << endl;
     }
+    nbEventsBeforeKeyframe--;
 }
 
 void ReplayExporter::writeDisplayUpdate(Time date, bID bid, uint16_t value) {
@@ -196,6 +198,7 @@ void ReplayExporter::writeDisplayUpdate(Time date, bID bid, uint16_t value) {
     if (debug) {
         *debugFile << "Dpy:" << date << " " << (int)EVENT_DISPLAY_UPDATE << " " << bid << " " << value << endl;
     }
+    nbEventsBeforeKeyframe--;
 }
 
 void ReplayExporter::writePositionUpdate(Time date, bID bid, const Cell3DPosition& pos, uint8_t orientation) {
@@ -207,7 +210,7 @@ void ReplayExporter::writePositionUpdate(Time date, bID bid, const Cell3DPositio
     if (debug) {
         *debugFile << "Pos:" << date << " " << (int)EVENT_POSITION_UPDATE << " " << bid << " " << pos[0] << " " << pos[1] << " " << pos[2] << " " << (int)orientation << endl;
     }
-
+    nbEventsBeforeKeyframe--;
 }
 
 void ReplayExporter::writeAddModule(Time date, bID bid) {
@@ -218,6 +221,7 @@ void ReplayExporter::writeAddModule(Time date, bID bid) {
     if (debug) {
         *debugFile << "Add:" << date << " " << (int)EVENT_ADD_MODULE << " " << bid << endl;
     }
+    nbEventsBeforeKeyframe--;
 }
 
 void ReplayExporter::writeRemoveModule(Time date, bID bid) {
@@ -228,6 +232,7 @@ void ReplayExporter::writeRemoveModule(Time date, bID bid) {
     if (debug) {
         *debugFile << "Rmv:" << date << " " << (int)EVENT_REMOVE_MODULE << " " << bid << endl;
     }
+    nbEventsBeforeKeyframe--;
 }
 
 void ReplayExporter::writeMotion(Time date, bID bid, Time duration_us,
@@ -235,12 +240,14 @@ void ReplayExporter::writeMotion(Time date, bID bid, Time duration_us,
     exportFile->write((char*)&date, sizeof(Time));
     exportFile->write((char*)&EVENT_MOTION, sizeof(u1));
     exportFile->write((char*)&bid, sizeof(bID));
-
-    // @TODO: bid, duration, destination
+    exportFile->write((char*)&duration_us, sizeof(u8));
+    exportFile->write((char*)&destination.pt,3*sizeof(u2));
 
     if (debug) {
-        *debugFile << "Motion:" << date << " " << (int)EVENT_MOTION << " " << bid << endl;
+        *debugFile << "Motion:" << date << " " << (int)EVENT_MOTION << " " << bid
+            << " " << (int)duration_us << " " << " " << destination[0] << " " << destination[1] << " " << destination[2] << endl;
     }
+    nbEventsBeforeKeyframe--;
 }
 
 void ReplayExporter::writeConsoleTrace(Time date, bID bid, const string& trace) {
@@ -252,5 +259,7 @@ void ReplayExporter::writeConsoleTrace(Time date, bID bid, const string& trace) 
 
     if (debug) {
         *debugFile << "INFO:" << date << " " <<(int) EVENT_MOTION << " " << bid << " " << trace << endl;
-    }*/
+    }
+    nbEventsBeforeKeyframe--;
+*/
 }

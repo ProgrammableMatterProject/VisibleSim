@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="10,10,1" windowSize="1920,1080" >
+<camera target="125,125,10" directionSpherical="0,60,400" angle="45" near="200" far="500" />
+	<blockList color="0,255,0" blockSize="25.0,25.0,11.0">
+		<blocksLine line="0" values="1111101100"/>
+		<blocksLine line="1" values="0101011010"/>
+		<blocksLine line="2" values="1100001111"/>
+		<blocksLine line="3" values="0101010000"/>
+		<blocksLine line="4" values="0011111111"/>
+		<block position="3,5,0" />
+		<block position="5,5,0" leader="1" />
+		<block position="7,5,0" />
+		<block position="9,5,0" />
+		<blocksLine line="6" values="0010110001"/>
+		<blocksLine line="7" values="0110001101"/>
+		<blocksLine line="8" values="1010101010"/>
+		<blocksLine line="9" values="1111111111"/>
+	</blockList>
+</world>

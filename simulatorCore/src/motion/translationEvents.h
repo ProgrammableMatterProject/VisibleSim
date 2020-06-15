@@ -10,8 +10,8 @@
 #ifndef TRANSLATIONEVENTS_H_
 #define TRANSLATIONEVENTS_H_
 
-#include "base/buildingBlock.h"
-#include "events/events.h"
+#include "../base/buildingBlock.h"
+#include "../events/events.h"
 
 namespace BaseSimulator {
 
@@ -42,7 +42,7 @@ public:
 class TranslationStepEvent : public BlockEvent {
     Vector3D finalPosition;	//!< Target position of the block
     Vector3D motionStep;		//!< Translation of the block during this step
-    Vector3D motionPosition;		//!< Actual position on the grid of the block in motion
+    Vector3D motionPosition;	//!< Current position on the grid of the block in motion
 public:
     TranslationStepEvent(Time, BuildingBlock *block,const Vector3D &fpos);
     TranslationStepEvent(Time, BuildingBlock *block,const Vector3D &fpos,
