@@ -1,5 +1,5 @@
-#include "robots/smartBlocks/smartBlocksGlBlock.h"
-#include "robots/smartBlocks/smartBlocksWorld.h"
+#include "smartBlocksGlBlock.h"
+#include "smartBlocksWorld.h"
 
 namespace SmartBlocks {
 
@@ -19,14 +19,14 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         ptrObj->setLightedColor(color);
     }
     ptrObj->glDraw();
-    if (displayedValue>=0) {
+    if (displayedValue<noDisplay) {
         int digits = 1;
         if (displayedValue>9) digits=2;
         if (displayedValue>99) digits=3;
         GLfloat dx = 20.0/digits;
         GLfloat x,s,t;
         int n=displayedValue;
-        SmartBlocksWorld *wrld = (SmartBlocksWorld*)getWorld();
+        auto wrld = (SmartBlocksWorld*)getWorld();
         glBindTexture(GL_TEXTURE_2D,wrld->idTextureDigits);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);

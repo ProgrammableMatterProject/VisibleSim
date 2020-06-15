@@ -161,7 +161,7 @@ public:
     void writeColorUpdate(Time date, bID bid, const Color& color);
 
     // TODO: doxygen
-    void writeDisplayUpdate(Time date, bID bid, int value);
+    void writeDisplayUpdate(Time date, bID bid, uint16_t value);
     void writePositionUpdate(Time date, bID bid, const Cell3DPosition& pos,uint8_t orientation);
     void writeAddModule(Time date, bID bid);
     void writeRemoveModule(Time date, bID bid);

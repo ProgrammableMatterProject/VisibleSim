@@ -164,7 +164,6 @@ void ReplayExporter::writeKeyFrame(Time date) {
 
     for (const pair<bID, BuildingBlock*>& pair:BaseSimulator::getWorld()->buildingBlocksMap) {
         pair.second->serialize(*exportFile);
-
         if (debug) pair.second->serialize_cleartext(*debugFile);
     }
 
@@ -188,14 +187,14 @@ void ReplayExporter::writeColorUpdate(Time date, bID bid, const Color& color) {
     }
 }
 
-void ReplayExporter::writeDisplayUpdate(Time date, bID bid, int value) {
+void ReplayExporter::writeDisplayUpdate(Time date, bID bid, uint16_t value) {
     exportFile->write((char*)&date, sizeof(Time));
     exportFile->write((char*)&EVENT_DISPLAY_UPDATE, sizeof(u1));
     exportFile->write((char*)&bid, sizeof(bID));
+    exportFile->write((char*)&value, sizeof(u2));
 
-    // @TODO: bid, value
     if (debug) {
-        *debugFile << "Dpy:" << date << " " << EVENT_DISPLAY_UPDATE << " " << bid << " TODO" << endl;
+        *debugFile << "Dpy:" << date << " " << (int)EVENT_DISPLAY_UPDATE << " " << bid << " " << value << endl;
     }
 }
 

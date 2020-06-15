@@ -66,7 +66,8 @@ void StressTestSBBlockCode::startup() {
 
     initLockedCells();
 
-    module->setDisplayedValue(-1);
+    if (nbUnmarked<1000) module->setDisplayedValue(module->blockId);
+    else module->disableDisplay();
     // Leader initiates activation
     if (isLeader) {
         nbUnmarked--;

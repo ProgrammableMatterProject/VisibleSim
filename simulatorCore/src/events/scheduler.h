@@ -18,9 +18,10 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "utils/sema.h"
-#include "events/events.h"
-#include "stats/statsCollector.h"
+#include "events.h"
+#include "../base/buildingBlock.h"
+#include "../utils/sema.h"
+#include "../stats/statsCollector.h"
 
 using namespace std;
 

@@ -8,12 +8,12 @@
 #ifndef SMARTBLOCKSBLOCK_H_
 #define SMARTBLOCKSBLOCK_H_
 
-#include "base/buildingBlock.h"
-#include "robots/smartBlocks/smartBlocksBlockCode.h"
-#include "robots/smartBlocks/smartBlocksGlBlock.h"
-#include "comm/network.h"
-#include "grid/lattice.h"
-#include "replay/replayExporter.h"
+#include "../../base/buildingBlock.h"
+#include "smartBlocksBlockCode.h"
+#include "smartBlocksGlBlock.h"
+#include "../../comm/network.h"
+#include "../../grid/lattice.h"
+#include "../../replay/replayExporter.h"
 
 namespace SmartBlocks {
 
@@ -41,13 +41,15 @@ public:
     /**
      * @copydoc BuildingBlock::addNeighbor
      */
-    virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) override;
+    void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) override;
     /**
      * @copydoc BuildingBlock::removeNeighbor
      */
-    virtual void removeNeighbor(P2PNetworkInterface *ni) override;
+    void removeNeighbor(P2PNetworkInterface *ni) override;
 
-    void setDisplayedValue(int n);
+    void setDisplayedValue(uint16_t n);
+    void disableDisplay() { setDisplayedValue(SmartBlocksGlBlock::noDisplay); }
+
 
     /**
      * @param dest
@@ -63,26 +65,6 @@ public:
      */
     bool moveTo(const Cell3DPosition& dest) override;
 
-    /**
-     * Serializes (converts to a stream of bits) relevant data from the SmartBlock object
-     *  for the purpose of simulation replay.
-     *
-     *  Overrides BuildingBlock serializer, serializes as:
-     *   <id><position><orientation><color><display_value>
-     *
-     * @see BuildingBlock::serialize
-     * @param bStream output binary stream
-     */
-    virtual void serialize(std::ofstream &bStream) override;
-
-    /**
-     * Clear-text equivalent of the BuildingBlock::serialize function, for debugging purpose
-     *  Overrides BuildingBlock serializer_cleartext function
-     *
-     * @see SmartBlock::serialize
-     * @param dbStream output binary stream
-     */
-    virtual void serialize_cleartext(std::ofstream &dbStream)  override;
 };
 
 }

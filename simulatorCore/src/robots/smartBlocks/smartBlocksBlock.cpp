@@ -6,9 +6,9 @@
  */
 
 #include <iostream>
-#include "robots/smartBlocks/smartBlocksBlock.h"
-#include "robots/smartBlocks/smartBlocksWorld.h"
-#include "motion/translationEvents.h"
+#include "smartBlocksBlock.h"
+#include "smartBlocksWorld.h"
+#include "../../motion/translationEvents.h"
 
 using namespace std;
 
@@ -120,23 +120,7 @@ bool SmartBlocksBlock::moveTo(const Cell3DPosition& dest) {
     return true;
 }
 
-void SmartBlocksBlock::serialize(std::ofstream &bStream) {
-    BuildingBlock::serialize(bStream);
-
-    // Then serialize extra attributes
-
-    throw NotImplementedException(); // @TODO BP
-}
-
-void SmartBlocksBlock::serialize_cleartext(std::ofstream &dbStream) {
-    BuildingBlock::serialize(dbStream);
-
-    // Then serialize extra attributes
-
-    throw NotImplementedException(); // @TODO BP
-}
-
-void SmartBlocksBlock::setDisplayedValue(int n) {
+void SmartBlocksBlock::setDisplayedValue(uint16_t n) {
     static_cast<SmartBlocksGlBlock*>(ptrGlBlock)->setDisplayedValue(n);
     if (ReplayExporter::isReplayEnabled())
         ReplayExporter::getInstance()->writeDisplayUpdate(getScheduler()->now(), blockId, n);

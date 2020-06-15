@@ -10,13 +10,13 @@
 #include <algorithm>
 #include <chrono>
 
-#include "events/cppScheduler.h"
-#include "base/buildingBlock.h"
-#include "base/blockCode.h"
-#include "utils/trace.h"
-#include "base/world.h"
-#include "base/simulator.h"
-#include "replay/replayExporter.h"
+#include "cppScheduler.h"
+#include "../base/buildingBlock.h"
+#include "../base/blockCode.h"
+#include "../utils/trace.h"
+#include "../base/world.h"
+#include "../base/simulator.h"
+#include "../replay/replayExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -132,8 +132,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
                             // cout << "globalPauseTime2: " << static_cast<uint64_t>(chrono::duration_cast<us>(globalPauseTime).count()) << endl;
 
                             if (ReplayExporter::isReplayEnabled())
-                                ReplayExporter::getInstance()->
-                                    writeKeyFrameIfNeeded(currentDate);
+                                ReplayExporter::getInstance()->writeKeyFrameIfNeeded(currentDate);
 
                             first=eventsMap.begin();
                             pev = (*first).second;
@@ -202,7 +201,6 @@ void *CPPScheduler::startPaused(/*void *param*/) {
     // Terminate replay export if enabled
     if (ReplayExporter::isReplayEnabled()) {
         // Export final key frame
-        ReplayExporter::getInstance()->writeKeyFrame(currentDate);
         ReplayExporter::getInstance()->endExport();
     }
 

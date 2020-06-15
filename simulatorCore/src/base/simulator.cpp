@@ -19,6 +19,7 @@
 #include "../meld/meldInterpretScheduler.h"
 #include "../events/cppScheduler.h"
 #include "../gui/openglViewer.h"
+#include "../grid/target.h"
 #include "../csg/csg.h"
 #include "../csg/csgParser.h"
 #include "../replay/replayExporter.h"
@@ -1073,7 +1074,7 @@ void Simulator::parseCustomizations() {
     }
 }
 
-void Simulator::startSimulation(void) {
+void Simulator::startSimulation() {
     // Connect all blocks – TODO: Check if needed to do it here (maybe all blocks are linked on addition)
     world->linkBlocks();
 
@@ -1087,7 +1088,7 @@ void Simulator::startSimulation(void) {
     // Start replay export if enabled
     if (cmdLine.isReplayEnabled()) {
         auto replay = ReplayExporter::getInstance();
-        replay->enable(true);
+        ReplayExporter::enable(true);
         replay->writeHeader();
         // ReplayExporter::getInstance()->exportKeyframe();
     }
