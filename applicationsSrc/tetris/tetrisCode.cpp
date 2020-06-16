@@ -196,7 +196,7 @@ void TetrisCode::tmnAppearance()
     update = 1;
     nbReinit = 0;
     int r = (int)rand();
-    tmn = 2; // r % 7 + 1;
+    tmn = r % 7 + 1;
     r = (int)rand();
     rotation = r % 4 + 1;
     //Some tetramino would exceed the set
@@ -253,9 +253,33 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
         //The module that starts the update of the tetramino is on the bottom of the pixel so that it can send the position 1 to the future position 1
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
-            if (tmn == 2)
+            if (tmn == 1)
+            {
+                verifTmn1(DOWN);
+            }
+            else if (tmn == 2)
             {
                 verifTmn2(DOWN);
+            }
+            else if (tmn == 3)
+            {
+                verifTmn3(DOWN);
+            }
+            else if (tmn == 4)
+            {
+                verifTmn4(DOWN);
+            }
+            else if (tmn == 5)
+            {
+                verifTmn5(DOWN);
+            }
+            else if (tmn == 6)
+            {
+                verifTmn6(DOWN);
+            }
+            else if (tmn == 7)
+            {
+                verifTmn7(DOWN);
             }
 
             /*usleep(1000000);
@@ -649,7 +673,7 @@ void TetrisCode::myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
     isFreeData msgData = *msg->getData();
 
     console << "recieved verification to do : p = " << msgData.position << " d= " << msgData.direction << "\n";
-
+console<<"recieved id = "<<msgData.id<<" my nbFree = "<<nbFree<<"\n";
     if (msgData.id > nbFree)
     {
         nbFree = msgData.id;
@@ -674,9 +698,33 @@ void TetrisCode::myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
 
         if (position != msgData.position || !b) //if this module has to spread the verification
         {
-            if (tmn == 2)
+            if (tmn == 1)
+            {
+                sendVerifTmn1(false, msgData);
+            }
+            else if (tmn == 2)
             {
                 sendVerifTmn2(false, msgData);
+            }
+            else if (tmn == 3)
+            {
+                sendVerifTmn3(false, msgData);
+            }
+            else if (tmn == 4)
+            {
+                sendVerifTmn4(false, msgData);
+            }
+            else if (tmn == 5)
+            {
+                sendVerifTmn5(false, msgData);
+            }
+            else if (tmn == 6)
+            {
+                sendVerifTmn6(false, msgData);
+            }
+            else if (tmn == 7)
+            {
+                sendVerifTmn7(false, msgData);
             }
         }
         else // if this module can ask the answer directly
@@ -702,9 +750,33 @@ void TetrisCode::myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
             {
                 nbFBack = nbFree + 1;
                 isFreeData data = isFreeData(nbFBack, position, msgData.direction, false);
-                if (tmn == 2)
+                if (tmn == 1)
+                {
+                    sendVerifTmn1(true, data);
+                }
+                else if (tmn == 2)
                 {
                     sendVerifTmn2(true, data);
+                }
+                else if (tmn == 3)
+                {
+                    sendVerifTmn3(true, data);
+                }
+                else if (tmn == 4)
+                {
+                    sendVerifTmn4(true, data);
+                }
+                else if (tmn == 5)
+                {
+                    sendVerifTmn5(true, data);
+                }
+                else if (tmn == 6)
+                {
+                    sendVerifTmn6(true, data);
+                }
+                else if (tmn == 7)
+                {
+                    sendVerifTmn7(true, data);
                 }
             }
         }
@@ -734,7 +806,7 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     {
         console << "nb verif left : " << verifications.size() << "\n";
 
-        if (verifications.size()>0)
+        if (verifications.size() > 0)
         {
             freeAnswer f = verifications.at(verifications.size() - 1);
             console << "testing the recieved answer : \n";
@@ -747,7 +819,7 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                 if (msgData.answer == FREE)
                 {
                     verifications.pop_back();
-                    if (verifications.empty())
+                    if (verifications.size()==0)
                     {
                         updateOfTmn();
                     }
@@ -757,7 +829,34 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                         nbFree += 1;
                         console << "verifying : position = " << f.position << " direction = " << f.direction << "\n";
                         isFreeData data = isFreeData(nbFree, f.position, f.direction);
-                        sendVerifTmn2(false, data);
+                        if (tmn == 1)
+                        {
+                            sendVerifTmn1(false, data);
+                        }
+                        else if (tmn == 2)
+                        {
+                            sendVerifTmn2(false, data);
+                        }
+                        else if (tmn == 3)
+                        {
+                            sendVerifTmn3(false, data);
+                        }
+                        else if (tmn == 4)
+                        {
+                            sendVerifTmn4(false, data);
+                        }
+                        else if (tmn == 5)
+                        {
+                            sendVerifTmn5(false, data);
+                        }
+                        else if (tmn == 6)
+                        {
+                            sendVerifTmn6(false, data);
+                        }
+                        else if (tmn == 7)
+                        {
+                            sendVerifTmn7(false, data);
+                        }
                     }
                 }
                 else // if one verification is false, the movement cannot be done. A new tetramino is started
@@ -767,7 +866,8 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                 }
             }
         }
-        else {
+        else
+        {
             stringstream strstm;
             strstm << "ERROR : verifications vector empty";
             scheduler->trace(strstm.str(), module->blockId, RED);
@@ -776,7 +876,34 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     else if (msgData.id > nbFBack) // if this module is not the deciding module, it has to spread the answer.
     {
         nbFBack = msgData.id;
-        sendVerifTmn2(true, msgData);
+        if (tmn == 1)
+        {
+            sendVerifTmn1(true, msgData);
+        }
+        else if (tmn == 2)
+        {
+            sendVerifTmn2(true, msgData);
+        }
+        else if (tmn == 3)
+        {
+            sendVerifTmn3(true, msgData);
+        }
+        else if (tmn == 4)
+        {
+            sendVerifTmn4(true, msgData);
+        }
+        else if (tmn == 5)
+        {
+            sendVerifTmn5(true, msgData);
+        }
+        else if (tmn == 6)
+        {
+            sendVerifTmn6(true, msgData);
+        }
+        else if (tmn == 7)
+        {
+            sendVerifTmn7(true, msgData);
+        }
     }
 }
 
@@ -832,8 +959,7 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
     {
         if (msgData) //if the verified pixel is free
         {
-            verifications.pop_back();
-            if (verifications.size()>0)
+            if (verifications.size() == 0)
             {
                 updateOfTmn();
             }
@@ -843,7 +969,35 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
                 console << "verifying : position = " << f.position << " direction = " << f.direction << "\n";
                 nbFree += 1;
                 isFreeData data = isFreeData(nbFree, f.position, f.direction);
-                sendVerifTmn2(false, data);
+                if (tmn == 1)
+                {
+                    sendVerifTmn1(false, data);
+                }
+                else if (tmn == 2)
+                {
+                    sendVerifTmn2(false, data);
+                }
+                else if (tmn == 3)
+                {
+                    console<<"sending verif tmn 3\n";
+                    sendVerifTmn3(false, data);
+                }
+                else if (tmn == 4)
+                {
+                    sendVerifTmn4(false, data);
+                }
+                else if (tmn == 5)
+                {
+                    sendVerifTmn5(false, data);
+                }
+                else if (tmn == 6)
+                {
+                    sendVerifTmn6(false, data);
+                }
+                else if (tmn == 7)
+                {
+                    sendVerifTmn7(false, data);
+                }
             }
         }
         else
@@ -882,7 +1036,34 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
             result = OCCUPIED;
         }
         isFreeData data = isFreeData(nbFBack, position, direction, result);
-        sendVerifTmn2(true, data);
+        if (tmn == 1)
+        {
+            sendVerifTmn2(true, data);
+        }
+        else if (tmn == 2)
+        {
+            sendVerifTmn2(true, data);
+        }
+        else if (tmn == 3)
+        {
+            sendVerifTmn3(true, data);
+        }
+        else if (tmn == 4)
+        {
+            sendVerifTmn4(true, data);
+        }
+        else if (tmn == 5)
+        {
+            sendVerifTmn5(true, data);
+        }
+        else if (tmn == 6)
+        {
+            sendVerifTmn6(true, data);
+        }
+        else if (tmn == 7)
+        {
+            sendVerifTmn7(true, data);
+        }
     }
 }
 

@@ -2,13 +2,8 @@
 
 void TetrisCode::sendTmn5(bool reinit, int movement)
 {
-    TmnData data = TmnData(update, rotation, position, color,nbReinit, nbFree);
+    TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFree);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
-    P2PNetworkInterface *itf[4];
-    bool northBool = false;
-    bool eastBool = false;
-    bool southBool = false;
-    bool westBool = false;
     if (rotation == NORTH)
     {
         itf[northId] = topItf;
@@ -244,7 +239,7 @@ void TetrisCode::myTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         nbReinit = msgData.nbReinit;
         nbFree = msgData.nbFree;
         parent = sender;
-        nbTmnBackMsg = 0 ;
+        nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
         sendTmn5(false, NO_MVT);
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
@@ -279,5 +274,107 @@ void TetrisCode::myRestartTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInte
     else if (bottomItf != nullptr && bottomItf->isConnected())
     {
         sendMessage("Restart Tmn 5 Message", new MessageOf<TmnData>(START_TMN5_MSG_ID, msgData), bottomItf, 0, 0);
+    }
+}
+
+void TetrisCode::verifTmn5(int movement)
+{
+    verifications.clear();
+    if (movement == DOWN)
+    {
+        if (rotation == NORTH)
+        {
+            verifications.push_back(freeAnswer(2, SOUTH));
+            verifications.push_back(freeAnswer(4, SOUTH));
+            if (bottomItf != nullptr && bottomItf->isConnected())
+            {
+                sendMessage("Direct Verification Message", new Message(FREEMSG_ID), bottomItf, 0, 0);
+            }
+            else
+            {
+                nbTmn += 1;
+                sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            }
+        }
+        else if (rotation == SOUTH)
+        {
+            nbFree += 1;
+            verifications.push_back(freeAnswer(2, SOUTH));
+            verifications.push_back(freeAnswer(3, SOUTH));
+            verifications.push_back(freeAnswer(4, SOUTH));
+            isFreeData data = isFreeData(nbFree, 4, SOUTH);
+            sendVerifTmn2(false, data);
+        }
+        else if (rotation == EAST)
+        {
+            nbFree += 1;
+            verifications.push_back(freeAnswer(4, SOUTH));
+            verifications.push_back(freeAnswer(3, SOUTH));
+            isFreeData data = isFreeData(nbFree, 3, SOUTH);
+            sendVerifTmn2(false, data);
+        }
+        else if (rotation == WEST)
+        {
+            nbFree += 1;
+            verifications.push_back(freeAnswer(2, SOUTH));
+            verifications.push_back(freeAnswer(3, SOUTH));
+            isFreeData data = isFreeData(nbFree, 3, SOUTH);
+            sendVerifTmn2(false, data);
+        }
+    }
+}
+
+void TetrisCode::sendVerifTmn5(bool answer, isFreeData data)
+{
+    P2PNetworkInterface *i = itf[westId];
+
+    console << "sent position = " << data.position << " direction = " << data.direction << "\n";
+
+    if (((position != 2 && position != 3) || !westBool) && i != nullptr && i->isConnected())
+    {
+        if (answer)
+        {
+            sendMessage("Back Free Message", new MessageOf<isFreeData>(BACKFREEMSG_ID, data), i, 0, 0);
+        }
+        else
+        {
+            sendMessage("Verification Message", new MessageOf<isFreeData>(ISFREE_MSG_ID, data), i, 0, 0);
+        }
+    }
+    i = itf[eastId];
+    if (((position != 4 && position != 3) || !eastBool) && i != nullptr && i->isConnected())
+    {
+        if (answer)
+        {
+            sendMessage("Back Free Message", new MessageOf<isFreeData>(BACKFREEMSG_ID, data), i, 0, 0);
+        }
+        else
+        {
+            sendMessage("Verification Message", new MessageOf<isFreeData>(ISFREE_MSG_ID, data), i, 0, 0);
+        }
+    }
+    i = itf[northId];
+    if ((position ==1 || !northBool) && i != nullptr && i->isConnected())
+    {
+        if (answer)
+        {
+            sendMessage("Back Free Message", new MessageOf<isFreeData>(BACKFREEMSG_ID, data), i, 0, 0);
+        }
+        else
+        {
+            sendMessage("Verification Message", new MessageOf<isFreeData>(ISFREE_MSG_ID, data), i, 0, 0);
+        }
+    }
+    i = itf[southId];
+    if ((position ==3 || !southBool) && i != nullptr && i->isConnected())
+    {
+        if (answer)
+        {
+            sendMessage("Back Free Message", new MessageOf<isFreeData>(BACKFREEMSG_ID, data), i, 0, 0);
+        }
+        else
+        {
+            sendMessage("Verification Message", new MessageOf<isFreeData>(ISFREE_MSG_ID, data), i, 0, 0);
+        }
     }
 }

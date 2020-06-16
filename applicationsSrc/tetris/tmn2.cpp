@@ -261,6 +261,8 @@ void TetrisCode::verifTmn2(int movement)
             verifications.push_back(freeAnswer(2, SOUTH));
             verifications.push_back(freeAnswer(3, SOUTH));
             verifications.push_back(freeAnswer(4, SOUTH));
+
+            //the following verification can be made directly by the deciding module
             if (bottomItf != nullptr && bottomItf->isConnected())
             {
                 sendMessage("Direct Verification Message", new Message(FREEMSG_ID), bottomItf, 0, 0);

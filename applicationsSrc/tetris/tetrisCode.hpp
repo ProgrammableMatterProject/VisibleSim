@@ -532,6 +532,42 @@ public:
     * @param data data to be spread
     */
     void sendVerifTmn2(bool answer, isFreeData data);
+
+    /**
+    * @brief Spreads the verification messages and answers
+    * @param answer true if the data spread is the answer
+    * @param data data to be spread
+    */
+    void sendVerifTmn3(bool answer, isFreeData data);
+
+    /**
+    * @brief Spreads the verification messages and answers
+    * @param answer true if the data spread is the answer
+    * @param data data to be spread
+    */
+    void sendVerifTmn4(bool answer, isFreeData data);
+
+    /**
+    * @brief Spreads the verification messages and answers
+    * @param answer true if the data spread is the answer
+    * @param data data to be spread
+    */
+    void sendVerifTmn5(bool answer, isFreeData data);
+
+    /**
+    * @brief Spreads the verification messages and answers
+    * @param answer true if the data spread is the answer
+    * @param data data to be spread
+    */
+    void sendVerifTmn6(bool answer, isFreeData data);
+
+    /**
+    * @brief Spreads the verification messages and answers
+    * @param answer true if the data spread is the answer
+    * @param data data to be spread
+    */
+    void sendVerifTmn7(bool answer, isFreeData data);
+
     /**
     * @brief Handler for all events received by the host block
     * @param pev pointer to the received event
