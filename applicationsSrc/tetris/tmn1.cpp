@@ -2,7 +2,7 @@
 
 void TetrisCode::sendTmn1(bool reinit, int movement) // NB : the first tetramino doesn't rotate (square)
 {
-    TmnData data = TmnData(update, rotation, position, color);
+    TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFree);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
 
     if (roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE)
@@ -193,6 +193,8 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         update = msgData.nbupdate;
         rotation = msgData.rotation;
         position = msgData.position;
+        nbReinit = msgData.nbReinit;
+        nbFree = msgData.nbFree;
         color = msgData.color;
         parent = sender;
         nbTmnBackMsg = 0;
@@ -201,7 +203,6 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
-            // parent = nullptr;
         }
     }
     else if (update == msgData.nbupdate)
@@ -220,6 +221,7 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         tmn = 1;
         update = msgData.nbupdate;
         nbReinit = msgData.nbReinit;
+        nbFree = msgData.nbFree;
         rotation = msgData.rotation;
         position = msgData.position;
         color = msgData.color;
@@ -230,5 +232,18 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
     else if (bottomItf != nullptr && bottomItf->isConnected())
     {
         sendMessage("Restart Tmn 1 Message", new MessageOf<TmnData>(START_TMN1_MSG_ID, msgData), bottomItf, 0, 0);
+    }
+}
+
+void TetrisCode::verifTmn1(int movement)
+{
+    verifications.clear();
+    if (movement == DOWN)
+    {
+            nbFree += 1;
+            verifications.push_back(freeAnswer(3, SOUTH));
+            verifications.push_back(freeAnswer(4, SOUTH));
+            isFreeData data = isFreeData(nbFree, 4, SOUTH);
+            sendVerifTmn1(false, data);
     }
 }

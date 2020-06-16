@@ -1,9 +1,7 @@
 #include "tetrisCode.hpp"
 #include "utils/random.h"
-#include "utils.cpp"
 #include <algorithm>
 #include <unistd.h>
-
 
 //The program has been split into several files, to be easier to work with
 #include "coords.cpp"
@@ -132,6 +130,26 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
                          std::bind(&TetrisCode::myRestartTmn7Func, this,
                                    std::placeholders::_1, std::placeholders::_2));
 
+    // Registers a callback (myIsFreeMsgFunc) to the message of type E
+    addMessageEventFunc2(ISFREE_MSG_ID,
+                         std::bind(&TetrisCode::myIsFreeMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myIFreeMsgId) to the message of type E
+    addMessageEventFunc2(FREEMSG_ID,
+                         std::bind(&TetrisCode::myIFreeMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myBackFreeMsgFunc) to the message of type E
+    addMessageEventFunc2(BACKFREEMSG_ID,
+                         std::bind(&TetrisCode::myBackFreeMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myBFreeMsgFunc) to the message of type E
+    addMessageEventFunc2(BFMSG_ID,
+                         std::bind(&TetrisCode::myBFreeMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
     // Initialization of random numbers generator
     srand(Random::getSimulationSeed());
 }
@@ -156,8 +174,12 @@ void TetrisCode::myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
     if (msgData > nbTmn)
     {
         nbTmn = msgData;
+        nbFBack = 0;
         if (appear_module)
         {
+            stringstream strstm;
+            strstm << "NEW Tetramino !";
+            scheduler->trace(strstm.str(), module->blockId, MAGENTA);
             tmnAppearance();
         }
         else
@@ -174,7 +196,7 @@ void TetrisCode::tmnAppearance()
     update = 1;
     nbReinit = 0;
     int r = (int)rand();
-    tmn = r % 7 + 1;
+    tmn = 2; // r % 7 + 1;
     r = (int)rand();
     rotation = r % 4 + 1;
     //Some tetramino would exceed the set
@@ -218,7 +240,6 @@ void TetrisCode::tmnAppearance()
     }
 }
 
-
 void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
     MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
@@ -232,7 +253,12 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
         //The module that starts the update of the tetramino is on the bottom of the pixel so that it can send the position 1 to the future position 1
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
-            usleep(1000000);
+            if (tmn == 2)
+            {
+                verifTmn2(DOWN);
+            }
+
+            /*usleep(1000000);
 
             stringstream strstm;
             strstm << "UPDATE OF THE Tetramino";
@@ -270,9 +296,9 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
             if (tmn == 7)
             {
                 sendTmn7(true, DOWN);
-            }
+            }*/
         }
-        else
+        else if (parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
             // parent = nullptr;
@@ -475,7 +501,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
             }
         }
 
-        if (nbReinitBackMsg == 0)
+        if (nbReinitBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Reinit Back Message Parent", new MessageOf<int>(REINITBACK_MSG_ID, nbReinit), parent, 0, 0);
             // parent = nullptr;
@@ -489,6 +515,12 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
                 color = NO_COLOR;
                 update = 0;
                 init = false;
+                nbBackMsg = 0;
+                nbFBack = 0;
+                nbFree = 0;
+                nbReinit = 0;
+                nbReinitBackMsg = 0;
+                nbTmnBackMsg = 0;
                 module->setColor(Colors[color]);
             }
         }
@@ -513,8 +545,7 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
         //The module that starts the update of the tetramino is on the bottom of the pixel so that it can send the position 1 to the future position 1
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
-            // parent = nullptr;
-            TmnData data = TmnData(update, rotation, position, color, nbReinit);
+            TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFBack);
             data.nbupdate += 1;
             if (tmn == 1)
             {
@@ -580,10 +611,15 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
                 color = NO_COLOR;
                 update = 0;
                 init = false;
+                nbBackMsg = 0;
+                nbReinit = 0;
+                nbReinitBackMsg = 0;
+                nbFBack = 0;
+                nbFree = 0;
                 module->setColor(Colors[color]);
             }
         }
-        else
+        else if (parent != nullptr && parent->isConnected())
         {
             sendMessage("Reinit Back Message Parent", new MessageOf<int>(REINITBACK_MSG_ID, nbReinit), parent, 0, 0);
             // parent = nullptr;
@@ -596,9 +632,257 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
                 color = NO_COLOR;
                 update = 0;
                 init = false;
+                nbBackMsg = 0;
+                nbFBack = 0;
+                nbFree = 0;
+                nbReinit = 0;
+                nbReinitBackMsg = 0;
                 module->setColor(Colors[color]);
             }
         }
+    }
+}
+
+void TetrisCode::myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<isFreeData> *msg = static_cast<MessageOf<isFreeData> *>(_msg.get());
+    isFreeData msgData = *msg->getData();
+
+    console << "recieved verification to do : p = " << msgData.position << " d= " << msgData.direction << "\n";
+
+    if (msgData.id > nbFree)
+    {
+        nbFree = msgData.id;
+        bool b = false;
+        P2PNetworkInterface *i = nullptr;
+        if (msgData.direction == SOUTH)
+        {
+            b = roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        }
+        else if (msgData.direction == EAST)
+        {
+            b = roleInPixel == TOP_RIGHT_CORNER || roleInPixel == RIGHT_BORDER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        }
+        else if (msgData.direction == WEST)
+        {
+            b = roleInPixel == TOP_LEFT_CORNER || roleInPixel == LEFT_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        }
+        else if (msgData.direction == NORTH)
+        {
+            b = roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == ALONE;
+        }
+
+        if (position != msgData.position || !b) //if this module has to spread the verification
+        {
+            if (tmn == 2)
+            {
+                sendVerifTmn2(false, msgData);
+            }
+        }
+        else // if this module can ask the answer directly
+        {
+            console << "aking if the pixel is free! (position = " << position << " direction = " << msgData.direction << "\n";
+            if (msgData.direction == SOUTH)
+            {
+                i = bottomItf;
+            }
+            else if (msgData.direction == WEST)
+            {
+                i = leftItf;
+            }
+            else if (msgData.direction == EAST)
+            {
+                i = rightItf;
+            }
+            if (i != nullptr && i->isConnected())
+            {
+                sendMessage("Asking Free Message", new Message(FREEMSG_ID), i, 0, 0);
+            }
+            else
+            {
+                nbFBack = nbFree + 1;
+                isFreeData data = isFreeData(nbFBack, position, msgData.direction, false);
+                if (tmn == 2)
+                {
+                    sendVerifTmn2(true, data);
+                }
+            }
+        }
+    }
+}
+
+void TetrisCode::myIFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    if (tmn == NO_TMN && sender != nullptr && sender->isConnected())
+    {
+        sendMessage("Answer Free Message", new MessageOf<bool>(BFMSG_ID, true), sender, 0, 0);
+    }
+    else if (sender != nullptr && sender->isConnected())
+    {
+        sendMessage("Answer Free Message", new MessageOf<bool>(BFMSG_ID, false), sender, 0, 0);
+    }
+}
+
+void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<isFreeData> *msg = static_cast<MessageOf<isFreeData> *>(_msg.get());
+    isFreeData msgData = *msg->getData();
+
+    console << "recieved answer : p = " << msgData.position << " d = " << msgData.direction << "\n";
+    console << "recieved id = " << msgData.id << " my nbFBack = " << nbFBack << "\n";
+    if (msgData.id > nbFBack && position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
+    {
+        console << "nb verif left : " << verifications.size() << "\n";
+
+        if (verifications.size()>0)
+        {
+            freeAnswer f = verifications.at(verifications.size() - 1);
+            console << "testing the recieved answer : \n";
+            console << "r pos = " << msgData.position << " r dir = " << msgData.direction << " w pos = " << f.position << " w dir = " << f.direction << "\n";
+            //the answer can be sent several times : test of direction and position needed.
+            if (msgData.direction == f.direction && msgData.position == f.position)
+            {
+                console << "recieved free answer\n";
+                nbFBack = msgData.id;
+                if (msgData.answer == FREE)
+                {
+                    verifications.pop_back();
+                    if (verifications.empty())
+                    {
+                        updateOfTmn();
+                    }
+                    else //send the next verification
+                    {
+                        freeAnswer f = verifications.at(verifications.size() - 1);
+                        nbFree += 1;
+                        console << "verifying : position = " << f.position << " direction = " << f.direction << "\n";
+                        isFreeData data = isFreeData(nbFree, f.position, f.direction);
+                        sendVerifTmn2(false, data);
+                    }
+                }
+                else // if one verification is false, the movement cannot be done. A new tetramino is started
+                {
+                    nbTmn += 1;
+                    sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                }
+            }
+        }
+        else {
+            stringstream strstm;
+            strstm << "ERROR : verifications vector empty";
+            scheduler->trace(strstm.str(), module->blockId, RED);
+        }
+    }
+    else if (msgData.id > nbFBack) // if this module is not the deciding module, it has to spread the answer.
+    {
+        nbFBack = msgData.id;
+        sendVerifTmn2(true, msgData);
+    }
+}
+
+void TetrisCode::updateOfTmn()
+{
+    usleep(1000000);
+
+    stringstream strstm;
+    strstm << "UPDATE OF THE Tetramino";
+    scheduler->trace(strstm.str(), module->blockId, GREEN);
+    nbReinit += 1;
+    parent = nullptr;
+
+    //If the modules don't belong to the tetramino after the update, they won't be updated by the function `sendTmn1(false,NO_MVT)`
+    //That's why we need to reinitialize them 'by hand', by spreading through the current tetramino the message that a reinitialization
+    //may be needed. When modules recieve the message, they spread it to their neighbors, and reinitialize themselves if needed.
+    if (tmn == 1)
+    {
+        sendTmn1(true, DOWN);
+    }
+    if (tmn == 2)
+    {
+        sendTmn2(true, DOWN);
+    }
+    if (tmn == 3)
+    {
+        sendTmn3(true, DOWN);
+    }
+    if (tmn == 4)
+    {
+        sendTmn4(true, DOWN);
+    }
+    if (tmn == 5)
+    {
+        sendTmn5(true, DOWN);
+    }
+    if (tmn == 6)
+    {
+        sendTmn6(true, DOWN);
+    }
+    if (tmn == 7)
+    {
+        sendTmn7(true, DOWN);
+    }
+}
+
+void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<bool> *msg = static_cast<MessageOf<bool> *>(_msg.get());
+    bool msgData = *msg->getData();
+
+    if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
+    {
+        if (msgData) //if the verified pixel is free
+        {
+            verifications.pop_back();
+            if (verifications.size()>0)
+            {
+                updateOfTmn();
+            }
+            else
+            {
+                freeAnswer f = verifications.at(verifications.size() - 1);
+                console << "verifying : position = " << f.position << " direction = " << f.direction << "\n";
+                nbFree += 1;
+                isFreeData data = isFreeData(nbFree, f.position, f.direction);
+                sendVerifTmn2(false, data);
+            }
+        }
+        else
+        {
+            nbTmn += 1;
+            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+        }
+    }
+    else
+    {
+        nbFBack = nbFree + 1;
+        int direction = 0;
+        if (sender == topItf)
+        {
+            direction = NORTH;
+        }
+        else if (sender == bottomItf)
+        {
+            direction = SOUTH;
+        }
+        else if (sender == leftItf)
+        {
+            direction = WEST;
+        }
+        else if (sender == rightItf)
+        {
+            direction = EAST;
+        }
+        int result = NO_ANSWER;
+        if (msgData)
+        {
+            result = FREE;
+        }
+        else if (!msgData)
+        {
+            result = OCCUPIED;
+        }
+        isFreeData data = isFreeData(nbFBack, position, direction, result);
+        sendVerifTmn2(true, data);
     }
 }
 

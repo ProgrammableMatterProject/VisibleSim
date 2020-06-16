@@ -5,6 +5,7 @@
 #include "robots/blinkyBlocks/blinkyBlocksWorld.h"
 #include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
 #include "utils/color.h"
+#include "utils.cpp"
 #include <vector>
 
 // Possible roles of modules in a pixel
@@ -109,6 +110,11 @@ static const int DOWN = 1;
 static const int ROT_CK = 2;         //rotation clockwise
 static const int ROT_COUNTER_CK = 3; // rotation counter clockwise
 
+//Types of free answer
+static const int NO_ANSWER = 0;
+static const int FREE = 1;     //if the pixel is free
+static const int OCCUPIED = 2; //if not
+
 //Message IDs
 static const int COORDSMSG_ID = 1001;
 static const int BACKMSG_ID = 1002;
@@ -132,7 +138,10 @@ static const int START_TMN4_MSG_ID = 1020;
 static const int START_TMN5_MSG_ID = 1021;
 static const int START_TMN6_MSG_ID = 1022;
 static const int START_TMN7_MSG_ID = 1023;
-
+static const int ISFREE_MSG_ID = 1024;
+static const int FREEMSG_ID = 1025;
+static const int BACKFREEMSG_ID = 1026;
+static const int BFMSG_ID = 1027;
 
 //IDs of the interfaces
 static const int topId = 0;
@@ -172,6 +181,12 @@ private:
     bool appear_module = false; //true if the module is the one which picks the form, rotation and color of the new tetramino
     int nbTmn = 0;              //number of the current moving tetramino
 
+    P2PNetworkInterface *itf[4];
+    bool northBool = false;
+    bool eastBool = false;
+    bool southBool = false;
+    bool westBool = false;
+
     int tmn = NO_TMN;           // represents the type of tetramino the module is part of
     int rotation = NO_ROTATION; //represents the rotation of the tetramino the module is part of
     int position = NO_POSITION; //reprensents the position of the pixel in the tetramino the module is part of
@@ -181,6 +196,11 @@ private:
     bool init = false;          //true if a reinitialization is needed
     int nbReinit = 0;           //"id" of the reinitialization (to avoid infinite loops)
     int nbReinitBackMsg = 0;    //nb of back messages needed to be sure that the message of reinitialization have been sent to everyone
+
+    int nbFree = 0;  //nb of free pixels verifications
+    int nbFBack = 0; //nb of free pixels answers
+    std::vector<freeAnswer> verifications;
+
 public:
     TetrisCode(BlinkyBlocksBlock *host);
     ~TetrisCode(){};
@@ -410,7 +430,7 @@ public:
 
     /**
     * @brief Message handler for the message 'ReinitPix'. Spreads that a reinitialization may be needed, 
-    * and then calculates if a reinitialization is needed by this module. If yes, it reinitializes itself.
+    * and then calculates if a reinitialization is needed by this module.
     * @param _msg Pointer to the message received by the module, requires casting
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
@@ -424,6 +444,94 @@ public:
     */
     void myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
+    /**
+    * @brief Updates the tetramino when the verifications have been made
+    */
+    void updateOfTmn();
+
+    /**
+    * @brief Message handler for the message 'IsFree'. Propagates the verification that pixels are free or not.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'Free'. Propagates the verificationto the pixel that needs verification.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myIFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'BackFree'. Propagates the answer that pixels are free or not.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'BF'. The target pixel's answer.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Calculates which pixels have to be verified, and sends the required messages.
+    * @param mvt movement made by the tetramino
+    */
+    void verifTmn1(int mvt);
+
+    /**
+    * @brief Calculates which pixels have to be verified, and sends the required messages.
+    * @param mvt movement made by the tetramino
+    */
+    void verifTmn2(int mvt);
+
+    /**
+    * @brief Calculates which pixels have to be verified, and sends the required messages.
+    * @param mvt movement made by the tetramino
+    */
+    void verifTmn3(int mvt);
+
+    /**
+    * @brief Calculates which pixels have to be verified, and sends the required messages.
+    * @param mvt movement made by the tetramino
+    */
+    void verifTmn4(int mvt);
+
+    /**
+    * @brief Calculates which pixels have to be verified, and sends the required messages.
+    * @param mvt movement made by the tetramino
+    */
+    void verifTmn5(int mvt);
+
+    /**
+    * @brief Calculates which pixels have to be verified, and sends the required messages.
+    * @param mvt movement made by the tetramino
+    */
+    void verifTmn6(int mvt);
+
+    /**
+    * @brief Calculates which pixels have to be verified, and sends the required messages.
+    * @param mvt movement made by the tetramino
+    */
+    void verifTmn7(int mvt);
+
+    /**
+    * @brief Spreads the verification messages and answers
+    * @param answer true if the data spread is the answer
+    * @param data data to be spread
+    */
+    void sendVerifTmn1(bool answer, isFreeData data);
+    
+    /**
+    * @brief Spreads the verification messages and answers
+    * @param answer true if the data spread is the answer
+    * @param data data to be spread
+    */
+    void sendVerifTmn2(bool answer, isFreeData data);
     /**
     * @brief Handler for all events received by the host block
     * @param pev pointer to the received event

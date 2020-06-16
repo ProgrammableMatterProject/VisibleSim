@@ -2,7 +2,7 @@
 
 void TetrisCode::sendTmn5(bool reinit, int movement)
 {
-    TmnData data = TmnData(update, rotation, position, color);
+    TmnData data = TmnData(update, rotation, position, color,nbReinit, nbFree);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
     P2PNetworkInterface *itf[4];
     bool northBool = false;
@@ -241,6 +241,8 @@ void TetrisCode::myTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         rotation = msgData.rotation;
         position = msgData.position;
         color = msgData.color;
+        nbReinit = msgData.nbReinit;
+        nbFree = msgData.nbFree;
         parent = sender;
         nbTmnBackMsg = 0 ;
         module->setColor(Colors[color]);
@@ -267,6 +269,7 @@ void TetrisCode::myRestartTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         tmn = 5;
         update = msgData.nbupdate;
         nbReinit = msgData.nbReinit;
+        nbFree = msgData.nbFree;
         rotation = msgData.rotation;
         position = msgData.position;
         color = msgData.color;

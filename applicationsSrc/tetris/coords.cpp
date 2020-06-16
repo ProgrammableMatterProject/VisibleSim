@@ -211,13 +211,10 @@ int TetrisCode::pixelCalculation()
         appear_module = false;
     }
 
-    if (pixelHCoord + pixelWCoord == 0)
-    {
-        module->setColor(MAGENTA);
-    }
-    else
-    {
-        module->setColor(WHITE);
-    }
+    // module->setColor(Colors[(pixelHCoord+pixelWCoord)%NB_COLORS]);
+    // if(appear_module)
+    // {
+    //     module->setColor(DARKGREEN);
+    // }
     return 1;
 }
