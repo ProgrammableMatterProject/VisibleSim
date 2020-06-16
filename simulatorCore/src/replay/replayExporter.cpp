@@ -157,8 +157,8 @@ void ReplayExporter::writeKeyFrameIfNeeded(Time date) {
 void ReplayExporter::writeKeyFrame(Time date) {
     keyFramesIndex.insert(make_pair(date, exportFile->tellp()));
 
-    size_t nbModules = BaseSimulator::getWorld()->lattice->nbModules;
-    exportFile->write((char*)&nbModules, sizeof(size_t));
+    u4 nbModules = BaseSimulator::getWorld()->lattice->nbModules;
+    exportFile->write((char*)&nbModules, sizeof(u4));
     if (debug) {
         *debugFile << "-- BEGIN KEY FRAME #" << keyFramesIndex.size()
                    << " (t = " << date << ") --"  << endl;
