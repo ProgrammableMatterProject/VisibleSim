@@ -21,7 +21,7 @@ class SmartBlocksBlockCode;
 
 class SmartBlocksBlock : public BaseSimulator::BuildingBlock {
 public:
-    bool wellPlaced,_isBorder,_isTrain,_isSingle;
+    //bool wellPlaced,_isBorder,_isTrain,_isSingle;
 
     SmartBlocksBlock(int bId, BlockCodeBuilder bcb);
     ~SmartBlocksBlock();

@@ -105,25 +105,28 @@ void ReplayExporter::writeHeader() {
     exportFile->write((char*)&gridSize, 3*sizeof(u2)); // xyz
 
     keyFramesIndexPos = exportFile->tellp();
+    exportFile->write((char*)&keyFramesIndexPos, sizeof(u8)); // we temporaly write keyFramesIndexPos, will be updated by keyframe table address
 
-    // cout << "keyFramesIndexPos: " << keyFramesIndexPos << endl;
     cout << "debug:" << debug << endl;
     if (debug) {
         debugFile->write((char*)&VS_MAGIC, sizeof(u4)); *debugFile << endl;
         *debugFile << (int)moduleType << endl;
         *debugFile << gridSize[0] << " " << gridSize[1] << " " << gridSize[2] << endl; // xyz
-
-        keyFramesIndexPosDebug = debugFile->tellp();
+        *debugFile << "TABLE INDEX" << endl;
+        // keyFramesIndexPosDebug = debugFile->tellp();
         // cout << "keyFramesIndexPosDebug: " << keyFramesIndexPosDebug << endl;
     }
 }
 
 void ReplayExporter::writeKeyFramesIndex() {
+        // Write number of index entries
     // Move write head to previously saved index location
-    /*exportFile->seekp(keyFramesIndexPos); // currently at the end !
-    if (debug) debugFile->seekp(keyFramesIndexPosDebug);*/
+    auto currentPos = exportFile->tellp(); // current position
+    exportFile->seekp(keyFramesIndexPos); // begin of the file
+    exportFile->write((char*)&currentPos, sizeof(u8));
+    exportFile->seekp(currentPos); // back at the end of the file
 
-    // Write number of index entries
+    //if (debug) debugFile->seekp(keyFramesIndexPosDebug);
     size_t nEntries = keyFramesIndex.size();
     exportFile->write((char*)&nEntries, sizeof(size_t));
 

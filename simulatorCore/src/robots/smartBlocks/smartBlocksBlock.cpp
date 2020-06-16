@@ -17,6 +17,7 @@ namespace SmartBlocks {
 
 SmartBlocksBlock::SmartBlocksBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, SLattice::MAX_NB_NEIGHBORS) {
+    orientationCode=0;
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "SmartBlocksBlock #" << bId << " constructor" << endl;
 #endif
