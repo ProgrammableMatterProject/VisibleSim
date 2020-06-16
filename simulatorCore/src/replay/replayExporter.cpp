@@ -10,7 +10,6 @@
 
 #include <algorithm>
 #include "replayExporter.h"
-
 #include "replayTags.h"
 
 #include "../utils/utils.h"

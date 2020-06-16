@@ -10,11 +10,11 @@
 
 #include <stdexcept>
 
-#include "base/buildingBlock.h"
-#include "utils/color.h"
-#include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
-#include "robots/blinkyBlocks/blinkyBlocksGlBlock.h"
-#include "grid/lattice.h"
+#include "../../base/buildingBlock.h"
+#include "../../utils/color.h"
+#include "blinkyBlocksBlockCode.h"
+#include "blinkyBlocksGlBlock.h"
+#include "../../grid/lattice.h"
 
 namespace BlinkyBlocks {
 

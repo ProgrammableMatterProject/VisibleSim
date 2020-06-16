@@ -2,22 +2,22 @@
  * blinkyBlocksBlock.cpp
  *
  *  Created on: 23 mars 2013
- *      Author: dom
+ *      Author: dom, André, Pierre, Benoît
  */
 
 #include <iostream>
 
-#include "utils/tDefs.h"
-#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
-#include "base/buildingBlock.h"
-#include "robots/blinkyBlocks/blinkyBlocksWorld.h"
-#include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
-#include "robots/blinkyBlocks/blinkyBlocksEvents.h"
-#include "utils/trace.h"
-#include "clock/clock.h"
-#include "meld/meldInterpretEvents.h"
-#include "grid/lattice.h"
-#include "motion/teleportationEvents.h"
+#include "../../utils/tDefs.h"
+#include "blinkyBlocksBlock.h"
+#include "../../base/buildingBlock.h"
+#include "blinkyBlocksWorld.h"
+#include "blinkyBlocksSimulator.h"
+#include "blinkyBlocksEvents.h"
+#include "../../utils/trace.h"
+#include "../../clock/clock.h"
+#include "../../meld/meldInterpretEvents.h"
+#include "../../grid/lattice.h"
+#include "../../motion/teleportationEvents.h"
 
 using namespace std;
 
@@ -29,6 +29,7 @@ namespace BlinkyBlocks {
 
   BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
+      orientationCode=0;
 #ifdef DEBUG_OBJECT_LIFECYCLE
       OUTPUT << "BlinkyBlocksBlock constructor" << endl;
 #endif
