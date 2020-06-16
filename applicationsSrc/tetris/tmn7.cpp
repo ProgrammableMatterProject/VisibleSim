@@ -332,9 +332,6 @@ void TetrisCode::verifTmn7(int movement)
 void TetrisCode::sendVerifTmn7(bool answer, isFreeData data)
 {
     P2PNetworkInterface *i = itf[westId];
-
-    console << "send position = " << data.position << " direction = " << data.direction << "\n";
-
     if ((position == 1 || !westBool) && i != nullptr && i->isConnected())
     {
         if (answer)

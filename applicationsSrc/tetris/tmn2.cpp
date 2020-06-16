@@ -279,13 +279,6 @@ void TetrisCode::verifTmn2(int movement)
 void TetrisCode::sendVerifTmn2(bool answer, isFreeData data)
 {
     P2PNetworkInterface *i = itf[westId];
-    int top_pos = 0;
-    int bott_pos = 0;
-    top_pos = 2;
-    bott_pos = 4;
-
-    console << "sent position = " << data.position << " direction = " << data.direction << "\n";
-
     if (!westBool && i != nullptr && i->isConnected())
     {
         if (answer)
@@ -310,7 +303,7 @@ void TetrisCode::sendVerifTmn2(bool answer, isFreeData data)
         }
     }
     i = itf[northId];
-    if ((position != top_pos || !northBool) && i != nullptr && i->isConnected())
+    if ((position != 2 || !northBool) && i != nullptr && i->isConnected())
     {
         if (answer)
         {
@@ -322,7 +315,7 @@ void TetrisCode::sendVerifTmn2(bool answer, isFreeData data)
         }
     }
     i = itf[southId];
-    if ((position != bott_pos || !southBool) && i != nullptr && i->isConnected())
+    if ((position != 4 || !southBool) && i != nullptr && i->isConnected())
     {
         if (answer)
         {

@@ -249,9 +249,14 @@ void TetrisCode::verifTmn1(int movement)
     verifications.clear();
     if (movement == DOWN)
     {
+        //to go down, pixels have to be verified. These needed verification are stored into the vector verifications.
+        //With any other tetramino, these verifications depend on the rotation of the tetramino.
+        //If the deciding pixel can do the verification itself, it does it (it's not the case here).
         nbFree += 1;
+        //creating the needed verifications
         verifications.push_back(freeAnswer(3, SOUTH));
         verifications.push_back(freeAnswer(4, SOUTH));
+        //sending the first verification. It has to be the last verification pushed back into the vector.
         isFreeData data = isFreeData(nbFree, 4, SOUTH);
         sendVerifTmn1(false, data);
     }
@@ -259,10 +264,9 @@ void TetrisCode::verifTmn1(int movement)
 
 void TetrisCode::sendVerifTmn1(bool answer, isFreeData data)
 {
+    //The verifications are not sent oustide of the tetramino, so recipients have to be calculated according to the shape of the tetramino.
+    
     P2PNetworkInterface *i = itf[westId];
-
-    console << "sent position = " << data.position << " direction = " << data.direction << "\n";
-
     if (((position!= 1 && position!=3) || !westBool) && i != nullptr && i->isConnected())
     {
         if (answer)

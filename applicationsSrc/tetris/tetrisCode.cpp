@@ -250,7 +250,9 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
     }
     if (nbTmnBackMsg == 0)
     {
+        //Once all modules recieved their new position, the update of the tetramino can be done again.
         //The module that starts the update of the tetramino is on the bottom of the pixel so that it can send the position 1 to the future position 1
+        //the update is started by verifying if the wanted movement is possible (for now, DOWN is the only possible movement).
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
             if (tmn == 1)
@@ -281,51 +283,10 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
             {
                 verifTmn7(DOWN);
             }
-
-            /*usleep(1000000);
-
-            stringstream strstm;
-            strstm << "UPDATE OF THE Tetramino";
-            scheduler->trace(strstm.str(), module->blockId, GREEN);
-            nbReinit += 1;
-            parent = nullptr;
-
-            //If the modules don't belong to the tetramino after the update, they won't be updated by the function `sendTmn1(false,NO_MVT)`
-            //That's why we need to reinitialize them 'by hand', by spreading through the current tetramino the message that a reinitialization
-            //may be needed. When modules recieve the message, they spread it to their neighbors, and reinitialize themselves if needed.
-            if (tmn == 1)
-            {
-                sendTmn1(true, DOWN);
-            }
-            if (tmn == 2)
-            {
-                sendTmn2(true, DOWN);
-            }
-            if (tmn == 3)
-            {
-                sendTmn3(true, DOWN);
-            }
-            if (tmn == 4)
-            {
-                sendTmn4(true, DOWN);
-            }
-            if (tmn == 5)
-            {
-                sendTmn5(true, DOWN);
-            }
-            if (tmn == 6)
-            {
-                sendTmn6(true, DOWN);
-            }
-            if (tmn == 7)
-            {
-                sendTmn7(true, DOWN);
-            }*/
         }
         else if (parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
-            // parent = nullptr;
         }
     }
 }
@@ -667,13 +628,54 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
     }
 }
 
+void TetrisCode::updateOfTmn()
+{
+    usleep(1000000);
+
+    stringstream strstm;
+    strstm << "UPDATE OF THE Tetramino";
+    scheduler->trace(strstm.str(), module->blockId, GREEN);
+    nbReinit += 1;
+    parent = nullptr;
+
+    //If the modules don't belong to the tetramino after the update, they won't be updated by the function `sendTmn1(false,NO_MVT)`
+    //That's why we need to reinitialize them 'by hand', by spreading through the current tetramino the message that a reinitialization
+    //may be needed. When modules recieve the message, they spread it to their neighbors, and reinitialize themselves if needed.
+    if (tmn == 1)
+    {
+        sendTmn1(true, DOWN);
+    }
+    if (tmn == 2)
+    {
+        sendTmn2(true, DOWN);
+    }
+    if (tmn == 3)
+    {
+        sendTmn3(true, DOWN);
+    }
+    if (tmn == 4)
+    {
+        sendTmn4(true, DOWN);
+    }
+    if (tmn == 5)
+    {
+        sendTmn5(true, DOWN);
+    }
+    if (tmn == 6)
+    {
+        sendTmn6(true, DOWN);
+    }
+    if (tmn == 7)
+    {
+        sendTmn7(true, DOWN);
+    }
+}
+
 void TetrisCode::myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
     MessageOf<isFreeData> *msg = static_cast<MessageOf<isFreeData> *>(_msg.get());
     isFreeData msgData = *msg->getData();
 
-    console << "recieved verification to do : p = " << msgData.position << " d= " << msgData.direction << "\n";
-console<<"recieved id = "<<msgData.id<<" my nbFree = "<<nbFree<<"\n";
     if (msgData.id > nbFree)
     {
         nbFree = msgData.id;
@@ -729,7 +731,6 @@ console<<"recieved id = "<<msgData.id<<" my nbFree = "<<nbFree<<"\n";
         }
         else // if this module can ask the answer directly
         {
-            console << "aking if the pixel is free! (position = " << position << " direction = " << msgData.direction << "\n";
             if (msgData.direction == SOUTH)
             {
                 i = bottomItf;
@@ -746,7 +747,7 @@ console<<"recieved id = "<<msgData.id<<" my nbFree = "<<nbFree<<"\n";
             {
                 sendMessage("Asking Free Message", new Message(FREEMSG_ID), i, 0, 0);
             }
-            else
+            else //if there is no module, it means that it is not free -> the answer is false, directly
             {
                 nbFBack = nbFree + 1;
                 isFreeData data = isFreeData(nbFBack, position, msgData.direction, false);
@@ -783,8 +784,10 @@ console<<"recieved id = "<<msgData.id<<" my nbFree = "<<nbFree<<"\n";
     }
 }
 
+//when a module recieves this message, it means that it belongs to the verified pixel (and not to the tetramino that asks the verification)
 void TetrisCode::myIFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
+    //if the module doesn't belong to any tetramino, it is free
     if (tmn == NO_TMN && sender != nullptr && sender->isConnected())
     {
         sendMessage("Answer Free Message", new MessageOf<bool>(BFMSG_ID, true), sender, 0, 0);
@@ -800,34 +803,29 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     MessageOf<isFreeData> *msg = static_cast<MessageOf<isFreeData> *>(_msg.get());
     isFreeData msgData = *msg->getData();
 
-    console << "recieved answer : p = " << msgData.position << " d = " << msgData.direction << "\n";
-    console << "recieved id = " << msgData.id << " my nbFBack = " << nbFBack << "\n";
     if (msgData.id > nbFBack && position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
     {
-        console << "nb verif left : " << verifications.size() << "\n";
-
-        if (verifications.size() > 0)
+        if (verifications.size() > 0) //this is only to prevent an error at the following line
         {
             freeAnswer f = verifications.at(verifications.size() - 1);
-            console << "testing the recieved answer : \n";
-            console << "r pos = " << msgData.position << " r dir = " << msgData.direction << " w pos = " << f.position << " w dir = " << f.direction << "\n";
-            //the answer can be sent several times : test of direction and position needed.
+
+            //the answer can be sent several times : test of direction and position needed, even if normally the test of msgData.id should be enough
             if (msgData.direction == f.direction && msgData.position == f.position)
             {
-                console << "recieved free answer\n";
                 nbFBack = msgData.id;
-                if (msgData.answer == FREE)
+                if (msgData.answer == FREE) // if the answer is free, the verifications can continue.
+                //Otherwise, the tetramino is stuck, and an other one has to be started.
                 {
                     verifications.pop_back();
-                    if (verifications.size()==0)
+                    if (verifications.size() == 0) 
                     {
+                        //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
                         updateOfTmn();
                     }
                     else //send the next verification
                     {
                         freeAnswer f = verifications.at(verifications.size() - 1);
                         nbFree += 1;
-                        console << "verifying : position = " << f.position << " direction = " << f.direction << "\n";
                         isFreeData data = isFreeData(nbFree, f.position, f.direction);
                         if (tmn == 1)
                         {
@@ -907,66 +905,23 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     }
 }
 
-void TetrisCode::updateOfTmn()
-{
-    usleep(1000000);
-
-    stringstream strstm;
-    strstm << "UPDATE OF THE Tetramino";
-    scheduler->trace(strstm.str(), module->blockId, GREEN);
-    nbReinit += 1;
-    parent = nullptr;
-
-    //If the modules don't belong to the tetramino after the update, they won't be updated by the function `sendTmn1(false,NO_MVT)`
-    //That's why we need to reinitialize them 'by hand', by spreading through the current tetramino the message that a reinitialization
-    //may be needed. When modules recieve the message, they spread it to their neighbors, and reinitialize themselves if needed.
-    if (tmn == 1)
-    {
-        sendTmn1(true, DOWN);
-    }
-    if (tmn == 2)
-    {
-        sendTmn2(true, DOWN);
-    }
-    if (tmn == 3)
-    {
-        sendTmn3(true, DOWN);
-    }
-    if (tmn == 4)
-    {
-        sendTmn4(true, DOWN);
-    }
-    if (tmn == 5)
-    {
-        sendTmn5(true, DOWN);
-    }
-    if (tmn == 6)
-    {
-        sendTmn6(true, DOWN);
-    }
-    if (tmn == 7)
-    {
-        sendTmn7(true, DOWN);
-    }
-}
-
 void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
     MessageOf<bool> *msg = static_cast<MessageOf<bool> *>(_msg.get());
     bool msgData = *msg->getData();
 
-    if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
+    if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if it is a direct verification by the deciding module
     {
         if (msgData) //if the verified pixel is free
         {
-            if (verifications.size() == 0)
+            if (verifications.size() == 0) 
             {
+                //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
                 updateOfTmn();
             }
-            else
+            else //the next verification is sent.
             {
                 freeAnswer f = verifications.at(verifications.size() - 1);
-                console << "verifying : position = " << f.position << " direction = " << f.direction << "\n";
                 nbFree += 1;
                 isFreeData data = isFreeData(nbFree, f.position, f.direction);
                 if (tmn == 1)
@@ -979,7 +934,6 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
                 }
                 else if (tmn == 3)
                 {
-                    console<<"sending verif tmn 3\n";
                     sendVerifTmn3(false, data);
                 }
                 else if (tmn == 4)
@@ -1000,16 +954,18 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
                 }
             }
         }
-        else
+        else //if the verified pixel isn't free, the tetramino is stuck : a new tetramino has to be created.
         {
             nbTmn += 1;
             sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
         }
     }
-    else
+    else //if the module is not the deciding module, it has to send the answer.
     {
         nbFBack = nbFree + 1;
         int direction = 0;
+
+        //the module didnt keep the direction asked by the verification : it is deduced using sender.
         if (sender == topItf)
         {
             direction = NORTH;
@@ -1027,6 +983,8 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
             direction = EAST;
         }
         int result = NO_ANSWER;
+
+        //converting the boolean into the int representing the result.
         if (msgData)
         {
             result = FREE;
@@ -1035,6 +993,8 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
         {
             result = OCCUPIED;
         }
+
+        //sending the answer
         isFreeData data = isFreeData(nbFBack, position, direction, result);
         if (tmn == 1)
         {
