@@ -18,6 +18,20 @@ typedef std::uint16_t u2;
 typedef std::uint32_t u4;
 typedef std::uint64_t u8;
 
+typedef struct KeyframeBlock {
+    int id;
+    short x,y,z;
+    u1 rotation;
+    u1 r,g,b;
+} KeyFrameBlock;
+
+typedef struct Keyframe {
+    //KeyFrameBlock * block;
+    int id;
+    u8 time;
+    u8 position;
+    int blockCount = 0;
+} KeyFrame;
 /* GENERAL FLAGS */
 
 /**
