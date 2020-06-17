@@ -136,10 +136,10 @@ void ReplayExporter::writeKeyFramesIndex() {
 
     //  and write all key frame pairs (kfp) to file
     for (const auto& kfp : keyFramesIndex) {
-        s8 pos = (s8)kfp.second;
+        u8 pos = (u8)kfp.second;
 
         exportFile->write((char*)&kfp.first, sizeof(u8));
-        exportFile->write((char*)&pos, sizeof(s8));
+        exportFile->write((char*)&pos, sizeof(u8));
 
         if (debug) *debugFile << kfp.first << " " << pos << endl;
     }
