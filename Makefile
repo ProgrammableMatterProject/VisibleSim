@@ -82,10 +82,12 @@ $(SUBDIRS):
 test: subdirs
 	@$(MAKE) -C applicationsSrc test;
 
-replay:
-	@$(MAKE) -C utilities/replay;
+replay: simulatorCore/src
+	@$(MAKE) -C utilities/replay GLOBAL_INCLUDES=$(GLOBAL_INCLUDES) GLOBAL_LIBS=$(GLOBAL_LIBS) GLOBAL_CCFLAGS=$(GLOBAL_CCFLAGS) LOCAL_INCLUDES=$(LOCAL_INCLUDES);
+
 doc:
 	@$(MAKE) -C doc;
+
 clean:
 	rm -f *~ *.o
 	@for dir in $(SUBDIRS); do \
