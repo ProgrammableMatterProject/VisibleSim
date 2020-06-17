@@ -35,14 +35,17 @@ class ReplayPlayer {
     static inline ReplayPlayer* replayPlayer = nullptr; //!< the singleton instance
 
     ifstream* exportFile = nullptr;     //!< binary export file
-    ofstream* debugFile = nullptr;      //!< corresponding clear text export file for debugging
 private:
-    const streampos headerSize = 11*sizeof(u1);
+    const streampos headerSize = 19*sizeof(u1);
 
     //Simulation general parameters
+
     char * simulationType ;
     u1 robotType = 0;
     int gridSizeX = 0, gridSizeY = 0, gridSizeZ = 0;
+
+    u8 keyframeIndexPosition = 0;
+    u8 keyframeCount = 0;
 
     CommandLine cmdLine;
 public:
@@ -58,7 +61,11 @@ public:
 
     void parseInitialConfiguration();
 
+    void parseKeyframeIndex();
 
+    u8 findKeyframeWithTime(u8 time);
+
+    void parseKeyframe(u8 position);
 };
 
 
