@@ -255,33 +255,53 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
         //the update is started by verifying if the wanted movement is possible (for now, DOWN is the only possible movement).
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
+            if (goingRight)
+            {
+                movement = GO_RIGHT;
+            }
+            // else if (goingLeft)
+            // {
+            //     movement = GO_LEFT;
+            // }
+            // else if (turnCK)
+            // {
+            //     movement = ROT_CK;
+            // }
+            // else if (turnCounterCK)
+            // {
+            //     movement = ROT_COUNTER_CK;
+            // }
+            else
+            {
+                movement = DOWN;
+            }
             if (tmn == 1)
             {
-                verifTmn1(DOWN);
+                verifTmn1();
             }
             else if (tmn == 2)
             {
-                verifTmn2(DOWN);
+                verifTmn2();
             }
             else if (tmn == 3)
             {
-                verifTmn3(DOWN);
+                verifTmn3();
             }
             else if (tmn == 4)
             {
-                verifTmn4(DOWN);
+                verifTmn4();
             }
             else if (tmn == 5)
             {
-                verifTmn5(DOWN);
+                verifTmn5();
             }
             else if (tmn == 6)
             {
-                verifTmn6(DOWN);
+                verifTmn6();
             }
             else if (tmn == 7)
             {
-                verifTmn7(DOWN);
+                verifTmn7();
             }
         }
         else if (parent != nullptr && parent->isConnected())
@@ -532,53 +552,66 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
         {
             TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFBack);
             data.nbupdate += 1;
+            P2PNetworkInterface *i = nullptr;
+            if (movement == DOWN)
+            {
+                i = bottomItf;
+            }
+            else if (movement == GO_RIGHT)
+            {
+                i = rightItf;
+            }
+            else
+            {
+                i = bottomItf;
+            }
             if (tmn == 1)
             {
-                if (bottomItf != nullptr && bottomItf->isConnected())
+                if (i != nullptr && i->isConnected())
                 {
-                    sendMessage("Update Tmn 1 Message", new MessageOf<TmnData>(START_TMN1_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 1 Message", new MessageOf<TmnData>(START_TMN1_MSG_ID, data), i, 0, 0);
                 }
             }
             else if (tmn == 2)
             {
-                if (bottomItf != nullptr && bottomItf->isConnected())
+                if (i != nullptr && i->isConnected())
                 {
-                    sendMessage("Update Tmn 2 Message", new MessageOf<TmnData>(START_TMN2_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 2 Message", new MessageOf<TmnData>(START_TMN2_MSG_ID, data), i, 0, 0);
                 }
             }
             else if (tmn == 3)
             {
-                if (bottomItf != nullptr && bottomItf->isConnected())
+                if (i != nullptr && i->isConnected())
                 {
-                    sendMessage("Update Tmn 3 Message", new MessageOf<TmnData>(START_TMN3_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 3 Message", new MessageOf<TmnData>(START_TMN3_MSG_ID, data), i, 0, 0);
                 }
             }
             else if (tmn == 4)
             {
-                if (bottomItf != nullptr && bottomItf->isConnected())
+                if (i != nullptr && i->isConnected())
                 {
-                    sendMessage("Update Tmn 4 Message", new MessageOf<TmnData>(START_TMN4_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 4 Message", new MessageOf<TmnData>(START_TMN4_MSG_ID, data), i, 0, 0);
                 }
             }
             else if (tmn == 5)
             {
-                if (bottomItf != nullptr && bottomItf->isConnected())
+                if (i != nullptr && i->isConnected())
                 {
-                    sendMessage("Update Tmn 5 Message", new MessageOf<TmnData>(START_TMN5_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 5 Message", new MessageOf<TmnData>(START_TMN5_MSG_ID, data), i, 0, 0);
                 }
             }
             else if (tmn == 6)
             {
-                if (bottomItf != nullptr && bottomItf->isConnected())
+                if (i != nullptr && i->isConnected())
                 {
-                    sendMessage("Update Tmn 6 Message", new MessageOf<TmnData>(START_TMN6_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 6 Message", new MessageOf<TmnData>(START_TMN6_MSG_ID, data), i, 0, 0);
                 }
             }
             else if (tmn == 7)
             {
-                if (bottomItf != nullptr && bottomItf->isConnected())
+                if (i != nullptr && i->isConnected())
                 {
-                    sendMessage("Update Tmn 7 Message", new MessageOf<TmnData>(START_TMN7_MSG_ID, data), bottomItf, 0, 0);
+                    sendMessage("Update Tmn 7 Message", new MessageOf<TmnData>(START_TMN7_MSG_ID, data), i, 0, 0);
                 }
             }
 
@@ -817,7 +850,7 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                 //Otherwise, the tetramino is stuck, and an other one has to be started.
                 {
                     verifications.pop_back();
-                    if (verifications.size() == 0) 
+                    if (verifications.size() == 0)
                     {
                         //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
                         updateOfTmn();
@@ -914,7 +947,7 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
     {
         if (msgData) //if the verified pixel is free
         {
-            if (verifications.size() == 0) 
+            if (verifications.size() == 0)
             {
                 //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
                 updateOfTmn();
@@ -1060,9 +1093,31 @@ void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
 
 void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
 {
+    console<<"detected user key press\n";
     switch (c)
     {
-    case 'a': // update with your code
+    case charGoRight:
+        console<<"movement on the right asked\n";
+        goingRight = true;
+        goingLeft = false;
+        turnCK = false;
+        turnCounterCK = false;
         break;
+    case charGoLeft:
+        goingLeft = true;
+        goingRight = false;
+        turnCK = false;
+        turnCounterCK = false;
+        break;
+    case charTurnCK:
+        turnCK = true;
+        goingLeft = false;
+        goingRight = false;
+        turnCounterCK = false;
+    case charTurnCCK:
+        turnCounterCK = true;
+        goingLeft = false;
+        goingRight = false;
+        turnCK = false;
     }
 };

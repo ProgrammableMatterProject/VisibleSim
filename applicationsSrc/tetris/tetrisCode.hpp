@@ -8,6 +8,16 @@
 #include "utils.cpp"
 #include <vector>
 
+//##################################################################################################
+
+//Key commands to control the game :
+static const char charGoRight = 'a'; //to make the tetramino go on the right
+static const char charGoLeft = 'd';  //to go on the left
+static const char charTurnCK = 'r';  //to turn clockwise
+static const char charTurnCCK = 'f'; //to turn counter clockwise
+
+//##################################################################################################
+
 // Possible roles of modules in a pixel
 static const int ALONE = 0; //if the pixel's size is 1x1
 static const int CORE = 1;  //all modules that are not on the border of the pixel
@@ -107,8 +117,10 @@ static const int NO_COLOR = 6; //color if the module doesn't belong to any tetra
 //Types of movements of the tetraminos
 static const int NO_MVT = 0;
 static const int DOWN = 1;
-static const int ROT_CK = 2;         //rotation clockwise
-static const int ROT_COUNTER_CK = 3; // rotation counter clockwise
+static const int GO_RIGHT = 2;       //translation on the right
+static const int GO_LEFT = 3;        //translation on the left
+static const int ROT_CK = 4;         //rotation clockwise
+static const int ROT_COUNTER_CK = 5; // rotation counter clockwise
 
 //Types of free answer
 static const int NO_ANSWER = 0;
@@ -200,6 +212,12 @@ private:
     int nbFree = 0;  //nb of free pixels verifications
     int nbFBack = 0; //nb of free pixels answers
     std::vector<freeAnswer> verifications;
+
+    int movement = NO_MVT;   //movement done currently by the tetramino
+    bool goingRight = false; //booleans that save the last movement asked by the player (if no movement asked, the tetramino goes down)
+    bool goingLeft = false;
+    bool turnCK = false;
+    bool turnCounterCK = false;
 
 public:
     TetrisCode(BlinkyBlocksBlock *host);
@@ -478,46 +496,39 @@ public:
     void myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
-    * @brief Calculates which pixels have to be verified, and sends the required messages.
-    * @param mvt movement made by the tetramino
+    * @brief Calculates which pixels have to be verified, based on the movement asked, and sends the required messages.
     */
-    void verifTmn1(int mvt);
+    void verifTmn1();
 
     /**
     * @brief Calculates which pixels have to be verified, and sends the required messages.
-    * @param mvt movement made by the tetramino
     */
-    void verifTmn2(int mvt);
+    void verifTmn2();
 
     /**
     * @brief Calculates which pixels have to be verified, and sends the required messages.
-    * @param mvt movement made by the tetramino
     */
-    void verifTmn3(int mvt);
+    void verifTmn3();
 
     /**
     * @brief Calculates which pixels have to be verified, and sends the required messages.
-    * @param mvt movement made by the tetramino
     */
-    void verifTmn4(int mvt);
+    void verifTmn4();
 
     /**
     * @brief Calculates which pixels have to be verified, and sends the required messages.
-    * @param mvt movement made by the tetramino
     */
-    void verifTmn5(int mvt);
+    void verifTmn5();
 
     /**
     * @brief Calculates which pixels have to be verified, and sends the required messages.
-    * @param mvt movement made by the tetramino
     */
-    void verifTmn6(int mvt);
+    void verifTmn6();
 
     /**
     * @brief Calculates which pixels have to be verified, and sends the required messages.
-    * @param mvt movement made by the tetramino
     */
-    void verifTmn7(int mvt);
+    void verifTmn7();
 
     /**
     * @brief Spreads the verification messages and answers
@@ -525,7 +536,7 @@ public:
     * @param data data to be spread
     */
     void sendVerifTmn1(bool answer, isFreeData data);
-    
+
     /**
     * @brief Spreads the verification messages and answers
     * @param answer true if the data spread is the answer

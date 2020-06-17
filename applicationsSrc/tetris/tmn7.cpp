@@ -277,7 +277,7 @@ void TetrisCode::myRestartTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInte
     }
 }
 
-void TetrisCode::verifTmn7(int movement)
+void TetrisCode::verifTmn7()
 {
     verifications.clear();
     if (movement == DOWN)

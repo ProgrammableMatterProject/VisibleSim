@@ -231,47 +231,82 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         module->setColor(Colors[color]);
         sendTmn2(false, NO_MVT);
     }
-    else if (bottomItf != nullptr && bottomItf->isConnected())
+    else
     {
-        sendMessage("Restart Tmn 2 Message", new MessageOf<TmnData>(START_TMN2_MSG_ID, msgData), bottomItf, 0, 0);
+        P2PNetworkInterface *i = nullptr;
+        if (sender == topItf)
+        {
+            i = bottomItf;
+        }
+        else if (sender == bottomItf)
+        {
+            i = topItf;
+        }
+        else if (sender == rightItf)
+        {
+            i = leftItf;
+        }
+        else if (sender == leftItf)
+        {
+            i = rightItf;
+        }
+        if (i != nullptr && i->isConnected())
+        {
+            sendMessage("Restart Tmn 2 Message", new MessageOf<TmnData>(START_TMN2_MSG_ID, msgData), i, 0, 0);
+        }
     }
 }
 
-void TetrisCode::verifTmn2(int movement)
+void TetrisCode::verifTmn2()
 {
     verifications.clear();
+    int rot1 = 0;
+    int rot2 = 0;
+    int rot3 = 0;
+    int rot4 = 0;
     if (movement == DOWN)
     {
-        if (rotation == NORTH)
-        {
-            nbFree += 1;
-            verifications.push_back(freeAnswer(4, SOUTH));
-            isFreeData data = isFreeData(nbFree, 4, SOUTH);
-            sendVerifTmn2(false, data);
-        }
-        else if (rotation == SOUTH)
-        {
-            nbFree += 1;
-            verifications.push_back(freeAnswer(2, SOUTH));
-            isFreeData data = isFreeData(nbFree, 2, SOUTH);
-            sendVerifTmn2(false, data);
-        }
-        else if (rotation == EAST || rotation == WEST)
-        {
-            verifications.push_back(freeAnswer(2, SOUTH));
-            verifications.push_back(freeAnswer(3, SOUTH));
-            verifications.push_back(freeAnswer(4, SOUTH));
+        rot1 = NORTH;
+        rot2 = SOUTH;
+        rot3 = EAST;
+        rot4 = WEST;
+    }
+    else if (movement == GO_RIGHT)
+    {
+        rot1 = WEST;
+        rot2 = EAST;
+        rot3 = NORTH;
+        rot4 = SOUTH;
+    }
+    if (rotation == rot1)
+    {
+        nbFree += 1;
+        verifications.push_back(freeAnswer(4, SOUTH));
+        isFreeData data = isFreeData(nbFree, 4, SOUTH);
+        sendVerifTmn2(false, data);
+    }
+    else if (rotation == rot2)
+    {
+        nbFree += 1;
+        verifications.push_back(freeAnswer(2, SOUTH));
+        isFreeData data = isFreeData(nbFree, 2, SOUTH);
+        sendVerifTmn2(false, data);
+    }
+    else if (rotation == rot3 || rotation == rot4)
+    {
+        verifications.push_back(freeAnswer(2, SOUTH));
+        verifications.push_back(freeAnswer(3, SOUTH));
+        verifications.push_back(freeAnswer(4, SOUTH));
 
-            //the following verification can be made directly by the deciding module
-            if (bottomItf != nullptr && bottomItf->isConnected())
-            {
-                sendMessage("Direct Verification Message", new Message(FREEMSG_ID), bottomItf, 0, 0);
-            }
-            else
-            {
-                nbTmn += 1;
-                sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
-            }
+        //the following verification can be made directly by the deciding module
+        if (bottomItf != nullptr && bottomItf->isConnected())
+        {
+            sendMessage("Direct Verification Message", new Message(FREEMSG_ID), bottomItf, 0, 0);
+        }
+        else
+        {
+            nbTmn += 1;
+            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
         }
     }
 }
