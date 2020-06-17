@@ -18,6 +18,11 @@ typedef std::uint16_t u2;
 typedef std::uint32_t u4;
 typedef std::uint64_t u8;
 
+typedef std::int8_t s1; // [s]igned 1
+typedef std::int16_t s2;
+typedef std::int32_t s4;
+typedef std::int64_t s8;
+
 /* GENERAL FLAGS */
 
 /**
