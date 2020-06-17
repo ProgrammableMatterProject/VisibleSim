@@ -1,6 +1,6 @@
 #include "tetrisCode.hpp"
 
-void TetrisCode::sendTmn2(bool reinit, int movement)
+void TetrisCode::sendTmn2(bool reinit)
 {
     TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFree);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
@@ -202,7 +202,7 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         parent = sender;
         nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
-        sendTmn2(false, NO_MVT);
+        sendTmn2(false);
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
@@ -229,7 +229,7 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         position = msgData.position;
         color = msgData.color;
         module->setColor(Colors[color]);
-        sendTmn2(false, NO_MVT);
+        sendTmn2(false);
     }
     else
     {
@@ -264,12 +264,16 @@ void TetrisCode::verifTmn2()
     int rot2 = 0;
     int rot3 = 0;
     int rot4 = 0;
+    int dir = 0;
+    P2PNetworkInterface *i = nullptr; //for direct verifications
     if (movement == DOWN)
     {
         rot1 = NORTH;
         rot2 = SOUTH;
         rot3 = EAST;
         rot4 = WEST;
+        dir = SOUTH;
+        i = bottomItf;
     }
     else if (movement == GO_RIGHT)
     {
@@ -277,31 +281,33 @@ void TetrisCode::verifTmn2()
         rot2 = EAST;
         rot3 = NORTH;
         rot4 = SOUTH;
+        dir = EAST;
+        i = rightItf;
     }
     if (rotation == rot1)
     {
         nbFree += 1;
-        verifications.push_back(freeAnswer(4, SOUTH));
-        isFreeData data = isFreeData(nbFree, 4, SOUTH);
+        verifications.push_back(freeAnswer(4, dir));
+        isFreeData data = isFreeData(nbFree, 4, dir);
         sendVerifTmn2(false, data);
     }
     else if (rotation == rot2)
     {
         nbFree += 1;
-        verifications.push_back(freeAnswer(2, SOUTH));
-        isFreeData data = isFreeData(nbFree, 2, SOUTH);
+        verifications.push_back(freeAnswer(2, dir));
+        isFreeData data = isFreeData(nbFree, 2, dir);
         sendVerifTmn2(false, data);
     }
     else if (rotation == rot3 || rotation == rot4)
     {
-        verifications.push_back(freeAnswer(2, SOUTH));
-        verifications.push_back(freeAnswer(3, SOUTH));
-        verifications.push_back(freeAnswer(4, SOUTH));
+        verifications.push_back(freeAnswer(2, dir));
+        verifications.push_back(freeAnswer(3, dir));
+        verifications.push_back(freeAnswer(4, dir));
 
         //the following verification can be made directly by the deciding module
-        if (bottomItf != nullptr && bottomItf->isConnected())
+        if (i != nullptr && i->isConnected())
         {
-            sendMessage("Direct Verification Message", new Message(FREEMSG_ID), bottomItf, 0, 0);
+            sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
         }
         else
         {
@@ -313,6 +319,7 @@ void TetrisCode::verifTmn2()
 
 void TetrisCode::sendVerifTmn2(bool answer, isFreeData data)
 {
+    console<<"send verif : p = "<<data.position<<" d = "<<data.direction<<"\n";
     P2PNetworkInterface *i = itf[westId];
     if (!westBool && i != nullptr && i->isConnected())
     {

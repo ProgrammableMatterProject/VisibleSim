@@ -196,9 +196,9 @@ void TetrisCode::tmnAppearance()
     update = 1;
     nbReinit = 0;
     int r = (int)rand();
-    tmn = r % 7 + 1;
+    tmn = 2; //r % 7 + 1;
     r = (int)rand();
-    rotation = r % 4 + 1;
+    rotation =r % 4 + 1;
     //Some tetramino would exceed the set
     if (tmn == 2 && rotation == SOUTH)
     {
@@ -216,7 +216,7 @@ void TetrisCode::tmnAppearance()
     }
     else if (tmn == 2)
     {
-        sendTmn2(false, NO_MVT);
+        sendTmn2(false);
     }
     else if (tmn == 3)
     {
@@ -275,6 +275,7 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
             {
                 movement = DOWN;
             }
+            movement = GO_RIGHT;
             if (tmn == 1)
             {
                 verifTmn1();
@@ -324,31 +325,65 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         nbReinit = msgData.id;
         parent = sender;
         init = false;
+        movement = msgData.movement;
         if (msgData.tmn == 1)
         {
             sendTmn1(true, msgData.movement);
             //the first tetramino doesn't rotate, it goes down no matter what
             //the pixels that were in positions 1 and 2 don't belong to the tetramino anymore, they have to be re-initialized
-            if (position == 1 || position == 2)
+            if (msgData.movement == DOWN && (position == 1 || position == 2))
+            {
+                init = true;
+            }
+            else if (msgData.movement == GO_RIGHT && (position == 1 || position == 3))
+            {
+                init = true;
+            }
+            else if (msgData.movement == GO_LEFT && (position == 2 || position == 4))
             {
                 init = true;
             }
         }
         else if (msgData.tmn == 2)
         {
-            sendTmn2(true, msgData.movement);
-            if (msgData.movement == DOWN)
+            sendTmn2(true);
+            if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
+                int rot1 = 0;
+                int rot2 = 0;
+                int rot3 = 0;
+                int rot4 = 0;
+                if (msgData.movement == DOWN)
+                {
+                    rot1 = NORTH;
+                    rot2 = EAST;
+                    rot3 = SOUTH;
+                    rot4 = WEST;
+                }
+                else if (msgData.movement == GO_RIGHT)
+                {
+                    rot1 = WEST;
+                    rot2 = NORTH;
+                    rot3 = EAST;
+                    rot4 = SOUTH;
+                }
+                else if (msgData.movement == GO_LEFT)
+                {
+                    rot1 = EAST;
+                    rot2 = SOUTH;
+                    rot3 = WEST;
+                    rot4 = NORTH;
+                }
                 //When the tetramino 2 goes down, if it is upright, only the pixel 2 doesn't belong to the tetramino anymore.
-                if (rotation == NORTH && position == 2)
+                if (rotation == rot1 && position == 2)
                 {
                     init = true;
                 }
-                else if (rotation == WEST || rotation == EAST)
+                else if (rotation == rot4 || rotation == rot2)
                 {
                     init = true;
                 }
-                else if (rotation == SOUTH && position == 4)
+                else if (rotation == rot3 && position == 4)
                 {
                     init = true;
                 }
@@ -361,21 +396,46 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         else if (msgData.tmn == 3)
         {
             sendTmn3(true, msgData.movement);
-            if (msgData.movement == DOWN)
+            if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
-                if (rotation == NORTH && (position == 2 || position == 4))
+                int rot1 = 0;
+                int rot2 = 0;
+                int rot3 = 0;
+                int rot4 = 0;
+                if (msgData.movement == DOWN)
+                {
+                    rot1 = NORTH;
+                    rot2 = EAST;
+                    rot3 = SOUTH;
+                    rot4 = WEST;
+                }
+                else if (msgData.movement == GO_RIGHT)
+                {
+                    rot1 = WEST;
+                    rot2 = NORTH;
+                    rot3 = EAST;
+                    rot4 = SOUTH;
+                }
+                else if (msgData.movement == GO_LEFT)
+                {
+                    rot1 = EAST;
+                    rot2 = SOUTH;
+                    rot3 = WEST;
+                    rot4 = NORTH;
+                }
+                if (rotation == rot1 && (position == 2 || position == 4))
                 {
                     init = true;
                 }
-                else if (rotation == WEST && position != 3)
+                else if (rotation == rot4 && position != 3)
                 {
                     init = true;
                 }
-                else if (rotation == SOUTH && (position == 3 || position == 4))
+                else if (rotation == rot3 && (position == 3 || position == 4))
                 {
                     init = true;
                 }
-                else if (rotation == EAST && position != 4)
+                else if (rotation == rot2 && position != 4)
                 {
                     init = true;
                 }
@@ -388,21 +448,46 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         else if (msgData.tmn == 4)
         {
             sendTmn4(true, msgData.movement);
-            if (msgData.movement == DOWN)
+            if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
-                if (rotation == NORTH && (position == 2 || position == 4))
+                int rot1 = 0;
+                int rot2 = 0;
+                int rot3 = 0;
+                int rot4 = 0;
+                if (msgData.movement == DOWN)
+                {
+                    rot1 = NORTH;
+                    rot2 = EAST;
+                    rot3 = SOUTH;
+                    rot4 = WEST;
+                }
+                else if (msgData.movement == GO_RIGHT)
+                {
+                    rot1 = WEST;
+                    rot2 = NORTH;
+                    rot3 = EAST;
+                    rot4 = SOUTH;
+                }
+                else if (msgData.movement == GO_LEFT)
+                {
+                    rot1 = EAST;
+                    rot2 = SOUTH;
+                    rot3 = WEST;
+                    rot4 = NORTH;
+                }
+                if (rotation == rot1 && (position == 2 || position == 4))
                 {
                     init = true;
                 }
-                else if (rotation == WEST && position != 4)
+                else if (rotation == rot4 && position != 4)
                 {
                     init = true;
                 }
-                else if (rotation == SOUTH && (position == 3 || position == 4))
+                else if (rotation == rot3 && (position == 3 || position == 4))
                 {
                     init = true;
                 }
-                else if (rotation == EAST && position != 3)
+                else if (rotation == rot2 && position != 3)
                 {
                     init = true;
                 }
@@ -415,21 +500,46 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         else if (msgData.tmn == 5)
         {
             sendTmn5(true, msgData.movement);
-            if (msgData.movement == DOWN)
+            if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
-                if (rotation == NORTH && position != 1)
+                int rot1 = 0;
+                int rot2 = 0;
+                int rot3 = 0;
+                int rot4 = 0;
+                if (msgData.movement == DOWN)
+                {
+                    rot1 = NORTH;
+                    rot2 = EAST;
+                    rot3 = SOUTH;
+                    rot4 = WEST;
+                }
+                else if (msgData.movement == GO_RIGHT)
+                {
+                    rot1 = WEST;
+                    rot2 = NORTH;
+                    rot3 = EAST;
+                    rot4 = SOUTH;
+                }
+                else if (msgData.movement == GO_LEFT)
+                {
+                    rot1 = EAST;
+                    rot2 = SOUTH;
+                    rot3 = WEST;
+                    rot4 = NORTH;
+                }
+                if (rotation == rot1 && position != 1)
                 {
                     init = true;
                 }
-                else if (rotation == WEST && (position == 3 || position == 4))
+                else if (rotation == rot4 && (position == 3 || position == 4))
                 {
                     init = true;
                 }
-                else if (rotation == SOUTH && position != 3)
+                else if (rotation == rot3 && position != 3)
                 {
                     init = true;
                 }
-                else if (rotation == EAST && (position == 2 || position == 3))
+                else if (rotation == rot2 && (position == 2 || position == 3))
                 {
                     init = true;
                 }
@@ -446,21 +556,47 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         else if (msgData.tmn == 6)
         {
             sendTmn6(true, msgData.movement);
-            if (msgData.movement == DOWN)
+            if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
-                if (rotation == NORTH && (position == 2 || position == 3))
+                int rot1 = 0;
+                int rot2 = 0;
+                int rot3 = 0;
+                int rot4 = 0;
+                if (msgData.movement == DOWN)
+                {
+                    rot1 = NORTH;
+                    rot2 = EAST;
+                    rot3 = SOUTH;
+                    rot4 = WEST;
+                }
+                else if (msgData.movement == GO_RIGHT)
+                {
+                    rot1 = WEST;
+                    rot2 = NORTH;
+                    rot3 = EAST;
+                    rot4 = SOUTH;
+                }
+                else if (msgData.movement == GO_LEFT)
+                {
+                    rot1 = EAST;
+                    rot2 = SOUTH;
+                    rot3 = WEST;
+                    rot4 = NORTH;
+                }
+
+                if (rotation == rot1 && (position == 2 || position == 3))
                 {
                     init = true;
                 }
-                else if (rotation == WEST && position != 1)
+                else if (rotation == rot4 && position != 1)
                 {
                     init = true;
                 }
-                else if (rotation == SOUTH && (position == 1 || position == 4))
+                else if (rotation == rot3 && (position == 1 || position == 4))
                 {
                     init = true;
                 }
-                else if (rotation == EAST && position != 3)
+                else if (rotation == rot2 && position != 3)
                 {
                     init = true;
                 }
@@ -477,21 +613,46 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         else if (msgData.tmn == 7)
         {
             sendTmn7(true, msgData.movement);
-            if (msgData.movement == DOWN)
+            if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
-                if (rotation == NORTH && (position == 2 || position == 3))
+                int rot1 = 0;
+                int rot2 = 0;
+                int rot3 = 0;
+                int rot4 = 0;
+                if (msgData.movement == DOWN)
+                {
+                    rot1 = NORTH;
+                    rot2 = EAST;
+                    rot3 = SOUTH;
+                    rot4 = WEST;
+                }
+                else if (msgData.movement == GO_RIGHT)
+                {
+                    rot1 = WEST;
+                    rot2 = NORTH;
+                    rot3 = EAST;
+                    rot4 = SOUTH;
+                }
+                else if (msgData.movement == GO_LEFT)
+                {
+                    rot1 = EAST;
+                    rot2 = SOUTH;
+                    rot3 = WEST;
+                    rot4 = NORTH;
+                }
+                if (rotation == rot1 && (position == 2 || position == 3))
                 {
                     init = true;
                 }
-                else if (rotation == WEST && position != 3)
+                else if (rotation == rot2 && position != 3)
                 {
                     init = true;
                 }
-                else if (rotation == SOUTH && (position == 1 || position == 4))
+                else if (rotation == rot3 && (position == 1 || position == 4))
                 {
                     init = true;
                 }
-                else if (rotation == EAST && position != 1)
+                else if (rotation == rot4 && position != 1)
                 {
                     init = true;
                 }
@@ -509,7 +670,6 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         if (nbReinitBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Reinit Back Message Parent", new MessageOf<int>(REINITBACK_MSG_ID, nbReinit), parent, 0, 0);
-            // parent = nullptr;
 
             //Reinitialization if needed
             if (init)
@@ -617,11 +777,29 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
 
             //Reinitialization if needed : the deciding module never recieved the reinitpixmsg (it sent it)
             //so it never calculated if it needs reinitialization
-            if (tmn == 1 ||
-                ((tmn == 2 || tmn == 3 || tmn == 4) && (rotation == EAST || rotation == WEST)) ||
-                (tmn == 5 && rotation == SOUTH) ||
-                (tmn == 6 && (rotation == SOUTH || rotation == EAST)) ||
-                (tmn == 7 && (rotation == SOUTH || rotation == WEST)))
+            // int rot1 = 0; // non used in the end
+            int rot2 = 0;
+            int rot3 = 0;
+            int rot4 = 0;
+            if (movement == DOWN)
+            {
+                // rot1 = NORTH;
+                rot2 = EAST;
+                rot3 = SOUTH;
+                rot4 = WEST;
+            }
+            else if (movement == GO_RIGHT)
+            {
+                // rot1 = WEST;
+                rot2 = NORTH;
+                rot3 = EAST;
+                rot4 = SOUTH;
+            }
+            if ((tmn == 1 && (movement == GO_RIGHT || movement == DOWN)) ||
+                ((tmn == 2 || tmn == 3 || tmn == 4) && (rotation == rot2 || rotation == rot4)) ||
+                (tmn == 5 && rotation == rot3) ||
+                (tmn == 6 && (rotation == rot3 || rotation == rot2)) ||
+                (tmn == 7 && (rotation == rot3 || rotation == rot4)))
             {
                 tmn = NO_TMN;
                 rotation = NO_ROTATION;
@@ -680,7 +858,7 @@ void TetrisCode::updateOfTmn()
     }
     if (tmn == 2)
     {
-        sendTmn2(true, DOWN);
+        sendTmn2(true);
     }
     if (tmn == 3)
     {
@@ -1093,11 +1271,11 @@ void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
 
 void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
 {
-    console<<"detected user key press\n";
+    console << "detected user key press\n";
     switch (c)
     {
     case charGoRight:
-        console<<"movement on the right asked\n";
+        console << "movement on the right asked\n";
         goingRight = true;
         goingLeft = false;
         turnCK = false;

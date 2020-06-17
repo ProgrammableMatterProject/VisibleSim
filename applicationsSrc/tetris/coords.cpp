@@ -211,6 +211,17 @@ int TetrisCode::pixelCalculation()
         appear_module = false;
     }
 
+    if ((pixelHCoord + 1) * sizeOfPixel > maxHeight || (pixelWCoord + 1) * sizeOfPixel > maxWidth) //if the pixel isn't complete
+    {
+        tmn = PIXEL_NON_VALID;
+        module->setColor(BLACK);
+    }
+    else
+    {
+        tmn = NO_TMN;
+        module->setColor(Colors[NO_COLOR]);
+    }
+
     // module->setColor(Colors[(pixelHCoord+pixelWCoord)%NB_COLORS]);
     // if(appear_module)
     // {

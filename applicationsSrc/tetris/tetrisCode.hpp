@@ -35,7 +35,8 @@ static const int MIN_HEIGHT = 10;
 static const int MIN_WIDTH = 3;
 
 //Types of tetramino
-static const int NO_TMN = 0; //if the module doesn't belong to any tetramino
+static const int NO_TMN = 0;           //if the module doesn't belong to any tetramino
+static const int PIXEL_NON_VALID = -1; //if the pixel isn't full, the tetramino needs to stop before it.
 //All the types of tetramino considered here, and the numbers associated with the positions of the pixels :
 static const int NO_POSITION = 0;
 /*
@@ -315,9 +316,8 @@ public:
     /**
     * @brief spread the second tetramino (column)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
-    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn2(bool reinit, int movement);
+    void sendTmn2(bool reinit);
 
     /**
     * @brief Message handler for the message 'tmn2'
