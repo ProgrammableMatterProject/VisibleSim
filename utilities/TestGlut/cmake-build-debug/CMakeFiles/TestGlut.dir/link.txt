@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/TestGlut.dir/main.cpp.o  -o TestGlut  /usr/lib/x86_64-linux-gnu/libglut.so /usr/lib/x86_64-linux-gnu/libXi.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so 
