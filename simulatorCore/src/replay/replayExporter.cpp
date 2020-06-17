@@ -111,7 +111,7 @@ void ReplayExporter::writeHeader() {
         debugFile->write((char*)&VS_MAGIC, sizeof(u4)); *debugFile << endl;
         *debugFile << (int)moduleType << endl;
         *debugFile << gridSize[0] << " " << gridSize[1] << " " << gridSize[2] << endl; // xyz
-        *debugFile << "TABLE INDEX" << endl;
+        *debugFile << "TABLE INDEX: " << keyFramesIndexPos << endl;
         // keyFramesIndexPosDebug = debugFile->tellp();
         // cout << "keyFramesIndexPosDebug: " << keyFramesIndexPosDebug << endl;
     }

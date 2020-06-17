@@ -69,7 +69,7 @@ SUBDIRS = simulatorCore/src applicationsSrc
 
 GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 
-.PHONY: subdirs $(SUBDIRS) test doc
+.PHONY: subdirs $(SUBDIRS) test doc replay
 #.PHONY: subdirs $(SUBDIRS) test doc
 
 .NOTPARALLEL: applicationsSrc/
@@ -82,6 +82,8 @@ $(SUBDIRS):
 test: subdirs
 	@$(MAKE) -C applicationsSrc test;
 
+replay:
+	@$(MAKE) -C utilities/replay;
 doc:
 	@$(MAKE) -C doc;
 clean:
@@ -92,3 +94,5 @@ clean:
 
 realclean: clean
 	$(MAKE) -C applicationsSrc APPDIR=../../applicationsBin realclean; \
+	$(MAKE) -C doc clean; \
+	$(MAKE) -C replay clean; \

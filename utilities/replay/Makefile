@@ -1,9 +1,3 @@
-
-# Get current directory's name
-mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
-current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
-APPDIR = ../../applicationsBin/$(current_dir)
-
 #####################################################################
 #
 # --- Sample User Makefile ---
@@ -19,12 +13,10 @@ APPDIR = ../../applicationsBin/$(current_dir)
 SRCS = replay.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/replay
+OUT = replay
 #
-# MODULELIB is the library for your target module type: -lsimBlinkyBlocks
-MODULELIB = -lsimBlinkyBlocks
-# TESTS contains the commands that will be executed when `make test` is called
-TESTS = ../../utilities/blockCodeTest.sh replay $(OUT)
+# MODULELIB is the library for your target module type: e.g., -lsimBlinkyBlocks
+MODULELIB = -lsimBlinkyBlocks -lsimSmartBlocks -lsimSlidingCubes -lsimCatoms2D -lsimCatoms3D -lsimOkteen -lsimDatoms -lsimNodes2D -lsimHexanodes
 #
 # CUSTOM_LIBS are the external dependencies of your blockcode, empty by default
 CUSTOM_LIBS =
@@ -78,20 +70,8 @@ CC = g++
 all: $(OUT)
 	@:
 
-test:
-	@$(TESTS)
-
-autoinstall: $(OUT)
-	cp $(OUT)  $(APPDIR)
-
-$(APPDIR)/$(OUT): $(OUT)
-
 $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
-ifneq ($(MAKECMDGOALS),clean)
--include $(DEPS)
-endif
-
 clean:
-	rm -f *~ $(OBJS) $(OUT) $(DEPS)
+	rm -f *~ *.o *.depends
