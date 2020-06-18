@@ -160,12 +160,12 @@ u8 ReplayPlayer::findKeyframeWithTime(u8 time)
         exportFile->read((char*)&keyframes[i].time,sizeof(u8));
 
         exportFile->read((char*)&keyframes[i].position,sizeof(u8));
-        exportFile->seekg(exportFile->tellg()+8);
-        cout << " ---DEBUG POSITION BOUCLE :"<<keyframes[i].position<<endl;
+        
+
         // Optimisation possible (jeu du plus ou moins) si nécessaire
         if(keyframes[i].time>time)
         {
-            cout << " ---DEBUG POSITION RETURNED :"<<keyframes[i-1].position<<endl;
+
             return keyframes[i-1].position;
         }
     }
