@@ -221,7 +221,7 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
     if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
     {
         parent = nullptr;
-        leaderBlockCode = this ;
+        leaderBlockCode = this;
         tmn = 2;
         update = msgData.nbupdate;
         nbReinit = msgData.nbReinit;
@@ -289,6 +289,15 @@ void TetrisCode::verifTmn2()
         dir = EAST;
         i = rightItf;
     }
+    else if (movement == GO_LEFT)
+    {
+        rot1 = EAST;
+        rot2 = WEST;
+        rot3 = SOUTH;
+        rot4 = NORTH;
+        dir = WEST;
+        i = leftItf;
+    }
     if (rotation == rot1)
     {
         nbFree += 1;
@@ -308,16 +317,25 @@ void TetrisCode::verifTmn2()
         verifications.push_back(freeAnswer(2, dir));
         verifications.push_back(freeAnswer(3, dir));
         verifications.push_back(freeAnswer(4, dir));
-
-        //the following verification can be made directly by the deciding module
-        if (i != nullptr && i->isConnected())
+        if (movement == GO_LEFT)
         {
-            sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+            nbFree+=1;
+            verifications.push_back(freeAnswer(1, dir));
+            isFreeData data = isFreeData(nbFree, 1, dir);
+            sendVerifTmn2(false, data);
         }
         else
         {
-            nbTmn += 1;
-            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            //the following verification can be made directly by the deciding module
+            if (i != nullptr && i->isConnected())
+            {
+                sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+            }
+            else
+            {
+                nbTmn += 1;
+                sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            }
         }
     }
 }

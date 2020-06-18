@@ -227,7 +227,7 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
     if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
     {
         parent = nullptr;
-        leaderBlockCode = this ;
+        leaderBlockCode = this;
         tmn = 1;
         update = msgData.nbupdate;
         nbReinit = msgData.nbReinit;
@@ -291,6 +291,14 @@ void TetrisCode::verifTmn1()
         verifications.push_back(freeAnswer(2, EAST));
         verifications.push_back(freeAnswer(4, EAST));
         isFreeData data = isFreeData(nbFree, 4, EAST);
+        sendVerifTmn1(false, data);
+    }
+    else if (movement == GO_LEFT)
+    {
+        nbFree += 1;
+        verifications.push_back(freeAnswer(3, WEST));
+        verifications.push_back(freeAnswer(1, WEST));
+        isFreeData data = isFreeData(nbFree, 1, WEST);
         sendVerifTmn1(false, data);
     }
 }

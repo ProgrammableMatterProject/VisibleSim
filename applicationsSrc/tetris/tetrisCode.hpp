@@ -11,10 +11,10 @@
 //##################################################################################################
 
 //Key commands to control the game :
-static const char charGoRight = 'a'; //to make the tetramino go on the right
-static const char charGoLeft = 'd';  //to go on the left
-static const char charTurnCK = 't';  //to turn clockwise
-static const char charTurnCCK = 'g'; //to turn counter clockwise
+static const char charGoRight = 'k'; //to make the tetramino go on the right
+static const char charGoLeft = 'j';  //to go on the left
+static const char charTurnCK = 'h';  //to turn clockwise
+static const char charTurnCCK = 'b'; //to turn counter clockwise
 
 //##################################################################################################
 
@@ -595,6 +595,11 @@ public:
     * @brief function called when user presses the key to ask for a translation on the right
     */
     void rightMvtKeyHandler();
+
+    /**
+    * @brief function called when user presses the key to ask for a translation on the left
+    */
+    void leftMvtKeyHandler();
 
 
     /*****************************************************************************/

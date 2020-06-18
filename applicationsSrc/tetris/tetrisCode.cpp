@@ -260,10 +260,11 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
                 movement = GO_RIGHT;
                 goingRight = false;
             }
-            // else if (goingLeft)
-            // {
-            //     movement = GO_LEFT;
-            // }
+            else if (goingLeft)
+            {
+                movement = GO_LEFT;
+                goingLeft = false;
+            }
             // else if (turnCK)
             // {
             //     movement = ROT_CK;
@@ -722,6 +723,10 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
             {
                 i = rightItf;
             }
+            else if (movement == GO_LEFT)
+            {
+                i = leftItf;
+            }
             else
             {
                 i = bottomItf;
@@ -795,6 +800,13 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
                 rot2 = NORTH;
                 rot3 = EAST;
                 rot4 = SOUTH;
+            }
+            else if (movement == GO_LEFT)
+            {
+                //rot1 = EAST;
+                rot2 = SOUTH;
+                rot3 = WEST;
+                rot4 = NORTH;
             }
             if ((tmn == 1 && (movement == GO_RIGHT || movement == DOWN)) ||
                 ((tmn == 2 || tmn == 3 || tmn == 4) && (rotation == rot2 || rotation == rot4)) ||
@@ -956,6 +968,10 @@ void TetrisCode::myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
             else if (msgData.direction == EAST)
             {
                 i = rightItf;
+            }
+            else if (msgData.direction == NORTH)
+            {
+                i = topItf;
             }
             if (i != nullptr && i->isConnected())
             {
@@ -1353,10 +1369,10 @@ void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
         }
         break;
     case charGoLeft:
-        goingLeft = true;
-        goingRight = false;
-        turnCK = false;
-        turnCounterCK = false;
+        if (leaderBlockCode != nullptr)
+        {
+            leaderBlockCode->leftMvtKeyHandler();
+        }
         break;
     case charTurnCK:
         turnCK = true;
@@ -1375,6 +1391,14 @@ void TetrisCode::rightMvtKeyHandler()
 {
     goingRight = true;
     goingLeft = false;
+    turnCK = false;
+    turnCounterCK = false;
+};
+
+void TetrisCode::leftMvtKeyHandler()
+{
+    goingRight = false;
+    goingLeft = true;
     turnCK = false;
     turnCounterCK = false;
 };

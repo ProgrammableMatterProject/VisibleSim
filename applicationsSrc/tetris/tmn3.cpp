@@ -261,7 +261,7 @@ void TetrisCode::myRestartTmn3Func(std::shared_ptr<Message> _msg, P2PNetworkInte
     if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
     {
         parent = nullptr;
-        leaderBlockCode = this ;
+        leaderBlockCode = this;
         tmn = 3;
         update = msgData.nbupdate;
         nbReinit = msgData.nbReinit;
@@ -329,6 +329,15 @@ void TetrisCode::verifTmn3()
         dir = EAST;
         i = rightItf;
     }
+    else if (movement == GO_LEFT)
+    {
+        rot1 = EAST;
+        rot2 = WEST;
+        rot3 = SOUTH;
+        rot4 = NORTH;
+        dir = WEST;
+        i = leftItf;
+    }
     if (rotation == rot1)
     {
         nbFree += 1;
@@ -349,28 +358,48 @@ void TetrisCode::verifTmn3()
     {
         verifications.push_back(freeAnswer(2, dir));
         verifications.push_back(freeAnswer(4, dir));
-        if (i != nullptr && i->isConnected())
+        if (movement == GO_LEFT)
         {
-            sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+            nbFree += 1;
+            verifications.push_back(freeAnswer(1, WEST));
+            isFreeData data = isFreeData(nbFree, 1, WEST);
+            sendVerifTmn3(false, data);
         }
         else
         {
-            nbTmn += 1;
-            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            if (i != nullptr && i->isConnected())
+            {
+                sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+            }
+            else
+            {
+                nbTmn += 1;
+                sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            }
         }
     }
     else if (rotation == rot4)
     {
         verifications.push_back(freeAnswer(2, dir));
         verifications.push_back(freeAnswer(3, dir));
-        if (i != nullptr && i->isConnected())
+        if (movement == GO_LEFT)
         {
-            sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+            nbFree += 1;
+            verifications.push_back(freeAnswer(1, WEST));
+            isFreeData data = isFreeData(nbFree, 1, WEST);
+            sendVerifTmn3(false, data);
         }
         else
         {
-            nbTmn += 1;
-            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            if (i != nullptr && i->isConnected())
+            {
+                sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+            }
+            else
+            {
+                nbTmn += 1;
+                sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            }
         }
     }
 }
