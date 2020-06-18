@@ -23,6 +23,11 @@ public:
     int nbReinit;
     int nbFree;
 
+    bool goingR = false;
+    bool goingL = false;
+    bool rotCW = false;
+    bool rotCCW = false;
+
     TmnData(int upd, int r, int p, int c, int reinit, int nbf)
     {
         nbupdate = upd;
@@ -31,6 +36,19 @@ public:
         color = c;
         nbReinit = reinit;
         nbFree = nbf;
+    }
+    TmnData(int upd, int r, int p, int c, int reinit, int nbf, bool gRight, bool gLeft, bool rCK, bool rCCK)
+    {
+        nbupdate = upd;
+        rotation = r;
+        position = p;
+        color = c;
+        nbReinit = reinit;
+        nbFree = nbf;
+        goingR = gRight;
+        goingL = gLeft;
+        rotCW = rCK;
+        rotCCW = rCCK;
     }
 };
 
@@ -55,7 +73,7 @@ public:
     int id;
     int position;
     int direction;
-    int answer; 
+    int answer;
 
     isFreeData(int i, int p, int d)
     {

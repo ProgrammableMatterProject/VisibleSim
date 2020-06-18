@@ -221,6 +221,7 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
     if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
     {
         parent = nullptr;
+        leaderBlockCode = this ;
         tmn = 2;
         update = msgData.nbupdate;
         nbReinit = msgData.nbReinit;
@@ -228,6 +229,10 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         rotation = msgData.rotation;
         position = msgData.position;
         color = msgData.color;
+        goingRight = msgData.goingR;
+        goingLeft = msgData.goingL;
+        turnCK = msgData.rotCW;
+        turnCounterCK = msgData.rotCCW;
         module->setColor(Colors[color]);
         sendTmn2(false);
     }

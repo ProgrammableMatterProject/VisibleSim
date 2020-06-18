@@ -258,6 +258,7 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
             if (goingRight)
             {
                 movement = GO_RIGHT;
+                goingRight = false;
             }
             // else if (goingLeft)
             // {
@@ -275,7 +276,6 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
             {
                 movement = DOWN;
             }
-            movement = GO_RIGHT;
             if (tmn == 1)
             {
                 verifTmn1();
@@ -710,9 +710,10 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
         //The module that starts the update of the tetramino is on the bottom of the pixel so that it can send the position 1 to the future position 1
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
-            TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFBack);
+            TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFBack, goingRight, goingLeft, turnCK, turnCounterCK);
             data.nbupdate += 1;
             P2PNetworkInterface *i = nullptr;
+            leaderBlockCode = nullptr;
             if (movement == DOWN)
             {
                 i = bottomItf;
@@ -1072,8 +1073,43 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                 }
                 else // if one verification is false, the movement cannot be done. A new tetramino is started
                 {
-                    nbTmn += 1;
-                    sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                    if (movement != DOWN) //if the movement cannot be done, the tetramino may still be able to go down
+                    {
+                        movement = DOWN;
+                        if (tmn == 1)
+                        {
+                            verifTmn1();
+                        }
+                        else if (tmn == 2)
+                        {
+                            verifTmn2();
+                        }
+                        else if (tmn == 3)
+                        {
+                            verifTmn3();
+                        }
+                        else if (tmn == 4)
+                        {
+                            verifTmn4();
+                        }
+                        else if (tmn == 5)
+                        {
+                            verifTmn5();
+                        }
+                        else if (tmn == 6)
+                        {
+                            verifTmn6();
+                        }
+                        else if (tmn == 7)
+                        {
+                            verifTmn7();
+                        }
+                    }
+                    else
+                    {
+                        nbTmn += 1;
+                        sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                    }
                 }
             }
         }
@@ -1169,8 +1205,43 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
         }
         else //if the verified pixel isn't free, the tetramino is stuck : a new tetramino has to be created.
         {
-            nbTmn += 1;
-            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            if (movement != DOWN) //if the movement cannot be done, the tetramino may still be able to go down
+            {
+                movement = DOWN;
+                if (tmn == 1)
+                {
+                    verifTmn1();
+                }
+                else if (tmn == 2)
+                {
+                    verifTmn2();
+                }
+                else if (tmn == 3)
+                {
+                    verifTmn3();
+                }
+                else if (tmn == 4)
+                {
+                    verifTmn4();
+                }
+                else if (tmn == 5)
+                {
+                    verifTmn5();
+                }
+                else if (tmn == 6)
+                {
+                    verifTmn6();
+                }
+                else if (tmn == 7)
+                {
+                    verifTmn7();
+                }
+            }
+            else
+            {
+                nbTmn += 1;
+                sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            }
         }
     }
     else //if the module is not the deciding module, it has to send the answer.
@@ -1273,15 +1344,13 @@ void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
 
 void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
 {
-    console << "detected user key press\n";
     switch (c)
     {
     case charGoRight:
-        console << "movement on the right asked\n";
-        goingRight = true;
-        goingLeft = false;
-        turnCK = false;
-        turnCounterCK = false;
+        if (leaderBlockCode != nullptr)
+        {
+            leaderBlockCode->rightMvtKeyHandler();
+        }
         break;
     case charGoLeft:
         goingLeft = true;
@@ -1300,4 +1369,12 @@ void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
         goingRight = false;
         turnCK = false;
     }
+};
+
+void TetrisCode::rightMvtKeyHandler()
+{
+    goingRight = true;
+    goingLeft = false;
+    turnCK = false;
+    turnCounterCK = false;
 };

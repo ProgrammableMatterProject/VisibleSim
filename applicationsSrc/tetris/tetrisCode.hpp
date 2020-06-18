@@ -172,6 +172,8 @@ using namespace BlinkyBlocks;
 
 class TetrisCode : public BlinkyBlocksBlockCode
 {
+    static inline TetrisCode *leaderBlockCode = nullptr;
+
 private:
     BlinkyBlocksBlock *module = nullptr;
     P2PNetworkInterface *topItf = nullptr;
@@ -588,6 +590,12 @@ public:
     * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
     */
     void onUserKeyPressed(unsigned char c, int x, int y) override;
+
+    /**
+    * @brief function called when user presses the key to ask for a translation on the right
+    */
+    void rightMvtKeyHandler();
+
 
     /*****************************************************************************/
     /** needed to associate code to module                                      **/
