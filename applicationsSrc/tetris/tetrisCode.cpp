@@ -196,15 +196,15 @@ void TetrisCode::tmnAppearance()
     update = 1;
     nbReinit = 0;
     int r = (int)rand();
-    tmn = 2; //r % 7 + 1;
+    tmn = r % 7 + 1;
     r = (int)rand();
-    rotation =r % 4 + 1;
+    rotation = r % 4 + 1;
     //Some tetramino would exceed the set
     if (tmn == 2 && rotation == SOUTH)
     {
         position = 3;
     }
-    while (color == NO_COLOR)
+    while (color == NO_COLOR || color == 8) //The color at 8th place is too close to white, it is almost invisible
     {
         r = (int)rand();
         color = r % 9;
@@ -212,7 +212,7 @@ void TetrisCode::tmnAppearance()
     module->setColor(Colors[color]);
     if (tmn == 1)
     {
-        sendTmn1(false, NO_MVT);
+        sendTmn1(false);
     }
     else if (tmn == 2)
     {
@@ -220,23 +220,23 @@ void TetrisCode::tmnAppearance()
     }
     else if (tmn == 3)
     {
-        sendTmn3(false, NO_MVT);
+        sendTmn3(false);
     }
     else if (tmn == 4)
     {
-        sendTmn4(false, NO_MVT);
+        sendTmn4(false);
     }
     else if (tmn == 5)
     {
-        sendTmn5(false, NO_MVT);
+        sendTmn5(false);
     }
     else if (tmn == 6)
     {
-        sendTmn6(false, NO_MVT);
+        sendTmn6(false);
     }
     else if (tmn == 7)
     {
-        sendTmn7(false, NO_MVT);
+        sendTmn7(false);
     }
 }
 
@@ -328,7 +328,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         movement = msgData.movement;
         if (msgData.tmn == 1)
         {
-            sendTmn1(true, msgData.movement);
+            sendTmn1(true);
             //the first tetramino doesn't rotate, it goes down no matter what
             //the pixels that were in positions 1 and 2 don't belong to the tetramino anymore, they have to be re-initialized
             if (msgData.movement == DOWN && (position == 1 || position == 2))
@@ -395,7 +395,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 3)
         {
-            sendTmn3(true, msgData.movement);
+            sendTmn3(true);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -447,7 +447,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 4)
         {
-            sendTmn4(true, msgData.movement);
+            sendTmn4(true);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -499,7 +499,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 5)
         {
-            sendTmn5(true, msgData.movement);
+            sendTmn5(true);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -555,7 +555,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 6)
         {
-            sendTmn6(true, msgData.movement);
+            sendTmn6(true);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -612,7 +612,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 7)
         {
-            sendTmn7(true, msgData.movement);
+            sendTmn7(true);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -644,7 +644,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
                 {
                     init = true;
                 }
-                else if (rotation == rot2 && position != 3)
+                else if (rotation == rot2 && position != 1)
                 {
                     init = true;
                 }
@@ -652,7 +652,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
                 {
                     init = true;
                 }
-                else if (rotation == rot4 && position != 1)
+                else if (rotation == rot4 && position != 3)
                 {
                     init = true;
                 }
@@ -812,6 +812,7 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
                 nbReinitBackMsg = 0;
                 nbFBack = 0;
                 nbFree = 0;
+                nbTmnBackMsg = 0;
                 module->setColor(Colors[color]);
             }
         }
@@ -833,6 +834,7 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
                 nbFree = 0;
                 nbReinit = 0;
                 nbReinitBackMsg = 0;
+                nbTmnBackMsg = 0;
                 module->setColor(Colors[color]);
             }
         }
@@ -854,7 +856,7 @@ void TetrisCode::updateOfTmn()
     //may be needed. When modules recieve the message, they spread it to their neighbors, and reinitialize themselves if needed.
     if (tmn == 1)
     {
-        sendTmn1(true, DOWN);
+        sendTmn1(true);
     }
     if (tmn == 2)
     {
@@ -862,23 +864,23 @@ void TetrisCode::updateOfTmn()
     }
     if (tmn == 3)
     {
-        sendTmn3(true, DOWN);
+        sendTmn3(true);
     }
     if (tmn == 4)
     {
-        sendTmn4(true, DOWN);
+        sendTmn4(true);
     }
     if (tmn == 5)
     {
-        sendTmn5(true, DOWN);
+        sendTmn5(true);
     }
     if (tmn == 6)
     {
-        sendTmn6(true, DOWN);
+        sendTmn6(true);
     }
     if (tmn == 7)
     {
-        sendTmn7(true, DOWN);
+        sendTmn7(true);
     }
 }
 

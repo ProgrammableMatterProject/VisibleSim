@@ -319,7 +319,6 @@ void TetrisCode::verifTmn2()
 
 void TetrisCode::sendVerifTmn2(bool answer, isFreeData data)
 {
-    console<<"send verif : p = "<<data.position<<" d = "<<data.direction<<"\n";
     P2PNetworkInterface *i = itf[westId];
     if (!westBool && i != nullptr && i->isConnected())
     {

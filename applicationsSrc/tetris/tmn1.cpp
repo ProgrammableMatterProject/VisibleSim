@@ -1,6 +1,6 @@
 #include "tetrisCode.hpp"
 
-void TetrisCode::sendTmn1(bool reinit, int movement) // NB : the first tetramino doesn't rotate (square)
+void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotate (square)
 {
     TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFree);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
@@ -208,7 +208,7 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         parent = sender;
         nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
-        sendTmn1(false, NO_MVT);
+        sendTmn1(false);
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
@@ -235,12 +235,32 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         position = msgData.position;
         color = msgData.color;
         module->setColor(Colors[color]);
-        sendTmn1(false, NO_MVT);
+        sendTmn1(false);
     }
     //Normally the TOP_RIGHT_CORNER recieved it first, so the BOTTOM_RIGHT_CORNER should be under it on the same column
-    else if (bottomItf != nullptr && bottomItf->isConnected())
+    else
     {
-        sendMessage("Restart Tmn 1 Message", new MessageOf<TmnData>(START_TMN1_MSG_ID, msgData), bottomItf, 0, 0);
+        P2PNetworkInterface *i = nullptr;
+        if (sender == topItf)
+        {
+            i = bottomItf;
+        }
+        else if (sender == bottomItf)
+        {
+            i = topItf;
+        }
+        else if (sender == rightItf)
+        {
+            i = leftItf;
+        }
+        else if (sender == leftItf)
+        {
+            i = rightItf;
+        }
+        if (i != nullptr && i->isConnected())
+        {
+            sendMessage("Restart Tmn 1 Message", new MessageOf<TmnData>(START_TMN1_MSG_ID, msgData), i, 0, 0);
+        }
     }
 }
 
@@ -260,14 +280,22 @@ void TetrisCode::verifTmn1()
         isFreeData data = isFreeData(nbFree, 4, SOUTH);
         sendVerifTmn1(false, data);
     }
+    else if (movement == GO_RIGHT)
+    {
+        nbFree += 1;
+        verifications.push_back(freeAnswer(2, EAST));
+        verifications.push_back(freeAnswer(4, EAST));
+        isFreeData data = isFreeData(nbFree, 4, EAST);
+        sendVerifTmn1(false, data);
+    }
 }
 
 void TetrisCode::sendVerifTmn1(bool answer, isFreeData data)
 {
     //The verifications are not sent oustide of the tetramino, so recipients have to be calculated according to the shape of the tetramino.
-    
+
     P2PNetworkInterface *i = itf[westId];
-    if (((position!= 1 && position!=3) || !westBool) && i != nullptr && i->isConnected())
+    if (((position != 1 && position != 3) || !westBool) && i != nullptr && i->isConnected())
     {
         if (answer)
         {
@@ -279,7 +307,7 @@ void TetrisCode::sendVerifTmn1(bool answer, isFreeData data)
         }
     }
     i = itf[eastId];
-    if (((position!= 4 && position!=2) || !eastBool) && i != nullptr && i->isConnected())
+    if (((position != 4 && position != 2) || !eastBool) && i != nullptr && i->isConnected())
     {
         if (answer)
         {
@@ -291,7 +319,7 @@ void TetrisCode::sendVerifTmn1(bool answer, isFreeData data)
         }
     }
     i = itf[northId];
-    if (((position!= 1 && position!=2) || !northBool) && i != nullptr && i->isConnected())
+    if (((position != 1 && position != 2) || !northBool) && i != nullptr && i->isConnected())
     {
         if (answer)
         {
@@ -303,7 +331,7 @@ void TetrisCode::sendVerifTmn1(bool answer, isFreeData data)
         }
     }
     i = itf[southId];
-    if (((position!= 3 && position!=4) || !southBool) && i != nullptr && i->isConnected())
+    if (((position != 3 && position != 4) || !southBool) && i != nullptr && i->isConnected())
     {
         if (answer)
         {

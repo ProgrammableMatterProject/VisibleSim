@@ -13,8 +13,8 @@
 //Key commands to control the game :
 static const char charGoRight = 'a'; //to make the tetramino go on the right
 static const char charGoLeft = 'd';  //to go on the left
-static const char charTurnCK = 'r';  //to turn clockwise
-static const char charTurnCCK = 'f'; //to turn counter clockwise
+static const char charTurnCK = 't';  //to turn clockwise
+static const char charTurnCCK = 'g'; //to turn counter clockwise
 
 //##################################################################################################
 
@@ -295,9 +295,8 @@ public:
     /**
     * @brief spread the first tetramino (square)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
-    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn1(bool reinit, int movement);
+    void sendTmn1(bool reinit);
 
     /**
     * @brief Message handler for the message 'tmn1'
@@ -336,9 +335,8 @@ public:
     /**
     * @brief spread the third tetramino (L)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
-    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn3(bool reinit, int movement);
+    void sendTmn3(bool reinit);
 
     /**
     * @brief Message handler for the message 'tmn3'
@@ -357,9 +355,8 @@ public:
     /**
     * @brief spread the fourth tetramino (L in mirror)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
-    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn4(bool reinit, int movement);
+    void sendTmn4(bool reinit);
 
     /**
     * @brief Message handler for the message 'tmn4'
@@ -378,9 +375,8 @@ public:
     /**
     * @brief spread the fifth tetramino (T)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
-    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn5(bool reinit, int movement);
+    void sendTmn5(bool reinit);
 
     /**
     * @brief Message handler for the message 'tmn5'
@@ -399,9 +395,8 @@ public:
     /**
     * @brief spread the sixth tetramino ("chair")
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
-    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn6(bool reinit, int movement);
+    void sendTmn6(bool reinit);
 
     /**
     * @brief Message handler for the message 'tmn6'
@@ -420,9 +415,8 @@ public:
     /**
     * @brief spread the seventh tetramino ("chair" in mirror)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
-    * @param movement (int) if reinit is true, movement is the movement done by the tetramino (to know which pixels have to be reinitialized)
     */
-    void sendTmn7(bool reinit, int movement);
+    void sendTmn7(bool reinit);
 
     /**
     * @brief Message handler for the message 'tmn7'

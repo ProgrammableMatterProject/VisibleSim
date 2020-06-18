@@ -1,6 +1,6 @@
 #include "tetrisCode.hpp"
 
-void TetrisCode::sendTmn5(bool reinit, int movement)
+void TetrisCode::sendTmn5(bool reinit)
 {
     TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFree);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
@@ -241,7 +241,7 @@ void TetrisCode::myTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         parent = sender;
         nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
-        sendTmn5(false, NO_MVT);
+        sendTmn5(false);
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
@@ -269,58 +269,99 @@ void TetrisCode::myRestartTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         position = msgData.position;
         color = msgData.color;
         module->setColor(Colors[color]);
-        sendTmn5(false, NO_MVT);
+        sendTmn5(false);
     }
-    else if (bottomItf != nullptr && bottomItf->isConnected())
+    else
     {
-        sendMessage("Restart Tmn 5 Message", new MessageOf<TmnData>(START_TMN5_MSG_ID, msgData), bottomItf, 0, 0);
+        P2PNetworkInterface *i = nullptr;
+        if (sender == topItf)
+        {
+            i = bottomItf;
+        }
+        else if (sender == bottomItf)
+        {
+            i = topItf;
+        }
+        else if (sender == rightItf)
+        {
+            i = leftItf;
+        }
+        else if (sender == leftItf)
+        {
+            i = rightItf;
+        }
+        if (i != nullptr && i->isConnected())
+        {
+            sendMessage("Restart Tmn 5 Message", new MessageOf<TmnData>(START_TMN5_MSG_ID, msgData), i, 0, 0);
+        }
     }
 }
 
 void TetrisCode::verifTmn5()
 {
     verifications.clear();
+    int rot1 = 0;
+    int rot2 = 0;
+    int rot3 = 0;
+    int rot4 = 0;
+    int dir = 0;
+    P2PNetworkInterface *i = nullptr; //for direct verifications
     if (movement == DOWN)
     {
-        if (rotation == NORTH)
+        rot1 = NORTH;
+        rot2 = SOUTH;
+        rot3 = EAST;
+        rot4 = WEST;
+        dir = SOUTH;
+        i = bottomItf;
+    }
+    else if (movement == GO_RIGHT)
+    {
+        rot1 = WEST;
+        rot2 = EAST;
+        rot3 = NORTH;
+        rot4 = SOUTH;
+        dir = EAST;
+        i = rightItf;
+    }
+    if (rotation == rot1)
+    {
+        verifications.push_back(freeAnswer(2, dir));
+        verifications.push_back(freeAnswer(4, dir));
+        if (i != nullptr && i->isConnected())
         {
-            verifications.push_back(freeAnswer(2, SOUTH));
-            verifications.push_back(freeAnswer(4, SOUTH));
-            if (bottomItf != nullptr && bottomItf->isConnected())
-            {
-                sendMessage("Direct Verification Message", new Message(FREEMSG_ID), bottomItf, 0, 0);
-            }
-            else
-            {
-                nbTmn += 1;
-                sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
-            }
+            sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
         }
-        else if (rotation == SOUTH)
+        else
         {
-            nbFree += 1;
-            verifications.push_back(freeAnswer(2, SOUTH));
-            verifications.push_back(freeAnswer(3, SOUTH));
-            verifications.push_back(freeAnswer(4, SOUTH));
-            isFreeData data = isFreeData(nbFree, 4, SOUTH);
-            sendVerifTmn2(false, data);
+            nbTmn += 1;
+            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
         }
-        else if (rotation == EAST)
-        {
-            nbFree += 1;
-            verifications.push_back(freeAnswer(4, SOUTH));
-            verifications.push_back(freeAnswer(3, SOUTH));
-            isFreeData data = isFreeData(nbFree, 3, SOUTH);
-            sendVerifTmn2(false, data);
-        }
-        else if (rotation == WEST)
-        {
-            nbFree += 1;
-            verifications.push_back(freeAnswer(2, SOUTH));
-            verifications.push_back(freeAnswer(3, SOUTH));
-            isFreeData data = isFreeData(nbFree, 3, SOUTH);
-            sendVerifTmn2(false, data);
-        }
+    }
+    else if (rotation == rot2)
+    {
+        nbFree += 1;
+        verifications.push_back(freeAnswer(2, dir));
+        verifications.push_back(freeAnswer(3, dir));
+        verifications.push_back(freeAnswer(4, dir));
+        isFreeData data = isFreeData(nbFree, 4, dir);
+        sendVerifTmn5(false, data);
+    }
+    else if (rotation == rot3)
+    {
+        nbFree += 1;
+        verifications.push_back(freeAnswer(4, dir));
+        verifications.push_back(freeAnswer(3, dir));
+        isFreeData data = isFreeData(nbFree, 3, dir);
+        sendVerifTmn5(false, data);
+    }
+    else if (rotation == rot4)
+    {
+        nbFree += 1;
+        verifications.push_back(freeAnswer(2, dir));
+        verifications.push_back(freeAnswer(3, dir));
+        isFreeData data = isFreeData(nbFree, 3, dir);
+        sendVerifTmn5(false, data);
     }
 }
 
@@ -351,7 +392,7 @@ void TetrisCode::sendVerifTmn5(bool answer, isFreeData data)
         }
     }
     i = itf[northId];
-    if ((position ==1 || !northBool) && i != nullptr && i->isConnected())
+    if ((position == 1 || !northBool) && i != nullptr && i->isConnected())
     {
         if (answer)
         {
@@ -363,7 +404,7 @@ void TetrisCode::sendVerifTmn5(bool answer, isFreeData data)
         }
     }
     i = itf[southId];
-    if ((position ==3 || !southBool) && i != nullptr && i->isConnected())
+    if ((position == 3 || !southBool) && i != nullptr && i->isConnected())
     {
         if (answer)
         {
