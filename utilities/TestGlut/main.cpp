@@ -28,6 +28,7 @@ static void mouseFuncMW(int button,int state,int x,int y);
 static void motionFuncMW(int x,int y);
 static void idleFunc();
 static void quit();
+static void updateSubWindows();
 
 /*********************************************************/
 /* global variables                                      */
@@ -38,7 +39,7 @@ static GLfloat lightgrey[4] = { 0.8f, 0.8f, 0.8f, 1.0f}; // lightgrey color mate
 static GLfloat grey[4] = { 0.4f, 0.4f, 0.4f, 1.0f}; // grey color material
 static GLfloat black[4] = { 0.0f, 0.0f, 0.0f, 1.0f}; // black color material
 
-int width=1024,height=600,toolHeight=100,separ=32; // initial size of the screen
+int width=1024,height=600,toolHeight=120,separ=24; // initial size of the screen
 const float cameraPos[] = {5.0f,2.0f,8.0f};
 float cameraTheta=0.0f, cameraPhi=0.0f, cameraDist=5.0f; // spherical coordinates of the point of view
 float rotationAngle=0; // rotation angle of the teapot /z
@@ -97,26 +98,18 @@ int main(int argc, char** argv) {
 //  glutSetCursor(GLUT_CURSOR_NONE); // allow to hide cursor
 
     glutMainLoop();
-
     return 0;
 }
 
 /*********************************************************/
 /* frame drawing function                                */
 static void drawFunc(void) {
+    cout << "topdraw" << endl;
     glClearColor(0.8f,0.8f,0.8f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     glDisable(GL_LIGHTING);
-    glDisable(GLUT_DEPTH);
-    glColor3fv(black);
-
-    glBegin(GL_LINES);
-    glVertex2i(0, 1);
-    glVertex2i(width,1);
-    glVertex2i(0,separ);
-    glVertex2i(width,separ);
-    glEnd();
+    glDisable(GL_DEPTH_TEST);
 
     glColor3fv(black);
     glPushMatrix();
@@ -150,7 +143,7 @@ static void drawFunc(void) {
         glPopMatrix();
     }
 
-    glEnable(GL_DEPTH);
+    glEnable(GL_DEPTH_TEST);
 
     glutSwapBuffers();
 }
@@ -171,28 +164,26 @@ static void drawFuncMW(void) {
     glLightfv(GL_LIGHT0, GL_POSITION, pos );
 
     glPushMatrix();
-    glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,blue);
-    glutSolidCylinder(0.02,2.0,20,5);
-    glPushMatrix();
-    glRotatef(-90.0,1,0,0);
-    glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,green);
-    glutSolidCylinder(0.02,2.0,20,5);
-    glPopMatrix();
-    glRotatef(90.0,0,1,0);
-    glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,red);
-    glutSolidCylinder(0.02,2.0,20,5);
+        glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,blue);
+        glutSolidCylinder(0.02,2.0,20,5);
+        glPushMatrix();
+            glRotatef(-90.0,1,0,0);
+            glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,green);
+            glutSolidCylinder(0.02,2.0,20,5);
+        glPopMatrix();
+        glRotatef(90.0,0,1,0);
+        glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,red);
+        glutSolidCylinder(0.02,2.0,20,5);
     glPopMatrix();
 
     glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,grey);
     glPushMatrix();
-    glRotatef(rotationAngle,0.0f,0.0f,1.0f);
-
-    glPushMatrix();
-    glRotatef(90.0,1.0f,0.0f,0.0f);
-    glutSolidTeapot(1.0f);
-    //glutSolidCone(0.5,2.0,10,1);
-    glPopMatrix();
-
+        glRotatef(rotationAngle,0.0f,0.0f,1.0f);
+        glPushMatrix();
+            glRotatef(90.0,1.0f,0.0f,0.0f);
+            glutSolidTeapot(1.0f);
+            //glutSolidCone(0.5,2.0,10,1);
+        glPopMatrix();
     glPopMatrix();
 
     glPopMatrix();
@@ -213,16 +204,17 @@ void drawString(int ix,int iy,char* str) {
 static void drawFuncTW(void) {
     cout << "draw TW" << endl;
     char str[50];
+
+
     glClearColor(0.5f,0.5f,0.5f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-
     glDisable(GL_LIGHTING);
-    glDisable(GL_DEPTH);
-    glColor3fv(blue);
+    glDisable(GL_DEPTH_TEST);
+    glColor3fv(red);
 
-/*    sprintf(str,"angle = %6.1f",rotationAngle);
+    sprintf(str,"angle = %6.1f",rotationAngle);
     drawString(40,20,str);
-*/
+
     glBegin(GL_LINES);
     glVertex2i(0,0);
     glVertex2i(width,toolHeight);
@@ -230,7 +222,7 @@ static void drawFuncTW(void) {
     glVertex2i(width,0);
     glEnd();
 
-    glEnable(GL_DEPTH);
+    glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
 }
 
@@ -251,19 +243,30 @@ static void reshapeFunc(int w,int h) {
     // initialize ModelView matrix
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    updateSubWindows();
+}
+
+void updateSubWindows() {
 
     // place and size mainWindow
     glutSetWindow(mainWindow);
     glutPositionWindow(0,0);
     glutReshapeWindow(width, height);
 
+    glutSetWindow(toolsWindow);
     if (toolsWinOpened) {
         // place and size toolsWindow
-        glutSetWindow(toolsWindow);
+        glutShowWindow();
         glutPositionWindow(0, height + separ);
         glutReshapeWindow(width, toolHeight);
+    } else {
+        glutReshapeWindow(width, 0);
+        glutHideWindow();
     }
+    glutSetWindow(topWindow);
 }
+
+
 
 static void reshapeFuncMW(int w,int h) {
     cout << "reshapeMW:" << w << "," << h << endl;
@@ -275,7 +278,6 @@ static void reshapeFuncMW(int w,int h) {
     // initialize ModelView matrix
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
 }
 
 static void reshapeFuncTW(int w,int h) {
@@ -301,8 +303,8 @@ static void idleFunc(void) {
 //	sprintf_s(chaineFPS,"FR : %lf",1.0/dt);
     initTime = currentTime;
 
-    rotationAngle += dt*20.0f; // turn at 20� / s
-//cout << "rotationAngle=" << rotationAngle << endl;
+    rotationAngle += dt*20.0f; // turn at 20° / s
+// cout << "rotationAngle=" << rotationAngle << endl;
     glutPostWindowRedisplay(mainWindow);
 }
 
@@ -347,21 +349,16 @@ bool isIn(int x, int y, int x0, int y0, int w, int h) {
 
 static void mouseFunc(int button,int state,int x,int y) {
     int hy=toolsWinOpened?height+separ-y:height+separ-y;
-    cout << x << ',' << y << "/" << hy << ":" << isIn(x,hy,width-1.5f*separ,toolHeight+0.1f*separ,0.8*separ,0.8*separ) << endl;
+    cout << x << ',' << y << "/" << hy << ":" << isIn(x,hy,width-1.5f*separ,0.1f*separ,0.8f*separ,0.8f*separ) << endl;
     if (state==GLUT_UP && isIn(x,hy,width-1.5f*separ,0.1f*separ,0.8f*separ,0.8f*separ)) {
         if (toolsWinOpened) {
-            toolsWinOpened=false;
-            glutSetWindow(toolsWindow);
-            glutHideWindow();
-            glutSetWindow(topWindow);
-            reshapeFunc(width,height+toolHeight+separ);
+            height+=toolHeight;
+            toolsWinOpened = false;
         } else {
-            toolsWinOpened=true;
-            glutSetWindow(toolsWindow);
-            glutShowWindow();
-            glutSetWindow(topWindow);
-            reshapeFunc(width,height+separ);
+            height-=toolHeight;
+            toolsWinOpened = true;
         }
+        updateSubWindows();
         glutPostWindowRedisplay(topWindow);
     }
     mouseX0=x;
