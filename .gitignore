@@ -87,6 +87,5 @@ applicationsBin/*/*.m
 TAGS
 
 # CMake files
-applicationsSrc/*/CMakeLists.txt
 applicationsSrc/*/cmake-build-debug/
-applicationsSrc/*/.idea
+applicationsSrc/*/.idea/
