@@ -9,7 +9,8 @@
 #include <string>
 #include <GL/freeglut.h>
 #include <cmath>
-
+#include "objLoader.h"
+//#include "blinkyBlocksGlBlock.h"
 using namespace std;
 
 
@@ -48,9 +49,12 @@ GLint topWindow;
 GLint mainWindow;
 GLint toolsWindow;
 bool toolsWinOpened=true;
+//ObjLoader::ObjLoader objectLoader = new ObjLoader();
+//BlinkyBlocks::BlinkyBlocksGlBlock block = new BlinkyBlocks::BlinkyBlocksGlBlock(1);
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
+
 
     // create the window
     glutInitWindowPosition(0, 0);
@@ -181,7 +185,9 @@ static void drawFuncMW(void) {
         glRotatef(rotationAngle,0.0f,0.0f,1.0f);
         glPushMatrix();
             glRotatef(90.0,1.0f,0.0f,0.0f);
-            glutSolidTeapot(1.0f);
+            //glutSolidTeapot(1.0f);
+//            objectLoader.glDraw();
+
             //glutSolidCone(0.5,2.0,10,1);
         glPopMatrix();
     glPopMatrix();
