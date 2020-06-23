@@ -8,9 +8,9 @@
 #include <iostream>
 #include <string>
 //#include <GL/glew.h>
-//#include <GL/freeglut.h>
+#include <GL/freeglut.h>
 #include <cmath>
-#include "../../simulatorCore/src/gui/objLoader.h"
+//#include "../../simulatorCore/src/gui/objLoader.h"
 //#include "../../simulatorCore/src/robots/blinkyBlocks/blinkyBlocksGlBlock.h"
 using namespace std;
 
@@ -33,6 +33,8 @@ static void quit();
 static void updateSubWindows();
 static void drawNextButtonSquare();
 static void drawTimeline();
+static void drawCursor();
+static void mouseFuncTW(int button,int state,int x,int y);
 /*********************************************************/
 /* global variables                                      */
 static GLfloat red[4] = { 1.0f, 0.0f, 0.0f, 1.0f}; // red color material
@@ -59,17 +61,19 @@ bool toolsWinOpened=true;
 
 //Cottes pour la fenetre de commandes en fonction des dimensions
 float offsetX = 0.01f, offsetY = 0.1f;
-float timelineHeight = 0.5f, timelineOffset = 0.02f;
+float timelineHeight = 0.5f, timelineOffset = 0.05f;
 float toolsSeparationY = 0.05f;
 float toolsButtonSize = 0.3f;
 float toolbarOffsetX = 0.30f, buttonSeparation = 0.005f;
 float recButtonOffset = 0.1f;
 
-ObjLoader::ObjLoader *objBlock = nullptr;
+float timelineX = width*(1-2*offsetX), timelineY = timelineHeight*toolHeight;
+//ObjLoader::ObjLoader *objBlock = nullptr;
+
 //Variables de test
 //durée en secondes
-float duree = 4900.0f;
-
+float duree = 25.0f;
+float currentTime = 5.374f;
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
 
@@ -110,14 +114,15 @@ int main(int argc, char** argv) {
 
     initGL();
 
-    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
-                                        "smartBlockSimple.obj");
+    //objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
+    //                                    "smartBlockSimple.obj");
 
 
     toolsWindow = glutCreateSubWindow(topWindow, 0,height+separ,width, toolHeight);
     glutDisplayFunc(drawFuncTW);
     glutReshapeFunc(reshapeFuncTW);
     glutKeyboardFunc(kbdFunc);
+    glutMouseFunc(mouseFuncTW);
     initGL();
 
 //	glutFullScreen();
@@ -208,7 +213,7 @@ static void drawFuncMW(void) {
         glPushMatrix();
             glRotatef(90.0,1.0f,0.0f,0.0f);
             //glutSolidTeapot(1.0f);
-            objBlock->glDraw();
+            //objBlock->glDraw();
 
             //glutSolidCone(0.5,2.0,10,1);
         glPopMatrix();
@@ -221,7 +226,7 @@ static void drawFuncMW(void) {
 void drawString(int ix,int iy,char* str) {
     glRasterPos2i(ix,iy);
     while (*str) {
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *str);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *str);
         str++;
     }
 }
@@ -393,7 +398,7 @@ void drawTimeline()
 {
     glPushMatrix();
     glTranslatef(offsetX*width,toolHeight*(1-offsetY-timelineHeight),0);
-    float timelineX = width*(1-2*offsetX), timelineY = timelineHeight*toolHeight;
+    timelineX = width*(1-2*offsetX);
     glColor3fv(white);
     glBegin(GL_QUADS);
     glVertex2i(0,timelineY);
@@ -432,7 +437,7 @@ void drawTimeline()
         {
             stepHeight = 1.0f;
             sprintf(str,"%2.1f",i*stepDuration) ;
-            drawString(xPosition-15,0.05*timelineY,str);
+            drawString(xPosition-18,0.05*timelineY,str);
         }
         else
         {
@@ -448,7 +453,47 @@ void drawTimeline()
 
 
     cout << "DEBUG : "<<stepDuration<<" SUITE :"<<stepCount<<endl;
+
+    //drawCursor();
+    glTranslatef(timelineOffset*timelineX+timelineX*(1-2*timelineOffset)*currentTime/duree,0.65*timelineY,0);
+    glBegin(GL_TRIANGLES);
+    glVertex2i(-9*3-10, 9);
+    glVertex2i(-9*3, 0);
+    glVertex2i(-9*3, 18);
+
+    glVertex2i(9*3+10, 9);
+    glVertex2i(9*3, 0);
+    glVertex2i(9*3, 18);
+
+    glVertex2i(9, 0);
+    glVertex2i(-9, 0);
+    glVertex2i(0, -10);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2i(-9*3, 1);
+    glVertex2i(9*3, 1);
+    glVertex2i(-9*3, 17);
+    glVertex2i(9*3, 17);
+    glEnd();
+
+    glColor3fv(white);
+    glBegin(GL_QUADS);
+    {
+        glVertex2i(-9*3+1, 2);
+        glVertex2i(9*3-1, 2);
+        glVertex2i(9*3-1, 16);
+        glVertex2i(-9*3+1, 16);
+    }
+    glEnd();
+    glColor3fv(black);
+    sprintf(str,"%2.1f",currentTime) ;
+    drawString(-12,2,str);
     glPopMatrix();
+}
+
+void drawCursor()
+{
+
 }
 void drawNextButtonSquare()
 {
@@ -618,6 +663,20 @@ static void motionFuncMW(int x,int y) {
     mouseX0=x;
     mouseY0=y;
     glutPostWindowRedisplay(mainWindow);
+}
+static void mouseFuncTW(int button,int state,int x,int y)
+{
+
+    if(x>=offsetX*width + timelineX*timelineOffset && x<= width*(1-offsetX)-timelineX*timelineOffset)
+    {
+        if(y>=offsetY*toolHeight && y<= toolHeight*(timelineHeight+offsetY))
+        {
+
+            currentTime = (x - timelineOffset*timelineX-offsetX*width)*duree/
+                    (width*(1-2*offsetX)-2*timelineX*timelineOffset);
+        }
+    }
+    drawFuncTW();
 }
 
 /*********************************************************/
