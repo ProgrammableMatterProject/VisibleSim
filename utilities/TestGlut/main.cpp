@@ -7,6 +7,7 @@
 #endif
 #include <iostream>
 #include <string>
+//#include <GL/glew.h>
 //#include <GL/freeglut.h>
 #include <cmath>
 #include "../../simulatorCore/src/gui/objLoader.h"
@@ -51,6 +52,7 @@ GLint topWindow;
 GLint mainWindow;
 GLint toolsWindow;
 bool toolsWinOpened=true;
+
 //ObjLoader::ObjLoader objectLoader = new ObjLoader();
 //BlinkyBlocks::BlinkyBlocksGlBlock block = new BlinkyBlocks::BlinkyBlocksGlBlock();
 
@@ -63,9 +65,10 @@ float toolsButtonSize = 0.3f;
 float toolbarOffsetX = 0.30f, buttonSeparation = 0.005f;
 float recButtonOffset = 0.1f;
 
+ObjLoader::ObjLoader *objBlock = nullptr;
 //Variables de test
 //durée en secondes
-float duree = 50.0f;
+float duree = 4900.0f;
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
@@ -106,6 +109,10 @@ int main(int argc, char** argv) {
     //glutPassiveMotionFunc(passiveMotionFunc);
 
     initGL();
+
+    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
+                                        "smartBlockSimple.obj");
+
 
     toolsWindow = glutCreateSubWindow(topWindow, 0,height+separ,width, toolHeight);
     glutDisplayFunc(drawFuncTW);
@@ -201,7 +208,7 @@ static void drawFuncMW(void) {
         glPushMatrix();
             glRotatef(90.0,1.0f,0.0f,0.0f);
             //glutSolidTeapot(1.0f);
-//            objectLoader.glDraw();
+            objBlock->glDraw();
 
             //glutSolidCone(0.5,2.0,10,1);
         glPopMatrix();
@@ -400,27 +407,46 @@ void drawTimeline()
     float power = floor(log10(duree));
     float firstDigit = duree/(pow(10,power));
     float stepDuration;
+    char str[50];
+    float stepHeight;
+
     if(firstDigit>=5)
     {
-        stepDuration = pow(10,power-1);
+        stepDuration = pow(10,power-1)*pow(2,ceil(log2(1024.0f/width)));
     }
-    else if (firstDigit>2)
+    else if (firstDigit>=2)
     {
-        stepDuration = 5*pow(10,power-2);
+        stepDuration = 5*pow(10,power-2)*pow(2,ceil(log2(1024.0f/width)));
     }
     else
     {
-        stepDuration = 2*pow(10,power-2);
+        stepDuration = 2*pow(10,power-2)*pow(2,ceil(log2(1024.0f/width)));
     }
     int stepCount = duree/stepDuration;
     glColor3fv(black);
-    glBegin(GL_LINES);
+
     for(float i=0;i<=stepCount;i++)
     {
-        glVertex2i(timelineOffset*timelineX+i/stepCount*(timelineX*(1-2*timelineOffset)),0.7*timelineY);
-        glVertex2i(timelineOffset*timelineX+i/stepCount*(timelineX*(1-2*timelineOffset)),0.3*timelineY);
+        int xPosition = timelineOffset*timelineX+i/stepCount*(timelineX*(1-2*timelineOffset));
+        if((int)i%10==0)
+        {
+            stepHeight = 1.0f;
+            sprintf(str,"%2.1f",i*stepDuration) ;
+            drawString(xPosition-15,0.05*timelineY,str);
+        }
+        else
+        {
+            stepHeight = 0.6f;
+        }
+
+        glBegin(GL_LINES);
+        glVertex2i(xPosition,stepHeight*timelineY);
+        glVertex2i(xPosition,0.4*timelineY);
+        glEnd();
+
     }
-    glEnd();
+
+
     cout << "DEBUG : "<<stepDuration<<" SUITE :"<<stepCount<<endl;
     glPopMatrix();
 }

@@ -28,12 +28,16 @@ IF(LINUX)
     SET(GLUT_INCLUDE_DIR /usr/include)
     SET(GLUT_glut_LIBRARY /usr/lib/x86_64-linux-gnu/libglut.so)
 
+    set(LIBSMARTBLOCKS_DIRS  ./cmake-build-debug)
+    SET(LIBSMARTBLOCKS libSmartBlocks.so)
     # GLUT
     #########################################################
     # FIND GLUT
     #########################################################
     find_package(GLUT REQUIRED)
+    find_package(GLEW REQUIRED)
     link_directories(${GLUT_LIBRARY_DIRS})
+    #include_directories(${GLUT_INCLUDE_DIRS})
     add_definitions(${GLUT_DEFINITIONS})
     if(NOT GLUT_FOUND)
         message(ERROR " GLUT not found!")
@@ -42,11 +46,21 @@ IF(LINUX)
     # OpenGL
     find_package(OpenGL REQUIRED)
 
-    include_directories( ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} )
+    include_directories( ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${LIBSMARTBLOCKS_DIRS} ${GLEW_INCLUDE_DIRS})
 ENDIF()
 
 add_definitions(${FREEGLUT_DEFINITIONS} ${OPENGL_DEFINITIONS})
 
-add_executable(${PROJECT_NAME} main.cpp ../../simulatorCore/src/utils/color.cpp)
-target_link_libraries(${PROJECT_NAME} ${FREEGLUT_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} )
+add_executable(${PROJECT_NAME} main.cpp ../../simulatorCore/src/utils/color.cpp
+        ../../simulatorCore/src/gui/objLoader.cpp ../../simulatorCore/src/math/vector3D.cpp
+        ../../simulatorCore/src/gui/shaders.cpp
+        ../../simulatorCore/src/utils/trace.cpp
+        ../../simulatorCore/src/math/matrix44.cpp
+        ../../simulatorCore/src/gui/camera.cpp
+        ../../simulatorCore/src/gui/interface.cpp
+        ../../simulatorCore/src/replay/replayExporter.cpp
+        ../../simulatorCore/src/grid/cell3DPosition.cpp
+        ../../simulatorCore/src/events/scheduler.cpp)
+#add_executable(${PROJECT_NAME} main.cpp )
+target_link_libraries(${PROJECT_NAME} ${FREEGLUT_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES})
 

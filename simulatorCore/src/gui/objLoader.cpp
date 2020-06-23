@@ -208,7 +208,7 @@ namespace ObjLoader {
 #endif
 */
                                     if (numTex[0] == 0 || numTex[1] == 0 || numTex[2] == 0) {
-                                        ERRPUT << "No texture coordinates for this object : " << objCourant->nomOriginal
+                                       ERRPUT << "No texture coordinates for this object : " << objCourant->nomOriginal
                                                << endl;
                                         system("PAUSE");
                                     }
