@@ -72,7 +72,7 @@ public:
     void parseInitialConfiguration();
 
     /**
-     * Read KeyFrame index
+     * [deprecated] Read KeyFrame index
      */
     void parseKeyframeIndex();
 

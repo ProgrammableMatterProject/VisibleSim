@@ -7,10 +7,10 @@
 #endif
 #include <iostream>
 #include <string>
-#include <GL/freeglut.h>
+//#include <GL/freeglut.h>
 #include <cmath>
-#include "objLoader.h"
-//#include "blinkyBlocksGlBlock.h"
+#include "../../simulatorCore/src/gui/objLoader.h"
+//#include "../../simulatorCore/src/robots/blinkyBlocks/blinkyBlocksGlBlock.h"
 using namespace std;
 
 
@@ -30,10 +30,12 @@ static void motionFuncMW(int x,int y);
 static void idleFunc();
 static void quit();
 static void updateSubWindows();
-
+static void drawNextButtonSquare();
+static void drawTimeline();
 /*********************************************************/
 /* global variables                                      */
 static GLfloat red[4] = { 1.0f, 0.0f, 0.0f, 1.0f}; // red color material
+static GLfloat white[4] = { 1.0f, 1.0f, 1.0f, 1.0f}; // White color material
 static GLfloat green[4] = { 0.0f, 1.0f, 0.0f, 1.0f}; // green color material
 static GLfloat blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f}; // blue color material
 static GLfloat lightgrey[4] = { 0.8f, 0.8f, 0.8f, 1.0f}; // lightgrey color material
@@ -50,7 +52,20 @@ GLint mainWindow;
 GLint toolsWindow;
 bool toolsWinOpened=true;
 //ObjLoader::ObjLoader objectLoader = new ObjLoader();
-//BlinkyBlocks::BlinkyBlocksGlBlock block = new BlinkyBlocks::BlinkyBlocksGlBlock(1);
+//BlinkyBlocks::BlinkyBlocksGlBlock block = new BlinkyBlocks::BlinkyBlocksGlBlock();
+
+
+//Cottes pour la fenetre de commandes en fonction des dimensions
+float offsetX = 0.01f, offsetY = 0.1f;
+float timelineHeight = 0.5f, timelineOffset = 0.02f;
+float toolsSeparationY = 0.05f;
+float toolsButtonSize = 0.3f;
+float toolbarOffsetX = 0.30f, buttonSeparation = 0.005f;
+float recButtonOffset = 0.1f;
+
+//Variables de test
+//durée en secondes
+float duree = 50.0f;
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
@@ -216,22 +231,218 @@ static void drawFuncTW(void) {
     glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
-    glColor3fv(red);
 
-    sprintf(str,"angle = %6.1f",rotationAngle);
-    drawString(40,20,str);
+    //Drawing timeline
+    drawTimeline();
 
-    glBegin(GL_LINES);
-    glVertex2i(0,0);
-    glVertex2i(width,toolHeight);
-    glVertex2i(0,toolHeight);
-    glVertex2i(width,0);
+    //Drawing buttons
+    //TODO adater à la fenetre mieux
+    glPushMatrix();
+    glTranslatef(width*offsetX,toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),0);
+    glTranslatef(width*toolbarOffsetX-toolHeight*toolsButtonSize,0,0);
+
+    //Return to beginning button
+    drawNextButtonSquare();
+    glColor3fv(black);
+    glBegin(GL_QUADS);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
     glEnd();
+    glBegin(GL_TRIANGLES);
+    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glEnd();
+
+    //Go Back button
+    drawNextButtonSquare();
+    glColor3fv(black);
+    glBegin(GL_QUADS);
+    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glEnd();
+    glBegin(GL_TRIANGLES);
+    glVertex2i(toolHeight*0.2f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
+    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glEnd();
+
+    //Pause button
+    drawNextButtonSquare();
+    glColor3fv(black);
+    glBegin(GL_QUADS);
+    glVertex2i(toolHeight*0.35f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.35f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.45f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.45f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+
+    glVertex2i(toolHeight*0.55f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.55f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.65f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.65f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glEnd();
+
+    //Play button
+    drawNextButtonSquare();
+    glColor3fv(black);
+    glBegin(GL_POLYGON);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.8f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
+    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glEnd();
+
+    //Go fourth button
+    drawNextButtonSquare();
+    glColor3fv(black);
+    glBegin(GL_QUADS);
+    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glEnd();
+    glBegin(GL_TRIANGLES);
+    glVertex2i(toolHeight*0.8f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
+    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glEnd();
+
+    //Go to the end button
+    drawNextButtonSquare();
+    glColor3fv(black);
+    glBegin(GL_QUADS);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glEnd();
+    glBegin(GL_TRIANGLES);
+    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glEnd();
+
+    //TODO adater à la fenetre mieux
+    glTranslatef(width*recButtonOffset,0,0);
+    //Start sequence button
+    drawNextButtonSquare();
+    glColor3fv(black);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.7f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.7f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.3f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.3f*toolsButtonSize);
+    glEnd();
+
+    //rec button
+    drawNextButtonSquare();
+    glBegin(GL_TRIANGLE_STRIP);
+
+    glColor3fv(red);
+    for(int i=0;i<=360;i++)
+    {
+        glVertex2i(toolHeight*0.5f*toolsButtonSize+toolHeight*0.35f*toolsButtonSize*cos(i*6.28/360),
+                   toolHeight*0.5f*toolsButtonSize+toolHeight*0.35f*toolsButtonSize*sin(i*6.28/360));
+        glVertex2i(toolHeight*0.5f*toolsButtonSize+toolHeight*0.35f*toolsButtonSize*cos((i+1)*6.28/360),
+                   toolHeight*0.5f*toolsButtonSize+toolHeight*0.35f*toolsButtonSize*sin((i+1)*6.28/360));
+        glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
+    }
+    glEnd();
+
+    //End sequence button
+    drawNextButtonSquare();
+    glColor3fv(black);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.7f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
+    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.7f*toolsButtonSize);
+    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.3f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
+    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.3f*toolsButtonSize);
+    glEnd();
+    glPopMatrix();
+
+
+//    sprintf(str,"angle = %6.1f",rotationAngle);
+//    drawString(40,20,str);
 
     glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
 }
 
+void drawTimeline()
+{
+    glPushMatrix();
+    glTranslatef(offsetX*width,toolHeight*(1-offsetY-timelineHeight),0);
+    float timelineX = width*(1-2*offsetX), timelineY = timelineHeight*toolHeight;
+    glColor3fv(white);
+    glBegin(GL_QUADS);
+    glVertex2i(0,timelineY);
+    glVertex2i(timelineX,timelineY);
+    glVertex2i(timelineX,0);
+    glVertex2i(0,0);
+    glEnd();
+
+    //calcul de la timeline
+
+    float power = floor(log10(duree));
+    float firstDigit = duree/(pow(10,power));
+    float stepDuration;
+    if(firstDigit>=5)
+    {
+        stepDuration = pow(10,power-1);
+    }
+    else if (firstDigit>2)
+    {
+        stepDuration = 5*pow(10,power-2);
+    }
+    else
+    {
+        stepDuration = 2*pow(10,power-2);
+    }
+    int stepCount = duree/stepDuration;
+    glColor3fv(black);
+    glBegin(GL_LINES);
+    for(float i=0;i<=stepCount;i++)
+    {
+        glVertex2i(timelineOffset*timelineX+i/stepCount*(timelineX*(1-2*timelineOffset)),0.7*timelineY);
+        glVertex2i(timelineOffset*timelineX+i/stepCount*(timelineX*(1-2*timelineOffset)),0.3*timelineY);
+    }
+    glEnd();
+    cout << "DEBUG : "<<stepDuration<<" SUITE :"<<stepCount<<endl;
+    glPopMatrix();
+}
+void drawNextButtonSquare()
+{
+    glTranslatef(width*buttonSeparation+toolHeight*toolsButtonSize,0,0);
+    glColor3fv(black);
+    glBegin(GL_QUADS);
+    glVertex2i(0,0);
+    glVertex2i(0,toolHeight*toolsButtonSize);
+    glVertex2i(toolHeight*toolsButtonSize,toolHeight*toolsButtonSize);
+    glVertex2i(toolHeight*toolsButtonSize,0);
+    glEnd();
+
+    glColor3fv(white);
+    glBegin(GL_QUADS);
+    glVertex2i(toolHeight*toolsButtonSize*0.1f,toolHeight*toolsButtonSize*0.1f);
+    glVertex2i(toolHeight*toolsButtonSize*0.1f,toolHeight*toolsButtonSize*(1-0.1f));
+    glVertex2i(toolHeight*toolsButtonSize*(1-0.1f),toolHeight*toolsButtonSize*(1-0.1f));
+    glVertex2i(toolHeight*toolsButtonSize*(1-0.1f),toolHeight*toolsButtonSize*0.1f);
+    glEnd();
+}
 /*********************************************************/
 /* Window size update function                           */
 /* width: width of the drawing area                      */
