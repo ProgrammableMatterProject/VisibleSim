@@ -7,8 +7,6 @@
 #endif
 #include <iostream>
 #include <string>
-//#include <GL/glew.h>
-#include <GL/freeglut.h>
 #include <cmath>
 #include "../../simulatorCore/src/gui/objLoader.h"
 using namespace std;
@@ -67,7 +65,7 @@ float toolbarOffsetX = 0.30f, buttonSeparation = 0.005f;
 float recButtonOffset = 0.1f;
 
 float timelineX = width*(1-2*offsetX), timelineY = timelineHeight*toolHeight;
-//ObjLoader::ObjLoader *objBlock = nullptr;
+ObjLoader::ObjLoader *objBlock = nullptr;
 
 //Variables de test
 //durée en secondes
@@ -121,9 +119,7 @@ int main(int argc, char** argv) {
 
     initGL();
 
-    //objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
-    //                                    "smartBlockSimple.obj");
-
+    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures","smartBlockSimple.obj");
 
     toolsWindow = glutCreateSubWindow(topWindow, 0,height+separ,width, toolHeight);
     glutDisplayFunc(drawFuncTW);
@@ -220,7 +216,7 @@ static void drawFuncMW(void) {
         glPushMatrix();
             glRotatef(90.0,1.0f,0.0f,0.0f);
             //glutSolidTeapot(1.0f);
-            //objBlock->glDraw();
+            objBlock->glDraw();
 
             //glutSolidCone(0.5,2.0,10,1);
         glPopMatrix();
