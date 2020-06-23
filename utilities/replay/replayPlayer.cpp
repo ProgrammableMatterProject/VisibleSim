@@ -32,7 +32,14 @@ ReplayPlayer::ReplayPlayer(int argc, char *argv[]):cmdLine(argc,argv,NULL) {
     parseHeader();
     parseKeyframeIndex();
     //parseInitialConfiguration();
+
+    world = new SmartBlocks::SmartBlocksWorld(Cell3DPosition(gridSizeX,gridSizeY,gridSizeZ),Vector3D(0, 0, 0),argc,argv);
+    parseKeyframe(findKeyframeWithTime(0));//0 seconds
     parseKeyframe(findKeyframeWithTime(10000000));//10 seconds
+
+    string test;
+    cin >> test;
+    //glutMainLoop();
     exportFile->close();
 }
 
@@ -89,7 +96,7 @@ void ReplayPlayer::parseHeader()
             strRobotType = "SmartBlocks";
             break;
         default:
-            strRobotType = "Erreur";
+            strRobotType = "Error";
     }
 
     cout << "Robot Type : "<< strRobotType << endl;
