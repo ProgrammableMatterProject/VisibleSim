@@ -12,12 +12,11 @@
 #include <stdexcept>
 #include <bitset>
 
-#include "base/buildingBlock.h"
-#include "robots/datoms/datomsBlockCode.h"
-#include "robots/datoms/datomsGlBlock.h"
-#include "grid/cell3DPosition.h"
-//#include "robots/datoms/datomsCapabilities.h"
-#include "utils/utils.h"
+#include "../../base/buildingBlock.h"
+#include "datomsBlockCode.h"
+#include "datomsGlBlock.h"
+#include "../../grid/cell3DPosition.h"
+#include "../../utils/utils.h"
 
 using namespace BaseSimulator::utils;
 

@@ -13,9 +13,9 @@
 
 #include <utility>
 #include <vector>
-#include "robots/nodes2D/nodes2DWorld.h"
-#include "grid/cell3DPosition.h"
-#include "grid/lattice.h"
+#include "nodes2DWorld.h"
+#include "../../grid/cell3DPosition.h"
+#include "../../grid/lattice.h"
 
 using namespace std;
 

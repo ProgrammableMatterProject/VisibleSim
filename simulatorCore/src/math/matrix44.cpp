@@ -5,7 +5,7 @@
  *
  */
 
-#include "math/matrix44.h"
+#include "matrix44.h"
 
 Matrix::Matrix(const float *tab)
 { int i=16;

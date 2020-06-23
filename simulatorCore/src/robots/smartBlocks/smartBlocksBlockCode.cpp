@@ -6,8 +6,8 @@
  */
 
 #include <iostream>
-#include "robots/smartBlocks/smartBlocksBlockCode.h"
-#include "utils/trace.h"
+#include "smartBlocksBlockCode.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

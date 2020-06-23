@@ -8,10 +8,10 @@
 #ifndef OKTEENSIMULATOR_H_
 #define OKTEENSIMULATOR_H_
 
-#include "base/simulator.h"
-#include "robots/okteen/okteenBlockCode.h"
-#include "robots/okteen/okteenWorld.h"
-#include "utils/trace.h"
+#include "../../base/simulator.h"
+#include "okteenBlockCode.h"
+#include "okteenWorld.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

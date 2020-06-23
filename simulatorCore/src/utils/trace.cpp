@@ -5,9 +5,9 @@
  *      Author: Andre
  */
 
-#include "utils/trace.h"
-#include "events/scheduler.h"
-#include "replay/replayExporter.h"
+#include "trace.h"
+#include "../events/scheduler.h"
+#include "../replay/replayExporter.h"
 
 std::ofstream log_file{};
 

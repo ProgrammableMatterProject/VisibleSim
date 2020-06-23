@@ -11,10 +11,10 @@
 #ifndef OKTEENMOTIONSEVENTS_H_
 #define OKTEENMOTIONSEVENTS_H_
 
-#include "math/matrix44.h"
-#include "robots/okteen/okteenBlock.h"
-#include "events/events.h"
-#include "grid/lattice.h"
+#include "../../math/matrix44.h"
+#include "okteenBlock.h"
+#include "../../events/events.h"
+#include "../../grid/lattice.h"
 
 const int nbRotationSteps = 20;
 

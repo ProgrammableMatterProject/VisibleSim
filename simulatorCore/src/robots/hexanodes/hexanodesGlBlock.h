@@ -12,10 +12,10 @@
 #define HEXANODESGLBLOCK_H_
 
 #include <string>
-#include "gui/objLoader.h"
+#include "../../gui/objLoader.h"
 
-#include "math/matrix44.h"
-#include "base/glBlock.h"
+#include "../../math/matrix44.h"
+#include "../../base/glBlock.h"
 
 namespace Hexanodes {
 class HexanodesGlBlock:public GlBlock {

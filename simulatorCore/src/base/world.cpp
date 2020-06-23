@@ -5,12 +5,12 @@
  *      Author: dom
  */
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "world.h"
 #include "../utils/trace.h"
 #include "../gui/openglViewer.h"
-#include "replay/replayExporter.h"
+#include "../replay/replayExporter.h"
 
 using namespace std;
 

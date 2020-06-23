@@ -5,11 +5,9 @@
  * @date 22/07/2016
  */
 
-#include "stats/statsCollector.h"
-
 #include <iomanip>
-
-#include "base/world.h"
+#include "statsCollector.h"
+#include "../base/world.h"
 
 using namespace std;
 

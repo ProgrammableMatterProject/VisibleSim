@@ -1,9 +1,9 @@
 #include <map>
 #include <climits>
 
-#include "stats/configStat.h"
-#include "events/scheduler.h"
-#include "comm/network.h"
+#include "configStat.h"
+#include "../events/scheduler.h"
+#include "../comm/network.h"
 
 using namespace std;
 using namespace BaseSimulator;

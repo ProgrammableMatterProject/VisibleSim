@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cassert>
 
-#include "robots/catoms2D/catoms2DMotionEngine.h"
+#include "catoms2DMotionEngine.h"
 
 //#define SPEED_DEBUG
 

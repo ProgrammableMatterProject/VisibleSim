@@ -37,13 +37,12 @@
 #include <cfloat>
 
 #define TIXML_USE_STL	1
-#include "deps/TinyXML/tinyxml.h"
-
-#include "utils/color.h"
-#include "grid/cell3DPosition.h"
-#include "csg/csg.h"
-#include "math/vector3D.h"
-#include "utils/exceptions.h"
+#include "cell3DPosition.h"
+#include "../deps/TinyXML/tinyxml.h"
+#include "../utils/color.h"
+#include "../utils/exceptions.h"
+#include "../csg/csg.h"
+#include "../math/vector3D.h"
 
 using namespace std;
 

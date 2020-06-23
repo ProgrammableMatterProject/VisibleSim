@@ -1,6 +1,6 @@
-#include "clock/clock.h"
-#include "events/scheduler.h"
-#include "base/buildingBlock.h"
+#include "../clock/clock.h"
+#include "../events/scheduler.h"
+#include "../base/buildingBlock.h"
 
 namespace BaseSimulator {
 

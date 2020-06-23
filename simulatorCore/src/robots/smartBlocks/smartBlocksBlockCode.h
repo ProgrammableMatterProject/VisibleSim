@@ -8,10 +8,10 @@
 #ifndef SMARTBLOCKSBLOCKCODE_H_
 #define SMARTBLOCKSBLOCKCODE_H_
 
-#include "base/blockCode.h"
-#include "robots/smartBlocks/smartBlocksBlock.h"
-#include "comm/network.h"
-#include "events/events.h"
+#include "../../base/blockCode.h"
+#include "smartBlocksBlock.h"
+#include "../../comm/network.h"
+#include "../../events/events.h"
 
 using namespace BaseSimulator;
 

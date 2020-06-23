@@ -1,7 +1,7 @@
-#include "robots/catoms3D/catoms3DMotionEngine.h"
-
-#include "utils/utils.h"
 #include <vector>
+#include "../../utils/utils.h"
+#include "catoms3DMotionEngine.h"
+
 
 const Catoms3DMotionRulesLink*
 Catoms3DMotionEngine::findConnectorLink(const Catoms3DBlock *module,

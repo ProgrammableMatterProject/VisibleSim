@@ -1,6 +1,5 @@
-#include "utils/color.h"
-
-#include "utils/exceptions.h" //@TODO BP REMOVE
+#include "color.h"
+#include "exceptions.h" //@TODO BP REMOVE
 
 Color::Color() {
     memset(rgba,0,4*sizeof(GLfloat));

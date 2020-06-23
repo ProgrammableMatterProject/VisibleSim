@@ -11,9 +11,9 @@
 #ifndef HEXANODESMOTIONEVENTS_H_
 #define HEXANODESMOTIONEVENTS_H_
 
-#include "base/buildingBlock.h"
-#include "events/events.h"
-#include "grid/lattice.h"
+#include "../../base/buildingBlock.h"
+#include "../../events/events.h"
+#include "../../grid/lattice.h"
 
 namespace BaseSimulator {
 

@@ -8,11 +8,11 @@
 #include <iostream>
 #include <sstream>
 
-#include "events/scheduler.h"
-#include "comm/network.h"
-#include "utils/trace.h"
-#include "stats/statsIndividual.h"
-#include "utils/utils.h"
+#include "../events/scheduler.h"
+#include "../comm/network.h"
+#include "../utils/trace.h"
+#include "../stats/statsIndividual.h"
+#include "../utils/utils.h"
 
 //#define TRANSMISSION_TIME_DEBUG
 

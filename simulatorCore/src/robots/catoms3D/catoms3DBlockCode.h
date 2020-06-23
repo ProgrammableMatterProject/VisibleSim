@@ -10,11 +10,10 @@
 
 #include <ostream>
 
-#include "base/blockCode.h"
-#include "robots/catoms3D/catoms3DBlock.h"
-#include "comm/network.h"
-#include "events/scheduler.h"
-/* #include "robots/catoms3D/catoms3DMotionRules.h" */
+#include "../../base/blockCode.h"
+#include "catoms3DBlock.h"
+#include "../../comm/network.h"
+#include "../../events/scheduler.h"
 
 using namespace BaseSimulator;
 

@@ -13,9 +13,9 @@
 #include <vector>
 #include <string>
 
-#include "clock/clock.h"
-#include "clock/clockNoise.h"
-#include "utils/random.h"
+#include "clock.h"
+#include "clockNoise.h"
+#include "../utils/random.h"
 
 using namespace std;
 

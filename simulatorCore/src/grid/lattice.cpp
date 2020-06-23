@@ -1,8 +1,8 @@
 #include <climits>
 
-#include "grid/lattice.h"
-#include "utils/utils.h"
-#include "utils/trace.h"
+#include "lattice.h"
+#include "../utils/utils.h"
+#include "../utils/trace.h"
 
 using namespace BaseSimulator;
 using namespace utils;

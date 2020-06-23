@@ -23,8 +23,9 @@ class GlBlock {
 public :
     bool isHighlighted;
     GLfloat position[3];
-    GLfloat color[4];
+    GLubyte color[3];
     bID blockId;
+    bool visible;
 
     GlBlock(bID id);
     GlBlock(bID id,const Vector3D &pos, const Vector3D &col);

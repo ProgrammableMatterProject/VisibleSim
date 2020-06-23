@@ -7,11 +7,11 @@
 
 #include <iostream>
 
-#include "robots/slidingCubes/slidingCubesBlock.h"
-#include "robots/slidingCubes/slidingCubesWorld.h"
-#include "robots/slidingCubes/slidingCubesSimulator.h"
-#include "grid/lattice.h"
-#include "utils/trace.h"
+#include "slidingCubesBlock.h"
+#include "slidingCubesWorld.h"
+#include "slidingCubesSimulator.h"
+#include "../../grid/lattice.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 
@@ -26,24 +26,6 @@ SlidingCubesBlock::SlidingCubesBlock(int bId, BlockCodeBuilder bcb)
 
 SlidingCubesBlock::~SlidingCubesBlock() {
     OUTPUT << "SlidingCubesBlock destructor " << blockId << endl;
-}
-
-void SlidingCubesBlock::setPrevNext(int prev,int next) {
-    getWorld()->updateGlData(this,prev,next);
-}
-
-void SlidingCubesBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next) {
-    int prevId=0,nextId=0;
-    if (prev) {
-        SlidingCubesBlock*rb = (SlidingCubesBlock*)(prev->hostBlock);
-        prevId = rb->blockId;
-    }
-    if (next) {
-        SlidingCubesBlock*rb = (SlidingCubesBlock*)(next->hostBlock);
-        nextId = rb->blockId;
-    }
-    //cout << (prev?prev->hostBlock->blockId:-1) << "," << (next?next->hostBlock->blockId:-1) << endl;
-    getWorld()->updateGlData(this,prevId,nextId);
 }
 
 void SlidingCubesBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {

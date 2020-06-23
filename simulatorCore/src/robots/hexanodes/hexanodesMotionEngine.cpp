@@ -1,4 +1,4 @@
-#include "robots/hexanodes/hexanodesMotionEngine.h"
+#include "hexanodesMotionEngine.h"
 
 namespace Hexanodes {
 

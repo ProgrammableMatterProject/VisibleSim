@@ -1,18 +1,16 @@
-#include "base/glBlock.h"
-#include "base/world.h"
+#include "glBlock.h"
+#include "world.h"
 
 #include <sstream>
-
-#include "gui/objLoader.h"
 
 GlBlock::GlBlock(bID id):blockId(id) {
     position[0] = 0.0;
     position[1] = 0.0;
     position[2] = 0.0;
-    color[0] = 0.5;
-    color[1] = 0.5;
-    color[2] = 0.5;
-    color[3] = 1.0;
+    color[0] = 128;
+    color[1] = 128;
+    color[2] = 128;
+    visible = true;
     isHighlighted = false;
 }
 
@@ -20,10 +18,10 @@ GlBlock::GlBlock(bID id,const Vector3D &pos, const Vector3D &col) : blockId(id) 
     position[0] = pos[0];
     position[1] = pos[1];
     position[2] = pos[2];
-    color[0] = col[0];
-    color[1] = col[1];
-    color[2] = col[2];
-    color[3] = 1.0;
+    color[0] = GLubyte(col[0]*255.0);
+    color[1] = GLubyte(col[1]*255.0);
+    color[2] = GLubyte(col[2]*255.0);
+    visible = true;
     isHighlighted = false;
 }
 
@@ -38,25 +36,23 @@ void GlBlock::setPosition(const Vector3D &pos) {
 }
 
 void GlBlock::setColor(const Vector3D &col) {
-    color[0] = GLfloat(col[0]);
-    color[1] = GLfloat(col[1]);
-    color[2] = GLfloat(col[2]);
-    color[3] = 1.0;
+    color[0] = GLubyte(col[0]*255.0);
+    color[1] = GLubyte(col[1]*255.0);
+    color[2] = GLubyte(col[2]*255.0);
 }
 
 void GlBlock::setColor(const Color &col) {
-    color[0] = col[0];
-    color[1] = col[1];
-    color[2] = col[2];
-    color[3] = 1.0;
+    color[0] = GLubyte(col[0]*255.0);
+    color[1] = GLubyte(col[1]*255.0);
+    color[2] = GLubyte(col[2]*255.0);
 }
 
 bool GlBlock::isVisible() {
-    return color[3];
+    return visible;
 }
 
-void GlBlock::setVisible(bool visible) {
-    color[3] = visible;
+void GlBlock::setVisible(bool v) {
+    visible=v;
 }
 
 void GlBlock::toggleHighlight() {
@@ -86,14 +82,14 @@ string GlBlock::getPopupInfo() {
 void GlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int n) {
     glPushMatrix();
     glTranslatef(position[0],position[1],position[2]);
-			ptrObj->glDrawId(n);
+		ptrObj->glDrawId(n);
     glPopMatrix();
 }
 
 void GlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
     glPushMatrix();
     glTranslatef(position[0],position[1],position[2]);
-    ptrObj->glDrawIdByMaterial(n);
+        ptrObj->glDrawIdByMaterial(n);
     glPopMatrix();
 }
 

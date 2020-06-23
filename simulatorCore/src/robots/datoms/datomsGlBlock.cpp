@@ -4,7 +4,7 @@
  * \date 28/01/2018
  * \author Benoît Piranda
  */
-#include "robots/datoms/datomsGlBlock.h"
+#include "datomsGlBlock.h"
 
 namespace Datoms {
 

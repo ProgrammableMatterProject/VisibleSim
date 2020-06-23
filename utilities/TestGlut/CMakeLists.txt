@@ -48,4 +48,4 @@ ENDIF()
 add_definitions(${FREEGLUT_DEFINITIONS} ${OPENGL_DEFINITIONS})
 
 add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries(${PROJECT_NAME} ${FREEGLUT_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} )
+target_link_libraries( ${FREEGLUT_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} )

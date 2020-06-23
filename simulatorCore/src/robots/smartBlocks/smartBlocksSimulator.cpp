@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include "robots/smartBlocks/smartBlocksSimulator.h"
+#include "smartBlocksSimulator.h"
 
 using namespace std;
 

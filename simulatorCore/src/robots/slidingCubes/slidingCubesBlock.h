@@ -10,10 +10,10 @@
 
 #include <stdexcept>
 
-#include "base/buildingBlock.h"
-#include "robots/slidingCubes/slidingCubesBlockCode.h"
-#include "robots/slidingCubes/slidingCubesGlBlock.h"
-#include "grid/lattice.h"
+#include "../../base/buildingBlock.h"
+#include "slidingCubesBlockCode.h"
+#include "slidingCubesGlBlock.h"
+#include "../../grid/lattice.h"
 
 namespace SlidingCubes {
 
@@ -27,8 +27,6 @@ public:
 
     inline SlidingCubesGlBlock* getGlBlock() const override { return (SlidingCubesGlBlock*)ptrGlBlock; };
     inline void setGlBlock(SlidingCubesGlBlock*ptr) { ptrGlBlock=ptr;};
-    void setPrevNext(int,int);
-    void setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next);
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) const;
     inline P2PNetworkInterface *getInterface(SCLattice::Direction d) const {
         return P2PNetworkInterfaces[d];

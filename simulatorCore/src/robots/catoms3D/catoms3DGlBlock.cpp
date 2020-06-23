@@ -1,6 +1,6 @@
-#include "robots/catoms3D/catoms3DGlBlock.h"
-#include "robots/catoms3D/catoms3DBlock.h"
-#include "robots/catoms3D/catoms3DWorld.h"
+#include "catoms3DGlBlock.h"
+#include "catoms3DBlock.h"
+#include "catoms3DWorld.h"
 
 namespace Catoms3D {
 

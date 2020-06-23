@@ -8,10 +8,10 @@
  *      Author: Pierre Thalamy
  */
 
-#include "robots/hexanodes/hexanodesMotionEvents.h"
-#include "base/world.h"
-#include "utils/utils.h"
-#include "robots/hexanodes/hexanodesBlock.h"
+#include "hexanodesMotionEvents.h"
+#include "../../base/world.h"
+#include "../../utils/utils.h"
+#include "hexanodesBlock.h"
 
 using namespace BaseSimulator::utils;
 

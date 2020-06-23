@@ -10,8 +10,8 @@
 
 #include <string>
 
-#include "events/scheduler.h"
-#include "utils/tDefs.h"
+#include "tDefs.h"
+#include "../events/scheduler.h"
 
 using namespace std;
 

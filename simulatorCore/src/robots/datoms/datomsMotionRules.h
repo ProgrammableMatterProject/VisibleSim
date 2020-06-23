@@ -1,8 +1,8 @@
 #ifndef DATOMSMOTIONRULES_H
 #define DATOMSMOTIONRULES_H
 
-#include "grid/lattice.h"
-#include "robots/datoms/datomsBlock.h"
+#include "../../grid/lattice.h"
+#include "datomsBlock.h"
 #include "deformationEvents.h"
 
 //!< \namespace Datoms

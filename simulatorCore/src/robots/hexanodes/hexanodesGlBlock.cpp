@@ -8,9 +8,9 @@
  *
  */
 
-#include "robots/hexanodes/hexanodesGlBlock.h"
-#include "robots/hexanodes/hexanodesWorld.h"
-#include "grid/lattice.h"
+#include "hexanodesGlBlock.h"
+#include "hexanodesWorld.h"
+#include "../../grid/lattice.h"
 
 namespace Hexanodes {
 

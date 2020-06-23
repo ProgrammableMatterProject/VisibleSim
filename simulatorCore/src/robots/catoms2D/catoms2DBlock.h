@@ -10,11 +10,11 @@
 
 #include <stdexcept>
 
-#include "base/buildingBlock.h"
-#include "robots/catoms2D/catoms2DBlockCode.h"
-#include "robots/catoms2D/catoms2DGlBlock.h"
-#include "grid/lattice.h"
-#include "robots/catoms2D/catoms2DMotionEngine.h"
+#include "../../base/buildingBlock.h"
+#include "catoms2DBlockCode.h"
+#include "catoms2DGlBlock.h"
+#include "catoms2DMotionEngine.h"
+#include "../../grid/lattice.h"
 
 class Catoms2DRotationMove;
 

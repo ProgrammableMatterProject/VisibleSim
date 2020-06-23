@@ -11,10 +11,10 @@
 #ifndef NODES2DSIMULATOR_H_
 #define NODES2DSIMULATOR_H_
 
-#include "base/simulator.h"
-#include "robots/nodes2D/nodes2DBlockCode.h"
-#include "robots/nodes2D/nodes2DWorld.h"
-#include "utils/trace.h"
+#include "../../base/simulator.h"
+#include "nodes2DBlockCode.h"
+#include "nodes2DWorld.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

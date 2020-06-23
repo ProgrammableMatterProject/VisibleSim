@@ -89,10 +89,6 @@ public:
     using World::updateGlData; // Suppresses hiding warning
 
     /**
-     * @copydoc World::updateGlData
-     */
-    virtual void updateGlData(SlidingCubesBlock*blc,int prev,int next);
-    /**
      * @copydoc World::setSelectedFace
      */
     void setSelectedFace(int n) override;

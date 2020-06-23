@@ -341,15 +341,6 @@ void SlidingCubesWorld::loadTextures(const string &str) {
     idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
-void SlidingCubesWorld::updateGlData(SlidingCubesBlock*blc,int prev,int next) {
-    SlidingCubesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        glblc->setPrevNext(prev,next);
-        unlock();
-    }
-}
-
 void SlidingCubesWorld::setSelectedFace(int n) {
     numSelectedGlBlock=n/numPickingTextures;
     string name = objBlockForPicking->getObjMtlName(n%numPickingTextures);

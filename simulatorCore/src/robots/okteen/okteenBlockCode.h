@@ -10,10 +10,10 @@
 
 #include <ostream>
 
-#include "base/blockCode.h"
-#include "robots/okteen/okteenBlock.h"
-#include "comm/network.h"
-#include "events/scheduler.h"
+#include "../../base/blockCode.h"
+#include "okteenBlock.h"
+#include "../../comm/network.h"
+#include "../../events/scheduler.h"
 
 using namespace BaseSimulator;
 

@@ -5,10 +5,10 @@
  *      Author: Benoît
  */
 
-#include "robots/catoms2D/catoms2DEvents.h"
-#include "robots/catoms2D/catoms2DScheduler.h"
-#include "robots/catoms2D/catoms2DWorld.h"
-#include "robots/catoms2D/catoms2DMove.h"
+#include "catoms2DEvents.h"
+#include "catoms2DScheduler.h"
+#include "catoms2DWorld.h"
+#include "catoms2DMove.h"
 
 const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;

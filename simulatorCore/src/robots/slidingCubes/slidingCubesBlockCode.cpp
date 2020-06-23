@@ -6,8 +6,8 @@
  */
 
 #include <iostream>
-#include "robots/slidingCubes/slidingCubesBlockCode.h"
-#include "utils/trace.h"
+#include "slidingCubesBlockCode.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

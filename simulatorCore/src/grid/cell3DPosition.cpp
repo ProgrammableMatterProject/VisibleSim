@@ -1,8 +1,8 @@
 #include <sstream>
 
-#include "grid/cell3DPosition.h"
+#include "cell3DPosition.h"
 
-#include "utils/exceptions.h" //@TODO BP REMOVE
+#include "../utils/exceptions.h" //@TODO BP REMOVE
 
 Cell3DPosition::Cell3DPosition() {
     set(0,0,0);

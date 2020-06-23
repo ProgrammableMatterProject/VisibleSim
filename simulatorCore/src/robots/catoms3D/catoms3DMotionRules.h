@@ -1,9 +1,9 @@
 #ifndef CATOMS3DMOTIONRULES_H
 #define CATOMS3DMOTIONRULES_H
 
-#include "grid/lattice.h"
-#include "robots/catoms3D/catoms3DBlock.h"
-#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "../../grid/lattice.h"
+#include "catoms3DBlock.h"
+#include "catoms3DRotationEvents.h"
 
 //!< \namespace Catoms3D
 namespace Catoms3D {

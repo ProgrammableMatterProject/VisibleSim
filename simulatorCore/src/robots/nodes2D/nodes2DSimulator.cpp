@@ -8,13 +8,12 @@
  *
  */
 
-#include "robots/nodes2D/nodes2DSimulator.h"
-
 #include <iostream>
 #include <string.h>
 
-#include "utils/trace.h"
-#include "utils/utils.h"
+#include "../../utils/trace.h"
+#include "../../utils/utils.h"
+#include "nodes2DSimulator.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

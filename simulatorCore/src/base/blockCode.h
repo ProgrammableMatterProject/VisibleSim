@@ -8,13 +8,13 @@
 #ifndef BLOCKCODE_H_
 #define BLOCKCODE_H_
 
-#include <inttypes.h>
+#include <cinttypes>
 #include <memory>
 #include <map>
 
-#include "utils/trace.h"
-#include "grid/target.h"
-#include "deps/TinyXML/tinyxml.h"
+#include "../utils/trace.h"
+#include "../grid/target.h"
+#include "../deps/TinyXML/tinyxml.h"
 
 class Event;
 typedef std::shared_ptr<Event> EventPtr;

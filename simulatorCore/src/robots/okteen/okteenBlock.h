@@ -10,12 +10,12 @@
 
 #include <stdexcept>
 
-#include "base/buildingBlock.h"
-#include "robots/okteen/okteenBlockCode.h"
-#include "robots/okteen/okteenGlBlock.h"
-#include "grid/cell3DPosition.h"
-#include "grid/lattice.h"
-#include "utils/utils.h"
+#include "../../base/buildingBlock.h"
+#include "okteenBlockCode.h"
+#include "okteenGlBlock.h"
+#include "../../grid/cell3DPosition.h"
+#include "../../grid/lattice.h"
+#include "../../utils/utils.h"
 
 using namespace BaseSimulator::utils;
 

@@ -6,9 +6,9 @@
 
 #include <cmath>
 
-#include "stats/statsIndividual.h"
-#include "base/buildingBlock.h"
-#include "base/world.h"
+#include "statsIndividual.h"
+#include "../base/buildingBlock.h"
+#include "../base/world.h"
 
 using namespace std;
 

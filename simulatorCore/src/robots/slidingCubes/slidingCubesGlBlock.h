@@ -9,24 +9,18 @@
 #define SLIDINGCUBESGLBLOCK_H_
 #include <string>
 #include <sstream>
-#include "gui/objLoader.h"
-#include "base/glBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../base/glBlock.h"
 
 namespace SlidingCubes {
-class SlidingCubesGlBlock:public GlBlock {
-protected :
-    int nextId = 0;
-    int prevId = 0;
-public :
-    string popupString;
+    class SlidingCubesGlBlock:public GlBlock {
+    protected :
+    public :
+        SlidingCubesGlBlock(bID id) : GlBlock(id) {};
+        virtual ~SlidingCubesGlBlock() {};
 
-    SlidingCubesGlBlock(bID id) : GlBlock(id) {};
-    virtual ~SlidingCubesGlBlock() {};
-
-    virtual void setPrevNext(int p,int n);
-    virtual string getPopupInfo() override;
-
-    void glDraw(ObjLoader::ObjLoader *ptrObj) override;
-};
+        //string getPopupInfo() override;
+        void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+    };
 }
 #endif /* SLIDINGCUBESGLBLOCK_H_ */

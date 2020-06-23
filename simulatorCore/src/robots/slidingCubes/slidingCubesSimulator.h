@@ -8,10 +8,10 @@
 #ifndef SLIDINGCUBESSIMULATOR_H_
 #define SLIDINGCUBESSIMULATOR_H_
 
-#include "base/simulator.h"
-#include "robots/slidingCubes/slidingCubesBlockCode.h"
-#include "robots/slidingCubes/slidingCubesWorld.h"
-#include "utils/trace.h"
+#include "../../base/simulator.h"
+#include "slidingCubesBlockCode.h"
+#include "slidingCubesWorld.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 
