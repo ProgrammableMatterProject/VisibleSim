@@ -8,9 +8,9 @@
 #ifndef OKTEENGLBLOCK_H_
 #define OKTEENGLBLOCK_H_
 #include <string>
-#include "gui/objLoader.h"
-#include "math/matrix44.h"
-#include "base/glBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../math/matrix44.h"
+#include "../../base/glBlock.h"
 
 namespace Okteen {
 class OkteenGlBlock:public GlBlock {

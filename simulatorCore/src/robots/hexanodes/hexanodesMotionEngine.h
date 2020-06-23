@@ -13,9 +13,9 @@
 
 #include <utility>
 #include <vector>
-#include "robots/hexanodes/hexanodesWorld.h"
-#include "grid/cell3DPosition.h"
-#include "grid/lattice.h"
+#include "hexanodesWorld.h"
+#include "../../grid/cell3DPosition.h"
+#include "../../grid/lattice.h"
 
 using namespace std;
 

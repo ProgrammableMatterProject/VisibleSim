@@ -12,10 +12,9 @@
 #define NODES2DGLBLOCK_H_
 
 #include <string>
-#include "gui/objLoader.h"
-
-#include "math/matrix44.h"
-#include "base/glBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../math/matrix44.h"
+#include "../../base/glBlock.h"
 
 namespace Nodes2D {
 class Nodes2DGlBlock:public GlBlock {

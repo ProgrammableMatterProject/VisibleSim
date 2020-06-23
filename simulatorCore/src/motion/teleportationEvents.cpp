@@ -8,10 +8,10 @@
  *      Author: Pierre Thalamy
  */
 
-#include "motion/teleportationEvents.h"
-#include "base/world.h"
-#include "robots/catoms3D/catoms3DWorld.h"
-#include "utils/utils.h"
+#include "teleportationEvents.h"
+#include "../base/world.h"
+//#include "../robots/catoms3D/catoms3DWorld.h"
+#include "../utils/utils.h"
 
 using namespace BaseSimulator::utils;
 

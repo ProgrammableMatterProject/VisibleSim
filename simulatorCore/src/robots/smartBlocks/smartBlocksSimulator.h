@@ -8,10 +8,10 @@
 #ifndef SMARTBLOCKSSIMULATOR_H_
 #define SMARTBLOCKSSIMULATOR_H_
 
-#include "robots/smartBlocks/smartBlocksWorld.h"
-#include "base/simulator.h"
-#include "robots/smartBlocks/smartBlocksBlock.h"
-#include "robots/smartBlocks/smartBlocksBlockCode.h"
+#include "smartBlocksWorld.h"
+#include "../../base/simulator.h"
+#include "smartBlocksBlock.h"
+#include "smartBlocksBlockCode.h"
 
 using namespace std;
 

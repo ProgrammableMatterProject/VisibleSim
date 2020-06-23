@@ -8,12 +8,11 @@
  *
  */
 
-#include "robots/nodes2D/nodes2DBlockCode.h"
-
 #include <iostream>
 
-#include "comm/network.h"
-#include "utils/trace.h"
+#include "../../comm/network.h"
+#include "../../utils/trace.h"
+#include "nodes2DBlockCode.h"
 
 using namespace std;
 using namespace Nodes2D;

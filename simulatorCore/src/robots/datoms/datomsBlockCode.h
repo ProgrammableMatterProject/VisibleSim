@@ -10,10 +10,10 @@
 
 #include <ostream>
 
-#include "base/blockCode.h"
-#include "robots/datoms/datomsBlock.h"
-#include "comm/network.h"
-#include "events/scheduler.h"
+#include "../../base/blockCode.h"
+#include "datomsBlock.h"
+#include "../../comm/network.h"
+#include "../../events/scheduler.h"
 
 using namespace BaseSimulator;
 

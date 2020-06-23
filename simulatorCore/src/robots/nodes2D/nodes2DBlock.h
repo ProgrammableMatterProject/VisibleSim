@@ -13,12 +13,12 @@
 
 #include <stdexcept>
 
-#include "base/buildingBlock.h"
-#include "robots/nodes2D/nodes2DBlockCode.h"
-#include "robots/nodes2D/nodes2DGlBlock.h"
-#include "grid/cell3DPosition.h"
-#include "grid/lattice.h"
-#include "utils/utils.h"
+#include "../../base/buildingBlock.h"
+#include "nodes2DBlockCode.h"
+#include "nodes2DGlBlock.h"
+#include "../../grid/cell3DPosition.h"
+#include "../../grid/lattice.h"
+#include "../../utils/utils.h"
 
 using namespace BaseSimulator::utils;
 

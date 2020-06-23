@@ -8,9 +8,9 @@
  *
  */
 
-#include "robots/nodes2D/nodes2DGlBlock.h"
-#include "robots/nodes2D/nodes2DWorld.h"
-#include "grid/lattice.h"
+#include "nodes2DGlBlock.h"
+#include "nodes2DWorld.h"
+#include "../../grid/lattice.h"
 
 namespace Nodes2D {
 

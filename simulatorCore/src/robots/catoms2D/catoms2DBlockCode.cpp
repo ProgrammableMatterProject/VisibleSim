@@ -6,11 +6,11 @@
  */
 
 #include <iostream>
-#include "robots/catoms2D/catoms2DBlockCode.h"
-#include "utils/trace.h"
-#include "events/uniqueEventsId.h"
-#include "events/events.h"
-#include "events/scheduler.h"
+#include "catoms2DBlockCode.h"
+#include "../../utils/trace.h"
+#include "../../events/uniqueEventsId.h"
+#include "../../events/events.h"
+#include "../../events/scheduler.h"
 
 using namespace std;
 

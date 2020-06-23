@@ -7,16 +7,16 @@
 
 #include <iostream>
 #include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <signal.h>
+#include <csignal>
 
-#include "robots/okteen/okteenWorld.h"
-#include "robots/okteen/okteenBlock.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
-#include "replay/replayExporter.h"
+#include "okteenWorld.h"
+#include "okteenBlock.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

@@ -8,8 +8,8 @@
  *
  */
 
-#include "robots/okteen/okteenEvents.h"
-#include "robots/okteen/okteenWorld.h"
+#include "okteenEvents.h"
+#include "okteenWorld.h"
 
 using namespace BaseSimulator::utils;
 

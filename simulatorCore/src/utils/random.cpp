@@ -1,6 +1,6 @@
 #include <iostream>
-#include "utils/random.h"
-#include "base/simulator.h"
+#include "random.h"
+#include "../base/simulator.h"
 
 using namespace std;
 

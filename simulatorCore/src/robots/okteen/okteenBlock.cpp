@@ -6,11 +6,11 @@
  */
 
 #include <iostream>
-#include "robots/okteen/okteenBlock.h"
-#include "base/buildingBlock.h"
-#include "robots/okteen/okteenWorld.h"
-#include "robots/okteen/okteenSimulator.h"
-#include "utils/trace.h"
+#include "okteenBlock.h"
+#include "../../base/buildingBlock.h"
+#include "okteenWorld.h"
+#include "okteenSimulator.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

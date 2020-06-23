@@ -11,7 +11,7 @@
 #include <cstdint>
 #include <string>
 
-#include "utils/tDefs.h"
+#include "../utils/tDefs.h"
 
 namespace BaseSimulator {
 namespace utils {

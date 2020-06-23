@@ -8,13 +8,13 @@
  *
  */
 
-#include "hexanodesSimulator.h"
 
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
-#include "utils/trace.h"
-#include "utils/utils.h"
+#include "hexanodesSimulator.h"
+#include "../../utils/trace.h"
+#include "../../utils/utils.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

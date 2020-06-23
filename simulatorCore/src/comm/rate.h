@@ -1,7 +1,7 @@
 #ifndef RATE_H_
 #define RATE_H_
 
-#include "utils/random.h"
+#include "../utils/random.h"
 
 namespace BaseSimulator {
 

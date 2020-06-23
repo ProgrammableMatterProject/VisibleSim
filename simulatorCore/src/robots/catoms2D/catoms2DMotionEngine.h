@@ -1,8 +1,8 @@
 #ifndef CATOMS2D_MOTION_ENGINE_H_
 #define CATOMS2D_MOTION_ENGINE_H_
 
-#include "utils/tDefs.h"
-#include "comm/rate.h"
+#include "../../utils/tDefs.h"
+#include "../../comm/rate.h"
 
 #define DEFAULT_MOTION_SPEED 0.1
 #define CATOMS2D_MOTION_SPEED_MEAN 1.881119320574239116075

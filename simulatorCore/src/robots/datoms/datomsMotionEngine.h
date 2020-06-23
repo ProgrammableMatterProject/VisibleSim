@@ -13,8 +13,8 @@
 
 #include <utility>
 
-#include "robots/datoms/datomsMotionRules.h"
-#include "robots/datoms/datomsWorld.h"
+#include "datomsMotionRules.h"
+#include "datomsWorld.h"
 
 namespace Datoms {
 

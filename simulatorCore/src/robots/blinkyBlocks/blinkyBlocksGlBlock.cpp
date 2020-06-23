@@ -1,4 +1,4 @@
-#include "robots/blinkyBlocks/blinkyBlocksGlBlock.h"
+#include "blinkyBlocksGlBlock.h"
 
 namespace BlinkyBlocks {
 
@@ -9,9 +9,9 @@ void BlinkyBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     if (isHighlighted) {
         GLfloat n = 0.5+1.5*(1.0-(glutGet(GLUT_ELAPSED_TIME)%1000)/1000.0);
         GLfloat c[4];
-        c[0]=color[0]*n;
-        c[1]=color[1]*n;
-        c[2]=color[2]*n;
+        c[0]=GLfloat(color[0])*n/255.0;
+        c[1]=GLfloat(color[1])*n/255.0;
+        c[2]=GLfloat(color[2])*n/255.0;
         c[3]=1.0;
         ptrObj->setLightedColor(c);
     } else {

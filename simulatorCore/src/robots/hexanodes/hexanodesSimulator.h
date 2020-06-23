@@ -11,10 +11,10 @@
 #ifndef HEXANODESSIMULATOR_H_
 #define HEXANODESSIMULATOR_H_
 
-#include "base/simulator.h"
-#include "robots/hexanodes/hexanodesBlockCode.h"
-#include "robots/hexanodes/hexanodesWorld.h"
-#include "utils/trace.h"
+#include "../../base/simulator.h"
+#include "hexanodesBlockCode.h"
+#include "hexanodesWorld.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

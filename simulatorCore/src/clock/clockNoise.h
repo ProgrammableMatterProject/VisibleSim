@@ -5,8 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "utils/tDefs.h"
-#include "utils/random.h"
+#include "../utils/tDefs.h"
+#include "../utils/random.h"
 
 using namespace std;
 

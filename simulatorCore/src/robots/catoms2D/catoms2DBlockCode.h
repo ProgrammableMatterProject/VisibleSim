@@ -8,9 +8,9 @@
 #ifndef CATOMS2DBLOCKCODE_H_
 #define CATOMS2DBLOCKCODE_H_
 
-#include "base/blockCode.h"
-#include "robots/catoms2D/catoms2DBlock.h"
-#include "comm/network.h"
+#include "../../base/blockCode.h"
+#include "catoms2DBlock.h"
+#include "../../comm/network.h"
 
 namespace Catoms2D {
 

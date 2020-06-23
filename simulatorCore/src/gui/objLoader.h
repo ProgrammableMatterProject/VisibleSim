@@ -157,6 +157,7 @@ public:
     void glDrawIdByMaterial(int &i);
     void glDrawId(int i);
     void setLightedColor(GLfloat *color);
+    void setLightedColor(GLubyte *color);
     inline string getObjMtlName(int pos) { return tabObj[pos]->objMtl->name; };
     ObjData* getObjDataByName(const string &name) const;
     void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const;

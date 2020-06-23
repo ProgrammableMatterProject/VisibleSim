@@ -1,9 +1,9 @@
 #ifndef SLIDINGCUBESMOTIONRULES_H
 #define SLIDINGCUBESMOTIONRULES_H
 
-#include "grid/lattice.h"
-#include "robots/slidingCubes/slidingCubesBlock.h"
-#include "robots/catoms3D/catoms3DRotationEvents.h"
+#include "../../grid/lattice.h"
+#include "slidingCubesBlock.h"
+//#include "robots/catoms3D/catoms3DRotationEvents.h"
 
 //!< \namespace SlidingCubes
 namespace SlidingCubes {

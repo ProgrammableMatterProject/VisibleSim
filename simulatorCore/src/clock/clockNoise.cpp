@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <random>
-#include "clock/clockNoise.h"
+#include "clockNoise.h"
 
 
 using namespace std;

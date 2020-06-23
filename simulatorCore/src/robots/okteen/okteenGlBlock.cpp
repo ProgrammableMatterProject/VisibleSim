@@ -1,5 +1,5 @@
-#include "robots/okteen/okteenGlBlock.h"
-#include "grid/lattice.h"
+#include "okteenGlBlock.h"
+#include "../../grid/lattice.h"
 
 namespace Okteen {
 

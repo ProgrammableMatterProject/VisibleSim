@@ -8,12 +8,11 @@
  *
  */
 
-#include "robots/hexanodes/hexanodesBlockCode.h"
-
 #include <iostream>
+#include "../../comm/network.h"
+#include "../../utils/trace.h"
+#include "hexanodesBlockCode.h"
 
-#include "comm/network.h"
-#include "utils/trace.h"
 
 using namespace std;
 using namespace Hexanodes;

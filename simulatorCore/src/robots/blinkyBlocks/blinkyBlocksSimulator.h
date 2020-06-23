@@ -8,10 +8,10 @@
 #ifndef BLINKYBLOCKSSIMULATOR_H_
 #define BLINKYBLOCKSSIMULATOR_H_
 
-#include "base/simulator.h"
-#include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
-#include "robots/blinkyBlocks/blinkyBlocksWorld.h"
-#include "utils/trace.h"
+#include "../../base/simulator.h"
+#include "blinkyBlocksBlockCode.h"
+#include "blinkyBlocksWorld.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

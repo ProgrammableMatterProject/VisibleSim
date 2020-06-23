@@ -1,12 +1,11 @@
-#include "utils/commandLine.h"
 
 #include <iostream>
 #include <cstdlib>
-
-#include "stats/statsIndividual.h"
-#include "gui/openglViewer.h"
-#include "base/simulator.h"
-#include "utils/trace.h"
+#include "commandLine.h"
+#include "../stats/statsIndividual.h"
+#include "../gui/openglViewer.h"
+#include "../base/simulator.h"
+#include "trace.h"
 
 void CommandLine::help() const {
     cerr << TermColor::BWhite << "VisibleSim options:" << TermColor::Reset << endl;

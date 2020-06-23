@@ -1,5 +1,5 @@
-#include "meld/meldInterpretMessages.h"
-#include "meld/meldInterpretVM.h"
+#include "meldInterpretMessages.h"
+#include "meldInterpretVM.h"
 
 namespace MeldInterpret{
 

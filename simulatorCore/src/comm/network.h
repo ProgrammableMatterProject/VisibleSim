@@ -9,11 +9,11 @@
 #define NETWORK_H_
 
 #include <deque>
-#include <string.h>
+#include <string>
 
-#include "utils/tDefs.h"
-#include "comm/rate.h"
-#include "base/buildingBlock.h"
+#include "rate.h"
+#include "../utils/tDefs.h"
+#include "../base/buildingBlock.h"
 
 using namespace std;
 

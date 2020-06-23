@@ -8,8 +8,8 @@
 #include <iostream>
 #include <string.h>
 
-#include "robots/slidingCubes/slidingCubesSimulator.h"
-#include "utils/trace.h"
+#include "slidingCubesSimulator.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

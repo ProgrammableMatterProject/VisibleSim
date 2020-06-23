@@ -8,8 +8,8 @@
 #ifndef BLINKYBLOCKSGLBLOCK_H_
 #define BLINKYBLOCKSGLBLOCK_H_
 #include <string>
-#include "gui/objLoader.h"
-#include "base/glBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../base/glBlock.h"
 
 namespace BlinkyBlocks {
 class BlinkyBlocksGlBlock:public GlBlock {

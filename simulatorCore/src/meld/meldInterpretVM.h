@@ -3,15 +3,13 @@
 
 //#include "bb.h"
 
-#include <math.h>
-#include <stdint.h>
-#include <stdio.h>
+#include <cmath>
 #include <sys/timeb.h>
 #include <memory>
 #include <map>
 
-#include "utils/color.h"
-#include "base/buildingBlock.h"
+#include "../utils/color.h"
+#include "../base/buildingBlock.h"
 
 #include <sys/timeb.h>
 

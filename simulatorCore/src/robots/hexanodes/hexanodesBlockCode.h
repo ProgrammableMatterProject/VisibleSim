@@ -13,10 +13,10 @@
 
 #include <ostream>
 
-#include "base/blockCode.h"
-#include "robots/hexanodes/hexanodesBlock.h"
-#include "comm/network.h"
-#include "events/scheduler.h"
+#include "../../base/blockCode.h"
+#include "hexanodesBlock.h"
+#include "../../comm/network.h"
+#include "../../events/scheduler.h"
 
 using namespace BaseSimulator;
 

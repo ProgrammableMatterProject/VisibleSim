@@ -11,8 +11,8 @@
 #include <list>
 #include <string>
 
-#include "base/buildingBlock.h"
-#include "base/world.h"
+#include "../base/buildingBlock.h"
+#include "../base/world.h"
 
 using namespace std;
 
