@@ -1,6 +1,8 @@
 #include "../gui/shaders.h"
-#include "../utils/trace.h"
 #include "../utils/color.h"
+#ifdef DEBUG_GRAPHICS
+    #include "../utils/trace.h"
+#endif
 
 GLuint depth_tex,id_fb,color_rb;
 bool useShaders=true;
@@ -43,7 +45,9 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
 // loading the Vertex Program source
     code = lectureCodeShader(titreVP);
     if (!code) {
+#ifdef DEBUG_GRAPHICS
         ERRPUT << "error: " << titreVP << " not found."<< endl;
+#endif
         exit(-1);
     }
     glShaderSourceARB(VShader, 1, (const GLcharARB**) &code, NULL);
@@ -59,8 +63,10 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
 // loading the Fragment Program source
     code = lectureCodeShader(titreFP);
     if (!code) {
+#ifdef DEBUG_GRAPHICS
         ERRPUT << "error: " << titreFP << " not found."<< endl;
         exit(-1);
+#endif
     }
     glShaderSourceARB(FShader, 1, (const GLcharARB**) &code, NULL);
 // Compile the Fragment program
@@ -108,19 +114,25 @@ void initShaders(bool activateShadows) {
     glCullFace(GL_BACK);
 
     locTex = glGetUniformLocationARB(shadersProgram, "tex");
+#ifdef DEBUG_GRAPHICS
     if (locTex==-1) {
       ERRPUT << "erreur affectation : tex\n";
     }
+#endif
     locTextureEnable = glGetUniformLocationARB(shadersProgram, "textureEnable");
+#ifdef DEBUG_GRAPHICS
     if (locTextureEnable  ==-1) {
-      ERRPUT << "erreur affectation : textureEnable\n";
+        ERRPUT << "erreur affectation : textureEnable\n";
     }
+#endif
 
     if (activateShadows) {
         locShadowMap = glGetUniformLocationARB(shadersProgram, "shadowMap");
+#ifdef DEBUG_GRAPHICS
         if (locShadowMap == -1) {
             ERRPUT << "erreur affectation : shadowMap\n";
         }
+#endif
         // texture pour le shadow mapping
         glGenFramebuffersEXT(1, &id_fb);	// id for the frameBuffer
         glGenTextures(1, &depth_tex);		// and a new texture used as a color buffer
@@ -326,4 +338,121 @@ void noshadowRenderingStop() {
     glFlush ();	// Flush The GL Rendering Pipeline
 }
 
+/////////////////////////////////////////////////////////////////////////////
+// loadTextures
+// lecture de l'identifiant de texture
+GLuint loadTexture(const char *titre, int &tw, int &th) {
+    unsigned char *image;
+    GLuint id = 0;
+#ifdef DEBUG_GRAPHICS
+    OUTPUT << "loading " << titre << endl;
+#endif
+    if (!(image = lectureTarga(titre, tw, th))) {
+#ifdef DEBUG_GRAPHICS
+        ERRPUT << "Error : can't open " << titre << endl;
+#endif
+    } else {
+        glGenTextures(1, &id);
+        glBindTexture(GL_TEXTURE_2D, id);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, tw, th, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        delete[] image;
+    }
+    return id;
+}
+
+unsigned char *lectureTarga(const char *titre, int &width, int &height, bool turn) {
+#define DEF_targaHeaderLength            12
+#define DEF_targaHeaderContent        "\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+
+    ifstream fin;
+    char *pData;
+    streampos maxLen = 0;
+
+    fin.open(titre, ios::binary);
+    if (!fin.is_open()) return NULL;
+
+// calcul la longueur du fichier
+    fin.seekg(0, ios::end);
+    maxLen = fin.tellg();
+    fin.seekg(0, ios::beg);
+
+    // allocation de la mémoire pour le fichier
+    pData = new char[int(maxLen)];
+
+    // lecture des données du fichier
+    fin.read(pData, maxLen);
+
+    fin.close();
+
+    int commentOffset = int((unsigned char) *pData);
+    if (memcmp(pData + 1, DEF_targaHeaderContent, DEF_targaHeaderLength - 1) != 0) {
+#ifdef DEBUG_GRAPHICS
+        ERRPUT << "Format non reconnu : " << titre << endl;
+#endif
+        return 0;
+    }
+    unsigned char smallArray[2];
+
+    memcpy(smallArray, pData + DEF_targaHeaderLength + 0, 2);
+    width = smallArray[0] + smallArray[1] * 0x0100;
+
+    memcpy(smallArray, pData + DEF_targaHeaderLength + 2, 2);
+    height = smallArray[0] + smallArray[1] * 0x0100;
+
+    memcpy(smallArray, pData + DEF_targaHeaderLength + 4, 2);
+    int depth = smallArray[0];
+//	int pixelBitFlags = smallArray[ 1 ];
+
+    if ((width <= 0) || (height <= 0))
+        return 0;
+
+    // Only allow 24-bit and 32-bit!
+    bool is24Bit(depth == 24);
+    bool is32Bit(depth == 32);
+    if (!(is24Bit || is32Bit))
+        return 0;
+
+    // Make it a BGRA array for now.
+    int bodySize(width * height * 4);
+    unsigned char *pBuffer = new unsigned char[bodySize];
+    if (is32Bit) {
+        // Easy, just copy it.
+        memcpy(pBuffer, pData + DEF_targaHeaderLength + 6 + commentOffset, bodySize);
+    } else if (is24Bit) {
+        int bytesRead = DEF_targaHeaderLength + 6 + commentOffset;
+        for (int loop = 0; loop < bodySize; loop += 4, bytesRead += 3) {
+            memcpy(pBuffer + loop, pData + bytesRead, 3);
+            pBuffer[loop + 3] = 255;            // Force alpha to max.
+        }
+    } else return NULL;
+
+    // Swap R & B (convert to RGBA).
+    for (int loop = 0; loop < bodySize; loop += 4) {
+        unsigned char tempC = pBuffer[loop + 0];
+        pBuffer[loop + 0] = pBuffer[loop + 2];
+        pBuffer[loop + 2] = tempC;
+    }
+
+    delete[] pData;
+
+
+    if (turn) {
+        unsigned char *pBufferRet = new unsigned char[bodySize],
+                *ptr1 = pBuffer + width * (height - 1) * 4, *ptr2 = pBufferRet;
+        for (int loop = 0; loop < height; loop++) {
+            memcpy(ptr2, ptr1, width * 4);
+            ptr2 += width * 4;
+            ptr1 -= width * 4;
+        }
+        delete[] pBuffer;
+        return pBufferRet;
+    }
+    // Ownership moves out.
+    return pBuffer;
+}
 

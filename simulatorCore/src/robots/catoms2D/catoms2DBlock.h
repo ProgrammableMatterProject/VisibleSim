@@ -10,6 +10,7 @@
 
 #include <stdexcept>
 
+#include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
 #include "catoms2DBlockCode.h"
 #include "catoms2DGlBlock.h"

@@ -52,15 +52,12 @@ ENDIF()
 add_definitions(${FREEGLUT_DEFINITIONS} ${OPENGL_DEFINITIONS})
 
 add_executable(${PROJECT_NAME} main.cpp ../../simulatorCore/src/utils/color.cpp
-        ../../simulatorCore/src/gui/objLoader.cpp ../../simulatorCore/src/math/vector3D.cpp
+        ../../simulatorCore/src/gui/objLoader.cpp
+        ../../simulatorCore/src/math/vector3D.cpp
         ../../simulatorCore/src/gui/shaders.cpp
-        ../../simulatorCore/src/utils/trace.cpp
         ../../simulatorCore/src/math/matrix44.cpp
         ../../simulatorCore/src/gui/camera.cpp
-        ../../simulatorCore/src/gui/interface.cpp
-        ../../simulatorCore/src/replay/replayExporter.cpp
-        ../../simulatorCore/src/grid/cell3DPosition.cpp
-        ../../simulatorCore/src/events/scheduler.cpp)
+        ../../simulatorCore/src/grid/cell3DPosition.cpp)
 #add_executable(${PROJECT_NAME} main.cpp )
 target_link_libraries(${PROJECT_NAME} ${FREEGLUT_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES})
 

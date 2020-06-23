@@ -10,6 +10,7 @@
 
 #include <stdexcept>
 
+#include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
 #include "slidingCubesBlockCode.h"
 #include "slidingCubesGlBlock.h"

@@ -1,5 +1,6 @@
 #include "okteenGlBlock.h"
-#include "../../grid/lattice.h"
+
+using namespace BaseSimulator;
 
 namespace Okteen {
 

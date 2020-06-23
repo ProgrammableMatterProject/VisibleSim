@@ -10,6 +10,7 @@
 
 #include <stdexcept>
 
+#include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
 #include "okteenBlockCode.h"
 #include "okteenGlBlock.h"

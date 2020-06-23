@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <bitset>
 
+#include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
 #include "datomsBlockCode.h"
 #include "datomsGlBlock.h"

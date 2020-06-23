@@ -252,9 +252,9 @@ void Catoms2DWorld::glDrawBackground() {
 void Catoms2DWorld::loadTextures(const string &str) {
     string path = str+"//hexa.tga";
     int lx,ly;
-    idTextureHexa = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureHexa = loadTexture(path.c_str(),lx,ly);
     path = str+"//lignes.tga";
-    idTextureLines = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureLines = loadTexture(path.c_str(),lx,ly);
 }
 
 void Catoms2DWorld::updateGlData(BuildingBlock*blc) {

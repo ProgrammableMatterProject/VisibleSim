@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <bitset>
 
+#include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
 #include "../../grid/cell3DPosition.h"
 #include "../../utils/utils.h"

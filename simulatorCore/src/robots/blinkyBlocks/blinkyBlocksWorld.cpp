@@ -252,7 +252,7 @@ void BlinkyBlocksWorld::glDrawBackground() {
 void BlinkyBlocksWorld::loadTextures(const string &str) {
     string path = str+"/texture_plane.tga";
     int lx,ly;
-    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureWall = loadTexture(path.c_str(),lx,ly);
 }
 
 void BlinkyBlocksWorld::setSelectedFace(int n) {

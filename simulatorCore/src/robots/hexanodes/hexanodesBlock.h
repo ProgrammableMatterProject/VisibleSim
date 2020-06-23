@@ -13,6 +13,7 @@
 
 #include <stdexcept>
 
+#include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
 #include "hexanodesBlockCode.h"
 #include "hexanodesGlBlock.h"

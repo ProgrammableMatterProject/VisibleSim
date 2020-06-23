@@ -11,7 +11,6 @@
 //#include <GL/freeglut.h>
 #include <cmath>
 #include "../../simulatorCore/src/gui/objLoader.h"
-//#include "../../simulatorCore/src/robots/blinkyBlocks/blinkyBlocksGlBlock.h"
 using namespace std;
 
 
@@ -45,7 +44,7 @@ static GLfloat black[4] = { 0.0f, 0.0f, 0.0f, 1.0f}; // black color material
 
 int width=1024,height=600,toolHeight=120,separ=24; // initial size of the screen
 const float cameraPos[] = {5.0f,2.0f,8.0f};
-float cameraTheta=0.0f, cameraPhi=0.0f, cameraDist=5.0f; // spherical coordinates of the point of view
+float cameraTheta=0.0f, cameraPhi=0.0f, cameraDist=50.0f; // spherical coordinates of the point of view
 float rotationAngle=0; // rotation angle of the teapot /z
 int mouseX0,mouseY0;
 GLint topWindow;
@@ -70,15 +69,21 @@ ObjLoader::ObjLoader *objBlock = nullptr;
 //durée en secondes
 float duree = 4900.0f;
 
+bool enableShadows=false; // BPi todo for true
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
-
 
     // create the window
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(width,height+toolHeight+separ);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
     topWindow=glutCreateWindow("VisibleSim Replayer");
+
+
+    initShaders(enableShadows);
+
+    std::string versionString = std::string((const char*)glGetString(GL_VERSION));
+    cout << "Opengl Version: " << versionString << endl;
 
     glutDisplayFunc(drawFunc);
     /* bind reshape function */
