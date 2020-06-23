@@ -11,6 +11,7 @@
 #include "../../gui/objLoader.h"
 #include "../../math/matrix44.h"
 #include "../../base/glBlock.h"
+#include "../../grid/lattice.h"
 
 namespace Okteen {
 class OkteenGlBlock:public GlBlock {

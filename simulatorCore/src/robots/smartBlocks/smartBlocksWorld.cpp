@@ -175,10 +175,10 @@ void SmartBlocksWorld::loadTextures(const string &str) {
     if (GlutContext::GUIisEnabled) {
         string path = str+"/textureCarre.tga";
         int lx,ly;
-        idTextureFloor = GlutWindow::loadTexture(path.c_str(),lx,ly);
+        idTextureFloor = loadTexture(path.c_str(),lx,ly);
 
         path=str+"/../smartBlocksTextures/digits.tga";
-        idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
+        idTextureDigits = loadTexture(path.c_str(),lx,ly);
     }
 }
 

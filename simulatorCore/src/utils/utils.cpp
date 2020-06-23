@@ -18,6 +18,7 @@
 #include <string>
 #include <cstdlib>
 
+#include "../gui/openglViewer.h"
 #include "utils.h"
 #include "../events/scheduler.h"
 #include "../base/world.h"

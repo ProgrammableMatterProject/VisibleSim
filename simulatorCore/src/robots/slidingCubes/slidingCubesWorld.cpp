@@ -338,7 +338,7 @@ void SlidingCubesWorld::glDrawBackground() {
 void SlidingCubesWorld::loadTextures(const string &str) {
     string path = str+"/texture_plane.tga";
     int lx,ly;
-    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureWall = loadTexture(path.c_str(),lx,ly);
 }
 
 void SlidingCubesWorld::setSelectedFace(int n) {

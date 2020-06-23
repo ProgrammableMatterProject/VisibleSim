@@ -54,8 +54,6 @@ public :
     virtual bool passiveMotionFunc(int mx,int my);
     virtual int keyFunc(int charcode);
     virtual void reshapeFunc(int wx,int wy,int mw,int mh) {};
-    static GLuint loadTexture(const char *titre,int &tw,int &th);
-    static unsigned char *lectureTarga(const char *titre, int& width, int& height ,bool turn=false);
     static GLfloat drawString(GLfloat x,GLfloat y,const char *str,void* mode=GLUT_BITMAP_8_BY_13,GLint height=13);
     GLfloat drawString(GLfloat x,GLfloat y,const char *str, TextMode mode);
     virtual void setTextSize(TextSize ts);

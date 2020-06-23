@@ -23,7 +23,7 @@
 #include <vector>
 #include <cmath>
 
-#include "openglViewer.h"
+#include "shaders.h"
 
 using namespace std;
 

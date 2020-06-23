@@ -13,6 +13,7 @@
 
 #include <stdexcept>
 
+#include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
 #include "nodes2DBlockCode.h"
 #include "nodes2DGlBlock.h"

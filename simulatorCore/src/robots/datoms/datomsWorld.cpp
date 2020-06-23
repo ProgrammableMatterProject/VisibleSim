@@ -382,9 +382,9 @@ void DatomsWorld::glDrawBackground() {
 void DatomsWorld::loadTextures(const string &str) {
     string path = str+"//hexa.tga";
     int lx,ly;
-    idTextureHexa = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureHexa = loadTexture(path.c_str(),lx,ly);
     path = str+"//textureCarre.tga";
-    idTextureGrid = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureGrid = loadTexture(path.c_str(),lx,ly);
 }
 
 void DatomsWorld::updateGlData(BuildingBlock *bb) {

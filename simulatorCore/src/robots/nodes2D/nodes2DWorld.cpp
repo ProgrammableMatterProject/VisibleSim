@@ -320,9 +320,9 @@ void Nodes2DWorld::glDrawBackground() {
 void Nodes2DWorld::loadTextures(const string &str) {
     string path = str+"/texture_plane.tga";
     int lx,ly;
-    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureWall = loadTexture(path.c_str(),lx,ly);
     path=str+"/../smartBlocksTextures/digits.tga";
-    idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureDigits = loadTexture(path.c_str(),lx,ly);
 }
 
 void Nodes2DWorld::updateGlData(BuildingBlock *bb) {

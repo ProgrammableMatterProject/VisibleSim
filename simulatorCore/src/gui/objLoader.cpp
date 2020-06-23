@@ -12,9 +12,10 @@
 #include <climits>
 #include <cassert>
 #include "objLoader.h"
-#include "../utils/trace.h"
 #include "../math/vector3D.h"
-//#define DEBUG	1
+#ifdef DEBUG_GRAPHICS
+#include "../utils/trace.h"
+#endif
 
 using namespace std;
 
@@ -208,9 +209,11 @@ namespace ObjLoader {
 #endif
 */
                                     if (numTex[0] == 0 || numTex[1] == 0 || numTex[2] == 0) {
+#ifdef DEBUG_GRAPHICS
                                        ERRPUT << "No texture coordinates for this object : " << objCourant->nomOriginal
                                                << endl;
                                         system("PAUSE");
+#endif
                                     }
                                     S1.set(tabVertex[numVert[0] - 1].v, tabNormal[numNorm[0] - 1].v,
                                            tabTexture[numTex[0] - 1].v);
@@ -652,7 +655,6 @@ namespace ObjLoader {
 #else
             sprintf(erreur, "File error : '%s'", txt);
 #endif
-            ERRPUT << erreur << endl;
             perror("MtlLib");
             exit(EXIT_FAILURE);
         }
@@ -853,7 +855,7 @@ namespace ObjLoader {
         if (mapKd) {
             if (!glTexId) {
                 int lx, ly;
-                glTexId = GlutWindow::loadTexture(mapKd, lx, ly);
+                glTexId = loadTexture(mapKd, lx, ly);
             }
             //glEnable(GL_TEXTURE_2D);
             enableTexture(true);

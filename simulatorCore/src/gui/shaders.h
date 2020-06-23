@@ -31,4 +31,7 @@ void shadowedRenderingStep3(Camera *camera);
 void shadowedRenderingStep4();
 void noshadowRenderingStart(Camera *camera);
 void noshadowRenderingStop();
+
+unsigned char *lectureTarga(const char *titre, int &width, int &height, bool turn=false);
+GLuint loadTexture(const char *titre, int &tw, int &th);
 #endif

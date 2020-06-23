@@ -11,6 +11,7 @@
 #include <thread>
 #include <functional>
 
+#include "../gui/openglViewer.h"
 #include "../events/scheduler.h"
 #include "../comm/network.h"
 #include "../utils/trace.h"

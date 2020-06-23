@@ -10,11 +10,12 @@
 
 #include <stdexcept>
 
+#include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
 #include "../../utils/color.h"
+#include "../../grid/lattice.h"
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksGlBlock.h"
-#include "../../grid/lattice.h"
 
 namespace BlinkyBlocks {
 
@@ -25,7 +26,7 @@ public:
     BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb);
     ~BlinkyBlocksBlock();
 
-    inline virtual BlinkyBlocksGlBlock* getGlBlock() const override {
+    inline BlinkyBlocksGlBlock* getGlBlock() const override {
         return (BlinkyBlocksGlBlock *)ptrGlBlock;
     };
 
@@ -46,12 +47,12 @@ public:
     /**
      * @copydoc BuildingBlock::canMoveTo
      */
-    virtual bool canMoveTo(const Cell3DPosition& dest) const override { return false; }
+    bool canMoveTo(const Cell3DPosition& dest) const override { return false; }
 
     /**
      * @copydoc BuildingBlock::moveTo
      */
-    virtual bool moveTo(const Cell3DPosition& dest) override;
+    bool moveTo(const Cell3DPosition& dest) override;
 };
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);

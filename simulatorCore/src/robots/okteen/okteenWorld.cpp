@@ -266,7 +266,7 @@ void OkteenWorld::glDrawIdByMaterial() {
 void OkteenWorld::loadTextures(const string &str) {
     string path = str+"/texture_plane.tga";
     int lx,ly;
-    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureWall = loadTexture(path.c_str(),lx,ly);
 }
 
 void OkteenWorld::updateGlData(BuildingBlock *bb) {

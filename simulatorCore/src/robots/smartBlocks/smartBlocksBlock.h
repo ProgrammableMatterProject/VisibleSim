@@ -8,6 +8,7 @@
 #ifndef SMARTBLOCKSBLOCK_H_
 #define SMARTBLOCKSBLOCK_H_
 
+#include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksGlBlock.h"
