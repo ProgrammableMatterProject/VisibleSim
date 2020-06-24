@@ -170,6 +170,13 @@ public:
     void writeMotion(Time date, bID bid, Time duration_us, const Cell3DPosition& destination);
     void writeConsoleTrace(Time date, bID bid, const string& trace);
 
+    /**
+     * Write the date of end of simulation at the end of the export file
+     *
+     * Format: [time]
+     */
+    void writeSimulationEndTime();
+
 
     /**
      * Singleton getter

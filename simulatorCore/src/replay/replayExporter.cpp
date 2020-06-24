@@ -76,6 +76,7 @@ string ReplayExporter::debugFilenameFromExportFilename(const string& exportFn) c
 
 void ReplayExporter::endExport() {
     writeKeyFramesIndex();
+    writeSimulationEndTime();
 
     if (exportFile) {
         exportFile->close();
@@ -118,7 +119,7 @@ void ReplayExporter::writeHeader() {
 }
 
 void ReplayExporter::writeKeyFramesIndex() {
-        // Write number of index entries
+    // Write number of index entries
     // Move write head to previously saved index location
     auto currentPos = exportFile->tellp(); // current position
     exportFile->seekp(keyFramesIndexPos); // begin of the file
@@ -126,8 +127,8 @@ void ReplayExporter::writeKeyFramesIndex() {
     exportFile->seekp(currentPos); // back at the end of the file
 
     //if (debug) debugFile->seekp(keyFramesIndexPosDebug);
-    size_t nEntries = keyFramesIndex.size();
-    exportFile->write((char*)&nEntries, sizeof(size_t));
+    u8 nEntries = keyFramesIndex.size();
+    exportFile->write((char*)&nEntries, sizeof(u8));
 
     if (debug) {
         *debugFile << "-- BEGIN KEY FRAME INDEX --" << endl;
@@ -145,6 +146,13 @@ void ReplayExporter::writeKeyFramesIndex() {
     }
 
     if (debug) *debugFile << "-- END KEY FRAME INDEX --" << endl;
+}
+
+void ReplayExporter::writeSimulationEndTime() {
+    Time endDate = getScheduler()->now();
+
+    exportFile->write((char*)&endDate, sizeof(u8));
+    if (debug) *debugFile << endDate << endl;
 }
 
 void ReplayExporter::writeKeyFrameIfNeeded(Time date) {
