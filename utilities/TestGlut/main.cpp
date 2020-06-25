@@ -85,14 +85,11 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
     topWindow=glutCreateWindow("VisibleSim Replayer");
 
-<<<<<<< HEAD
-=======
     initShaders(enableShadows);
 
     std::string versionString = std::string((const char*)glGetString(GL_VERSION));
     cout << "Opengl Version: " << versionString << endl;
 
->>>>>>> 365ca9d3c5b305659c1a4f88c76fd1c98d6d1ce0
     glutDisplayFunc(drawFunc);
     /* bind reshape function */
     glutReshapeFunc(reshapeFunc);
@@ -128,11 +125,8 @@ int main(int argc, char** argv) {
     glutReshapeFunc(reshapeFuncTW);
     glutKeyboardFunc(kbdFunc);
     glutMouseFunc(mouseFuncTW);
-<<<<<<< HEAD
-=======
     glutMotionFunc(motionFuncTW);
     initGL();
->>>>>>> 365ca9d3c5b305659c1a4f88c76fd1c98d6d1ce0
 
 //	glutFullScreen();
 //  glutSetCursor(GLUT_CURSOR_NONE); // allow to hide cursor
@@ -557,8 +551,6 @@ void updateSubWindows() {
     }
     glutSetWindow(topWindow);
 }
-
-
 
 static void reshapeFuncMW(int w,int h) {
     cout << "reshapeMW:" << w << "," << h << endl;
