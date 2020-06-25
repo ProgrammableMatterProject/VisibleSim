@@ -58,6 +58,7 @@ namespace ObjLoader {
 /////////////////////////////////////////////////////////////////////////////
 // class ObjLoader
     ObjLoader::ObjLoader(const char *rep, const char *titre) {
+
         vector<Point3> tabVertex;
         vector<Point3> tabNormal;
         vector<Point2> tabTexture;
@@ -69,11 +70,14 @@ namespace ObjLoader {
 #else
         sprintf(txt, "%s/%s", rep, titre);
 #endif
+
         ifstream fin(txt);
+
         if (!fin.is_open()) {
             cerr << "File error: " << txt << endl;
             exit(EXIT_FAILURE);
         }
+
 #ifdef DEBUG_GRAPHICS
         OUTPUT << "Open " << txt  << " file..."<< endl;
 #endif
@@ -307,8 +311,6 @@ namespace ObjLoader {
 #endif
         } while (!fin.eof());
         createVertexArrays();
-
-
         // find 'lighted' texture
         ptrMtlLighted = mtls->getMtlByName("lighted");
         if (!ptrMtlLighted) {
@@ -403,7 +405,6 @@ namespace ObjLoader {
 
     void ObjLoader::createVertexArrays() {
         vector<ObjData *>::const_iterator ci = tabObj.begin();
-
         while (ci != tabObj.end()) {
             (*ci)->createVertexArray();
             ci++;

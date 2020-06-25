@@ -13,14 +13,13 @@
 #include <fstream>
 #include <map>
 #include "../../simulatorCore/src/utils/tDefs.h"
-#include "../../simulatorCore/src/utils/color.h"
 #include "../../simulatorCore/src/utils/exceptions.h"
-#include "../../simulatorCore/src/base/buildingBlock.h"
 #include "../../simulatorCore/src/grid/cell3DPosition.h"
 #include "../../simulatorCore/src/utils/commandLine.h"
 #include "../../simulatorCore/src/replay/replayTags.h"
-#include "../../simulatorCore/src/gui/openglViewer.h"
-#include "../../simulatorCore/src/robots/smartBlocks/smartBlocksWorld.h"
+#include "replayGlutContext.h"
+#include "replayWorld.h"
+
 
 using namespace std;
 using namespace ReplayTags;
@@ -40,8 +39,8 @@ class ReplayPlayer {
 private:
     const streampos headerSize = 19*sizeof(u1);
 
+    ReplayWorld *world = nullptr;
     //Simulation general parameters
-    World *world = nullptr;
     char * simulationType ;
     u1 robotType = 0;
     int gridSizeX = 0, gridSizeY = 0, gridSizeZ = 0;
@@ -50,6 +49,10 @@ private:
     u8 keyframeCount = 0;
 
     CommandLine cmdLine;
+
+    float replayDuration = 25.0f;
+    float currentTime = 0.0f;
+
 public:
 
 

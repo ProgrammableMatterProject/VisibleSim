@@ -25,6 +25,7 @@ static void kbdFunc(unsigned char,int,int);
 static void mouseFunc(int button,int state,int x,int y);
 static void mouseFuncMW(int button,int state,int x,int y);
 static void motionFuncMW(int x,int y);
+static void motionFuncTW(int x,int y);
 static void idleFunc();
 static void quit();
 static void updateSubWindows();
@@ -69,8 +70,8 @@ ObjLoader::ObjLoader *objBlock = nullptr;
 
 //Variables de test
 //durée en secondes
-float duree = 25.0f;
-float currentTime = 5.374f;
+float duree = 3.749f;
+float currentTime = 0.0f;
 
 bool enableShadows=false; // BPi todo for true
 
@@ -82,7 +83,6 @@ int main(int argc, char** argv) {
     glutInitWindowSize(width,height+toolHeight+separ);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
     topWindow=glutCreateWindow("VisibleSim Replayer");
-
 
     initShaders(enableShadows);
 
@@ -126,6 +126,7 @@ int main(int argc, char** argv) {
     glutReshapeFunc(reshapeFuncTW);
     glutKeyboardFunc(kbdFunc);
     glutMouseFunc(mouseFuncTW);
+    glutMotionFunc(motionFuncTW);
     initGL();
 
 //	glutFullScreen();
@@ -667,19 +668,54 @@ static void motionFuncMW(int x,int y) {
     mouseY0=y;
     glutPostWindowRedisplay(mainWindow);
 }
+static void motionFuncTW(int x,int y)
+{
+    if(x>=offsetX*width && x<= width*(1-offsetX))
+    {
+        if(y>=offsetY*toolHeight && y<= toolHeight*(timelineHeight+offsetY))
+        {
+            if(x<offsetX*width + timelineX*timelineOffset)
+            {
+                currentTime = 0;
+            }
+            else if(x>width*(1-offsetX)-timelineX*timelineOffset)
+            {
+                currentTime = duree;
+            }
+            else
+            {
+                currentTime = (x - timelineOffset*timelineX-offsetX*width)*duree/
+                              (width*(1-2*offsetX)-2*timelineX*timelineOffset);
+            }
+
+        }
+    }
+    glutPostWindowRedisplay(toolsWindow);
+}
 static void mouseFuncTW(int button,int state,int x,int y)
 {
 
-    if(x>=offsetX*width + timelineX*timelineOffset && x<= width*(1-offsetX)-timelineX*timelineOffset)
+    if(x>=offsetX*width && x<= width*(1-offsetX))
     {
         if(y>=offsetY*toolHeight && y<= toolHeight*(timelineHeight+offsetY))
         {
 
-            currentTime = (x - timelineOffset*timelineX-offsetX*width)*duree/
-                    (width*(1-2*offsetX)-2*timelineX*timelineOffset);
+            if(x<offsetX*width + timelineX*timelineOffset)
+            {
+                currentTime = 0;
+            }
+            else if(x>width*(1-offsetX)-timelineX*timelineOffset)
+            {
+                currentTime = duree;
+            }
+            else
+            {
+                currentTime = (x - timelineOffset*timelineX-offsetX*width)*duree/
+                              (width*(1-2*offsetX)-2*timelineX*timelineOffset);
+            }
         }
     }
-    drawFuncTW();
+    glutPostWindowRedisplay(toolsWindow);
 }
 
 /*********************************************************/
