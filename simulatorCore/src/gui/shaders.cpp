@@ -44,10 +44,12 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
     FShader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
 // loading the Vertex Program source
     code = lectureCodeShader(titreVP);
+
     if (!code) {
 #ifdef DEBUG_GRAPHICS
         ERRPUT << "error: " << titreVP << " not found."<< endl;
 #endif
+
         exit(-1);
     }
     glShaderSourceARB(VShader, 1, (const GLcharARB**) &code, NULL);
@@ -95,6 +97,7 @@ void initShaders(bool activateShadows) {
 #ifdef DEBUG_GRAPHICS
     OUTPUT << "initShaders" << endl;
 #endif
+
     glewInit();
 
     glClearDepth (1.0f);						// Depth Buffer Setup
@@ -103,13 +106,16 @@ void initShaders(bool activateShadows) {
     glShadeModel (GL_SMOOTH);					// Select Smooth Shading
     glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Set Perspective Calculations To Most Accurate
 
+
     if (activateShadows) {
       shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtexShadows.vert",
                                   "../../simulatorCore/resources/shaders/pointtexShadows.frag");
     } else {
       shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
                                   "../../simulatorCore/resources/shaders/pointtex.frag");
+
     }
+
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 

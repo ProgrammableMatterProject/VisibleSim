@@ -14,7 +14,7 @@
 #include "../../simulatorCore/src/replay/replayTags.h"
 
 #include "../../simulatorCore/src/utils/utils.h"
-#include "../../simulatorCore/src/base/simulator.h"
+#include "replayWorld.h"
 #include <fstream>
 
 using namespace ReplayTags;
@@ -33,12 +33,22 @@ ReplayPlayer::ReplayPlayer(int argc, char *argv[]):cmdLine(argc,argv,NULL) {
     parseKeyframeIndex();
     //parseInitialConfiguration();
 
-    world = new SmartBlocks::SmartBlocksWorld(Cell3DPosition(gridSizeX,gridSizeY,gridSizeZ),Vector3D(0, 0, 0),argc,argv);
     parseKeyframe(findKeyframeWithTime(0));//0 seconds
     parseKeyframe(findKeyframeWithTime(10000000));//10 seconds
 
-    string test;
-    cin >> test;
+    cout<<"Initialising GlutContext.."<<flush;
+    GlutContext::ReplayGlutContext::init(argc, argv);
+    cout <<"Done"<<endl;
+
+    cout <<"Initializing World .."<<flush;
+    world = new ReplayWorld(argc,argv);
+    cout <<"Done"<<endl;
+
+    cout <<"Setting up World .."<<flush;
+    GlutContext::ReplayGlutContext::setWorld(world);
+    cout <<"Done"<<endl;
+
+    GlutContext::ReplayGlutContext::mainLoop();
     //glutMainLoop();
     exportFile->close();
 }
