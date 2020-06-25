@@ -66,6 +66,8 @@ namespace GlutContext {
         static inline bool enableShadows; // BPi todo for true
         static inline int keyboardModifier=0;
 
+        static inline ObjLoader::ObjLoader* objBlock=nullptr;
+
         static void init(int argc, char *argv[]);
 
         static void initGL();

@@ -15,6 +15,9 @@ void ReplayGlutContext::initGL() {
     camera->setLightParameters(Vector3D(0.0,0.0,0.0),80.0,50.0,50.0,50.0,1.0,1000.0);
     std::string versionString = std::string((const char*)glGetString(GL_VERSION));
     cout << "Opengl Version: " << versionString << endl;
+
+    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
+                                        "smartBlockSimple.obj");
 }
 
 void ReplayGlutContext::quit() {
@@ -412,12 +415,21 @@ void ReplayGlutContext::drawFuncMW(void) {
         glScalef(0.1f,0.1f,0.1f);
         glPushMatrix();
             //glutSolidTeapot(1.0f);
-            world->objBlock->glDraw();
-            glTranslatef(25.0f,0,0);
+//            world->objBlock->glDraw();
+//            glTranslatef(25.0f,0,0);
             world->objBlock->glDraw();
             //glutSolidCone(0.5,2.0,10,1);
+            //objBlock->glDraw();
+            //glTranslatef(25.0f,0,0);
+            //objBlock->glDraw();
         glPopMatrix();
     glPopMatrix();
+
+//    cout<<"----------------"<<endl;
+//    cout<<"world->objBlock : "<<world->objBlock<<endl;
+//    cout<<"objBlock : "<<objBlock<<endl;
+//    cout<<"----------------"<<endl;
+
 
     glPopMatrix();
     noshadowRenderingStop();
