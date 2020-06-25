@@ -44,6 +44,7 @@ static GLfloat grey[4] = { 0.4f, 0.4f, 0.4f, 1.0f}; // grey color material
 static GLfloat black[4] = { 0.0f, 0.0f, 0.0f, 1.0f}; // black color material
 
 int width=1024,height=600,toolHeight=120,separ=24; // initial size of the screen
+int keyboardModifier=0;
 const float cameraPos[] = {5.0f,2.0f,8.0f};
 //float cameraTheta=0.0f, cameraPhi=0.0f, cameraDist=50.0f; // spherical coordinates of the point of view
 Camera camera(30,30,50.0f);
@@ -621,8 +622,31 @@ static void kbdFunc(unsigned char c, int x, int y) {
 /* state: action                                         */
 /* x,y: mouse coordinates                                */
 static void mouseFuncMW(int button,int state,int x,int y) {
-    mouseX0=x;
-    mouseY0=y;
+    keyboardModifier = glutGetModifiers();
+    if (keyboardModifier != GLUT_ACTIVE_CTRL) { // rotation du point de vue
+        switch (button) {
+            case GLUT_LEFT_BUTTON:
+                if (state == GLUT_DOWN) {
+                    camera.mouseDown(x, y);
+                } else if (state == GLUT_UP) {
+                    camera.mouseUp(x, y);
+                }
+                break;
+            case GLUT_RIGHT_BUTTON:
+                if (state == GLUT_DOWN) {
+                    camera.mouseDown(x, y, true);
+                } else if (state == GLUT_UP) {
+                    camera.mouseUp(x, y);
+                }
+                break;
+            case 3 :
+                camera.mouseZoom(-10);
+                break;
+            case 4 :
+                camera.mouseZoom(10);
+                break;
+        }
+    }
 }
 
 bool isIn(int x, int y, int x0, int y0, int w, int h) {
@@ -651,8 +675,10 @@ static void mouseFunc(int button,int state,int x,int y) {
 /* Mouse move function (with button pressed)             */
 /* x,y: mouse coordinates                                */
 static void motionFuncMW(int x,int y) {
-    mouseX0=x;
-    mouseY0=y;
+    if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
+        camera.mouseMove(x,y);
+        glutPostRedisplay();
+    }
     glutPostWindowRedisplay(mainWindow);
 }
 static void motionFuncTW(int x,int y)
@@ -712,7 +738,7 @@ static void initGL() {
 
     camera.setNearFar(1.0,1000.0);
     camera.setTarget(Vector3D(0,0,0));
-    camera.setAngle(50.0);
+    camera.setAngle(10.0);
     camera.setLightParameters(Vector3D(0,0,0.0),80,80,50,20,1,1000);
     std::string versionString = std::string((const char*)glGetString(GL_VERSION));
     cout << "Opengl Version: " << versionString << endl;
