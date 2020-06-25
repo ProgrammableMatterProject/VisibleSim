@@ -13,8 +13,8 @@
 //Key commands to control the game :
 static const char charGoRight = 'k'; //to make the tetramino go on the right
 static const char charGoLeft = 'j';  //to go on the left
-static const char charTurnCK = 'h';  //to turn clockwise
-static const char charTurnCCK = 'b'; //to turn counter clockwise
+static const char charTurnCK = 'p';  //to turn clockwise
+static const char charTurnCCK = 'o'; //to turn counter clockwise
 
 //##################################################################################################
 
@@ -155,6 +155,8 @@ static const int ISFREE_MSG_ID = 1024;
 static const int FREEMSG_ID = 1025;
 static const int BACKFREEMSG_ID = 1026;
 static const int BFMSG_ID = 1027;
+static const int FAR_VERIF_MSG_ID = 1028;
+static const int BACK_FAR_V_MSG_ID = 1029;
 
 //IDs of the interfaces
 static const int topId = 0;
@@ -215,6 +217,7 @@ private:
     int nbFree = 0;  //nb of free pixels verifications
     int nbFBack = 0; //nb of free pixels answers
     std::vector<freeAnswer> verifications;
+    std::vector<farVerif> farVerifications;
 
     int movement = NO_MVT;   //movement done currently by the tetramino
     bool goingRight = false; //booleans that save the last movement asked by the player (if no movement asked, the tetramino goes down)
@@ -576,6 +579,28 @@ public:
     void sendVerifTmn7(bool answer, isFreeData data);
 
     /**
+    * @brief Spreads the far verification messages
+    * @param verif data to be spread
+    * @param sender itf to send back non valid answers
+    */
+    void sendFarVerif(farVerif verif,P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'FarVerif'. Spreads a far verification (that cannot be made by 
+    * a pixel in the tetramino) to the right pixel.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myFarVerifMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'BackFarV'. Spreads  the answer of a far verification.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
     * @brief Handler for all events received by the host block
     * @param pev pointer to the received event
     */
@@ -601,6 +626,15 @@ public:
     */
     void leftMvtKeyHandler();
 
+    /**
+    * @brief function called when user presses the key to ask for a clockwise rotation
+    */
+    void cwRotKeyHandler();
+
+    /**
+    * @brief function called when user presses the key to ask for a counter clockwise rotation
+    */
+    void counterCwRotKeyHandler();
 
     /*****************************************************************************/
     /** needed to associate code to module                                      **/

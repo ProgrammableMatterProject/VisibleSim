@@ -304,103 +304,137 @@ void TetrisCode::myRestartTmn3Func(std::shared_ptr<Message> _msg, P2PNetworkInte
 
 void TetrisCode::verifTmn3()
 {
-    verifications.clear();
-    int rot1 = 0;
-    int rot2 = 0;
-    int rot3 = 0;
-    int rot4 = 0;
-    int dir = 0;
-    P2PNetworkInterface *i = nullptr; //for direct verifications
-    if (movement == DOWN)
+    if (movement == GO_LEFT || movement == GO_RIGHT || movement == DOWN)
     {
-        rot1 = NORTH;
-        rot2 = SOUTH;
-        rot3 = EAST;
-        rot4 = WEST;
-        dir = SOUTH;
-        i = bottomItf;
-    }
-    else if (movement == GO_RIGHT)
-    {
-        rot1 = WEST;
-        rot2 = EAST;
-        rot3 = NORTH;
-        rot4 = SOUTH;
-        dir = EAST;
-        i = rightItf;
-    }
-    else if (movement == GO_LEFT)
-    {
-        rot1 = EAST;
-        rot2 = WEST;
-        rot3 = SOUTH;
-        rot4 = NORTH;
-        dir = WEST;
-        i = leftItf;
-    }
-    if (rotation == rot1)
-    {
-        nbFree += 1;
-        verifications.push_back(freeAnswer(3, dir));
-        verifications.push_back(freeAnswer(4, dir));
-        isFreeData data = isFreeData(nbFree, 4, dir);
-        sendVerifTmn3(false, data);
-    }
-    else if (rotation == rot2)
-    {
-        nbFree += 1;
-        verifications.push_back(freeAnswer(2, dir));
-        verifications.push_back(freeAnswer(4, dir));
-        isFreeData data = isFreeData(nbFree, 4, dir);
-        sendVerifTmn3(false, data);
-    }
-    else if (rotation == rot3)
-    {
-        verifications.push_back(freeAnswer(2, dir));
-        verifications.push_back(freeAnswer(4, dir));
-        if (movement == GO_LEFT)
+        verifications.clear();
+        int rot1 = 0;
+        int rot2 = 0;
+        int rot3 = 0;
+        int rot4 = 0;
+        int dir = 0;
+        P2PNetworkInterface *i = nullptr; //for direct verifications
+        if (movement == DOWN)
+        {
+            rot1 = NORTH;
+            rot2 = SOUTH;
+            rot3 = EAST;
+            rot4 = WEST;
+            dir = SOUTH;
+            i = bottomItf;
+        }
+        else if (movement == GO_RIGHT)
+        {
+            rot1 = WEST;
+            rot2 = EAST;
+            rot3 = NORTH;
+            rot4 = SOUTH;
+            dir = EAST;
+            i = rightItf;
+        }
+        else if (movement == GO_LEFT)
+        {
+            rot1 = EAST;
+            rot2 = WEST;
+            rot3 = SOUTH;
+            rot4 = NORTH;
+            dir = WEST;
+            i = leftItf;
+        }
+        if (rotation == rot1)
         {
             nbFree += 1;
-            verifications.push_back(freeAnswer(1, WEST));
-            isFreeData data = isFreeData(nbFree, 1, WEST);
+            verifications.push_back(freeAnswer(3, dir));
+            verifications.push_back(freeAnswer(4, dir));
+            isFreeData data = isFreeData(nbFree, 4, dir);
             sendVerifTmn3(false, data);
         }
-        else
+        else if (rotation == rot2)
         {
-            if (i != nullptr && i->isConnected())
+            nbFree += 1;
+            verifications.push_back(freeAnswer(2, dir));
+            verifications.push_back(freeAnswer(4, dir));
+            isFreeData data = isFreeData(nbFree, 4, dir);
+            sendVerifTmn3(false, data);
+        }
+        else if (rotation == rot3)
+        {
+            verifications.push_back(freeAnswer(2, dir));
+            verifications.push_back(freeAnswer(4, dir));
+            if (movement == GO_LEFT)
             {
-                sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+                nbFree += 1;
+                verifications.push_back(freeAnswer(1, WEST));
+                isFreeData data = isFreeData(nbFree, 1, WEST);
+                sendVerifTmn3(false, data);
             }
             else
             {
-                nbTmn += 1;
-                sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                if (i != nullptr && i->isConnected())
+                {
+                    sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+                }
+                else
+                {
+                    nbTmn += 1;
+                    sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                }
             }
         }
-    }
-    else if (rotation == rot4)
-    {
-        verifications.push_back(freeAnswer(2, dir));
-        verifications.push_back(freeAnswer(3, dir));
-        if (movement == GO_LEFT)
+        else if (rotation == rot4)
         {
-            nbFree += 1;
-            verifications.push_back(freeAnswer(1, WEST));
-            isFreeData data = isFreeData(nbFree, 1, WEST);
-            sendVerifTmn3(false, data);
-        }
-        else
-        {
-            if (i != nullptr && i->isConnected())
+            verifications.push_back(freeAnswer(2, dir));
+            verifications.push_back(freeAnswer(3, dir));
+            if (movement == GO_LEFT)
             {
-                sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+                nbFree += 1;
+                verifications.push_back(freeAnswer(1, WEST));
+                isFreeData data = isFreeData(nbFree, 1, WEST);
+                sendVerifTmn3(false, data);
             }
             else
             {
-                nbTmn += 1;
-                sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                if (i != nullptr && i->isConnected())
+                {
+                    sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+                }
+                else
+                {
+                    nbTmn += 1;
+                    sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                }
             }
         }
+    }
+    else if (movement == ROT_CK || movement == ROT_COUNTER_CK)
+    {
+        farVerifications.clear();
+        std::vector<int> dirs;
+        farVerif v;
+        if (movement == ROT_CK)
+        {
+            dirs.push_back(EAST);
+            farVerifications.push_back(farVerif(0, 0, dirs, rotation));
+            dirs.clear();
+            dirs.push_back(WEST);
+            farVerifications.push_back(farVerif(0, 0, dirs, rotation));
+            dirs.push_back(SOUTH);
+            v = farVerif(0, 0, dirs, rotation);
+            farVerifications.push_back(v);
+        }
+        else if (movement == ROT_COUNTER_CK)
+        {
+            dirs.push_back(WEST);
+            farVerifications.push_back(farVerif(0, 0, dirs, rotation));
+            dirs.clear();
+            dirs.push_back(EAST);
+            farVerifications.push_back(farVerif(0, 0, dirs, rotation));
+            dirs.push_back(NORTH);
+            v = farVerif(0, 0, dirs, rotation);
+            farVerifications.push_back(v);
+        }
+        nbFree += 1;
+        v.id = nbFree;
+        sendFarVerif(v, nullptr);
     }
 }
 

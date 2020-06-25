@@ -150,6 +150,16 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
                          std::bind(&TetrisCode::myBFreeMsgFunc, this,
                                    std::placeholders::_1, std::placeholders::_2));
 
+    // Registers a callback (myFarVerifMsgFunc) to the message of type E
+    addMessageEventFunc2(FAR_VERIF_MSG_ID,
+                         std::bind(&TetrisCode::myFarVerifMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myBackFarVMsgFunc) to the message of type E
+    addMessageEventFunc2(BACK_FAR_V_MSG_ID,
+                         std::bind(&TetrisCode::myBackFarVMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
     // Initialization of random numbers generator
     srand(Random::getSimulationSeed());
 }
@@ -175,6 +185,7 @@ void TetrisCode::myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
     {
         nbTmn = msgData;
         nbFBack = 0;
+        nbFree = 0;
         if (appear_module)
         {
             stringstream strstm;
@@ -265,14 +276,16 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
                 movement = GO_LEFT;
                 goingLeft = false;
             }
-            // else if (turnCK)
-            // {
-            //     movement = ROT_CK;
-            // }
-            // else if (turnCounterCK)
-            // {
-            //     movement = ROT_COUNTER_CK;
-            // }
+            else if (turnCK)
+            {
+                movement = ROT_CK;
+                turnCK = false;
+            }
+            else if (turnCounterCK)
+            {
+                movement = ROT_COUNTER_CK;
+                turnCounterCK = false;
+            }
             else
             {
                 movement = DOWN;
@@ -658,11 +671,11 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
                     init = true;
                 }
             }
-            else if (msgData.movement == ROT_CK && (position == 3 || position == 4))
+            else if (msgData.movement == ROT_CK && position != 1)
             {
                 init = true;
             }
-            else if (msgData.movement == ROT_COUNTER_CK && (position == 2 || position == 4))
+            else if (msgData.movement == ROT_COUNTER_CK && position != 1)
             {
                 init = true;
             }
@@ -711,122 +724,195 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
         //The module that starts the update of the tetramino is on the bottom of the pixel so that it can send the position 1 to the future position 1
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
-            TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFBack, goingRight, goingLeft, turnCK, turnCounterCK);
-            data.nbupdate += 1;
-            P2PNetworkInterface *i = nullptr;
-            leaderBlockCode = nullptr;
-            if (movement == DOWN)
+            if (movement == DOWN || movement == GO_LEFT || movement == GO_RIGHT)
             {
-                i = bottomItf;
-            }
-            else if (movement == GO_RIGHT)
-            {
-                i = rightItf;
-            }
-            else if (movement == GO_LEFT)
-            {
-                i = leftItf;
-            }
-            else
-            {
-                i = bottomItf;
-            }
-            if (tmn == 1)
-            {
-                if (i != nullptr && i->isConnected())
+                TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFBack, goingRight, goingLeft, turnCK, turnCounterCK);
+                data.nbupdate += 1;
+                P2PNetworkInterface *i = nullptr;
+                leaderBlockCode = nullptr;
+                if (movement == DOWN)
                 {
-                    sendMessage("Update Tmn 1 Message", new MessageOf<TmnData>(START_TMN1_MSG_ID, data), i, 0, 0);
+                    i = bottomItf;
                 }
-            }
-            else if (tmn == 2)
-            {
-                if (i != nullptr && i->isConnected())
+                else if (movement == GO_RIGHT)
                 {
-                    sendMessage("Update Tmn 2 Message", new MessageOf<TmnData>(START_TMN2_MSG_ID, data), i, 0, 0);
+                    i = rightItf;
                 }
-            }
-            else if (tmn == 3)
-            {
-                if (i != nullptr && i->isConnected())
+                else if (movement == GO_LEFT)
                 {
-                    sendMessage("Update Tmn 3 Message", new MessageOf<TmnData>(START_TMN3_MSG_ID, data), i, 0, 0);
+                    i = leftItf;
                 }
-            }
-            else if (tmn == 4)
-            {
-                if (i != nullptr && i->isConnected())
+                else
                 {
-                    sendMessage("Update Tmn 4 Message", new MessageOf<TmnData>(START_TMN4_MSG_ID, data), i, 0, 0);
+                    i = bottomItf;
                 }
-            }
-            else if (tmn == 5)
-            {
-                if (i != nullptr && i->isConnected())
+                if (tmn == 1)
                 {
-                    sendMessage("Update Tmn 5 Message", new MessageOf<TmnData>(START_TMN5_MSG_ID, data), i, 0, 0);
+                    if (i != nullptr && i->isConnected())
+                    {
+                        sendMessage("Update Tmn 1 Message", new MessageOf<TmnData>(START_TMN1_MSG_ID, data), i, 0, 0);
+                    }
                 }
-            }
-            else if (tmn == 6)
-            {
-                if (i != nullptr && i->isConnected())
+                else if (tmn == 2)
                 {
-                    sendMessage("Update Tmn 6 Message", new MessageOf<TmnData>(START_TMN6_MSG_ID, data), i, 0, 0);
+                    if (i != nullptr && i->isConnected())
+                    {
+                        sendMessage("Update Tmn 2 Message", new MessageOf<TmnData>(START_TMN2_MSG_ID, data), i, 0, 0);
+                    }
                 }
-            }
-            else if (tmn == 7)
-            {
-                if (i != nullptr && i->isConnected())
+                else if (tmn == 3)
                 {
-                    sendMessage("Update Tmn 7 Message", new MessageOf<TmnData>(START_TMN7_MSG_ID, data), i, 0, 0);
+                    if (i != nullptr && i->isConnected())
+                    {
+                        sendMessage("Update Tmn 3 Message", new MessageOf<TmnData>(START_TMN3_MSG_ID, data), i, 0, 0);
+                    }
                 }
-            }
+                else if (tmn == 4)
+                {
+                    if (i != nullptr && i->isConnected())
+                    {
+                        sendMessage("Update Tmn 4 Message", new MessageOf<TmnData>(START_TMN4_MSG_ID, data), i, 0, 0);
+                    }
+                }
+                else if (tmn == 5)
+                {
+                    if (i != nullptr && i->isConnected())
+                    {
+                        sendMessage("Update Tmn 5 Message", new MessageOf<TmnData>(START_TMN5_MSG_ID, data), i, 0, 0);
+                    }
+                }
+                else if (tmn == 6)
+                {
+                    if (i != nullptr && i->isConnected())
+                    {
+                        sendMessage("Update Tmn 6 Message", new MessageOf<TmnData>(START_TMN6_MSG_ID, data), i, 0, 0);
+                    }
+                }
+                else if (tmn == 7)
+                {
+                    if (i != nullptr && i->isConnected())
+                    {
+                        sendMessage("Update Tmn 7 Message", new MessageOf<TmnData>(START_TMN7_MSG_ID, data), i, 0, 0);
+                    }
+                }
 
-            //Reinitialization if needed : the deciding module never recieved the reinitpixmsg (it sent it)
-            //so it never calculated if it needs reinitialization
-            // int rot1 = 0; // non used in the end
-            int rot2 = 0;
-            int rot3 = 0;
-            int rot4 = 0;
-            if (movement == DOWN)
-            {
-                // rot1 = NORTH;
-                rot2 = EAST;
-                rot3 = SOUTH;
-                rot4 = WEST;
+                //Reinitialization if needed : the deciding module never recieved the reinitpixmsg (it sent it)
+                //so it never calculated if it needs reinitialization
+                // int rot1 = 0; // non used in the end
+                int rot2 = 0;
+                int rot3 = 0;
+                int rot4 = 0;
+                if (movement == DOWN)
+                {
+                    // rot1 = NORTH;
+                    rot2 = EAST;
+                    rot3 = SOUTH;
+                    rot4 = WEST;
+                }
+                else if (movement == GO_RIGHT)
+                {
+                    // rot1 = WEST;
+                    rot2 = NORTH;
+                    rot3 = EAST;
+                    rot4 = SOUTH;
+                }
+                else if (movement == GO_LEFT)
+                {
+                    //rot1 = EAST;
+                    rot2 = SOUTH;
+                    rot3 = WEST;
+                    rot4 = NORTH;
+                }
+                if ((tmn == 1 && (movement == GO_RIGHT || movement == DOWN)) ||
+                    ((tmn == 2 || tmn == 3 || tmn == 4) && (rotation == rot2 || rotation == rot4)) ||
+                    (tmn == 5 && rotation == rot3) ||
+                    (tmn == 6 && (rotation == rot3 || rotation == rot2)) ||
+                    (tmn == 7 && (rotation == rot3 || rotation == rot4)))
+                {
+                    tmn = NO_TMN;
+                    rotation = NO_ROTATION;
+                    position = NO_POSITION;
+                    color = NO_COLOR;
+                    update = 0;
+                    init = false;
+                    nbBackMsg = 0;
+                    nbReinit = 0;
+                    nbReinitBackMsg = 0;
+                    nbFBack = 0;
+                    nbFree = 0;
+                    nbTmnBackMsg = 0;
+                    module->setColor(Colors[color]);
+                }
             }
-            else if (movement == GO_RIGHT)
+            else if (movement == ROT_CK || movement == ROT_COUNTER_CK)
             {
-                // rot1 = WEST;
-                rot2 = NORTH;
-                rot3 = EAST;
-                rot4 = SOUTH;
-            }
-            else if (movement == GO_LEFT)
-            {
-                //rot1 = EAST;
-                rot2 = SOUTH;
-                rot3 = WEST;
-                rot4 = NORTH;
-            }
-            if ((tmn == 1 && (movement == GO_RIGHT || movement == DOWN)) ||
-                ((tmn == 2 || tmn == 3 || tmn == 4) && (rotation == rot2 || rotation == rot4)) ||
-                (tmn == 5 && rotation == rot3) ||
-                (tmn == 6 && (rotation == rot3 || rotation == rot2)) ||
-                (tmn == 7 && (rotation == rot3 || rotation == rot4)))
-            {
-                tmn = NO_TMN;
-                rotation = NO_ROTATION;
-                position = NO_POSITION;
-                color = NO_COLOR;
-                update = 0;
-                init = false;
-                nbBackMsg = 0;
-                nbReinit = 0;
-                nbReinitBackMsg = 0;
-                nbFBack = 0;
-                nbFree = 0;
-                nbTmnBackMsg = 0;
-                module->setColor(Colors[color]);
+                update += 1;
+                if (movement == ROT_CK)
+                {
+                    if (rotation == NORTH)
+                    {
+                        rotation = EAST;
+                    }
+                    else if (rotation == EAST)
+                    {
+                        rotation = SOUTH;
+                    }
+                    else if (rotation == SOUTH)
+                    {
+                        rotation = WEST;
+                    }
+                    else if (rotation == WEST)
+                    {
+                        rotation = NORTH;
+                    }
+                }
+                else if (movement == ROT_COUNTER_CK)
+                {
+                    if (rotation == NORTH)
+                    {
+                        rotation = WEST;
+                    }
+                    else if (rotation == EAST)
+                    {
+                        rotation = NORTH;
+                    }
+                    else if (rotation == SOUTH)
+                    {
+                        rotation = EAST;
+                    }
+                    else if (rotation == WEST)
+                    {
+                        rotation = SOUTH;
+                    }
+                }
+                if (tmn == 1)
+                {
+                    sendTmn1(false);
+                }
+                else if (tmn == 2)
+                {
+                    sendTmn2(false);
+                }
+                else if (tmn == 3)
+                {
+                    sendTmn3(false);
+                }
+                else if (tmn == 4)
+                {
+                    sendTmn4(false);
+                }
+                else if (tmn == 5)
+                {
+                    sendTmn5(false);
+                }
+                else if (tmn == 6)
+                {
+                    sendTmn6(false);
+                }
+                else if (tmn == 7)
+                {
+                    sendTmn7(false);
+                }
             }
         }
         else if (parent != nullptr && parent->isConnected())
@@ -1327,6 +1413,335 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
     }
 }
 
+void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
+{
+    if (verif.rotation == NORTH)
+    {
+        itf[northId] = topItf;
+        itf[eastId] = rightItf;
+        itf[southId] = bottomItf;
+        itf[westId] = leftItf;
+        northBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+    }
+    else if (verif.rotation == EAST)
+    {
+        itf[northId] = rightItf;
+        itf[eastId] = bottomItf;
+        itf[southId] = leftItf;
+        itf[westId] = topItf;
+        northBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+    }
+    else if (verif.rotation == SOUTH)
+    {
+        itf[northId] = bottomItf;
+        itf[eastId] = leftItf;
+        itf[southId] = topItf;
+        itf[westId] = rightItf;
+        northBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+    }
+    else if (verif.rotation == WEST)
+    {
+        itf[northId] = leftItf;
+        itf[eastId] = topItf;
+        itf[southId] = rightItf;
+        itf[westId] = bottomItf;
+        northBool = roleInPixel == LEFT_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+        eastBool = roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE;
+        southBool = roleInPixel == RIGHT_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+        westBool = roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+    }
+
+    int cur_dir = verif.directions.at(verif.current_dir);
+    P2PNetworkInterface *i = itf[northId];
+    if (cur_dir == NORTH)
+    {
+        if (northBool)
+        {
+            if (i != nullptr && i->isConnected())
+            {
+                verif.current_dir += 1;
+                sendMessage("Far Verif", new MessageOf<farVerif>(FAR_VERIF_MSG_ID, verif), i, 0, 0);
+            }
+            else if (sender != nullptr && sender->isConnected()) //if the target module isn't connected, it means that it is not free
+            {
+                verif.answer = OCCUPIED;
+                nbFBack = nbFree + 1;
+                verif.id = nbFBack;
+                sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, verif), sender, 0, 0);
+            }
+            else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
+            {
+                farVerifications.pop_back();
+                if (farVerifications.size() == 0)
+                {
+                    //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
+                    updateOfTmn();
+                }
+                else //send the next verification
+                {
+                    farVerif v = farVerifications.back();
+                    nbFree += 1;
+                    v.id = nbFree;
+                    sendFarVerif(v, nullptr);
+                }
+            }
+        }
+        else if (i != nullptr && i->isConnected())
+        {
+            sendMessage("Far Verif", new MessageOf<farVerif>(FAR_VERIF_MSG_ID, verif), i, 0, 0);
+        }
+    }
+    else if (cur_dir == EAST)
+    {
+        i = itf[eastId];
+        if (eastBool)
+        {
+            if (i != nullptr && i->isConnected())
+            {
+                verif.current_dir += 1;
+                sendMessage("Far Verif", new MessageOf<farVerif>(FAR_VERIF_MSG_ID, verif), i, 0, 0);
+            }
+            else if (sender != nullptr && sender->isConnected()) //if the target module isn't connected, it means that it is not free
+            {
+                verif.answer = OCCUPIED;
+                nbFBack = nbFree + 1;
+                verif.id = nbFBack;
+                sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, verif), sender, 0, 0);
+            }
+            else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
+            {
+                farVerifications.pop_back();
+                if (farVerifications.size() == 0)
+                {
+                    //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
+                    updateOfTmn();
+                }
+                else //send the next verification
+                {
+                    farVerif v = farVerifications.back();
+                    nbFree += 1;
+                    v.id = nbFree;
+                    sendFarVerif(v, nullptr);
+                }
+            }
+        }
+        else if (i != nullptr && i->isConnected())
+        {
+            sendMessage("Far Verif", new MessageOf<farVerif>(FAR_VERIF_MSG_ID, verif), i, 0, 0);
+        }
+    }
+    else if (cur_dir == SOUTH)
+    {
+        i = itf[southId];
+        if (southBool)
+        {
+            if (i != nullptr && i->isConnected())
+            {
+                verif.current_dir += 1;
+                sendMessage("Far Verif", new MessageOf<farVerif>(FAR_VERIF_MSG_ID, verif), i, 0, 0);
+            }
+            else if (sender != nullptr && sender->isConnected()) //if the target module isn't connected, it means that it is not free
+            {
+                verif.answer = OCCUPIED;
+                nbFBack = nbFree + 1;
+                verif.id = nbFBack;
+                sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, verif), sender, 0, 0);
+            }
+            else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
+            {
+                farVerifications.pop_back();
+                if (farVerifications.size() == 0)
+                {
+                    //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
+                    updateOfTmn();
+                }
+                else //send the next verification
+                {
+                    farVerif v = farVerifications.back();
+                    nbFree += 1;
+                    v.id = nbFree;
+                    sendFarVerif(v, nullptr);
+                }
+            }
+        }
+        else if (i != nullptr && i->isConnected())
+        {
+            sendMessage("Far Verif", new MessageOf<farVerif>(FAR_VERIF_MSG_ID, verif), i, 0, 0);
+        }
+    }
+    else if (cur_dir == WEST)
+    {
+        i = itf[westId];
+        if (westBool)
+        {
+            if (i != nullptr && i->isConnected())
+            {
+                verif.current_dir += 1;
+                sendMessage("Far Verif", new MessageOf<farVerif>(FAR_VERIF_MSG_ID, verif), i, 0, 0);
+            }
+            else if (sender != nullptr && sender->isConnected()) //if the target module isn't connected, it means that it is not free
+            {
+                verif.answer = OCCUPIED;
+                nbFBack = nbFree + 1;
+                verif.id = nbFBack;
+                sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, verif), sender, 0, 0);
+            }
+            else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
+            {
+                farVerifications.pop_back();
+                if (farVerifications.size() == 0)
+                {
+                    //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
+                    updateOfTmn();
+                }
+                else //send the next verification
+                {
+                    farVerif v = farVerifications.back();
+                    nbFree += 1;
+                    v.id = nbFree;
+                    sendFarVerif(v, nullptr);
+                }
+            }
+        }
+        else if (i != nullptr && i->isConnected())
+        {
+            sendMessage("Far Verif", new MessageOf<farVerif>(FAR_VERIF_MSG_ID, verif), i, 0, 0);
+        }
+    }
+}
+
+void TetrisCode::myFarVerifMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<farVerif> *msg = static_cast<MessageOf<farVerif> *>(_msg.get());
+    farVerif msgData = *msg->getData();
+    if (msgData.id > nbFree)
+    {
+        nbFree = msgData.id;
+        if (tmn == PIXEL_NON_VALID) // If the module belongs to a non valid pixel, the rotation isn't possible.
+        {
+            msgData.answer = OCCUPIED;
+            msgData.current_dir -= 1;
+            nbBackMsg = nbFree + 1;
+            if (sender != nullptr && sender->isConnected())
+            {
+                sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, msgData), sender, 0, 0);
+            }
+        }
+        else if (msgData.current_dir >= msgData.directions.size()) // if the current direction is out of bounds, this module belongs to the verified pixel
+        {
+            if (tmn == NO_TMN)
+            {
+                msgData.answer = FREE;
+            }
+            else
+            {
+                msgData.answer = OCCUPIED;
+            }
+            msgData.current_dir -= 2;
+            nbBackMsg = nbFree + 1;
+            if (sender != nullptr && sender->isConnected())
+            {
+                sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, msgData), sender, 0, 0);
+            }
+        }
+        else //otherwise, this module needs to spread the verification in the right direction.
+        {
+            parent = sender;
+            sendFarVerif(msgData, sender);
+        }
+    }
+}
+
+void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<farVerif> *msg = static_cast<MessageOf<farVerif> *>(_msg.get());
+    farVerif msgData = *msg->getData();
+
+    if (msgData.id > nbFBack)
+    {
+        nbFBack = msgData.id;
+
+        if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) // if this module is the deciding module
+        {
+
+            if (msgData.answer == FREE) // if the answer is free, the verifications can continue.
+            //Otherwise, the tetramino is stuck, and an other one has to be started.
+            {
+                farVerifications.pop_back();
+                if (farVerifications.size() == 0)
+                {
+                    //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
+                    updateOfTmn();
+                }
+                else //send the next verification
+                {
+                    farVerif v = farVerifications.back();
+                    nbFree += 1;
+                    v.id = nbFree;
+                    sendFarVerif(v, nullptr);
+                }
+            }
+            else // if one verification is false, the movement cannot be done. A new tetramino is started
+            {
+                if (movement != DOWN) //if the movement cannot be done, the tetramino may still be able to go down
+                {
+                    movement = DOWN;
+                    if (tmn == 1)
+                    {
+                        verifTmn1();
+                    }
+                    else if (tmn == 2)
+                    {
+                        verifTmn2();
+                    }
+                    else if (tmn == 3)
+                    {
+                        verifTmn3();
+                    }
+                    else if (tmn == 4)
+                    {
+                        verifTmn4();
+                    }
+                    else if (tmn == 5)
+                    {
+                        verifTmn5();
+                    }
+                    else if (tmn == 6)
+                    {
+                        verifTmn6();
+                    }
+                    else if (tmn == 7)
+                    {
+                        verifTmn7();
+                    }
+                }
+                else
+                {
+                    nbTmn += 1;
+                    sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                }
+            }
+        }
+        else //otherwise, this module needs to spread the answer in the right direction.
+        {
+
+            if (parent != nullptr && parent->isConnected())
+            {
+                sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, msgData), parent, 0, 0);
+            }
+        }
+    }
+}
+
 void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
 {
     std::shared_ptr<Message> message;
@@ -1375,15 +1790,17 @@ void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
         }
         break;
     case charTurnCK:
-        turnCK = true;
-        goingLeft = false;
-        goingRight = false;
-        turnCounterCK = false;
+        if (leaderBlockCode != nullptr)
+        {
+            leaderBlockCode->cwRotKeyHandler();
+        }
+        break;
     case charTurnCCK:
-        turnCounterCK = true;
-        goingLeft = false;
-        goingRight = false;
-        turnCK = false;
+        if (leaderBlockCode != nullptr)
+        {
+            leaderBlockCode->counterCwRotKeyHandler();
+        }
+        break;
     }
 };
 
@@ -1401,4 +1818,20 @@ void TetrisCode::leftMvtKeyHandler()
     goingLeft = true;
     turnCK = false;
     turnCounterCK = false;
+};
+
+void TetrisCode::cwRotKeyHandler()
+{
+    turnCK = true;
+    goingLeft = false;
+    goingRight = false;
+    turnCounterCK = false;
+};
+
+void TetrisCode::counterCwRotKeyHandler()
+{
+    turnCounterCK = true;
+    goingLeft = false;
+    goingRight = false;
+    turnCK = false;
 };

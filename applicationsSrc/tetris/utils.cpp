@@ -104,6 +104,28 @@ public:
     }
 };
 
+class farVerif
+{
+public:
+    int id;
+    int answer = 0; //=NO_ANSWER
+    unsigned int current_dir;
+    std::vector<int> directions;
+    int rotation;
+
+    farVerif(int i, int c_dir, std::vector<int> dirs, int rot)
+    {
+        id = i;
+        current_dir = c_dir;
+        directions = dirs;
+        rotation = rot;
+    }
+
+    farVerif()
+    {
+    }
+};
+
 /*
 stringstream strstm;
 strstm << "Role is BL corner";
