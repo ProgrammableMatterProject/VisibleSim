@@ -10,7 +10,6 @@
                              -------------------
     copyright            : (C) 2011 by Benoît Piranda
     email                : benoit.piranda@univ-fcomte.fr
- LASELDI / Universite de Franche-Comté
  ***************************************************************************/
 
 #include "camera.h"

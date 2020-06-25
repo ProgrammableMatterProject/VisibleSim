@@ -9,8 +9,8 @@
 #include <string>
 #include <cmath>
 #include "../../simulatorCore/src/gui/objLoader.h"
+#include "../../simulatorCore/src/gui/camera.h"
 using namespace std;
-
 
 /*********************************************************/
 /* prototypes                                            */
@@ -44,7 +44,8 @@ static GLfloat black[4] = { 0.0f, 0.0f, 0.0f, 1.0f}; // black color material
 
 int width=1024,height=600,toolHeight=120,separ=24; // initial size of the screen
 const float cameraPos[] = {5.0f,2.0f,8.0f};
-float cameraTheta=0.0f, cameraPhi=0.0f, cameraDist=50.0f; // spherical coordinates of the point of view
+//float cameraTheta=0.0f, cameraPhi=0.0f, cameraDist=50.0f; // spherical coordinates of the point of view
+Camera camera(30,30,50.0f);
 float rotationAngle=0; // rotation angle of the teapot /z
 int mouseX0,mouseY0;
 GLint topWindow;
@@ -83,12 +84,6 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
     topWindow=glutCreateWindow("VisibleSim Replayer");
 
-
-    initShaders(enableShadows);
-
-    std::string versionString = std::string((const char*)glGetString(GL_VERSION));
-    cout << "Opengl Version: " << versionString << endl;
-
     glutDisplayFunc(drawFunc);
     /* bind reshape function */
     glutReshapeFunc(reshapeFunc);
@@ -106,7 +101,6 @@ int main(int argc, char** argv) {
     /* bind close function */
     glutCloseFunc(quit);
 
-
     // sub windows
     mainWindow = glutCreateSubWindow(topWindow,0,0,width,height);
     glutDisplayFunc(drawFuncMW);
@@ -119,14 +113,12 @@ int main(int argc, char** argv) {
 
     initGL();
 
-    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures","smartBlockSimple.obj");
 
     toolsWindow = glutCreateSubWindow(topWindow, 0,height+separ,width, toolHeight);
     glutDisplayFunc(drawFuncTW);
     glutReshapeFunc(reshapeFuncTW);
     glutKeyboardFunc(kbdFunc);
     glutMouseFunc(mouseFuncTW);
-    initGL();
 
 //	glutFullScreen();
 //  glutSetCursor(GLUT_CURSOR_NONE); // allow to hide cursor
@@ -188,14 +180,8 @@ static void drawFuncMW(void) {
     glClearColor(0.2f,0.2f,0.2f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    noshadowRenderingStart(&camera);
     glPushMatrix();
-    double x = cameraDist*cos(cameraTheta)*cos(cameraPhi);
-    double y  = cameraDist*sin(cameraTheta)*cos(cameraPhi);
-    double z = cameraDist*sin(cameraPhi);
-    gluLookAt(x,y,z,0,0,0,0,0,1.0);
-
-    GLfloat pos[4] = { 0.0f, 0.0f, 5.0f, 1.0f}; // position
-    glLightfv(GL_LIGHT0, GL_POSITION, pos );
 
     glPushMatrix();
         glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,blue);
@@ -215,14 +201,15 @@ static void drawFuncMW(void) {
         glRotatef(rotationAngle,0.0f,0.0f,1.0f);
         glPushMatrix();
             glRotatef(90.0,1.0f,0.0f,0.0f);
-            //glutSolidTeapot(1.0f);
-            objBlock->glDraw();
+            glutSolidTeapot(1.0f);
+            //objBlock->glDraw();
 
             //glutSolidCone(0.5,2.0,10,1);
         glPopMatrix();
     glPopMatrix();
 
     glPopMatrix();
+    noshadowRenderingStop();
     glutSwapBuffers();
 }
 
@@ -562,13 +549,17 @@ void updateSubWindows() {
 static void reshapeFuncMW(int w,int h) {
     cout << "reshapeMW:" << w << "," << h << endl;
     glViewport(0,0,w,h);
-    // initialize Projection matrix
+
+    camera.setW_H(double(w)/double(h));
+    // size of the OpenGL drawing area
+    glViewport(0,0,w,h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(30.0,(double)width/(double)height,0.1,100.0);
-    // initialize ModelView matrix
+    camera.glProjection();
+    // camera intrinsic parameters
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
 }
 
 static void reshapeFuncTW(int w,int h) {
@@ -614,12 +605,6 @@ static void kbdFunc(unsigned char c, int x, int y) {
         case 'F' :
             glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
             break;
-        case '+' :
-            cameraDist+=0.10f;
-            break;
-        case '-' :
-            cameraDist-=0.10f;
-            break;
     }
     glutPostWindowRedisplay(mainWindow);
 }
@@ -660,9 +645,6 @@ static void mouseFunc(int button,int state,int x,int y) {
 /* Mouse move function (with button pressed)             */
 /* x,y: mouse coordinates                                */
 static void motionFuncMW(int x,int y) {
-    cameraTheta += (x-mouseX0)*0.01f;
-    cameraPhi += (y-mouseY0)*0.01f;
-
     mouseX0=x;
     mouseY0=y;
     glutPostWindowRedisplay(mainWindow);
@@ -685,23 +667,17 @@ static void mouseFuncTW(int button,int state,int x,int y)
 /*********************************************************/
 /* Initialisation of the OPENGL window and parameters    */
 static void initGL() {
-    glEnable(GL_DEPTH_TEST);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_NORMALIZE); // auto-normalize normal vectors
+    initShaders(enableShadows);
 
-    glClearColor(0.0,0.0,0.0,0.0); // background color
+    camera.setNearFar(1.0,1000.0);
+    camera.setTarget(Vector3D(0,0,0));
+    camera.setAngle(50.0);
+    camera.setLightParameters(Vector3D(0,0,0.0),80,80,50,20,1,1000);
+    std::string versionString = std::string((const char*)glGetString(GL_VERSION));
+    cout << "Opengl Version: " << versionString << endl;
 
-    glEnable(GL_LIGHTING);
-    /* LIGHT0 light source parameters */
-    GLfloat pos[4] = { 0.0f, 0.0f, 5.0f, 1.0f}; // position
-    GLfloat light_diffuse[4] = {1.0f, 1.0f, 1.0f, 1.0f}; // colors
-    GLfloat light_ambient[4] = {0.2f, 0.2f, 0.2f, 1.0f};
+    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures","smartBlockSimple.obj");
 
-    glEnable(GL_LIGHT0);
-    glLightfv(GL_LIGHT0, GL_POSITION, pos );
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_diffuse);
 }
 
 static void quit() {
