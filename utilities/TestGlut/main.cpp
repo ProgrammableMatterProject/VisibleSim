@@ -125,7 +125,7 @@ int main(int argc, char** argv) {
     glutKeyboardFunc(kbdFunc);
     glutMouseFunc(mouseFuncTW);
     glutMotionFunc(motionFuncTW);
-    initGL();
+    //initGL();
 
 //	glutFullScreen();
 //  glutSetCursor(GLUT_CURSOR_NONE); // allow to hide cursor
