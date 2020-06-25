@@ -45,11 +45,9 @@ static GLfloat black[4] = { 0.0f, 0.0f, 0.0f, 1.0f}; // black color material
 
 int width=1024,height=600,toolHeight=120,separ=24; // initial size of the screen
 int keyboardModifier=0;
-const float cameraPos[] = {5.0f,2.0f,8.0f};
 //float cameraTheta=0.0f, cameraPhi=0.0f, cameraDist=50.0f; // spherical coordinates of the point of view
 Camera camera(30,30,50.0f);
 float rotationAngle=0; // rotation angle of the teapot /z
-int mouseX0,mouseY0;
 GLint topWindow;
 GLint mainWindow;
 GLint toolsWindow;
@@ -208,12 +206,11 @@ static void drawFuncMW(void) {
     glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,grey);
     glPushMatrix();
         glRotatef(rotationAngle,0.0f,0.0f,1.0f);
+        glScalef(0.1f,0.1f,0.1f);
         glPushMatrix();
-            glRotatef(90.0,1.0f,0.0f,0.0f);
-            glutSolidTeapot(1.0f);
-            //objBlock->glDraw();
-
-            //glutSolidCone(0.5,2.0,10,1);
+            objBlock->glDraw();
+            glTranslatef(25.0f,0,0);
+            objBlock->glDraw();
         glPopMatrix();
     glPopMatrix();
 
@@ -229,7 +226,6 @@ void drawString(int ix,int iy,char* str) {
         str++;
     }
 }
-
 
 /*********************************************************/
 /* frame drawing function                                */
@@ -566,7 +562,6 @@ static void reshapeFuncMW(int w,int h) {
     // camera intrinsic parameters
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
 }
 
 static void reshapeFuncTW(int w,int h) {
@@ -667,8 +662,6 @@ static void mouseFunc(int button,int state,int x,int y) {
         updateSubWindows();
         glutPostWindowRedisplay(topWindow);
     }
-    mouseX0=x;
-    mouseY0=y;
 }
 
 /*********************************************************/
@@ -705,8 +698,7 @@ static void motionFuncTW(int x,int y)
     }
     glutPostWindowRedisplay(toolsWindow);
 }
-static void mouseFuncTW(int button,int state,int x,int y)
-{
+static void mouseFuncTW(int button,int state,int x,int y) {
 
     if(x>=offsetX*width && x<= width*(1-offsetX))
     {
@@ -736,15 +728,15 @@ static void mouseFuncTW(int button,int state,int x,int y)
 static void initGL() {
     initShaders(enableShadows);
 
+    camera.setDirection(0,30);
     camera.setNearFar(1.0,1000.0);
     camera.setTarget(Vector3D(0,0,0));
     camera.setAngle(10.0);
-    camera.setLightParameters(Vector3D(0,0,0.0),80,80,50,20,1,1000);
+    camera.setLightParameters(Vector3D(0.0,0.0,0.0),80.0,50.0,50.0,50.0,1.0,1000.0);
     std::string versionString = std::string((const char*)glGetString(GL_VERSION));
     cout << "Opengl Version: " << versionString << endl;
 
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures","smartBlockSimple.obj");
-
 }
 
 static void quit() {

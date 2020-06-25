@@ -113,7 +113,6 @@ void initShaders(bool activateShadows) {
     } else {
       shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
                                   "../../simulatorCore/resources/shaders/pointtex.frag");
-
     }
 
     glEnable(GL_CULL_FACE);
@@ -167,6 +166,7 @@ void initShaders(bool activateShadows) {
 #ifdef DEBUG_GRAPHICS
   OUTPUT << "Shaders initialized." << endl;
 #endif
+    cout << "Shaders initialized." << endl;
 }
 
 void shadowedRenderingStep1(Camera *camera) {
@@ -295,10 +295,12 @@ GLint shaderCompilationStatus(GLhandleARB shader) {
 #ifdef DEBUG_GRAPHICS
         OUTPUT << "warning: Impossible de compiler le program :\n" << log  <<endl;
 #endif
+        cout << "warning: Impossible de compiler le program :\n" << log  <<endl;
     } else {
 #ifdef DEBUG_GRAPHICS
         OUTPUT << "compilation OK" << endl;
 #endif
+        cout << "compilation OK" << endl;
     }
     return compile_status;
 }
