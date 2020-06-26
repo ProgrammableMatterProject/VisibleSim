@@ -31,13 +31,14 @@ void ReplayGlutContext::quit() {
 void ReplayGlutContext::reshapeFunc(int w,int h) {
     cout << "reshapeFunc:" << w << "," << h << endl;
     width=w;
-    height = toolsWinOpened? h-toolHeight-separ:h-separ;
+    height = toolsWinOpened ? h-toolHeight-separ:h-separ;
 
     glViewport(0,0,w,h);
     // initialize Projection matrix
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0,w,0,h,0.0,1.0);
+
     // initialize ModelView matrix
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -71,13 +72,12 @@ void ReplayGlutContext::reshapeFuncMW(int w,int h) {
     glViewport(0,0,w,h);
 
     camera->setW_H(double(w)/double(h));
-    // size of the OpenGL drawing area
-    //glViewport(0,0,w,h);
 
+    // size of the OpenGL drawing area
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     camera->glProjection();
-    //gluPerspective(30.0,(double)width/(double)height,0.1,100.0);
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -85,10 +85,12 @@ void ReplayGlutContext::reshapeFuncMW(int w,int h) {
 void ReplayGlutContext::reshapeFuncTW(int w,int h) {
     cout << "reshapeTW:" << w << "," << h << endl;
     glViewport(0,0,w,h);
+
     // initialize Projection matrix
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0,w,0,h,0.0,1.0);
+
     // initialize ModelView matrix
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -101,12 +103,8 @@ void ReplayGlutContext::idleFunc(void) {
     int currentTime = glutGet(GLUT_ELAPSED_TIME);
 
     float dt= static_cast<float>(currentTime-initTime)/1000.0f;
-
-//	sprintf_s(chaineFPS,"FR : %lf",1.0/dt);
     initTime = currentTime;
-
     rotationAngle += dt*20.0f; // turn at 20° / s
-// cout << "rotationAngle=" << rotationAngle << endl;
     glutPostWindowRedisplay(mainWindow);
 }
 
@@ -213,14 +211,12 @@ void ReplayGlutContext::motionFuncTW(int x,int y)
                 world->setCurrentTime((x - timelineOffset*timelineX-offsetX*width)*world->getExportDuration()/
                                       (width*(1-2*offsetX)-2*timelineX*timelineOffset));
             }
-
         }
     }
     glutPostWindowRedisplay(toolsWindow);
 }
 void ReplayGlutContext::mouseFuncTW(int button,int state,int x,int y)
 {
-
     if(x>=offsetX*width && x<= width*(1-offsetX))
     {
         if(y>=offsetY*toolHeight && y<= toolHeight*(timelineHeight+offsetY))
@@ -247,35 +243,8 @@ void ReplayGlutContext::mouseFuncTW(int button,int state,int x,int y)
 void ReplayGlutContext::init(int argc, char *argv[])
 {
 
-    //Variables initialization
-    width = 1024;
-    height = 600;
-    toolHeight = 120;
-    separ = 24;
-    offsetX = 0.01f;
-    offsetY = 0.1f;
-    timelineHeight = 0.5f;
-    timelineOffset = 0.05f;
-    toolsSeparationY = 0.05f;
-    toolsButtonSize = 0.3f;
-    toolbarOffsetX = 0.30f;
-    buttonSeparation = 0.005f;
-    recButtonOffset = 0.1f;
-    timelineX = width * (1 - 2 * offsetX);
-    timelineY = timelineHeight * toolHeight;
-    //world = replayWorld;
-
-    //camera = new Camera(30,30,50.0f);
-
-
-    /*cameraTheta = 0.0f;
-    cameraPhi = 0.0f;
-    cameraDist = 50.0f; // spherical coordinates of the point of view*/
-    rotationAngle = 0; // rotation angle of the teapot /z
-    toolsWinOpened = true;
-    enableShadows = false;
-
     glutInit(&argc, argv);
+
     // create the window
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(width,height+toolHeight+separ);
@@ -320,10 +289,9 @@ void ReplayGlutContext::init(int argc, char *argv[])
     glutKeyboardFunc(kbdFunc);
     glutMouseFunc(mouseFuncTW);
     glutMotionFunc(motionFuncTW);
-    //initGL();
 
-//	glutFullScreen();
-//  glutSetCursor(GLUT_CURSOR_NONE); // allow to hide cursor
+    //	glutFullScreen();
+    //  glutSetCursor(GLUT_CURSOR_NONE); // allow to hide cursor
 
 
 }
@@ -425,10 +393,7 @@ void ReplayGlutContext::drawFuncMW(void) {
         glPopMatrix();
     glPopMatrix();
 
-//    cout<<"----------------"<<endl;
-//    cout<<"world->objBlock : "<<world->objBlock<<endl;
-//    cout<<"objBlock : "<<objBlock<<endl;
-//    cout<<"----------------"<<endl;
+
 
 
     glPopMatrix();
@@ -450,8 +415,6 @@ void ReplayGlutContext::drawString(int ix,int iy,char* str) {
 /* frame drawing function                                */
 void ReplayGlutContext::drawFuncTW(void) {
     cout << "draw TW" << endl;
-    //char str[50];
-
 
     glClearColor(0.5f,0.5f,0.5f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -557,6 +520,7 @@ void ReplayGlutContext::drawFuncTW(void) {
 
     //TODO adater à la fenetre mieux
     glTranslatef(width*recButtonOffset,0,0);
+
     //Start sequence button
     drawNextButtonSquare();
     glColor3fv(black);
@@ -601,10 +565,6 @@ void ReplayGlutContext::drawFuncTW(void) {
     glEnd();
     glPopMatrix();
 
-
-//    sprintf(str,"angle = %6.1f",rotationAngle);
-//    drawString(40,20,str);
-
     glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
 
@@ -626,7 +586,6 @@ void ReplayGlutContext::drawTimeline()
     //calcul de la timeline
 
     float power = floor(log10(world->getExportDuration()));
-    //float power = world->getExportDuration();
     float firstDigit = world->getExportDuration()/(pow(10,power));
     float stepDuration;
     char str[50];
@@ -659,16 +618,13 @@ void ReplayGlutContext::drawTimeline()
         {
             stepHeight = 0.6f;
         }
-
         glBegin(GL_LINES);
         glVertex2i(xPosition,stepHeight*timelineY);
         glVertex2i(xPosition,0.4*timelineY);
         glEnd();
-
     }
 
-
-    cout << "DEBUG : "<<stepDuration<<" SUITE :"<<stepCount<<endl;
+    //cout << "DEBUG : "<<stepDuration<<" SUITE :"<<stepCount<<endl;
 
     //drawCursor();
     glTranslatef(timelineOffset*timelineX+timelineX*(1-2*timelineOffset)*world->getCurrentTime()/
