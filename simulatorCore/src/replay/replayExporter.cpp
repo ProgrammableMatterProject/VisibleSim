@@ -191,7 +191,9 @@ void ReplayExporter::writeColorUpdate(Time date, bID bid, const Color& color) {
     exportFile->write((char*)&bid, sizeof(bID));
     u1 u1color[3];
     for (std::size_t i;i<3; i++) {
-        u1color[i] = clamp(static_cast<int>(color.rgba[i] * 255.0), 0, 255);
+        u1color[i] = static_cast<int>(color.rgba[i] * 255.0);
+        if (u1color[i]<0) u1color[i]=0;
+        else if (u1color[i]>255) u1color[i]=255;
     }
     exportFile->write((char*)&u1color,3*sizeof(u1));
 
