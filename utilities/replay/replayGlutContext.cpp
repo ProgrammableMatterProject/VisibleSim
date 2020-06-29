@@ -308,7 +308,7 @@ void ReplayGlutContext::setWorld(ReplayWorld* replayWorld)
 void ReplayGlutContext::mainLoop()
 {
     world->updateMap();
-    
+
     glutMainLoop();
 }
 /*********************************************************/

@@ -118,7 +118,7 @@ bool SmartBlocksBlock::moveTo(const Cell3DPosition& dest) {
     if (not canMoveTo(dest)) return false;
 
     if (ReplayExporter::isReplayEnabled())
-        ReplayExporter::getInstance()->writeMotion(getScheduler()->now(), blockId,102000,dest); // BPi : duration is currently fixed due to translation event implementation
+        ReplayExporter::getInstance()->writeMotion(getScheduler()->now(), blockId,1002000,dest); // BPi : duration is currently fixed due to translation event implementation
 
     getScheduler()->schedule(new TranslationStartEvent(getScheduler()->now(), this, dest));
     return true;

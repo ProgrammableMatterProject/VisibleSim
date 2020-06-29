@@ -67,13 +67,13 @@ const u1 MODULE_TYPE_SLIDINGCUBE = (u1)7;
 const u1 MODULE_TYPE_SMARTBLOCKS = (u1)8;
 
 /* EVENT TYPES */
-const u1 EVENT_COLOR_UPDATE = (u1)0;
-const u1 EVENT_DISPLAY_UPDATE = (u1)1;
-const u1 EVENT_POSITION_UPDATE = (u1)2;
-const u1 EVENT_ADD_MODULE = (u1)3;
-const u1 EVENT_REMOVE_MODULE = (u1)4;
-const u1 EVENT_MOTION = (u1)5;
-const u1 EVENT_CONSOLE_TRACE = (u1)6;
+const u1 EVENT_COLOR_UPDATE = (u1)0; // Message Length : 3*1 = 3 Bytes
+const u1 EVENT_DISPLAY_UPDATE = (u1)1; // Message Length : 2 Bytes
+const u1 EVENT_POSITION_UPDATE = (u1)2; // Message Length : 3*2 + 1 = 7 Bytes
+const u1 EVENT_ADD_MODULE = (u1)3; // Message Length :
+const u1 EVENT_REMOVE_MODULE = (u1)4; // Message Length :
+const u1 EVENT_MOTION = (u1)5; // Message Length :
+const u1 EVENT_CONSOLE_TRACE = (u1)6; // Message Length :
 }
 
 #endif
