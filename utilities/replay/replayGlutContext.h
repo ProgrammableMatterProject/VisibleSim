@@ -16,13 +16,12 @@
 #include <map>
 #include "../../simulatorCore/src/gui/objLoader.h"
 #include "replay.hpp"
-#include "replayWorld.h"
+#include "replayPlayer.h"
 #include "../../simulatorCore/src/gui/camera.h"
 
+class ReplayWorld;
+
 namespace GlutContext {
-
-
-
     //Cottes pour la fenetre de commandes en fonction des dimensions
 
 
@@ -38,7 +37,7 @@ namespace GlutContext {
         static inline float timelineHeight=0.5f, timelineOffset=0.05f;
         static inline float toolsSeparationY=0.05f;
         static inline float toolsButtonSize=0.3f;
-        static inline float toolbarOffsetX=0.3f, buttonSeparation=0.05f;
+        static inline float toolbarOffsetX=0.3f, buttonSeparation=0.005f;
         static inline float recButtonOffset=0.1f;
         static inline float timelineX = width * (1 - 2 * offsetX), timelineY = timelineHeight * toolHeight;
         static inline ReplayWorld *world;
@@ -66,7 +65,7 @@ namespace GlutContext {
         static inline bool enableShadows=false; // BPi todo for true
         static inline int keyboardModifier=0;
 
-        static inline ObjLoader::ObjLoader* objBlock=nullptr;
+        static inline ObjLoader::ObjLoader* objBlocke=nullptr;
 
         /**
          * Initialize the windows and bind functions to actions

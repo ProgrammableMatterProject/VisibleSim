@@ -16,8 +16,10 @@ void ReplayGlutContext::initGL() {
     std::string versionString = std::string((const char*)glGetString(GL_VERSION));
     cout << "Opengl Version: " << versionString << endl;
 
-    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
+    objBlocke = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
                                         "smartBlockSimple.obj");
+//    objBlocke = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
+//                                        "blinkyBlockCentered.obj");
 }
 
 void ReplayGlutContext::quit() {
@@ -104,7 +106,7 @@ void ReplayGlutContext::idleFunc(void) {
 
     float dt= static_cast<float>(currentTime-initTime)/1000.0f;
     initTime = currentTime;
-    rotationAngle += dt*20.0f; // turn at 20° / s
+    //rotationAngle += dt*20.0f; // turn at 20° / s
     glutPostWindowRedisplay(mainWindow);
 }
 
@@ -211,6 +213,7 @@ void ReplayGlutContext::motionFuncTW(int x,int y)
                 world->setCurrentTime((x - timelineOffset*timelineX-offsetX*width)*world->getExportDuration()/
                                       (width*(1-2*offsetX)-2*timelineX*timelineOffset));
             }
+            world->updateMap();
         }
     }
     glutPostWindowRedisplay(toolsWindow);
@@ -235,6 +238,7 @@ void ReplayGlutContext::mouseFuncTW(int button,int state,int x,int y)
                 world->setCurrentTime((x - timelineOffset*timelineX-offsetX*width)*world->getExportDuration()/
                                      (width*(1-2*offsetX)-2*timelineX*timelineOffset));
             }
+            world->updateMap();
         }
     }
     glutPostWindowRedisplay(toolsWindow);
@@ -385,11 +389,12 @@ void ReplayGlutContext::drawFuncMW(void) {
             //glutSolidTeapot(1.0f);
 //            world->objBlock->glDraw();
 //            glTranslatef(25.0f,0,0);
-            world->objBlock->glDraw();
+            //world->objBlock->glDraw();
             //glutSolidCone(0.5,2.0,10,1);
             //objBlock->glDraw();
             //glTranslatef(25.0f,0,0);
             //objBlock->glDraw();
+            world->glDraw();
         glPopMatrix();
     glPopMatrix();
 

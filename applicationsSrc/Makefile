@@ -1,4 +1,4 @@
-SUBDIRS = gameOfLife stressTestSB
+SUBDIRS = gameOfLife stressTestSB stressTestCatoms
 
 .PHONY: subdirs $(SUBDIRS) test
 

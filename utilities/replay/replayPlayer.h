@@ -23,6 +23,7 @@
 
 using namespace std;
 using namespace ReplayTags;
+
 namespace Replay {
 
 class ReplayPlayer;
@@ -91,6 +92,12 @@ public:
      * @param position
      */
     void parseKeyframe(u8 position);
+
+    /**
+     * Parse the total duration of the exported file
+     * @return duration
+     */
+    u8 parseDuration();
 };
 
 
