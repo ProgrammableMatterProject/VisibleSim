@@ -15,12 +15,8 @@ void ReplayGlutContext::initGL() {
     camera->setLightParameters(Vector3D(0.0,0.0,0.0),80.0,50.0,50.0,50.0,1.0,1000.0);
     std::string versionString = std::string((const char*)glGetString(GL_VERSION));
     cout << "Opengl Version: " << versionString << endl;
-
-    objBlocke = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
+    ObjLoader::ObjLoader *objBlocke = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
                                         "smartBlockSimple.obj");
-//    objBlocke = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
-//                                        "blinkyBlockCentered.obj");
-
 }
 
 void ReplayGlutContext::quit() {
@@ -369,7 +365,7 @@ void ReplayGlutContext::drawFuncMW(void) {
     noshadowRenderingStart(camera);
 
     glPushMatrix();
-
+    glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
     glPushMatrix();
         glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,blue);
         glutSolidCylinder(0.02,2.0,20,5);
@@ -395,7 +391,6 @@ void ReplayGlutContext::drawFuncMW(void) {
             //glutSolidCone(0.5,2.0,10,1);
             //objBlock->glDraw();
             //glTranslatef(25.0f,0,0);
-            //objBlock->glDraw();
             world->glDraw();
         glPopMatrix();
     glPopMatrix();

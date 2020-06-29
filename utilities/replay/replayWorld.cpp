@@ -12,11 +12,7 @@ ReplayWorld::ReplayWorld(int argc, char *argv[], u8 duration)
     cout << "Debug Replay World "<<endl;
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
                                         "smartBlockSimple.obj");
-//    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
-//                                        "blinkyBlockCentered.obj");
-    //GlutContext::ReplayGlutContext::mainLoop();
     exportDuration = (float)duration*pow(10,-6);
-    //exportDuration = (float)duration;
 }
 
 ReplayWorld::~ReplayWorld()

@@ -42,7 +42,6 @@ namespace GlutContext {
         static inline float timelineX = width * (1 - 2 * offsetX), timelineY = timelineHeight * toolHeight;
         static inline ReplayWorld *world;
 
-
         static inline constexpr GLfloat red[4] = {1.0f, 0.0f, 0.0f, 1.0f}; // red color material
         static inline constexpr GLfloat white[4]= {1.0f, 1.0f, 1.0f, 1.0f}; // White color material
         static inline constexpr  GLfloat green[4]= {0.0f, 1.0f, 0.0f, 1.0f}; // green color material
@@ -64,9 +63,6 @@ namespace GlutContext {
         static inline bool toolsWinOpened=true;
         static inline bool enableShadows=false; // BPi todo for true
         static inline int keyboardModifier=0;
-
-        static inline ObjLoader::ObjLoader* objBlocke=nullptr;
-
 
         /**
          * Initialize the windows and bind functions to actions
@@ -155,10 +151,6 @@ namespace GlutContext {
          * @param str
          */
         static void drawString(int ix,int iy,char* str);
-
-
-
-
     };
 
 }
