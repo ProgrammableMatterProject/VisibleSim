@@ -5,7 +5,6 @@
  *      Author: Ben
  */
 
-#include "openglViewer.h"
 
 #include <string>
 #include <chrono>
@@ -13,6 +12,7 @@
 #include <sys/stat.h>
 #include <future>
 
+#include "openglViewer.h"
 #include "../base/world.h"
 #include "../events/scheduler.h"
 #include "../base/simulator.h"
@@ -56,8 +56,8 @@ bool GlutContext::showGrid = true;
 bool GlutContext::hasGradientBackground = false;
 float GlutContext::bgColor[3] = {0.3,0.3,0.8};
 float GlutContext::bgColor2[3] = {0.8,0.8,0.8};
-GLint GlutContext::mainWinId=0;
-GLint GlutContext::consoleWinId=0;
+//GLint GlutContext::mainWinId=0; // TODO new interface with subWindows
+//GLint GlutContext::consoleWinId=0; // TODO new interface with subWindows
 unsigned int GlutContext::nbModules = 0;
 long unsigned int GlutContext::timestep = 0;
 
@@ -67,25 +67,20 @@ void GlutContext::init(int argc, char **argv) {
     cout << "initGlut" << endl;
     if (GUIisEnabled) {
         glutInit(&argc,argv);
+
         glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
         glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 
         // creation of a new graphic window
         glutInitWindowPosition(0, 0);
         glutInitWindowSize(screenWidth,screenHeight);
-        if ((mainWinId=glutCreateWindow("VisibleSim")) == GL_FALSE) {
+        if (glutCreateWindow("VisibleSim") == GL_FALSE) {
             puts("ERREUR : echec à la création de la fenêtre graphique");
             exit(EXIT_FAILURE);
         }
         if(fullScreenMode) {
             glutFullScreen();
         }
-        /*glutInitWindowPosition(screenWidth+10,0);
-        glutInitWindowSize(200.0, screenHeight);           // set a window size
-        if ((consoleWinId=glutCreateWindow("console")) == GL_FALSE) {
-            puts("ERREUR : echec à la création de la fenêtre de console");
-            exit(EXIT_FAILURE);
-        }*/
 
         initShaders(enableShadows);
 
@@ -538,7 +533,6 @@ void GlutContext::idleFunc(void) {
     std::chrono::milliseconds timespan(20);
     std::this_thread::sleep_for(timespan);
 
-
     if (enableShowFPS) calculateFPS();
 
     if (saveScreenMode) {
@@ -569,9 +563,12 @@ void GlutContext::idleFunc(void) {
         if (tm-lastMotionTime>100) {
             int n=selectFunc(lastMousePos[0],lastMousePos[1]);
             if (n) {
-                GlBlock *slct=BaseSimulator::getWorld()->getBlockByNum(n);
+                World *wrl = BaseSimulator::getWorld();
+                GlBlock *slct=wrl->getBlockByNum(n);
                 popup->setCenterPosition(lastMousePos[0],screenHeight - lastMousePos[1]);
-                popup->setInfo(slct->getPopupInfo());
+                //popup->setInfo(slct->getPopupInfo());
+                ostringstream out;
+                out << slct->blockId << " - " << wrl->lattice->worldToGridPosition(slct->getPosition()) <<"\n";
                 popup->show(true);
             } else {
                 popup->show(false);

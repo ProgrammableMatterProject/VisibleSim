@@ -16,8 +16,7 @@ void ReplayGlutContext::initGL() {
     std::string versionString = std::string((const char*)glGetString(GL_VERSION));
     cout << "Opengl Version: " << versionString << endl;
 
-    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
-                                        "smartBlockSimple.obj");
+    //objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures","smartBlockSimple.obj");
 }
 
 void ReplayGlutContext::quit() {

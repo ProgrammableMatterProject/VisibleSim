@@ -66,7 +66,7 @@ namespace GlutContext {
         static inline bool enableShadows=false; // BPi todo for true
         static inline int keyboardModifier=0;
 
-        static inline ObjLoader::ObjLoader* objBlock=nullptr;
+//        static inline ObjLoader::ObjLoader* objBlock=nullptr;
 
         /**
          * Initialize the windows and bind functions to actions

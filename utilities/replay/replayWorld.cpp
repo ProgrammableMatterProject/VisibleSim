@@ -2,6 +2,7 @@
 #include "replayWorld.h"
 #include "replay.hpp"
 #include "../../simulatorCore/src/gui/objLoader.h"
+#include "../../simulatorCore/src/base/glBlock.h"
 
 using namespace std;
 using namespace Replay;

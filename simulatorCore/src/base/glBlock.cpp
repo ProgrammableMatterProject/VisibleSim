@@ -1,5 +1,5 @@
 #include "glBlock.h"
-#include "world.h"
+#include "../gui/objLoader.h"
 
 #include <sstream>
 
@@ -70,7 +70,7 @@ string GlBlock::getInfo() {
 
     return out.str();
 }
-
+/*
 string GlBlock::getPopupInfo() {
     ostringstream out;
     out << blockId << " - "
@@ -78,7 +78,7 @@ string GlBlock::getPopupInfo() {
 
     return out.str();
 }
-
+*/
 void GlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int n) {
     glPushMatrix();
     glTranslatef(position[0],position[1],position[2]);
