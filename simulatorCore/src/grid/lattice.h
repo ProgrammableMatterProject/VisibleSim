@@ -446,6 +446,14 @@ public:
     ~SLattice();
 
     /**
+     * Static base function for world to Slattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
+    /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
@@ -521,6 +529,14 @@ public:
     ~HLattice();
 
     /**
+     * Static base function for world to Hlattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
+    /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
@@ -590,6 +606,14 @@ public:
      * @brief HLattice destructor.
      */
     ~HHLattice();
+
+    /**
+     * Static base function for world to HH lattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
 
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
@@ -753,6 +777,14 @@ public:
     ~FCCLattice();
 
     /**
+     * Static base function for world to FCC lattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
+    /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
@@ -844,6 +876,14 @@ public:
     virtual Cell3DPosition getGridUpperBounds(int z = -1) const override;
 
     /**
+     * Static base function for world to SkewFCC lattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
+    /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
@@ -918,6 +958,15 @@ public:
      * @brief SCLattice destructor.
      */
     ~SCLattice();
+
+    /**
+     * Static base function for world to SC lattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
