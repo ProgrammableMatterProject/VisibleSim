@@ -16,13 +16,12 @@
 #include <map>
 #include "../../simulatorCore/src/gui/objLoader.h"
 #include "replay.hpp"
-#include "replayWorld.h"
+#include "replayPlayer.h"
 #include "../../simulatorCore/src/gui/camera.h"
 
+class ReplayWorld;
+
 namespace GlutContext {
-
-
-
     //Cottes pour la fenetre de commandes en fonction des dimensions
 
 
@@ -66,6 +65,12 @@ namespace GlutContext {
         static inline bool enableShadows=false; // BPi todo for true
         static inline int keyboardModifier=0;
 
+<<<<<<< HEAD
+=======
+        static inline ObjLoader::ObjLoader* objBlocke=nullptr;
+
+
+>>>>>>> 36c4365c67b73e827a7724f9162821513a95f489
         /**
          * Initialize the windows and bind functions to actions
          * @param argc

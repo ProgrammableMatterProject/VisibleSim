@@ -19,6 +19,8 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         ptrObj->setLightedColor(color);
     }
     ptrObj->glDraw();
+    //TODO REMETTRE BIEN : Test sans le world
+    /*
     if (displayedValue<noDisplay) {
         int digits = 1;
         if (displayedValue>9) digits=2;
@@ -49,6 +51,7 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         }
         glDisable(GL_BLEND);
     }
+     */
     glPopMatrix();
 }
 

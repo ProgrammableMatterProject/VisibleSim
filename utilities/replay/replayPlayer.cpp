@@ -16,6 +16,7 @@
 #include "../../simulatorCore/src/utils/utils.h"
 #include "replayWorld.h"
 #include <fstream>
+#include "../../simulatorCore/src/robots/smartBlocks/smartBlocksGlBlock.h"
 
 using namespace ReplayTags;
 namespace Replay {
@@ -32,16 +33,19 @@ namespace Replay {
         parseKeyframeIndex();
         //parseInitialConfiguration();
 
-        parseKeyframe(findKeyframeWithTime(0));//0 seconds
-        parseKeyframe(findKeyframeWithTime(10000000));//10 seconds
+//        parseKeyframe(findKeyframeWithTime(0));//0 seconds
+//        parseKeyframe(findKeyframeWithTime(10000000));//10 seconds
+
 
         cout << "Initialising GlutContext.." << flush;
         GlutContext::ReplayGlutContext::init(argc, argv);
         cout << "Done" << endl;
 
-        cout << "Initializing World .." << flush;
-        world = new ReplayWorld(argc, argv);
-        cout << "Done" << endl;
+
+        cout <<"Initializing World .."<<flush;
+        world = new ReplayWorld(argc,argv,parseDuration());
+        world->player = this;
+        cout <<"Done"<<endl;
 
         cout << "Setting up World .." << flush;
         GlutContext::ReplayGlutContext::setWorld(world);
@@ -190,7 +194,6 @@ namespace Replay {
             exportFile->read((char *) &keyframe[i].r, sizeof(u1));
             exportFile->read((char *) &keyframe[i].g, sizeof(u1));
             exportFile->read((char *) &keyframe[i].b, sizeof(u1));
-
         }
         cout << "Done" << endl;
 
@@ -203,6 +206,43 @@ namespace Replay {
                  << " | RGB : " << (int) keyframe[i].r << " " << (int) keyframe[i].g << " " << (int) keyframe[i].b
                  << endl;
         }
+
+    cout <<"Done"<<endl;
+
+    //print results
+    cout << "There are "<<blockCount<<" blocks in the keyframe"<<endl;
+    for(int i=0;i<blockCount;i++)
+    {
+
+        //TODO changer les coordonnées avec gridToWorld
+        Vector3D position;
+        Color col;
+        position.pt[3] = 1;
+        position.pt[0] = keyframe[i].x*25;
+        position.pt[1] = keyframe[i].y*25;
+        position.pt[2] = keyframe[i].z*25;
+        col.rgba[0] = keyframe[i].r/255.0f;
+        col.rgba[1] = keyframe[i].g/255.0f;
+        col.rgba[2]= keyframe[i].b/255.0f;
+        col.rgba[3]= 1.0;
+//        cout << "id : "<<keyframe[i].id
+//             <<" | Pos : "<<(int)keyframe[i].x<<" "<<(int)keyframe[i].y<<" "<<(int)keyframe[i].z
+//             <<" | rotation : "<<(int)keyframe[i].rotation
+//             <<" | RGB : "<<(int)keyframe[i].r<<" "<<(int)keyframe[i].g<<" "<<(int)keyframe[i].b<<endl;
+        world->addBlock(keyframe[i].id,position,col);
+    }
     }
 
+
+u8 ReplayPlayer::parseDuration()
+{
+    u8 duration;
+    exportFile->seekg(0,exportFile->end);
+    exportFile->seekg(exportFile->tellg()-8);
+    cout <<"OMGG"<< exportFile->tellg()<<endl;
+    exportFile->read((char*)&duration,sizeof(u8));
+    cout <<"DEBUG : "<<duration<<endl;
+    return duration;
+
+}
 }
