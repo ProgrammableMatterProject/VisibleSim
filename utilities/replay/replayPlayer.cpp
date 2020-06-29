@@ -48,14 +48,12 @@ namespace Replay {
         cout << "Done" << endl;
 
         GlutContext::ReplayGlutContext::mainLoop();
-        //glutMainLoop();
-        exportFile->close();
+         // exportFile->close(); // jamais atteint -> placer dans quit
     }
 
     void ReplayPlayer::createPlayer(int argc, char *argv[]) {
         cout << "creating Replay" << endl;
         replayPlayer = new ReplayPlayer(argc, argv);
-
     }
 
     void ReplayPlayer::parseHeader() {

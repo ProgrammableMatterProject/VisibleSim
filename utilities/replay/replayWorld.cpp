@@ -12,7 +12,6 @@ ReplayWorld::ReplayWorld(int argc, char *argv[])
     cout << "Debug Replay World "<<endl;
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
                                         "smartBlockSimple.obj");
-    //GlutContext::ReplayGlutContext::mainLoop();
 }
 
 ReplayWorld::~ReplayWorld()

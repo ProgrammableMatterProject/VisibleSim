@@ -66,8 +66,6 @@ namespace GlutContext {
         static inline bool enableShadows=false; // BPi todo for true
         static inline int keyboardModifier=0;
 
-//        static inline ObjLoader::ObjLoader* objBlock=nullptr;
-
         /**
          * Initialize the windows and bind functions to actions
          * @param argc
@@ -155,10 +153,6 @@ namespace GlutContext {
          * @param str
          */
         static void drawString(int ix,int iy,char* str);
-
-
-
-
     };
 
 }

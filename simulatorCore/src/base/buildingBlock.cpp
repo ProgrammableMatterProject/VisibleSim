@@ -340,8 +340,10 @@ void BuildingBlock::serialize(std::ofstream &bStream) {
     bStream.write((char*)&position, 3*sizeof(ReplayTags::u2));
     bStream.write((char*)&orientationCode, sizeof(ReplayTags::u1));
     ReplayTags::u1 u1color[3];
-    for (std::size_t i;i<3; i++) {
-        u1color[i] = clamp(static_cast<int>(color.rgba[i] * 255.0), 0, 255);
+    for (std::size_t i=0;i<3; i++) {
+        u1color[i] = static_cast<int>(color.rgba[i] * 255.0);
+        if (u1color[i]<0) u1color[i]=0;
+        else if (u1color[i]>255) u1color[i]=255;
     }
     bStream.write((char*)&u1color, 3*sizeof(ReplayTags::u1));
 }
