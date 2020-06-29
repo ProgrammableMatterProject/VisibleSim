@@ -27,7 +27,9 @@ void ReplayWorld::updateMap()
         delete (GlBlock*)pair.second;
     }
     mapGlBlocks.clear();
-    player->parseKeyframe(player->findKeyframeWithTime(currentTime*pow(10,6)));
+    //TODO Changer l'échelle de temps
+    player->parseFrame(currentTime*pow(10,6));
+
 }
 
 void ReplayWorld::addBlock(bID blockId, Vector3D pos, Color col)
@@ -41,10 +43,20 @@ void ReplayWorld::addBlock(bID blockId, Vector3D pos, Color col)
 
 }
 
+void ReplayWorld::updateColor(u4 blockId, Color col)
+{
+    for (const auto& pair : mapGlBlocks) {
+        if(pair.first==blockId)
+        {
+            pair.second->setColor(col);
+        }
+    }
+}
 
 
 void ReplayWorld::glDraw()
 {
+    //TODO optimisable
     for (const auto& pair : mapGlBlocks) {
         ((SmartBlocks::SmartBlocksGlBlock*)pair.second)->glDraw(objBlock);
     }

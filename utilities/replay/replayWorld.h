@@ -53,5 +53,6 @@ public:
     void updateMap();
     void addBlock(bID blockId, Vector3D pos, Color col);
     void glDraw();
+    void updateColor(u4 blockId, Color col);
 };
 #endif

@@ -72,7 +72,7 @@ const u1 EVENT_DISPLAY_UPDATE = (u1)1; // Message Length : 2 Bytes
 const u1 EVENT_POSITION_UPDATE = (u1)2; // Message Length : 3*2 + 1 = 7 Bytes
 const u1 EVENT_ADD_MODULE = (u1)3; // Message Length :
 const u1 EVENT_REMOVE_MODULE = (u1)4; // Message Length :
-const u1 EVENT_MOTION = (u1)5; // Message Length :
+const u1 EVENT_MOTION = (u1)5; // Message Length : 8 + 3*2 = 14
 const u1 EVENT_CONSOLE_TRACE = (u1)6; // Message Length :
 }
 

@@ -88,10 +88,33 @@ public:
     u8 findKeyframeWithTime(u8 time);
 
     /**
+     * Read Keyframe Index to return the position in the file of the first KeyFrame after the time given in parameter
+     * @param time
+     * @return
+     */
+    u8 findNextKeyframe(u8 time);
+
+    /**
+     * Starts parsing of the frame at time @time
+     * @param time
+     */
+    void parseFrame(u8 time);
+
+
+    /**
      * Parse the keyframe which beginning position is given in parameter
      * @param position
+     * @return Position of the end of the Keyframe
      */
-    void parseKeyframe(u8 position);
+    u8 parseKeyframe(u8 position);
+
+    /**
+     * Parse the events that starts at the position given in parameter until the time given or the end position
+     * @param position : Start position of the events of current keyframe
+     * @param time : Time of the selected frame
+     * @param end : End position of current keyframe
+     */
+    void parseEvents(u8 position,u8 time, u8 end);
 
     /**
      * Parse the total duration of the exported file
