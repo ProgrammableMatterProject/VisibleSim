@@ -267,7 +267,7 @@ HLattice::HLattice() : Lattice2D() {}
 HLattice::HLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice2D(gsz,gsc) {}
 HLattice::~HLattice() {}
 
-Vector3D HLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D HLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[2] = M_SQRT3_2 * pos[2];
@@ -285,6 +285,10 @@ Vector3D HLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const 
   cout << "---------------------------------------------------------" << endl;*/
 
     return res;
+}
+
+Vector3D HLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Vector3D HLattice::gridToWorldPosition(const Cell3DPosition &pos) const {
@@ -370,7 +374,7 @@ HHLattice::HHLattice() : HLattice() {}
 HHLattice::HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : HLattice(gsz,gsc) {}
 HHLattice::~HHLattice() {}
 
-Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D HHLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[2] = 0;
@@ -378,6 +382,11 @@ Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const
     res.pt[0] = pos[0]+0.5*pos[1];
 
     return res;
+}
+
+
+Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Vector3D HHLattice::gridToWorldPosition(const Cell3DPosition &pos) const {
@@ -438,8 +447,12 @@ vector<Cell3DPosition> SLattice::getRelativeConnectivity(const Cell3DPosition &p
     return nCells;
 }
 
-Vector3D SLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D SLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     return Vector3D(pos[0], pos[1], 0, 0);
+}
+
+Vector3D SLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Cell3DPosition SLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
@@ -504,8 +517,7 @@ vector<Cell3DPosition> FCCLattice::getRelativeConnectivity(const Cell3DPosition 
     return IS_EVEN(p[2]) ? nCellsEven : nCellsOdd;
 }
 
-
-Vector3D FCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D FCCLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[3] = 1.0;
@@ -521,6 +533,10 @@ Vector3D FCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) cons
 //    OUTPUT << "world :"<< res << endl;
 
     return res;
+}
+
+Vector3D FCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Cell3DPosition FCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
@@ -777,7 +793,7 @@ vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosit
     return nCells;
 }
 
-Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D SkewFCCLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[3] = 1.0;
@@ -788,6 +804,11 @@ Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) 
 //		OUTPUT << "gridToUnscaledWorldPosition" << pos << " -> " << res << endl;
 
     return res;
+}
+
+
+Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Cell3DPosition SkewFCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
@@ -861,8 +882,12 @@ vector<Cell3DPosition> SCLattice::getRelativeConnectivity(const Cell3DPosition &
     return nCells;
 }
 
-Vector3D SCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D SCLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     return Vector3D(pos[0], pos[1], pos[2], 0);
+}
+
+Vector3D SCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Cell3DPosition SCLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {

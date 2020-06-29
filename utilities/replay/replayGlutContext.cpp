@@ -20,6 +20,7 @@ void ReplayGlutContext::initGL() {
                                         "smartBlockSimple.obj");
 //    objBlocke = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
 //                                        "blinkyBlockCentered.obj");
+
 }
 
 void ReplayGlutContext::quit() {
@@ -306,7 +307,8 @@ void ReplayGlutContext::setWorld(ReplayWorld* replayWorld)
 }
 void ReplayGlutContext::mainLoop()
 {
-
+    world->updateMap();
+    
     glutMainLoop();
 }
 /*********************************************************/

@@ -67,6 +67,7 @@ namespace GlutContext {
 
         static inline ObjLoader::ObjLoader* objBlocke=nullptr;
 
+
         /**
          * Initialize the windows and bind functions to actions
          * @param argc

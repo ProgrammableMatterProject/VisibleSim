@@ -3,6 +3,7 @@
 #include "replay.hpp"
 #include "../../simulatorCore/src/gui/objLoader.h"
 #include <map>
+#include "../../simulatorCore/src/base/glBlock.h"
 
 using namespace std;
 
