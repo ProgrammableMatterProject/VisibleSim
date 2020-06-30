@@ -18,8 +18,10 @@
 #include "replay.hpp"
 #include "replayPlayer.h"
 #include "../../simulatorCore/src/gui/camera.h"
+#include "../../simulatorCore/src/replay/replayTags.h"
 
 class ReplayWorld;
+
 
 namespace GlutContext {
     //Cottes pour la fenetre de commandes en fonction des dimensions
@@ -30,7 +32,7 @@ namespace GlutContext {
         /*********************************************************/
 /* global variables                                      */
     public:
-
+        static inline u1 replayMode = REPLAY_MODE_PAUSE;
 
         static inline int width = 1024, height = 600, toolHeight = 120, separ = 24; // initial size of the screen
         static inline float offsetX=0.01f, offsetY=0.1f;
@@ -151,6 +153,8 @@ namespace GlutContext {
          * @param str
          */
         static void drawString(int ix,int iy,char* str);
+
+        static void play();
     };
 
 }

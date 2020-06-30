@@ -74,6 +74,11 @@ const u1 EVENT_ADD_MODULE = (u1)3; // Message Length :
 const u1 EVENT_REMOVE_MODULE = (u1)4; // Message Length :
 const u1 EVENT_MOTION = (u1)5; // Message Length : 8 + 3*2 = 14
 const u1 EVENT_CONSOLE_TRACE = (u1)6; // Message Length :
+
+/* REPLAY MODES */
+const u1 REPLAY_MODE_PAUSE = (u1)0;
+const u1 REPLAY_MODE_PLAY = (u1)1;
+
 }
 
 #endif

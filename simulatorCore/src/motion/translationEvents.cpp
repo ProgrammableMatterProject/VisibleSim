@@ -110,7 +110,7 @@ void TranslationStepEvent::consume() {
 
     double v = abs((finalPosition - motionPosition) * motionStep);
     if (v<EPS) {
-        scheduler->schedule(new TranslationStopEvent(scheduler->now() + ANIMATION_DELAY,
+        scheduler->schedule(new TranslationStopEvent(scheduler->now() + COM_DELAY,
                                                 bb, finalPosition));
     } else {
         scheduler->schedule(new TranslationStepEvent(scheduler->now() + ANIMATION_DELAY, bb,

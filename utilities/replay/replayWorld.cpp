@@ -53,6 +53,25 @@ void ReplayWorld::updateColor(u4 blockId, Color col)
     }
 }
 
+void ReplayWorld::updatePosition(u4 blockId, Vector3D pos)
+{
+    for (const auto& pair : mapGlBlocks) {
+        if(pair.first==blockId)
+        {
+            pair.second->setPosition(pos);
+        }
+    }
+}
+
+Vector3D ReplayWorld::getPosition(u4 blockId)
+{
+    for (const auto& pair : mapGlBlocks) {
+        if(pair.first==blockId)
+        {
+            return pair.second->getPosition();
+        }
+    }
+}
 
 void ReplayWorld::glDraw()
 {

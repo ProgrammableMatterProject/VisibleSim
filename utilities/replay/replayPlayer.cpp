@@ -264,8 +264,6 @@ namespace Replay {
         u8 readTime = 0;
         u1 eventType;
         u4 blockId;
-        KeyframeBlock block;
-        Color col;
         while(true)
         {
             if(exportFile->tellg()>end) {break;}
@@ -275,33 +273,23 @@ namespace Replay {
             exportFile->read((char *) &blockId, sizeof(u4));
             switch(eventType){
                 case EVENT_COLOR_UPDATE:
-                    cout <<"EVENEMENT DE COULEUR"<<endl;
-                    cout <<"EVENEMENT DE DEBUG 1: "<<col.rgba[0]<<endl;
-                    exportFile->read((char *) &block.r, sizeof(u1));
-                    exportFile->read((char *) &block.g, sizeof(u1));
-                    exportFile->read((char *) &block.b, sizeof(u1));
-                    cout <<"EVENEMENT DE DEBUG 2: "<<col.rgba[0]<<endl;
-                    col.rgba[0] = (GLfloat) block.r/255.0f;
-                    col.rgba[1] = (GLfloat) block.g/255.0f;
-                    col.rgba[2] = (GLfloat) block.b/255.0f;
-                    col.rgba[3] = 1.0f;
-                    cout <<"EVENEMENT DE DEBUG 3: "<<col.rgba[0]<<endl;
-                    world->updateColor(blockId,col);
+                    parseEventColor(exportFile->tellg(), blockId);
                     break;
                 case EVENT_DISPLAY_UPDATE:
                     cout <<"EVENEMENT DE DISP"<<endl;
                     exportFile->seekg(exportFile->tellg()+2);
                     break;
                 case EVENT_POSITION_UPDATE:
-                    exportFile->seekg(exportFile->tellg()+7);
+                    parseEventPosition(exportFile->tellg(), blockId);
+                    //exportFile->seekg(exportFile->tellg()+7);
                     break;
                 case EVENT_ADD_MODULE:
                     break;
                 case EVENT_REMOVE_MODULE:
                     break;
                 case EVENT_MOTION:
-                    cout <<"EVENEMENT DE MOTION"<<endl;
-                    exportFile->seekg(exportFile->tellg()+14);
+                    parseEventMotion(exportFile->tellg(),blockId,time,readTime);
+                    //exportFile->seekg(exportFile->tellg()+14);
                     break;
                 case EVENT_CONSOLE_TRACE:
                     break;
@@ -312,6 +300,60 @@ namespace Replay {
     }
 
 
+    void ReplayPlayer::parseEventPosition(u8 position, u4 blockId)
+    {
+        exportFile->seekg(position);
+        KeyframeBlock block;
+        Vector3D newPosition;
+        exportFile->read((char *) &block.x, sizeof(u2));
+        exportFile->read((char *) &block.y, sizeof(u2));
+        exportFile->read((char *) &block.z, sizeof(u2));
+        exportFile->read((char *) &block.rotation, sizeof(u1));
+        //TODO GridToUnscaleWorld()
+        newPosition.pt[0] = block.x*25;
+        newPosition.pt[1] = block.y*25;
+        newPosition.pt[2] = block.z*25;
+        world->updatePosition(blockId,newPosition);
+    }
+    void ReplayPlayer::parseEventMotion(u8 position, u4 blockId, u8 time, u8 readTime)
+    {
+        exportFile->seekg(position);
+        Vector3D worldPosition = world->getPosition(blockId);
+        KeyframeBlock block;
+        u8 endTime;
+        Vector3D newPosition;
+        exportFile->read((char *) &endTime, sizeof(u8));
+        exportFile->read((char *) &block.x, sizeof(u2));
+        exportFile->read((char *) &block.y, sizeof(u2));
+        exportFile->read((char *) &block.z, sizeof(u2));
+        if(time>=readTime+2000)
+        {
+            if(time<=readTime+endTime)
+            {
+                //TODO GridToUnscaleWorld()
+                newPosition.pt[0] = worldPosition.pt[0]+(block.x*25-worldPosition.pt[0])*(time-readTime-2000)/1000000;
+                newPosition.pt[1] = worldPosition.pt[1]+(block.y*25-worldPosition.pt[1])*(time-readTime-2000)/1000000;
+                newPosition.pt[2] = worldPosition.pt[2]+(block.z*25-worldPosition.pt[2])*(time-readTime-2000)/1000000;
+                newPosition.pt[3] = 1;
+                world->updatePosition(blockId,newPosition);
+            }
+        }
+
+    }
+    void ReplayPlayer::parseEventColor(u8 position, u4 blockId)
+    {
+        exportFile->seekg(position);
+        KeyframeBlock block;
+        Color col;
+        exportFile->read((char *) &block.r, sizeof(u1));
+        exportFile->read((char *) &block.g, sizeof(u1));
+        exportFile->read((char *) &block.b, sizeof(u1));
+        col.rgba[0] = (GLfloat) block.r/255.0f;
+        col.rgba[1] = (GLfloat) block.g/255.0f;
+        col.rgba[2] = (GLfloat) block.b/255.0f;
+        col.rgba[3] = 1.0f;
+        world->updateColor(blockId,col);
+    }
     u8 ReplayPlayer::parseDuration()
     {
         u8 duration;

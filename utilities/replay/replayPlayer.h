@@ -116,6 +116,11 @@ public:
      */
     void parseEvents(u8 position,u8 time, u8 end);
 
+    void parseEventColor(u8 position, u4 blockId);
+
+    void parseEventMotion(u8 position, u4 blockId, u8 time, u8 readTime);
+
+    void parseEventPosition(u8 position, u4 blockId);
     /**
      * Parse the total duration of the exported file
      * @return duration

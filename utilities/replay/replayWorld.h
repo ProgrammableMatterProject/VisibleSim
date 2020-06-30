@@ -54,5 +54,9 @@ public:
     void addBlock(bID blockId, Vector3D pos, Color col);
     void glDraw();
     void updateColor(u4 blockId, Color col);
+    void updatePosition(u4 blockId, Vector3D pos);
+    Vector3D getPosition(u4 blockId);
+
+
 };
 #endif

@@ -1,9 +1,14 @@
 #include <iostream>
 #include "replayGlutContext.h"
+#include <chrono>
+#include "../../simulatorCore/src/replay/replayTags.h"
 
 using namespace std;
 using namespace Replay;
 using namespace GlutContext;
+
+using us = chrono::microseconds;
+using get_time = chrono::steady_clock;
 
 void ReplayGlutContext::initGL() {
     initShaders(enableShadows);
@@ -104,6 +109,21 @@ void ReplayGlutContext::idleFunc(void) {
     float dt= static_cast<float>(currentTime-initTime)/1000.0f;
     initTime = currentTime;
     //rotationAngle += dt*20.0f; // turn at 20° / s
+    if(replayMode == REPLAY_MODE_PLAY)
+    {
+        if(world->getCurrentTime()+dt<= world->getExportDuration())
+        {
+            world->setCurrentTime(world->getCurrentTime()+dt);
+        }
+        else
+        {
+            world->setCurrentTime(world->getExportDuration());
+            replayMode = REPLAY_MODE_PAUSE;
+        }
+    }
+
+    world->updateMap();
+    updateSubWindows();
     glutPostWindowRedisplay(mainWindow);
 }
 
@@ -121,6 +141,12 @@ void ReplayGlutContext::kbdFunc(unsigned char c, int x, int y) {
             break;
         case 'F' :
             glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+            break;
+        case 'r' :
+            replayMode = REPLAY_MODE_PLAY;
+            break;
+        case 's' :
+            replayMode = REPLAY_MODE_PAUSE;
             break;
     }
     glutPostWindowRedisplay(mainWindow);
@@ -154,6 +180,9 @@ void ReplayGlutContext::mouseFuncMW(int button,int state,int x,int y) {
                 break;
             case 4 :
                 camera->mouseZoom(10);
+                break;
+            case GLUT_KEY_F1 :
+                play();
                 break;
         }
     }
@@ -210,6 +239,7 @@ void ReplayGlutContext::motionFuncTW(int x,int y)
                 world->setCurrentTime((x - timelineOffset*timelineX-offsetX*width)*world->getExportDuration()/
                                       (width*(1-2*offsetX)-2*timelineX*timelineOffset));
             }
+            replayMode = REPLAY_MODE_PAUSE;
             world->updateMap();
         }
     }
@@ -236,6 +266,7 @@ void ReplayGlutContext::mouseFuncTW(int button,int state,int x,int y)
                                      (width*(1-2*offsetX)-2*timelineX*timelineOffset));
             }
             world->updateMap();
+            replayMode = REPLAY_MODE_PAUSE;
         }
     }
     glutPostWindowRedisplay(toolsWindow);
@@ -685,4 +716,9 @@ void ReplayGlutContext::drawNextButtonSquare()
     glVertex2i(toolHeight*toolsButtonSize*(1-0.1f),toolHeight*toolsButtonSize*(1-0.1f));
     glVertex2i(toolHeight*toolsButtonSize*(1-0.1f),toolHeight*toolsButtonSize*0.1f);
     glEnd();
+}
+
+void ReplayGlutContext::play()
+{
+    replayMode = REPLAY_MODE_PLAY;
 }
