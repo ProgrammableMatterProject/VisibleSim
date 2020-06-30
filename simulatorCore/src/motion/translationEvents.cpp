@@ -108,7 +108,7 @@ void TranslationStepEvent::consume() {
     wrl->updateGlData(bb, motionGlPos);
     Scheduler *scheduler = getScheduler();
 
-    double v = (finalPosition - motionPosition) * motionStep;
+    double v = abs((finalPosition - motionPosition) * motionStep);
     if (v<EPS) {
         scheduler->schedule(new TranslationStopEvent(scheduler->now() + ANIMATION_DELAY,
                                                 bb, finalPosition));
@@ -158,7 +158,7 @@ void TranslationStopEvent::consume() {
     OUTPUT << "connect Block " << bb->blockId << "\n";
     wrld->connectBlock(bb, false);
     Scheduler *scheduler = getScheduler();
-    scheduler->schedule(new TranslationEndEvent(scheduler->now() + ANIMATION_DELAY, bb));
+    scheduler->schedule(new TranslationEndEvent(scheduler->now() + COM_DELAY, bb));
 }
 
 const string TranslationStopEvent::getEventName() {
@@ -187,7 +187,7 @@ TranslationEndEvent::~TranslationEndEvent() {
 void TranslationEndEvent::consume() {
     EVENT_CONSUME_INFO();
     BuildingBlock *bb = concernedBlock;
-    concernedBlock->blockCode->processLocalEvent(EventPtr(new TranslationEndEvent(date + COM_DELAY,bb)));
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new TranslationEndEvent(date,bb)));
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(bb->stats);
 }
