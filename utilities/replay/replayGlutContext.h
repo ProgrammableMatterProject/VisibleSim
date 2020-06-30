@@ -40,7 +40,7 @@ namespace GlutContext {
         static inline float toolbarOffsetX=0.3f, buttonSeparation=0.005f;
         static inline float recButtonOffset=0.1f;
         static inline float timelineX = width * (1 - 2 * offsetX), timelineY = timelineHeight * toolHeight;
-        static inline ReplayWorld *world;
+        static inline ReplayWorld *world= nullptr;
 
         static inline constexpr GLfloat red[4] = {1.0f, 0.0f, 0.0f, 1.0f}; // red color material
         static inline constexpr GLfloat white[4]= {1.0f, 1.0f, 1.0f, 1.0f}; // White color material

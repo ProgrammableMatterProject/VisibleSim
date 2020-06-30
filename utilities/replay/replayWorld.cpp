@@ -7,17 +7,17 @@
 
 using namespace std;
 
-ReplayWorld::ReplayWorld(int argc, char *argv[], u8 duration)
-{
+ReplayWorld::ReplayWorld(int argc, char *argv[], u8 duration) {
     cout << "Debug Replay World "<<endl;
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
                                         "smartBlockSimple.obj");
+    objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
+                                         "repere25.obj");
     exportDuration = (float)duration*pow(10,-6);
 }
 
-ReplayWorld::~ReplayWorld()
-{
-
+ReplayWorld::~ReplayWorld() {
+    delete objBlock;
 }
 
 //TODO quand les GlBlocks seront importés
@@ -32,32 +32,29 @@ void ReplayWorld::updateMap()
 
 }
 
-void ReplayWorld::addBlock(bID blockId, Vector3D pos, Color col)
-{
+void ReplayWorld::addBlock(bID blockId, Vector3D pos, Color col) {
 //    SmartBlocks::SmartBlocksGlBlock *glBlock = new SmartBlocks::SmartBlocksGlBlock(blockId);
     auto *glBlock = new SmartBlocks::SmartBlocksGlBlock(blockId);
     glBlock->setPosition(pos);
     glBlock->setColor(col);
-    //mapGlBlocks.insert(make_pair(blockId, glBlock));
     mapGlBlocks.insert(make_pair(blockId, glBlock));
-
 }
 
-void ReplayWorld::updateColor(u4 blockId, Color col)
-{
+void ReplayWorld::updateColor(u4 blockId, Color col) {
     for (const auto& pair : mapGlBlocks) {
-        if(pair.first==blockId)
-        {
+        if(pair.first==blockId) {
             pair.second->setColor(col);
         }
     }
 }
 
 
-void ReplayWorld::glDraw()
-{
+void ReplayWorld::glDraw() {
+    glPushMatrix();
+    objRepere->glDraw();
     //TODO optimisable
     for (const auto& pair : mapGlBlocks) {
         ((SmartBlocks::SmartBlocksGlBlock*)pair.second)->glDraw(objBlock);
     }
+    glPopMatrix();
 }

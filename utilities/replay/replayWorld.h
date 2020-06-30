@@ -34,6 +34,8 @@ private:
 public:
 
     ObjLoader::ObjLoader* objBlock=nullptr;
+    ObjLoader::ObjLoader* objRepere=nullptr;
+
     Replay::ReplayPlayer* player=nullptr;
     map<bID, GlBlock*>mapGlBlocks; //!< A hash map containing pointers to all graphical blocks, indexed by block id
     /**
