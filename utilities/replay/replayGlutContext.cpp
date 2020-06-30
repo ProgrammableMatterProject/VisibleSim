@@ -7,10 +7,11 @@ using namespace GlutContext;
 
 void ReplayGlutContext::initGL() {
     camera->setDirection(0,30);
-    camera->setNearFar(1.0,1000.0);
+    camera->setDistance(1000.0);
+    camera->setNearFar(100.0,10000.0);
     camera->setTarget(Vector3D(0,0,0));
     camera->setAngle(10.0);
-    camera->setLightParameters(Vector3D(0.0,0.0,0.0),80.0,50.0,50.0,50.0,1.0,1000.0);
+    camera->setLightParameters(Vector3D(0.0,0.0,0.0),80.0,50.0,500.0,50.0,1.0,1000.0);
     std::string versionString = std::string((const char*)glGetString(GL_VERSION));
     cout << "Opengl Version: " << versionString << endl;
 }
@@ -94,12 +95,11 @@ void ReplayGlutContext::reshapeFuncTW(int w,int h) {
 /*********************************************************/
 /* Animation function                                    */
 void ReplayGlutContext::idleFunc(void) {
-    static int initTime = glutGet(GLUT_ELAPSED_TIME); // ms
+    /*static int initTime = glutGet(GLUT_ELAPSED_TIME); // ms
     int currentTime = glutGet(GLUT_ELAPSED_TIME);
 
     float dt= static_cast<float>(currentTime-initTime)/1000.0f;
-    initTime = currentTime;
-    //rotationAngle += dt*20.0f; // turn at 20° / s
+    initTime = currentTime;*/
     glutPostWindowRedisplay(mainWindow);
 }
 
@@ -356,39 +356,10 @@ void ReplayGlutContext::drawFuncMW(void) {
 
     noshadowRenderingStart(camera);
 
-    glPushMatrix();
-    glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
-    glPushMatrix();
-        glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,blue);
-        glutSolidCylinder(0.02,2.0,20,5);
-        glPushMatrix();
-            glRotatef(-90.0,1,0,0);
-            glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,green);
-            glutSolidCylinder(0.02,2.0,20,5);
-        glPopMatrix();
-        glRotatef(90.0,0,1,0);
-        glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,red);
-        glutSolidCylinder(0.02,2.0,20,5);
-    glPopMatrix();
-
     glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,grey);
     glPushMatrix();
-        glRotatef(rotationAngle,0.0f,0.0f,1.0f);
-        glScalef(0.1f,0.1f,0.1f);
-        glPushMatrix();
-            //glutSolidTeapot(1.0f);
-//            world->objBlock->glDraw();
-//            glTranslatef(25.0f,0,0);
-            //world->objBlock->glDraw();
-            //glutSolidCone(0.5,2.0,10,1);
-            //objBlock->glDraw();
-            //glTranslatef(25.0f,0,0);
-            world->glDraw();
-        glPopMatrix();
+        world->glDraw();
     glPopMatrix();
-
-
-
 
     glPopMatrix();
     noshadowRenderingStop();

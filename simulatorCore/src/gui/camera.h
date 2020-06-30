@@ -80,6 +80,7 @@ public :
   void glLookAt();
   void setLightParameters(const Vector3D &t,double th,double ph, double d,double angle,double nearplane,double farplane);
   void glProjection();
+  void initFromGridSize(const Vector3D &v);
   const Vector3D getDirectionSpherical();
 
   friend ostream& operator<<(ostream& f,const Camera &c);

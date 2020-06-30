@@ -185,3 +185,14 @@ ostream& operator<<(ostream& f,const Camera &c)
 { f << "(" << c.phi*180.0/M_PI << "," << c.theta*180.0/M_PI << "," << c.distance << ")";
   return f;
 }
+
+void Camera::initFromGridSize(const Vector3D &v) {
+    Vector3D target= 0.5 * v;
+    setTarget(target);
+    double d = target.norme();
+    setDistance(3.0 * d);
+    setDirection(-30.0 - 90.0, 30.0);
+    setNearFar(0.25 * d, 5.0 * d);
+    setAngle(35.0);
+    setLightParameters(target, -30.0, 30.0, 3.0 * d, 30.0, 0.25 * d, 4.0 * d);
+}
