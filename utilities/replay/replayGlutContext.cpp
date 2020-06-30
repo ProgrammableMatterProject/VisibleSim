@@ -11,8 +11,6 @@ using us = chrono::microseconds;
 using get_time = chrono::steady_clock;
 
 void ReplayGlutContext::initGL() {
-    initShaders(enableShadows);
-
     camera->setDirection(0,30);
     camera->setNearFar(1.0,1000.0);
     camera->setTarget(Vector3D(0,0,0));
@@ -20,8 +18,6 @@ void ReplayGlutContext::initGL() {
     camera->setLightParameters(Vector3D(0.0,0.0,0.0),80.0,50.0,50.0,50.0,1.0,1000.0);
     std::string versionString = std::string((const char*)glGetString(GL_VERSION));
     cout << "Opengl Version: " << versionString << endl;
-    ObjLoader::ObjLoader *objBlocke = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
-                                        "smartBlockSimple.obj");
 }
 
 void ReplayGlutContext::quit() {
@@ -272,8 +268,7 @@ void ReplayGlutContext::mouseFuncTW(int button,int state,int x,int y)
     glutPostWindowRedisplay(toolsWindow);
 }
 
-void ReplayGlutContext::init(int argc, char *argv[])
-{
+void ReplayGlutContext::init(int argc, char *argv[]) {
 
     glutInit(&argc, argv);
 
@@ -282,7 +277,6 @@ void ReplayGlutContext::init(int argc, char *argv[])
     glutInitWindowSize(width,height+toolHeight+separ);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
     topWindow=glutCreateWindow("VisibleSim Replayer");
-
 
     glutDisplayFunc(drawFunc);
     /* bind reshape function */
@@ -301,8 +295,14 @@ void ReplayGlutContext::init(int argc, char *argv[])
     /* bind close function */
     glutCloseFunc(quit);
 
-
     // sub windows
+    toolsWindow = glutCreateSubWindow(topWindow, 0,height+separ,width, toolHeight);
+    glutDisplayFunc(drawFuncTW);
+    glutReshapeFunc(reshapeFuncTW);
+    glutKeyboardFunc(kbdFunc);
+    glutMouseFunc(mouseFuncTW);
+    glutMotionFunc(motionFuncTW);
+
     mainWindow = glutCreateSubWindow(topWindow,0,0,width,height);
     glutDisplayFunc(drawFuncMW);
     glutReshapeFunc(reshapeFuncMW);
@@ -312,15 +312,8 @@ void ReplayGlutContext::init(int argc, char *argv[])
     glutMotionFunc(motionFuncMW); // drag
     //glutPassiveMotionFunc(passiveMotionFunc);
 
+    initShaders(enableShadows);
     initGL();
-
-
-    toolsWindow = glutCreateSubWindow(topWindow, 0,height+separ,width, toolHeight);
-    glutDisplayFunc(drawFuncTW);
-    glutReshapeFunc(reshapeFuncTW);
-    glutKeyboardFunc(kbdFunc);
-    glutMouseFunc(mouseFuncTW);
-    glutMotionFunc(motionFuncTW);
 
     //	glutFullScreen();
     //  glutSetCursor(GLUT_CURSOR_NONE); // allow to hide cursor
@@ -328,12 +321,11 @@ void ReplayGlutContext::init(int argc, char *argv[])
 
 }
 
-void ReplayGlutContext::setWorld(ReplayWorld* replayWorld)
-{
+void ReplayGlutContext::setWorld(ReplayWorld* replayWorld) {
     world = replayWorld;
 }
-void ReplayGlutContext::mainLoop()
-{
+
+void ReplayGlutContext::mainLoop() {
     world->updateMap();
 
     glutMainLoop();

@@ -37,23 +37,21 @@ namespace Replay {
 //        parseKeyframe(findKeyframeWithTime(0));//0 seconds
 //        parseKeyframe(findKeyframeWithTime(10000000));//10 seconds
 
-
         cout << "Initialising GlutContext.." << flush;
         GlutContext::ReplayGlutContext::init(argc, argv);
         cout << "Done" << endl;
 
-
-        cout <<"Initializing World .."<<flush;
+        cout << "Initializing World .." << flush;
         world = new ReplayWorld(argc,argv,parseDuration());
         world->player = this;
-        cout <<"Done"<<endl;
+        cout << "Done" << endl;
 
         cout << "Setting up World .." << flush;
         GlutContext::ReplayGlutContext::setWorld(world);
         cout << "Done" << endl;
 
         GlutContext::ReplayGlutContext::mainLoop();
-         // exportFile->close(); // jamais atteint -> placer dans quit
+         // exportFile->close(); // jamais atteint -> à placer dans quit
     }
 
     void ReplayPlayer::createPlayer(int argc, char *argv[]) {
