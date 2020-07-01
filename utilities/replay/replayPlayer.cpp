@@ -39,6 +39,9 @@ namespace Replay {
 
         cout << "Initialising GlutContext.." << flush;
         GlutContext::ReplayGlutContext::init(argc, argv);
+
+        GlutContext::ReplayGlutContext::camera->initFromGridSize(Vector3D(25*gridSizeX,25*gridSizeY,0));
+
         cout << "Done" << endl;
 
         cout << "Initializing World .." << flush;
@@ -198,7 +201,6 @@ namespace Replay {
         u8 position = parseKeyframe(keyframePosition);
         u8 endPosition = findNextKeyframe(time);
         parseEvents(position,time,endPosition);
-
     }
 
     u8 ReplayPlayer::parseKeyframe(u8 position) {

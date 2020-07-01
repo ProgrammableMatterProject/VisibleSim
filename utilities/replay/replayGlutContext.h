@@ -21,7 +21,7 @@
 #include "../../simulatorCore/src/replay/replayTags.h"
 
 class ReplayWorld;
-
+using namespace ReplayTags;
 
 namespace GlutContext {
     //Cottes pour la fenetre de commandes en fonction des dimensions
@@ -32,7 +32,7 @@ namespace GlutContext {
         /*********************************************************/
 /* global variables                                      */
     public:
-        static inline u1 replayMode = REPLAY_MODE_PAUSE;
+
 
         static inline int width = 1024, height = 600, toolHeight = 120, separ = 24; // initial size of the screen
         static inline float offsetX=0.01f, offsetY=0.1f;
@@ -43,6 +43,8 @@ namespace GlutContext {
         static inline float recButtonOffset=0.1f;
         static inline float timelineX = width * (1 - 2 * offsetX), timelineY = timelineHeight * toolHeight;
         static inline ReplayWorld *world= nullptr;
+
+        static inline u1 replayMode = REPLAY_MODE_PAUSE;
 
         static inline constexpr GLfloat red[4] = {1.0f, 0.0f, 0.0f, 1.0f}; // red color material
         static inline constexpr GLfloat white[4]= {1.0f, 1.0f, 1.0f, 1.0f}; // White color material
