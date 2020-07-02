@@ -1,6 +1,6 @@
 #include "tetrisCode.hpp"
 
-void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotate (square)
+void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino doesn't rotate (square)
 {
     TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFree);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
@@ -31,6 +31,10 @@ void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotat
                 sendMessage("Reinit Tmn 1 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), topItf, 0, 0);
                 nbReinitBackMsg += 1;
             }
+            else if (blocked && topItf != nullptr and topItf->isConnected())
+            {
+                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), topItf, 0, 0);
+            }
             else
             {
                 if (topItf != parent && topItf != nullptr and topItf->isConnected())
@@ -47,6 +51,10 @@ void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotat
         {
             sendMessage("Reinit Tmn 1 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), topItf, 0, 0);
             nbReinitBackMsg += 1;
+        }
+        else if (blocked && topItf != nullptr and topItf->isConnected())
+        {
+            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), topItf, 0, 0);
         }
         else
         {
@@ -75,6 +83,10 @@ void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotat
                 sendMessage("Reinit Tmn 1 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), bottomItf, 0, 0);
                 nbReinitBackMsg += 1;
             }
+            else if (blocked && bottomItf != nullptr and bottomItf->isConnected())
+            {
+                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), bottomItf, 0, 0);
+            }
             else
             {
                 if (bottomItf != parent and bottomItf != nullptr and bottomItf->isConnected())
@@ -91,6 +103,10 @@ void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotat
         {
             sendMessage("Reinit Tmn 1 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), bottomItf, 0, 0);
             nbReinitBackMsg += 1;
+        }
+        else if (blocked && bottomItf != nullptr and bottomItf->isConnected())
+        {
+            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), bottomItf, 0, 0);
         }
         else
         {
@@ -119,6 +135,10 @@ void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotat
                 sendMessage("Reinit Tmn 1 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), rightItf, 0, 0);
                 nbReinitBackMsg += 1;
             }
+            else if (blocked && rightItf != nullptr and rightItf->isConnected())
+            {
+                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), rightItf, 0, 0);
+            }
             else
             {
                 if (rightItf != parent && rightItf != nullptr and rightItf->isConnected())
@@ -135,6 +155,10 @@ void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotat
         {
             sendMessage("Reinit Tmn 1 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), rightItf, 0, 0);
             nbReinitBackMsg += 1;
+        }
+        else if (blocked && rightItf != nullptr and rightItf->isConnected())
+        {
+            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), rightItf, 0, 0);
         }
         else
         {
@@ -163,6 +187,10 @@ void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotat
                 sendMessage("Reinit Tmn 1 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), leftItf, 0, 0);
                 nbReinitBackMsg += 1;
             }
+            else if (blocked && leftItf != nullptr and leftItf->isConnected())
+            {
+                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), leftItf, 0, 0);
+            }
             else
             {
                 if (leftItf != parent && leftItf != nullptr and leftItf->isConnected())
@@ -179,6 +207,10 @@ void TetrisCode::sendTmn1(bool reinit) // NB : the first tetramino doesn't rotat
         {
             sendMessage("Reinit Tmn 1 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), leftItf, 0, 0);
             nbReinitBackMsg += 1;
+        }
+        else if (blocked && leftItf != nullptr and leftItf->isConnected())
+        {
+            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), leftItf, 0, 0);
         }
         else
         {
@@ -208,7 +240,7 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         parent = sender;
         nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
-        sendTmn1(false);
+        sendTmn1(false, false);
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
@@ -240,7 +272,7 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         turnCK = msgData.rotCW;
         turnCounterCK = msgData.rotCCW;
         module->setColor(Colors[color]);
-        sendTmn1(false);
+        sendTmn1(false, false);
     }
     //Normally the TOP_RIGHT_CORNER recieved it first, so the BOTTOM_RIGHT_CORNER should be under it on the same column
     else

@@ -1,6 +1,6 @@
 #include "tetrisCode.hpp"
 
-void TetrisCode::sendTmn5(bool reinit)
+void TetrisCode::sendTmn5(bool reinit, bool blocked)
 {
     TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFree);
     ReinitData rData = ReinitData(nbReinit, tmn, movement);
@@ -62,6 +62,10 @@ void TetrisCode::sendTmn5(bool reinit)
                 sendMessage("Reinit Tmn 5 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
                 nbReinitBackMsg += 1;
             }
+            else if (blocked && i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+            }
             else
             {
                 if (i != parent && i != nullptr and i->isConnected())
@@ -79,6 +83,10 @@ void TetrisCode::sendTmn5(bool reinit)
         {
             sendMessage("Reinit Tmn 5 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
             nbReinitBackMsg += 1;
+        }
+        else if (blocked && i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
         }
         else
         {
@@ -104,6 +112,10 @@ void TetrisCode::sendTmn5(bool reinit)
                 sendMessage("Reinit Tmn 5 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
                 nbReinitBackMsg += 1;
             }
+            else if (blocked && i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+            }
             else
             {
                 if (i != parent && i != nullptr and i->isConnected())
@@ -121,6 +133,10 @@ void TetrisCode::sendTmn5(bool reinit)
         {
             sendMessage("Reinit Tmn 5 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
             nbReinitBackMsg += 1;
+        }
+        else if (blocked && i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
         }
         else
         {
@@ -150,6 +166,10 @@ void TetrisCode::sendTmn5(bool reinit)
                 sendMessage("Reinit Tmn 5 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
                 nbReinitBackMsg += 1;
             }
+            else if (blocked && i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+            }
             else
             {
                 if (i != parent && i != nullptr and i->isConnected())
@@ -167,6 +187,10 @@ void TetrisCode::sendTmn5(bool reinit)
         {
             sendMessage("Reinit Tmn 5 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
             nbReinitBackMsg += 1;
+        }
+        else if (blocked && i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
         }
         else
         {
@@ -196,6 +220,10 @@ void TetrisCode::sendTmn5(bool reinit)
                 sendMessage("Reinit Tmn 5 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
                 nbReinitBackMsg += 1;
             }
+            else if (blocked && i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+            }
             else
             {
                 if (i != parent && i != nullptr and i->isConnected())
@@ -213,6 +241,10 @@ void TetrisCode::sendTmn5(bool reinit)
         {
             sendMessage("Reinit Tmn 5 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
             nbReinitBackMsg += 1;
+        }
+        else if (blocked && i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
         }
         else
         {
@@ -241,7 +273,7 @@ void TetrisCode::myTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         parent = sender;
         nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
-        sendTmn5(false);
+        sendTmn5(false, false);
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
@@ -274,7 +306,7 @@ void TetrisCode::myRestartTmn5Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         turnCK = msgData.rotCW;
         turnCounterCK = msgData.rotCCW;
         module->setColor(Colors[color]);
-        sendTmn5(false);
+        sendTmn5(false, false);
     }
     else
     {
@@ -359,6 +391,17 @@ void TetrisCode::verifTmn5()
                 }
                 else
                 {
+                    //the tetramino is blocked
+                    blocked = true;
+                    sendTmn5(false, true);
+                    if (leftItf != nullptr && leftItf->isConnected())
+                    {
+                        sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+                    }
+                    if (rightItf != nullptr && rightItf->isConnected())
+                    {
+                        sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+                    }
                     nbTmn += 1;
                     sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
                 }

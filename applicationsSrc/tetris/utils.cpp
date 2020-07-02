@@ -126,6 +126,29 @@ public:
     }
 };
 
+class TmnInfo
+{
+public:
+    int tmn;
+    int rotation;
+    int position;
+    int color;
+    bool blocked;
+    int blockedRight;
+    int blockedLeft;
+
+    TmnInfo(int tmn, int rot, int pos, int color, bool blocked, int blockedRight, int blockedLeft)
+    {
+        this->tmn = tmn;
+        this->rotation = rot;
+        this->position = pos;
+        this->color = color;
+        this->blocked = blocked;
+        this->blockedRight = blockedRight;
+        this->blockedLeft = blockedLeft;
+    }
+};
+
 /*
 stringstream strstm;
 strstm << "Role is BL corner";

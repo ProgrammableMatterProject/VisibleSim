@@ -160,6 +160,26 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
                          std::bind(&TetrisCode::myBackFarVMsgFunc, this,
                                    std::placeholders::_1, std::placeholders::_2));
 
+    // Registers a callback (myBlockedMsgFunc) to the message of type E
+    addMessageEventFunc2(BLOCKED_MSG_ID,
+                         std::bind(&TetrisCode::myBlockedMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myCountBlockedMsgFunc) to the message of type E
+    addMessageEventFunc2(COUNT_BCK_MSG_ID,
+                         std::bind(&TetrisCode::myCountBlockedMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myAskTmnInfoMsgFunc) to the message of type E
+    addMessageEventFunc2(ASK_INFO_MSG_ID,
+                         std::bind(&TetrisCode::myAskTmnInfoMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myTmnInfoMsgFunc) to the message of type E
+    addMessageEventFunc2(TMN_INFO_MSG_ID,
+                         std::bind(&TetrisCode::myTmnInfoMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
     // Initialization of random numbers generator
     srand(Random::getSimulationSeed());
 }
@@ -223,31 +243,31 @@ void TetrisCode::tmnAppearance()
     module->setColor(Colors[color]);
     if (tmn == 1)
     {
-        sendTmn1(false);
+        sendTmn1(false, false);
     }
     else if (tmn == 2)
     {
-        sendTmn2(false);
+        sendTmn2(false, false);
     }
     else if (tmn == 3)
     {
-        sendTmn3(false);
+        sendTmn3(false, false);
     }
     else if (tmn == 4)
     {
-        sendTmn4(false);
+        sendTmn4(false, false);
     }
     else if (tmn == 5)
     {
-        sendTmn5(false);
+        sendTmn5(false, false);
     }
     else if (tmn == 6)
     {
-        sendTmn6(false);
+        sendTmn6(false, false);
     }
     else if (tmn == 7)
     {
-        sendTmn7(false);
+        sendTmn7(false, false);
     }
 }
 
@@ -342,7 +362,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         movement = msgData.movement;
         if (msgData.tmn == 1)
         {
-            sendTmn1(true);
+            sendTmn1(true, false);
             //the first tetramino doesn't rotate, it goes down no matter what
             //the pixels that were in positions 1 and 2 don't belong to the tetramino anymore, they have to be re-initialized
             if (msgData.movement == DOWN && (position == 1 || position == 2))
@@ -360,7 +380,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 2)
         {
-            sendTmn2(true);
+            sendTmn2(true, false);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -409,7 +429,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 3)
         {
-            sendTmn3(true);
+            sendTmn3(true, false);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -461,7 +481,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 4)
         {
-            sendTmn4(true);
+            sendTmn4(true, false);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -513,7 +533,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 5)
         {
-            sendTmn5(true);
+            sendTmn5(true, false);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -569,7 +589,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 6)
         {
-            sendTmn6(true);
+            sendTmn6(true, false);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -626,7 +646,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 7)
         {
-            sendTmn7(true);
+            sendTmn7(true, false);
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -887,31 +907,31 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
                 }
                 if (tmn == 1)
                 {
-                    sendTmn1(false);
+                    sendTmn1(false, false);
                 }
                 else if (tmn == 2)
                 {
-                    sendTmn2(false);
+                    sendTmn2(false, false);
                 }
                 else if (tmn == 3)
                 {
-                    sendTmn3(false);
+                    sendTmn3(false, false);
                 }
                 else if (tmn == 4)
                 {
-                    sendTmn4(false);
+                    sendTmn4(false, false);
                 }
                 else if (tmn == 5)
                 {
-                    sendTmn5(false);
+                    sendTmn5(false, false);
                 }
                 else if (tmn == 6)
                 {
-                    sendTmn6(false);
+                    sendTmn6(false, false);
                 }
                 else if (tmn == 7)
                 {
-                    sendTmn7(false);
+                    sendTmn7(false, false);
                 }
             }
         }
@@ -942,7 +962,7 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
 
 void TetrisCode::updateOfTmn()
 {
-    usleep(1000000);
+    usleep(500000);
 
     stringstream strstm;
     strstm << "UPDATE OF THE Tetramino";
@@ -955,31 +975,31 @@ void TetrisCode::updateOfTmn()
     //may be needed. When modules recieve the message, they spread it to their neighbors, and reinitialize themselves if needed.
     if (tmn == 1)
     {
-        sendTmn1(true);
+        sendTmn1(true, false);
     }
     if (tmn == 2)
     {
-        sendTmn2(true);
+        sendTmn2(true, false);
     }
     if (tmn == 3)
     {
-        sendTmn3(true);
+        sendTmn3(true, false);
     }
     if (tmn == 4)
     {
-        sendTmn4(true);
+        sendTmn4(true, false);
     }
     if (tmn == 5)
     {
-        sendTmn5(true);
+        sendTmn5(true, false);
     }
     if (tmn == 6)
     {
-        sendTmn6(true);
+        sendTmn6(true, false);
     }
     if (tmn == 7)
     {
-        sendTmn7(true);
+        sendTmn7(true, false);
     }
 }
 
@@ -1209,6 +1229,43 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                     }
                     else
                     {
+                        blocked = true;
+                        if (tmn == 1)
+                        {
+                            sendTmn1(false, true);
+                        }
+                        else if (tmn == 2)
+                        {
+                            sendTmn2(false, true);
+                        }
+                        else if (tmn == 3)
+                        {
+                            sendTmn3(false, true);
+                        }
+                        else if (tmn == 4)
+                        {
+                            sendTmn4(false, true);
+                        }
+                        else if (tmn == 5)
+                        {
+                            sendTmn5(false, true);
+                        }
+                        else if (tmn == 6)
+                        {
+                            sendTmn6(false, true);
+                        }
+                        else if (tmn == 7)
+                        {
+                            sendTmn7(false, true);
+                        }
+                        if (leftItf != nullptr && leftItf->isConnected())
+                        {
+                            sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+                        }
+                        if (rightItf != nullptr && rightItf->isConnected())
+                        {
+                            sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+                        }
                         nbTmn += 1;
                         sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
                     }
@@ -1341,6 +1398,43 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
             }
             else
             {
+                blocked = true;
+                if (tmn == 1)
+                {
+                    sendTmn1(false, true);
+                }
+                else if (tmn == 2)
+                {
+                    sendTmn2(false, true);
+                }
+                else if (tmn == 3)
+                {
+                    sendTmn3(false, true);
+                }
+                else if (tmn == 4)
+                {
+                    sendTmn4(false, true);
+                }
+                else if (tmn == 5)
+                {
+                    sendTmn5(false, true);
+                }
+                else if (tmn == 6)
+                {
+                    sendTmn6(false, true);
+                }
+                else if (tmn == 7)
+                {
+                    sendTmn7(false, true);
+                }
+                if (leftItf != nullptr && leftItf->isConnected())
+                {
+                    sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+                }
+                if (rightItf != nullptr && rightItf->isConnected())
+                {
+                    sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+                }
                 nbTmn += 1;
                 sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
             }
@@ -1726,6 +1820,43 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                 }
                 else
                 {
+                    blocked = true;
+                    if (tmn == 1)
+                    {
+                        sendTmn1(false, true);
+                    }
+                    else if (tmn == 2)
+                    {
+                        sendTmn2(false, true);
+                    }
+                    else if (tmn == 3)
+                    {
+                        sendTmn3(false, true);
+                    }
+                    else if (tmn == 4)
+                    {
+                        sendTmn4(false, true);
+                    }
+                    else if (tmn == 5)
+                    {
+                        sendTmn5(false, true);
+                    }
+                    else if (tmn == 6)
+                    {
+                        sendTmn6(false, true);
+                    }
+                    else if (tmn == 7)
+                    {
+                        sendTmn7(false, true);
+                    }
+                    if (leftItf != nullptr && leftItf->isConnected())
+                    {
+                        sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+                    }
+                    if (rightItf != nullptr && rightItf->isConnected())
+                    {
+                        sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+                    }
                     nbTmn += 1;
                     sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
                 }
@@ -1739,6 +1870,156 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                 sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, msgData), parent, 0, 0);
             }
         }
+    }
+}
+
+void TetrisCode::myBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    if (blocked == false)
+    {
+        blocked = true;
+        blockedLeft = 0;
+        blockedRight = 0;
+        if (tmn == 1)
+        {
+            sendTmn1(false, true);
+        }
+        else if (tmn == 2)
+        {
+            sendTmn2(false, true);
+        }
+        else if (tmn == 3)
+        {
+            sendTmn3(false, true);
+        }
+        else if (tmn == 4)
+        {
+            sendTmn4(false, true);
+        }
+        else if (tmn == 5)
+        {
+            sendTmn5(false, true);
+        }
+        else if (tmn == 6)
+        {
+            sendTmn6(false, true);
+        }
+        else if (tmn == 7)
+        {
+            sendTmn7(false, true);
+        }
+        if (leftItf != nullptr && leftItf->isConnected())
+        {
+            sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+        }
+        if (rightItf != nullptr && rightItf->isConnected())
+        {
+            sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+        }
+    }
+}
+
+void TetrisCode::myCountBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
+    int msgData = *msg->getData();
+
+    if (blocked == true && blockedLeft + blockedRight + 1 != totalBckdModules) // only the blocked modules are counted, and if the line already is full, nothing should happen.
+    {
+        if (sender == leftItf && msgData > blockedLeft)
+        {
+            blockedLeft = msgData;
+            //sending the update to both neighbors
+            if (rightItf != nullptr && rightItf->isConnected())
+            {
+                int data = blockedLeft + 1;
+                sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
+            }
+            if (leftItf != nullptr && leftItf->isConnected())
+            {
+                int data = blockedRight + 1;
+                sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
+            }
+        }
+        else if (sender == rightItf && msgData > blockedRight)
+        {
+            blockedRight = msgData;
+            if (leftItf != nullptr && leftItf->isConnected())
+            {
+                int data = blockedRight + 1;
+                sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
+            }
+            if (rightItf != nullptr && rightItf->isConnected())
+            {
+                int data = blockedLeft + 1;
+                sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
+            }
+        }
+
+        //if the line is full, the module asks for the information of the upper line.
+        int v = blockedLeft + blockedRight + 1;
+        if (v == totalBckdModules && (roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE) && topItf != nullptr && topItf->isConnected())
+        {
+            sendMessage("Asking line Tmn Info", new Message(ASK_INFO_MSG_ID), topItf, 0, 0);
+        }
+    }
+}
+
+void TetrisCode::myAskTmnInfoMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    if (roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    //if the module has to answer
+    {
+        TmnInfo data = TmnInfo(tmn, rotation, position, color, blocked, blockedRight, blockedLeft);
+        if (bottomItf != nullptr && bottomItf->isConnected())
+        {
+            sendMessage("Sending Tmn Info", new MessageOf<TmnInfo>(TMN_INFO_MSG_ID, data), bottomItf, 0, 0);
+        }
+        if (tmn != NO_TMN && topItf != nullptr && topItf->isConnected()) //if the pixel isn't empty, the upper line needs to come down
+        {
+            sendMessage("Asking line Tmn Info", new Message(ASK_INFO_MSG_ID), topItf, 0, 0);
+        }
+    }
+    else
+    {
+        //if the module is in contact with the next line, it needs to send the demand only once
+        if (roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_RIGHT_CORNER)
+        {
+            if (blockedLeft + blockedRight + 1 != totalBckdModules && topItf != nullptr && topItf->isConnected())
+            {
+                sendMessage("Asking line Tmn Info", new Message(ASK_INFO_MSG_ID), topItf, 0, 0);
+            }
+        }
+        else if (topItf != nullptr && topItf->isConnected())
+        {
+            sendMessage("Asking line Tmn Info", new Message(ASK_INFO_MSG_ID), topItf, 0, 0);
+        }
+    }
+}
+
+void TetrisCode::myTmnInfoMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    MessageOf<TmnInfo> *msg = static_cast<MessageOf<TmnInfo> *>(_msg.get());
+    TmnInfo msgData = *msg->getData();
+    tmn = msgData.tmn;
+    rotation = msgData.rotation;
+    position = msgData.position;
+    color = msgData.color;
+    blocked = msgData.blocked;
+    blockedRight = msgData.blockedRight;
+    blockedLeft = msgData.blockedLeft;
+    update = 0;
+    module->setColor(Colors[color]);
+    //if the module is not at the bottom of the pixel, it has to spread the new information
+    if (roleInPixel != BOTTOM_LEFT_CORNER && roleInPixel != BOTTOM_BORDER && roleInPixel != BOTTOM_RIGHT_CORNER && roleInPixel != ALONE && bottomItf != nullptr && bottomItf->isConnected())
+    {
+        sendMessage("Sending Tmn Info", new MessageOf<TmnInfo>(TMN_INFO_MSG_ID, msgData), bottomItf, 0, 0);
+    }
+    //if the line is full, the module asks for the information of the upper line.
+    int v = blockedLeft + blockedRight + 1;
+    if (v == totalBckdModules && (roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE) && topItf != nullptr && topItf->isConnected())
+    {
+        sendMessage("Asking line Tmn Info", new Message(ASK_INFO_MSG_ID), topItf, 0, 0);
     }
 }
 

@@ -157,6 +157,10 @@ static const int BACKFREEMSG_ID = 1026;
 static const int BFMSG_ID = 1027;
 static const int FAR_VERIF_MSG_ID = 1028;
 static const int BACK_FAR_V_MSG_ID = 1029;
+static const int BLOCKED_MSG_ID = 1030;
+static const int COUNT_BCK_MSG_ID = 1031;
+static const int ASK_INFO_MSG_ID = 1032;
+static const int TMN_INFO_MSG_ID = 1033;
 
 //IDs of the interfaces
 static const int topId = 0;
@@ -193,7 +197,7 @@ private:
     int maxWidth = 0;            //maximum width of the BBs set
     int pixelHCoord = 0;         //"vertical" coordinate of the pixel the module belongs to
     int pixelWCoord = 0;         //"horizontal" coordinate of the pixel the module belongs to
-    int roleInPixel = 100;       // role of the module in the pixel (core, border, corner)
+    int roleInPixel = 100;       // role of the module in the pixel (core, border, corner) 
 
     bool appear_module = false; //true if the module is the one which picks the form, rotation and color of the new tetramino
     int nbTmn = 0;              //number of the current moving tetramino
@@ -224,6 +228,11 @@ private:
     bool goingLeft = false;
     bool turnCK = false;
     bool turnCounterCK = false;
+
+    bool blocked = false; //true if the tetramino is blocked
+    int blockedRight = 0; //number of neighbors on the right of the line that are also blocked
+    int blockedLeft = 0;
+    int totalBckdModules = 0 ; //total number of blocked modules that is needed for the line to be full.
 
 public:
     TetrisCode(BlinkyBlocksBlock *host);
@@ -300,8 +309,9 @@ public:
     /**
     * @brief spread the first tetramino (square)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param blocked (bool) true if the tetramino is blocked
     */
-    void sendTmn1(bool reinit);
+    void sendTmn1(bool reinit, bool blocked);
 
     /**
     * @brief Message handler for the message 'tmn1'
@@ -320,8 +330,9 @@ public:
     /**
     * @brief spread the second tetramino (column)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param blocked (bool) true if the tetramino is blocked
     */
-    void sendTmn2(bool reinit);
+    void sendTmn2(bool reinit, bool blocked);
 
     /**
     * @brief Message handler for the message 'tmn2'
@@ -340,8 +351,9 @@ public:
     /**
     * @brief spread the third tetramino (L)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param blocked (bool) true if the tetramino is blocked
     */
-    void sendTmn3(bool reinit);
+    void sendTmn3(bool reinit, bool blocked);
 
     /**
     * @brief Message handler for the message 'tmn3'
@@ -360,8 +372,9 @@ public:
     /**
     * @brief spread the fourth tetramino (L in mirror)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param blocked (bool) true if the tetramino is blocked
     */
-    void sendTmn4(bool reinit);
+    void sendTmn4(bool reinit, bool blocked);
 
     /**
     * @brief Message handler for the message 'tmn4'
@@ -380,8 +393,9 @@ public:
     /**
     * @brief spread the fifth tetramino (T)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param blocked (bool) true if the tetramino is blocked
     */
-    void sendTmn5(bool reinit);
+    void sendTmn5(bool reinit, bool blocked);
 
     /**
     * @brief Message handler for the message 'tmn5'
@@ -400,8 +414,9 @@ public:
     /**
     * @brief spread the sixth tetramino ("chair")
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param blocked (bool) true if the tetramino is blocked
     */
-    void sendTmn6(bool reinit);
+    void sendTmn6(bool reinit, bool blocked);
 
     /**
     * @brief Message handler for the message 'tmn6'
@@ -420,8 +435,9 @@ public:
     /**
     * @brief spread the seventh tetramino ("chair" in mirror)
     * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
+    * @param blocked (bool) true if the tetramino is blocked
     */
-    void sendTmn7(bool reinit);
+    void sendTmn7(bool reinit, bool blocked);
 
     /**
     * @brief Message handler for the message 'tmn7'
@@ -599,6 +615,34 @@ public:
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
     void myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'blocked'. Spreads through the tetramino that it is blocked.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'CountBlocked'. Message used to count all blocked modules on the same line
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myCountBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'AskInfo'. When the line is full, the modules are asking the informations of the module on the top.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myAskTmnInfoMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'TmnInfo'. Having the infos of the modules on the top back.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myTmnInfoMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     * @brief Handler for all events received by the host block

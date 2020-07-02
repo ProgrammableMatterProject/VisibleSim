@@ -222,6 +222,8 @@ int TetrisCode::pixelCalculation()
         module->setColor(Colors[NO_COLOR]);
     }
 
+    totalBckdModules = (maxWidth / sizeOfPixel) * sizeOfPixel; //the number of modules on width that belong to full pixels;
+
     // module->setColor(Colors[(pixelHCoord+pixelWCoord)%NB_COLORS]);
     // if(appear_module)
     // {
