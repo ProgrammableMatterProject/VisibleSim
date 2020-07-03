@@ -19,9 +19,10 @@
 #include "replayPlayer.h"
 #include "../../simulatorCore/src/gui/camera.h"
 #include "../../simulatorCore/src/replay/replayTags.h"
-
+#include "replayInterface.h"
 class ReplayWorld;
 using namespace ReplayTags;
+class Button;
 
 namespace GlutContext {
     //Cottes pour la fenetre de commandes en fonction des dimensions
@@ -42,9 +43,16 @@ namespace GlutContext {
         static inline float toolbarOffsetX=0.3f, buttonSeparation=0.005f;
         static inline float recButtonOffset=0.1f;
         static inline float timelineX = width * (1 - 2 * offsetX), timelineY = timelineHeight * toolHeight;
+        static inline float stepDuration = 0.0f;
         static inline ReplayWorld *world= nullptr;
 
+        //Buttons
+        static inline vector<Button*> buttons  = {};
+
+
+
         static inline u1 replayMode = REPLAY_MODE_PAUSE;
+
 
         static inline constexpr GLfloat red[4] = {1.0f, 0.0f, 0.0f, 1.0f}; // red color material
         static inline constexpr GLfloat white[4]= {1.0f, 1.0f, 1.0f, 1.0f}; // White color material

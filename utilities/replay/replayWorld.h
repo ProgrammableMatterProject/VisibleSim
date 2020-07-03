@@ -31,8 +31,10 @@ private:
     float exportDuration = 0.0f;
     float currentTime = 0.0f;
 
+
 public:
 
+    float gridScale = 25.0f;
     ObjLoader::ObjLoader* objBlock=nullptr;
     ObjLoader::ObjLoader* objRepere=nullptr;
 
@@ -41,7 +43,7 @@ public:
     /**
      * @brief World constructor, initializes the camera, light, and user interaction attributes
      */
-    ReplayWorld(int argc, char *argv[], u8 duration);
+    ReplayWorld(int argc, char *argv[], u8 duration, float scale);
     /**
      * @brief World destructor, deletes the blocks and their GL counterparts, the lattice and camera
      */
@@ -53,7 +55,7 @@ public:
     float getCurrentTime(){return currentTime;};
     void setCurrentTime(float time) {currentTime=time;};
     void updateMap();
-    void addBlock(bID blockId, Vector3D pos, Color col);
+    void addBlock(bID blockId, KeyframeBlock pos);
     void glDraw();
     void updateColor(u4 blockId, Color col);
     void updatePosition(u4 blockId, Vector3D pos);

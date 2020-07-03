@@ -19,7 +19,7 @@
 #include "../../simulatorCore/src/replay/replayTags.h"
 #include "replayGlutContext.h"
 #include "replayWorld.h"
-
+#include "../../simulatorCore/src/grid/lattice.h"
 
 using namespace std;
 using namespace ReplayTags;
@@ -121,6 +121,9 @@ public:
     void parseEventMotion(u8 position, u4 blockId, u8 time, u8 readTime);
 
     void parseEventPosition(u8 position, u4 blockId);
+
+    void parseEventDisplay(u8 position, u4 blockId);
+
     /**
      * Parse the total duration of the exported file
      * @return duration

@@ -45,7 +45,7 @@ namespace Replay {
         cout << "Done" << endl;
 
         cout << "Initializing World .." << flush;
-        world = new ReplayWorld(argc,argv,parseDuration());
+        world = new ReplayWorld(argc,argv,parseDuration(),25.0f);
         world->player = this;
         cout << "Done" << endl;
 
@@ -237,23 +237,11 @@ namespace Replay {
         cout << "There are "<<blockCount<<" blocks in the keyframe"<<endl;
         for(int i=0;i<blockCount;i++)
         {
-
-            //TODO changer les coordonnées avec gridToWorld
-            Vector3D position;
-            Color col;
-            position.pt[3] = 1;
-            position.pt[0] = keyframe[i].x*25;
-            position.pt[1] = keyframe[i].y*25;
-            position.pt[2] = keyframe[i].z*25;
-            col.rgba[0] = keyframe[i].r/255.0f;
-            col.rgba[1] = keyframe[i].g/255.0f;
-            col.rgba[2]= keyframe[i].b/255.0f;
-            col.rgba[3]= 1.0;
     //        cout << "id : "<<keyframe[i].id
     //             <<" | Pos : "<<(int)keyframe[i].x<<" "<<(int)keyframe[i].y<<" "<<(int)keyframe[i].z
     //             <<" | rotation : "<<(int)keyframe[i].rotation
     //             <<" | RGB : "<<(int)keyframe[i].r<<" "<<(int)keyframe[i].g<<" "<<(int)keyframe[i].b<<endl;
-            world->addBlock(keyframe[i].id,position,col);
+            world->addBlock(keyframe[i].id,keyframe[i]);
         }
         return (u8)exportFile->tellg();
     }
@@ -276,12 +264,10 @@ namespace Replay {
                     parseEventColor(exportFile->tellg(), blockId);
                     break;
                 case EVENT_DISPLAY_UPDATE:
-                    cout <<"EVENEMENT DE DISP"<<endl;
                     exportFile->seekg(exportFile->tellg()+2);
                     break;
                 case EVENT_POSITION_UPDATE:
                     parseEventPosition(exportFile->tellg(), blockId);
-                    //exportFile->seekg(exportFile->tellg()+7);
                     break;
                 case EVENT_ADD_MODULE:
                     break;
@@ -289,7 +275,6 @@ namespace Replay {
                     break;
                 case EVENT_MOTION:
                     parseEventMotion(exportFile->tellg(),blockId,time,readTime);
-                    //exportFile->seekg(exportFile->tellg()+14);
                     break;
                 case EVENT_CONSOLE_TRACE:
                     break;
@@ -299,6 +284,12 @@ namespace Replay {
 
     }
 
+    void ReplayPlayer::parseEventDisplay(u8 position, u4 blockId)
+    {
+        exportFile->seekg(position);
+        uint16_t displayedValue;
+        exportFile->read((char *) &displayedValue, sizeof(u2));
+    }
 
     void ReplayPlayer::parseEventPosition(u8 position, u4 blockId)
     {

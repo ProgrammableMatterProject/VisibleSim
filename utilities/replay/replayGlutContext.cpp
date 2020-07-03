@@ -118,11 +118,10 @@ void ReplayGlutContext::idleFunc(void) {
             world->setCurrentTime(world->getExportDuration());
             replayMode = REPLAY_MODE_PAUSE;
         }
+        world->updateMap();
+        updateSubWindows();
     }
 
-    world->updateMap();
-    updateSubWindows();
-    
     glutPostWindowRedisplay(mainWindow);
 }
 
@@ -185,6 +184,7 @@ void ReplayGlutContext::mouseFuncMW(int button,int state,int x,int y) {
                 break;
         }
     }
+
 }
 
 bool ReplayGlutContext::isIn(int x, int y, int x0, int y0, int w, int h) {
@@ -242,6 +242,8 @@ void ReplayGlutContext::motionFuncTW(int x,int y)
             world->updateMap();
         }
     }
+
+
     glutPostWindowRedisplay(toolsWindow);
 }
 void ReplayGlutContext::mouseFuncTW(int button,int state,int x,int y)
@@ -268,6 +270,15 @@ void ReplayGlutContext::mouseFuncTW(int button,int state,int x,int y)
             replayMode = REPLAY_MODE_PAUSE;
         }
     }
+    if(state == GLUT_DOWN)
+    {
+        for(auto &glButton : buttons)
+        {
+            glButton->mouseFunc(button, state, x ,toolHeight-y);
+        }
+    }
+
+
     glutPostWindowRedisplay(toolsWindow);
 }
 
@@ -321,7 +332,33 @@ void ReplayGlutContext::init(int argc, char *argv[]) {
     //	glutFullScreen();
     //  glutSetCursor(GLUT_CURSOR_NONE); // allow to hide cursor
 
+    //Buttons initialization
 
+//    playButton = new PlayButton(width*(toolbarOffsetX+offsetX)+3*(toolsButtonSize*toolHeight+buttonSeparation*width),
+//                    toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
+//                    toolHeight*toolsButtonSize, toolHeight*toolsButtonSize);
+//    pauseButton = new PauseButton(width*(toolbarOffsetX+offsetX)+2*(toolsButtonSize*toolHeight+buttonSeparation*width),
+//                                toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
+//                                toolHeight*toolsButtonSize, toolHeight*toolsButtonSize);
+
+    buttons.push_back(new PlayButton(width*(toolbarOffsetX+offsetX)+3*(toolsButtonSize*toolHeight+buttonSeparation*width),
+                                     toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
+                                     toolHeight*toolsButtonSize, toolHeight*toolsButtonSize));
+    buttons.push_back(new PauseButton(width*(toolbarOffsetX+offsetX)+2*(toolsButtonSize*toolHeight+buttonSeparation*width),
+                                      toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
+                                      toolHeight*toolsButtonSize, toolHeight*toolsButtonSize));
+    buttons.push_back(new GoToBeginningButton(width*(toolbarOffsetX+offsetX),
+                                      toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
+                                      toolHeight*toolsButtonSize, toolHeight*toolsButtonSize));
+    buttons.push_back(new GoToEndButton(width*(toolbarOffsetX+offsetX)+5*(toolsButtonSize*toolHeight+buttonSeparation*width),
+                                              toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
+                                              toolHeight*toolsButtonSize, toolHeight*toolsButtonSize));
+    buttons.push_back(new StepBackwardButton(width*(toolbarOffsetX+offsetX)+1*(toolsButtonSize*toolHeight+buttonSeparation*width),
+                                        toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
+                                        toolHeight*toolsButtonSize, toolHeight*toolsButtonSize));
+    buttons.push_back(new StepForwardButton(width*(toolbarOffsetX+offsetX)+4*(toolsButtonSize*toolHeight+buttonSeparation*width),
+                                        toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
+                                        toolHeight*toolsButtonSize, toolHeight*toolsButtonSize));
 }
 
 void ReplayGlutContext::setWorld(ReplayWorld* replayWorld) {
@@ -424,8 +461,12 @@ void ReplayGlutContext::drawFuncTW(void) {
 
     drawTimeline();
 
+    for(auto &glButton : buttons)
+    {
+        glButton->drawFunc();
+    }
     //Drawing buttons
-    //TODO adater à la fenetre mieux
+    /*
     glPushMatrix();
     glTranslatef(width*offsetX,toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),0);
     glTranslatef(width*toolbarOffsetX-toolHeight*toolsButtonSize,0,0);
@@ -563,6 +604,7 @@ void ReplayGlutContext::drawFuncTW(void) {
     glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.3f*toolsButtonSize);
     glEnd();
     glPopMatrix();
+     */
 
     glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
@@ -586,7 +628,6 @@ void ReplayGlutContext::drawTimeline()
 
     float power = floor(log10(world->getExportDuration()));
     float firstDigit = world->getExportDuration()/(pow(10,power));
-    float stepDuration;
     char str[50];
     float stepHeight;
 
