@@ -48,11 +48,14 @@ private:
 
     u8 keyframeIndexPosition = 0;
     u8 keyframeCount = 0;
+    u8 keyframeEndTime = 0;
+    u8 maxMotionDuration = 0;
+    u8 lastFrameEndParsePosition = 0;
 
     CommandLine cmdLine;
 
-    float replayDuration = 25.0f;
-    float currentTime = 0.0f;
+//    float replayDuration = 25.0f;
+//    float currentTime = 0.0f;
 
 public:
 
@@ -129,6 +132,11 @@ public:
      * @return duration
      */
     u8 parseDuration();
+
+    u8 getKeyframeEndTime();
+
+    u8 getLastFrameEndParsePosition();
+
 };
 
 

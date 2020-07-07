@@ -31,6 +31,7 @@ public:
 
     Button(float xPosition, float yPosition, float h, float w);
     void mouseFunc(int button,int state,int xMouse,int yMouse);
+    void reshapeFunc();
     virtual void drawFunc() {};
     virtual void activate() {};
 };

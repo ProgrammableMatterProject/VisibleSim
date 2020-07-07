@@ -10,7 +10,7 @@
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = replay.cpp replayPlayer.cpp replayGlutContext.cpp replayWorld.cpp replayInterface.cpp
+SRCS = replay.cpp replayPlayer.cpp replayGlutContext.cpp replayWorld.cpp replayInterface.cpp replayEvent.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = replay

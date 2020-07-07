@@ -28,7 +28,10 @@ void Button::mouseFunc(int button,int state,int xMouse,int yMouse)
         }
     }
 }
-
+void Button::reshapeFunc()
+{
+    //x = x*ReplayGlutContext::width/1024.0f;
+}
 PlayButton::PlayButton(float xPosition, float yPosition, float h, float w) :
 Button( xPosition,  yPosition,  h,  w)
 {

@@ -19,18 +19,19 @@
 #include "../../simulatorCore/src/replay/replayTags.h"
 #include "replay.hpp"
 #include "../../simulatorCore/src/robots/smartBlocks/smartBlocksGlBlock.h"
+#include "replayEvent.h"
 
 using namespace ReplayTags;
 namespace Replay {
     class ReplayPlayer;
 }
-
+class ReplayEvent;
 class ReplayWorld{
 private:
 
     float exportDuration = 0.0f;
     float currentTime = 0.0f;
-
+    float lastFrameTime = 0.0f;
 
 public:
 
@@ -40,6 +41,7 @@ public:
 
     Replay::ReplayPlayer* player=nullptr;
     map<bID, GlBlock*>mapGlBlocks; //!< A hash map containing pointers to all graphical blocks, indexed by block id
+    map<bID, ReplayEvent>eventBuffer;
     /**
      * @brief World constructor, initializes the camera, light, and user interaction attributes
      */
@@ -55,10 +57,13 @@ public:
     float getCurrentTime(){return currentTime;};
     void setCurrentTime(float time) {currentTime=time;};
     void updateMap();
-    void addBlock(bID blockId, KeyframeBlock pos);
+    void addBlock(bID blockId, KeyframeBlock block);
     void glDraw();
     void updateColor(u4 blockId, Color col);
-    void updatePosition(u4 blockId, Vector3D pos);
+    void updatePositionMotion(u4 blockId, KeyframeBlock block,u8 time, u8 readTime, Cell3DPosition initPos);
+    void updatePosition(u4 blockId, KeyframeBlock block);
+    void updateFrame();
+    void updateMotionBlocks();
     Vector3D getPosition(u4 blockId);
 
 
