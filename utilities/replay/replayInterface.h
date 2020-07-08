@@ -83,3 +83,43 @@ public:
     virtual void drawFunc() override;
     virtual void activate() override;
 };
+
+class ZoomInButton : public Button
+{
+public:
+    ZoomInButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
+    virtual void drawFunc() override;
+    virtual void activate() override;
+};
+
+class ZoomOutButton : public Button
+{
+public:
+    ZoomOutButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
+    virtual void drawFunc() override;
+    virtual void activate() override;
+};
+
+class CenterZoomButton : public Button
+{
+public:
+    CenterZoomButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
+    virtual void drawFunc() override;
+    virtual void activate() override;
+};
+
+class SetStartZoomButton : public Button
+{
+public:
+    SetStartZoomButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
+    virtual void drawFunc() override;
+    virtual void activate() override;
+};
+
+class SetEndZoomButton : public Button
+{
+public:
+    SetEndZoomButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
+    virtual void drawFunc() override;
+    virtual void activate() override;
+};

@@ -31,6 +31,8 @@ private:
 
     float exportDuration = 0.0f;
     float currentTime = 0.0f;
+    float startZoom = 0.0f;
+    float endZoom = 0.0f;
     float lastFrameTime = 0.0f;
 
 public:
@@ -53,6 +55,10 @@ public:
 
     ObjLoader::ObjLoader getObjBlock() {return *objBlock;};
     float getExportDuration() const {return exportDuration;};
+    float getStartZoom() const {return startZoom;};
+    float getEndZoom() const {return endZoom;};
+    void setStartZoom(float time) {startZoom=time;};
+    void setEndZoom(float time) {endZoom=time;};
     void setExportDuration(float duration) {exportDuration=duration;};
     float getCurrentTime(){return currentTime;};
     void setCurrentTime(float time) {currentTime=time;};
