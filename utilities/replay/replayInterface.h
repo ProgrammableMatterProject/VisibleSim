@@ -22,14 +22,14 @@ class Button
 
 public:
     bool isActive;
-    bool isDown;
+    bool isDown = false;
     bool isHighlighted;
-    int x;
-    int y;
-    int height;
-    int width;
+    int x, initX, fixedX;
+    int y, initY, fixedY;
+    int height, initHeight;
+    int width, initWidth;
 
-    Button(float xPosition, float yPosition, float h, float w);
+    Button(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
     void mouseFunc(int button,int state,int xMouse,int yMouse);
     void reshapeFunc();
     virtual void drawFunc() {};
@@ -39,7 +39,7 @@ public:
 class PlayButton : public Button
 {
 public:
-    PlayButton(float xPosition, float yPosition, float h, float w);
+    PlayButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
     virtual void drawFunc() override;
     virtual void activate() override;
 };
@@ -47,7 +47,7 @@ public:
 class PauseButton : public Button
 {
 public:
-    PauseButton(float xPosition, float yPosition, float h, float w);
+    PauseButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
     virtual void drawFunc() override;
     virtual void activate() override;
 };
@@ -55,7 +55,7 @@ public:
 class GoToBeginningButton : public Button
 {
 public:
-    GoToBeginningButton(float xPosition, float yPosition, float h, float w);
+    GoToBeginningButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
     virtual void drawFunc() override;
     virtual void activate() override;
 };
@@ -63,7 +63,7 @@ public:
 class GoToEndButton : public Button
 {
 public:
-    GoToEndButton(float xPosition, float yPosition, float h, float w);
+    GoToEndButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
     virtual void drawFunc() override;
     virtual void activate() override;
 };
@@ -71,7 +71,7 @@ public:
 class StepForwardButton : public Button
 {
 public:
-    StepForwardButton(float xPosition, float yPosition, float h, float w);
+    StepForwardButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
     virtual void drawFunc() override;
     virtual void activate() override;
 };
@@ -79,7 +79,7 @@ public:
 class StepBackwardButton : public Button
 {
 public:
-    StepBackwardButton(float xPosition, float yPosition, float h, float w);
+    StepBackwardButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
     virtual void drawFunc() override;
     virtual void activate() override;
 };

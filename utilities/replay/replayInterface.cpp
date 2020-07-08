@@ -6,10 +6,19 @@
 using namespace std;
 using namespace GlutContext;
 using namespace ReplayTags;
-Button::Button(float xPosition, float yPosition, float h, float w)
+Button::Button(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w)
 {
-    x = xPosition;
-    y = yPosition;
+
+    initX = xPosition;
+    initY = yPosition;
+    initHeight = h;
+    initWidth = w;
+
+    fixedX = xFixed;
+    fixedY = yFixed;
+
+    x = xPosition+fixedX;
+    y = yPosition+fixedY;
     height = h;
     width = w;
 }
@@ -30,10 +39,10 @@ void Button::mouseFunc(int button,int state,int xMouse,int yMouse)
 }
 void Button::reshapeFunc()
 {
-    //x = x*ReplayGlutContext::width/1024.0f;
+    x = fixedX+initX*(1+(ReplayGlutContext::width-1024.0f)/700);
 }
-PlayButton::PlayButton(float xPosition, float yPosition, float h, float w) :
-Button( xPosition,  yPosition,  h,  w)
+PlayButton::PlayButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w) :
+Button( xPosition, xFixed,  yPosition,yFixed,  h,  w)
 {
 
 }
@@ -106,8 +115,8 @@ void PlayButton::activate() {
 }
 
 
-PauseButton::PauseButton(float xPosition, float yPosition, float h, float w) :
-        Button( xPosition,  yPosition,  h,  w)
+PauseButton::PauseButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w) :
+        Button( xPosition, xFixed,  yPosition,yFixed,  h,  w)
 {
 
 }
@@ -183,8 +192,9 @@ void PauseButton::activate() {
     ReplayGlutContext::replayMode = REPLAY_MODE_PAUSE;
 }
 
-GoToBeginningButton::GoToBeginningButton(float xPosition, float yPosition, float h, float w) :
-        Button( xPosition,  yPosition,  h,  w)
+GoToBeginningButton::GoToBeginningButton(float xPosition, float xFixed, float yPosition,
+        float yFixed, float h, float w) :
+        Button( xPosition, xFixed,  yPosition,yFixed,  h,  w)
 {
 
 }
@@ -261,8 +271,9 @@ void GoToBeginningButton::activate() {
 }
 
 
-GoToEndButton::GoToEndButton(float xPosition, float yPosition, float h, float w) :
-        Button( xPosition,  yPosition,  h,  w)
+GoToEndButton::GoToEndButton(float xPosition, float xFixed, float yPosition, float yFixed,
+        float h, float w) :
+        Button( xPosition, xFixed,  yPosition,yFixed,  h,  w)
 {
 
 }
@@ -338,8 +349,9 @@ void GoToEndButton::activate() {
 
 }
 
-StepBackwardButton::StepBackwardButton(float xPosition, float yPosition, float h, float w) :
-        Button( xPosition,  yPosition,  h,  w)
+StepBackwardButton::StepBackwardButton(float xPosition, float xFixed, float yPosition, float yFixed,
+        float h, float w) :
+        Button( xPosition, xFixed,  yPosition,yFixed,  h,  w)
 {
 
 }
@@ -400,8 +412,9 @@ void StepBackwardButton::activate() {
 
 }
 
-StepForwardButton::StepForwardButton(float xPosition, float yPosition, float h, float w) :
-        Button( xPosition,  yPosition,  h,  w)
+StepForwardButton::StepForwardButton(float xPosition, float xFixed, float yPosition, float yFixed,
+        float h, float w) :
+        Button( xPosition, xFixed,  yPosition,yFixed,  h,  w)
 {
 
 }
