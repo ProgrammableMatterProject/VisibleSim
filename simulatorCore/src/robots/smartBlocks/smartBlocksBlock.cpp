@@ -141,7 +141,8 @@ void SmartBlocksBlock::serialize(std::ofstream &bStream) {
         else if (u1color[i]>255) u1color[i]=255;
     }
     bStream.write((char*)&u1color, 3*sizeof(ReplayTags::u1));
-    bStream.write((char*)(dynamic_cast<SmartBlocksGlBlock*>(ptrGlBlock)->displayedValue), sizeof(ReplayTags::u2));
+    ReplayTags::u2 displayValue = dynamic_cast<SmartBlocksGlBlock*>(ptrGlBlock)->displayedValue;
+    bStream.write((char*)&displayValue, sizeof(ReplayTags::u2));
 }
 
 void SmartBlocksBlock::serialize_cleartext(std::ofstream &dbStream) {
