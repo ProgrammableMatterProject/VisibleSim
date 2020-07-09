@@ -133,9 +133,9 @@ public:
     int rotation;
     int position;
     int color;
-    bool blocked;
-    int blockedRight;
-    int blockedLeft;
+    bool bckd;
+    int bckdR;
+    int bckdL;
 
     TmnInfo(int tmn, int rot, int pos, int color, bool blocked, int blockedRight, int blockedLeft)
     {
@@ -143,9 +143,22 @@ public:
         this->rotation = rot;
         this->position = pos;
         this->color = color;
-        this->blocked = blocked;
-        this->blockedRight = blockedRight;
-        this->blockedLeft = blockedLeft;
+        bckd = blocked;
+        bckdR = blockedRight;
+        bckdL = blockedLeft;
+    }
+};
+
+class BlockedData
+{
+public:
+    int i;
+    int n;
+
+    BlockedData(int id, int nb)
+    {
+        i = id;
+        n = nb;
     }
 };
 

@@ -286,6 +286,16 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
         //the update is started by verifying if the wanted movement is possible (for now, DOWN is the only possible movement).
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
+            if (!goingDown) //if a quicker down translation is asked, the pause is skipped
+            {
+                usleep(700000);
+            }
+            else
+            {
+                goingDown = false;
+                console<<"no pause\n";
+            }
+
             if (goingRight)
             {
                 movement = GO_RIGHT;
@@ -962,8 +972,6 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
 
 void TetrisCode::updateOfTmn()
 {
-    usleep(500000);
-
     stringstream strstm;
     strstm << "UPDATE OF THE Tetramino";
     scheduler->trace(strstm.str(), module->blockId, GREEN);
@@ -1260,11 +1268,13 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                         }
                         if (leftItf != nullptr && leftItf->isConnected())
                         {
-                            sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+                            BlockedData data = BlockedData(nbLinesReinit, 1);
+                            sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
                         }
                         if (rightItf != nullptr && rightItf->isConnected())
                         {
-                            sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+                            BlockedData data = BlockedData(nbLinesReinit, 1);
+                            sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
                         }
                         nbTmn += 1;
                         sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
@@ -1429,11 +1439,13 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
                 }
                 if (leftItf != nullptr && leftItf->isConnected())
                 {
-                    sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+                    BlockedData data = BlockedData(nbLinesReinit, 1);
+                    sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
                 }
                 if (rightItf != nullptr && rightItf->isConnected())
                 {
-                    sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+                    BlockedData data = BlockedData(nbLinesReinit, 1);
+                    sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
                 }
                 nbTmn += 1;
                 sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
@@ -1908,58 +1920,64 @@ void TetrisCode::myBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
         {
             sendTmn7(false, true);
         }
+        BlockedData data = BlockedData(nbLinesReinit, 1);
         if (leftItf != nullptr && leftItf->isConnected())
         {
-            sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+            sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
         }
         if (rightItf != nullptr && rightItf->isConnected())
         {
-            sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+            sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
         }
     }
 }
 
 void TetrisCode::myCountBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
-    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
-    int msgData = *msg->getData();
+    MessageOf<BlockedData> *msg = static_cast<MessageOf<BlockedData> *>(_msg.get());
+    BlockedData msgData = *msg->getData();
 
-    if (blocked == true && blockedLeft + blockedRight + 1 != totalBckdModules) // only the blocked modules are counted, and if the line already is full, nothing should happen.
+    console << "received counting for update n° : " << msgData.i << " while current update is " << nbLinesReinit << ".\n";
+    if (msgData.i == nbLinesReinit && blocked == true && blockedLeft + blockedRight + 1 != totalBckdModules) // only the blocked modules are counted, and if the line already is full, nothing should happen.
     {
-        if (sender == leftItf && msgData > blockedLeft)
+        if (sender == leftItf && msgData.n > blockedLeft)
         {
-            blockedLeft = msgData;
+            blockedLeft = msgData.n;
+            console << "update left = " << blockedLeft << "\n";
             //sending the update to both neighbors
             if (rightItf != nullptr && rightItf->isConnected())
             {
-                int data = blockedLeft + 1;
-                sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
+                BlockedData data = BlockedData(nbLinesReinit, blockedLeft + 1);
+                sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
             }
             if (leftItf != nullptr && leftItf->isConnected())
             {
-                int data = blockedRight + 1;
-                sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
+                BlockedData data = BlockedData(nbLinesReinit, blockedRight + 1);
+                sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
             }
         }
-        else if (sender == rightItf && msgData > blockedRight)
+        else if (sender == rightItf && msgData.n > blockedRight)
         {
-            blockedRight = msgData;
+            blockedRight = msgData.n;
+            console << "update right = " << blockedRight << "\n";
             if (leftItf != nullptr && leftItf->isConnected())
             {
-                int data = blockedRight + 1;
-                sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
+                BlockedData data = BlockedData(nbLinesReinit, blockedRight + 1);
+                sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
             }
             if (rightItf != nullptr && rightItf->isConnected())
             {
-                int data = blockedLeft + 1;
-                sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
+                BlockedData data = BlockedData(nbLinesReinit, blockedLeft + 1);
+                sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
             }
         }
 
         //if the line is full, the module asks for the information of the upper line.
         int v = blockedLeft + blockedRight + 1;
+        console << "blocked left = " << blockedLeft << " blocked right = " << blockedRight << " total = " << v << "\n";
         if (v == totalBckdModules && (roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE) && topItf != nullptr && topItf->isConnected())
         {
+            console << "v = " << v << " left = " << blockedLeft << " right = " << blockedRight << "\n";
             sendMessage("Asking line Tmn Info", new Message(ASK_INFO_MSG_ID), topItf, 0, 0);
         }
     }
@@ -2001,24 +2019,37 @@ void TetrisCode::myTmnInfoMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
 {
     MessageOf<TmnInfo> *msg = static_cast<MessageOf<TmnInfo> *>(_msg.get());
     TmnInfo msgData = *msg->getData();
+    nbLinesReinit += 1;
     tmn = msgData.tmn;
     rotation = msgData.rotation;
     position = msgData.position;
     color = msgData.color;
-    blocked = msgData.blocked;
-    blockedRight = msgData.blockedRight;
-    blockedLeft = msgData.blockedLeft;
+    blocked = msgData.bckd;
+    blockedRight = msgData.bckdR;
+    blockedLeft = msgData.bckdL;
     update = 0;
     module->setColor(Colors[color]);
+    console << "tmn = " << tmn << " color = " << color << " blocked = " << blocked << " blocked right = " << blockedRight << " blocked left = " << blockedLeft << "\n";
     //if the module is not at the bottom of the pixel, it has to spread the new information
     if (roleInPixel != BOTTOM_LEFT_CORNER && roleInPixel != BOTTOM_BORDER && roleInPixel != BOTTOM_RIGHT_CORNER && roleInPixel != ALONE && bottomItf != nullptr && bottomItf->isConnected())
     {
         sendMessage("Sending Tmn Info", new MessageOf<TmnInfo>(TMN_INFO_MSG_ID, msgData), bottomItf, 0, 0);
     }
+    if (leftItf != nullptr && leftItf->isConnected())
+    {
+        BlockedData data = BlockedData(nbLinesReinit, blockedRight + 1);
+        sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
+    }
+    if (rightItf != nullptr && rightItf->isConnected())
+    {
+        BlockedData data = BlockedData(nbLinesReinit, blockedLeft + 1);
+        sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
+    }
     //if the line is full, the module asks for the information of the upper line.
     int v = blockedLeft + blockedRight + 1;
     if (v == totalBckdModules && (roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE) && topItf != nullptr && topItf->isConnected())
     {
+        console << "recieved full line\n";
         sendMessage("Asking line Tmn Info", new Message(ASK_INFO_MSG_ID), topItf, 0, 0);
     }
 }
@@ -2070,6 +2101,12 @@ void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
             leaderBlockCode->leftMvtKeyHandler();
         }
         break;
+    case charGoDown:
+        if (leaderBlockCode != nullptr)
+        {
+            leaderBlockCode->downMvtKeyHandler();
+        }
+        break;
     case charTurnCK:
         if (leaderBlockCode != nullptr)
         {
@@ -2089,6 +2126,7 @@ void TetrisCode::rightMvtKeyHandler()
 {
     goingRight = true;
     goingLeft = false;
+    goingDown = false;
     turnCK = false;
     turnCounterCK = false;
 };
@@ -2097,15 +2135,26 @@ void TetrisCode::leftMvtKeyHandler()
 {
     goingRight = false;
     goingLeft = true;
+    goingDown = false;
     turnCK = false;
     turnCounterCK = false;
 };
+
+void TetrisCode::downMvtKeyHandler()
+{
+    goingDown = true;
+    goingRight = false;
+    goingLeft = false;
+    turnCK = false;
+    turnCounterCK = false;
+}
 
 void TetrisCode::cwRotKeyHandler()
 {
     turnCK = true;
     goingLeft = false;
     goingRight = false;
+    goingDown = false;
     turnCounterCK = false;
 };
 
@@ -2114,5 +2163,6 @@ void TetrisCode::counterCwRotKeyHandler()
     turnCounterCK = true;
     goingLeft = false;
     goingRight = false;
+    goingDown = false;
     turnCK = false;
 };

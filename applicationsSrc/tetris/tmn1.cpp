@@ -304,7 +304,7 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
 void TetrisCode::verifTmn1()
 {
     verifications.clear();
-    if (movement == DOWN)
+    if (movement == DOWN || movement == ROT_CK || movement == ROT_COUNTER_CK) //if the movement is a rotation, the tetramino goes down as this tetramino can't rotate
     {
         //to go down, pixels have to be verified. These needed verification are stored into the vector verifications.
         //With any other tetramino, these verifications depend on the rotation of the tetramino.

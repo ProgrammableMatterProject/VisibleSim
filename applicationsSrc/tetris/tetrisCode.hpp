@@ -13,6 +13,7 @@
 //Key commands to control the game :
 static const char charGoRight = 'k'; //to make the tetramino go on the right
 static const char charGoLeft = 'j';  //to go on the left
+static const char charGoDown = 'l'; //to go down quicker
 static const char charTurnCK = 'p';  //to turn clockwise
 static const char charTurnCCK = 'o'; //to turn counter clockwise
 
@@ -226,6 +227,7 @@ private:
     int movement = NO_MVT;   //movement done currently by the tetramino
     bool goingRight = false; //booleans that save the last movement asked by the player (if no movement asked, the tetramino goes down)
     bool goingLeft = false;
+    bool goingDown = false;
     bool turnCK = false;
     bool turnCounterCK = false;
 
@@ -233,6 +235,7 @@ private:
     int blockedRight = 0; //number of neighbors on the right of the line that are also blocked
     int blockedLeft = 0;
     int totalBckdModules = 0 ; //total number of blocked modules that is needed for the line to be full.
+    int nbLinesReinit = 0;
 
 public:
     TetrisCode(BlinkyBlocksBlock *host);
@@ -669,6 +672,11 @@ public:
     * @brief function called when user presses the key to ask for a translation on the left
     */
     void leftMvtKeyHandler();
+
+    /**
+    * @brief function called when user presses the key to ask for a quicker down translation
+    */
+    void downMvtKeyHandler();
 
     /**
     * @brief function called when user presses the key to ask for a clockwise rotation
