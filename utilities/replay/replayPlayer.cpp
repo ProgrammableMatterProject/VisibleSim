@@ -101,7 +101,7 @@ namespace Replay {
                 strRobotType = "Okteens";
                 break;
             case MODULE_TYPE_SLIDINGCUBE:
-                strRobotType = "SlindingCubes";
+                strRobotType = "SlidingCubes";
                 break;
             case MODULE_TYPE_SMARTBLOCKS:
                 strRobotType = "SmartBlocks";
@@ -109,7 +109,6 @@ namespace Replay {
             default:
                 strRobotType = "Error";
         }
-
         cout << "Robot Type : " << strRobotType << endl;
         cout << "Grid Size : " << gridSizeX
              << " " << gridSizeY
