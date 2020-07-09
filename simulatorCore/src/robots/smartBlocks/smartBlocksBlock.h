@@ -22,8 +22,6 @@ class SmartBlocksBlockCode;
 
 class SmartBlocksBlock : public BaseSimulator::BuildingBlock {
 public:
-    //bool wellPlaced,_isBorder,_isTrain,_isSingle;
-
     SmartBlocksBlock(int bId, BlockCodeBuilder bcb);
     ~SmartBlocksBlock();
 
@@ -66,6 +64,23 @@ public:
      */
     bool moveTo(const Cell3DPosition& dest) override;
 
+    /**
+     * Serializes (converts to a stream of bits) relevant data from the building block object
+     *  for the purpose of simulation replay
+     *
+     *  By default, serializes as: <id><position><orientation><color>
+     *  Extra attributes can be serialized in children classes
+     *
+     * @param bStream output binary stream
+     */
+    void serialize(std::ofstream &bStream) override;
+
+    /**
+     * Clear-text equivalent of the BuildingBlock::serialize function, for debugging purpose
+     * @see BuildingBlock::serialize
+     * @param dbStream output binary stream
+     */
+    void serialize_cleartext(std::ofstream &dbStream) override;
 };
 
 }

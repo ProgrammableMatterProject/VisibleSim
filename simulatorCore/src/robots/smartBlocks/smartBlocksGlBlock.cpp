@@ -1,11 +1,14 @@
 #include "smartBlocksGlBlock.h"
-#include "smartBlocksWorld.h"
+
+static const char digitTexturePath[]="../../simulatorCore/resources/textures/smartBlocksTextures/digits.tga";
 
 namespace SmartBlocks {
 
 void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
-    glPushMatrix();
+    static GLint lx,ly;
+    static GLint idTextureDigits = loadTexture(digitTexturePath,lx,ly);
 
+    glPushMatrix();
     glTranslatef(position[0]+12.5,position[1]+12.5,position[2]);
     if (isHighlighted) {
         GLfloat n = 0.5+1.5*(1.0-(glutGet(GLUT_ELAPSED_TIME)%1000)/1000.0);
@@ -19,8 +22,7 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         ptrObj->setLightedColor(color);
     }
     ptrObj->glDraw();
-    //TODO REMETTRE BIEN : Test sans le world
-    /*
+
     if (displayedValue<noDisplay) {
         int digits = 1;
         if (displayedValue>9) digits=2;
@@ -28,8 +30,7 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         GLfloat dx = 20.0/digits;
         GLfloat x,s,t;
         int n=displayedValue;
-        auto wrld = (SmartBlocksWorld*)getWorld();
-        glBindTexture(GL_TEXTURE_2D,wrld->idTextureDigits);
+        glBindTexture(GL_TEXTURE_2D,idTextureDigits);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         for (int i=0; i<digits; i++) {
@@ -51,7 +52,7 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         }
         glDisable(GL_BLEND);
     }
-     */
+
     glPopMatrix();
 }
 

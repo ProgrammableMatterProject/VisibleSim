@@ -25,7 +25,6 @@ namespace SmartBlocks {
                                    int argc, char *argv[]):World(argc, argv) {
     cout << TermColor::LifecycleColor << "SmartBlocksWorld constructor" << TermColor::Reset << endl;
     idTextureFloor=0;
-    idTextureDigits=0;
     if (GlutContext::GUIisEnabled) {
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
                                             "smartBlockSimple.obj");
@@ -176,9 +175,6 @@ void SmartBlocksWorld::loadTextures(const string &str) {
         string path = str+"/textureCarre.tga";
         int lx,ly;
         idTextureFloor = loadTexture(path.c_str(),lx,ly);
-
-        path=str+"/../smartBlocksTextures/digits.tga";
-        idTextureDigits = loadTexture(path.c_str(),lx,ly);
     }
 }
 

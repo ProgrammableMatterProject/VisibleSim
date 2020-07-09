@@ -29,7 +29,7 @@ public:
     [[maybe_unused]] SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                      int argc, char *argv[]);
 
-    GLuint idTextureFloor,idTextureDigits;
+    GLuint idTextureFloor;
 
     static void deleteWorld();
     static SmartBlocksWorld* getWorld() {

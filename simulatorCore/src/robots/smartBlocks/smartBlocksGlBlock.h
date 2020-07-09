@@ -13,11 +13,10 @@
 
 namespace SmartBlocks {
 class SmartBlocksGlBlock:public GlBlock {
-protected :
-//	string popupInfo,textInfo;
-    uint16_t displayedValue;
 public :
+    uint16_t displayedValue;
     static const uint16_t noDisplay=1000;
+
     SmartBlocksGlBlock(bID id) : GlBlock(id), displayedValue(noDisplay) {};
     virtual ~SmartBlocksGlBlock() {};
 

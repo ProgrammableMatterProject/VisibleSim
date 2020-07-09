@@ -130,4 +130,25 @@ void SmartBlocksBlock::setDisplayedValue(uint16_t n) {
         ReplayExporter::getInstance()->writeDisplayUpdate(getScheduler()->now(), blockId, n);
 }
 
+void SmartBlocksBlock::serialize(std::ofstream &bStream) {
+    bStream.write((char*)&blockId, sizeof(ReplayTags::u4));
+    bStream.write((char*)&position, 3*sizeof(ReplayTags::u2));
+    bStream.write((char*)&orientationCode, sizeof(ReplayTags::u1));
+    ReplayTags::u1 u1color[3];
+    for (std::size_t i=0;i<3; i++) {
+        u1color[i] = static_cast<int>(color.rgba[i] * 255.0);
+        if (u1color[i]<0) u1color[i]=0;
+        else if (u1color[i]>255) u1color[i]=255;
+    }
+    bStream.write((char*)&u1color, 3*sizeof(ReplayTags::u1));
+    bStream.write((char*)(dynamic_cast<SmartBlocksGlBlock*>(ptrGlBlock)->displayedValue), sizeof(ReplayTags::u2));
+}
+
+void SmartBlocksBlock::serialize_cleartext(std::ofstream &dbStream) {
+    dbStream << (int)blockId << ";"
+             << position[0] << "," << position[1] << ","<< position[2] << "," << (int) orientationCode << ";"
+             << (int)(color[0]*255) << "," << (int)(color[1]*255) << "," << (int)(color[2]*255) << ";" << dynamic_cast<SmartBlocksGlBlock*>(ptrGlBlock)->displayedValue << endl;
+}
+
+
 }

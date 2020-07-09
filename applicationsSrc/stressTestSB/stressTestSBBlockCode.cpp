@@ -161,8 +161,10 @@ bool StressTestSBBlockCode::randomWalk() {
 
     if (candidates.empty()) {
         module->setColor(RED);
+        module->disableDisplay();
         return false;
     }
+    module->setDisplayedValue(candidates.size());
 
     // Randomly pick one candidate
     std::random_shuffle ( candidates.begin(), candidates.end() );
@@ -223,7 +225,6 @@ void StressTestSBBlockCode::onBlockSelected() {
 }
 
 void StressTestSBBlockCode::parseUserBlockElements(TiXmlElement *config) {
-
     const char *attr = config->Attribute("leader");
     isLeader=(attr!=nullptr);
     if (isLeader) cout << module->blockId << " is leader!" << endl;
