@@ -19,7 +19,7 @@
 #include "../../simulatorCore/src/replay/replayTags.h"
 #include "replayGlutContext.h"
 #include "replayWorld.h"
-
+#include "../../simulatorCore/src/grid/lattice.h"
 
 using namespace std;
 using namespace ReplayTags;
@@ -48,11 +48,14 @@ private:
 
     u8 keyframeIndexPosition = 0;
     u8 keyframeCount = 0;
+    u8 keyframeEndTime = 0;
+    u8 maxMotionDuration = 0;
+    u8 lastFrameEndParsePosition = 0;
 
     CommandLine cmdLine;
 
-    float replayDuration = 25.0f;
-    float currentTime = 0.0f;
+//    float replayDuration = 25.0f;
+//    float currentTime = 0.0f;
 
 public:
 
@@ -121,11 +124,19 @@ public:
     void parseEventMotion(u8 position, u4 blockId, u8 time, u8 readTime);
 
     void parseEventPosition(u8 position, u4 blockId);
+
+    void parseEventDisplay(u8 position, u4 blockId);
+
     /**
      * Parse the total duration of the exported file
      * @return duration
      */
     u8 parseDuration();
+
+    u8 getKeyframeEndTime();
+
+    u8 getLastFrameEndParsePosition();
+
 };
 
 

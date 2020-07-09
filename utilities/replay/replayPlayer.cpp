@@ -18,11 +18,13 @@
 #include "replayWorld.h"
 #include <fstream>
 #include "../../simulatorCore/src/robots/smartBlocks/smartBlocksGlBlock.h"
+#include "replayEvent.h"
 
 using namespace ReplayTags;
 namespace Replay {
 
     ReplayPlayer::ReplayPlayer(int argc, char *argv[]) : cmdLine(argc, argv, NULL) {
+
         cout << "instanciating ReplayPlayer" << endl;
 
         cout << "Loading export file .. " << flush;
@@ -45,7 +47,7 @@ namespace Replay {
         cout << "Done" << endl;
 
         cout << "Initializing World .." << flush;
-        world = new ReplayWorld(argc,argv,parseDuration());
+        world = new ReplayWorld(argc,argv,parseDuration(),25.0f);
         world->player = this;
         cout << "Done" << endl;
 
@@ -190,6 +192,7 @@ namespace Replay {
 
             // Optimisation possible (jeu du plus ou moins) si nécessaire
             if (keyframes[i].time > time) {
+                keyframeEndTime = keyframes[i].time;
                 return keyframes[i].position;
             }
         }
@@ -236,23 +239,11 @@ namespace Replay {
         cout << "There are "<<blockCount<<" blocks in the keyframe"<<endl;
         for(int i=0;i<blockCount;i++)
         {
-
-            //TODO changer les coordonnées avec gridToWorld
-            Vector3D position;
-            Color col;
-            position.pt[3] = 1;
-            position.pt[0] = keyframe[i].x*25;
-            position.pt[1] = keyframe[i].y*25;
-            position.pt[2] = keyframe[i].z*25;
-            col.rgba[0] = keyframe[i].r/255.0f;
-            col.rgba[1] = keyframe[i].g/255.0f;
-            col.rgba[2]= keyframe[i].b/255.0f;
-            col.rgba[3]= 1.0;
     //        cout << "id : "<<keyframe[i].id
     //             <<" | Pos : "<<(int)keyframe[i].x<<" "<<(int)keyframe[i].y<<" "<<(int)keyframe[i].z
     //             <<" | rotation : "<<(int)keyframe[i].rotation
     //             <<" | RGB : "<<(int)keyframe[i].r<<" "<<(int)keyframe[i].g<<" "<<(int)keyframe[i].b<<endl;
-            world->addBlock(keyframe[i].id,position,col);
+            world->addBlock(keyframe[i].id,keyframe[i]);
         }
         return (u8)exportFile->tellg();
     }
@@ -265,6 +256,7 @@ namespace Replay {
         u4 blockId;
         while(true)
         {
+            lastFrameEndParsePosition = exportFile->tellg();
             if(exportFile->tellg()>end) {break;}
             exportFile->read((char *) &readTime, sizeof(u8));
             if(readTime>time){break;}
@@ -275,12 +267,10 @@ namespace Replay {
                     parseEventColor(exportFile->tellg(), blockId);
                     break;
                 case EVENT_DISPLAY_UPDATE:
-                    cout <<"EVENEMENT DE DISP"<<endl;
                     exportFile->seekg(exportFile->tellg()+2);
                     break;
                 case EVENT_POSITION_UPDATE:
                     parseEventPosition(exportFile->tellg(), blockId);
-                    //exportFile->seekg(exportFile->tellg()+7);
                     break;
                 case EVENT_ADD_MODULE:
                     break;
@@ -288,7 +278,6 @@ namespace Replay {
                     break;
                 case EVENT_MOTION:
                     parseEventMotion(exportFile->tellg(),blockId,time,readTime);
-                    //exportFile->seekg(exportFile->tellg()+14);
                     break;
                 case EVENT_CONSOLE_TRACE:
                     break;
@@ -298,6 +287,12 @@ namespace Replay {
 
     }
 
+    void ReplayPlayer::parseEventDisplay(u8 position, u4 blockId)
+    {
+        exportFile->seekg(position);
+        uint16_t displayedValue;
+        exportFile->read((char *) &displayedValue, sizeof(u2));
+    }
 
     void ReplayPlayer::parseEventPosition(u8 position, u4 blockId)
     {
@@ -308,35 +303,50 @@ namespace Replay {
         exportFile->read((char *) &block.y, sizeof(u2));
         exportFile->read((char *) &block.z, sizeof(u2));
         exportFile->read((char *) &block.rotation, sizeof(u1));
-        //TODO GridToUnscaleWorld()
-        newPosition.pt[0] = block.x*25;
-        newPosition.pt[1] = block.y*25;
-        newPosition.pt[2] = block.z*25;
-        world->updatePosition(blockId,newPosition);
+
+        world->updatePosition(blockId,block);
     }
     void ReplayPlayer::parseEventMotion(u8 position, u4 blockId, u8 time, u8 readTime)
     {
+        //Tracing block 36
+        if(blockId==36)
+        {
+            cout << "Parsing Motion Event for Block : "<<blockId<<endl;
+        }
+
         exportFile->seekg(position);
-        Vector3D worldPosition = world->getPosition(blockId);
         KeyframeBlock block;
         u8 endTime;
-        Vector3D newPosition;
         exportFile->read((char *) &endTime, sizeof(u8));
         exportFile->read((char *) &block.x, sizeof(u2));
         exportFile->read((char *) &block.y, sizeof(u2));
         exportFile->read((char *) &block.z, sizeof(u2));
+        maxMotionDuration = max(endTime, maxMotionDuration);
         if(time>=readTime+2000)
         {
             if(time<=readTime+endTime)
             {
-                //TODO GridToUnscaleWorld()
-                newPosition.pt[0] = worldPosition.pt[0]+(block.x*25-worldPosition.pt[0])*(time-readTime-2000)/1000000;
-                newPosition.pt[1] = worldPosition.pt[1]+(block.y*25-worldPosition.pt[1])*(time-readTime-2000)/1000000;
-                newPosition.pt[2] = worldPosition.pt[2]+(block.z*25-worldPosition.pt[2])*(time-readTime-2000)/1000000;
-                newPosition.pt[3] = 1;
-                world->updatePosition(blockId,newPosition);
+                ReplayEvent newEvent;
+                Cell3DPosition pos, initPos;
+                pos.pt[0] = block.x;
+                pos.pt[1] = block.y;
+                pos.pt[2] = block.z;
+                newEvent.beginDate = readTime;
+                newEvent.duration = endTime;
+                newEvent.destinationPosition = pos;
+                initPos.pt[0] = world->getPosition(blockId).pt[0];
+                initPos.pt[1] = world->getPosition(blockId).pt[1];
+                initPos.pt[2] = world->getPosition(blockId).pt[2];
+                newEvent.initialPosition = initPos;
+                world->eventBuffer.insert(make_pair(blockId,newEvent));
+                world->updatePositionMotion(blockId,block, time, readTime, initPos);
+            }
+            else
+            {
+                world->updatePosition(blockId,block);
             }
         }
+
 
     }
     void ReplayPlayer::parseEventColor(u8 position, u4 blockId)
@@ -364,4 +374,15 @@ namespace Replay {
         return duration;
 
     }
+
+    u8 ReplayPlayer::getKeyframeEndTime()
+    {
+        return keyframeEndTime;
+    }
+    u8 ReplayPlayer::getLastFrameEndParsePosition()
+    {
+        return lastFrameEndParsePosition;
+    }
 }
+
+
