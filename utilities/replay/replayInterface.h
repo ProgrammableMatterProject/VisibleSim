@@ -123,3 +123,11 @@ public:
     virtual void drawFunc() override;
     virtual void activate() override;
 };
+
+class ShowKeyframesButton : public Button
+{
+public:
+    ShowKeyframesButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
+    virtual void drawFunc() override;
+    virtual void activate() override;
+};

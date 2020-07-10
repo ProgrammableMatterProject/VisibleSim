@@ -17,6 +17,7 @@ ReplayWorld::ReplayWorld(int argc, char *argv[], u8 duration, float scale) {
     exportDuration = (float)duration*pow(10,-6);
     endZoom = exportDuration;
     gridScale = scale;
+    loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 }
 
 ReplayWorld::~ReplayWorld() {
@@ -126,6 +127,7 @@ void ReplayWorld::addBlock(bID blockId, KeyframeBlock block) {
     col.rgba[2]= block.b/255.0f;
     col.rgba[3]= 1.0;
     glBlock->setColor(col);
+    glBlock->setDisplayedValue(block.displayedValue);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
 }
 
@@ -187,9 +189,57 @@ Vector3D ReplayWorld::getPosition(u4 blockId)
 
 void ReplayWorld::glDraw() {
     glPushMatrix();
+    glDrawBackground();
     objRepere->glDraw();
     for (const auto& pair : mapGlBlocks) {
         ((SmartBlocks::SmartBlocksGlBlock*)pair.second)->glDraw(objBlock);
     }
     glPopMatrix();
+}
+
+void ReplayWorld::updateDisplayedValue(u4 blockId, u2 display)
+{
+    for (const auto& pair : mapGlBlocks) {
+        if(pair.first==blockId) {
+            pair.second->setDisplayedValue(display);
+        }
+    }
+}
+
+void ReplayWorld::glDrawBackground() {
+    cout<<"Drawing background "<<gridScale<<endl;
+    static const GLfloat white[]={1.0,1.0,1.0,1.0},
+            gray[]={0.2,0.2,0.2,1.0};
+
+    glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+    glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+    glPushMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,idTextureFloor);
+    glNormal3f(0,0,1.0f);
+    glScalef(gridScale*player->gridSizeX,
+             gridScale*player->gridSizeY,1.0f);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(static_cast<float>(player->gridSizeX)/4.0f,0); // textureCarre is a used as a 4x4 square texture
+    glVertex3f(1.0f,0.0f,0.0f);
+    glTexCoord2f(static_cast<float>(player->gridSizeX)/4.0f,static_cast<float>(player->gridSizeY)/4.0f);
+    glVertex3f(1.0,1.0,0.0f);
+    glTexCoord2f(0,static_cast<float>(player->gridSizeY)/4.0f);
+    glVertex3f(0.0,1.0,0.0f);
+    glEnd();
+    glPopMatrix();
+}
+
+void ReplayWorld::loadTextures(const string &str) {
+
+
+    string path = str+"/textureCarre.tga";
+    int lx,ly;
+    idTextureFloor = loadTexture(path.c_str(),lx,ly);
+    cout<<"Loading texture"<<endl;
+
 }

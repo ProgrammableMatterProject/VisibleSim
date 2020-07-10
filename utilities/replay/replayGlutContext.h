@@ -49,6 +49,9 @@ namespace GlutContext {
         //Buttons
         static inline vector<Button*> buttons  = {};
 
+        //Keyframes show time
+        static inline vector<float> keyframesTime = {};
+        static inline bool showKeyframesTime = false;
 
 
         static inline u1 replayMode = REPLAY_MODE_PAUSE;

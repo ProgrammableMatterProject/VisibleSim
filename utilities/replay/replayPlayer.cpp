@@ -19,8 +19,10 @@
 #include <fstream>
 #include "../../simulatorCore/src/robots/smartBlocks/smartBlocksGlBlock.h"
 #include "replayEvent.h"
+#include "replayGlutContext.h"
 
 using namespace ReplayTags;
+using namespace GlutContext;
 namespace Replay {
 
     ReplayPlayer::ReplayPlayer(int argc, char *argv[]) : cmdLine(argc, argv, NULL) {
@@ -220,6 +222,10 @@ namespace Replay {
             exportFile->read((char *) &keyframe[i].r, sizeof(u1));
             exportFile->read((char *) &keyframe[i].g, sizeof(u1));
             exportFile->read((char *) &keyframe[i].b, sizeof(u1));
+            if(robotType == MODULE_TYPE_SMARTBLOCKS)
+            {
+                exportFile->read((char *) &keyframe[i].displayedValue, sizeof(u2));
+            }
         }
         cout << "Done" << endl;
 
@@ -248,6 +254,19 @@ namespace Replay {
         return (u8)exportFile->tellg();
     }
 
+    void ReplayPlayer::parseKeyframeForTimeline()
+    {
+        exportFile->seekg(keyframeIndexPosition);
+        exportFile->read((char *) &keyframeCount, sizeof(u8));
+
+        Keyframe *keyframes = new Keyframe[keyframeCount];
+        for (u8 i = 0; i < keyframeCount; i++) {
+            exportFile->read((char *) &keyframes[i].time, sizeof(u8));
+            ReplayGlutContext::keyframesTime.push_back(keyframes[i].time*pow(10,-6));
+            exportFile->read((char *) &keyframes[i].position, sizeof(u8));
+        }
+    }
+
     void ReplayPlayer::parseEvents(u8 position,u8 time, u8 end) {
         cout << "Parsing events .." << flush;
         exportFile->seekg(position);
@@ -267,7 +286,7 @@ namespace Replay {
                     parseEventColor(exportFile->tellg(), blockId);
                     break;
                 case EVENT_DISPLAY_UPDATE:
-                    exportFile->seekg(exportFile->tellg()+2);
+                    parseEventDisplay(exportFile->tellg(),blockId);
                     break;
                 case EVENT_POSITION_UPDATE:
                     parseEventPosition(exportFile->tellg(), blockId);
@@ -292,6 +311,7 @@ namespace Replay {
         exportFile->seekg(position);
         uint16_t displayedValue;
         exportFile->read((char *) &displayedValue, sizeof(u2));
+        world->updateDisplayedValue(blockId,displayedValue);
     }
 
     void ReplayPlayer::parseEventPosition(u8 position, u4 blockId)

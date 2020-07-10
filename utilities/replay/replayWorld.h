@@ -36,13 +36,14 @@ private:
     float lastFrameTime = 0.0f;
 
 public:
+    GLuint idTextureFloor;
 
     float gridScale = 25.0f;
     ObjLoader::ObjLoader* objBlock=nullptr;
     ObjLoader::ObjLoader* objRepere=nullptr;
 
     Replay::ReplayPlayer* player=nullptr;
-    map<bID, GlBlock*>mapGlBlocks; //!< A hash map containing pointers to all graphical blocks, indexed by block id
+    map<bID, SmartBlocks::SmartBlocksGlBlock*>mapGlBlocks; //!< A hash map containing pointers to all graphical blocks, indexed by block id
     map<bID, ReplayEvent>eventBuffer;
     /**
      * @brief World constructor, initializes the camera, light, and user interaction attributes
@@ -70,6 +71,10 @@ public:
     void updatePosition(u4 blockId, KeyframeBlock block);
     void updateFrame();
     void updateMotionBlocks();
+    void glDrawBackground();
+    void loadTextures(const string &str);
+    //SmartBlocks
+    void updateDisplayedValue(u4 blockId, u2 display);
     Vector3D getPosition(u4 blockId);
 
 
