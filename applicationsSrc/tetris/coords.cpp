@@ -175,19 +175,19 @@ int TetrisCode::pixelCalculation()
         {
             roleInPixel = TOP_RIGHT_CORNER;
         }
-        else if (hPosition == 0)
+        else if (wPosition == 0)
         {
             roleInPixel = LEFT_BORDER;
         }
-        else if (hPosition == sizeOfPixel - 1)
+        else if (wPosition == sizeOfPixel - 1)
         {
             roleInPixel = RIGHT_BORDER;
         }
-        else if (wPosition == 0)
+        else if (hPosition == 0)
         {
             roleInPixel = BOTTOM_BORDER;
         }
-        else if (wPosition == sizeOfPixel - 1)
+        else if (hPosition == sizeOfPixel - 1)
         {
             roleInPixel = TOP_BORDER;
         }
@@ -224,7 +224,7 @@ int TetrisCode::pixelCalculation()
 
     totalBckdModules = (maxWidth / sizeOfPixel) * sizeOfPixel; //the number of modules on width that belong to full pixels;
 
-    // module->setColor(Colors[(pixelHCoord+pixelWCoord)%NB_COLORS]);
+    // module->setColor(Colors[roleInPixel%NB_COLORS]);
     // if(appear_module)
     // {
     //     module->setColor(DARKGREEN);

@@ -272,6 +272,7 @@ void TetrisCode::myTmn7Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         nbFree = msgData.nbFree;
         parent = sender;
         nbTmnBackMsg = 0;
+        console<<"recieved tmn "<<tmn<<" rot = "<<rotation<<" pos = "<<position<<"\n";
         module->setColor(Colors[color]);
         sendTmn7(false, false);
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())

@@ -241,6 +241,7 @@ void TetrisCode::tmnAppearance()
         color = r % 9;
     }
     module->setColor(Colors[color]);
+    console<<"decinding module : send tmn "<<tmn<<" rot = "<<rotation<<" pos = "<<position<<"\n";
     if (tmn == 1)
     {
         sendTmn1(false, false);
@@ -286,14 +287,13 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
         //the update is started by verifying if the wanted movement is possible (for now, DOWN is the only possible movement).
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
         {
-            if (!goingDown) //if a quicker down translation is asked, the pause is skipped
+            if (goingDown == false) //if a quicker down translation is asked, the pause is skipped
             {
                 usleep(700000);
             }
             else
             {
                 goingDown = false;
-                console<<"no pause\n";
             }
 
             if (goingRight)
@@ -1021,25 +1021,30 @@ void TetrisCode::myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
         nbFree = msgData.id;
         bool b = false;
         P2PNetworkInterface *i = nullptr;
-        if (msgData.direction == SOUTH)
+        if (msgData.direction == SOUTH) //to avoid that the verification is made twice, only the top right corner and the bottom lefet corner do the verifications.
         {
-            b = roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+            i = bottomItf;
+            b = roleInPixel == BOTTOM_LEFT_CORNER /*|| roleInPixel == BOTTOM_BORDER || roleInPixel == BOTTOM_RIGHT_CORNER */|| roleInPixel == ALONE;
         }
         else if (msgData.direction == EAST)
         {
-            b = roleInPixel == TOP_RIGHT_CORNER || roleInPixel == RIGHT_BORDER || roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE;
+            i = rightItf;
+            b = roleInPixel == TOP_RIGHT_CORNER /*|| roleInPixel == RIGHT_BORDER || roleInPixel == BOTTOM_RIGHT_CORNER */|| roleInPixel == ALONE;
         }
         else if (msgData.direction == WEST)
         {
-            b = roleInPixel == TOP_LEFT_CORNER || roleInPixel == LEFT_BORDER || roleInPixel == BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
+            i = leftItf;
+            b = roleInPixel == /*TOP_LEFT_CORNER || roleInPixel == LEFT_BORDER || roleInPixel ==*/ BOTTOM_LEFT_CORNER || roleInPixel == ALONE;
         }
         else if (msgData.direction == NORTH)
         {
-            b = roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER || roleInPixel == ALONE;
+            i = topItf;
+            b = roleInPixel == TOP_RIGHT_CORNER /*|| roleInPixel == TOP_BORDER || roleInPixel == TOP_LEFT_CORNER */|| roleInPixel == ALONE;
         }
 
         if (position != msgData.position || !b) //if this module has to spread the verification
         {
+            console<<"sending verification : nb = "<<msgData.id<<" pos = "<<msgData.position<<" dir = "<<msgData.direction<<"\n";
             if (tmn == 1)
             {
                 sendVerifTmn1(false, msgData);
@@ -1071,22 +1076,6 @@ void TetrisCode::myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
         }
         else // if this module can ask the answer directly
         {
-            if (msgData.direction == SOUTH)
-            {
-                i = bottomItf;
-            }
-            else if (msgData.direction == WEST)
-            {
-                i = leftItf;
-            }
-            else if (msgData.direction == EAST)
-            {
-                i = rightItf;
-            }
-            else if (msgData.direction == NORTH)
-            {
-                i = topItf;
-            }
             if (i != nullptr && i->isConnected())
             {
                 sendMessage("Asking Free Message", new Message(FREEMSG_ID), i, 0, 0);
@@ -1147,9 +1136,10 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     MessageOf<isFreeData> *msg = static_cast<MessageOf<isFreeData> *>(_msg.get());
     isFreeData msgData = *msg->getData();
 
-    if (msgData.id > nbFBack && position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
+    if (/*msgData.id > nbFBack &&*/ position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
     {
-        if (verifications.size() > 0) //this is only to prevent an error at the following line
+        console<<"recieved verification answer : pos = "<<msgData.position<<" dir = "<<msgData.direction<<" answer = "<<msgData.answer<<"\n";
+        if (verifications.size() > 0) //if the vector is empty, all verification alreday have been recieved
         {
             freeAnswer f = verifications.at(verifications.size() - 1);
 
@@ -1171,6 +1161,7 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                         freeAnswer f = verifications.at(verifications.size() - 1);
                         nbFree += 1;
                         isFreeData data = isFreeData(nbFree, f.position, f.direction);
+                        console<<"sending new verification : pos = "<<f.position<<" dir = "<<f.direction<<" nb = "<<nbFree<<"\n";
                         if (tmn == 1)
                         {
                             sendVerifTmn1(false, data);
@@ -1203,6 +1194,7 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                 }
                 else // if one verification is false, the movement cannot be done. A new tetramino is started
                 {
+                    verifications.clear();
                     if (movement != DOWN) //if the movement cannot be done, the tetramino may still be able to go down
                     {
                         movement = DOWN;
@@ -1282,16 +1274,11 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                 }
             }
         }
-        else
-        {
-            stringstream strstm;
-            strstm << "ERROR : verifications vector empty";
-            scheduler->trace(strstm.str(), module->blockId, RED);
-        }
     }
     else if (msgData.id > nbFBack) // if this module is not the deciding module, it has to spread the answer.
     {
         nbFBack = msgData.id;
+        console<<" send back verification : nb = "<<msgData.id<<" pos = "<<msgData.position<<" dir = "<<msgData.direction<<" answer = "<<msgData.answer<<"\n";
         if (tmn == 1)
         {
             sendVerifTmn1(true, msgData);
@@ -1762,6 +1749,7 @@ void TetrisCode::myFarVerifMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
         else //otherwise, this module needs to spread the verification in the right direction.
         {
             parent = sender;
+            console<<"recieves far verif to send : dir = "<<msgData.current_dir<<"\n";
             sendFarVerif(msgData, sender);
         }
     }
@@ -1937,13 +1925,11 @@ void TetrisCode::myCountBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetwork
     MessageOf<BlockedData> *msg = static_cast<MessageOf<BlockedData> *>(_msg.get());
     BlockedData msgData = *msg->getData();
 
-    console << "received counting for update n° : " << msgData.i << " while current update is " << nbLinesReinit << ".\n";
     if (msgData.i == nbLinesReinit && blocked == true && blockedLeft + blockedRight + 1 != totalBckdModules) // only the blocked modules are counted, and if the line already is full, nothing should happen.
     {
         if (sender == leftItf && msgData.n > blockedLeft)
         {
             blockedLeft = msgData.n;
-            console << "update left = " << blockedLeft << "\n";
             //sending the update to both neighbors
             if (rightItf != nullptr && rightItf->isConnected())
             {
@@ -1959,7 +1945,6 @@ void TetrisCode::myCountBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetwork
         else if (sender == rightItf && msgData.n > blockedRight)
         {
             blockedRight = msgData.n;
-            console << "update right = " << blockedRight << "\n";
             if (leftItf != nullptr && leftItf->isConnected())
             {
                 BlockedData data = BlockedData(nbLinesReinit, blockedRight + 1);
@@ -1974,10 +1959,8 @@ void TetrisCode::myCountBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetwork
 
         //if the line is full, the module asks for the information of the upper line.
         int v = blockedLeft + blockedRight + 1;
-        console << "blocked left = " << blockedLeft << " blocked right = " << blockedRight << " total = " << v << "\n";
         if (v == totalBckdModules && (roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE) && topItf != nullptr && topItf->isConnected())
         {
-            console << "v = " << v << " left = " << blockedLeft << " right = " << blockedRight << "\n";
             sendMessage("Asking line Tmn Info", new Message(ASK_INFO_MSG_ID), topItf, 0, 0);
         }
     }
@@ -2029,7 +2012,6 @@ void TetrisCode::myTmnInfoMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
     blockedLeft = msgData.bckdL;
     update = 0;
     module->setColor(Colors[color]);
-    console << "tmn = " << tmn << " color = " << color << " blocked = " << blocked << " blocked right = " << blockedRight << " blocked left = " << blockedLeft << "\n";
     //if the module is not at the bottom of the pixel, it has to spread the new information
     if (roleInPixel != BOTTOM_LEFT_CORNER && roleInPixel != BOTTOM_BORDER && roleInPixel != BOTTOM_RIGHT_CORNER && roleInPixel != ALONE && bottomItf != nullptr && bottomItf->isConnected())
     {
@@ -2049,7 +2031,6 @@ void TetrisCode::myTmnInfoMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
     int v = blockedLeft + blockedRight + 1;
     if (v == totalBckdModules && (roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE) && topItf != nullptr && topItf->isConnected())
     {
-        console << "recieved full line\n";
         sendMessage("Asking line Tmn Info", new Message(ASK_INFO_MSG_ID), topItf, 0, 0);
     }
 }

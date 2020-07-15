@@ -17,6 +17,10 @@ static const char charGoDown = 'l'; //to go down quicker
 static const char charTurnCK = 'p';  //to turn clockwise
 static const char charTurnCCK = 'o'; //to turn counter clockwise
 
+//Minimum size of the BB set to display a tetris game (& min nb of pixels on each dimension)
+static const int MIN_HEIGHT = 8;
+static const int MIN_WIDTH = 3;
+
 //##################################################################################################
 
 // Possible roles of modules in a pixel
@@ -30,10 +34,6 @@ static const int BOTTOM_BORDER = 6;
 static const int BOTTOM_LEFT_CORNER = 7;
 static const int LEFT_BORDER = 8;
 static const int TOP_LEFT_CORNER = 9;
-
-//Minimum size of the BB set to display a tetris game (& min nb of pixels on each dimension)
-static const int MIN_HEIGHT = 10;
-static const int MIN_WIDTH = 3;
 
 //Types of tetramino
 static const int NO_TMN = 0;           //if the module doesn't belong to any tetramino

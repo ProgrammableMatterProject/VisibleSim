@@ -239,6 +239,7 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         color = msgData.color;
         parent = sender;
         nbTmnBackMsg = 0;
+        console << "recieved tmn " << tmn << " rot = " << rotation << " pos = " << position << "\n";
         module->setColor(Colors[color]);
         sendTmn1(false, false);
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
@@ -271,6 +272,9 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         goingLeft = msgData.goingL;
         turnCK = msgData.rotCW;
         turnCounterCK = msgData.rotCCW;
+        stringstream strstm;
+        strstm << "NEW LEADER OF TMN "<<tmn;
+        scheduler->trace(strstm.str(), module->blockId, GOLD);
         module->setColor(Colors[color]);
         sendTmn1(false, false);
     }
