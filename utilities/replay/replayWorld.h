@@ -27,15 +27,14 @@ namespace Replay {
 }
 class ReplayEvent;
 class ReplayWorld{
-private:
-
+public:
     float exportDuration = 0.0f;
     float currentTime = 0.0f;
     float startZoom = 0.0f;
     float endZoom = 0.0f;
     float lastFrameTime = 0.0f;
 
-public:
+
     GLuint idTextureFloor;
 
     float gridScale = 25.0f;
@@ -43,7 +42,7 @@ public:
     ObjLoader::ObjLoader* objRepere=nullptr;
 
     Replay::ReplayPlayer* player=nullptr;
-    map<bID, SmartBlocks::SmartBlocksGlBlock*>mapGlBlocks; //!< A hash map containing pointers to all graphical blocks, indexed by block id
+    map<bID, GlBlock*>mapGlBlocks; //!< A hash map containing pointers to all graphical blocks, indexed by block id
     map<bID, ReplayEvent>eventBuffer;
     /**
      * @brief World constructor, initializes the camera, light, and user interaction attributes
@@ -64,18 +63,18 @@ public:
     float getCurrentTime(){return currentTime;};
     void setCurrentTime(float time) {currentTime=time;};
     void updateMap();
-    void addBlock(bID blockId, KeyframeBlock block);
+    virtual void addBlock(bID blockId, KeyframeBlock block);
     void glDraw();
     void updateColor(u4 blockId, Color col);
-    void updatePositionMotion(u4 blockId, KeyframeBlock block,u8 time, u8 readTime, Cell3DPosition initPos);
-    void updatePosition(u4 blockId, KeyframeBlock block);
+    virtual void updatePositionMotion(u4 blockId, KeyframeBlock block,u8 time, u8 readTime, Cell3DPosition initPos);
+    virtual void updatePosition(u4 blockId, KeyframeBlock block);
     void updateFrame();
-    void updateMotionBlocks();
-    void glDrawBackground();
-    void loadTextures(const string &str);
+    virtual void updateMotionBlocks();
+    virtual void glDrawBackground();
+    virtual void loadTextures(const string &str);
     //SmartBlocks
-    void updateDisplayedValue(u4 blockId, u2 display);
-    Vector3D getPosition(u4 blockId);
+    virtual void updateDisplayedValue(u4 blockId, u2 display);
+    virtual Vector3D getPosition(u4 blockId);
 
 
 };

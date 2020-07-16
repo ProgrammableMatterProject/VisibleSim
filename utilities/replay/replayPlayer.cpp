@@ -21,6 +21,9 @@
 #include "replayEvent.h"
 #include "replayGlutContext.h"
 
+#include "robots/smartBlocks/smartBlocksReplayWorld.h"
+#include "robots/blinkyBlocks/blinkyBlocksReplayWorld.h"
+#include "robots/catoms3D/catoms3DReplayWorld.h"
 using namespace ReplayTags;
 using namespace GlutContext;
 namespace Replay {
@@ -49,7 +52,32 @@ namespace Replay {
         cout << "Done" << endl;
 
         cout << "Initializing World .." << flush;
-        world = new ReplayWorld(argc,argv,parseDuration(),25.0f);
+        switch (robotType) {
+            case MODULE_TYPE_BB:
+                world = new BlinkyBlocksReplayWorld(argc,argv,parseDuration(),40.0f);
+                break;
+            case MODULE_TYPE_C2D:
+                break;
+            case MODULE_TYPE_C3D:
+                world = new Catoms3DReplayWorld(argc,argv,parseDuration(),10.0f);
+                break;
+            case MODULE_TYPE_DATOM:
+                break;
+            case MODULE_TYPE_HEXANODE:
+                break;
+            case MODULE_TYPE_NODE2D:
+                break;
+            case MODULE_TYPE_OKTEEN:
+                break;
+            case MODULE_TYPE_SLIDINGCUBE:
+                break;
+            case MODULE_TYPE_SMARTBLOCKS:
+                world = new SmartBlocksReplayWorld(argc,argv,parseDuration(),25.0f);
+                break;
+            default:
+                cout<<"Error"<<endl;
+        }
+        //world = new SmartBlocksReplayWorld(argc,argv,parseDuration(),25.0f);
         world->player = this;
         cout << "Done" << endl;
 
@@ -198,6 +226,8 @@ namespace Replay {
                 return keyframes[i].position;
             }
         }
+        cout<<"TUTUTUT BRIGADE DE DEBUGGAGE "<<world->getExportDuration()*pow(10,6)<<endl;
+        keyframeEndTime = world->getExportDuration()*pow(10,6);
         return keyframeIndexPosition;
     }
     void ReplayPlayer::parseFrame(u8 time) {
@@ -283,6 +313,7 @@ namespace Replay {
             exportFile->read((char *) &blockId, sizeof(u4));
             switch(eventType){
                 case EVENT_COLOR_UPDATE:
+
                     parseEventColor(exportFile->tellg(), blockId);
                     break;
                 case EVENT_DISPLAY_UPDATE:
@@ -371,6 +402,7 @@ namespace Replay {
     }
     void ReplayPlayer::parseEventColor(u8 position, u4 blockId)
     {
+
         exportFile->seekg(position);
         KeyframeBlock block;
         Color col;
@@ -381,6 +413,8 @@ namespace Replay {
         col.rgba[1] = (GLfloat) block.g/255.0f;
         col.rgba[2] = (GLfloat) block.b/255.0f;
         col.rgba[3] = 1.0f;
+        cout<<"Parsing Color event for block "<<(int)blockId<<endl;
+        cout<<"Color : "<<(int)block.r<<" "<<(int)block.g<<" "<<(int)block.b<<endl;
         world->updateColor(blockId,col);
     }
     u8 ReplayPlayer::parseDuration()
@@ -388,9 +422,7 @@ namespace Replay {
         u8 duration;
         exportFile->seekg(0,exportFile->end);
         exportFile->seekg(exportFile->tellg()-8);
-        cout <<"OMGG"<< exportFile->tellg()<<endl;
         exportFile->read((char*)&duration,sizeof(u8));
-        cout <<"DEBUG : "<<duration<<endl;
         return duration;
 
     }

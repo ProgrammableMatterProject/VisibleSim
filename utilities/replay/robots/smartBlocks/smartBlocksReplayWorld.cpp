@@ -5,65 +5,29 @@
 #include <map>
 #include "../../simulatorCore/src/base/glBlock.h"
 #include "../../simulatorCore/src/grid/lattice.h"
-#include "../../simulatorCore/src/replay/replayTags.h"
 #include "replayPlayer.h"
+#include "smartBlocksReplayWorld.h"
 using namespace std;
-using namespace ReplayTags;
-ReplayWorld::ReplayWorld(int argc, char *argv[], u8 duration, float scale) {
-//    cout << "Debug Replay World "<<endl;
-//    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
-//                                        "smartBlockSimple.obj");
-//    objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
-//                                         "repere25.obj");
-    exportDuration = (float)duration*pow(10,-6);
-    endZoom = exportDuration;
-    gridScale = scale;
-//    loadTextures("../../simulatorCore/resources/textures/latticeTextures");
+
+SmartBlocksReplayWorld::SmartBlocksReplayWorld(int argc, char *argv[], u8 duration, float scale)
+: ReplayWorld (argc, argv, duration, scale){
+    cout << "Debug Replay World "<<endl;
+    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
+                                        "smartBlockSimple.obj");
+    objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
+                                         "repere25.obj");
+    //exportDuration = (float)duration*pow(10,-6);
+    //endZoom = exportDuration;
+    //gridScale = scale;
+    loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 }
 
-ReplayWorld::~ReplayWorld() {
+SmartBlocksReplayWorld::~SmartBlocksReplayWorld() {
     delete objBlock;
 }
 
-void ReplayWorld::updateMap()
+void SmartBlocksReplayWorld::updateMotionBlocks()
 {
-//    cout << "Debug UpdateMap : "<<endl;
-//    cout << "currentTime : "<<currentTime*pow(10,6) <<endl;
-//    cout << "Keyframe end time "<<player->getKeyframeEndTime()<<endl;
-//    cout <<"CurrentTIme : "<<currentTime<<endl;
-//    cout <<"LastFrameTime : "<<lastFrameTime<<endl;
-    //Test if a map update is need or just a frame update
-
-
-    if(currentTime*pow(10,6)>=player->getKeyframeEndTime() || currentTime<=lastFrameTime)
-    {
-        for (const auto& pair : mapGlBlocks) {
-            delete (GlBlock*)pair.second;
-        }
-        mapGlBlocks.clear();
-        eventBuffer.clear();
-        player->parseFrame(currentTime*pow(10,6));
-    }
-    else
-    {
-        cout<<"ICI"<<endl;
-        updateFrame();
-    }
-    lastFrameTime = currentTime;
-}
-
-void ReplayWorld::updateFrame()
-{
-    //mapGlBlocks.insert(make_pair(blockId, glBlock));
-    player->parseEvents(player->getLastFrameEndParsePosition(),
-            currentTime*pow(10,6),
-            player->getKeyframeEndTime());
-    updateMotionBlocks();
-}
-
-void ReplayWorld::updateMotionBlocks()
-{
-    /*
     KeyframeBlock block;
 
     list<int> blackList;
@@ -88,11 +52,11 @@ void ReplayWorld::updateMotionBlocks()
         eventBuffer.erase(element);
     }
     blackList.clear();
-    */
+
 }
 
-void ReplayWorld::addBlock(bID blockId, KeyframeBlock block) {
-    /*auto *glBlock = new SmartBlocks::SmartBlocksGlBlock(blockId);
+void SmartBlocksReplayWorld::addBlock(bID blockId, KeyframeBlock block) {
+    auto *glBlock = new SmartBlocks::SmartBlocksGlBlock(blockId);
 
     Cell3DPosition pos;
     pos.pt[0] = gridScale*block.x;
@@ -107,21 +71,13 @@ void ReplayWorld::addBlock(bID blockId, KeyframeBlock block) {
     col.rgba[2]= block.b/255.0f;
     col.rgba[3]= 1.0;
     glBlock->setColor(col);
+
     glBlock->setDisplayedValue(block.displayedValue);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
-     */
 }
 
-void ReplayWorld::updateColor(u4 blockId, Color col) {
-    for (const auto& pair : mapGlBlocks) {
-        if(pair.first==blockId) {
-            pair.second->setColor(col);
-        }
-    }
-}
-void ReplayWorld::updatePosition(u4 blockId, KeyframeBlock block)
+void SmartBlocksReplayWorld::updatePosition(u4 blockId, KeyframeBlock block)
 {
-    /*
     Cell3DPosition pos;
     pos.pt[0] = block.x*gridScale;
     pos.pt[1] = block.y*gridScale;
@@ -133,16 +89,16 @@ void ReplayWorld::updatePosition(u4 blockId, KeyframeBlock block)
         if(pair.first==blockId)
         {
 
-            pair.second->setPosition(pos);
+            pair.second->setPosition(newPos);
         }
     }
-    */
+
 }
 
-void ReplayWorld::updatePositionMotion(u4 blockId, KeyframeBlock block,
+void SmartBlocksReplayWorld::updatePositionMotion(u4 blockId, KeyframeBlock block,
         u8 time,u8 readTime, Cell3DPosition initPos)
 {
-   /* Vector3D pos;
+    Vector3D pos;
     Cell3DPosition oldPos = initPos;
 
     pos.pt[0] = oldPos.pt[0]+(block.x*gridScale-oldPos.pt[0])*(time-readTime-2000)/1000000;
@@ -157,41 +113,20 @@ void ReplayWorld::updatePositionMotion(u4 blockId, KeyframeBlock block,
             pair.second->setPosition(pos);
         }
     }
-    */
-}
-Vector3D ReplayWorld::getPosition(u4 blockId)
-{
-    for (const auto& pair : mapGlBlocks) {
-        if(pair.first==blockId)
-        {
-            return pair.second->getPosition();
-        }
-    }
+
 }
 
-void ReplayWorld::glDraw() {
-    glPushMatrix();
-    glDrawBackground();
-    objRepere->glDraw();
-    for (const auto& pair : mapGlBlocks) {
-        ((GlBlock*)pair.second)->glDraw(objBlock);
-    }
-    glPopMatrix();
-}
 
-void ReplayWorld::updateDisplayedValue(u4 blockId, u2 display)
+void SmartBlocksReplayWorld::updateDisplayedValue(u4 blockId, u2 display)
 {
-    /*
     for (const auto& pair : mapGlBlocks) {
         if(pair.first==blockId) {
-            pair.second->setDisplayedValue(display);
+            dynamic_cast<SmartBlocks::SmartBlocksGlBlock*>(pair.second)->setDisplayedValue(display);
         }
     }
-     */
 }
 
-void ReplayWorld::glDrawBackground() {
-    /*
+void SmartBlocksReplayWorld::glDrawBackground() {
     //cout<<"Drawing background "<<gridScale<<endl;
     static const GLfloat white[]={1.0,1.0,1.0,1.0},
             gray[]={0.2,0.2,0.2,1.0};
@@ -217,15 +152,15 @@ void ReplayWorld::glDrawBackground() {
     glVertex3f(0.0,1.0,0.0f);
     glEnd();
     glPopMatrix();
-     */
 }
 
-void ReplayWorld::loadTextures(const string &str) {
+void SmartBlocksReplayWorld::loadTextures(const string &str) {
 
 
-//    string path = str+"/textureCarre.tga";
-//    int lx,ly;
-//    idTextureFloor = loadTexture(path.c_str(),lx,ly);
-//    cout<<"Loading texture"<<endl;
-    cout<<"LOADING TEXTURE WORLD"<<endl;
+    string path = str+"/textureCarre.tga";
+    int lx,ly;
+    idTextureFloor = loadTexture(path.c_str(),lx,ly);
+    cout<<"Loading texture"<<endl;
+    cout<<"LOADING TEXTURE SBWORLD"<<endl;
+
 }

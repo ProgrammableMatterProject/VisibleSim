@@ -270,7 +270,7 @@ void ScaffoldingBlockCode::startup() {
 
     // Progress Display
     static unsigned int lastNbModules = 0;
-    lastNbModules = max(lastNbModules, lattice->nbModules);
+    lastNbModules = max((size_t)lastNbModules, lattice->nbModules);
     int ts = round(getScheduler()->now() / getRoundDuration());
     if (ts > 0)
         cout << TermColor::BWhite << "\rCurrent Timestep:\t"
