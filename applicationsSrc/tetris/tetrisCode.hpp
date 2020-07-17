@@ -16,6 +16,7 @@ static const char charGoLeft = 'j';  //to go on the left
 static const char charGoDown = 'l'; //to go down quicker
 static const char charTurnCK = 'p';  //to turn clockwise
 static const char charTurnCCK = 'o'; //to turn counter clockwise
+static const char charSeparate = '|'; //to cut in two
 
 //Minimum size of the BB set to display a tetris game (& min nb of pixels on each dimension)
 static const int MIN_HEIGHT = 8;

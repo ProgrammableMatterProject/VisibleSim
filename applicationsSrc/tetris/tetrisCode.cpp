@@ -2100,6 +2100,13 @@ void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
             leaderBlockCode->counterCwRotKeyHandler();
         }
         break;
+        case charSeparate:
+            if (leaderBlockCode!=nullptr) {
+                BlinkyBlocksWorld::getWorld()->separate(true);
+            }
+        break;
+
+
     }
 };
 

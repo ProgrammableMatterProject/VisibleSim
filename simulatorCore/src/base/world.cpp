@@ -327,4 +327,20 @@ void World::getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float
     unlock();
 }
 
+bool World::separate(bool enable) {
+    if (!lattice->hasSeparator()) return false;
+
+    for (auto bb:buildingBlocksMap) {
+        bool state=lattice->isFront(bb.second->position);
+        if (state) { // on cherche un voisin qui est not front
+            bb.second->setColor(BLUE);
+            for (auto neighbor:bb.second->getNeighbors()) {
+                if (!lattice->isFront(neighbor->position)) {
+                    neighbor->setColor(LIGHTBLUE);
+                }
+            }
+        }
+    }
+}
+
 } // BaseSimulator namespace
