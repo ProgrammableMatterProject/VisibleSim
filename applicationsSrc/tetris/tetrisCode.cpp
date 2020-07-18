@@ -2102,7 +2102,7 @@ void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
         break;
         case charSeparate:
             if (leaderBlockCode!=nullptr) {
-                BlinkyBlocksWorld::getWorld()->separate(true);
+                BlinkyBlocksWorld::getWorld()->separate();
             }
         break;
 

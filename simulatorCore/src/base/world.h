@@ -386,7 +386,7 @@ public:
     void getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax);
     bool hasBlinkingBlocks() { return isBlinkingBlocks;};
 
-    bool separate(bool enable);
+    bool separate();
 };
 
 /**
