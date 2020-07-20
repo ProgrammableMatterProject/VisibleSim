@@ -29,5 +29,23 @@
 		<blocksLine plane="3" line=" 3" values="0001010100" color="255,128,128"/>
 		<blocksLine plane="3" line=" 4" values="0010101000" color="255,128,128"/>
 		<blocksLine plane="3" line=" 4" values="0001010100"/>
+		
+		<blocksLine plane="4" line=" 1" values="0001010100" color="255,128,128"/>
+		<blocksLine plane="4" line=" 2" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="4" line=" 2" values="0001010100"/>
+		<blocksLine plane="4" line=" 3" values="0001010100" color="255,128,128"/>
+		<blocksLine plane="4" line=" 4" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="4" line=" 4" values="0001010100"/>
+
+		
+		<blocksLine plane="5" line=" 1" values="0001010100" color="255,128,128"/>
+		<blocksLine plane="5" line=" 2" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="5" line=" 2" values="0001010100"/>
+		<blocksLine plane="5" line=" 3" values="0001010100" color="255,128,128"/>
+		<blocksLine plane="5" line=" 4" values="0010101000" color="255,128,128"/>
+		<blocksLine plane="5" line=" 4" values="0001010100"/>
+
+		
+		
 	</blockList>
 </world>

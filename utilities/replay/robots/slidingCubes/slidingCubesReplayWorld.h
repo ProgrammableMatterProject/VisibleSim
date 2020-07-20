@@ -27,7 +27,8 @@ namespace Replay {
 class ReplayEvent;
 class SlidingCubesReplayWorld : public ReplayWorld{
 private:
-
+protected :
+    GLuint idTextureWall;
 
 public:
 

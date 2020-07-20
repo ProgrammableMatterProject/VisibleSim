@@ -24,6 +24,8 @@
 #include "robots/smartBlocks/smartBlocksReplayWorld.h"
 #include "robots/blinkyBlocks/blinkyBlocksReplayWorld.h"
 #include "robots/catoms3D/catoms3DReplayWorld.h"
+#include "robots/slidingCubes/slidingCubesReplayWorld.h"
+#include "robots/catoms2D/catoms2DReplayWorld.h"
 using namespace ReplayTags;
 using namespace GlutContext;
 namespace Replay {
@@ -57,6 +59,7 @@ namespace Replay {
                 world = new BlinkyBlocksReplayWorld(argc,argv,parseDuration(),40.0f);
                 break;
             case MODULE_TYPE_C2D:
+                world = new Catoms2DReplayWorld(argc,argv,parseDuration(),1.0f);
                 break;
             case MODULE_TYPE_C3D:
                 world = new Catoms3DReplayWorld(argc,argv,parseDuration(),10.0f);
@@ -70,6 +73,7 @@ namespace Replay {
             case MODULE_TYPE_OKTEEN:
                 break;
             case MODULE_TYPE_SLIDINGCUBE:
+                world = new SlidingCubesReplayWorld(argc,argv,parseDuration(),10.0f);
                 break;
             case MODULE_TYPE_SMARTBLOCKS:
                 world = new SmartBlocksReplayWorld(argc,argv,parseDuration(),25.0f);
@@ -222,6 +226,7 @@ namespace Replay {
 
             // Optimisation possible (jeu du plus ou moins) si nécessaire
             if (keyframes[i].time > time) {
+                cout<<"ON ARRIVE ICI ?"<<endl;
                 keyframeEndTime = keyframes[i].time;
                 return keyframes[i].position;
             }
@@ -305,10 +310,14 @@ namespace Replay {
         u4 blockId;
         while(true)
         {
+
             lastFrameEndParsePosition = exportFile->tellg();
+            cout<<"Hellow 1 End : "<<end<<" & tellG "<<exportFile->tellg()<<endl;
             if(exportFile->tellg()>end) {break;}
+            cout<<"Hellow 2"<<endl;
             exportFile->read((char *) &readTime, sizeof(u8));
             if(readTime>time){break;}
+            cout<<"Hellow 3"<<endl;
             exportFile->read((char *) &eventType, sizeof(u1));
             exportFile->read((char *) &blockId, sizeof(u4));
             switch(eventType){

@@ -121,29 +121,80 @@ void SlidingCubesReplayWorld::updatePositionMotion(u4 blockId, KeyframeBlock blo
 }
 
 void SlidingCubesReplayWorld::glDrawBackground() {
-    //cout<<"Drawing background "<<gridScale<<endl;
-    static const GLfloat white[]={1.0,1.0,1.0,1.0},
-            gray[]={0.2,0.2,0.2,1.0};
-
+    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+            gray[]={0.2f,0.2f,0.2f,1.0};
+    glPopMatrix();
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
     glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
     glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
     glMaterialf(GL_FRONT,GL_SHININESS,40.0);
     glPushMatrix();
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D,idTextureFloor);
-    glNormal3f(0,0,1.0f);
-    glScalef(gridScale*player->gridSizeX,
-             gridScale*player->gridSizeY,1.0f);
+    enableTexture(true);
+    glBindTexture(GL_TEXTURE_2D,idTextureWall);
+    glScalef(player->gridSizeX*gridScale,
+             player->gridSizeY*gridScale,
+             player->gridSizeZ*gridScale);
     glBegin(GL_QUADS);
+    // bottom
+    glNormal3f(0,0,1.0f);
     glTexCoord2f(0,0);
     glVertex3f(0.0f,0.0f,0.0f);
-    glTexCoord2f(static_cast<float>(player->gridSizeX)/4.0f,0); // textureCarre is a used as a 4x4 square texture
+    glTexCoord2f(player->gridSizeX/4.0f,0);
     glVertex3f(1.0f,0.0f,0.0f);
-    glTexCoord2f(static_cast<float>(player->gridSizeX)/4.0f,static_cast<float>(player->gridSizeY)/4.0f);
+    glTexCoord2f(player->gridSizeX/4.0f,player->gridSizeY/4.0f);
     glVertex3f(1.0,1.0,0.0f);
-    glTexCoord2f(0,static_cast<float>(player->gridSizeY)/4.0f);
+    glTexCoord2f(0,player->gridSizeY/4.0f);
     glVertex3f(0.0,1.0,0.0f);
+    // top
+    glNormal3f(0,0,-1.0f);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,1.0f);
+    glTexCoord2f(0,player->gridSizeY/4.0f);
+    glVertex3f(0.0,1.0,1.0f);
+    glTexCoord2f(player->gridSizeX/4.0f,player->gridSizeY/4.0f);
+    glVertex3f(1.0,1.0,1.0f);
+    glTexCoord2f(player->gridSizeX/4.0f,0);
+    glVertex3f(1.0f,0.0f,1.0f);
+    // left
+    glNormal3f(1.0,0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(player->gridSizeY/4.0f,0);
+    glVertex3f(0.0f,1.0f,0.0f);
+    glTexCoord2f(player->gridSizeY/4.0f,player->gridSizeZ/4.0f);
+    glVertex3f(0.0,1.0,1.0f);
+    glTexCoord2f(0,player->gridSizeZ/4.0f);
+    glVertex3f(0.0,0.0,1.0f);
+    // right
+    glNormal3f(-1.0,0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(1.0f,0.0f,0.0f);
+    glTexCoord2f(0,player->gridSizeZ/4.0f);
+    glVertex3f(1.0,0.0,1.0f);
+    glTexCoord2f(player->gridSizeY/4.0f,player->gridSizeZ/4.0f);
+    glVertex3f(1.0,1.0,1.0f);
+    glTexCoord2f(player->gridSizeY/4.0f,0);
+    glVertex3f(1.0f,1.0f,0.0f);
+    // back
+    glNormal3f(0,-1.0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,1.0f,0.0f);
+    glTexCoord2f(player->gridSizeX/4.0f,0);
+    glVertex3f(1.0f,1.0f,0.0f);
+    glTexCoord2f(player->gridSizeX/4.0f,player->gridSizeZ/4.0f);
+    glVertex3f(1.0f,1.0,1.0f);
+    glTexCoord2f(0,player->gridSizeZ/4.0f);
+    glVertex3f(0.0,1.0,1.0f);
+    // front
+    glNormal3f(0,1.0,0);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(0,player->gridSizeZ/4.0f);
+    glVertex3f(0.0,0.0,1.0f);
+    glTexCoord2f(player->gridSizeX/4.0f,player->gridSizeZ/4.0f);
+    glVertex3f(1.0f,0.0,1.0f);
+    glTexCoord2f(player->gridSizeX/4.0f,0);
+    glVertex3f(1.0f,0.0f,0.0f);
     glEnd();
     glPopMatrix();
 }
@@ -153,7 +204,7 @@ void SlidingCubesReplayWorld::loadTextures(const string &str) {
 
     string path = str+"/textureCarre.tga";
     int lx,ly;
-    idTextureFloor = loadTexture(path.c_str(),lx,ly);
+    idTextureWall = loadTexture(path.c_str(),lx,ly);
     cout<<"Loading texture"<<endl;
     cout<<"LOADING TEXTURE SBWORLD"<<endl;
 

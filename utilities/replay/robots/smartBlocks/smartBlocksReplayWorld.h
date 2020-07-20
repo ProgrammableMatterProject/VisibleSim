@@ -27,6 +27,7 @@ namespace Replay {
 class ReplayEvent;
 class SmartBlocksReplayWorld : public ReplayWorld{
 private:
+protected :
 
 
 public:

@@ -46,7 +46,7 @@ void ReplayWorld::updateMap()
     }
     else
     {
-        cout<<"ICI"<<endl;
+        cout<<"Updating Frame from t = "<<lastFrameTime<<" to " << currentTime<<endl;
         updateFrame();
     }
     lastFrameTime = currentTime;
@@ -57,7 +57,7 @@ void ReplayWorld::updateFrame()
     //mapGlBlocks.insert(make_pair(blockId, glBlock));
     player->parseEvents(player->getLastFrameEndParsePosition(),
             currentTime*pow(10,6),
-            player->getKeyframeEndTime());
+            player->findNextKeyframe(currentTime*pow(10,6)));
     updateMotionBlocks();
 }
 
