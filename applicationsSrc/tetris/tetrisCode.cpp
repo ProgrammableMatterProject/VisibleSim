@@ -2052,8 +2052,9 @@ void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
     }
 
     case EVENT_REMOVE_NEIGHBOR:
-    {
-        // Do something when a neighbor is removed from an interface of the module
+    { 
+    module->setColor(BLUE);
+    // Do something when a neighbor is removed from an interface of the module
         break;
     }
 

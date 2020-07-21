@@ -11,7 +11,7 @@
 #include "events/scheduler.h"
 #include "base/buildingBlock.h"
 #include "base/world.h"
-#include "grid/lattice.h"
+//#include "grid/lattice.h"
 
 using namespace std;
 
