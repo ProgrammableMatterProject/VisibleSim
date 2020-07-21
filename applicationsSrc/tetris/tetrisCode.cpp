@@ -2135,6 +2135,8 @@ void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
             sendMessage("Detected Splitting", new MessageOf<int>(SPLIT_MSG_ID, dir), bottomItf, 0, 0);
             module->setColor(BLUE);
         }
+
+        module->setColor(BLUE);
         break;
     }
 
@@ -2181,6 +2183,13 @@ void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
             leaderBlockCode->counterCwRotKeyHandler();
         }
         break;
+        case charSeparate:
+            if (leaderBlockCode!=nullptr) {
+                BlinkyBlocksWorld::getWorld()->separate();
+            }
+        break;
+
+
     }
 };
 

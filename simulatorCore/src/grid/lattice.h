@@ -1,6 +1,6 @@
 /*! @file lattice.h
  * @brief Header file for the lattice simulation environment.
- * @author pthalamy
+ * @author pthalamy, bpiranda
  *
  * Inspired by github.com/nazandre:VisibleSimConfigGenerator
  *
@@ -54,10 +54,29 @@ public:
         }
     };
 
+    class Separator {
+    public:
+        Vector3D normal,pointA;
+
+        Separator(const Vector3D &_n, const Vector3D &_p):normal(_n),pointA(_p) {};
+        Separator(float cp_a,float cp_b,float cp_c,float cp_d) {
+            normal.set(cp_a,cp_b,cp_c);
+            normal.normer_interne();
+            float k = -cp_d/(cp_a+cp_b+cp_c);
+            pointA.set(k*cp_a,k*cp_b,k*cp_c,1);
+        }
+
+        bool isFront(const Vector3D&B) {
+            Vector3D AB=B-pointA;
+            return (AB * normal>0);
+        }
+    };
+
 protected:
     static const string directionName[];
 
     map<const Cell3DPosition, Color> mapHighlightedCells;
+    Separator *separator= nullptr;
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< Labels for a lattice cell's neighboring cells (virtual)
     /**
@@ -301,6 +320,31 @@ public:
      * @return the cell in the direction opposite to d relative pRef
      */
     Cell3DPosition getOppositeCell(const Cell3DPosition& pRef, short d) const;
+
+    /**
+     * @brief Create a new separator from the cartesian plane equation ax+by+cz+d=0
+     * @param cp_a a parameter of the cartesian plane
+     * @param cp_b b parameter of the cartesian plane
+     * @param cp_c c parameter of the cartesian plane
+     * @param cp_d d parameter of the cartesian plane
+     */
+    void addSeparator(float cp_a,float cp_b,float cp_c,float cp_d) {
+        if (separator) delete separator;
+        separator = new Separator(cp_a,cp_b,cp_c,cp_d);
+    }
+
+    void addSeparator(Separator *ptr) {
+        if (separator) delete separator;
+        separator=ptr;
+    }
+
+    inline bool hasSeparator() {
+        return separator!= nullptr;
+    }
+
+    bool isFront(const Vector3D &p) {
+        return separator!= nullptr && separator->isFront(p);
+    }
 };
 
 /*! @brief 2-Dimensional Lattice abstract class
