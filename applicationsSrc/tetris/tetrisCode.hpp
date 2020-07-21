@@ -13,7 +13,7 @@
 //Key commands to control the game :
 static const char charGoRight = 'k'; //to make the tetramino go on the right
 static const char charGoLeft = 'j';  //to go on the left
-static const char charGoDown = 'l'; //to go down quicker
+static const char charGoDown = 'l';  //to go down quicker
 static const char charTurnCK = 'p';  //to turn clockwise
 static const char charTurnCCK = 'o'; //to turn counter clockwise
 
@@ -162,6 +162,7 @@ static const int BLOCKED_MSG_ID = 1030;
 static const int COUNT_BCK_MSG_ID = 1031;
 static const int ASK_INFO_MSG_ID = 1032;
 static const int TMN_INFO_MSG_ID = 1033;
+static const int SPLIT_MSG_ID = 1034;
 
 //IDs of the interfaces
 static const int topId = 0;
@@ -187,6 +188,8 @@ private:
     P2PNetworkInterface *bottomItf = nullptr;
     P2PNetworkInterface *rightItf = nullptr;
     P2PNetworkInterface *leftItf = nullptr;
+
+    int stage = 0;                           //every time a splitting occurs, all modules belong to a new stage
     int height = 0;                          //"vertical" coordinate of the module -> to initialize
     int width = 0;                           //"horizontal" coordinate of the module -> to initialize
     unsigned int spanTree = module->blockId; //nb of the spanning tree the module belongs to
@@ -198,7 +201,7 @@ private:
     int maxWidth = 0;            //maximum width of the BBs set
     int pixelHCoord = 0;         //"vertical" coordinate of the pixel the module belongs to
     int pixelWCoord = 0;         //"horizontal" coordinate of the pixel the module belongs to
-    int roleInPixel = 100;       // role of the module in the pixel (core, border, corner) 
+    int roleInPixel = 100;       // role of the module in the pixel (core, border, corner)
 
     bool appear_module = false; //true if the module is the one which picks the form, rotation and color of the new tetramino
     int nbTmn = 0;              //number of the current moving tetramino
@@ -234,7 +237,7 @@ private:
     bool blocked = false; //true if the tetramino is blocked
     int blockedRight = 0; //number of neighbors on the right of the line that are also blocked
     int blockedLeft = 0;
-    int totalBckdModules = 0 ; //total number of blocked modules that is needed for the line to be full.
+    int totalBckdModules = 0; //total number of blocked modules that is needed for the line to be full.
     int nbLinesReinit = 0;
 
 public:
@@ -602,7 +605,7 @@ public:
     * @param verif data to be spread
     * @param sender itf to send back non valid answers
     */
-    void sendFarVerif(farVerif verif,P2PNetworkInterface *sender);
+    void sendFarVerif(farVerif verif, P2PNetworkInterface *sender);
 
     /**
     * @brief Message handler for the message 'FarVerif'. Spreads a far verification (that cannot be made by 
@@ -646,6 +649,13 @@ public:
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
     void myTmnInfoMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'Split'. Sends and confirms that there is a splitting
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     * @brief Handler for all events received by the host block

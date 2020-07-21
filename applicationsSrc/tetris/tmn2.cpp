@@ -2,8 +2,8 @@
 
 void TetrisCode::sendTmn2(bool reinit, bool blocked)
 {
-    TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFree);
-    ReinitData rData = ReinitData(nbReinit, tmn, movement);
+    TmnData data = TmnData(stage, update, rotation, position, color, nbReinit, nbFree);
+    ReinitData rData = ReinitData(stage, nbReinit, tmn, movement);
 
     if (rotation == NORTH)
     {
@@ -73,7 +73,7 @@ void TetrisCode::sendTmn2(bool reinit, bool blocked)
             }
             else if (blocked && i != nullptr and i->isConnected())
             {
-                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+                sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID, stage), i, 0, 0);
             }
             else
             {
@@ -95,7 +95,7 @@ void TetrisCode::sendTmn2(bool reinit, bool blocked)
         }
         else if (blocked && i != nullptr and i->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
         }
         else
         {
@@ -131,7 +131,7 @@ void TetrisCode::sendTmn2(bool reinit, bool blocked)
             }
             else if (blocked && i != nullptr and i->isConnected())
             {
-                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+                sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
             }
             else
             {
@@ -153,7 +153,7 @@ void TetrisCode::sendTmn2(bool reinit, bool blocked)
         }
         else if (blocked && i != nullptr and i->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
         }
         else
         {
@@ -175,7 +175,7 @@ void TetrisCode::sendTmn2(bool reinit, bool blocked)
         }
         else if (blocked && i != nullptr and i->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
         }
         else
         {
@@ -196,7 +196,7 @@ void TetrisCode::sendTmn2(bool reinit, bool blocked)
         }
         else if (blocked && i != nullptr and i->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), i, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
         }
         else
         {
@@ -214,8 +214,10 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
 
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    if (update < msgData.nbupdate && (tmn != 2 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
+    console<<"recieved message. Stage = "<< msgData.stage << " my stage = "<<stage<<"\n";
+    if (msgData.stage >= stage && update < msgData.nbupdate && (tmn != 2 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
     {
+        stage = msgData.stage;
         tmn = 2;
         update = msgData.nbupdate;
         rotation = msgData.rotation;
@@ -226,16 +228,19 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         parent = sender;
         nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
-        console<<"recieved tmn "<<tmn<<" rot = "<<rotation<<" pos = "<<position<<"\n";
+        console << "recieved tmn " << tmn << " rot = " << rotation << " pos = " << position << "\n";
         sendTmn2(false, false);
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
-            sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
+            TmnBackData data = TmnBackData(stage,update);
+            sendMessage("Tmn Back Message Parent", new MessageOf<TmnBackData>(TMNBACK_MSG_ID, data), parent, 0, 0);
         }
     }
-    else if (update == msgData.nbupdate)
+    else if (msgData.stage >= stage && update == msgData.nbupdate)
     {
-        sendMessage("Tmn Back Message", new MessageOf<int>(TMNBACK_MSG_ID, update), sender, 0, 0);
+        stage = msgData.stage;
+        TmnBackData data = TmnBackData(stage,update);
+        sendMessage("Tmn Back Message", new MessageOf<TmnBackData>(TMNBACK_MSG_ID, data), sender, 0, 0);
     }
 };
 
@@ -243,8 +248,9 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
 {
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    if (msgData.stage>=stage && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
     {
+        stage = msgData.stage;
         parent = nullptr;
         leaderBlockCode = this;
         tmn = 2;
@@ -261,8 +267,9 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         module->setColor(Colors[color]);
         sendTmn2(false, false);
     }
-    else
+    else if (msgData.stage >= stage)
     {
+        stage = msgData.stage;
         P2PNetworkInterface *i = nullptr;
         if (sender == topItf)
         {
@@ -328,27 +335,27 @@ void TetrisCode::verifTmn2()
         if (rotation == rot1)
         {
             nbFree += 1;
-            verifications.push_back(freeAnswer(4, dir));
-            isFreeData data = isFreeData(nbFree, 4, dir);
+            verifications.push_back(freeAnswer(stage, 4, dir));
+            isFreeData data = isFreeData(stage, nbFree, 4, dir);
             sendVerifTmn2(false, data);
         }
         else if (rotation == rot2)
         {
             nbFree += 1;
-            verifications.push_back(freeAnswer(2, dir));
-            isFreeData data = isFreeData(nbFree, 2, dir);
+            verifications.push_back(freeAnswer(stage, 2, dir));
+            isFreeData data = isFreeData(stage, nbFree, 2, dir);
             sendVerifTmn2(false, data);
         }
         else if (rotation == rot3 || rotation == rot4)
         {
-            verifications.push_back(freeAnswer(2, dir));
-            verifications.push_back(freeAnswer(3, dir));
-            verifications.push_back(freeAnswer(4, dir));
+            verifications.push_back(freeAnswer(stage, 2, dir));
+            verifications.push_back(freeAnswer(stage, 3, dir));
+            verifications.push_back(freeAnswer(stage, 4, dir));
             if (movement == GO_LEFT)
             {
                 nbFree += 1;
-                verifications.push_back(freeAnswer(1, dir));
-                isFreeData data = isFreeData(nbFree, 1, dir);
+                verifications.push_back(freeAnswer(stage, 1, dir));
+                isFreeData data = isFreeData(stage, nbFree, 1, dir);
                 sendVerifTmn2(false, data);
             }
             else
@@ -356,23 +363,25 @@ void TetrisCode::verifTmn2()
                 //the following verification can be made directly by the deciding module
                 if (i != nullptr && i->isConnected())
                 {
-                    sendMessage("Direct Verification Message", new Message(FREEMSG_ID), i, 0, 0);
+                    sendMessage("Direct Verification Message", new MessageOf<int>(FREEMSG_ID, stage), i, 0, 0);
                 }
                 else
                 {
                     //the tetramino is blocked
                     blocked = true;
                     sendTmn2(false, true);
+                    BlockedData data = BlockedData(stage,nbLinesReinit, 1);
                     if (leftItf != nullptr && leftItf->isConnected())
                     {
-                        sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+                        sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
                     }
                     if (rightItf != nullptr && rightItf->isConnected())
                     {
-                        sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+                        sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
                     }
                     nbTmn += 1;
-                    sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                    NewTmnData data2 = NewTmnData(stage,nbTmn);
+                    sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<NewTmnData>(NEWTMNMSG_ID, data2), 0, 0, 0);
                 }
             }
         }
@@ -385,23 +394,23 @@ void TetrisCode::verifTmn2()
         if (movement == ROT_CK)
         {
             dirs.push_back(EAST);
-            farVerifications.push_back(farVerif(0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
             dirs.clear();
             dirs.push_back(WEST);
-            farVerifications.push_back(farVerif(0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
             dirs.push_back(WEST);
-            v = farVerif(0, 0, dirs, rotation);
+            v = farVerif(stage, 0, 0, dirs, rotation);
             farVerifications.push_back(v);
         }
         else if (movement == ROT_COUNTER_CK)
         {
             dirs.push_back(WEST);
-            farVerifications.push_back(farVerif(0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
             dirs.clear();
             dirs.push_back(EAST);
-            farVerifications.push_back(farVerif(0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
             dirs.push_back(EAST);
-            v = farVerif(0, 0, dirs, rotation);
+            v = farVerif(stage, 0, 0, dirs, rotation);
             farVerifications.push_back(v);
         }
         nbFree += 1;

@@ -2,8 +2,8 @@
 
 void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino doesn't rotate (square)
 {
-    TmnData data = TmnData(update, rotation, position, color, nbReinit, nbFree);
-    ReinitData rData = ReinitData(nbReinit, tmn, movement);
+    TmnData data = TmnData(stage, update, rotation, position, color, nbReinit, nbFree);
+    ReinitData rData = ReinitData(stage, nbReinit, tmn, movement);
 
     itf[northId] = topItf;
     itf[eastId] = rightItf;
@@ -33,7 +33,7 @@ void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino
             }
             else if (blocked && topItf != nullptr and topItf->isConnected())
             {
-                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), topItf, 0, 0);
+                sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID, stage), topItf, 0, 0);
             }
             else
             {
@@ -54,7 +54,7 @@ void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino
         }
         else if (blocked && topItf != nullptr and topItf->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), topItf, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), topItf, 0, 0);
         }
         else
         {
@@ -85,7 +85,7 @@ void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino
             }
             else if (blocked && bottomItf != nullptr and bottomItf->isConnected())
             {
-                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), bottomItf, 0, 0);
+                sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), bottomItf, 0, 0);
             }
             else
             {
@@ -106,7 +106,7 @@ void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino
         }
         else if (blocked && bottomItf != nullptr and bottomItf->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), bottomItf, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), bottomItf, 0, 0);
         }
         else
         {
@@ -137,7 +137,7 @@ void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino
             }
             else if (blocked && rightItf != nullptr and rightItf->isConnected())
             {
-                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), rightItf, 0, 0);
+                sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), rightItf, 0, 0);
             }
             else
             {
@@ -158,7 +158,7 @@ void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino
         }
         else if (blocked && rightItf != nullptr and rightItf->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), rightItf, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), rightItf, 0, 0);
         }
         else
         {
@@ -189,7 +189,7 @@ void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino
             }
             else if (blocked && leftItf != nullptr and leftItf->isConnected())
             {
-                sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), leftItf, 0, 0);
+                sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), leftItf, 0, 0);
             }
             else
             {
@@ -210,7 +210,7 @@ void TetrisCode::sendTmn1(bool reinit, bool blocked) // NB : the first tetramino
         }
         else if (blocked && leftItf != nullptr and leftItf->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new Message(BLOCKED_MSG_ID), leftItf, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), leftItf, 0, 0);
         }
         else
         {
@@ -228,8 +228,9 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
 
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    if (update < msgData.nbupdate && (tmn != 1 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
+    if (msgData.stage >= stage && update < msgData.nbupdate && (tmn != 1 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
     {
+        stage = msgData.stage;
         tmn = 1;
         update = msgData.nbupdate;
         rotation = msgData.rotation;
@@ -247,9 +248,11 @@ void TetrisCode::myTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
             sendMessage("Tmn Back Message Parent", new MessageOf<int>(TMNBACK_MSG_ID, update), parent, 0, 0);
         }
     }
-    else if (update == msgData.nbupdate)
+    else if (msgData.stage>=stage && update == msgData.nbupdate)
     {
-        sendMessage("Tmn Back Message", new MessageOf<int>(TMNBACK_MSG_ID, update), sender, 0, 0);
+        stage = msgData.stage;
+        TmnBackData data = TmnBackData(stage,update);
+        sendMessage("Tmn Back Message", new MessageOf<TmnBackData>(TMNBACK_MSG_ID, data), sender, 0, 0);
     }
 };
 
@@ -257,8 +260,9 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
 {
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    if (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)
+    if (msgData.stage >= stage && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
     {
+        stage = msgData.stage;
         parent = nullptr;
         leaderBlockCode = this;
         tmn = 1;
@@ -273,14 +277,15 @@ void TetrisCode::myRestartTmn1Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         turnCK = msgData.rotCW;
         turnCounterCK = msgData.rotCCW;
         stringstream strstm;
-        strstm << "NEW LEADER OF TMN "<<tmn;
+        strstm << "NEW LEADER OF TMN " << tmn;
         scheduler->trace(strstm.str(), module->blockId, GOLD);
         module->setColor(Colors[color]);
         sendTmn1(false, false);
     }
     //Normally the TOP_RIGHT_CORNER recieved it first, so the BOTTOM_RIGHT_CORNER should be under it on the same column
-    else
+    else if (msgData.stage >= stage)
     {
+        stage = msgData.stage;
         P2PNetworkInterface *i = nullptr;
         if (sender == topItf)
         {
@@ -315,26 +320,26 @@ void TetrisCode::verifTmn1()
         //If the deciding pixel can do the verification itself, it does it (it's not the case here).
         nbFree += 1;
         //creating the needed verifications
-        verifications.push_back(freeAnswer(3, SOUTH));
-        verifications.push_back(freeAnswer(4, SOUTH));
+        verifications.push_back(freeAnswer(stage, 3, SOUTH));
+        verifications.push_back(freeAnswer(stage, 4, SOUTH));
         //sending the first verification. It has to be the last verification pushed back into the vector.
-        isFreeData data = isFreeData(nbFree, 4, SOUTH);
+        isFreeData data = isFreeData(stage, nbFree, 4, SOUTH);
         sendVerifTmn1(false, data);
     }
     else if (movement == GO_RIGHT)
     {
         nbFree += 1;
-        verifications.push_back(freeAnswer(2, EAST));
-        verifications.push_back(freeAnswer(4, EAST));
-        isFreeData data = isFreeData(nbFree, 4, EAST);
+        verifications.push_back(freeAnswer(stage, 2, EAST));
+        verifications.push_back(freeAnswer(stage, 4, EAST));
+        isFreeData data = isFreeData(stage, nbFree, 4, EAST);
         sendVerifTmn1(false, data);
     }
     else if (movement == GO_LEFT)
     {
         nbFree += 1;
-        verifications.push_back(freeAnswer(3, WEST));
-        verifications.push_back(freeAnswer(1, WEST));
-        isFreeData data = isFreeData(nbFree, 1, WEST);
+        verifications.push_back(freeAnswer(stage, 3, WEST));
+        verifications.push_back(freeAnswer(stage, 1, WEST));
+        isFreeData data = isFreeData(stage, nbFree, 1, WEST);
         sendVerifTmn1(false, data);
     }
 }

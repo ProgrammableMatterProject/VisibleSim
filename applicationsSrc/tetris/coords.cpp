@@ -4,41 +4,42 @@ void TetrisCode::sendCoords()
 {
     if (topItf != parent && topItf != nullptr and topItf->isConnected())
     {
-        CoordsData *data = new CoordsData(height + 1, width, spanTree);
-        sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), topItf, 0, 0);
+        CoordsData data = CoordsData(stage, height + 1, width, spanTree);
+        sendMessage("Coords Message", new MessageOf<CoordsData>(COORDSMSG_ID, data), topItf, 0, 0);
         nbBackMsg += 1;
     }
     if (height > 0 and bottomItf != parent and bottomItf != nullptr and bottomItf->isConnected()) // negative height is not sent
     {
-        CoordsData *data = new CoordsData(height - 1, width, spanTree);
-        sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), bottomItf, 0, 0);
+        CoordsData data = CoordsData(stage, height - 1, width, spanTree);
+        sendMessage("Coords Message", new MessageOf<CoordsData>(COORDSMSG_ID, data), bottomItf, 0, 0);
         nbBackMsg += 1;
     }
     if (rightItf != parent and rightItf != nullptr and rightItf->isConnected())
     {
-        CoordsData *data = new CoordsData(height, width + 1, spanTree);
-        sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), rightItf, 0, 0);
+        CoordsData data = CoordsData(stage, height, width + 1, spanTree);
+        sendMessage("Coords Message", new MessageOf<CoordsData>(COORDSMSG_ID, data), rightItf, 0, 0);
         nbBackMsg += 1;
     }
     if (width > 0 and leftItf != parent and leftItf != nullptr and leftItf->isConnected()) // negative width is not sent
     {
-        CoordsData *data = new CoordsData(height, width - 1, spanTree);
-        sendMessage("Coords Message", new MessageOf<CoordsData *>(COORDSMSG_ID, data), leftItf, 0, 0);
+        CoordsData data = CoordsData(stage, height, width - 1, spanTree);
+        sendMessage("Coords Message", new MessageOf<CoordsData>(COORDSMSG_ID, data), leftItf, 0, 0);
         nbBackMsg += 1;
     }
 }
 
 void TetrisCode::myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
-    MessageOf<CoordsData *> *msg = static_cast<MessageOf<CoordsData *> *>(_msg.get());
-    CoordsData *msgData = *msg->getData();
+    MessageOf<CoordsData> *msg = static_cast<MessageOf<CoordsData> *>(_msg.get());
+    CoordsData msgData = *msg->getData();
 
     //The coordinates have to be better on at least one of the dimensions, and not worse on the other
-    if ((height < msgData->height && width <= msgData->width) || (height <= msgData->height && width < msgData->width))
+    if (msgData.stage >= stage && ((height < msgData.height && width <= msgData.width) || (height <= msgData.height && width < msgData.width)))
     {
-        height = msgData->height;
-        width = msgData->width;
-        spanTree = msgData->nbTree;
+        stage = msgData.stage;
+        height = msgData.height;
+        width = msgData.width;
+        spanTree = msgData.nbTree;
         nbBackMsg = 0;
         parent = sender;
 
@@ -46,7 +47,8 @@ void TetrisCode::myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
 
         if (nbBackMsg == 0)
         {
-            sendMessage("Back Message", new MessageOf<int>(BACKMSG_ID, spanTree), parent, 0, 0);
+            BackCoords data = BackCoords(stage, spanTree);
+            sendMessage("Back Message", new MessageOf<BackCoords>(BACKMSG_ID, data), parent, 0, 0);
         }
 
         if (height > maxHeight)
@@ -62,19 +64,21 @@ void TetrisCode::myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
             pixelCalculation();
         }
     }
-    else if (msgData->nbTree == spanTree)
+    else if (msgData.nbTree == spanTree)
     {
-        sendMessage("Back Message", new MessageOf<int>(BACKMSG_ID, spanTree), sender, 0, 0);
+        BackCoords data = BackCoords(stage, spanTree);
+        sendMessage("Back Message", new MessageOf<BackCoords>(BACKMSG_ID, data), sender, 0, 0);
     }
 };
 
 void TetrisCode::myBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
-    MessageOf<unsigned int> *msg = static_cast<MessageOf<unsigned int> *>(_msg.get());
-    unsigned int msgData = *msg->getData();
+    MessageOf<BackCoords> *msg = static_cast<MessageOf<BackCoords> *>(_msg.get());
+    BackCoords msgData = *msg->getData();
 
-    if (msgData == spanTree)
+    if (msgData.stage >= stage && msgData.spanTree == spanTree)
     {
+        stage = msgData.stage;
         nbBackMsg -= 1;
     }
     if (nbBackMsg == 0)
@@ -83,43 +87,47 @@ void TetrisCode::myBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfac
         if (module->blockId == spanTree)
         {
             nbTmn += 1;
-            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+            NewTmnData data = NewTmnData(stage, nbTmn);
+            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<NewTmnData>(NEWTMNMSG_ID, data), 0, 0, 0);
         }
         else
         {
-            sendMessage("Back Message", new MessageOf<int>(BACKMSG_ID, spanTree), parent, 0, 0);
+            BackCoords data = BackCoords(stage, spanTree);
+            sendMessage("Back Message", new MessageOf<BackCoords>(BACKMSG_ID, data), parent, 0, 0);
         }
     }
 }
 
 void TetrisCode::sendIntToAll(int MSG_ID, int i)
 {
+    IntData data = IntData(stage, i);
     if (topItf != nullptr and topItf->isConnected())
     {
-        sendMessage("int Message", new MessageOf<int>(MSG_ID, i), topItf, 0, 0);
+
+        sendMessage("int Message", new MessageOf<IntData>(MSG_ID, data), topItf, 0, 0);
     }
     if (bottomItf != nullptr and bottomItf->isConnected())
     {
-        sendMessage("int Message", new MessageOf<int>(MSG_ID, i), bottomItf, 0, 0);
+        sendMessage("int Message", new MessageOf<IntData>(MSG_ID, data), bottomItf, 0, 0);
     }
     if (rightItf != nullptr and rightItf->isConnected())
     {
-        sendMessage("int Message", new MessageOf<int>(MSG_ID, i), rightItf, 0, 0);
+        sendMessage("int Message", new MessageOf<IntData>(MSG_ID, data), rightItf, 0, 0);
     }
     if (leftItf != nullptr and leftItf->isConnected()) // negative width is not send
     {
-        sendMessage("int Message", new MessageOf<int>(MSG_ID, i), leftItf, 0, 0);
+        sendMessage("int Message", new MessageOf<IntData>(MSG_ID, data), leftItf, 0, 0);
     }
 }
 
 void TetrisCode::myMaxHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
-
-    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
-    int msgData = *msg->getData();
-    if (maxHeight < msgData)
+    MessageOf<IntData> *msg = static_cast<MessageOf<IntData> *>(_msg.get());
+    IntData msgData = *msg->getData();
+    if (msgData.stage >= stage && maxHeight < msgData.data)
     {
-        maxHeight = msgData;
+        stage = msgData.stage;
+        maxHeight = msgData.data;
         sendIntToAll(MAXHEIGHTMSG_MSG_ID, maxHeight);
         pixelCalculation();
     }
@@ -127,13 +135,13 @@ void TetrisCode::myMaxHeightMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
 
 void TetrisCode::myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
+    MessageOf<IntData> *msg = static_cast<MessageOf<IntData> *>(_msg.get());
+    IntData msgData = *msg->getData();
 
-    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
-    int msgData = *msg->getData();
-
-    if (maxWidth < msgData)
+    if (msgData.stage >= stage && maxWidth < msgData.data)
     {
-        maxWidth = msgData;
+        stage = msgData.stage;
+        maxWidth = msgData.data;
         sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
         pixelCalculation();
     }
@@ -202,7 +210,7 @@ int TetrisCode::pixelCalculation()
     //The tetraminos appear at the top of the set, in the middle
     //The role of the deciding pixel is the same as in the rest of the game : if the root of the spanning trees
     //in the tetramino changes, it causes synchronization problems.
-    if (pixelHCoord == totalHNbPixels - 2 && pixelWCoord == totalWNbPixels / 2 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
+    if (pixelHCoord == totalHNbPixels - 1 && pixelWCoord == totalWNbPixels / 2 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
     {
         appear_module = true;
     }
@@ -211,7 +219,7 @@ int TetrisCode::pixelCalculation()
         appear_module = false;
     }
 
-    if ((pixelHCoord+1) * sizeOfPixel -1 > maxHeight || (pixelWCoord+1) * sizeOfPixel -1 > maxWidth) //if the pixel isn't complete
+    if ((pixelHCoord + 1) * sizeOfPixel - 1 > maxHeight || (pixelWCoord + 1) * sizeOfPixel - 1 > maxWidth) //if the pixel isn't complete
     {
         tmn = PIXEL_NON_VALID;
         module->setColor(BLACK);
@@ -223,6 +231,11 @@ int TetrisCode::pixelCalculation()
     }
 
     totalBckdModules = (maxWidth / sizeOfPixel) * sizeOfPixel; //the number of modules on width that belong to full pixels;
+    int v = blockedLeft + blockedRight + 1;
+    if (v == totalBckdModules && (roleInPixel == TOP_LEFT_CORNER || roleInPixel == TOP_BORDER || roleInPixel == TOP_RIGHT_CORNER || roleInPixel == ALONE) && topItf != nullptr && topItf->isConnected())
+    {
+        sendMessage("Asking line Tmn Info", new MessageOf<int>(ASK_INFO_MSG_ID, stage), topItf, 0, 0);
+    }
 
     // module->setColor(Colors[roleInPixel%NB_COLORS]);
     // if(appear_module)
