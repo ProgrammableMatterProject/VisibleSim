@@ -26,6 +26,7 @@
 #include "robots/catoms3D/catoms3DReplayWorld.h"
 #include "robots/slidingCubes/slidingCubesReplayWorld.h"
 #include "robots/catoms2D/catoms2DReplayWorld.h"
+#include "robots/hexanodes/hexanodesReplayWorld.h"
 using namespace ReplayTags;
 using namespace GlutContext;
 namespace Replay {
@@ -67,6 +68,7 @@ namespace Replay {
             case MODULE_TYPE_DATOM:
                 break;
             case MODULE_TYPE_HEXANODE:
+                world = new HexanodesReplayWorld(argc,argv,parseDuration(),50.0f);
                 break;
             case MODULE_TYPE_NODE2D:
                 break;

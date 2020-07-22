@@ -1,4 +1,4 @@
-SUBDIRS = gameOfLife stressTestSB stressTestCatoms simpleColorBB rainbow scaffolding_csg demoMotionsC3D simpleColorSC simpleColorC2D datomsRotate simpleOkteenMotion hexanodes_demo
+SUBDIRS = gameOfLife stressTestSB stressTestCatoms simpleColorBB rainbow scaffolding_csg demoMotionsC3D simpleColorSC simpleColorC2D datomsRotate simpleOkteenMotion hexanodes_demo scaffoldig_cube
 
 .PHONY: subdirs $(SUBDIRS) test
 
