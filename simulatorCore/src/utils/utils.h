@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
-#include<bits/stdc++.h>
+//#include<bits/stdc++.h>
 
 #include "tDefs.h"
 

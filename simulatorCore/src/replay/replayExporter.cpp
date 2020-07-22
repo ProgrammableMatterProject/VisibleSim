@@ -157,9 +157,8 @@ void ReplayExporter::writeSimulationEndTime() {
 
 void ReplayExporter::writeKeyFrameIfNeeded(Time date) {
     //if (date > (lastKeyFrameExportDate + keyFrameSaveFrequency)) {
-    if (nbEventsBeforeKeyframe<=0 && date>lastKeyFrameExportDate) {
+    if (date>lastKeyFrameExportDate && nbEventsBeforeKeyframe<=0) {
         writeKeyFrame(date);
-
         lastKeyFrameExportDate = date;
     }
 }
