@@ -822,3 +822,69 @@ void SetEndZoomButton::activate() {
 
     ReplayGlutContext::replayMode = REPLAY_MODE_PAUSE;
 }
+
+ShowKeyframesButton::ShowKeyframesButton(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w)
+        : Button( xPosition, xFixed,  yPosition,yFixed,  h,  w)
+{
+
+}
+
+void ShowKeyframesButton::drawFunc() {
+    glPushMatrix();
+    glTranslatef(x,y,0);
+    glColor3fv(ReplayGlutContext::black);
+    glBegin(GL_QUADS);
+    glVertex2i(0,0);
+    glVertex2i(0,ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize);
+    glVertex2i(ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize,
+               ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize);
+    glVertex2i(ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize,0);
+    glEnd();
+
+    glColor3fv(ReplayGlutContext::white);
+    glBegin(GL_QUADS);
+    glVertex2i(ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize*0.1f,
+               ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize*0.1f);
+    glVertex2i(ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize*0.1f,
+               ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize*(1-0.1f));
+    glVertex2i(ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize*(1-0.1f),
+               ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize*(1-0.1f));
+    glVertex2i(ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize*(1-0.1f),
+               ReplayGlutContext::toolHeight*ReplayGlutContext::toolsButtonSize*0.1f);
+    glEnd();
+
+    glColor3fv(ReplayGlutContext::black);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2i(ReplayGlutContext::toolHeight*0.3f*ReplayGlutContext::toolsButtonSize,
+               ReplayGlutContext::toolHeight*0.8f*ReplayGlutContext::toolsButtonSize);
+    glVertex2i(ReplayGlutContext::toolHeight*0.3f*ReplayGlutContext::toolsButtonSize,
+               ReplayGlutContext::toolHeight*0.7f*ReplayGlutContext::toolsButtonSize);
+    glVertex2i(ReplayGlutContext::toolHeight*0.7f*ReplayGlutContext::toolsButtonSize,
+               ReplayGlutContext::toolHeight*0.8f*ReplayGlutContext::toolsButtonSize);
+    glVertex2i(ReplayGlutContext::toolHeight*0.6f*ReplayGlutContext::toolsButtonSize,
+               ReplayGlutContext::toolHeight*0.7f*ReplayGlutContext::toolsButtonSize);
+    glVertex2i(ReplayGlutContext::toolHeight*0.7f*ReplayGlutContext::toolsButtonSize,
+               ReplayGlutContext::toolHeight*0.2f*ReplayGlutContext::toolsButtonSize);
+    glVertex2i(ReplayGlutContext::toolHeight*0.6f*ReplayGlutContext::toolsButtonSize,
+               ReplayGlutContext::toolHeight*0.3f*ReplayGlutContext::toolsButtonSize);
+
+    glEnd();
+
+
+
+    glPopMatrix();
+}
+
+void ShowKeyframesButton::activate() {
+
+    if(ReplayGlutContext::showKeyframesTime)
+    {
+        ReplayGlutContext::showKeyframesTime = false;
+        ReplayGlutContext::keyframesTime.clear();
+    }
+    else
+    {
+        ReplayGlutContext::showKeyframesTime = true;
+        ReplayGlutContext::world->player->parseKeyframeForTimeline();
+    }
+}

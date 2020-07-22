@@ -51,7 +51,7 @@ void RainbowCode::myUpdateMessageFunc(std::shared_ptr<Message> _msg, P2PNetworkI
     {
         console << " update = " << nb_update << "\n";
         nb_update = msgData;
-        sendMessageToAllNeighbors("Update Message", new MessageOf<int>(UPDATEMESSAGE_MSG_ID, nb_update), 0, 0, 1, sender);
+        sendMessageToAllNeighbors("Update Message", new MessageOf<int>(UPDATEMESSAGE_MSG_ID, nb_update), 1000000, 0, 1, sender);
         layer = 0;
         startup();
     }
@@ -61,19 +61,19 @@ void RainbowCode::sendLayer()
     P2PNetworkInterface *topItf = listItf.at(0);
     if (topItf != nullptr and topItf->isConnected())
     {
-        sendMessage("Layer Message", new MessageOf<int>(LAYERMESSAGE_MSG_ID, layer + 1), topItf, 0, 0);
+        sendMessage("Layer Message", new MessageOf<int>(LAYERMESSAGE_MSG_ID, layer + 1), topItf, 1000000, 0);
     }
     P2PNetworkInterface *bottomItf = listItf.at(1);
     if (bottomItf != nullptr and bottomItf->isConnected())
     {
-        sendMessage("Layer Message", new MessageOf<int>(LAYERMESSAGE_MSG_ID, layer - 1), bottomItf, 0, 0);
+        sendMessage("Layer Message", new MessageOf<int>(LAYERMESSAGE_MSG_ID, layer - 1), bottomItf, 1000000, 0);
     }
     for (int i = 2; i < 6; i++)
     {
         P2PNetworkInterface *itf = listItf.at(i);
         if (itf != nullptr and itf->isConnected())
         {
-            sendMessage("Layer Message", new MessageOf<int>(LAYERMESSAGE_MSG_ID, layer), itf, 0, 0);
+            sendMessage("Layer Message", new MessageOf<int>(LAYERMESSAGE_MSG_ID, layer), itf, 1000000, 0);
         }
     }
 }

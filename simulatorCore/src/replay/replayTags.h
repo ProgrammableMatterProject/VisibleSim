@@ -28,6 +28,7 @@ typedef struct KeyframeBlock {
     short x,y,z;
     u1 rotation;
     u1 r,g,b;
+    u2 displayedValue;
 } KeyFrameBlock;
 
 typedef struct Keyframe {

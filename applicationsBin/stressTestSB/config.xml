@@ -1,23 +1,41 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="10,10,1" windowSize="1920,1080" >
+<world gridSize="20,20,1" windowSize="1920,1080" >
 <camera target="125,125,10" directionSpherical="0,60,400" angle="45" near="200" far="500" />
 	<blockList color="0,255,0" blockSize="25.0,25.0,11.0">
-		<blocksLine line="0" values="0101010101"/>
-		<blocksLine line="1" values="1111111111"/>
-		<blocksLine line="2" values="1010010010"/>
-		<blocksLine line="3" values="0110111011"/>
-		<blocksLine line="4" values="1101010101"/>
-		<block position="0,5,0" />
-		<block position="2,5,0" />
-		<block position="3,5,0" />
-		<block position="4,5,0" />
-		<block position="5,5,0" leader="1" />
-		<block position="6,5,0" />
-		<block position="7,5,0" />
-		<block position="8,5,0" />
-		<blocksLine line="6" values="0100010001"/>
-		<blocksLine line="7" values="1110111011"/>
-		<blocksLine line="8" values="0101010101"/>
-		<blocksLine line="9" values="1111111111"/>
+		<blocksLine line="0" values="01010101010101010101"/>
+		<blocksLine line="1" values="11111111111111111111"/>
+		<blocksLine line="2" values="10100100101010010010"/>
+		<blocksLine line="3" values="01101110110110111011"/>
+		<blocksLine line="4" values="11010101011101010101"/>
+		<blocksLine line="5" values="01010101010101010101"/>
+		<blocksLine line="6" values="01000100010100010001"/>
+		<blocksLine line="7" values="11101110111110111011"/>
+		<blocksLine line="8" values="01010101010101010101"/>
+		<blocksLine line="9" values="11111111111111111111"/>
+		
+		<block position="0,10,0" />
+		<block position="2,10,0" />
+		<block position="3,10,0" />
+		<block position="4,10,0" />
+		<block position="5,10,0" />
+		<block position="6,10,0" />
+		<block position="7,10,0" />
+		<block position="8,10,0" />
+		<block position="10,10,0" leader="1" />
+		<block position="12,10,0" />
+		<block position="13,10,0" />
+		<block position="14,10,0" />
+		<block position="16,10,0" />
+		<block position="17,10,0" />
+		<block position="18,10,0" />
+		
+		<blocksLine line="11" values="11111111111111111111"/>
+		<blocksLine line="12" values="10100100101010010010"/>
+		<blocksLine line="13" values="01101110110110111011"/>
+		<blocksLine line="14" values="11010101011101010101"/>
+		<blocksLine line="16" values="01000100010100010001"/>
+		<blocksLine line="17" values="11101110111110111011"/>
+		<blocksLine line="18" values="01010101010101010101"/>
+		<blocksLine line="19" values="11111111111111111111"/>
 	</blockList>
 </world>

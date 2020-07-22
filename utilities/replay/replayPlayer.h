@@ -44,7 +44,7 @@ private:
     //Simulation general parameters
     char * simulationType ;
     u1 robotType = 0;
-    int gridSizeX = 0, gridSizeY = 0, gridSizeZ = 0;
+
 
     u8 keyframeIndexPosition = 0;
     u8 keyframeCount = 0;
@@ -59,7 +59,7 @@ private:
 
 public:
 
-
+    int gridSizeX = 0, gridSizeY = 0, gridSizeZ = 0;
     ReplayPlayer(int argc, char *argv[]);
     virtual ~ReplayPlayer() {}
 
@@ -112,6 +112,11 @@ public:
     u8 parseKeyframe(u8 position);
 
     /**
+     * Parse Keyframe index to show keyframes on the timeline
+     * Updates ReplayGlutContext::keyframesTime
+     */
+    void parseKeyframeForTimeline();
+    /**
      * Parse the events that starts at the position given in parameter until the time given or the end position
      * @param position : Start position of the events of current keyframe
      * @param time : Time of the selected frame
@@ -126,6 +131,8 @@ public:
     void parseEventPosition(u8 position, u4 blockId);
 
     void parseEventDisplay(u8 position, u4 blockId);
+
+
 
     /**
      * Parse the total duration of the exported file

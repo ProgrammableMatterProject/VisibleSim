@@ -380,6 +380,9 @@ void ReplayGlutContext::init(int argc, char *argv[]) {
     buttons.push_back(new SetEndZoomButton(width*(toolbarOffsetX+offsetX),11*(toolsButtonSize*toolHeight+buttonSeparation*width),
                                            toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),0,
                                            toolHeight*toolsButtonSize, toolHeight*toolsButtonSize));
+    buttons.push_back(new ShowKeyframesButton(width*(toolbarOffsetX+offsetX),13*(toolsButtonSize*toolHeight+buttonSeparation*width),
+                                           toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),0,
+                                           toolHeight*toolsButtonSize, toolHeight*toolsButtonSize));
 
 }
 
@@ -686,7 +689,23 @@ void ReplayGlutContext::drawTimeline()
         glVertex2i(xPosition,0.4*timelineY);
         glEnd();
     }
-
+    glBegin(GL_QUADS);
+    glColor3fv(blue);
+    if(showKeyframesTime)
+    {
+        for(float time : keyframesTime)
+        {
+            float xPosition = timelineOffset*timelineX+(time-world->getStartZoom())
+                    /zoomDuration*timelineX*(1-2*timelineOffset);
+            glVertex2i(xPosition-1,0.3f*timelineY);
+            glVertex2i(xPosition+1,0.3f*timelineY);
+            glVertex2i(xPosition+1,0.8f*timelineY);
+            glVertex2i(xPosition-1,0.8f*timelineY);
+//            cout<<"Checkpoint 3"<<endl;
+        }
+    }
+    glColor3fv(black);
+    glEnd();
     //cout << "DEBUG : "<<stepDuration<<" SUITE :"<<stepCount<<endl;
 
     //Curseur
@@ -724,6 +743,7 @@ void ReplayGlutContext::drawTimeline()
     glColor3fv(black);
     sprintf(str,"%2.1f",world->getCurrentTime()) ;
     drawString(-12,2,str);
+
     glPopMatrix();
 
 }
