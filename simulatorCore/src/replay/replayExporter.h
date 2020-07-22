@@ -38,7 +38,7 @@ class ReplayExporter {
      * @attention In MICROSECONDS
      */
     static inline const Time keyFrameSaveFrequency = 50000; //@TODO: BP changer à un compte d'évènements
-    // Time lastKeyFrameExportDate = 0; //!< Date of the last key frame export
+    Time lastKeyFrameExportDate = 0; //!< Date of the last key frame export
     const int NumberOfEventsBetweenKeyFrames=256;
     int nbEventsBeforeKeyframe;
 

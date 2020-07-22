@@ -157,9 +157,9 @@ void ReplayExporter::writeSimulationEndTime() {
 
 void ReplayExporter::writeKeyFrameIfNeeded(Time date) {
     //if (date > (lastKeyFrameExportDate + keyFrameSaveFrequency)) {
-    if (nbEventsBeforeKeyframe<=0) {
+    if (date>lastKeyFrameExportDate && nbEventsBeforeKeyframe<=0) {
         writeKeyFrame(date);
-        //lastKeyFrameExportDate = date;
+        lastKeyFrameExportDate = date;
     }
 }
 
@@ -190,7 +190,7 @@ void ReplayExporter::writeColorUpdate(Time date, bID bid, const Color& color) {
     exportFile->write((char*)&EVENT_COLOR_UPDATE, sizeof(u1));
     exportFile->write((char*)&bid, sizeof(bID));
     u1 u1color[3];
-    for (std::size_t i;i<3; i++) {
+    for (std::size_t i=0;i<3; i++) {
         u1color[i] = static_cast<int>(color.rgba[i] * 255.0);
         if (u1color[i]<0) u1color[i]=0;
         else if (u1color[i]>255) u1color[i]=255;
