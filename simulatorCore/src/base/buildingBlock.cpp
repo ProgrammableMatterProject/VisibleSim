@@ -168,7 +168,7 @@ void BuildingBlock::breakP2PNetworkInterface(BuildingBlock *bb) {
     auto match = std::find(P2PNetworkInterfaces.begin(), P2PNetworkInterfaces.end(), p2p_12);
     getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), this, match-P2PNetworkInterfaces.begin()));
     match = std::find(bb->P2PNetworkInterfaces.begin(), bb->P2PNetworkInterfaces.end(), p2p_21);
-    getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), this, match-bb->P2PNetworkInterfaces.begin()));
+    getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), bb, match-bb->P2PNetworkInterfaces.begin()));
 
     p2p_12->connectedInterface=nullptr;
     p2p_21->connectedInterface=nullptr;
