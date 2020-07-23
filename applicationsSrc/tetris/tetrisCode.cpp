@@ -273,7 +273,7 @@ void TetrisCode::myTmnBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
 {
     MessageOf<TmnBackData> *msg = static_cast<MessageOf<TmnBackData> *>(_msg.get());
     TmnBackData msgData = *msg->getData();
-    if (msgData.stage>=stage && msgData.update == update)
+    if (msgData.stage >= stage && msgData.update == update)
     {
         stage = msgData.stage;
         nbTmnBackMsg -= 1;
@@ -1134,12 +1134,12 @@ void TetrisCode::myIFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
         //if the module doesn't belong to any tetramino, it is free
         if (tmn == NO_TMN && sender != nullptr && sender->isConnected())
         {
-            BackFreeData data = BackFreeData(stage,true);
+            BackFreeData data = BackFreeData(stage, true);
             sendMessage("Answer Free Message", new MessageOf<BackFreeData>(BFMSG_ID, data), sender, 0, 0);
         }
         else if (sender != nullptr && sender->isConnected())
         {
-            BackFreeData data = BackFreeData(stage,false);
+            BackFreeData data = BackFreeData(stage, false);
             sendMessage("Answer Free Message", new MessageOf<BackFreeData>(BFMSG_ID, data), sender, 0, 0);
         }
     }
@@ -2009,7 +2009,7 @@ void TetrisCode::myAskTmnInfoMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
         }
         if (tmn != NO_TMN && topItf != nullptr && topItf->isConnected()) //if the pixel isn't empty, the upper line needs to come down
         {
-            sendMessage("Asking line Tmn Info", new MessageOf<int>(ASK_INFO_MSG_ID,stage), topItf, 0, 0);
+            sendMessage("Asking line Tmn Info", new MessageOf<int>(ASK_INFO_MSG_ID, stage), topItf, 0, 0);
         }
     }
     else
@@ -2079,6 +2079,7 @@ void TetrisCode::mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
     //if the same neighbor is also missing
     {
         stage = msgData.stage;
+        module->setColor(GOLD);
         if (bottomItf != nullptr && bottomItf->isConnected())
         {
             sendMessage("Detected Splitting", new MessageOf<Splitdata>(SPLIT_MSG_ID, msgData), bottomItf, 0, 0);
@@ -2118,25 +2119,25 @@ void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
     case EVENT_REMOVE_NEIGHBOR:
     {
         int dir = 0;
+        module->setColor(RED);
         uint64_t neighbor = (std::static_pointer_cast<AddNeighborEvent>(pev))->face;
         P2PNetworkInterface *itf = module->getInterface(neighbor);
-        if (itf == rightItf)
-        {
-            dir = EAST;
-            console << "right neighbor missing\n";
-        }
-        else if (itf == leftItf)
+        if (itf == leftItf)
         {
             dir = WEST;
             console << "left neighbor missing\n";
+        }
+        else if (itf == rightItf)
+        {
+            dir = EAST;
+            console << "right neighbor missing\n";
+            module->setColor(BLUE);
         }
         if ((topItf == nullptr || !topItf->isConnected()) && (bottomItf != nullptr && bottomItf->isConnected()))
         {
             sendMessage("Detected Splitting", new MessageOf<int>(SPLIT_MSG_ID, dir), bottomItf, 0, 0);
             module->setColor(BLUE);
         }
-
-        module->setColor(BLUE);
         break;
     }
 
@@ -2183,13 +2184,12 @@ void TetrisCode::onUserKeyPressed(unsigned char c, int x, int y)
             leaderBlockCode->counterCwRotKeyHandler();
         }
         break;
-        case charSeparate:
-            if (leaderBlockCode!=nullptr) {
-                BlinkyBlocksWorld::getWorld()->separate();
-            }
+    case charSeparate:
+        if (leaderBlockCode != nullptr)
+        {
+            BlinkyBlocksWorld::getWorld()->separate();
+        }
         break;
-
-
     }
 };
 
