@@ -202,6 +202,7 @@ private:
     int maxWidth = 0;            //maximum width of the BBs set
     int pixelHCoord = 0;         //"vertical" coordinate of the pixel the module belongs to
     int pixelWCoord = 0;         //"horizontal" coordinate of the pixel the module belongs to
+    int sizeOfPixel = 0;
     int roleInPixel = 100;       // role of the module in the pixel (core, border, corner)
 
     bool appear_module = false; //true if the module is the one which picks the form, rotation and color of the new tetramino

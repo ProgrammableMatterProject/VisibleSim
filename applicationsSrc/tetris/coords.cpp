@@ -33,10 +33,25 @@ void TetrisCode::myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
     MessageOf<CoordsData> *msg = static_cast<MessageOf<CoordsData> *>(_msg.get());
     CoordsData msgData = *msg->getData();
 
-    //The coordinates have to be better on at least one of the dimensions, and not worse on the other
-    if (msgData.stage >= stage && ((height < msgData.height && width <= msgData.width) || (height <= msgData.height && width < msgData.width)))
+    console<<"new coords : stage = "<<stage<<"new stage = "<<msgData.stage<<"\n";
+    if (msgData.stage > stage)
     {
+        console<<"recieved new coords\n";
         stage = msgData.stage;
+        height = msgData.height;
+        width = msgData.width;
+        spanTree = msgData.nbTree;
+        if (rightItf == nullptr || !rightItf->isConnected())
+        {
+            maxWidth = width;
+            sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
+        }
+        sendCoords();
+        pixelCalculation();
+    }
+    //The coordinates have to be better on at least one of the dimensions, and not worse on the other
+    else if (msgData.stage == stage && ((height < msgData.height && width <= msgData.width) || (height <= msgData.height && width < msgData.width)))
+    {
         height = msgData.height;
         width = msgData.width;
         spanTree = msgData.nbTree;
@@ -138,9 +153,17 @@ void TetrisCode::myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     MessageOf<IntData> *msg = static_cast<MessageOf<IntData> *>(_msg.get());
     IntData msgData = *msg->getData();
 
-    if (msgData.stage >= stage && maxWidth < msgData.data)
+    console<<"recieved max width : stage = "<<stage<<" new stage = "<<msgData.stage<<"\n";
+    if (msgData.stage > stage)
     {
+        console<<"recieved new max width\n";
         stage = msgData.stage;
+        maxWidth = msgData.data;
+        sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
+        pixelCalculation();
+    }
+    else if (msgData.stage == stage && maxWidth < msgData.data)
+    {
         maxWidth = msgData.data;
         sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
         pixelCalculation();
@@ -152,56 +175,61 @@ int TetrisCode::pixelCalculation()
     if (maxHeight < MIN_HEIGHT || maxWidth < MIN_WIDTH) //The set is too small to display a tetris game
     {
         return 0;
+        tmn = PIXEL_NON_VALID;
+        module->setColor(BLACK);
     }
 
-    int sizeOfPixel = maxHeight / MIN_HEIGHT;
-    if (sizeOfPixel == 1)
+    if (stage == 0) //there is no rescaling when the set is split
     {
-        pixelHCoord = height;
-        pixelWCoord = width;
-        roleInPixel = ALONE;
-    }
-    else
-    {
-        pixelHCoord = height / sizeOfPixel;
-        pixelWCoord = width / sizeOfPixel;
-        int hPosition = height % sizeOfPixel;
-        int wPosition = width % sizeOfPixel;
-        if (hPosition == 0 && wPosition == 0)
+        sizeOfPixel = maxHeight / MIN_HEIGHT;
+        if (sizeOfPixel == 1)
         {
-            roleInPixel = BOTTOM_LEFT_CORNER;
-        }
-        else if (hPosition == 0 && wPosition == sizeOfPixel - 1)
-        {
-            roleInPixel = BOTTOM_RIGHT_CORNER;
-        }
-        else if (hPosition == sizeOfPixel - 1 && wPosition == 0)
-        {
-            roleInPixel = TOP_LEFT_CORNER;
-        }
-        else if (hPosition == sizeOfPixel - 1 && wPosition == sizeOfPixel - 1)
-        {
-            roleInPixel = TOP_RIGHT_CORNER;
-        }
-        else if (wPosition == 0)
-        {
-            roleInPixel = LEFT_BORDER;
-        }
-        else if (wPosition == sizeOfPixel - 1)
-        {
-            roleInPixel = RIGHT_BORDER;
-        }
-        else if (hPosition == 0)
-        {
-            roleInPixel = BOTTOM_BORDER;
-        }
-        else if (hPosition == sizeOfPixel - 1)
-        {
-            roleInPixel = TOP_BORDER;
+            pixelHCoord = height;
+            pixelWCoord = width;
+            roleInPixel = ALONE;
         }
         else
         {
-            roleInPixel = CORE;
+            pixelHCoord = height / sizeOfPixel;
+            pixelWCoord = width / sizeOfPixel;
+            int hPosition = height % sizeOfPixel;
+            int wPosition = width % sizeOfPixel;
+            if (hPosition == 0 && wPosition == 0)
+            {
+                roleInPixel = BOTTOM_LEFT_CORNER;
+            }
+            else if (hPosition == 0 && wPosition == sizeOfPixel - 1)
+            {
+                roleInPixel = BOTTOM_RIGHT_CORNER;
+            }
+            else if (hPosition == sizeOfPixel - 1 && wPosition == 0)
+            {
+                roleInPixel = TOP_LEFT_CORNER;
+            }
+            else if (hPosition == sizeOfPixel - 1 && wPosition == sizeOfPixel - 1)
+            {
+                roleInPixel = TOP_RIGHT_CORNER;
+            }
+            else if (wPosition == 0)
+            {
+                roleInPixel = LEFT_BORDER;
+            }
+            else if (wPosition == sizeOfPixel - 1)
+            {
+                roleInPixel = RIGHT_BORDER;
+            }
+            else if (hPosition == 0)
+            {
+                roleInPixel = BOTTOM_BORDER;
+            }
+            else if (hPosition == sizeOfPixel - 1)
+            {
+                roleInPixel = TOP_BORDER;
+            }
+            else
+            {
+                roleInPixel = CORE;
+            }
         }
     }
 
@@ -242,5 +270,10 @@ int TetrisCode::pixelCalculation()
     // {
     //     module->setColor(DARKGREEN);
     // }
+
+    if(stage == 1)
+    {
+        module->setColor(RED);
+    }
     return 1;
 }

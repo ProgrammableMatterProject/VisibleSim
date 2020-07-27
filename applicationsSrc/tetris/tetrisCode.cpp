@@ -2089,12 +2089,35 @@ void TetrisCode::mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
             stringstream strstm;
             strstm << "SPLIT HANDELED";
             scheduler->trace(strstm.str(), module->blockId, GREEN);
+            stage += 1;
             if (msgData.direction == WEST) // if the set is on the left of the splitting, new cooridinates have to be calculated
             {
                 height = 0;
                 width = 0;
                 maxWidth = 0;
-                stage += 1;
+                spanTree = module->blockId;
+                if(topItf!=nullptr && topItf->isConnected())
+                {
+                    CoordsData data = CoordsData(stage,1,0,spanTree);
+                    sendMessage("New coords", new MessageOf<CoordsData>(COORDSMSG_ID, data), topItf, 0, 0);
+                }
+                if(rightItf!=nullptr && rightItf->isConnected())
+                {
+                    CoordsData data = CoordsData(stage,0,1,spanTree);
+                    sendMessage("New coords", new MessageOf<CoordsData>(COORDSMSG_ID, data), rightItf, 0, 0);
+                }
+            } else if (msgData.direction==EAST) //if the set is on the right, only the total width needs to be recalculated.
+            {
+                maxWidth = width;
+                IntData data = IntData(stage,width);
+                if(topItf!=nullptr && topItf->isConnected())
+                {
+                    sendMessage("New width", new MessageOf<IntData>(MAXWIDTHMSG_MSG_ID, data), topItf, 0, 0);
+                }
+                if(leftItf!=nullptr && leftItf->isConnected())
+                {
+                    sendMessage("New width", new MessageOf<IntData>(MAXWIDTHMSG_MSG_ID, data), leftItf, 0, 0);
+                }
             }
         }
     }
@@ -2119,24 +2142,20 @@ void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
     case EVENT_REMOVE_NEIGHBOR:
     {
         int dir = 0;
-        module->setColor(RED);
         uint64_t neighbor = (std::static_pointer_cast<AddNeighborEvent>(pev))->face;
         P2PNetworkInterface *itf = module->getInterface(neighbor);
         if (itf == leftItf)
         {
             dir = WEST;
-            console << "left neighbor missing\n";
         }
         else if (itf == rightItf)
         {
             dir = EAST;
-            console << "right neighbor missing\n";
-            module->setColor(BLUE);
         }
         if ((topItf == nullptr || !topItf->isConnected()) && (bottomItf != nullptr && bottomItf->isConnected()))
         {
-            sendMessage("Detected Splitting", new MessageOf<int>(SPLIT_MSG_ID, dir), bottomItf, 0, 0);
-            module->setColor(BLUE);
+            Splitdata data = Splitdata(stage,dir);
+            sendMessage("Detected Splitting", new MessageOf<Splitdata>(SPLIT_MSG_ID, data), bottomItf, 0, 0);
         }
         break;
     }
