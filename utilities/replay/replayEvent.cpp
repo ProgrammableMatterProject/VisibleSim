@@ -29,7 +29,7 @@ Matrix Catoms3DRotationEvent::getMatrixFromTime(u8 time)
         firstRotation = true;
     else
         firstRotation = false;
-    int step = (time-beginDate)*20/duration;
+    int step = (time-beginDate)*2*20/duration; //TODO UNSURE
 
 
     if (firstRotation) {
