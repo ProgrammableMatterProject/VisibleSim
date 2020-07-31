@@ -359,7 +359,7 @@ namespace ObjLoader {
         ptrMtlLighted->Ka[0] = GLfloat(color[0]) / 255.0;
         ptrMtlLighted->Ka[1] = GLfloat(color[1]) / 255.0;
         ptrMtlLighted->Ka[2] = GLfloat(color[2]) / 255.0;
-        ptrMtlLighted->Ka[3] = 1.0;
+        ptrMtlLighted->Ka[3] = 1.0f;
         memcpy(ptrMtlLighted->Kd, ptrMtlLighted->Ka, 4 * sizeof(GLfloat));
     }
     

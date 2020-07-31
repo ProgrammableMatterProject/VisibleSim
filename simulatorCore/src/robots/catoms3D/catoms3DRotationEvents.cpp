@@ -9,7 +9,6 @@
 
 #include "catoms3DRotationEvents.h"
 #include "catoms3DWorld.h"
-#include "catoms3DMotionEngine.h"
 
 using namespace BaseSimulator::utils;
 using namespace Catoms3D;
@@ -330,7 +329,6 @@ void Catoms3DRotation::init(const Matrix& m) {
 void Catoms3DRotation::exportMatrix(const Matrix& m) {
 // #define ROTATION_STEP_MATRIX_EXPORT
 #ifdef ROTATION_STEP_MATRIX_EXPORT
-
     Catoms3DBlock* block = static_cast<Catoms3DBlock*>
         (BaseSimulator::getWorld()->getBlockById(catomId));
 
@@ -345,9 +343,7 @@ void Catoms3DRotation::exportMatrix(const Matrix& m) {
         block->blockCode->onBlockSelected();
 
         OUTPUT << catomId << "|";
-
         // OUTPUT << block->color << "|";
-
         OUTPUT << "(matrix3 "
                << "[" << m.m[0] << "," << m.m[4] << "," << m.m[8] << "] "
                << "[" << m.m[1] << "," << m.m[5] << "," << m.m[9] << "] "
@@ -424,6 +420,14 @@ Catoms3DRotation::Catoms3DRotation(const Catoms3DBlock *mobile, const Catoms3DBl
     A1C1 = (0.5-0.5*rprim)*AB+shift*V;
 }
 
+bool Catoms3DRotation::setMatrixAt(Time t) {
+    if (t>2*ANIMATION_DELAY) return 0;
+    if (t<ANIMATION_DELAY) {
+
+    }
+    return true;
+}
+
 bool Catoms3DRotation::nextStep(Matrix &m) {
     if (firstRotation) {
         step++;
@@ -457,9 +461,7 @@ bool Catoms3DRotation::nextStep(Matrix &m) {
         m = finalMatrix * m;
 //        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
     }
-
     exportMatrix(m);
-
     return step == 0;
 }
 
