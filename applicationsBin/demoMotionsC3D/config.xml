@@ -3,7 +3,7 @@
 	<camera target="41.4196,26.8882,15.9999" directionSpherical="-22.9183,30,100" angle="30.000000" near="1.000000" far="300.000000" />
 
 	<blockList color="128,128,128" blockSize="10,10,10">
-		<block position="2,2,0" orientation="0" color="128,128,64"/>
+		<block position="2,2,0" orientation="1" color="128,128,64"/>
 		<block position="3,2,0" orientation="0" color="128,128,64"/>
 		<block position="4,2,0" orientation="0" color="128,128,64"/>
 		<block position="5,2,0" orientation="0" color="128,128,64"/>

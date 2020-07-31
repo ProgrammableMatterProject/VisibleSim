@@ -1,3 +1,9 @@
+/*!
+ * @file replay.hpp
+ * @brief Main file header of the replayer
+ * @author Mattéo Daluz
+ */
+
 #ifndef replay_H_
 #define replay_H_
 
@@ -5,7 +11,6 @@
 #include "replayWorld.h"
 #include "../../simulatorCore/src/gui/shaders.h"
 #include "replayGlutContext.h"
-//using namespace Replay;
 
 
 #endif /* replay_H_ */

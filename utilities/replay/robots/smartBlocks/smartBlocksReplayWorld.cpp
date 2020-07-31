@@ -16,9 +16,7 @@ SmartBlocksReplayWorld::SmartBlocksReplayWorld(int argc, char *argv[], u8 durati
                                         "smartBlockSimple.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
                                          "repere25.obj");
-    //exportDuration = (float)duration*pow(10,-6);
-    //endZoom = exportDuration;
-    //gridScale = scale;
+
     loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 }
 
@@ -33,10 +31,12 @@ void SmartBlocksReplayWorld::updateMotionBlocks()
     list<int> blackList;
     for(auto &pair : eventBuffer)
     {
+
         u8 time = currentTime*pow(10,6);
         u8 readTime = pair.second.beginDate;
         if(time<=readTime+pair.second.duration)
         {
+
             block.x = pair.second.destinationPosition.pt[0];
             block.y = pair.second.destinationPosition.pt[1];
             block.z = pair.second.destinationPosition.pt[2];
@@ -105,7 +105,7 @@ void SmartBlocksReplayWorld::updatePositionMotion(u4 blockId, KeyframeBlock bloc
     pos.pt[1] = oldPos.pt[1]+(block.y*gridScale-oldPos.pt[1])*(time-readTime-2000)/1000000;
     pos.pt[2] = oldPos.pt[2]+(block.z*gridScale-oldPos.pt[2])*(time-readTime-2000)/1000000;
     pos.pt[3] = 1;
-
+    cout<<"DEBUGGAGE 3 : "<<pos.pt[0]<< " " <<pos.pt[1]<<" "<<pos.pt[2]<<endl;
     for (const auto& pair : mapGlBlocks) {
         if(pair.first==blockId)
         {

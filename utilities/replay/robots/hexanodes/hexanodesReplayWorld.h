@@ -17,35 +17,29 @@
 #include "../../simulatorCore/src/gui/shaders.h"
 #include "../../simulatorCore/src/replay/replayTags.h"
 #include "replay.hpp"
-#include "../../simulatorCore/src/robots/catoms3D/catoms3DGlBlock.h"
-#include "../../simulatorCore/src/robots/blinkyBlocks/blinkyBlocksGlBlock.h"
-#include "../../replayEvent.h"
+#include "../../simulatorCore/src/robots/hexanodes/hexanodesGlBlock.h"
+#include "replayEvent.h"
 
 using namespace ReplayTags;
 namespace Replay {
     class ReplayPlayer;
 }
 class ReplayEvent;
-class Catoms3DReplayWorld : public ReplayWorld{
+class HexanodesReplayWorld : public ReplayWorld{
 private:
 
 protected:
-    GLuint idTextureHexa,idTextureGrid;
+    GLuint idTextureWall,idTextureDigits;
 public:
-
-    const float tabOrientationAngles[12][3] = { {0,0,0}, {180.0f,0.0f,-90.0f}, {-90.0f,45.0f,-45.0f},
-                                                {90.0f,45.0f,-135.0f}, {-90.0f,45.0f,135.0f}, {90.0f,45.0f,45.0f},
-                                                {0,0,180.0f}, {180.0f,0,90.0f}, {90.0f,-45.0f,135.0f},
-                                                {-90.0f,-45.0f,45.0f}, {90.0f,-45.0f,-45.0f}, {-90.0f,-45.0f,-135.0f} };
 
     /**
      * @brief World constructor, initializes the camera, light, and user interaction attributes
      */
-    Catoms3DReplayWorld(int argc, char *argv[], u8 duration, float scale);
+    HexanodesReplayWorld(int argc, char *argv[], u8 duration, float scale);
     /**
      * @brief World destructor, deletes the blocks and their GL counterparts, the lattice and camera
      */
-    ~Catoms3DReplayWorld();
+    ~HexanodesReplayWorld();
 
     void addBlock(bID blockId, KeyframeBlock block) override;
     void updatePositionMotion(u4 blockId, KeyframeBlock block,u8 time, u8 readTime, Cell3DPosition initPos) override;
@@ -54,10 +48,5 @@ public:
     void glDrawBackground() override;
     void loadTextures(const string &str) override ;
     void updateDisplayedValue(u4 blockId, u2 display) override;
-    Matrix getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,
-                                                              uint8_t code);
-    void updatePositionMotionWithMatrix(u4 blockId, Matrix newMatrix);
 
 };
-
-

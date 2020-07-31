@@ -57,9 +57,9 @@ void HexanodesDemoBlockCode::onMotionEnd() {
     while (ci!=tab.end() && !((*ci)->direction==motionDirection::CW)) {
         ci++;
     }
-    if (ci!=tab.end()) {
+    if (ci!=tab.end() && nMotions<=5000) {
         Cell3DPosition destination = (*ci)->getFinalPos(node->position);
-        scheduler->schedule(new HexanodesMotionStartEvent(scheduler->now()+1000000, node,destination,(*ci)->getToConId()));
+        scheduler->schedule(new HexanodesMotionStartEvent(scheduler->now()+100000, node,destination,(*ci)->getToConId()));
     } else {
         cout << "no possible motions..." << endl;
     }

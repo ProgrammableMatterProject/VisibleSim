@@ -1,3 +1,9 @@
+/*!
+ * @file replayGlutContext.cpp
+ * @brief Contains all graphical elements, draw interface and manage user controls
+ * @author Mattéo Daluz
+ */
+
 #include <iostream>
 #include "replayGlutContext.h"
 #include <chrono>
@@ -330,22 +336,11 @@ void ReplayGlutContext::init(int argc, char *argv[]) {
     glutMouseFunc(mouseFuncMW);
     /* bind mouse motion function */
     glutMotionFunc(motionFuncMW); // drag
-    //glutPassiveMotionFunc(passiveMotionFunc);
 
     initShaders(enableShadows);
     initGL();
 
-    //	glutFullScreen();
-    //  glutSetCursor(GLUT_CURSOR_NONE); // allow to hide cursor
-
     //Buttons initialization
-
-//    playButton = new PlayButton(width*(toolbarOffsetX+offsetX)+3*(toolsButtonSize*toolHeight+buttonSeparation*width),
-//                    toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
-//                    toolHeight*toolsButtonSize, toolHeight*toolsButtonSize);
-//    pauseButton = new PauseButton(width*(toolbarOffsetX+offsetX)+2*(toolsButtonSize*toolHeight+buttonSeparation*width),
-//                                toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),
-//                                toolHeight*toolsButtonSize, toolHeight*toolsButtonSize);
 
     buttons.push_back(new PlayButton(width*(toolbarOffsetX+offsetX),3*(toolsButtonSize*toolHeight+buttonSeparation*width),
                                      toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),0,
@@ -398,7 +393,7 @@ void ReplayGlutContext::mainLoop() {
 /*********************************************************/
 /* frame drawing function                                */
 void ReplayGlutContext::drawFunc(void) {
-    cout << "topdraw" << endl;
+    //cout << "topdraw" << endl;
     glClearColor(0.8f,0.8f,0.8f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -475,7 +470,7 @@ void ReplayGlutContext::drawString(int ix,int iy,char* str) {
 /*********************************************************/
 /* frame drawing function                                */
 void ReplayGlutContext::drawFuncTW(void) {
-    cout << "draw TW" << endl;
+    //cout << "draw TW" << endl;
 
     glClearColor(0.5f,0.5f,0.5f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -486,150 +481,11 @@ void ReplayGlutContext::drawFuncTW(void) {
 
     drawTimeline();
 
+    //Drawing buttons
     for(auto &glButton : buttons)
     {
         glButton->drawFunc();
     }
-    //Drawing buttons
-    /*
-    glPushMatrix();
-    glTranslatef(width*offsetX,toolHeight*(1-offsetY-timelineHeight-toolsSeparationY-toolsButtonSize),0);
-    glTranslatef(width*toolbarOffsetX-toolHeight*toolsButtonSize,0,0);
-
-    //Return to beginning button
-    drawNextButtonSquare();
-    glColor3fv(black);
-    glBegin(GL_QUADS);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-
-    //Go Back button
-    drawNextButtonSquare();
-    glColor3fv(black);
-    glBegin(GL_QUADS);
-    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-    glVertex2i(toolHeight*0.2f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
-    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-
-    //Pause button
-    drawNextButtonSquare();
-    glColor3fv(black);
-    glBegin(GL_QUADS);
-    glVertex2i(toolHeight*0.35f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.35f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.45f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.45f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-
-    glVertex2i(toolHeight*0.55f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.55f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.65f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.65f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-
-    //Play button
-    drawNextButtonSquare();
-    glColor3fv(black);
-    glBegin(GL_POLYGON);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.8f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
-    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-
-    //Go fourth button
-    drawNextButtonSquare();
-    glColor3fv(black);
-    glBegin(GL_QUADS);
-    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-    glVertex2i(toolHeight*0.8f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
-    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-
-    //Go to the end button
-    drawNextButtonSquare();
-    glColor3fv(black);
-    glBegin(GL_QUADS);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glEnd();
-
-    //TODO adater à la fenetre mieux
-    glTranslatef(width*recButtonOffset,0,0);
-
-    //Start sequence button
-    drawNextButtonSquare();
-    glColor3fv(black);
-    glBegin(GL_QUAD_STRIP);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.7f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.7f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.4f*toolsButtonSize,toolHeight*0.3f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.3f*toolsButtonSize);
-    glEnd();
-
-    //rec button
-    drawNextButtonSquare();
-    glBegin(GL_TRIANGLE_STRIP);
-
-    glColor3fv(red);
-    for(int i=0;i<=360;i++)
-    {
-        glVertex2i(toolHeight*0.5f*toolsButtonSize+toolHeight*0.35f*toolsButtonSize*cos(i*6.28/360),
-                   toolHeight*0.5f*toolsButtonSize+toolHeight*0.35f*toolsButtonSize*sin(i*6.28/360));
-        glVertex2i(toolHeight*0.5f*toolsButtonSize+toolHeight*0.35f*toolsButtonSize*cos((i+1)*6.28/360),
-                   toolHeight*0.5f*toolsButtonSize+toolHeight*0.35f*toolsButtonSize*sin((i+1)*6.28/360));
-        glVertex2i(toolHeight*0.5f*toolsButtonSize,toolHeight*0.5f*toolsButtonSize);
-    }
-    glEnd();
-
-    //End sequence button
-    drawNextButtonSquare();
-    glColor3fv(black);
-    glBegin(GL_QUAD_STRIP);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.7f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.8f*toolsButtonSize);
-    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.7f*toolsButtonSize);
-    glVertex2i(toolHeight*0.7f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.6f*toolsButtonSize,toolHeight*0.3f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.2f*toolsButtonSize);
-    glVertex2i(toolHeight*0.3f*toolsButtonSize,toolHeight*0.3f*toolsButtonSize);
-    glEnd();
-    glPopMatrix();
-     */
 
     glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();

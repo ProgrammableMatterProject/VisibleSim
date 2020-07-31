@@ -16,9 +16,7 @@ SlidingCubesReplayWorld::SlidingCubesReplayWorld(int argc, char *argv[], u8 dura
             "slidingCube.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
                                          "repere25.obj");
-    //exportDuration = (float)duration*pow(10,-6);
-    //endZoom = exportDuration;
-    //gridScale = scale;
+
     loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 }
 

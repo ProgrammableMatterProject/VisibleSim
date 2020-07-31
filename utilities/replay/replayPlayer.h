@@ -1,11 +1,8 @@
 /**
- * @file   ReplayPlayer.h
+ * @file   ReplayPlayer.cpp
  * @author Matteo Daluz
- * @date   Tue Jun  9 11:13:33 2020
- *
- * @brief  Simulation replay application for simulation reconstruction
- *
- *
+ * @brief Simulation replay application for simulation reconstruction
+ * contains parsing methods and world generation
  */
 
 #pragma once
@@ -73,15 +70,7 @@ public:
      */
     void parseHeader();
 
-    /**
-     * [deprecated] Read first KeyFrame
-     */
-    void parseInitialConfiguration();
 
-    /**
-     * [deprecated] Read KeyFrame index
-     */
-    void parseKeyframeIndex();
 
     /**
      * Read Keyframe Index to return the position in the file of the last KeyFrame before the time given in parameter

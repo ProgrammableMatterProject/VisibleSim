@@ -1,3 +1,10 @@
+/*!
+ * @file replayInterface.cpp
+ * @brief Contains all buttons definition with their draw,
+ * activation and click detection methods
+ * @author Mattéo Daluz
+ */
+
 #include <iostream>
 #include "replayInterface.h"
 #include "../../simulatorCore/src/replay/replayTags.h"

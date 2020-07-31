@@ -1,3 +1,10 @@
+/*!
+ * @file replay.cpp
+ * @brief Main file of the replayer
+ * @author Mattéo Daluz
+ */
+
+
 #include <iostream>
 #include "replay.hpp"
 

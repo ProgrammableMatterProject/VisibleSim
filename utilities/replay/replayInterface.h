@@ -1,11 +1,8 @@
-/**
- * @file   ReplayInterface.h
- * @author Matteo Daluz
- * @date   Tue Jun  9 11:13:33 2020
- *
- * @brief  Replay interface containing buttons and windows
- *
- *
+/*!
+ * @file replayInterface.h
+ * @brief Contains all buttons definition with their draw,
+ * activation and click detection methods
+ * @author Mattéo Daluz
  */
 
 #pragma once
@@ -30,9 +27,25 @@ public:
     int width, initWidth;
 
     Button(float xPosition, float xFixed, float yPosition, float yFixed, float h, float w);
+
+    /**
+     * @brief Called on click, checks if the user clicked on the button
+     */
     void mouseFunc(int button,int state,int xMouse,int yMouse);
+
+    /**
+     * @brief Adapt button scale with window scale
+     */
     void reshapeFunc();
+
+    /**
+     * @brief Draw function of the button (to be updated for better looking buttons)
+     */
     virtual void drawFunc() {};
+
+    /**
+     * @brief Called when clicked on the button
+     */
     virtual void activate() {};
 };
 

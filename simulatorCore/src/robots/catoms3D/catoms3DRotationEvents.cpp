@@ -241,7 +241,7 @@ Catoms3DRotationStopEvent::~Catoms3DRotationStopEvent() {
 void Catoms3DRotationStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
-    // cout << "[t-" << getScheduler()->now() << "] rotation stop" << endl;
+        // cout << "[t-" << getScheduler()->now() << "] rotation stop" << endl;
 
     Catoms3DWorld *wrld=Catoms3DWorld::getWorld();
     Scheduler *scheduler = getScheduler();

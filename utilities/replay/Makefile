@@ -10,7 +10,7 @@
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = replay.cpp replayPlayer.cpp replayGlutContext.cpp replayWorld.cpp replayInterface.cpp replayEvent.cpp robots/smartBlocks/smartBlocksReplayWorld.cpp robots/blinkyBlocks/blinkyBlocksReplayWorld.cpp robots/slidingCubes/slidingCubesReplayWorld.cpp robots/catoms2D/catoms2DReplayWorld.cpp robots/catoms3D/catoms3DReplayWorld.cpp
+SRCS = replay.cpp replayPlayer.cpp replayGlutContext.cpp replayWorld.cpp replayInterface.cpp replayEvent.cpp robots/smartBlocks/smartBlocksReplayWorld.cpp robots/blinkyBlocks/blinkyBlocksReplayWorld.cpp robots/slidingCubes/slidingCubesReplayWorld.cpp robots/catoms2D/catoms2DReplayWorld.cpp robots/catoms3D/catoms3DReplayWorld.cpp robots/hexanodes/hexanodesReplayWorld.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = replay

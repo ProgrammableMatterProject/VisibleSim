@@ -1,11 +1,7 @@
-/**
- * @file   ReplayGlutContext.h
- * @author Matteo Daluz
- * @date   Tue Jun  9 11:13:33 2020
- *
- * @brief  Glut components for replay player application
- *
- *
+/*!
+ * @file replayGlutContext.h
+ * @brief Contains all graphical elements, draw interface and manage user controls
+ * @author Mattéo Daluz
  */
 
 #ifndef REPLAYGLUTCONTEXT
@@ -167,6 +163,9 @@ namespace GlutContext {
          */
         static void drawString(int ix,int iy,char* str);
 
+        /**
+         * @brief Starts Play mode
+         */
         static void play();
     };
 

@@ -16,9 +16,7 @@ BlinkyBlocksReplayWorld::BlinkyBlocksReplayWorld(int argc, char *argv[], u8 dura
                                         "blinkyBlockCentered.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
             "repere25.obj");
-    //exportDuration = (float)duration*pow(10,-6);
-    //endZoom = exportDuration;
-    //gridScale = scale;
+
     loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 }
 
@@ -42,12 +40,8 @@ void BlinkyBlocksReplayWorld::addBlock(bID blockId, KeyframeBlock block) {
     col.rgba[0] = block.r/255.0f;
     col.rgba[1] = block.g/255.0f;
     col.rgba[2]= block.b/255.0f;
-//    col.rgba[0] = 255/255.0f;
-//    col.rgba[1] = 255/255.0f;
-//    col.rgba[2]= 255/255.0f;
     col.rgba[3]= 1.0;
     glBlock->setColor(col);
-    //glBlock->setDisplayedValue(block.displayedValue);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
 }
 

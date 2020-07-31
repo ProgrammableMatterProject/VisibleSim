@@ -17,9 +17,7 @@ Catoms2DReplayWorld::Catoms2DReplayWorld(int argc, char *argv[], u8 duration, fl
                              "catom2D.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
                                          "repere25.obj");
-    //exportDuration = (float)duration*pow(10,-6);
-    //endZoom = exportDuration;
-    //gridScale = scale;
+
     loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 }
 
@@ -30,32 +28,6 @@ Catoms2DReplayWorld::~Catoms2DReplayWorld() {
 void Catoms2DReplayWorld::updateMotionBlocks()
 {
     //TODO
-    /*
-    KeyframeBlock block;
-
-    list<int> blackList;
-    for(auto &pair : eventBuffer)
-    {
-        u8 time = currentTime*pow(10,6);
-        u8 readTime = pair.second.beginDate;
-        if(time<=readTime+pair.second.duration)
-        {
-            block.x = pair.second.destinationPosition.pt[0];
-            block.y = pair.second.destinationPosition.pt[1];
-            block.z = pair.second.destinationPosition.pt[2];
-            updatePositionMotion(pair.first,block,time, readTime, pair.second.initialPosition);
-        }
-        else
-        {
-            blackList.push_back(pair.first);
-        }
-    }
-    for(auto element : blackList)
-    {
-        eventBuffer.erase(element);
-    }
-    blackList.clear();
-    */
 }
 
 void Catoms2DReplayWorld::updateDisplayedValue(u4 blockId, u2 display)
@@ -106,23 +78,6 @@ void Catoms2DReplayWorld::updatePositionMotion(u4 blockId, KeyframeBlock block,
         u8 time,u8 readTime, Cell3DPosition initPos)
 {
     //TODO
-    /*
-    Vector3D pos;
-    Cell3DPosition oldPos = initPos;
-
-    pos.pt[0] = oldPos.pt[0]+(block.x*gridScale-oldPos.pt[0])*(time-readTime-2000)/1000000;
-    pos.pt[1] = oldPos.pt[1]+(block.y*gridScale-oldPos.pt[1])*(time-readTime-2000)/1000000;
-    pos.pt[2] = oldPos.pt[2]+(block.z*gridScale-oldPos.pt[2])*(time-readTime-2000)/1000000;
-    pos.pt[3] = 1;
-
-    for (const auto& pair : mapGlBlocks) {
-        if(pair.first==blockId)
-        {
-
-            pair.second->setPosition(pos);
-        }
-    }
-    */
 }
 
 void Catoms2DReplayWorld::glDrawBackground() {
