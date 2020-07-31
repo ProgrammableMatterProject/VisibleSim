@@ -71,7 +71,6 @@ namespace Catoms3D {
             ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
                                                                blockId, position, orientationCode);
 
-
     }
 
     uint8_t Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
