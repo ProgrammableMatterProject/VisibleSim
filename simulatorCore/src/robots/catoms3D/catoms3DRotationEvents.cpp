@@ -9,6 +9,8 @@
 
 #include "catoms3DRotationEvents.h"
 #include "catoms3DWorld.h"
+#include "catoms3DMotionEngine.h"
+#include "../../replay/replayExporter.h"
 
 using namespace BaseSimulator::utils;
 using namespace Catoms3D;
@@ -102,7 +104,6 @@ Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Time t, Catoms3DBlock *m,
         throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
     }
 
-
     // Get valid links on surface of m
     const Catoms3DMotionRulesLink* link =
         Catoms3DMotionEngine::findConnectorLink(m, fromConM, toConM, faceReq);
@@ -117,6 +118,11 @@ Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Time t, Catoms3DBlock *m,
 
     rot.conFromP = fromConP;
     rot.conToP = toCon;
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeCatoms3DMotion(getScheduler()->now(), rot.mobile->blockId,
+                Catoms3DRotation::ANIMATION_DELAY*Catoms3DRotation::nbRotationSteps/2,
+                rot.pivot->blockId,(faceReq==RotationLinkType::HexaFace?3:4),rot.getAxe1(), rot.getAxe2());
 }
 
 Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Catoms3DRotationStartEvent *ev) : BlockEvent(ev) {
@@ -419,14 +425,14 @@ Catoms3DRotation::Catoms3DRotation(const Catoms3DBlock *mobile, const Catoms3DBl
     A1D1 = (0.5+0.5*rprim)*AB+shift*V;
     A1C1 = (0.5-0.5*rprim)*AB+shift*V;
 }
-
+/*
 bool Catoms3DRotation::setMatrixAt(Time t) {
     if (t>2*ANIMATION_DELAY) return 0;
     if (t<ANIMATION_DELAY) {
 
     }
     return true;
-}
+}*/
 
 bool Catoms3DRotation::nextStep(Matrix &m) {
     if (firstRotation) {

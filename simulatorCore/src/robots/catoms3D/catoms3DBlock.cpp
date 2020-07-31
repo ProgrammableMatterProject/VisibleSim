@@ -67,6 +67,8 @@ namespace Catoms3D {
         Matrix M = getMatrixFromPositionAndOrientation(pos, code);
         getWorld()->updateGlData(this, M);
         getWorld()->updateGlData(this, position);
+        if (ReplayExporter::isReplayEnabled())
+            ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),blockId, position, orientationCode);
     }
 
     uint8_t Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {

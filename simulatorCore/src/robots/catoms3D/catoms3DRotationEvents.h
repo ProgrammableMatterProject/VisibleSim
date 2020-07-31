@@ -75,7 +75,8 @@ public:
     bool nextStep(Matrix &m);
     void getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation);
     void exportMatrix(const Matrix& m);
-
+    [[nodiscard]] inline Vector3D getAxe1() const { return axe1; };
+    [[nodiscard]] inline Vector3D getAxe2() const { return axe2; };
 protected :
     short exportMatrixCount = 0;
     bool firstRotation;
