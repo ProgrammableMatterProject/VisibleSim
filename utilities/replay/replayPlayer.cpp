@@ -1,11 +1,8 @@
 /**
  * @file   ReplayPlayer.cpp
  * @author Matteo Daluz
- * @date   Tue Jun  9 11:14:00 2020
- *
  * @brief Simulation replay application for simulation reconstruction
- *
- *
+ * contains parsing methods and world generation
  */
 
 #include <algorithm>
@@ -18,6 +15,8 @@
 #include "replayWorld.h"
 #include <fstream>
 #include "../../simulatorCore/src/robots/smartBlocks/smartBlocksGlBlock.h"
+#include "../../simulatorCore/src/robots/catoms3D/catoms3DGlBlock.h"
+
 #include "replayEvent.h"
 #include "replayGlutContext.h"
 
@@ -41,11 +40,7 @@ namespace Replay {
         cout << "Done" << endl;
 
         parseHeader();
-        parseKeyframeIndex();
-        //parseInitialConfiguration();
 
-//        parseKeyframe(findKeyframeWithTime(0));//0 seconds
-//        parseKeyframe(findKeyframeWithTime(10000000));//10 seconds
 
         cout << "Initialising GlutContext.." << flush;
         GlutContext::ReplayGlutContext::init(argc, argv);
@@ -83,7 +78,6 @@ namespace Replay {
             default:
                 cout<<"Error"<<endl;
         }
-        //world = new SmartBlocksReplayWorld(argc,argv,parseDuration(),25.0f);
         world->player = this;
         cout << "Done" << endl;
 
@@ -153,50 +147,7 @@ namespace Replay {
              << " " << gridSizeZ << endl;
     }
 
-    void ReplayPlayer::parseInitialConfiguration() {
-        cout << "Parsing initial configuration .." << flush;
-        exportFile->seekg(headerSize);
-        int blockCount = 0;
-        exportFile->read((char *) &blockCount, sizeof(u4));
-        KeyframeBlock *keyframe = new KeyframeBlock[blockCount];
-        for (int i = 0; i < blockCount; i++) {
-            exportFile->read((char *) &keyframe[i].id, sizeof(u4));
-            exportFile->read((char *) &keyframe[i].x, sizeof(u2));
-            exportFile->read((char *) &keyframe[i].y, sizeof(u2));
-            exportFile->read((char *) &keyframe[i].z, sizeof(u2));
-            exportFile->read((char *) &keyframe[i].rotation, sizeof(u1));
-            exportFile->read((char *) &keyframe[i].r, sizeof(u1));
-            exportFile->read((char *) &keyframe[i].g, sizeof(u1));
-            exportFile->read((char *) &keyframe[i].b, sizeof(u1));
 
-        }
-        cout << "Done" << endl;
-
-        //print results
-        cout << "There are " << blockCount << " blocks in the initial configuration" << endl;
-        for (int i = 0; i < blockCount; i++) {
-            cout << "id : " << keyframe[i].id
-                 << " | Pos : " << (int) keyframe[i].x << " " << (int) keyframe[i].y << " " << (int) keyframe[i].z
-                 << " | rotation : " << (int) keyframe[i].rotation
-                 << " | RGB : " << (int) keyframe[i].r << " " << (int) keyframe[i].g << " " << (int) keyframe[i].b
-                 << endl;
-        }
-    }
-
-    void ReplayPlayer::parseKeyframeIndex() {
-        cout << "Parsing keyframes index .." << flush;
-        exportFile->seekg(keyframeIndexPosition);
-        exportFile->read((char *) &keyframeCount, sizeof(u8));
-
-        Keyframe *keyframes = new Keyframe[keyframeCount];
-        for (u8 i = 0; i < keyframeCount; i++) {
-            exportFile->read((char *) &keyframes[i].time, sizeof(u8));
-            exportFile->read((char *) &keyframes[i].position, sizeof(u8));
-        }
-        cout << "Done" << endl;
-
-        cout << "There are " << keyframeCount << " Key frames" << endl;
-    }
 
 /**
  * return the last keyframe before time in parameter
@@ -226,14 +177,12 @@ namespace Replay {
             exportFile->read((char *) &keyframes[i].time, sizeof(u8));
             exportFile->read((char *) &keyframes[i].position, sizeof(u8));
 
-            // Optimisation possible (jeu du plus ou moins) si nécessaire
+            // Optimisation possible (divide and conquer) si nécessaire
             if (keyframes[i].time > time) {
-                cout<<"ON ARRIVE ICI ?"<<endl;
                 keyframeEndTime = keyframes[i].time;
                 return keyframes[i].position;
             }
         }
-        cout<<"TUTUTUT BRIGADE DE DEBUGGAGE "<<world->getExportDuration()*pow(10,6)<<endl;
         keyframeEndTime = world->getExportDuration()*pow(10,6);
         return keyframeIndexPosition;
     }
@@ -274,20 +223,11 @@ namespace Replay {
                  << " | rotation : " << (int) keyframe[i].rotation
                  << " | RGB : " << (int) keyframe[i].r << " " << (int) keyframe[i].g << " " << (int) keyframe[i].b
                  << endl;
+            world->addBlock(keyframe[i].id,keyframe[i]);
         }
 
         cout <<"Done"<<endl;
 
-        //print results
-        cout << "There are "<<blockCount<<" blocks in the keyframe"<<endl;
-        for(int i=0;i<blockCount;i++)
-        {
-    //        cout << "id : "<<keyframe[i].id
-    //             <<" | Pos : "<<(int)keyframe[i].x<<" "<<(int)keyframe[i].y<<" "<<(int)keyframe[i].z
-    //             <<" | rotation : "<<(int)keyframe[i].rotation
-    //             <<" | RGB : "<<(int)keyframe[i].r<<" "<<(int)keyframe[i].g<<" "<<(int)keyframe[i].b<<endl;
-            world->addBlock(keyframe[i].id,keyframe[i]);
-        }
         return (u8)exportFile->tellg();
     }
 
@@ -312,14 +252,10 @@ namespace Replay {
         u4 blockId;
         while(true)
         {
-
             lastFrameEndParsePosition = exportFile->tellg();
-            cout<<"Hellow 1 End : "<<end<<" & tellG "<<exportFile->tellg()<<endl;
             if(exportFile->tellg()>end) {break;}
-            cout<<"Hellow 2"<<endl;
             exportFile->read((char *) &readTime, sizeof(u8));
             if(readTime>time){break;}
-            cout<<"Hellow 3"<<endl;
             exportFile->read((char *) &eventType, sizeof(u1));
             exportFile->read((char *) &blockId, sizeof(u4));
             switch(eventType){
@@ -360,7 +296,6 @@ namespace Replay {
     {
         exportFile->seekg(position);
         KeyframeBlock block;
-        Vector3D newPosition;
         exportFile->read((char *) &block.x, sizeof(u2));
         exportFile->read((char *) &block.y, sizeof(u2));
         exportFile->read((char *) &block.z, sizeof(u2));
@@ -370,12 +305,6 @@ namespace Replay {
     }
     void ReplayPlayer::parseEventMotion(u8 position, u4 blockId, u8 time, u8 readTime)
     {
-        //Tracing block 36
-        if(blockId==36)
-        {
-            cout << "Parsing Motion Event for Block : "<<blockId<<endl;
-        }
-
         exportFile->seekg(position);
         KeyframeBlock block;
         u8 endTime;
@@ -388,19 +317,55 @@ namespace Replay {
         {
             if(time<=readTime+endTime)
             {
-                ReplayEvent newEvent;
                 Cell3DPosition pos, initPos;
                 pos.pt[0] = block.x;
                 pos.pt[1] = block.y;
                 pos.pt[2] = block.z;
-                newEvent.beginDate = readTime;
-                newEvent.duration = endTime;
-                newEvent.destinationPosition = pos;
                 initPos.pt[0] = world->getPosition(blockId).pt[0];
                 initPos.pt[1] = world->getPosition(blockId).pt[1];
                 initPos.pt[2] = world->getPosition(blockId).pt[2];
-                newEvent.initialPosition = initPos;
-                world->eventBuffer.insert(make_pair(blockId,newEvent));
+                if(robotType == 2) //Catom3D
+                {
+                    Catoms3DRotationEvent newEvent;
+                    newEvent.beginDate = readTime;
+                    newEvent.duration = endTime;
+                    newEvent.destinationPosition = pos;
+                    newEvent.initialPosition = initPos;
+
+                    exportFile->read((char *) &newEvent.fixedBlockId, sizeof(u4));
+                    exportFile->read((char *) &newEvent.type, sizeof(u1));
+
+                    exportFile->read((char *) &newEvent.axe1.pt[0], sizeof(u2));
+                    exportFile->read((char *) &newEvent.axe1.pt[1], sizeof(u2));
+                    exportFile->read((char *) &newEvent.axe1.pt[2], sizeof(u2));
+
+                    exportFile->read((char *) &newEvent.axe2.pt[0], sizeof(u2));
+                    exportFile->read((char *) &newEvent.axe2.pt[1], sizeof(u2));
+                    exportFile->read((char *) &newEvent.axe2.pt[2], sizeof(u2));
+                    world->eventBuffer.insert(make_pair(blockId,newEvent));
+
+                    Catoms3D::Catoms3DGlBlock* fixedBlock = nullptr;
+                    Catoms3D::Catoms3DGlBlock* movingBlock = nullptr;
+                    for(auto& pair : world->mapGlBlocks)
+                    {
+                        if(pair.first == blockId)
+                            movingBlock = dynamic_cast<Catoms3D::Catoms3DGlBlock*>(pair.second);
+                        if(pair.first == newEvent.fixedBlockId)
+                            fixedBlock = dynamic_cast<Catoms3D::Catoms3DGlBlock*>(pair.second);
+                    }
+                    newEvent.init(movingBlock,fixedBlock);
+                }
+                else{ //Others
+
+                    ReplayMotionEvent newEvent;
+                    newEvent.beginDate = readTime;
+                    newEvent.duration = endTime;
+                    newEvent.destinationPosition = pos;
+                    newEvent.initialPosition = initPos;
+                    world->eventBuffer.insert(make_pair(blockId,newEvent));
+                }
+
+
                 world->updatePositionMotion(blockId,block, time, readTime, initPos);
             }
             else
@@ -424,8 +389,6 @@ namespace Replay {
         col.rgba[1] = (GLfloat) block.g/255.0f;
         col.rgba[2] = (GLfloat) block.b/255.0f;
         col.rgba[3] = 1.0f;
-        cout<<"Parsing Color event for block "<<(int)blockId<<endl;
-        cout<<"Color : "<<(int)block.r<<" "<<(int)block.g<<" "<<(int)block.b<<endl;
         world->updateColor(blockId,col);
     }
     u8 ReplayPlayer::parseDuration()

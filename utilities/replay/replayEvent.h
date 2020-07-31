@@ -1,11 +1,7 @@
-/**
- * @file   ReplayWorld.h
- * @author Matteo Daluz
- * @date   Tue Jun  9 11:13:33 2020
- *
- * @brief  World for the replay application
- *
- *
+/*!
+ * @file replayEvent.h
+ * @brief Contains motion events classes for moving blocks in the replayer
+ * @author Mattéo Daluz
  */
 
 #ifndef REPLAYEVENT
@@ -19,20 +15,36 @@
 #include "../../simulatorCore/src/replay/replayTags.h"
 #include "replay.hpp"
 #include "../../simulatorCore/src/robots/smartBlocks/smartBlocksGlBlock.h"
-
+#include "../../simulatorCore/src/robots/catoms3D/catoms3DGlBlock.h"
 using namespace ReplayTags;
 namespace Replay {
     class ReplayPlayer;
 }
 
-class ReplayEvent{
+class ReplayMotionEvent{
 public:
     u8 beginDate;
     u8 duration;
     Cell3DPosition destinationPosition;
     Cell3DPosition initialPosition;
-    ReplayEvent();
+    ReplayMotionEvent();
 };
 
+class Catoms3DRotationEvent : public ReplayMotionEvent {
+public:
+    u4 fixedBlockId;
+    Matrix initialMatrix, finalMatrix;
+    u1 type;
+    u4 radius;
+    Vector3D A0C0,A0D0,A1C1,A1D1;
+    Vector3D axe1, axe2;
+    double angle;
+
+    void init(Catoms3D::Catoms3DGlBlock* mobileBlock,Catoms3D::Catoms3DGlBlock* fixedBlock);
+
+    Matrix getMatrixFromTime(u8 Time);
+
+
+};
 
 #endif

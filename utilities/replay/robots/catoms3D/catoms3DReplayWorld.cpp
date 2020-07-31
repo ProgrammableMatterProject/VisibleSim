@@ -8,6 +8,7 @@
 #include "replayPlayer.h"
 #include "catoms3DReplayWorld.h"
 #include "../../simulatorCore/src/utils/utils.h"
+
 using namespace std;
 using namespace BaseSimulator::utils;
 Catoms3DReplayWorld::Catoms3DReplayWorld(int argc, char *argv[], u8 duration, float scale)
@@ -29,10 +30,6 @@ Catoms3DReplayWorld::~Catoms3DReplayWorld() {
 
 void Catoms3DReplayWorld::updateMotionBlocks()
 {
-    //TODO
-    /*
-    KeyframeBlock block;
-
     list<int> blackList;
     for(auto &pair : eventBuffer)
     {
@@ -40,10 +37,9 @@ void Catoms3DReplayWorld::updateMotionBlocks()
         u8 readTime = pair.second.beginDate;
         if(time<=readTime+pair.second.duration)
         {
-            block.x = pair.second.destinationPosition.pt[0];
-            block.y = pair.second.destinationPosition.pt[1];
-            block.z = pair.second.destinationPosition.pt[2];
-            updatePositionMotion(pair.first,block,time, readTime, pair.second.initialPosition);
+            Matrix newMatrix = static_cast<Catoms3DRotationEvent*>
+                    (&pair.second)->getMatrixFromTime(time);
+            updatePositionMotionWithMatrix(pair.first,newMatrix);
         }
         else
         {
@@ -55,7 +51,7 @@ void Catoms3DReplayWorld::updateMotionBlocks()
         eventBuffer.erase(element);
     }
     blackList.clear();
-    */
+
 }
 
 void Catoms3DReplayWorld::updateDisplayedValue(u4 blockId, u2 display)
@@ -65,30 +61,26 @@ void Catoms3DReplayWorld::updateDisplayedValue(u4 blockId, u2 display)
 
 void Catoms3DReplayWorld::addBlock(bID blockId, KeyframeBlock block) {
     auto *glBlock = new Catoms3D::Catoms3DGlBlock(blockId);
+    cout<<"Adding new block"<<endl;
 
     Cell3DPosition pos;
-    pos.pt[0] = gridScale*block.x;
-    pos.pt[1] = gridScale*block.y;
-    pos.pt[2] = gridScale*block.z;
-    Vector3D newPos = FCCLattice::gridToUnscaledWorldPosition_base(pos);
+    pos.pt[0] = block.x;
+    pos.pt[1] = block.y;
+    pos.pt[2] = block.z;
+    /* Unused with catoms : they are only using matrix*/
+//    Vector3D newPos = FCCLattice::gridToUnscaledWorldPosition_base(pos);
+//    newPos.pt[0] *= gridScale;
+//    newPos.pt[1] *= gridScale;
+//    newPos.pt[2] *= gridScale;
+    //glBlock->setPosition(newPos);
 
-    glBlock->setPosition(newPos);
-
+    glBlock->mat = getMatrixFromPositionAndOrientation(pos,block.rotation);
     Color col;
     col.rgba[0] = block.r/255.0f;
     col.rgba[1] = block.g/255.0f;
     col.rgba[2]= block.b/255.0f;
     col.rgba[3]= 1.0;
 
-    //Debugg
-//    if(blockId == 72)
-//    {
-//        col.rgba[0] = 1;
-//        col.rgba[1] = 0;
-//        col.rgba[2]= 0;
-//        cout <<"Debuggage position : "
-//             <<newPos.pt[0]<<" "<<newPos.pt[1]<<" "<<newPos.pt[2]<<endl;
-//    }
     glBlock->setColor(col);
 
     mapGlBlocks.insert(make_pair(blockId, glBlock));
@@ -97,18 +89,18 @@ void Catoms3DReplayWorld::addBlock(bID blockId, KeyframeBlock block) {
 void Catoms3DReplayWorld::updatePosition(u4 blockId, KeyframeBlock block)
 {
     Cell3DPosition pos;
-    pos.pt[0] = block.x*gridScale;
-    pos.pt[1] = block.y*gridScale;
-    pos.pt[2] = block.z*gridScale;
+    pos.pt[0] = block.x;
+    pos.pt[1] = block.y;
+    pos.pt[2] = block.z;
 
-    Vector3D newPos = FCCLattice::gridToUnscaledWorldPosition_base(pos);
-//    cout <<"Debuggage position Update : "
-//         <<newPos.pt[0]<<" "<<newPos.pt[1]<<" "<<newPos.pt[2]<<endl;
-    for (const auto& pair : mapGlBlocks) {
+    for (auto& pair : mapGlBlocks) {
         if(pair.first==blockId)
         {
-
-            pair.second->setPosition(newPos);
+            Catoms3D::Catoms3DGlBlock* newBlock =
+                    dynamic_cast<Catoms3D::Catoms3DGlBlock*>(pair.second); //Compile bien
+            newBlock->mat = getMatrixFromPositionAndOrientation(pos,block.rotation);
+            pair.second = newBlock;
+            //pair.second->setPosition(newPos);
         }
     }
 
@@ -117,24 +109,7 @@ void Catoms3DReplayWorld::updatePosition(u4 blockId, KeyframeBlock block)
 void Catoms3DReplayWorld::updatePositionMotion(u4 blockId, KeyframeBlock block,
         u8 time,u8 readTime, Cell3DPosition initPos)
 {
-    //TODO
-    /*
-    Vector3D pos;
-    Cell3DPosition oldPos = initPos;
 
-    pos.pt[0] = oldPos.pt[0]+(block.x*gridScale-oldPos.pt[0])*(time-readTime-2000)/1000000;
-    pos.pt[1] = oldPos.pt[1]+(block.y*gridScale-oldPos.pt[1])*(time-readTime-2000)/1000000;
-    pos.pt[2] = oldPos.pt[2]+(block.z*gridScale-oldPos.pt[2])*(time-readTime-2000)/1000000;
-    pos.pt[3] = 1;
-
-    for (const auto& pair : mapGlBlocks) {
-        if(pair.first==blockId)
-        {
-
-            pair.second->setPosition(pos);
-        }
-    }
-    */
 }
 
 void Catoms3DReplayWorld::glDrawBackground() {
@@ -227,4 +202,35 @@ void Catoms3DReplayWorld::loadTextures(const string &str) {
     idTextureHexa = loadTexture(path.c_str(),lx,ly);
     path = str+"//textureCarre.tga";
     idTextureGrid = loadTexture(path.c_str(),lx,ly);
+}
+
+Matrix Catoms3DReplayWorld::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,
+                                                          uint8_t code) {
+    uint8_t orientation = code % 12;
+    uint8_t up = code / 12;
+
+    Matrix M1, M2, M3, M;
+    M1.setRotationZ(tabOrientationAngles[orientation][2]);
+    M2.setRotationY(tabOrientationAngles[orientation][1]);
+    M3.setRotationX(tabOrientationAngles[orientation][0] + up * 180.0);
+    M = M2 * M1;
+    M1 = M3 * M;
+    Vector3D newPos = FCCLattice::gridToUnscaledWorldPosition_base(pos);
+    newPos.pt[0] *= gridScale;
+    newPos.pt[1] *= gridScale;
+    newPos.pt[2] *= gridScale;
+    M2.setTranslation(newPos);
+    M = M2 * M1;
+    return M;
+}
+
+void Catoms3DReplayWorld::updatePositionMotionWithMatrix(u4 blockId, Matrix newMatrix)
+{
+    for(auto& pair : mapGlBlocks)
+    {
+        if(pair.first == blockId)
+        {
+            dynamic_cast<Catoms3D::Catoms3DGlBlock*>(pair.second)->mat = newMatrix;
+        }
+    }
 }

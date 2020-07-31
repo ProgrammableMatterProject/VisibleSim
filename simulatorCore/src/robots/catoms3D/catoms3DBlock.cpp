@@ -55,6 +55,9 @@ namespace Catoms3D {
 
     void Catoms3DBlock::setPosition(const Cell3DPosition &p) {
         setPositionAndOrientation(p, orientationCode);
+        if (ReplayExporter::isReplayEnabled())
+            ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                               blockId, position, orientationCode);
     }
 
     void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &pos, uint8_t code) {
@@ -65,9 +68,7 @@ namespace Catoms3D {
         getWorld()->updateGlData(this, M);
         getWorld()->updateGlData(this, position);
 
-        if (ReplayExporter::isReplayEnabled())
-            ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
-                                                               blockId, position, orientationCode);
+
     }
 
     uint8_t Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
