@@ -170,7 +170,7 @@ public:
     void writeMotion(Time date, bID bid, Time duration_us, const Cell3DPosition& destination);
     void writeConsoleTrace(Time date, bID bid, const string& trace);
     void writeCatoms3DMotion(Time date, bID bid, Time duration_us,
-                                             const Cell3DPosition& destination, u4 fixedBlockId, u1 type,
+                                              u4 fixedBlockId, u1 type,
                                              Vector3D axe1, Vector3D axe2);
     /**
      * Write the date of end of simulation at the end of the export file

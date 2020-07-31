@@ -21,7 +21,7 @@ ReplayMotionEvent::ReplayMotionEvent()
 
 Matrix Catoms3DRotationEvent::getMatrixFromTime(u8 time)
 {
-    //TODO TEST NEEDED WITH EXPORT FILE
+    //TODO Corriger : Ne fonctionne pas
     Matrix m;
     bool firstRotation;
 
@@ -57,7 +57,7 @@ Matrix Catoms3DRotationEvent::getMatrixFromTime(u8 time)
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = finalMatrix * m;
     }
-    return 0;
+    return m;
 }
 
 void Catoms3DRotationEvent::init(Catoms3D::Catoms3DGlBlock *mobileBlock,

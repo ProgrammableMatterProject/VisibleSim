@@ -265,21 +265,20 @@ void ReplayExporter::writeMotion(Time date, bID bid, Time duration_us,
 }
 
 void ReplayExporter::writeCatoms3DMotion(Time date, bID bid, Time duration_us,
-                                 const Cell3DPosition& destination, u4 fixedBlockId, u1 type,
+                                  u4 fixedBlockId, u1 type,
                                  Vector3D axe1, Vector3D axe2) {
     exportFile->write((char*)&date, sizeof(Time));
-    exportFile->write((char*)&EVENT_MOTION, sizeof(u1));
+    exportFile->write((char*)&EVENT_MOTION_CATOMS3D, sizeof(u1));
     exportFile->write((char*)&bid, sizeof(bID));
     exportFile->write((char*)&duration_us, sizeof(u8));
-    exportFile->write((char*)&destination.pt,3*sizeof(u2));
     exportFile->write((char*)&fixedBlockId,sizeof(u4));
     exportFile->write((char*)&type,sizeof(u1));
     exportFile->write((char*)&axe1.pt,3*sizeof(u2));
     exportFile->write((char*)&axe2.pt,3*sizeof(u2));
 
     if (debug) {
-        *debugFile << "Motion:" << date << " " << (int)EVENT_MOTION << " " << bid
-                   << " " << (int)duration_us << " " << " " << destination[0] << " " << destination[1] << " " << destination[2] << endl;
+        *debugFile << "Motion:" << date << " " << (int)EVENT_MOTION_CATOMS3D << " " << bid
+                   << " " << (int)duration_us << " "  << endl;
     }
     nbEventsBeforeKeyframe--;
 }

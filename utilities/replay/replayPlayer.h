@@ -117,6 +117,8 @@ public:
 
     void parseEventMotion(u8 position, u4 blockId, u8 time, u8 readTime);
 
+    void parseEventMotionCatoms3D(u8 position, u4 blockId, u8 time, u8 readTime);
+
     void parseEventPosition(u8 position, u4 blockId);
 
     void parseEventDisplay(u8 position, u4 blockId);
