@@ -1,4 +1,4 @@
-SUBDIRS = tetris gameOfLife gameOfLife3D demoMotionsC3D
+SUBDIRS = tetris
 
 .PHONY: subdirs $(SUBDIRS) test
 

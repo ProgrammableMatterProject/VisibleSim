@@ -124,6 +124,7 @@ static const int GO_RIGHT = 2;       //translation on the right
 static const int GO_LEFT = 3;        //translation on the left
 static const int ROT_CK = 4;         //rotation clockwise
 static const int ROT_COUNTER_CK = 5; // rotation counter clockwise
+static const int APPEAR = 6 ; //if it is the first appearance of the tetramino (to be able to check if the tetramino can appear)
 
 //Types of free answer
 static const int NO_ANSWER = 0;
@@ -164,6 +165,8 @@ static const int COUNT_BCK_MSG_ID = 1031;
 static const int ASK_INFO_MSG_ID = 1032;
 static const int TMN_INFO_MSG_ID = 1033;
 static const int SPLIT_MSG_ID = 1034;
+static const int CHECK_SPLIT_MSG_ID = 1035;
+static const int RESET_TMN_MSG_ID = 1036;
 
 //IDs of the interfaces
 static const int topId = 0;
@@ -337,10 +340,9 @@ public:
 
     /**
     * @brief spread the second tetramino (column)
-    * @param reinit (bool) true if the reinitialisation of selected pixels is spread, false if the tetramino itself is spread
-    * @param blocked (bool) true if the tetramino is blocked
+    * @param c (char) : determines the type of message sent through the tetramino
     */
-    void sendTmn2(bool reinit, bool blocked);
+    void sendTmn2(char c);
 
     /**
     * @brief Message handler for the message 'tmn2'
@@ -658,6 +660,20 @@ public:
     * @param sender Connector of the module that has received the message and that is connected to the sender
     */
     void mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'CheckSplit'. Verifies if there is a tetramino cut in two but the split.
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myCheckSplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
+
+    /**
+    * @brief Message handler for the message 'ResetTmn'. Resets a tetramino that is cut by the split
+    * @param _msg Pointer to the message received by the module, requires casting
+    * @param sender Connector of the module that has received the message and that is connected to the sender
+    */
+    void myResetTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender);
 
     /**
     * @brief Handler for all events received by the host block

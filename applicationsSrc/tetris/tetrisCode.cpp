@@ -175,6 +175,16 @@ TetrisCode::TetrisCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), m
                          std::bind(&TetrisCode::mySplitMsgFunc, this,
                                    std::placeholders::_1, std::placeholders::_2));
 
+    // Registers a callback (myCheckSplitMsgFunc) to the message of type E
+    addMessageEventFunc2(CHECK_SPLIT_MSG_ID,
+                         std::bind(&TetrisCode::myCheckSplitMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
+    // Registers a callback (myResetTmnFunc) to the message of type E
+    addMessageEventFunc2(RESET_TMN_MSG_ID,
+                         std::bind(&TetrisCode::myResetTmnMsgFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
+
     // Initialization of random numbers generator
     srand(Random::getSimulationSeed());
 }
@@ -202,6 +212,7 @@ void TetrisCode::myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
         nbTmn = msgData.numbTmn;
         nbFBack = 0;
         nbFree = 0;
+        console<<"appear module = "<<appear_module<<"\n";
         if (appear_module)
         {
             stringstream strstm;
@@ -219,12 +230,13 @@ void TetrisCode::myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
 
 void TetrisCode::tmnAppearance()
 {
+    console<<"NEW TETRAMINO\n";    
     parent = nullptr; //The module is the root of the tetramino, it has no parent
     position = 1;
     update = 1;
     nbReinit = 0;
     int r = (int)rand();
-    tmn = r % 7 + 1;
+    tmn = 2; //r % 7 + 1;
     r = (int)rand();
     rotation = r % 4 + 1;
     //Some tetramino would exceed the set
@@ -237,15 +249,16 @@ void TetrisCode::tmnAppearance()
         r = (int)rand();
         color = r % 9;
     }
-    module->setColor(Colors[color]);
     console << "deciding module : send tmn " << tmn << " rot = " << rotation << " pos = " << position << "\n";
+    movement = APPEAR;
     if (tmn == 1)
     {
         sendTmn1(false, false);
     }
     else if (tmn == 2)
     {
-        sendTmn2(false, false);
+        module->setColor(GOLD);        
+        verifTmn2();
     }
     else if (tmn == 3)
     {
@@ -390,7 +403,7 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
         }
         else if (msgData.tmn == 2)
         {
-            sendTmn2(true, false);
+            sendTmn2('R');
             if (msgData.movement == DOWN || msgData.movement == GO_RIGHT || msgData.movement == GO_LEFT)
             {
                 int rot1 = 0;
@@ -711,11 +724,13 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
             }
         }
 
-        if (nbReinitBackMsg == 0 && parent != nullptr && parent->isConnected())
+        if (nbReinitBackMsg == 0)
         {
             ReinitBackData data = ReinitBackData(stage, nbReinit);
-            sendMessage("Reinit Back Message Parent", new MessageOf<ReinitBackData>(REINITBACK_MSG_ID, data), parent, 0, 0);
-
+            if (parent != nullptr && parent->isConnected())
+            {
+                sendMessage("Reinit Back Message Parent", new MessageOf<ReinitBackData>(REINITBACK_MSG_ID, data), parent, 0, 0);
+            }
             //Reinitialization if needed
             if (init)
             {
@@ -738,7 +753,10 @@ void TetrisCode::myReinitPixMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInt
     else if (msgData.tmn == tmn && msgData.id == nbReinit)
     {
         ReinitBackData data = ReinitBackData(stage, nbReinit);
-        sendMessage("Reinit Back Message", new MessageOf<ReinitBackData>(REINITBACK_MSG_ID, data), sender, 0, 0);
+        if (sender != nullptr && sender->isConnected())
+        {
+            sendMessage("Reinit Back Message", new MessageOf<ReinitBackData>(REINITBACK_MSG_ID, data), sender, 0, 0);
+        }
     }
 }
 
@@ -924,7 +942,7 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
                 }
                 else if (tmn == 2)
                 {
-                    sendTmn2(false, false);
+                    sendTmn2('T');
                 }
                 else if (tmn == 3)
                 {
@@ -948,11 +966,13 @@ void TetrisCode::myReinitBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
                 }
             }
         }
-        else if (parent != nullptr && parent->isConnected())
+        else
         {
-            ReinitBackData data = ReinitBackData(stage, nbReinit);
-            sendMessage("Reinit Back Message Parent", new MessageOf<ReinitBackData>(REINITBACK_MSG_ID, data), parent, 0, 0);
-            // parent = nullptr;
+            if (parent != nullptr && parent->isConnected())
+            {
+                ReinitBackData data = ReinitBackData(stage, nbReinit);
+                sendMessage("Reinit Back Message Parent", new MessageOf<ReinitBackData>(REINITBACK_MSG_ID, data), parent, 0, 0);
+            }
             //Reinitialization if needed
             if (init)
             {
@@ -991,7 +1011,7 @@ void TetrisCode::updateOfTmn()
     }
     if (tmn == 2)
     {
-        sendTmn2(true, false);
+        sendTmn2('R');
     }
     if (tmn == 3)
     {
@@ -1251,7 +1271,7 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                         }
                         else if (tmn == 2)
                         {
-                            sendTmn2(false, true);
+                            sendTmn2('B');
                         }
                         else if (tmn == 3)
                         {
@@ -1420,7 +1440,7 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
                 }
                 else if (tmn == 2)
                 {
-                    sendTmn2(false, true);
+                    sendTmn2('B');
                 }
                 else if (tmn == 3)
                 {
@@ -1497,7 +1517,7 @@ void TetrisCode::myBFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
         isFreeData data = isFreeData(stage, nbFBack, position, direction, result);
         if (tmn == 1)
         {
-            sendVerifTmn2(true, data);
+            sendVerifTmn1(true, data);
         }
         else if (tmn == 2)
         {
@@ -1594,6 +1614,7 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
             else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
             {
                 farVerifications.pop_back();
+                console<<"nb far verifs left 2 = "<<farVerifications.size()<<"\n";
                 if (farVerifications.size() == 0)
                 {
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
@@ -1633,6 +1654,7 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
             else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
             {
                 farVerifications.pop_back();
+                console<<"nb far verifs left 3 = "<<farVerifications.size()<<"\n";
                 if (farVerifications.size() == 0)
                 {
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
@@ -1672,6 +1694,7 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
             else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
             {
                 farVerifications.pop_back();
+                console<<"nb far verifs left 4 = "<<farVerifications.size()<<"\n";
                 if (farVerifications.size() == 0)
                 {
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
@@ -1711,6 +1734,7 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
             else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
             {
                 farVerifications.pop_back();
+                console<<"nb far verifs left 5 = "<<farVerifications.size()<<"\n";
                 if (farVerifications.size() == 0)
                 {
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
@@ -1793,10 +1817,24 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
             //Otherwise, the tetramino is stuck, and an other one has to be started.
             {
                 farVerifications.pop_back();
+                console<<"nb left verifs = "<<farVerifications.size()<<"\n";
                 if (farVerifications.size() == 0)
-                {
+                {   
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
-                    updateOfTmn();
+                    if(movement == APPEAR)
+                    {
+                        //module->setColor(Colors[color]);
+                        module->setColor(GREY);
+                        console<<"rotation = "<<rotation<<"\n";
+                        if (tmn == 2)
+                        {
+                            sendTmn2('T');
+                        }
+                    } 
+                    else 
+                    {
+                        updateOfTmn();
+                    }
                 }
                 else //send the next verification
                 {
@@ -1808,7 +1846,11 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
             }
             else // if one verification is false, the movement cannot be done. A new tetramino is started
             {
-                if (movement != DOWN) //if the movement cannot be done, the tetramino may still be able to go down
+                if(movement == APPEAR) //if the chosen tetramino cannot appear, another one has to be chosen
+                {
+                    tmnAppearance();
+                }                
+                else if (movement != DOWN) //if the movement cannot be done, the tetramino may still be able to go down
                 {
                     movement = DOWN;
                     if (tmn == 1)
@@ -1849,7 +1891,7 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                     }
                     else if (tmn == 2)
                     {
-                        sendTmn2(false, true);
+                        sendTmn2('B');
                     }
                     else if (tmn == 3)
                     {
@@ -1871,16 +1913,18 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                     {
                         sendTmn7(false, true);
                     }
+                    BlockedData data = BlockedData(stage, nbLinesReinit, 1);
                     if (leftItf != nullptr && leftItf->isConnected())
                     {
-                        sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), leftItf, 0, 0);
+                        sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
                     }
                     if (rightItf != nullptr && rightItf->isConnected())
                     {
-                        sendMessage("Counting blocked neighbors", new MessageOf<int>(COUNT_BCK_MSG_ID, 1), rightItf, 0, 0);
+                        sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
                     }
                     nbTmn += 1;
-                    sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<int>(NEWTMNMSG_ID, nbTmn), 0, 0, 0);
+                    NewTmnData data2 = NewTmnData(stage, nbTmn);
+                    sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<NewTmnData>(NEWTMNMSG_ID, data2), 0, 0, 0);
                 }
             }
         }
@@ -1889,7 +1933,7 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
 
             if (parent != nullptr && parent->isConnected())
             {
-                sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, msgData), parent, 0, 0);
+                sendMessage("Far Verif Back Parent", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, msgData), parent, 0, 0);
             }
         }
     }
@@ -1912,7 +1956,7 @@ void TetrisCode::myBlockedMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInter
         }
         else if (tmn == 2)
         {
-            sendTmn2(false, true);
+            sendTmn2('B');
         }
         else if (tmn == 3)
         {
@@ -2079,7 +2123,7 @@ void TetrisCode::mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
     //if the same neighbor is also missing
     {
         stage = msgData.stage;
-        module->setColor(GOLD);
+        module->setColor(GREEN);
         if (bottomItf != nullptr && bottomItf->isConnected())
         {
             sendMessage("Detected Splitting", new MessageOf<Splitdata>(SPLIT_MSG_ID, msgData), bottomItf, 0, 0);
@@ -2090,36 +2134,112 @@ void TetrisCode::mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
             strstm << "SPLIT HANDELED";
             scheduler->trace(strstm.str(), module->blockId, GREEN);
             stage += 1;
-            if (msgData.direction == WEST) // if the set is on the left of the splitting, new cooridinates have to be calculated
+            if (msgData.direction == WEST) // if the set is on the left of the splitting, new coordinates have to be calculated
             {
                 height = 0;
                 width = 0;
                 maxWidth = 0;
                 spanTree = module->blockId;
-                if(topItf!=nullptr && topItf->isConnected())
-                {
-                    CoordsData data = CoordsData(stage,1,0,spanTree);
-                    sendMessage("New coords", new MessageOf<CoordsData>(COORDSMSG_ID, data), topItf, 0, 0);
-                }
-                if(rightItf!=nullptr && rightItf->isConnected())
-                {
-                    CoordsData data = CoordsData(stage,0,1,spanTree);
-                    sendMessage("New coords", new MessageOf<CoordsData>(COORDSMSG_ID, data), rightItf, 0, 0);
-                }
-            } else if (msgData.direction==EAST) //if the set is on the right, only the total width needs to be recalculated.
+                nbBackMsg = 0;
+                parent = nullptr;
+                sendCoords();
+            }
+            else if (msgData.direction == EAST) //if the set is on the right, only the total width needs to be recalculated.
             {
                 maxWidth = width;
-                IntData data = IntData(stage,width);
-                if(topItf!=nullptr && topItf->isConnected())
+                IntData data = IntData(stage, width);
+                if (topItf != nullptr && topItf->isConnected())
                 {
                     sendMessage("New width", new MessageOf<IntData>(MAXWIDTHMSG_MSG_ID, data), topItf, 0, 0);
                 }
-                if(leftItf!=nullptr && leftItf->isConnected())
+                if (leftItf != nullptr && leftItf->isConnected())
                 {
                     sendMessage("New width", new MessageOf<IntData>(MAXWIDTHMSG_MSG_ID, data), leftItf, 0, 0);
                 }
             }
+            if (topItf != nullptr && topItf->isConnected())
+            {
+                sendMessage("Check tmn on split", new MessageOf<int>(CHECK_SPLIT_MSG_ID, stage), topItf, 0, 0);
+            }
         }
+    }
+}
+
+void TetrisCode::myCheckSplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    console << "recieved check split : tmn = " << tmn << " blocked = " << blocked << "\n";
+
+    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
+    int msgData = *msg->getData();
+
+    if (msgData >= stage)
+    {
+        stage = msgData;
+        if (tmn >= 1 && tmn <= 7 && blocked == false) //if there is a tetramino cut by the split, it has to be reset and a new tetramino is started
+        {
+            if (tmn == 2)
+            {
+                sendTmn2('S');
+            }
+            tmn = NO_TMN;
+            rotation = NO_ROTATION;
+            position = NO_POSITION;
+            color = NO_COLOR;
+            update = 0;
+            init = false;
+            nbBackMsg = 0;
+            nbFBack = 0;
+            nbFree = 0;
+            nbReinit = 0;
+            nbReinitBackMsg = 0;
+            nbTmnBackMsg = 0;
+            module->setColor(Colors[color]);
+            nbTmn += 1;
+            NewTmnData data = NewTmnData(stage, nbTmn);
+            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<NewTmnData>(NEWTMNMSG_ID, data), 0, 0, 0);
+        }
+        else if (topItf != nullptr && topItf->isConnected())
+        {
+            sendMessage("Check tmn on split", new MessageOf<int>(CHECK_SPLIT_MSG_ID, stage), topItf, 0, 0);
+        }
+    }
+}
+
+void TetrisCode::myResetTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
+{
+    console << "recieved reset\n";
+
+    MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
+    int msgData = *msg->getData();
+
+    if (msgData >= stage)
+    {
+        stage = msgData;
+        if (tmn == 2)
+        {
+            sendTmn2('S');
+        }
+        tmn = NO_TMN;
+        rotation = NO_ROTATION;
+        position = NO_POSITION;
+        color = NO_COLOR;
+        update = 0;
+        init = false;
+        nbBackMsg = 0;
+        nbFBack = 0;
+        nbFree = 0;
+        nbReinit = 0;
+        nbReinitBackMsg = 0;
+        nbTmnBackMsg = 0;
+        module->setColor(Colors[color]);
+        if ((pixelHCoord + 1) * sizeOfPixel - 1 > maxHeight || (pixelWCoord + 1) * sizeOfPixel - 1 > maxWidth) //if the pixel isn't complete
+        {
+            tmn = PIXEL_NON_VALID;
+            module->setColor(BLACK);
+        }
+        nbTmn += 1;
+        NewTmnData data = NewTmnData(stage, nbTmn);
+        sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<NewTmnData>(NEWTMNMSG_ID, data), 0, 0, 0);
     }
 }
 
@@ -2152,9 +2272,9 @@ void TetrisCode::processLocalEvent(std::shared_ptr<Event> pev)
         {
             dir = EAST;
         }
-        if ((topItf == nullptr || !topItf->isConnected()) && (bottomItf != nullptr && bottomItf->isConnected()))
+        if ((topItf == nullptr || !topItf->isConnected()) && bottomItf != nullptr && bottomItf->isConnected())
         {
-            Splitdata data = Splitdata(stage,dir);
+            Splitdata data = Splitdata(stage, dir);
             sendMessage("Detected Splitting", new MessageOf<Splitdata>(SPLIT_MSG_ID, data), bottomItf, 0, 0);
         }
         break;

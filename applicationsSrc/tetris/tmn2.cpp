@@ -1,7 +1,13 @@
 #include "tetrisCode.hpp"
 
-void TetrisCode::sendTmn2(bool reinit, bool blocked)
+void TetrisCode::sendTmn2(char c)
 {
+    /* char c = 
+        - 'T' : spread tetramino
+        - 'R' : spread reinitialization
+        - 'B' : spread blocked
+        - 'S' : spread reset from split
+    */
     TmnData data = TmnData(stage, update, rotation, position, color, nbReinit, nbFree);
     ReinitData rData = ReinitData(stage, nbReinit, tmn, movement);
 
@@ -66,44 +72,46 @@ void TetrisCode::sendTmn2(bool reinit, bool blocked)
         if (position != 2)
         {
             P2PNetworkInterface *i = itf[northId];
-            if (reinit && i != parent && i != nullptr and i->isConnected())
+            if (c == 'R' && i != parent && i != nullptr and i->isConnected())
             {
                 sendMessage("Reinit Tmn 2 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
                 nbReinitBackMsg += 1;
             }
-            else if (blocked && i != nullptr and i->isConnected())
+            else if (c == 'B' && i != nullptr and i->isConnected())
             {
                 sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID, stage), i, 0, 0);
             }
-            else
+            else if (c == 'T' && i != parent && i != nullptr and i->isConnected())
             {
-                if (i != parent && i != nullptr and i->isConnected())
-                {
-                    sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
-                    nbTmnBackMsg += 1;
-                }
+                sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+                nbTmnBackMsg += 1;
+            }
+            else if (c == 'S' && i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn Reset", new MessageOf<int>(RESET_TMN_MSG_ID, stage), i, 0, 0);
             }
         }
     }
     else
     {
         P2PNetworkInterface *i = itf[northId];
-        if (reinit && i != parent && i != nullptr and i->isConnected())
+        if (c == 'R' && i != parent && i != nullptr and i->isConnected())
         {
             sendMessage("Reinit Tmn 2 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
             nbReinitBackMsg += 1;
         }
-        else if (blocked && i != nullptr and i->isConnected())
+        else if (c == 'B' && i != nullptr and i->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID, stage), i, 0, 0);
         }
-        else
+        else if (c == 'T' && i != parent && i != nullptr and i->isConnected())
         {
-            if (i != parent && i != nullptr and i->isConnected())
-            {
-                sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
-                nbTmnBackMsg += 1;
-            }
+            sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+            nbTmnBackMsg += 1;
+        }
+        else if (c == 'S' && i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn Reset", new MessageOf<int>(RESET_TMN_MSG_ID, stage), i, 0, 0);
         }
     }
     data.position = position;
@@ -124,87 +132,91 @@ void TetrisCode::sendTmn2(bool reinit, bool blocked)
         if (position != 4)
         {
             P2PNetworkInterface *i = itf[southId];
-            if (reinit && i != parent && i != nullptr and i->isConnected())
+            if (c == 'R' && i != parent && i != nullptr and i->isConnected())
             {
                 sendMessage("Reinit Tmn 2 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
                 nbReinitBackMsg += 1;
             }
-            else if (blocked && i != nullptr and i->isConnected())
+            else if (c == 'B' && i != nullptr and i->isConnected())
             {
-                sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
+                sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID, stage), i, 0, 0);
             }
-            else
+            else if (c == 'T' && i != parent && i != nullptr and i->isConnected())
             {
-                if (i != parent && i != nullptr and i->isConnected())
-                {
-                    sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
-                    nbTmnBackMsg += 1;
-                }
+                sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+                nbTmnBackMsg += 1;
+            }
+            else if (c == 'S' && i != nullptr and i->isConnected())
+            {
+                sendMessage("Tmn Reset", new MessageOf<int>(RESET_TMN_MSG_ID, stage), i, 0, 0);
             }
         }
     }
     else
     {
         P2PNetworkInterface *i = itf[southId];
-        if (reinit && i != parent && i != nullptr and i->isConnected())
+        if (c == 'R' && i != parent && i != nullptr and i->isConnected())
         {
             sendMessage("Reinit Tmn 2 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
             nbReinitBackMsg += 1;
         }
-        else if (blocked && i != nullptr and i->isConnected())
+        else if (c == 'B' && i != nullptr and i->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID, stage), i, 0, 0);
         }
-        else
+        else if (c == 'T' && i != parent && i != nullptr and i->isConnected())
         {
-            if (i != parent && i != nullptr and i->isConnected())
-            {
-                sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
-                nbTmnBackMsg += 1;
-            }
+            sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+            nbTmnBackMsg += 1;
+        }
+        else if (c == 'S' && i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn Reset", new MessageOf<int>(RESET_TMN_MSG_ID, stage), i, 0, 0);
         }
     }
     data.position = position;
     if (!eastBool)
     {
         P2PNetworkInterface *i = itf[eastId];
-        if (reinit && i != parent && i != nullptr and i->isConnected())
+        if (c == 'R' && i != parent && i != nullptr and i->isConnected())
         {
             sendMessage("Reinit Tmn 2 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
             nbReinitBackMsg += 1;
         }
-        else if (blocked && i != nullptr and i->isConnected())
+        else if (c == 'B' && i != nullptr and i->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID, stage), i, 0, 0);
         }
-        else
+        else if (c == 'T' && i != parent && i != nullptr and i->isConnected())
         {
-            if (i != parent && i != nullptr and i->isConnected())
-            {
-                sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
-                nbTmnBackMsg += 1;
-            }
+            sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+            nbTmnBackMsg += 1;
+        }
+        else if (c == 'S' && i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn Reset", new MessageOf<int>(RESET_TMN_MSG_ID, stage), i, 0, 0);
         }
     }
     if (!westBool)
     {
         P2PNetworkInterface *i = itf[westId];
-        if (reinit && i != parent && i != nullptr and i->isConnected())
+        if (c == 'R' && i != parent && i != nullptr and i->isConnected())
         {
             sendMessage("Reinit Tmn 2 Message", new MessageOf<ReinitData>(REINITPIX_MSG_ID, rData), i, 0, 0);
             nbReinitBackMsg += 1;
         }
-        else if (blocked && i != nullptr and i->isConnected())
+        else if (c == 'B' && i != nullptr and i->isConnected())
         {
-            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID,stage), i, 0, 0);
+            sendMessage("Tmn Blocked Msg", new MessageOf<int>(BLOCKED_MSG_ID, stage), i, 0, 0);
         }
-        else
+        else if (c == 'T' && i != parent && i != nullptr and i->isConnected())
         {
-            if (i != parent && i != nullptr and i->isConnected())
-            {
-                sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
-                nbTmnBackMsg += 1;
-            }
+            sendMessage("Tmn 2 Message", new MessageOf<TmnData>(TMN2_MSG_ID, data), i, 0, 0);
+            nbTmnBackMsg += 1;
+        }
+        else if (c == 'S' && i != nullptr and i->isConnected())
+        {
+            sendMessage("Tmn Reset", new MessageOf<int>(RESET_TMN_MSG_ID, stage), i, 0, 0);
         }
     }
 }
@@ -214,7 +226,7 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
 
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    console<<"recieved message. Stage = "<< msgData.stage << " my stage = "<<stage<<"\n";
+    console << "recieved message. Stage = " << msgData.stage << " my stage = " << stage << "\n";
     if (msgData.stage >= stage && update < msgData.nbupdate && (tmn != 2 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
     {
         stage = msgData.stage;
@@ -229,18 +241,21 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
         nbTmnBackMsg = 0;
         module->setColor(Colors[color]);
         console << "recieved tmn " << tmn << " rot = " << rotation << " pos = " << position << "\n";
-        sendTmn2(false, false);
+        sendTmn2('T');
         if (nbTmnBackMsg == 0 && parent != nullptr && parent->isConnected())
         {
-            TmnBackData data = TmnBackData(stage,update);
+            TmnBackData data = TmnBackData(stage, update);
             sendMessage("Tmn Back Message Parent", new MessageOf<TmnBackData>(TMNBACK_MSG_ID, data), parent, 0, 0);
         }
     }
     else if (msgData.stage >= stage && update == msgData.nbupdate)
     {
         stage = msgData.stage;
-        TmnBackData data = TmnBackData(stage,update);
-        sendMessage("Tmn Back Message", new MessageOf<TmnBackData>(TMNBACK_MSG_ID, data), sender, 0, 0);
+        TmnBackData data = TmnBackData(stage, update);
+        if (sender != nullptr && sender->isConnected())
+        {
+            sendMessage("Tmn Back Message", new MessageOf<TmnBackData>(TMNBACK_MSG_ID, data), sender, 0, 0);
+        }
     }
 };
 
@@ -248,7 +263,7 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
 {
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    if (msgData.stage>=stage && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
+    if (msgData.stage >= stage && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
     {
         stage = msgData.stage;
         parent = nullptr;
@@ -265,7 +280,7 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         turnCK = msgData.rotCW;
         turnCounterCK = msgData.rotCCW;
         module->setColor(Colors[color]);
-        sendTmn2(false, false);
+        sendTmn2('T');
     }
     else if (msgData.stage >= stage)
     {
@@ -369,8 +384,8 @@ void TetrisCode::verifTmn2()
                 {
                     //the tetramino is blocked
                     blocked = true;
-                    sendTmn2(false, true);
-                    BlockedData data = BlockedData(stage,nbLinesReinit, 1);
+                    sendTmn2('B');
+                    BlockedData data = BlockedData(stage, nbLinesReinit, 1);
                     if (leftItf != nullptr && leftItf->isConnected())
                     {
                         sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), leftItf, 0, 0);
@@ -380,13 +395,13 @@ void TetrisCode::verifTmn2()
                         sendMessage("Counting blocked neighbors", new MessageOf<BlockedData>(COUNT_BCK_MSG_ID, data), rightItf, 0, 0);
                     }
                     nbTmn += 1;
-                    NewTmnData data2 = NewTmnData(stage,nbTmn);
+                    NewTmnData data2 = NewTmnData(stage, nbTmn);
                     sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<NewTmnData>(NEWTMNMSG_ID, data2), 0, 0, 0);
                 }
             }
         }
     }
-    else if (movement == ROT_CK || movement == ROT_COUNTER_CK)
+    else if (movement == ROT_CK || movement == ROT_COUNTER_CK || movement == APPEAR)
     {
         farVerifications.clear();
         std::vector<int> dirs;
@@ -412,6 +427,18 @@ void TetrisCode::verifTmn2()
             dirs.push_back(EAST);
             v = farVerif(stage, 0, 0, dirs, rotation);
             farVerifications.push_back(v);
+        }
+        else if (movement == APPEAR)
+        {
+            dirs.push_back(NORTH);
+            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            dirs.clear();
+            dirs.push_back(SOUTH);
+            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            dirs.push_back(SOUTH);
+            v = farVerif(stage, 0, 0, dirs, rotation);
+            farVerifications.push_back(v);
+            console<<"number of verifications : "<<farVerifications.size()<<"\n";
         }
         nbFree += 1;
         v.id = nbFree;
