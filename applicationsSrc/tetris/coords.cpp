@@ -33,10 +33,8 @@ void TetrisCode::myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
     MessageOf<CoordsData> *msg = static_cast<MessageOf<CoordsData> *>(_msg.get());
     CoordsData msgData = *msg->getData();
 
-    console << "new coords : stage = " << stage << "new stage = " << msgData.stage << "\n";
     if (msgData.stage > stage)
     {
-        console << "recieved new coords\n";
         stage = msgData.stage;
         height = msgData.height;
         width = msgData.width;
@@ -55,11 +53,10 @@ void TetrisCode::myCoordsMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
         }
         if (rightItf == nullptr || !rightItf->isConnected())
         {
-            console << "sending new max width " << width << "\n";
             maxWidth = width;
             sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
+            pixelCalculation();
         }
-        pixelCalculation();
     }
     //The coordinates have to be better on at least one of the dimensions, and not worse on the other
     else if (msgData.stage == stage && ((height < msgData.height && width <= msgData.width) || (height <= msgData.height && width < msgData.width)))
@@ -116,14 +113,10 @@ void TetrisCode::myBackMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfac
         //if the module is the root of the tree, and all neighbors are ready, a tetramino can be created
         if (module->blockId == spanTree)
         {
-            console<<"new tetramino after spreading coords\n";
             module->setColor(MAGENTA);
             nbTmn += 1;
             NewTmnData data = NewTmnData(stage, nbTmn);
             sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<NewTmnData>(NEWTMNMSG_ID, data), 0, 0, 0);
-            stringstream strstm;
-            strstm << "new tetramino";
-            scheduler->trace(strstm.str(), module->blockId, MAGENTA);
         }
         else if (parent != nullptr && parent->isConnected())
         {
@@ -172,10 +165,8 @@ void TetrisCode::myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     MessageOf<IntData> *msg = static_cast<MessageOf<IntData> *>(_msg.get());
     IntData msgData = *msg->getData();
 
-    console << "recieved max width : stage = " << stage << " new stage = " << msgData.stage << " width = " << msgData.data << "\n";
     if (msgData.stage > stage)
     {
-        console << "recieved new max width\n";
         stage = msgData.stage;
         maxWidth = msgData.data;
         sendIntToAll(MAXWIDTHMSG_MSG_ID, maxWidth);
@@ -191,12 +182,11 @@ void TetrisCode::myMaxWidthMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
 
 int TetrisCode::pixelCalculation()
 {
-    //console<<"pixel calculation\n";    
     if (maxHeight < MIN_HEIGHT || maxWidth < MIN_WIDTH) //The set is too small to display a tetris game
     {
         tmn = PIXEL_NON_VALID;
         module->setColor(BLACK);
-    return 0;
+        return 0;
     }
 
     if (stage == 0) //there is no rescaling when the set is split
@@ -204,54 +194,52 @@ int TetrisCode::pixelCalculation()
         sizeOfPixel = maxHeight / MIN_HEIGHT;
         pixelHCoord = height / sizeOfPixel;
         pixelWCoord = width / sizeOfPixel;
-        if (sizeOfPixel == 1)
+    }
+    if (sizeOfPixel == 1)
+    {
+        roleInPixel = ALONE;
+    }
+    else
+    {
+        int hPosition = height % sizeOfPixel;
+        int wPosition = width % sizeOfPixel;
+        if (hPosition == 0 && wPosition == 0)
         {
-            roleInPixel = ALONE;
+            roleInPixel = BOTTOM_LEFT_CORNER;
+        }
+        else if (hPosition == 0 && wPosition == sizeOfPixel - 1)
+        {
+            roleInPixel = BOTTOM_RIGHT_CORNER;
+        }
+        else if (hPosition == sizeOfPixel - 1 && wPosition == 0)
+        {
+            roleInPixel = TOP_LEFT_CORNER;
+        }
+        else if (hPosition == sizeOfPixel - 1 && wPosition == sizeOfPixel - 1)
+        {
+            roleInPixel = TOP_RIGHT_CORNER;
+        }
+        else if (wPosition == 0)
+        {
+            roleInPixel = LEFT_BORDER;
+        }
+        else if (wPosition == sizeOfPixel - 1)
+        {
+            roleInPixel = RIGHT_BORDER;
+        }
+        else if (hPosition == 0)
+        {
+            roleInPixel = BOTTOM_BORDER;
+        }
+        else if (hPosition == sizeOfPixel - 1)
+        {
+            roleInPixel = TOP_BORDER;
         }
         else
         {
-
-            int hPosition = height % sizeOfPixel;
-            int wPosition = width % sizeOfPixel;
-            if (hPosition == 0 && wPosition == 0)
-            {
-                roleInPixel = BOTTOM_LEFT_CORNER;
-            }
-            else if (hPosition == 0 && wPosition == sizeOfPixel - 1)
-            {
-                roleInPixel = BOTTOM_RIGHT_CORNER;
-            }
-            else if (hPosition == sizeOfPixel - 1 && wPosition == 0)
-            {
-                roleInPixel = TOP_LEFT_CORNER;
-            }
-            else if (hPosition == sizeOfPixel - 1 && wPosition == sizeOfPixel - 1)
-            {
-                roleInPixel = TOP_RIGHT_CORNER;
-            }
-            else if (wPosition == 0)
-            {
-                roleInPixel = LEFT_BORDER;
-            }
-            else if (wPosition == sizeOfPixel - 1)
-            {
-                roleInPixel = RIGHT_BORDER;
-            }
-            else if (hPosition == 0)
-            {
-                roleInPixel = BOTTOM_BORDER;
-            }
-            else if (hPosition == sizeOfPixel - 1)
-            {
-                roleInPixel = TOP_BORDER;
-            }
-            else
-            {
-                roleInPixel = CORE;
-            }
+            roleInPixel = CORE;
         }
     }
-    //console<<"calculating pixels\n";
     pixelHCoord = height / sizeOfPixel;
     pixelWCoord = width / sizeOfPixel;
     int totalHNbPixels = maxHeight / sizeOfPixel; //the number of (full) pixels that are displayed on height
@@ -259,8 +247,6 @@ int TetrisCode::pixelCalculation()
     //The tetraminos appear at the top of the set, in the middle
     //The role of the deciding pixel is the same as in the rest of the game : if the root of the spanning trees
     //in the tetramino changes, it causes synchronization problems.
-    //console << " h coord = " << totalHNbPixels - 2 << " w coord = " << totalWNbPixels / 2 << "\n";
-    //console << "my h coord = " << pixelHCoord << " my w coord = " << pixelWCoord << "\n";
     if (pixelHCoord == totalHNbPixels - 2 && pixelWCoord == totalWNbPixels / 2 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
     {
         appear_module = true;
@@ -272,7 +258,8 @@ int TetrisCode::pixelCalculation()
 
     if ((pixelHCoord + 1) * sizeOfPixel - 1 > maxHeight || (pixelWCoord + 1) * sizeOfPixel - 1 > maxWidth) //if the pixel isn't complete
     {
-        if (tmn >= 1 || tmn <= 7) //if this module belonged to a tmn, it means that this is a split, and the tetramino needs to be reset.
+        console<<"PIXEL NON COMPLETE, tmn = "<<tmn<<"\n";
+        if (tmn != NO_TMN && tmn != PIXEL_NON_VALID) //if this module belonged to a tmn, it means that this is a split, and the tetramino needs to be reset.
         {
             if (tmn == 2) //sending the reset
             {
@@ -288,6 +275,9 @@ int TetrisCode::pixelCalculation()
             nbReinit = 0;
             nbReinitBackMsg = 0;
             nbTmnBackMsg = 0;
+            nbTmn += 1; //sending the new tetromino
+            NewTmnData data = NewTmnData(stage, nbTmn);
+            sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<NewTmnData>(NEWTMNMSG_ID, data), 0, 0, 0);
         }
         tmn = PIXEL_NON_VALID;
         module->setColor(BLACK);
@@ -295,7 +285,7 @@ int TetrisCode::pixelCalculation()
     else if (tmn == PIXEL_NON_VALID)
     {
         tmn = NO_TMN;
-        module->setColor(Colors[NO_COLOR]);
+        module->setColor(Colors[color]);
     }
 
     totalBckdModules = (maxWidth / sizeOfPixel) * sizeOfPixel; //the number of modules on width that belong to full pixels;
@@ -304,12 +294,6 @@ int TetrisCode::pixelCalculation()
     {
         sendMessage("Asking line Tmn Info", new MessageOf<int>(ASK_INFO_MSG_ID, stage), topItf, 0, 0);
     }
-
-    // module->setColor(Colors[roleInPixel%NB_COLORS]);
-    // if(appear_module)
-    // {
-    //     module->setColor(DARKGREEN);
-    // }
 
     return 1;
 }

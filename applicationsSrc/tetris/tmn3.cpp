@@ -477,27 +477,25 @@ void TetrisCode::verifTmn3()
         if (movement == ROT_CK)
         {
             dirs.push_back(EAST);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.clear();
             dirs.push_back(WEST);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.push_back(SOUTH);
-            v = farVerif(stage, 0, 0, dirs, rotation);
+            v = farVerif(stage, 0, dirs, rotation);
             farVerifications.push_back(v);
         }
         else if (movement == ROT_COUNTER_CK)
         {
             dirs.push_back(WEST);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.clear();
             dirs.push_back(EAST);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.push_back(NORTH);
-            v = farVerif(stage, 0, 0, dirs, rotation);
+            v = farVerif(stage, 0, dirs, rotation);
             farVerifications.push_back(v);
         }
-        nbFree += 1;
-        v.id = nbFree;
         sendFarVerif(v, nullptr);
     }
 }

@@ -226,7 +226,7 @@ void TetrisCode::myTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInterface *
 
     MessageOf<TmnData> *msg = static_cast<MessageOf<TmnData> *>(_msg.get());
     TmnData msgData = *msg->getData();
-    console << "recieved message. Stage = " << msgData.stage << " my stage = " << stage << "\n";
+    console << "recieved message. Stage = " << msgData.stage << " my stage = " << stage <<" update = "<<msgData.nbupdate<<" my update = "<<update<< "\n";
     if (msgData.stage >= stage && update < msgData.nbupdate && (tmn != 2 || rotation != msgData.rotation || position != msgData.position || color != msgData.color))
     {
         stage = msgData.stage;
@@ -265,6 +265,9 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
     TmnData msgData = *msg->getData();
     if (msgData.stage >= stage && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE))
     {
+        stringstream strstm;
+        strstm << "New Leader of Tmn 2";
+        scheduler->trace(strstm.str(), module->blockId, GREEN);
         stage = msgData.stage;
         parent = nullptr;
         leaderBlockCode = this;
@@ -279,7 +282,9 @@ void TetrisCode::myRestartTmn2Func(std::shared_ptr<Message> _msg, P2PNetworkInte
         goingLeft = msgData.goingL;
         turnCK = msgData.rotCW;
         turnCounterCK = msgData.rotCCW;
+        console<<"rotation = "<<rotation<<"\n";
         module->setColor(Colors[color]);
+        nbTmnBackMsg = 0;
         sendTmn2('T');
     }
     else if (msgData.stage >= stage)
@@ -409,39 +414,37 @@ void TetrisCode::verifTmn2()
         if (movement == ROT_CK)
         {
             dirs.push_back(EAST);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.clear();
             dirs.push_back(WEST);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.push_back(WEST);
-            v = farVerif(stage, 0, 0, dirs, rotation);
+            v = farVerif(stage, 0, dirs, rotation);
             farVerifications.push_back(v);
         }
         else if (movement == ROT_COUNTER_CK)
         {
             dirs.push_back(WEST);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.clear();
             dirs.push_back(EAST);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.push_back(EAST);
-            v = farVerif(stage, 0, 0, dirs, rotation);
+            v = farVerif(stage, 0, dirs, rotation);
             farVerifications.push_back(v);
         }
         else if (movement == APPEAR)
         {
             dirs.push_back(NORTH);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.clear();
             dirs.push_back(SOUTH);
-            farVerifications.push_back(farVerif(stage, 0, 0, dirs, rotation));
+            farVerifications.push_back(farVerif(stage, 0, dirs, rotation));
             dirs.push_back(SOUTH);
-            v = farVerif(stage, 0, 0, dirs, rotation);
+            v = farVerif(stage, 0, dirs, rotation);
             farVerifications.push_back(v);
-            console<<"number of verifications : "<<farVerifications.size()<<"\n";
+            console << "number of verifications : " << farVerifications.size() << "\n";
         }
-        nbFree += 1;
-        v.id = nbFree;
         sendFarVerif(v, nullptr);
     }
 }

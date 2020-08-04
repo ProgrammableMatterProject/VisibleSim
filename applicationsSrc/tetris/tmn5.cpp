@@ -449,17 +449,15 @@ void TetrisCode::verifTmn5()
         if (movement == ROT_CK)
         {
             dirs.push_back(SOUTH);
-            v = farVerif(stage, 0, 0, dirs, rotation);
+            v = farVerif(stage, 0, dirs, rotation);
             farVerifications.push_back(v);
         }
         else if (movement == ROT_COUNTER_CK)
         {
             dirs.push_back(SOUTH);
-            v = farVerif(stage, 0, 0, dirs, rotation);
+            v = farVerif(stage, 0, dirs, rotation);
             farVerifications.push_back(v);
         }
-        nbFree += 1;
-        v.id = nbFree;
         sendFarVerif(v, nullptr);
     }
 }

@@ -212,12 +212,8 @@ void TetrisCode::myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
         nbTmn = msgData.numbTmn;
         nbFBack = 0;
         nbFree = 0;
-        console<<"appear module = "<<appear_module<<"\n";
         if (appear_module)
         {
-            stringstream strstm;
-            strstm << "NEW Tetramino !";
-            scheduler->trace(strstm.str(), module->blockId, MAGENTA);
             tmnAppearance();
         }
         else
@@ -230,7 +226,6 @@ void TetrisCode::myNewTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
 
 void TetrisCode::tmnAppearance()
 {
-    console<<"NEW TETRAMINO\n";    
     parent = nullptr; //The module is the root of the tetramino, it has no parent
     position = 1;
     update = 1;
@@ -239,25 +234,18 @@ void TetrisCode::tmnAppearance()
     tmn = 2; //r % 7 + 1;
     r = (int)rand();
     rotation = r % 4 + 1;
-    //Some tetramino would exceed the set
-    if (tmn == 2 && rotation == SOUTH)
-    {
-        position = 3;
-    }
     while (color == NO_COLOR || color == 8) //The color at 8th place is too close to white, it is almost invisible
     {
         r = (int)rand();
         color = r % 9;
     }
-    console << "deciding module : send tmn " << tmn << " rot = " << rotation << " pos = " << position << "\n";
     movement = APPEAR;
     if (tmn == 1)
     {
         sendTmn1(false, false);
     }
     else if (tmn == 2)
-    {
-        module->setColor(GOLD);        
+    {      
         verifTmn2();
     }
     else if (tmn == 3)
@@ -1069,7 +1057,6 @@ void TetrisCode::myIsFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
 
         if (position != msgData.position || !b) //if this module has to spread the verification
         {
-            console << "sending verification : nb = " << msgData.id << " pos = " << msgData.position << " dir = " << msgData.direction << "\n";
             if (tmn == 1)
             {
                 sendVerifTmn1(false, msgData);
@@ -1315,7 +1302,6 @@ void TetrisCode::myBackFreeMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     {
         stage = msgData.stage;
         nbFBack = msgData.id;
-        console << " send back verification : nb = " << msgData.id << " pos = " << msgData.position << " dir = " << msgData.direction << " answer = " << msgData.answer << "\n";
         if (tmn == 1)
         {
             sendVerifTmn1(true, msgData);
@@ -1607,14 +1593,11 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
             else if (sender != nullptr && sender->isConnected()) //if the target module isn't connected, it means that it is not free
             {
                 verif.answer = OCCUPIED;
-                nbFBack = nbFree + 1;
-                verif.id = nbFBack;
                 sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, verif), sender, 0, 0);
             }
             else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
             {
                 farVerifications.pop_back();
-                console<<"nb far verifs left 2 = "<<farVerifications.size()<<"\n";
                 if (farVerifications.size() == 0)
                 {
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
@@ -1623,8 +1606,6 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
                 else //send the next verification
                 {
                     farVerif v = farVerifications.back();
-                    nbFree += 1;
-                    v.id = nbFree;
                     sendFarVerif(v, nullptr);
                 }
             }
@@ -1647,14 +1628,11 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
             else if (sender != nullptr && sender->isConnected()) //if the target module isn't connected, it means that it is not free
             {
                 verif.answer = OCCUPIED;
-                nbFBack = nbFree + 1;
-                verif.id = nbFBack;
                 sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, verif), sender, 0, 0);
             }
             else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
             {
                 farVerifications.pop_back();
-                console<<"nb far verifs left 3 = "<<farVerifications.size()<<"\n";
                 if (farVerifications.size() == 0)
                 {
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
@@ -1663,8 +1641,6 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
                 else //send the next verification
                 {
                     farVerif v = farVerifications.back();
-                    nbFree += 1;
-                    v.id = nbFree;
                     sendFarVerif(v, nullptr);
                 }
             }
@@ -1687,14 +1663,11 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
             else if (sender != nullptr && sender->isConnected()) //if the target module isn't connected, it means that it is not free
             {
                 verif.answer = OCCUPIED;
-                nbFBack = nbFree + 1;
-                verif.id = nbFBack;
                 sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, verif), sender, 0, 0);
             }
             else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
             {
                 farVerifications.pop_back();
-                console<<"nb far verifs left 4 = "<<farVerifications.size()<<"\n";
                 if (farVerifications.size() == 0)
                 {
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
@@ -1703,8 +1676,6 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
                 else //send the next verification
                 {
                     farVerif v = farVerifications.back();
-                    nbFree += 1;
-                    v.id = nbFree;
                     sendFarVerif(v, nullptr);
                 }
             }
@@ -1727,14 +1698,11 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
             else if (sender != nullptr && sender->isConnected()) //if the target module isn't connected, it means that it is not free
             {
                 verif.answer = OCCUPIED;
-                nbFBack = nbFree + 1;
-                verif.id = nbFBack;
                 sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, verif), sender, 0, 0);
             }
             else if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) //if sender == nullptr, mybe this module is directly the deciding module : it has to start the next verification.
             {
                 farVerifications.pop_back();
-                console<<"nb far verifs left 5 = "<<farVerifications.size()<<"\n";
                 if (farVerifications.size() == 0)
                 {
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
@@ -1743,8 +1711,6 @@ void TetrisCode::sendFarVerif(farVerif verif, P2PNetworkInterface *sender)
                 else //send the next verification
                 {
                     farVerif v = farVerifications.back();
-                    nbFree += 1;
-                    v.id = nbFree;
                     sendFarVerif(v, nullptr);
                 }
             }
@@ -1760,15 +1726,13 @@ void TetrisCode::myFarVerifMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
 {
     MessageOf<farVerif> *msg = static_cast<MessageOf<farVerif> *>(_msg.get());
     farVerif msgData = *msg->getData();
-    if (msgData.stage >= stage && msgData.id > nbFree)
+    if (msgData.stage >= stage)
     {
         stage = msgData.stage;
-        nbFree = msgData.id;
         if (tmn == PIXEL_NON_VALID) // If the module belongs to a non valid pixel, the rotation isn't possible.
         {
             msgData.answer = OCCUPIED;
             msgData.current_dir -= 1;
-            nbBackMsg = nbFree + 1;
             if (sender != nullptr && sender->isConnected())
             {
                 sendMessage("Far Verif Back", new MessageOf<farVerif>(BACK_FAR_V_MSG_ID, msgData), sender, 0, 0);
@@ -1794,7 +1758,6 @@ void TetrisCode::myFarVerifMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
         else //otherwise, this module needs to spread the verification in the right direction.
         {
             parent = sender;
-            console << "recieves far verif to send : dir = " << msgData.current_dir << "\n";
             sendFarVerif(msgData, sender);
         }
     }
@@ -1805,14 +1768,13 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
     MessageOf<farVerif> *msg = static_cast<MessageOf<farVerif> *>(_msg.get());
     farVerif msgData = *msg->getData();
 
-    if (msgData.stage >= stage && msgData.id > nbFBack)
+    if (msgData.stage >= stage)
     {
         stage = msgData.stage;
-        nbFBack = msgData.id;
 
         if (position == 1 && (roleInPixel == BOTTOM_RIGHT_CORNER || roleInPixel == ALONE)) // if this module is the deciding module
         {
-
+            console<<"received far answer = "<<msgData.answer<<"\n";
             if (msgData.answer == FREE) // if the answer is free, the verifications can continue.
             //Otherwise, the tetramino is stuck, and an other one has to be started.
             {
@@ -1823,8 +1785,7 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                     //if there isn't any verification left, it means that all pixels were free -> the update of the tetramino can go on.
                     if(movement == APPEAR)
                     {
-                        //module->setColor(Colors[color]);
-                        module->setColor(GREY);
+                        module->setColor(Colors[color]);
                         console<<"rotation = "<<rotation<<"\n";
                         if (tmn == 2)
                         {
@@ -1839,8 +1800,6 @@ void TetrisCode::myBackFarVMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
                 else //send the next verification
                 {
                     farVerif v = farVerifications.back();
-                    nbFree += 1;
-                    v.id = nbFree;
                     sendFarVerif(v, nullptr);
                 }
             }
@@ -2123,7 +2082,6 @@ void TetrisCode::mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
     //if the same neighbor is also missing
     {
         stage = msgData.stage;
-        module->setColor(GREEN);
         if (bottomItf != nullptr && bottomItf->isConnected())
         {
             sendMessage("Detected Splitting", new MessageOf<Splitdata>(SPLIT_MSG_ID, msgData), bottomItf, 0, 0);
@@ -2143,6 +2101,7 @@ void TetrisCode::mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
                 nbBackMsg = 0;
                 parent = nullptr;
                 sendCoords();
+                pixelCalculation();
             }
             else if (msgData.direction == EAST) //if the set is on the right, only the total width needs to be recalculated.
             {
@@ -2156,6 +2115,7 @@ void TetrisCode::mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
                 {
                     sendMessage("New width", new MessageOf<IntData>(MAXWIDTHMSG_MSG_ID, data), leftItf, 0, 0);
                 }
+                pixelCalculation();
             }
             if (topItf != nullptr && topItf->isConnected())
             {
@@ -2167,8 +2127,6 @@ void TetrisCode::mySplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterfa
 
 void TetrisCode::myCheckSplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
-    console << "recieved check split : tmn = " << tmn << " blocked = " << blocked << "\n";
-
     MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
     int msgData = *msg->getData();
 
@@ -2187,7 +2145,6 @@ void TetrisCode::myCheckSplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
             color = NO_COLOR;
             update = 0;
             init = false;
-            nbBackMsg = 0;
             nbFBack = 0;
             nbFree = 0;
             nbReinit = 0;
@@ -2207,8 +2164,6 @@ void TetrisCode::myCheckSplitMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkIn
 
 void TetrisCode::myResetTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender)
 {
-    console << "recieved reset\n";
-
     MessageOf<int> *msg = static_cast<MessageOf<int> *>(_msg.get());
     int msgData = *msg->getData();
 
@@ -2225,7 +2180,6 @@ void TetrisCode::myResetTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
         color = NO_COLOR;
         update = 0;
         init = false;
-        nbBackMsg = 0;
         nbFBack = 0;
         nbFree = 0;
         nbReinit = 0;
@@ -2237,9 +2191,6 @@ void TetrisCode::myResetTmnMsgFunc(std::shared_ptr<Message> _msg, P2PNetworkInte
             tmn = PIXEL_NON_VALID;
             module->setColor(BLACK);
         }
-        nbTmn += 1;
-        NewTmnData data = NewTmnData(stage, nbTmn);
-        sendMessageToAllNeighbors("New Tetramino Message", new MessageOf<NewTmnData>(NEWTMNMSG_ID, data), 0, 0, 0);
     }
 }
 
