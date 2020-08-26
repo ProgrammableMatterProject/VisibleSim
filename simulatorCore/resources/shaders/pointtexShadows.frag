@@ -10,10 +10,10 @@ void main() {
 	vec4 texel;
 	vec4 color = ambientGlobal;
 	if (textureEnable) {
-		vec4 texColor = texture2D(tex,gl_TexCoord[0].st); 
+		vec4 texColor = texture2D(tex,gl_TexCoord[0].st);
 		if (texColor.a<0.1) discard;
 		color+= ambient*texColor;
- 		texel=diffuse*texColor;
+		texel = diffuse*texColor;
 	} else {
 		texel=diffuse;
 		color+=ambient;
@@ -28,7 +28,7 @@ void main() {
 
 		float NdotL = max(dot(n,L),0.0);
 		float Ispec = min(pow(max(dot(R,E),0.0),0.3*gl_FrontMaterial.shininess),1.0);
-        color += shade*(texel * NdotL + Ispec * specular);
+		color += shade*(texel * NdotL + Ispec * specular);
 	}
 	gl_FragColor = vec4(color.rgb,texel.a);
 }

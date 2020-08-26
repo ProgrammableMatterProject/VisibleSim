@@ -531,7 +531,6 @@ Vector3D FCCLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos)
     }
 
 //    OUTPUT << "world :"<< res << endl;
-    cout<<"DEBUG BRIGADE WOLOLO : "<<res.pt[0]<<" "<<res.pt[1]<<" "<<res.pt[2]<<endl;
     return res;
 }
 

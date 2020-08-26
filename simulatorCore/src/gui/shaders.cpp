@@ -9,12 +9,16 @@ bool useShaders=true;
 GLhandleARB shadersProgram;
 GLint locTex,locShadowMap,locTextureEnable;
 
+static const float ambientLightColor[4] = {0.25,0.25,0.25,1.0};
+static const float diffuseLightColor[4] = {0.75,0.75,0.75,1.0};
+static const float specularLightColor[4] = {0.75,0.75,0.75,1.0};
+
 void enableTexture(bool enable) {
     glUniform1iARB(locTextureEnable,enable);
 }
 
-GLcharARB *lectureCodeShader(const char* titre)
-{ GLint tailleFichier;
+GLcharARB *lectureCodeShader(const char* titre) {
+    GLint tailleFichier;
   ifstream fin(titre);
   if (!fin.is_open()) return NULL;
   fin.seekg(0, ios_base::end);
@@ -239,9 +243,9 @@ void shadowedRenderingStep3(Camera *camera) {
     glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, camera->ls.dir );
     glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle);
 
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE.rgba);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, WHITE.rgba);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE.rgba);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLightColor);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLightColor);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLightColor);
 
 // activation du programme de shader
     if(useShaders && shadersProgram) {
@@ -320,10 +324,9 @@ void noshadowRenderingStart(Camera *camera) {
     glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, camera->ls.dir );
     glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle);
 
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE.rgba);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, WHITE.rgba);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE.rgba);
-
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLightColor);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLightColor);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLightColor);
 // activation du programme de shader
     if(useShaders && shadersProgram) {
         glUseProgramObjectARB(shadersProgram);
