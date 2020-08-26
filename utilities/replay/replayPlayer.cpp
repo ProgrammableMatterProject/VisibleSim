@@ -278,6 +278,9 @@ namespace Replay {
                     break;
                 case EVENT_CONSOLE_TRACE:
                     break;
+                case EVENT_MOTION_CATOMS3D:
+                    parseEventMotionCatoms3D(exportFile->tellg(),blockId,time,readTime);
+                    break;
             }
         }
         cout << "Done" << endl;
@@ -324,46 +327,14 @@ namespace Replay {
                 initPos.pt[0] = world->getPosition(blockId).pt[0];
                 initPos.pt[1] = world->getPosition(blockId).pt[1];
                 initPos.pt[2] = world->getPosition(blockId).pt[2];
-                if(robotType == 2) //Catom3D
-                {
-                    Catoms3DRotationEvent newEvent;
-                    newEvent.beginDate = readTime;
-                    newEvent.duration = endTime;
-                    newEvent.destinationPosition = pos;
-                    newEvent.initialPosition = initPos;
 
-                    exportFile->read((char *) &newEvent.fixedBlockId, sizeof(u4));
-                    exportFile->read((char *) &newEvent.type, sizeof(u1));
+                ReplayMotionEvent newEvent;
+                newEvent.beginDate = readTime;
+                newEvent.duration = endTime;
+                newEvent.destinationPosition = pos;
+                newEvent.initialPosition = initPos;
+                world->eventBuffer.insert(make_pair(blockId,newEvent));
 
-                    exportFile->read((char *) &newEvent.axe1.pt[0], sizeof(u2));
-                    exportFile->read((char *) &newEvent.axe1.pt[1], sizeof(u2));
-                    exportFile->read((char *) &newEvent.axe1.pt[2], sizeof(u2));
-
-                    exportFile->read((char *) &newEvent.axe2.pt[0], sizeof(u2));
-                    exportFile->read((char *) &newEvent.axe2.pt[1], sizeof(u2));
-                    exportFile->read((char *) &newEvent.axe2.pt[2], sizeof(u2));
-                    world->eventBuffer.insert(make_pair(blockId,newEvent));
-
-                    Catoms3D::Catoms3DGlBlock* fixedBlock = nullptr;
-                    Catoms3D::Catoms3DGlBlock* movingBlock = nullptr;
-                    for(auto& pair : world->mapGlBlocks)
-                    {
-                        if(pair.first == blockId)
-                            movingBlock = dynamic_cast<Catoms3D::Catoms3DGlBlock*>(pair.second);
-                        if(pair.first == newEvent.fixedBlockId)
-                            fixedBlock = dynamic_cast<Catoms3D::Catoms3DGlBlock*>(pair.second);
-                    }
-                    newEvent.init(movingBlock,fixedBlock);
-                }
-                else{ //Others
-
-                    ReplayMotionEvent newEvent;
-                    newEvent.beginDate = readTime;
-                    newEvent.duration = endTime;
-                    newEvent.destinationPosition = pos;
-                    newEvent.initialPosition = initPos;
-                    world->eventBuffer.insert(make_pair(blockId,newEvent));
-                }
 
 
                 world->updatePositionMotion(blockId,block, time, readTime, initPos);
@@ -376,6 +347,62 @@ namespace Replay {
 
 
     }
+
+    void ReplayPlayer::parseEventMotionCatoms3D(u8 position, u4 blockId, u8 time, u8 readTime)
+    {
+        cout << "Debuggage parsing motion catoms"<<endl;
+        exportFile->seekg(position);
+        KeyframeBlock block;
+        u8 endTime;
+        exportFile->read((char *) &endTime, sizeof(u8));
+        maxMotionDuration = max(endTime, maxMotionDuration);
+        if(time>=readTime+2000)
+        {
+            if(time<=readTime+endTime)
+            {
+                Cell3DPosition initPos;
+                initPos.pt[0] = world->getPosition(blockId).pt[0];
+                initPos.pt[1] = world->getPosition(blockId).pt[1];
+                initPos.pt[2] = world->getPosition(blockId).pt[2];
+
+                Catoms3DRotationEvent newEvent;
+                newEvent.beginDate = readTime;
+                newEvent.duration = endTime;
+                newEvent.initialPosition = initPos;
+
+                exportFile->read((char *) &newEvent.fixedBlockId, sizeof(u4));
+                exportFile->read((char *) &newEvent.type, sizeof(u1));
+
+                exportFile->read((char *) &newEvent.axe1.pt[0], sizeof(u2));
+                exportFile->read((char *) &newEvent.axe1.pt[1], sizeof(u2));
+                exportFile->read((char *) &newEvent.axe1.pt[2], sizeof(u2));
+
+                exportFile->read((char *) &newEvent.axe2.pt[0], sizeof(u2));
+                exportFile->read((char *) &newEvent.axe2.pt[1], sizeof(u2));
+                exportFile->read((char *) &newEvent.axe2.pt[2], sizeof(u2));
+                world->eventBuffer.insert(make_pair(blockId,newEvent));
+
+                Catoms3D::Catoms3DGlBlock* fixedBlock = nullptr;
+                Catoms3D::Catoms3DGlBlock* movingBlock = nullptr;
+                for(auto& pair : world->mapGlBlocks)
+                {
+                    if(pair.first == blockId)
+                        movingBlock = dynamic_cast<Catoms3D::Catoms3DGlBlock*>(pair.second);
+                    if(pair.first == newEvent.fixedBlockId)
+                        fixedBlock = dynamic_cast<Catoms3D::Catoms3DGlBlock*>(pair.second);
+                }
+                newEvent.init(movingBlock,fixedBlock);
+                world->updatePositionMotion(blockId,block, time, readTime, initPos);
+            }
+            else
+            {
+                world->updatePosition(blockId,block);
+            }
+        }
+
+
+    }
+
     void ReplayPlayer::parseEventColor(u8 position, u4 blockId)
     {
 
