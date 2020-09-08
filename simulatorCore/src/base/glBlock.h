@@ -38,7 +38,6 @@ public :
     virtual void setVisible(bool visible);
     virtual void toggleHighlight();
     virtual string getInfo();
-    /*virtual string getPopupInfo();*/
     virtual const Vector3D getPosition() { return Vector3D(position[0],position[1],position[2],1); };
 
     /**

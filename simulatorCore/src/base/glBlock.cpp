@@ -70,19 +70,11 @@ string GlBlock::getInfo() {
 
     return out.str();
 }
-/*
-string GlBlock::getPopupInfo() {
-    ostringstream out;
-    out << blockId << " - "
-        << World::getWorld()->lattice->worldToGridPosition(getPosition()) <<"\n";
 
-    return out.str();
-}
-*/
 void GlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int n) {
     glPushMatrix();
     glTranslatef(position[0],position[1],position[2]);
-		ptrObj->glDrawId(n);
+        ptrObj->glDrawId(n);
     glPopMatrix();
 }
 
@@ -92,4 +84,3 @@ void GlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
         ptrObj->glDrawIdByMaterial(n);
     glPopMatrix();
 }
-
