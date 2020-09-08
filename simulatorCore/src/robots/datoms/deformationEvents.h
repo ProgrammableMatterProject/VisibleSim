@@ -9,9 +9,9 @@
 #ifndef DEFORMATIONEVENTS_H_
 #define DEFORMATIONEVENTS_H_
 
-#include "math/matrix44.h"
-#include "robots/datoms/datomsBlock.h"
-#include "events/events.h"
+#include "../../math/matrix44.h"
+#include "datomsBlock.h"
+#include "../../events/events.h"
 
 using namespace Datoms;
 

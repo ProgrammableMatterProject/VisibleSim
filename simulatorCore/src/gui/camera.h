@@ -23,8 +23,8 @@
 #endif
 
 #include <math.h>
-#include "math/vector3D.h"
-#include "math/matrix44.h"
+#include "../math/vector3D.h"
+#include "../math/matrix44.h"
 
 #ifndef M_PI
 #define M_PI	3.1415926535897932384626433832795
@@ -80,6 +80,7 @@ public :
   void glLookAt();
   void setLightParameters(const Vector3D &t,double th,double ph, double d,double angle,double nearplane,double farplane);
   void glProjection();
+  void initFromGridSize(const Vector3D &v);
   const Vector3D getDirectionSpherical();
 
   friend ostream& operator<<(ostream& f,const Camera &c);

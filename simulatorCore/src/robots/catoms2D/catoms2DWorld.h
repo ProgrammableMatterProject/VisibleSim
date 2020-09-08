@@ -10,12 +10,12 @@
 
 #include <vector>
 
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "robots/catoms2D/catoms2DBlock.h"
-#include "gui/objLoader.h"
-#include "utils/trace.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "catoms2DBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../utils/trace.h"
 
 namespace Catoms2D {
 
@@ -43,11 +43,17 @@ public:
     OUTPUT << "I'm a Catoms2DWorld" << endl;
     }
 
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_C2D; };
+
     virtual Catoms2DBlock* getBlockById(int bId) override {
     return((Catoms2DBlock*)World::getBlockById(bId));
     }
 
-    virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+    void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false) override;
     void loadTextures(const string &str) override;
 
@@ -55,32 +61,32 @@ public:
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
      */
-    virtual void linkBlock(const Cell3DPosition &pos) override;
+    void linkBlock(const Cell3DPosition &pos) override;
 
     bool areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2);
     bool areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &pos2);
 
     using World::updateGlData; // Suppresses hiding warning
-    virtual void updateGlData(BuildingBlock*blc) override;
+    void updateGlData(BuildingBlock*blc) override;
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position);
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position, double angle);
 
     /** @copydoc World::glDraw() */
-    virtual void glDraw() override;
+    void glDraw() override;
     /** @copydoc World::glDrawId() */
-    virtual void glDrawId() override;
+    void glDrawId() override;
     /** @copydoc World::glDrawIdByMaterial() */
-    virtual void glDrawIdByMaterial() override;
+    void glDrawIdByMaterial() override;
     /** @copydoc World::glDrawSpecificBg() */
-    virtual void glDrawSpecificBg() override;
+    void glDrawBackground() override;
     /** @copydoc World::createPopupMenu(int ix,int iy) */
-    virtual void createPopupMenu(int ix,int iy) override;
+    void createPopupMenu(int ix,int iy) override;
     /** @copydoc World::setSelectedFace(int n) */
-    virtual void setSelectedFace(int n) override;
+    void setSelectedFace(int n) override;
     /** @copydoc World::menuChoice(int n) */
-    virtual void menuChoice(int n) override;
+    void menuChoice(int n) override;
     /** @copydoc World::exportConfiguration() */
-    virtual void exportConfiguration() override;
+    void exportConfiguration() override;
 };
 
 inline void deleteWorld() {

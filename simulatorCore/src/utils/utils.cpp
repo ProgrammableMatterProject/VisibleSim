@@ -9,7 +9,6 @@
  */
 
 
-#include "utils/utils.h"
 
 #include <fstream>
 #include <ctime>
@@ -19,8 +18,10 @@
 #include <string>
 #include <cstdlib>
 
-#include "events/scheduler.h"
-#include "base/world.h"
+#include "../gui/openglViewer.h"
+#include "utils.h"
+#include "../events/scheduler.h"
+#include "../base/world.h"
 
 using namespace BaseSimulator;
 using namespace utils;
@@ -31,6 +32,10 @@ std::string Backtrace(int skip = 1);
 int utils::m_mod(int l, int mod) {
     VS_ASSERT_MSG(mod != 0, "Modulus cannot be 0!");
     return l < 0 and l % mod != 0 ? mod - (-l % mod) : l % mod;
+}
+
+void utils::toggleSchedulerPause() {
+    BaseSimulator::getScheduler()->toggle_pause();
 }
 
 bool utils::assert_handler(bool cond, const char *file, const int line,
@@ -54,8 +59,11 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
     if (contextModule) {
         cerr << TermColor::BWhite << "#"
              << contextModule->blockId << " at " << contextModule->position;
-        contextModule->setColor(BLACK);
-        getWorld()->getCamera()->setTarget(contextModule->ptrGlBlock->getPosition());
+
+        if (GlutContext::GUIisEnabled) {
+            contextModule->setColor(BLACK);
+            getWorld()->getCamera()->setTarget(contextModule->ptrGlBlock->getPosition());
+        }
     } else
         cerr << TermColor::BWhite << "NULL";
     cerr << std::endl << TermColor::Reset;
@@ -99,14 +107,26 @@ void utils::awaitKeyPressed() {
 }
 
 const std::string
-utils::generateTimestampedFilename(const std::string& prefix, const std::string& ext) {
+utils::generateTimestampedFilename(const std::string& prefix,
+                                   const std::string& ext,
+                                   bool includeDate) {
     std::ostringstream out;
 
     time_t now = time(0);
     tm *ltm = localtime(&now);
 
-    out << prefix << "_" << ltm->tm_hour << "_"
-        << ltm->tm_min << "_" << ltm->tm_sec << "." << ext;
+    out << prefix;
+
+    if (includeDate)
+        out << '_' << std::setw(2) << std::setfill('0')
+            << ltm->tm_mday << std::setw(2) << std::setfill('0')
+            << (ltm->tm_mon + 1)
+            << (ltm->tm_year + 1900);
+
+    out << "_" << ltm->tm_hour << "_"
+        << ltm->tm_min << "_" << ltm->tm_sec;
+
+    out << "." << ext;
 
     return out.str();
 }

@@ -6,8 +6,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
-
-#include "utils/tDefs.h"
+#include "tDefs.h"
 
 namespace BaseSimulator {
 
@@ -33,6 +32,15 @@ int m_mod(int l, int mod);
  * Pause the current thread until a key is pressed
  */
 void awaitKeyPressed();
+
+/**
+ * @brief Wrapper function for Scheduler::toggle_pause
+ * Pauses the scheduler and processing of events, or resumes it if scheduler state
+ *  was PAUSED
+ * @warning only works in Realtime mode scheduler ('r').
+ * @note can be triggered from the GUI using the <SPACE> key
+ */
+void toggleSchedulerPause();
 
 /**
  * For a given triggered assert, display its location and freeze current simulation until user provides an input
@@ -75,9 +83,11 @@ const double EPS = 1E-5;                  //!< Epsilon
 //!< @brief Generates a formatted filename string
 //!< @param prefix e.g, config
 //!< @param ext e.g, xml
+//!< @param includeDate if enabled format = <prefix>_ddmmyyyy__hh_mm_ss.<ext>
 //!< @return a string with format <prefix>_hh_mm_ss.<ext>
 const std::string
-generateTimestampedFilename(const std::string& prefix, const std::string& ext);
+generateTimestampedFilename(const std::string& prefix, const std::string& ext,
+                            bool includeDate = false);
 
 //!< @brief Generates a formatted directory name string
 //!< @param dirBasename e.g, dir
@@ -120,8 +130,21 @@ std::string int_to_hex_str( T i, int width)
   return stream.str();
 }
 
+/**
+ * @brief trims a file name from a path
+ * @param path
+ * @return filename of the file at path
+ */
 char *myBasename(char const *path);
 std::string myBasename(const std::string& path);
+
+inline void toLowercase(std::string& str) {
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+}
+
+inline void toUppercase(std::string& str) {
+    transform(str.begin(), str.end(), str.begin(), ::toupper);
+}
 
 } // namespace utils
 

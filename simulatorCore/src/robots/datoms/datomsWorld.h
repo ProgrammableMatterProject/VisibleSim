@@ -10,15 +10,15 @@
 
 #include <vector>
 
-#include "base/buildingBlock.h"
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "grid/cell3DPosition.h"
-#include "robots/datoms/datomsBlock.h"
-#include "gui/objLoader.h"
-#include "utils/trace.h"
-#include "robots/datoms/datomsMotionRules.h"
+#include "../../base/buildingBlock.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "../../grid/cell3DPosition.h"
+#include "../../gui/objLoader.h"
+#include "../../utils/trace.h"
+#include "datomsBlock.h"
+#include "datomsMotionRules.h"
 
 //!< \namespace Datoms
 namespace Datoms {
@@ -50,6 +50,12 @@ public:
         OUTPUT << "I'm a DatomsWorld" << endl;
     }
 
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_DATOM; };
+
     virtual DatomsBlock* getBlockById(int bId) override {
         return((DatomsBlock*)World::getBlockById(bId));
     }
@@ -63,12 +69,12 @@ public:
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
      */
-    virtual void linkBlock(const Cell3DPosition &pos) override;
+    void linkBlock(const Cell3DPosition &pos) override;
 
-    virtual void glDraw() override;
-    virtual void glDrawId() override;
-    virtual void glDrawIdByMaterial() override;
-    virtual void glDrawBackground();
+    void glDraw() override;
+    void glDrawId() override;
+    void glDrawIdByMaterial() override;
+    void glDrawBackground() override;
 
     using World::updateGlData; // Suppresses hiding warning
     void updateGlData(BuildingBlock *bb) override;
@@ -77,17 +83,16 @@ public:
     void updateGlData(DatomsBlock*blc, const Cell3DPosition &position);
     void updateGlData(DatomsBlock*blc, const Vector3D &position);
     void updateGlData(DatomsBlock*blc, const Matrix &mat);
-      void updateGlData(const DatomsBlock*blc, PistonId id);
-    virtual void setSelectedFace(int n) override;
-    virtual void exportConfiguration() override;
+    void updateGlData(const DatomsBlock*blc, PistonId id);
+    void setSelectedFace(int n) override;
+    void exportConfiguration() override;
 
-    virtual void createPopupMenu(int ix, int iy) override;
-    virtual void menuChoice(int n) override;
+    void createPopupMenu(int ix, int iy) override;
+    void menuChoice(int n) override;
 /**
  * \brief load the background textures (internal)
  */
     void loadTextures(const string &str) override;
-
 };
 
 inline void deleteWorld() {

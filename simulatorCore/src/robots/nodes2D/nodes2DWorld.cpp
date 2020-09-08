@@ -15,11 +15,13 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/nodes2D/nodes2DWorld.h"
-#include "robots/nodes2D/nodes2DBlock.h"
-#include "robots/nodes2D/nodes2DMotionEngine.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
+#include "nodes2DWorld.h"
+#include "nodes2DBlock.h"
+#include "nodes2DGlBlock.h"
+#include "nodes2DMotionEngine.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -195,11 +197,14 @@ void Nodes2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosit
     Nodes2DGlBlock *glBlock = new Nodes2DGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     module->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(),blockId);
     module->setColor(col);
-        module->setPositionAndOrientation(pos,orientation);
+    module->setPositionAndOrientation(pos,orientation);
     lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     linkBlock(pos);
+
 }
 
 /**
@@ -246,8 +251,6 @@ void Nodes2DWorld::glDraw() {
 
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
-
-    glDrawBackground();
 }
 
 void Nodes2DWorld::glDrawShadows() {
@@ -257,8 +260,6 @@ void Nodes2DWorld::glDrawShadows() {
         ((Nodes2DGlBlock*)pair.second)->glDrawShadows(objBlockForPicking);
     }
     unlock();
-
-    glPopMatrix();
 }
 
 void Nodes2DWorld::glDrawId() {
@@ -285,7 +286,7 @@ void Nodes2DWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void Nodes2DWorld::glDrawSpecificBg() {
+void Nodes2DWorld::glDrawBackground() {
     static const GLfloat white[]={1.0,1.0,1.0,1.0},
     gray[]={0.2,0.2,0.2,1.0};
 
@@ -319,64 +320,13 @@ void Nodes2DWorld::glDrawSpecificBg() {
 void Nodes2DWorld::loadTextures(const string &str) {
     string path = str+"/texture_plane.tga";
     int lx,ly;
-    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureWall = loadTexture(path.c_str(),lx,ly);
     path=str+"/../smartBlocksTextures/digits.tga";
-    idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
-}
-
-void Nodes2DWorld::updateGlData(BuildingBlock *bb) {
-    Nodes2DGlBlock *glblc = (Nodes2DGlBlock*)bb->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setPosition(lattice->gridToWorldPosition(bb->position));
-            glblc->setColor(bb->color);
-            unlock();
-    }
-}
-
-void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Color &color) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setColor(color);
-            unlock();
-    }
-}
-
-void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, bool visible) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setVisible(visible);
-            unlock();
-    }
-}
-
-void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Vector3D &position) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setPosition(position);
-        unlock();
-    }
-}
-
-void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Cell3DPosition &position) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setPosition(lattice->gridToWorldPosition(position));
-        unlock();
-    }
+    idTextureDigits = loadTexture(path.c_str(),lx,ly);
 }
 
 void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Matrix &mat) {
-    Nodes2DGlBlock *glblc = blc->getGlBlock();
+    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         glblc->mat = mat;
@@ -402,7 +352,7 @@ void Nodes2DWorld::setSelectedFace(int n) {
 }
 
 void Nodes2DWorld::exportConfiguration() {
-    Nodes2DConfigExporter exporter = Nodes2DConfigExporter(this);
+    auto exporter = Nodes2DConfigExporter(this);
     exporter.exportConfiguration();
 }
 

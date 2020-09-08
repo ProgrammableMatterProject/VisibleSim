@@ -10,11 +10,17 @@
 
 #include <iostream>
 
-#include "robots/hexanodes/hexanodesBlock.h"
-#include "base/buildingBlock.h"
-#include "robots/hexanodes/hexanodesWorld.h"
-#include "robots/hexanodes/hexanodesSimulator.h"
-#include "utils/trace.h"
+#include "../../base/buildingBlock.h"
+#include "../../utils/trace.h"
+#include "../../replay/replayExporter.h"
+#include "../../events/events.h"
+#include "hexanodesBlock.h"
+#include "hexanodesGlBlock.h"
+#include "hexanodesWorld.h"
+#include "hexanodesSimulator.h"
+#include "hexanodesBlock.h"
+#include "hexanodesMotionEngine.h"
+#include "hexanodesMotionEvents.h"
 
 using namespace std;
 
@@ -49,7 +55,7 @@ std::ostream& operator<<(std::ostream &stream, HexanodesBlock const& bb) {
     return stream;
 }
 
-bool HexanodesBlock::getNeighborPos(short connectorDir,Cell3DPosition &pos) const {
+bool HexanodesBlock::getNeighborPos(uint8_t connectorDir,Cell3DPosition &pos) const {
     HexanodesWorld *wrl = getWorld();
         const Vector3D bs = wrl->lattice->gridScale;
         pos = ((HHLattice*)(wrl->lattice))->getNeighborRelativePos(HHLattice::Direction(connectorDir));
@@ -111,7 +117,7 @@ void HexanodesBlock::setPosition(const Cell3DPosition &p) {
     setPositionAndOrientation(p, orientationCode);
 }
 
-void HexanodesBlock::setPositionAndOrientation(const Cell3DPosition &pos, short code) {
+void HexanodesBlock::setPositionAndOrientation(const Cell3DPosition &pos, uint8_t code) {
     orientationCode = code;
     position = pos;
 
@@ -120,10 +126,14 @@ void HexanodesBlock::setPositionAndOrientation(const Cell3DPosition &pos, short 
     cout << M << endl;
     getWorld()->updateGlData(this,M);
     getWorld()->updateGlData(this,position);
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                           blockId, position, orientationCode);
 }
 
-short HexanodesBlock::getOrientationFromMatrix(const Matrix &mat) {
-    static short tab[3][3]={{-1,2,-1},{3,-1,1},{-1,0,-1}};
+uint8_t HexanodesBlock::getOrientationFromMatrix(const Matrix &mat) {
+    static uint8_t tab[3][3]={{4,2,4},{3,4,1},{4,0,4}};
     Vector3D V=mat * Vector3D(1,0,0);
     int cx=(int)(V[0]+1.5);
     int cy=(int)(V[1]+1.5);
@@ -137,8 +147,8 @@ short HexanodesBlock::getOrientationFromMatrix(const Matrix &mat) {
     return (tab[cx][cy]);
 }
 
-Matrix HexanodesBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos, short code) {
-    short orientation = code;
+Matrix HexanodesBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos, uint8_t code) {
+    uint8_t orientation = code;
 
     Matrix M1,M2,M;
     M1.setRotationZ(-orientation*60.0);
@@ -146,6 +156,38 @@ Matrix HexanodesBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition 
     M2.setTranslation(V);
     M = M2*M1;
     return M;
+}
+
+bool HexanodesBlock::canMoveTo(const Cell3DPosition& dest) const {
+    vector<HexanodesMotion*> motions =
+        Hexanodes::getWorld()->getAllMotionsForModule(const_cast<HexanodesBlock*>(this));
+    for (const auto* motion : motions) {
+        if (motion->getFinalPos(position) == dest)
+            return true;
+    }
+
+    return false;
+}
+
+bool HexanodesBlock::moveTo(const Cell3DPosition& dest) {
+    vector<HexanodesMotion*> motions = Hexanodes::getWorld()->getAllMotionsForModule(this);
+
+    for (const auto* motion : motions) {
+        if (motion->getFinalPos(position) == dest) {
+            getScheduler()->schedule(
+                new HexanodesMotionStartEvent(getScheduler()->now(), this,
+                                              dest, motion->getToConId()));
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void HexanodesBlock::setDisplayedValue(int n) {
+    static_cast<HexanodesGlBlock*>(ptrGlBlock)->setDisplayedValue(n);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeDisplayUpdate(getScheduler()->now(), blockId, n);
 }
 
 }

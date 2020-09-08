@@ -8,11 +8,11 @@
 #include <iostream>
 #include <sstream>
 
-#include "events/scheduler.h"
-#include "comm/network.h"
-#include "utils/trace.h"
-#include "stats/statsIndividual.h"
-#include "utils/utils.h"
+#include "../events/scheduler.h"
+#include "../comm/network.h"
+#include "../utils/trace.h"
+#include "../stats/statsIndividual.h"
+#include "../utils/utils.h"
 
 //#define TRANSMISSION_TIME_DEBUG
 
@@ -23,7 +23,7 @@ using namespace BaseSimulator::utils;
 uint64_t Message::nextId = 0;
 uint64_t Message::nbMessages = 0;
 
-bID P2PNetworkInterface::nextId = 0;
+uint64_t P2PNetworkInterface::nextId = 0;
 int P2PNetworkInterface::defaultDataRate = 1000000;
 
 //===========================================================================================================
@@ -57,6 +57,7 @@ Message* Message::clone() const {
     ptr->sourceInterface = sourceInterface;
     ptr->destinationInterface = destinationInterface;
     ptr->type = type;
+    adjustClonedMessageCount();
     return ptr;
 }
 
@@ -85,7 +86,7 @@ P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 #endif
 #endif
     hostBlock = b;
-    connectedInterface = NULL;
+    connectedInterface = nullptr;
     availabilityDate = 0;
     globalId = nextId;
     nextId++;
@@ -93,7 +94,7 @@ P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 }
 
 void P2PNetworkInterface::setDataRate(Rate *r) {
-  assert(r != NULL);
+  assert(r != nullptr);
   delete dataRate;
   dataRate = r;
 }
@@ -114,11 +115,11 @@ void P2PNetworkInterface::send(Message *m) {
 bool P2PNetworkInterface::addToOutgoingBuffer(MessagePtr msg) {
     stringstream info;
 
-    if (connectedInterface != NULL) {
+    if (connectedInterface != nullptr) {
         outgoingQueue.push_back(msg);
         BaseSimulator::utils::StatsIndividual::incOutgoingMessageQueueSize(hostBlock->stats);
         if (availabilityDate < BaseSimulator::getScheduler()->now()) availabilityDate = BaseSimulator::getScheduler()->now();
-        if (outgoingQueue.size() == 1 && messageBeingTransmitted == NULL) { //TODO
+        if (outgoingQueue.size() == 1 && messageBeingTransmitted == nullptr) { //TODO
             BaseSimulator::getScheduler()->schedule(new NetworkInterfaceStartTransmittingEvent(availabilityDate,this));
         }
         return(true);
@@ -173,10 +174,10 @@ void P2PNetworkInterface::send() {
 }
 
 void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
-    // test ajouté par Ben, gestion du cas : connect(NULL)
+    // test ajouté par Ben, gestion du cas : connect(nullptr)
     if (ni) { // Connection
         if (ni->connectedInterface != this) {
-            if (ni->connectedInterface != NULL) {
+            if (ni->connectedInterface != nullptr) {
                 OUTPUT << "ERROR : connecting to an already connected P2PNetwork interface" << endl;
                 ni->connectedInterface->hostBlock->removeNeighbor(ni->connectedInterface);
                 ni->hostBlock->removeNeighbor(ni);
@@ -185,11 +186,11 @@ void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
             hostBlock->addNeighbor(ni->connectedInterface, ni->hostBlock);
             ni->hostBlock->addNeighbor(ni, ni->connectedInterface->hostBlock);
         }
-    } else if (connectedInterface != NULL) {
+    } else if (connectedInterface != nullptr) {
         // disconnect this interface and the remote one
         hostBlock->removeNeighbor(this);
         connectedInterface->hostBlock->removeNeighbor(connectedInterface);
-        connectedInterface->connectedInterface = NULL;
+        connectedInterface->connectedInterface = nullptr;
     }
     connectedInterface = ni;
 }
@@ -201,5 +202,5 @@ Time P2PNetworkInterface::getTransmissionDuration(MessagePtr &m) {
 }
 
 bool P2PNetworkInterface::isConnected() const {
-  return connectedInterface != NULL;
+  return connectedInterface != nullptr;
 }

@@ -10,10 +10,11 @@
 
 #include <stdexcept>
 
-#include "base/buildingBlock.h"
-#include "robots/slidingCubes/slidingCubesBlockCode.h"
-#include "robots/slidingCubes/slidingCubesGlBlock.h"
-#include "grid/lattice.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/buildingBlock.h"
+#include "slidingCubesBlockCode.h"
+#include "slidingCubesGlBlock.h"
+#include "../../grid/lattice.h"
 
 namespace SlidingCubes {
 
@@ -27,8 +28,6 @@ public:
 
     inline SlidingCubesGlBlock* getGlBlock() const override { return (SlidingCubesGlBlock*)ptrGlBlock; };
     inline void setGlBlock(SlidingCubesGlBlock*ptr) { ptrGlBlock=ptr;};
-    void setPrevNext(int,int);
-    void setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next);
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) const;
     inline P2PNetworkInterface *getInterface(SCLattice::Direction d) const {
         return P2PNetworkInterfaces[d];
@@ -43,6 +42,16 @@ public:
      */
     virtual void removeNeighbor(P2PNetworkInterface *ni) override;
     int getDirection(P2PNetworkInterface*) const override;
+
+    /**
+     * @copydoc BuildingBlock::canMoveTo
+     */
+    virtual bool canMoveTo(const Cell3DPosition& dest) const override;
+
+    /**
+     * @copydoc BuildingBlock::moveTo
+     */
+    virtual bool moveTo(const Cell3DPosition& dest) override;
 };
 
 std::ostream& operator<<(std::ostream &stream, SlidingCubesBlock const& bb);

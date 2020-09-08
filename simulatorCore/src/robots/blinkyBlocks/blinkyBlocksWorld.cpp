@@ -12,11 +12,12 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/blinkyBlocks/blinkyBlocksWorld.h"
-#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
-#include "robots/blinkyBlocks/blinkyBlocksEvents.h"
-#include "utils/configExporter.h"
-#include "utils/trace.h"
+#include "blinkyBlocksWorld.h"
+#include "blinkyBlocksBlock.h"
+#include "blinkyBlocksEvents.h"
+#include "../../utils/configExporter.h"
+#include "../../utils/trace.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 
@@ -64,6 +65,9 @@ void BlinkyBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     BlinkyBlocksGlBlock *glBlock = new BlinkyBlocksGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     blinkyBlock->setGlBlock(glBlock);
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     blinkyBlock->setPosition(pos);
     blinkyBlock->setColor(col);
 
@@ -104,7 +108,6 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 void BlinkyBlocksWorld::glDraw() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-    // glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
     glDisable(GL_TEXTURE_2D);
     lock();
     for (const auto& pair : mapGlBlocks) {
@@ -112,13 +115,30 @@ void BlinkyBlocksWorld::glDraw() {
         isBlinkingBlocks |= ((BlinkyBlocksGlBlock*)pair.second)->isHighlighted;
     }
     unlock();
+    glPopMatrix();
 
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
 
-    glDrawBackground();
+    lattice->glDraw();
+}
+
+void BlinkyBlocksWorld::glDrawShadows() {
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+    glDisable(GL_TEXTURE_2D);
+    lock();
+    for (const auto& pair : mapGlBlocks) {
+        ((BlinkyBlocksGlBlock*)pair.second)->glDraw(objBlock);
+    }
+    unlock();
+    glPopMatrix();
+
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
 
     lattice->glDraw();
+    glPopMatrix();
 }
 
 void BlinkyBlocksWorld::glDrawId() {
@@ -148,7 +168,7 @@ void BlinkyBlocksWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void BlinkyBlocksWorld::glDrawSpecificBg() {
+void BlinkyBlocksWorld::glDrawBackground() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
         gray[]={0.2f,0.2f,0.2f,1.0};
     glPopMatrix();
@@ -232,7 +252,7 @@ void BlinkyBlocksWorld::glDrawSpecificBg() {
 void BlinkyBlocksWorld::loadTextures(const string &str) {
     string path = str+"/texture_plane.tga";
     int lx,ly;
-    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureWall = loadTexture(path.c_str(),lx,ly);
 }
 
 void BlinkyBlocksWorld::setSelectedFace(int n) {

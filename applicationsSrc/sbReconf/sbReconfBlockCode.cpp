@@ -69,9 +69,9 @@ void SbReconfBlockCode::startup() {
     _next = NULL;
     _previous = NULL;
     _numPrev = -1;
-    block->_isBorder=false;
-    block->_isTrain=false;
-    block->_isSingle=false;
+    _isBorder=false;
+    _isTrain=false;
+    _isSingle=false;
     _isHead=false;
     _isEnd=false;
     _motionDir.set(0,0);
@@ -96,7 +96,7 @@ void SbReconfBlockCode::startup() {
 #endif
         targetGrid = new presence[gridSize[0]*gridSize[1]];
         memcpy(targetGrid,tab,gridSize[0]*gridSize[1]*sizeof(presence));
-        block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
+        wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
         tabSteps[0] = true;
 
         // compte le nombre de cellules pleines
@@ -193,7 +193,7 @@ void SbReconfBlockCode::applyRules() {
             bc = (SbReconfBlockCode*)(ni->connectedInterface->hostBlock->blockCode);
             neighborsDirection[i]=bc->_motionDir;
         } else {
-            if (ni->connectedInterface!=NULL && ((SmartBlocks::SmartBlocksBlock*)(ni->connectedInterface->hostBlock))->wellPlaced) {
+            if (ni->connectedInterface!=NULL && ((SbReconfBlockCode*)(ni->connectedInterface->hostBlock->blockCode))->wellPlaced) {
                 neighborsDirection[i].set(0,0);
             } else {
                 neighborsDirection[i].unSet();
@@ -218,15 +218,15 @@ void SbReconfBlockCode::applyRules() {
 }
 
 void SbReconfBlockCode::setRulesColor() {
-    if (block->_isBorder) {
-        if (block->_isTrain) {
+    if (_isBorder) {
+        if (_isTrain) {
             block->setColor(_isHead?RED:_isEnd?GOLD:ORANGE);
         } else {
             block->setColor(_isHead?RED:_isEnd?GREY:PINK);
         }
 
     } else {
-        block->setColor(_isHead?RED:block->wellPlaced?YELLOW:GREEN);
+        block->setColor(_isHead?RED:wellPlaced?YELLOW:GREEN);
     }
 }
 
@@ -257,7 +257,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
         posGrid.x = block->position[0];
         posGrid.y = block->position[1];
         getPresenceMatrix(posGrid,_pm);
-        block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
+        wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
 
         addStat(2,1);
         if (_isEnd) { // c'est une fin de train (et de ligne)
@@ -270,7 +270,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
             //GlutContext::mustSaveImage=true;
         }
         //printStats();
-        block->_isTrain=false;
+        _isTrain=false;
 
         // prepare for next motion
         if (unlockPathTabSize>0) {
@@ -322,14 +322,14 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                 targetGrid = new presence[gridSize[0]*gridSize[1]];
                 memcpy(targetGrid,recvMessage->targetGrid,gridSize[0]*gridSize[1]*sizeof(presence));
 
-                block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
+                wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
                 //block->setDisplayedValue(-1);
                 setRulesColor();
                 block2Answer=recvInterface;
                 sendMapToNeighbors(block2Answer);
 #ifdef verbose
                 info.str("");
-                info << "TargetState(" << posGrid.x << "," << posGrid.y << ")  " << block->wellPlaced;
+                info << "TargetState(" << posGrid.x << "," << posGrid.y << ")  " << wellPlaced;
                 scheduler->trace(info.str(),hostBlock->blockId);
 #endif
             }
@@ -441,7 +441,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                 }
             } else {
                 _previous = recvMessage->sourceInterface->connectedInterface;
-                _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+                _numPrev = ((_previous && !_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
                 applyRules();
                 if (possibleRules && !possibleRules->empty()) {
                     // on recherche une règle de tete
@@ -476,10 +476,10 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                                 OUTPUT << "le block de départ de la recherche " << endl;
 #endif // verbose
                                 _previous = getBorderPreviousNeightbor(NULL);
-                                _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+                                _numPrev = ((_previous && !_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
                                 _next = getBorderNextNeightbor();
                                 //block->setDisplayedValue(0);
-                                block->_isTrain = true;
+                                _isTrain = true;
                                 _isHead = true;
                                 _isEnd = false;
                                 _motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
@@ -513,7 +513,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 #endif // verbose
                                 setRulesColor();
                                 //block->setDisplayedValue(0);
-                                block->_isTrain = true;
+                                _isTrain = true;
                                 _isHead = true;
                                 _isEnd = false;
                                 _previous = NULL;
@@ -536,7 +536,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                         } else {
 //                        OUTPUT << "case 1" << endl;
                             _previous = recvMessage->sourceInterface->connectedInterface;
-                            _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+                            _numPrev = ((_previous && !_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
                             applyRules();
                             _next = getBorderNextNeightbor(_previous);
 #ifdef verbose
@@ -552,7 +552,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                 } else {
 //                        OUTPUT << "case 2" << endl;
                     _previous = recvMessage->sourceInterface->connectedInterface;
-                    _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+                    _numPrev = ((_previous && !_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
                     applyRules();
                     _next = getBorderNextNeightbor(_previous);
 #ifdef verbose
@@ -576,14 +576,14 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
             info << "rec. SearchEndTrainMessage("<< recvMessage->num <<") from " << sourceId;
             scheduler->trace(info.str(),hostBlock->blockId);
 
-            OUTPUT << "isSingle : " << block->_isSingle << endl;
+            OUTPUT << "isSingle : " << _isSingle << endl;
 #endif // verbose
             if (!tabSteps[1]) {
                 tabMemorisedMessages[3] = message;
                 tabSteps[3]=true;
             } else {
                 _previous = recvMessage->sourceInterface->connectedInterface;
-                _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+                _numPrev = ((_previous && !_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
                 step3(message);
                 tabSteps[3]=false;
             }
@@ -611,7 +611,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                 printRules();
 //                        Capability *capa = possibleRules->back()->capa;
 
-                block->_isTrain=true;
+                _isTrain=true;
 // si on est à la tete du train on peut créer des lignes
                 if (_isHead) {
                     createLine(scheduler->now(),true);
@@ -634,7 +634,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                         possibleRules->pop_back();
                     }
                     bool test=!possibleRules->empty();
-                    if (test && !block->_isSingle) {
+                    if (test && !_isSingle) {
                         capa = possibleRules->back()->capa;
                         test &= !testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
                     }
@@ -646,7 +646,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                         info << "send TrainReadyMessage(true) to " << _previous->connectedInterface->hostBlock->blockId;
                         scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                        block->_isTrain = true;
+                        _isTrain = true;
                         _isEnd = true;
                     } else {
                         // sinon on propage faux vers le début
@@ -657,7 +657,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                         info << "send TrainReadyMessage(false) to " << _previous->connectedInterface->hostBlock->blockId;
                         scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                        block->_isTrain = false;
+                        _isTrain = false;
                         _isEnd = false;
                     }
                 } else {
@@ -740,9 +740,9 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                         printRules();
 
                         _previous = getBorderPreviousNeightbor(NULL);
-                        _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+                        _numPrev = ((_previous && !_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
                         _next = NULL;
-                        block->_isTrain = false;
+                        _isTrain = false;
                         // envoie le message de reconstruction du train
                         ReconnectTrainMessage *message = new ReconnectTrainMessage(possibleRules && possibleRules->size()>0);
                         scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
@@ -811,7 +811,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                 _previous = recvMessage->sourceInterface->connectedInterface;
                 _next = getBorderNextNeightbor();
             }
-            _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+            _numPrev = ((_previous && !_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
             reconnect(recvMessage->hasRule);
         }
             break;
@@ -864,7 +864,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
                     OUTPUT << block->blockId << "._numPrev =" << _numPrev << endl;
 #endif
 
-                    if (block->_isSingle)  {
+                    if (_isSingle)  {
 #ifdef verbose
                         OUTPUT << "isSingle" << endl;
 #endif
@@ -985,11 +985,11 @@ void SbReconfBlockCode::init() {
       tabSteps[3] = false;*/
     posGrid.x = block->position[0];
     posGrid.y = block->position[1];
-    block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
+    wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
     setRulesColor();
     //block->setDisplayedValue(-1);
-    block->_isTrain = false;
-    block->_isBorder = false;
+    _isTrain = false;
+    _isBorder = false;
     /*_isHead = false;
       _isEnd = false;*/
     _motionDir.set(0,0);
@@ -1005,14 +1005,14 @@ void SbReconfBlockCode::step2(MessagePtr message) {
     SearchHeadMessage_ptr recvMessage = std::static_pointer_cast<SearchHeadMessage>(message);
     stringstream info;
 
-    block->_isTrain = false;
+    _isTrain = false;
     _next = recvMessage->sourceInterface->connectedInterface;
     _previous=NULL;
     _isEnd=false;
     applyRules();
     if (possibleRules && !possibleRules->empty()) {
         Capability *capa = possibleRules->back()->capa;
-        block->_isTrain = false;
+        _isTrain = false;
         if (capa->isHead) {
             // send searchEndTrainMessage
 #ifdef verbose
@@ -1033,7 +1033,7 @@ void SbReconfBlockCode::step2(MessagePtr message) {
             _isHead = true;
         } else /*if (capa->linkPrevPos)*/ {
             _previous = getBorderPreviousNeightbor(_next);
-            _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+            _numPrev = ((_previous && !_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
 #ifdef verbose
             info.str("");
             info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1);
@@ -1051,7 +1051,7 @@ void SbReconfBlockCode::step2(MessagePtr message) {
             scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
         }
-    } else /*if (block->_isBorder && _next) */{
+    } else /*if (_isBorder && _next) */{
         // si pas de rule : on demande un retour en arriere
 #ifdef verbose
         info.str("");
@@ -1059,8 +1059,8 @@ void SbReconfBlockCode::step2(MessagePtr message) {
         scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
         _isHead = false;
-        block->_isTrain = false;
-        block->_isBorder = false;
+        _isTrain = false;
+        _isBorder = false;
         //block->setDisplayedValue(-1);
 
         setRulesColor();
@@ -1082,7 +1082,7 @@ void SbReconfBlockCode::step3(MessagePtr message) {
     if (possibleRules && !possibleRules->empty()) {
         Capability *capa = possibleRules->back()->capa;
         bool test = testIsthmus(capa->linkPrevPos->x,capa->linkPrevPos->y);
-        if (capa->isEnd && !capa->isHead && !block->_isSingle) {
+        if (capa->isEnd && !capa->isHead && !_isSingle) {
             test = test || testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
         }
 
@@ -1102,9 +1102,9 @@ void SbReconfBlockCode::step3(MessagePtr message) {
             info << "send TrainReadyMessage(false) to " << _previous->connectedInterface->hostBlock->blockId;
             scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-            block->_isTrain = false;
+            _isTrain = false;
             _isEnd = false;
-            block->_isBorder = false;
+            _isBorder = false;
             return;
         }
     }
@@ -1119,7 +1119,7 @@ void SbReconfBlockCode::step3(MessagePtr message) {
 //        if (possibleRules->empty()) OUTPUT << _pm << endl;
     }
 
-    if (!block->_isSingle && possibleRules && !possibleRules->empty()) {
+    if (!_isSingle && possibleRules && !possibleRules->empty()) {
         Capability *capa = possibleRules->back()->capa;
         block->setDisplayedValue(block->blockId);
         // send searchEndTrainMessage
@@ -1138,8 +1138,8 @@ void SbReconfBlockCode::step3(MessagePtr message) {
         info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
         scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-        block->_isTrain = true;
-        block->_isBorder = true;
+        _isTrain = true;
+        _isBorder = true;
         _isEnd = false;
         //}
     } else {
@@ -1160,10 +1160,10 @@ void SbReconfBlockCode::step3(MessagePtr message) {
             info << "send TrainReadyMessage(true) to " << _previous->connectedInterface->hostBlock->blockId;
             scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-            block->_isTrain = true;
+            _isTrain = true;
             _isEnd = true;
-            block->_isBorder = true;
-            block->_isSingle = false; /////////// TODO
+            _isBorder = true;
+            _isSingle = false; /////////// TODO
         } else {
 // il faut trouver un bloc de fin de train avant le bloc courant.
             TrainReadyMessage *message = new TrainReadyMessage(false);
@@ -1173,9 +1173,9 @@ void SbReconfBlockCode::step3(MessagePtr message) {
             info << "send TrainReadyMessage(false) to " << _previous->connectedInterface->hostBlock->blockId;
             scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-            block->_isTrain = false;
+            _isTrain = false;
             _isEnd = false;
-            block->_isBorder = false;
+            _isBorder = false;
         }
     }
 
@@ -1242,7 +1242,7 @@ void SbReconfBlockCode::reconnect(bool hasRule) {
                 printRules();
                 _isHead = true;
                 _previous = NULL;
-                block->_isTrain = true;
+                _isTrain = true;
 //block->setDisplayedValue(0);
 
                 _motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
@@ -1277,7 +1277,7 @@ void SbReconfBlockCode::reconnect(bool hasRule) {
         // envoie le message de reconstruction du train
         //_next = recvMessage->sourceInterface->connectedInterface;
         _previous = getBorderPreviousNeightbor(_next);
-        _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+        _numPrev = ((_previous && !_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
 #ifdef verbose
         info.str("");
         info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
@@ -1285,7 +1285,7 @@ void SbReconfBlockCode::reconnect(bool hasRule) {
              << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
         scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-        block->_isTrain = false;
+        _isTrain = false;
         if (possibleRules && !possibleRules->empty()) {
             ReconnectTrainMessage *message = new ReconnectTrainMessage(true);
             scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
@@ -1380,7 +1380,7 @@ void SbReconfBlockCode::sendAsk4EndToNeighbors(P2PNetworkInterface *p2pExcept) {
 #endif // verbose
 
     nbreOfWaitedAnswers=0;
-    _nbreWellPlacedBlocks=int(block->wellPlaced);
+    _nbreWellPlacedBlocks=int(wellPlaced);
     _currentMove++;
     for(int i = SLattice::North; i <= SLattice::West; i++) {
         p2p = smartBlock->getInterface( SLattice::Direction(i));
@@ -1430,7 +1430,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightborNoWellPlaced(P
         // on cherche une cellule pleine
         i=3;
         while (i-- && (block->getInterface(dir)->connectedInterface==NULL
-                       || ((SmartBlocks::SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
+                       || ((SbReconfBlockCode*)(block->getInterface(dir)->connectedInterface->hostBlock->blockCode))->wellPlaced)) {
             dir=SLattice::Direction((int(dir)+3)%4);
 //		OUTPUT << dir << " ";
         }
@@ -1456,10 +1456,10 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightborNoWellPlaced(P
         dir=SLattice::Direction(((8-i)%8)/2);
 //OUTPUT << "une case vide = " << i << "(" << border[i][0] << "," << border[i][1]<< ")" << endl;
 // puis on cherche la case non vide la plus eloignée en tournant vers la gauche
-        if (block->wellPlaced) {
+        if (wellPlaced) {
             i=3;
             while (i-- && (block->getInterface(dir)->connectedInterface==NULL
-                           || ((SmartBlocks::SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
+                           || ((SbReconfBlockCode*)(block->getInterface(dir)->connectedInterface->hostBlock->blockCode))->wellPlaced)) {
                 dir=SLattice::Direction((int(dir)+3)%4);
             }
         } else {
@@ -1519,7 +1519,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightbor(P2PNetworkInt
         dir=SLattice::Direction(((8-i)%8)/2);
 //OUTPUT << "une case vide = " << i << "(" << border[i][0] << "," << border[i][1]<< ")" << endl;
 // puis on cherche la case non vide la plus eloignée en tournant vers la gauche
-        if (block->wellPlaced) {
+        if (wellPlaced) {
             i=3;
             while (i-- && block->getInterface(dir)->connectedInterface==NULL) {
                 dir=SLattice::Direction((int(dir)+3)%4);
@@ -1593,7 +1593,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced(P2PNe
 
     i=3;
     while (i-- && (block->getInterface(dir)->connectedInterface==NULL
-                   || ((SmartBlocks::SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
+                   || ((SbReconfBlockCode*)(block->getInterface(dir)->connectedInterface->hostBlock->blockCode))->wellPlaced)) {
 //            || _pm.get(border[dir*2][0],border[dir*2][1])==borderNotTrainCell)) {
         dir=SLattice::Direction((int(dir)+1)%4);
 //		OUTPUT << dir << "(" << _pm.get(border[dir*2][0],border[dir*2][1]) << ") ";
@@ -1694,9 +1694,9 @@ void SbReconfBlockCode::sendSearchBackHeadMessage(P2PNetworkInterface *dest,P2PN
     SearchBackHeadMessage *message = new SearchBackHeadMessage(except);
     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message,dest));
 
-    block->_isTrain = false;
+    _isTrain = false;
     _isHead = false;
-    block->_isBorder = false;
+    _isBorder = false;
     //block->setDisplayedValue(-1);
 
 }
@@ -1768,23 +1768,23 @@ bool SbReconfBlockCode::testIsthmus(int dx,int dy) {
             (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0)) : NULL;
     }
 #ifdef verbose
-    if (support && support->_isTrain) OUTPUT << block->blockId << posGrid << " ISTHME SUPPORT("
+    if (support && ((SbReconfBlockCode*)support->blockCode)->_isTrain) OUTPUT << block->blockId << posGrid << " ISTHME SUPPORT("
                                              << support->blockId <<")=TRAIN dx,dy=" << dx << ","
                                              << dy << endl;
-    if (supportDiag && supportDiag->_isTrain) OUTPUT << "ISTHME SUPPORT_DIAG("<< supportDiag->blockId
+    if (supportDiag && ((SbReconfBlockCode*)supportDiag->blockCode)->_isTrain) OUTPUT << "ISTHME SUPPORT_DIAG("<< supportDiag->blockId
                                                      <<")=TRAIN dx,dy=" << dx << "," << dy << endl;
-    if (voisin && voisin->_isTrain) OUTPUT << "ISTHME VOISIN("<< voisin->blockId <<")=TRAIN dx,dy=" << dx
+    if (voisin && ((SbReconfBlockCode*)voisin->blockCode)->_isTrain) OUTPUT << "ISTHME VOISIN("<< voisin->blockId <<")=TRAIN dx,dy=" << dx
                                            << "," << dy << endl;
-    if (voisin2 && voisin2->_isTrain) OUTPUT << "ISTHME VOISIN2("<< voisin2->blockId <<")=TRAIN dx,dy="
+    if (voisin2 && ((SbReconfBlockCode*)voisin2->blockCode)->_isTrain) OUTPUT << "ISTHME VOISIN2("<< voisin2->blockId <<")=TRAIN dx,dy="
                                              << dx << "," << dy << endl;
-    if (voisin3 && voisin3->_isTrain) OUTPUT << "ISTHME VOISIN3("<< voisin3->blockId <<")=TRAIN dx,dy="
+    if (voisin3 && ((SbReconfBlockCode*)voisin3->blockCode)->_isTrain) OUTPUT << "ISTHME VOISIN3("<< voisin3->blockId <<")=TRAIN dx,dy="
                                              << dx << "," << dy << endl;
 #endif
-    return (support && support->_isTrain) ||
-        (supportDiag && supportDiag->_isTrain) ||
-        (voisin && voisin->_isTrain) ||
-        (voisin2 && voisin2->_isTrain) ||
-        (voisin3 && voisin3->_isTrain);
+    return (support && ((SbReconfBlockCode*)support->blockCode)->_isTrain) ||
+        (supportDiag && ((SbReconfBlockCode*)supportDiag->blockCode)->_isTrain) ||
+        (voisin && ((SbReconfBlockCode*)voisin->blockCode)->_isTrain) ||
+        (voisin2 && ((SbReconfBlockCode*)voisin2->blockCode)->_isTrain) ||
+        (voisin3 && ((SbReconfBlockCode*)voisin3->blockCode)->_isTrain);
 }
 
 bool SbReconfBlockCode::testIsthmusTail(int dx,int dy) {
@@ -1819,27 +1819,27 @@ bool SbReconfBlockCode::testIsthmusTail(int dx,int dy) {
 
 void SbReconfBlockCode::createBorder() {
     getPresenceMatrix(posGrid,_pm);
-    block->_isBorder = _pm.isBorder();
+    _isBorder = _pm.isBorder();
 
     //block->setDisplayedValue(-1);
 
 #ifdef verbose
     stringstream info;
     info.str("");
-    info << "block->_isBorder = " << block->_isBorder;
+    info << "_isBorder = " << _isBorder;
     scheduler->trace(info.str(),hostBlock->blockId,GREEN);
 #endif // verbose
-    if (block->_isBorder) {
+    if (_isBorder) {
         setRulesColor();
         _previous = getBorderPreviousNeightbor(NULL);
-        _numPrev = ((_previous && !block->_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
+        _numPrev = ((_previous && !_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
         applyRules();
         if (possibleRules && !possibleRules->empty()) {
             Capability *capa = possibleRules->back()->capa;
             if (!capa->isHead && capa->linkPrevPos) {
                 PointCel pos = *capa->linkPrevPos;
                 _previous = block->getP2PNetworkInterfaceByRelPos(Cell3DPosition(pos.x, pos.y, 0));
-                _numPrev = ((_previous && !block->_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
+                _numPrev = ((_previous && !_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
 #ifdef verbose
                 info.str("");
                 info << "previous = " << *capa->linkPrevPos << "," << ((_previous->connectedInterface) ? _previous->connectedInterface->hostBlock->blockId : -1);
@@ -1899,7 +1899,7 @@ void SbReconfBlockCode::createBorder() {
             }
         } else {
             _previous = getBorderPreviousNeightbor(NULL);
-            _numPrev = ((_previous && !block->_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
+            _numPrev = ((_previous && !_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
             _next = getBorderNextNeightbor();
 #ifdef verbose
             info.str("");
@@ -2132,7 +2132,7 @@ void SbReconfBlockCode::singleMotion(Motion *currentMotion,Capability *capa) {
 
 //------------------------------------
     if (capa->isEnd && capa->isHead) {
-        block->_isSingle=true;
+        _isSingle=true;
         _numPrev=-1;
 #ifdef verbose
         OUTPUT << block->blockId << " is single" << endl;
@@ -2273,7 +2273,7 @@ int SbReconfBlockCode::nbreWellPlacedBlock() {
     SmartBlocks::SmartBlocksBlock *sb;
     for( it = buildingBlocksMap.begin() ; it != buildingBlocksMap.end() ; ++it) {
         sb = (SmartBlocks::SmartBlocksBlock *)(it->second);
-        if (sb->wellPlaced) n++;
+        if (((SbReconfBlockCode*)sb->blockCode)->wellPlaced) n++;
     }
     return n;
 }
@@ -2321,7 +2321,7 @@ bool SbReconfBlockCode::isBorder(int x,int y) {
 
 bool SbReconfBlockCode::isSingle(int x,int y) {
     SmartBlocks::SmartBlocksBlock **grb=(SmartBlocks::SmartBlocksBlock **)lattice->grid+x+y*lattice->gridSize[0];
-    return (*grb)->_isSingle;
+    return ((SbReconfBlockCode*)(*grb)->blockCode)->_isSingle;
 }
 
 void SbReconfBlockCode::getPresenceMatrix(const PointCel &pos,PresenceMatrix &pm) {

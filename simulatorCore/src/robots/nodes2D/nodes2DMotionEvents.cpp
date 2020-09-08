@@ -8,10 +8,10 @@
  *      Author: Pierre Thalamy
  */
 
-#include "robots/nodes2D/nodes2DMotionEvents.h"
-#include "base/world.h"
-#include "utils/utils.h"
-#include "robots/nodes2D/nodes2DBlock.h"
+#include "nodes2DMotionEvents.h"
+#include "../../base/world.h"
+#include "../../utils/utils.h"
+#include "nodes2DBlock.h"
 
 using namespace BaseSimulator::utils;
 
@@ -87,7 +87,7 @@ void Nodes2DMotionStopEvent::consume() {
     Nodes2D::Nodes2DBlock *bb = (Nodes2D::Nodes2DBlock*)concernedBlock;
     World *wrld = getWorld();
     bb->setPositionAndOrientation(finalPosition,finalOrientation);
-    wrld->updateGlData(bb);
+    wrld->updateGlData(bb,bb->position);
 
 #ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);

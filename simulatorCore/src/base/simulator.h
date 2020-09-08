@@ -10,17 +10,16 @@
 #define SIMULATOR_H_
 
 #define TIXML_USE_STL	1
-#include "deps/TinyXML/tinyxml.h"
+#include "../deps/TinyXML/tinyxml.h"
 
-#include "utils/tDefs.h"
-#include "events/scheduler.h"
-#include "base/world.h"
-#include "utils/commandLine.h"
-#include "base/blockCode.h"
+#include "../utils/tDefs.h"
+#include "../events/scheduler.h"
+#include "world.h"
+#include "../utils/commandLine.h"
+#include "blockCode.h"
+#include "../replay/replayExporter.h"
 
 using namespace std;
-
-#define DEFAULT_SIMULATION_SEED 50 //!< Default simulation seed
 
 namespace BaseSimulator {
 
@@ -71,7 +70,7 @@ public:
      *   (i.e. link the blocks, start the scheduler if needed, and enter the GLUT main loop)
      *
      */
-    void startSimulation(void);
+    void startSimulation();
 
     /*!
      *  @brief Generates a random unsigned int (ruint)
@@ -79,14 +78,16 @@ public:
     ruint getRandomUint();
 
     /*
-     * @brief Sets the simulation seed
+     * @brief Getter for the simulation seed
+     * @return The global simulation seed
+     * @warning do not use cmdLine->getSimulationSeed() instead of this one
      */
-    //inline void setSeed(int s) { seed = s; }
+    inline int getSimulationSeed() { return seed; }
 
 protected:
     static Type type;			//!< Type of simulation, i.e. language of the user program
 
-    int seed = DEFAULT_SIMULATION_SEED; //!< Simulation seed, used for every randomized operation
+    int seed; //!< Simulation seed, used for every randomized operation
     uintRNG generator; //!< Simulation random generator, used for every randomized operation, except for the id distribution
 
     static Simulator *simulator; //!< Static member for accessing *this* simulator
@@ -144,6 +145,8 @@ protected:
      *  @attention The xmlBlockListNode attribute has to be initialized before calling this function.
      */
     void initializeIDPool();
+
+
 
     /*!
      *  @brief Initializes IDPool with n ID distanced by step and shuffled

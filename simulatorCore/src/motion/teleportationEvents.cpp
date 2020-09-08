@@ -8,10 +8,10 @@
  *      Author: Pierre Thalamy
  */
 
-#include "motion/teleportationEvents.h"
-#include "base/world.h"
-#include "robots/catoms3D/catoms3DWorld.h"
-#include "utils/utils.h"
+#include "teleportationEvents.h"
+#include "../base/world.h"
+//#include "../robots/catoms3D/catoms3DWorld.h"
+#include "../utils/utils.h"
 
 using namespace BaseSimulator::utils;
 
@@ -85,7 +85,7 @@ void TeleportationStopEvent::consume() {
     BuildingBlock *bb = concernedBlock;
     World *wrld = getWorld();
     bb->setPosition(finalPosition);
-    wrld->updateGlData(bb);
+    wrld->updateGlData(bb,bb->position);
 
 #ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);

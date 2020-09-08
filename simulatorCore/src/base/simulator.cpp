@@ -11,25 +11,26 @@
 #include <climits>
 #include <unordered_set>
 
-#include "utils/trace.h"
-#include "meld/meldInterpretVM.h"
-#include "meld/meldInterpretScheduler.h"
-#include "events/cppScheduler.h"
-#include "gui/openglViewer.h"
-#include "utils/utils.h"
-#include "robots/catoms3D/catoms3DRotationEvents.h"
-#include "csg/csg.h"
-#include "csg/csgParser.h"
-#include "csg/csgUtils.h"
-#include "utils/global.h"
+#include "../grid/cell3DPosition.h"
+#include "../utils/trace.h"
+#include "../utils/utils.h"
+#include "../utils/global.h"
+#include "../meld/meldInterpretVM.h"
+#include "../meld/meldInterpretScheduler.h"
+#include "../events/cppScheduler.h"
+#include "../gui/openglViewer.h"
+#include "../grid/target.h"
+#include "../csg/csg.h"
+#include "../csg/csgParser.h"
+#include "../replay/replayExporter.h"
 
 using namespace std;
 
 namespace BaseSimulator {
 
-Simulator* simulator = NULL;
+Simulator* simulator = nullptr;
 
-Simulator* Simulator::simulator = NULL;
+Simulator* Simulator::simulator = nullptr;
 
 Simulator::Type	Simulator::type = CPP; // CPP code by default
 bool Simulator::regrTesting = false; // No regression testing by default
@@ -40,7 +41,7 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 #endif
 
     // Ensure that only one instance of simulator is running at once
-    if (simulator == NULL) {
+    if (simulator == nullptr) {
         simulator = this;
         BaseSimulator::simulator = simulator;
     } else {
@@ -56,25 +57,22 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
     xmlDoc = new TiXmlDocument(confFileName.c_str());
     bool isLoaded = xmlDoc->LoadFile();
 
-
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1,INT_MAX); // [1,intmax]
     if (cmdLine.isSimulationSeedSet()) {
         seed = cmdLine.getSimulationSeed();
-    }
-    int rseed = 0;
-    if (seed < 0) {
-        random_device rd;
-        mt19937 gen(rd());
-        uniform_int_distribution<> dis(1,INT_MAX); // [1,intmax]
-        rseed = dis(gen);
-        generator = uintRNG((ruint)rseed);
     } else {
-        rseed = seed;
-        generator = uintRNG((ruint)rseed);
+        // Set random seed
+        seed = dis(gen);
     }
-    cerr << "Seed: " << rseed << endl;
+
+    generator = uintRNG((ruint)seed);
+
+    cerr << TermColor::BWhite << "Simulation Seed: " << seed << TermColor::Reset << endl;
 
     if (!isLoaded) {
-        cerr << "error: Could not load configuration file :" << confFileName << endl;
+        cerr << "error: Could not load configuration file: " << confFileName << endl;
         exit(EXIT_FAILURE);
     } else {
         xmlWorldNode = xmlDoc->FirstChild("world");
@@ -96,22 +94,15 @@ Simulator::~Simulator() {
     OUTPUT << TermColor::LifecycleColor  << "Simulator destructor" << TermColor::Reset << endl;
 #endif
     delete xmlDoc;
-
-#ifdef ENABLE_MELDPROCESS
-    if (getType() == MELDPROCESS) {
-        if(MeldProcess::MeldProcessVM::isInDebuggingMode()) {
-            MeldProcess::deleteDebugger();
-        }
-        MeldProcess::deleteVMServer();
-    }
-#endif
+    if (ReplayExporter::isReplayEnabled())
+        delete ReplayExporter::getInstance();
 
     deleteWorld();
 }
 
 void Simulator::deleteSimulator() {
     delete simulator;
-    simulator = NULL;
+    simulator = nullptr;
 }
 
 void Simulator::loadScheduler(int schedulerMaxDate) {
@@ -213,9 +204,13 @@ Simulator::IDScheme Simulator::determineIDScheme() {
     return ORDERED;
 }
 
+// Seed for ID generation:
+// USES: idseed blocklist XML attribute if specified,
+//       OR otherwise, simulation seed if specified,
+//       OR otherwise, a random seed
 int Simulator::parseRandomIdSeed() {
     TiXmlElement *element = xmlBlockListNode->ToElement();
-    const char *attr = element->Attribute("seed");
+    const char *attr = element->Attribute("idseed");
     if (attr) {				// READ Seed
         try {
             string str(attr);
@@ -270,18 +265,26 @@ void Simulator::generateRandomIDs(const int n, const int idSeed, const int step)
     IDPool = vector<bID>(n);
     std::iota(begin(IDPool), end(IDPool), inc);
 
+    // Seed for ID generation:
+    // USES: idseed blocklist XML attribute if specified,
+    //       OR otherwise, simulation seed if specified,
+    //       OR otherwise, a random seed
+
     // Properly seed random number generator
     std::mt19937 gen;
-    if (seed == -1) {
+    if (idSeed == -1) {
         OUTPUT << "Generating fully random contiguous ID distribution" <<  endl;
-        gen = std::mt19937(std::random_device{}());
+        gen = std::mt19937(seed);
+        cerr << TermColor::BWhite << "ID Seed: " << seed << TermColor::Reset << endl;
     } else {
-        OUTPUT << "Generating random contiguous ID distribution with seed: " << idSeed <<  endl;
+        OUTPUT << "Generating random contiguous ID distribution with seed: "
+               << idSeed <<  endl;
         gen = std::mt19937(idSeed);
+        cerr << TermColor::BWhite << "ID Seed: " << idSeed << TermColor::Reset << endl;
     }
 
     // Shuffle the elements using the rng
-    std::shuffle(begin(IDPool), end(IDPool), generator);
+    std::shuffle(begin(IDPool), end(IDPool), gen);
 }
 
 bID Simulator::countNumberOfModules() {
@@ -318,9 +321,9 @@ bID Simulator::countNumberOfModules() {
             string str(attr);
             int pos1 = str.find_first_of(','),
   pos2 = str.find_last_of(',');
-            boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
-            boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-            boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            boxOrigin.pt[0] = stof(str.substr(0,pos1));
+            boxOrigin.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+            boxOrigin.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
         }
         Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
                          world->lattice->gridSize[1]*world->lattice->gridScale[1],
@@ -330,9 +333,9 @@ bID Simulator::countNumberOfModules() {
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
-            boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-            boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            boxDest.pt[0] = boxOrigin.pt[0] + stof(str.substr(0,pos1));
+            boxDest.pt[1] = boxOrigin.pt[1] + stof(str.substr(pos1+1,pos2-pos1-1));
+            boxDest.pt[2] = boxOrigin.pt[2] + stof(str.substr(pos2+1,str.length()-pos1-1));
             cout << "boxDest" << endl;
         }
         Vector3D pos;
@@ -367,7 +370,6 @@ void Simulator::initializeIDPool() {
 
     // Count number of modules in configuration file
     bID numModules = countNumberOfModules();
-
     cerr << "There are " << numModules << " modules in the configuration" << endl;
 
     switch (ids) {
@@ -434,35 +436,6 @@ void Simulator::initializeIDPool() {
 }
 
 void Simulator::readSimulationType(int argc, char*argv[]) {
-#ifdef ENABLE_MELDPROCESS
-    if (getType() == MELDPROCESS) {
-        string vmPath = cmdLine.getVMPath();
-        string programPath = cmdLine.getProgramPath();
-        int vmPort = cmdLine.getVMPort();
-        bool debugging = cmdLine.getMeldDebugger();
-
-        if (vmPath == "") {
-            cerr << "error: no path defined for Meld VM" << endl;
-            exit(1);
-        } else if (!vmPort) {
-            cerr << "error: no port defined for Meld VM" << endl;
-            exit(1);
-        } else if (!file_exists(programPath)) {
-            cerr << "error: no Meld program was provided, or default file \"./program.bb\" does not exist"
-                 << endl;
-            exit(1);
-        }
-
-        MeldProcess::setVMConfiguration(vmPath, programPath, debugging);
-        MeldProcess::createVMServer(vmPort);
-        if(debugging) {
-            MeldProcess::createDebugger();
-        }
-
-        return;
-    }
-#endif
-
     if(getType() == MELDINTERPRET) {
         string programPath = cmdLine.getProgramPath();
         bool debugging = cmdLine.getMeldDebugger();
@@ -482,9 +455,63 @@ void Simulator::readSimulationType(int argc, char*argv[]) {
 }
 
 void Simulator::parseWorld(int argc, char*argv[]) {
+    TiXmlNode *xmlVisualNode = xmlDoc->FirstChild("visuals");
+    if (xmlVisualNode) {
+        TiXmlElement* visualElement = xmlVisualNode->ToElement();
+        const char *attr= visualElement->Attribute("windowSize");
+        if (attr) {
+            string str=attr;
+            int pos = str.find_first_of(",x");
+            GlutContext::initialScreenWidth = stoi(str.substr(0,pos));
+            GlutContext::initialScreenHeight = stoi(str.substr(pos+1,str.length()-pos-1));
+            GlutContext::screenWidth = GlutContext::initialScreenWidth;
+            GlutContext::screenHeight = GlutContext::initialScreenHeight;
+        }
+
+        attr= visualElement->Attribute("enableShadows");
+        if (attr) {
+            string str(attr);
+            toLowercase(str);
+            GlutContext::enableShadows = (str=="true" || str=="yes");
+        }
+
+        attr= visualElement->Attribute("showGrid");
+        if (attr) {
+            string str(attr);
+            toLowercase(str);
+            GlutContext::showGrid = (str=="true" || str=="yes");
+            cout << "showGrid:" << str<< ": "<<GlutContext::showGrid << endl;
+        }
+
+        attr= visualElement->Attribute("backgroundColor");
+        if (attr) {
+            string str(attr);
+            size_t pos=str.find_first_of('#');
+            str.replace(pos,1,"0x");
+            unsigned int c = stoul(str, nullptr, 16);
+            GlutContext::bgColor[0] = static_cast<float>(c/65236)/256.0f;
+            GlutContext::bgColor[1] = static_cast<float>((c/256)%256)/256.0f;
+            GlutContext::bgColor[2] = static_cast<float>(c%256)/256.0f;
+            //cout << str << "=" << GlutContext::bgColor[0] << "," << GlutContext::bgColor[1] << "," << GlutContext::bgColor[2] << endl;
+        }
+
+        attr= visualElement->Attribute("backgroundGradientColor");
+        if (attr) {
+            GlutContext::hasGradientBackground = true;
+            string str(attr);
+            size_t pos=str.find_first_of('#');
+            str.replace(pos,1,"0x");
+            unsigned int c = stoul(str, nullptr, 16);
+            GlutContext::bgColor2[0] = static_cast<float>(c/65236)/256.0f;
+            GlutContext::bgColor2[1] = static_cast<float>((c/256)%256)/256.0f;
+            GlutContext::bgColor2[2] = static_cast<float>(c%256)/256.0f;
+            //cout << str << "=" << GlutContext::bgColor[0] << "," << GlutContext::bgColor[1] << "," << GlutContext::bgColor[2] << endl;
+        }
+
+    }
     /* reading the xml file */
     xmlWorldNode = xmlDoc->FirstChild("world");
-
+    Lattice::Separator *ptrSeparator= nullptr;
     if (xmlWorldNode) {
         TiXmlElement* worldElement = xmlWorldNode->ToElement();
         const char *attr= worldElement->Attribute("gridSize");
@@ -497,9 +524,9 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             string str=attr;
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            lx = atoi(str.substr(0,pos1).c_str());
-            ly = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
-            lz = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            lx = stoi(str.substr(0,pos1));
+            ly = stoi(str.substr(pos1+1,pos2-pos1-1));
+            lz = stoi(str.substr(pos2+1,str.length()-pos1-1));
 #ifdef DEBUG_CONF_PARSING
             OUTPUT << "grid size : " << lx << " x " << ly << " x " << lz << endl;
 #endif
@@ -513,16 +540,33 @@ void Simulator::parseWorld(int argc, char*argv[]) {
         if (attr) {
             string str=attr;
             int pos = str.find_first_of(',');
-            GlutContext::initialScreenWidth = atoi(str.substr(0,pos).c_str());
-            GlutContext::initialScreenHeight = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
+            GlutContext::initialScreenWidth = stoi(str.substr(0,pos));
+            GlutContext::initialScreenHeight = stoi(str.substr(pos+1,str.length()-pos-1));
             GlutContext::screenWidth = GlutContext::initialScreenWidth;
             GlutContext::screenHeight = GlutContext::initialScreenHeight;
+            cerr << "warning [DEPRECATED]: place windowSize in visual tag!" << endl;
+        }
+
+        attr = worldElement->Attribute("separatorPlane");
+        if (attr) {
+            string str=attr;
+            int pos1 = str.find_first_of(','),
+                pos2 = str.find_first_of(',',pos1+1);
+            float a = stof(str.substr(0,pos1));
+            float b = stof(str.substr(pos1+1,pos2-pos1-1));
+            pos1=pos2;
+            pos2 = str.find_first_of(',',pos1+1);
+            float c = stof(str.substr(pos1+1,pos2-pos1-1));
+            float d = stof(str.substr(pos2+1,str.length()-pos1-1));
+
+            cerr << "separator: a=" << a << "\tb=" << b << "\tc=" << c << "\td=" << d << endl;
+            ptrSeparator = new Lattice::Separator(a,b,c,d);
         }
 
         attr=worldElement->Attribute("maxSimulationTime");
         if (attr) {
             string str=attr;
-            Time t = atoi(attr);
+            Time t = atol(attr);
             int l = strlen(attr);
             if (str.substr(l-2,2)=="mn") {
                 t*=60000000;
@@ -537,24 +581,24 @@ void Simulator::parseWorld(int argc, char*argv[]) {
                  << " please use the command line option [-s <maxTime>]" << endl;
         }
 
-        // Get Blocksize
-        float blockSize[3] = {0.0,0.0,0.0};
+//         // Get Blocksize
+//         float blockSize[3] = {0.0,0.0,0.0};
         xmlBlockListNode = xmlWorldNode->FirstChild("blockList");
-        if (xmlBlockListNode) {
-            TiXmlElement *blockListElement = xmlBlockListNode->ToElement();
-            attr = blockListElement->Attribute("blockSize");
-            if (attr) {
-                string str(attr);
-                int pos1 = str.find_first_of(','),
-                    pos2 = str.find_last_of(',');
-                blockSize[0] = atof(str.substr(0,pos1).c_str());
-                blockSize[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-#ifdef DEBUG_CONF_PARSING
-                OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
-#endif
-            }
-        } else {
+//         // if (xmlBlockListNode) {
+//             TiXmlElement *blockListElement = xmlBlockListNode->ToElement();
+//             attr = blockListElement->Attribute("blockSize");
+//             if (attr) {
+//                 string str(attr);
+//                 int pos1 = str.find_first_of(','),
+//                     pos2 = str.find_last_of(',');
+//                 blockSize[0] = atof(str.substr(0,pos1).c_str());
+//                 blockSize[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+//                 blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+// #ifdef DEBUG_CONF_PARSING
+//                 OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
+// #endif
+//             }
+        if (not xmlBlockListNode)  {
             stringstream error;
             error << "No blockList element in XML configuration file" << "\n";
             throw ParsingException(error.str());
@@ -562,7 +606,11 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 
         // Create the simulation world and lattice
         loadWorld(Cell3DPosition(lx,ly,lz),
-                  Vector3D(blockSize[0], blockSize[1], blockSize[2]), argc, argv);
+                  Vector3D(0, 0, 0), // Always use default blocksize
+                  argc, argv);
+        if (ptrSeparator) {
+            getWorld()->lattice->addSeparator(ptrSeparator);
+        }
     } else {
         stringstream error;
         error << "No world in XML configuration file" << "\n";
@@ -580,7 +628,7 @@ void Simulator::parseCameraAndSpotlight() {
         world->getCamera()->setTarget(target);
         double d=target.norme();
         world->getCamera()->setDistance(3.0*d);
-        world->getCamera()->setDirection(45.0,30.0);
+        world->getCamera()->setDirection(-30.0-90.0,30.0);
         world->getCamera()->setNearFar(0.25*d,5.0*d);
         world->getCamera()->setAngle(35.0);
         world->getCamera()->setLightParameters(target,-30.0,30.0,3.0*d,30.0,0.25*d,4.0*d);
@@ -596,9 +644,9 @@ void Simulator::parseCameraAndSpotlight() {
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
                 Vector3D target;
-                target.pt[0] = atof(str.substr(0,pos1).c_str());
-                target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                target.pt[0] = stof(str.substr(0,pos1));
+                target.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+                target.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
                 world->getCamera()->setTarget(target);
             }
 
@@ -614,9 +662,9 @@ void Simulator::parseCameraAndSpotlight() {
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
                 float az,ele,dist;
-                az = -90.0+atof(str.substr(0,pos1).c_str());
-                ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                az = -90.0+stof(str.substr(0,pos1));
+                ele = stof(str.substr(pos1+1,pos2-pos1-1));
+                dist = stof(str.substr(pos2+1,str.length()-pos1-1));
                 world->getCamera()->setDirection(az,ele);
                 world->getCamera()->setDistance(dist);
                 // az = dist*sin(angle*M_PI/180.0);
@@ -648,9 +696,9 @@ void Simulator::parseCameraAndSpotlight() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                target.pt[0] = atof(str.substr(0,pos1).c_str());
-                target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                target.pt[0] = stof(str.substr(0,pos1));
+                target.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+                target.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
             }
 
             attr=lightElement->Attribute("directionSpherical");
@@ -658,9 +706,9 @@ void Simulator::parseCameraAndSpotlight() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                az = -90.0+atof(str.substr(0,pos1).c_str());
-                ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                az = -90.0+stof(str.substr(0,pos1));
+                ele = stof(str.substr(pos1+1,pos2-pos1-1));
+                dist = stof(str.substr(pos2+1,str.length()-pos1-1));
             }
 
             attr=lightElement->Attribute("angle");
@@ -694,9 +742,9 @@ void Simulator::parseBlockList() {
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-            defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-            defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+            defaultColor.rgba[0] = stof(str.substr(0,pos1))/255.0;
+            defaultColor.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
+            defaultColor.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
 #ifdef DEBUG_CONF_PARSING
             OUTPUT << "new default color :" << defaultColor << endl;
 #endif
@@ -716,9 +764,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.set(atof(str.substr(0,pos1).c_str())/255.0,
-                          atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
-                          atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+                color.set(stof(str.substr(0,pos1))/255.0,
+                          stof(str.substr(pos1+1,pos2-pos1-1))/255.0,
+                          stof(str.substr(pos2+1,str.length()-pos1-1))/255.0);
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new color :" << defaultColor << endl;
 #endif
@@ -728,9 +776,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos = str.find_first_of(',');
                 int pos2 = str.find_last_of(',');
-                int ix = atof(str.substr(0,pos).c_str()),
-                    iy = atoi(str.substr(pos+1,pos2-pos-1).c_str()),
-                    iz = atoi(str.substr(pos2+1,str.length()-pos2-1).c_str());
+                int ix = stoi(str.substr(0,pos)),
+                    iy = stoi(str.substr(pos+1,pos2-pos-1)),
+                    iz = stoi(str.substr(pos2+1,str.length()-pos2-1));
 
                 // cerr << ix << "," << iy << "," << iz << endl;
 
@@ -784,9 +832,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-                color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-                color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+                color.rgba[0] = stof(str.substr(0,pos1))/255.0;
+                color.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
+                color.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "line color :" << color << endl;
 #endif
@@ -833,9 +881,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-                color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-                color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+                color.rgba[0] = stof(str.substr(0,pos1))/255.0;
+                color.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
+                color.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "box color :" << color << endl;
 #endif
@@ -847,9 +895,9 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                boxOrigin.pt[0] = atof(str.substr(0,pos1).c_str());
-                boxOrigin.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                boxOrigin.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                boxOrigin.pt[0] = stof(str.substr(0,pos1));
+                boxOrigin.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+                boxOrigin.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new boxOrigine:" << boxOrigin << endl;
 #endif
@@ -863,15 +911,15 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                boxDest.pt[0] = boxOrigin.pt[0] + atof(str.substr(0,pos1).c_str());
-                boxDest.pt[1] = boxOrigin.pt[1] + atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                boxDest.pt[2] = boxOrigin.pt[2] + atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                boxDest.pt[0] = boxOrigin.pt[0] + stof(str.substr(0,pos1));
+                boxDest.pt[1] = boxOrigin.pt[1] + stof(str.substr(pos1+1,pos2-pos1-1));
+                boxDest.pt[2] = boxOrigin.pt[2] + stof(str.substr(pos2+1,str.length()-pos1-1));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new boxDest:" << boxDest << endl;
 #endif
             }
 
-            assert(world->lattice!=NULL);
+            assert(world->lattice!=nullptr);
 
             Vector3D pos;
             for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
@@ -908,15 +956,14 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                translate.pt[0] = atof(str.substr(0,pos1).c_str());
-                translate.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-                translate.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                translate.pt[0] = stof(str.substr(0,pos1));
+                translate.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
+                translate.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
 
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "csg translate :" << translate << endl;
 #endif
             }
-
 
             BoundingBox bb;
             bool boundingBox = true;
@@ -924,9 +971,8 @@ void Simulator::parseBlockList() {
             bool offsetBoundingBox = true;
             element->QueryBoolAttribute("offset", &offsetBoundingBox);
 
-            char* csgBin = CSGParser::parseCsg(str);
-            CsgUtils csgUtils;
-            CSGNode *csgRoot = csgUtils.readCSGBuffer(csgBin);
+            CSGParser parser;
+            CSGNode *csgRoot = parser.parseCSG(str);
             csgRoot->toString();
 
             if (boundingBox) csgRoot->boundingBox(bb);
@@ -951,7 +997,11 @@ void Simulator::parseBlockList() {
                         }
 
                         if (world->lattice->isInGrid(position)
-                            and csgRoot->isInside(csgPos, color)) {
+                            and csgRoot->isInside(csgPos, color)
+                            // @note Ignore position already filled through other means
+                            // this can be used to initialize some parameters on select
+                            // modules using `<block>` elements
+                            and not world->lattice->cellHasBlock(position)) {
                             loadBlock(element,
                                       ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
                                       bcb, position, color, false);
@@ -969,7 +1019,7 @@ void Simulator::parseBlockList() {
 void Simulator::parseTarget() {
     Target::targetListNode = xmlWorldNode->FirstChild("targetList");
     if (Target::targetListNode) {
-        // Load initial target (BlockCode::target = NULL if no target specified)
+        // Load initial target (BlockCode::target = nullptr if no target specified)
         BlockCode::target = Target::loadNextTarget();
     }
 }
@@ -985,9 +1035,9 @@ void Simulator::parseObstacles() {
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-            defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-            defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+            defaultColor.rgba[0] = stof(str.substr(0,pos1))/255.0;
+            defaultColor.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
+            defaultColor.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
         }
 
         nodeObstacle = nodeObstacle->FirstChild("obstacle");
@@ -1001,9 +1051,9 @@ void Simulator::parseObstacles() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.set(atof(str.substr(0,pos1).c_str())/255.0,
-                          atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
-                          atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+                color.set(stof(str.substr(0,pos1))/255.0,
+                          stof(str.substr(pos1+1,pos2-pos1-1))/255.0,
+                          stof(str.substr(pos2+1,str.length()-pos1-1))/255.0);
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "color :" << color << endl;
 #endif
@@ -1013,9 +1063,9 @@ void Simulator::parseObstacles() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                position.pt[0] = atoi(str.substr(0,pos1).c_str());
-                position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
-                position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                position.pt[0] = stoi(str.substr(0,pos1));
+                position.pt[1] = stoi(str.substr(pos1+1,pos2-pos1-1));
+                position.pt[2] = stoi(str.substr(pos2+1,str.length()-pos1-1));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "position : " << position << endl;
 #endif
@@ -1036,14 +1086,14 @@ void Simulator::parseCustomizations() {
             TiXmlElement* element = rotationDelayNode->ToElement();
             const char *attr= element->Attribute("multiplier");
 
-            if (attr != NULL) {
+            if (attr != nullptr) {
                 motionDelayMultiplier = atof(attr);
             }
         }
     }
 }
 
-void Simulator::startSimulation(void) {
+void Simulator::startSimulation() {
     // Connect all blocks – TODO: Check if needed to do it here (maybe all blocks are linked on addition)
     world->linkBlocks();
 
@@ -1053,6 +1103,14 @@ void Simulator::startSimulation(void) {
     scheduler->setState(Scheduler::NOTSTARTED);
     if (scheduler->willAutoStart())
         scheduler->start(scheduler->getSchedulerMode());
+
+    // Start replay export if enabled
+    if (cmdLine.isReplayEnabled()) {
+        auto replay = ReplayExporter::getInstance();
+        ReplayExporter::enable(true);
+        replay->writeHeader();
+        // ReplayExporter::getInstance()->exportKeyframe();
+    }
 
     // Enter graphical main loop
     GlutContext::mainLoop();

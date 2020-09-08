@@ -12,12 +12,14 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/datoms/datomsWorld.h"
-#include "robots/datoms/datomsBlock.h"
-#include "robots/datoms/datomsMotionEngine.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
+#include "datomsWorld.h"
+#include "datomsBlock.h"
+#include "datomsGlBlock.h"
+#include "datomsMotionEngine.h"
 #include "deformationEvents.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -199,6 +201,8 @@ void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                             (datom->blockId, (BaseSimulator::BuildingBlock*)datom));
 
+
+
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), datom));
 
     DatomsGlBlock *glBlock = new DatomsGlBlock(blockId);
@@ -206,6 +210,8 @@ void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
     glBlock->currentModel=pId;
     //datom->setModel(pId);
     datom->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     datom->setPositionAndOrientation(pos,orientation);
     datom->setColor(col);
     lattice->insert(datom, pos);
@@ -244,10 +250,6 @@ void DatomsWorld::linkBlock(const Cell3DPosition& pos) {
  */
 void DatomsWorld::glDraw() {
 // material for the grid walls
-    if (background) {
-        glDrawBackground();
-    }
-
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
 
@@ -380,9 +382,9 @@ void DatomsWorld::glDrawBackground() {
 void DatomsWorld::loadTextures(const string &str) {
     string path = str+"//hexa.tga";
     int lx,ly;
-    idTextureHexa = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureHexa = loadTexture(path.c_str(),lx,ly);
     path = str+"//textureCarre.tga";
-    idTextureGrid = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureGrid = loadTexture(path.c_str(),lx,ly);
 }
 
 void DatomsWorld::updateGlData(BuildingBlock *bb) {

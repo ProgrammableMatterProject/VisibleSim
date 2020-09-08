@@ -5,9 +5,9 @@
  *      Author: andre
  */
 
-#include "meld/meldInterpretEvents.h"
-#include "meld/meldInterpretScheduler.h"
-#include "meld/meldInterpretVM.h"
+#include "meldInterpretEvents.h"
+#include "meldInterpretScheduler.h"
+#include "meldInterpretVM.h"
 
 using namespace BaseSimulator;
 

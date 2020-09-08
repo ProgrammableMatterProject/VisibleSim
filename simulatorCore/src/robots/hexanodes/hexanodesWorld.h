@@ -13,19 +13,19 @@
 
 #include <vector>
 
-#include "base/buildingBlock.h"
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "grid/cell3DPosition.h"
-#include "robots/hexanodes/hexanodesBlock.h"
-#include "gui/objLoader.h"
-#include "utils/trace.h"
+#include "../../base/buildingBlock.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "../../grid/cell3DPosition.h"
+#include "hexanodesBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../utils/trace.h"
 
 //!< \namespace Hexanodes
 namespace Hexanodes {
 
-static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
+static const Vector3D defaultBlockSize{50, 50, 12.5};
 
 class HexanodesMotionEngine;
 class HexanodesMotion;
@@ -48,6 +48,12 @@ public:
         return((HexanodesWorld*)world);
     }
 
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_HEXANODE; };
+
     void printInfo() {
         OUTPUT << "I'm a HexanodesWorld" << endl;
     }
@@ -65,28 +71,24 @@ public:
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
      */
-    virtual void linkBlock(const Cell3DPosition &pos) override;
+    void linkBlock(const Cell3DPosition &pos) override;
 
-        virtual void glDraw() override;
-        virtual void glDrawShadows() override;
-        virtual void glDrawId() override;
-    virtual void glDrawIdByMaterial() override;
-    void updateGlData(BuildingBlock *bb) override;
-    void updateGlData(HexanodesBlock*blc,const Color &color);
-    void updateGlData(HexanodesBlock*blc, bool visible);
-    void updateGlData(HexanodesBlock*blc, const Cell3DPosition &position);
-    void updateGlData(HexanodesBlock*blc, const Vector3D &position);
-    void updateGlData(HexanodesBlock*blc, const Matrix &mat);
-    virtual void setSelectedFace(int n) override;
-    virtual void exportConfiguration() override;
+    void glDraw() override;
+    void glDrawShadows() override;
+    void glDrawBackground() override;
+    void glDrawId() override;
+    void glDrawIdByMaterial() override;
+
+    using World::updateGlData; // Fix hidden virtual func compiler warnings when using clang++
+    void updateGlData(BuildingBlock*blc, const Matrix &mat);
+    void setSelectedFace(int n) override;
+    void exportConfiguration() override;
 
     virtual void disconnectBlock(BuildingBlock *block);
-        virtual void glDrawSpecificBg() override;
+    void createPopupMenu(int ix, int iy) override;
+    void menuChoice(int n) override;
 
-        virtual void createPopupMenu(int ix, int iy) override;
-        virtual void menuChoice(int n) override;
-
-        vector<HexanodesMotion*>getAllMotionsForModule(HexanodesBlock*nb);
+    vector<HexanodesMotion*>getAllMotionsForModule(HexanodesBlock*nb);
 /**
  * \brief load the background textures (internal)
  */

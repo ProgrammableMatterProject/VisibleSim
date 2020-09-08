@@ -8,8 +8,8 @@
 #include <iostream>
 #include <string.h>
 
-#include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
-#include "utils/trace.h"
+#include "blinkyBlocksSimulator.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

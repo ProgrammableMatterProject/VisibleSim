@@ -12,10 +12,11 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/slidingCubes/slidingCubesWorld.h"
-#include "robots/slidingCubes/slidingCubesBlock.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
+#include "slidingCubesWorld.h"
+#include "slidingCubesBlock.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 
@@ -26,14 +27,14 @@ SlidingCubesWorld::SlidingCubesWorld(const Cell3DPosition &gridSize, const Vecto
     OUTPUT << TermColor::LifecycleColor << "SlidingCubesWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","robotBlock.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","robotBlockPicking.obj");
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","slidingCube.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/slidingCubesTextures","slidingCubePicking.obj");
         objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
     }
 
     lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 
-        motionRules = new SlidingCubesMotionRules();
+    motionRules = new SlidingCubesMotionRules();
 }
 
 SlidingCubesWorld::~SlidingCubesWorld() {
@@ -168,6 +169,8 @@ void SlidingCubesWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3D
     SlidingCubesGlBlock *glBlock = new SlidingCubesGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     robotBlock->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     robotBlock->setPosition(pos);
     robotBlock->setColor(col);
     robotBlock->isMaster=master;
@@ -207,100 +210,19 @@ void SlidingCubesWorld::linkBlock(const Cell3DPosition &pos) {
 }
 
 void SlidingCubesWorld::glDraw() {
-    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-        gray[]={0.2f,0.2f,0.2f,1.0f};
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+    glDisable(GL_TEXTURE_2D);
+    lock();
+    for (const auto& pair : mapGlBlocks) {
+        ((SlidingCubesGlBlock*)pair.second)->glDraw(objBlock);
+    }
+    unlock();
 
-        glPushMatrix();
-        glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-        glDisable(GL_TEXTURE_2D);
-        lock();
-        for (const auto& pair : mapGlBlocks) {
-            ((SlidingCubesGlBlock*)pair.second)->glDraw(objBlock);
-        }
-        unlock();
-        glPopMatrix();
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-        glPushMatrix();
-        enableTexture(true);
-        glBindTexture(GL_TEXTURE_2D,idTextureWall);
-        glScalef(lattice->gridSize[0]*lattice->gridScale[0],
-                 lattice->gridSize[1]*lattice->gridScale[1],
-                 lattice->gridSize[2]*lattice->gridScale[2]);
-        glBegin(GL_QUADS);
-        // bottom
-        glNormal3f(0,0,1.0f);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,0.0f);
-        glTexCoord2f(0,lattice->gridSize[1]);
-        glVertex3f(0.0,1.0,0.0f);
-        // top
-        glNormal3f(0,0,-1.0f);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,1.0f);
-        glTexCoord2f(0,lattice->gridSize[1]);
-        glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,1.0f);
-        // left
-        glNormal3f(1.0,0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[1],0);
-        glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-        glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(0.0,0.0,1.0f);
-        // right
-        glNormal3f(-1.0,0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(1.0,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-        glVertex3f(1.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[1],0);
-        glVertex3f(1.0f,1.0f,0.0f);
-        // back
-        glNormal3f(0,-1.0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-        glVertex3f(1.0f,1.0,1.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(0.0,1.0,1.0f);
-        // front
-        glNormal3f(0,1.0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(0,lattice->gridSize[2]);
-        glVertex3f(0.0,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-        glVertex3f(1.0f,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glEnd();
-        glPopMatrix();
-        // draw the axes
-        glPushMatrix();
-        glScalef(0.2f,0.2f,0.2f);
-        objRepere->glDraw();
-        glPopMatrix();
-
-        BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
-        if (bb) bb->blockCode->onGlDraw();
-        lattice->glDraw();
+    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    if (bb) bb->blockCode->onGlDraw();
+    lattice->glDraw();
+    glPopMatrix();
 }
 
 void SlidingCubesWorld::glDrawId() {
@@ -328,11 +250,9 @@ void SlidingCubesWorld::glDrawIdByMaterial() {
     }
     unlock();
     glPopMatrix();
-
-    glDrawBackground();
 }
 
-void SlidingCubesWorld::glDrawSpecificBg() {
+void SlidingCubesWorld::glDrawBackground() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
         gray[]={0.2f,0.2f,0.2f,1.0f};
 
@@ -418,16 +338,7 @@ void SlidingCubesWorld::glDrawSpecificBg() {
 void SlidingCubesWorld::loadTextures(const string &str) {
     string path = str+"/texture_plane.tga";
     int lx,ly;
-    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
-}
-
-void SlidingCubesWorld::updateGlData(SlidingCubesBlock*blc,int prev,int next) {
-    SlidingCubesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        glblc->setPrevNext(prev,next);
-        unlock();
-    }
+    idTextureWall = loadTexture(path.c_str(),lx,ly);
 }
 
 void SlidingCubesWorld::setSelectedFace(int n) {
@@ -483,7 +394,7 @@ bool SlidingCubesWorld::exportSTLModel(string title) {
     // select robotBlock in the border
     vector <SlidingCubesBlock*> borderBlocks;
     cout << "step #1: " << endl;
-    for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
+    for (const auto& pair : buildingBlocksMap) {
         if (pair.second->getState() != BuildingBlock::REMOVED
             and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
             SlidingCubesBlock *rb = (SlidingCubesBlock *)pair.second;

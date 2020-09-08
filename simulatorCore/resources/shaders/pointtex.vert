@@ -12,8 +12,6 @@ void main() {
 	ambient = gl_FrontMaterial.ambient * gl_LightSource[0].ambient;
 	ambientGlobal = gl_LightModel.ambient * gl_FrontMaterial.ambient;
 
-			
 	gl_TexCoord[0] = gl_MultiTexCoord0;
-	gl_TexCoord[1] = gl_TextureMatrix[0]*vec4(ecPos.xyz,1);
 	gl_Position = ftransform();
 }

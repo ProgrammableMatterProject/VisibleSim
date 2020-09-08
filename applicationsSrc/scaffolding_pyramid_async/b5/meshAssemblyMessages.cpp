@@ -35,7 +35,10 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
             mabc.sentRequestToCoordinator = true;
         } else return; // Wait for TR to get into place and send COORDINATOR_READY
     } else if (mabc.role == Support) {
-        // Forward message to ActiveBeamTip for forwarding to root
+
+        adjustClonedMessageCount();
+// Forward message to ActiveBeamTip for forwarding to roo
+        t
         P2PNetworkInterface* btItf =
             mabc.catom->getInterface(mabc.branchTipPos);
         VS_ASSERT_MSG(btItf, "cannot find branch tip among neighbor interfaces");

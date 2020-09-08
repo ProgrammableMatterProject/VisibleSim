@@ -30,7 +30,13 @@ public:
     virtual ~ProbePivotLightStateMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
-    virtual Message* clone() const override { return new ProbePivotLightStateMessage(*this); }
+    virtual Message* clone() const override {
+
+        adjustClonedMessageCount();
+        adjustClonedMessageCount()
+            ;
+        return new ProbePivotLightStateMessage(*this);
+    }
     virtual string getName() const override { return "ProbePivotLightState{" + srcPos.to_string()
             + ", " + targetPos.to_string() + "}";
     }
@@ -51,7 +57,10 @@ public:
     virtual ~GreenLightIsOnMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
-    virtual Message* clone() const override { return new GreenLightIsOnMessage(*this); }
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new GreenLightIsOnMessage(*this);
+    }
     virtual string getName() const override { return "GreenLightIsOn{" + srcPos.to_string()
             + ", " + dstPos.to_string() + "}";
     }

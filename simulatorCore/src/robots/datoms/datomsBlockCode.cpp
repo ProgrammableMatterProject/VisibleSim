@@ -6,9 +6,9 @@
  */
 
 #include <iostream>
-#include "robots/datoms/datomsBlockCode.h"
-#include "comm/network.h"
-#include "utils/trace.h"
+#include "datomsBlockCode.h"
+#include "../../comm/network.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

@@ -5,17 +5,18 @@
  *      Author: dom
  */
 
-#include <stdlib.h>
+#include <cstdlib>
 
-#include "base/world.h"
-#include "utils/trace.h"
-#include "gui/openglViewer.h"
+#include "world.h"
+#include "../utils/trace.h"
+#include "../gui/openglViewer.h"
+#include "../replay/replayExporter.h"
 
 using namespace std;
 
 namespace BaseSimulator {
 
-World *World::world = NULL;
+World *World::world = nullptr;
 map<bID, BuildingBlock*>World::buildingBlocksMap;
 unordered_map <bID, GlBlock*>World::mapGlBlocks;
 
@@ -23,12 +24,12 @@ World::World(int argc, char *argv[]) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "World constructor" << endl;
 #endif
-    selectedGlBlock = NULL;
+    selectedGlBlock = nullptr;
     numSelectedFace=0;
     numSelectedGlBlock=0;
     menuId = 0;
 
-    if (world == NULL) {
+    if (world == nullptr) {
         world = this;
 
         if (GlutContext::GUIisEnabled) {
@@ -80,7 +81,7 @@ BuildingBlock* World::getBlockById(int bId) {
     map<bID, BuildingBlock*>::iterator it;
     it = buildingBlocksMap.find(bId);
     if (it == buildingBlocksMap.end()) {
-        return(NULL);
+        return(nullptr);
     } else {
         return(it->second);
     }
@@ -92,7 +93,7 @@ BuildingBlock* World::getBlockByPosition(const Cell3DPosition &pos) {
         if (it->second->position == pos)
             return it->second;
     }
-    return(NULL);
+    return(nullptr);
 }
 
 void World::updateGlData(BuildingBlock *bb) {
@@ -105,12 +106,30 @@ void World::updateGlData(BuildingBlock *bb) {
     }
 }
 
+void World::updateGlData(BuildingBlock *bb, const Color &c) {
+    GlBlock *glblc = bb->getGlBlock();
+    if (glblc) {
+        //lock();
+        glblc->setColor(bb->color);
+        //unlock();
+    }
+}
+
+void World::updateGlData(BuildingBlock *bb, const Cell3DPosition &p) {
+    GlBlock *glblc = bb->getGlBlock();
+    if (glblc) {
+        //lock();
+        glblc->setPosition(lattice->gridToWorldPosition(p));
+        //unlock();
+    }
+}
+
 void World::updateGlData(BuildingBlock*blc, Vector3D &p) {
     GlBlock *glblc = blc->getGlBlock();
     if (glblc) {
-        lock();
+        //lock();
         glblc->setPosition(p);
-        unlock();
+        //unlock();
     }
 }
 
@@ -170,8 +189,8 @@ void World::disconnectBlock(BuildingBlock *block, bool count) {
             fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
 
             // Disconnect the interfaces
-            fromBlock->connectedInterface = NULL;
-            toBlock->connectedInterface = NULL;
+            fromBlock->connectedInterface = nullptr;
+            toBlock->connectedInterface = nullptr;
         }
     }
 
@@ -189,9 +208,13 @@ void World::deleteBlock(BuildingBlock *bb) {
     }
 
     if (selectedGlBlock == bb->ptrGlBlock) {
-        selectedGlBlock = NULL;
-        GlutContext::mainWindow->select(NULL);
+        selectedGlBlock = nullptr;
+        GlutContext::mainWindow->select(nullptr);
     }
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeRemoveModule(getScheduler()->now(), bb->blockId);
+
 
     // remove the associated glBlock
     lock();
@@ -208,7 +231,7 @@ void World::stopSimulation() {
     }
 }
 
-bool World::canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace) {
+bool World::canAddBlockToFace(bID numSelectedGlBlock, uint8_t numSelectedFace) {
     BuildingBlock *bb = getBlockById(mapGlBlocks[numSelectedGlBlock]->blockId);
     Cell3DPosition nPos;
     bool isInGrid = bb->getNeighborPos(numSelectedFace,nPos);
@@ -246,7 +269,7 @@ void World::menuChoice(int n) {
 void World::createHelpWindow() {
     if (GlutContext::helpWindow)
         delete GlutContext::helpWindow;
-    GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/resources/help/genericHelp.txt");
+    GlutContext::helpWindow = new GlutHelpWindow(nullptr,10,40,540,500,"../../simulatorCore/resources/help/genericHelp.txt");
 }
 
 void World::tapBlock(Time date, bID bId, int face) {
@@ -272,7 +295,7 @@ void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
 
 void World::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
-        GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
+        GlutContext::popupMenu = new GlutPopupMenuWindow(nullptr,0,0,200,180);
         GlutContext::popupMenu->addButton(1,"../../simulatorCore/resources/textures/menuTextures/menu_add.tga");
         GlutContext::popupMenu->addButton(2,"../../simulatorCore/resources/textures/menuTextures/menu_del.tga");
         GlutContext::popupMenu->addButton(3,"../../simulatorCore/resources/textures/menuTextures/menu_tap.tga");
@@ -281,7 +304,7 @@ void World::createPopupMenu(int ix, int iy) {
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
-cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
+        cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
          << " selected" << endl;
     // cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
 
@@ -289,16 +312,6 @@ cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(num
                                                           (int)numSelectedFace));
     GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
     GlutContext::popupMenu->show(true);
-}
-
-void World::glDrawBackground() {
-    if (background) {
-        glClearColor(0.3f, 0.3f, 0.8f, 1.0f);
-        glDrawSpecificBg();
-    }
-    else {
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    }
 }
 
 void World::getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax) {
@@ -316,6 +329,25 @@ void World::getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float
         if (zmax<pos[2]) zmax=pos[2];
     }
     unlock();
+}
+
+bool World::separate() {
+    if (!lattice->hasSeparator()) return false;
+
+    for (auto bb:buildingBlocksMap) {
+        bool state=lattice->isFront(bb.second->position);
+        if (state) { // on cherche un voisin qui est not front
+            for (auto neighbor:bb.second->getNeighbors()) {
+                if (!lattice->isFront(neighbor->position)) {
+                    /*neighbor->setColor(LIGHTBLUE);
+                    bb.second->setColor(BLUE);*/
+                    bb.second->breakP2PNetworkInterface(neighbor);
+                }
+            }
+        }
+    }
+
+    return true;
 }
 
 } // BaseSimulator namespace

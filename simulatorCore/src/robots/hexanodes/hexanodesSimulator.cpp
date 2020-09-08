@@ -8,13 +8,13 @@
  *
  */
 
-#include "hexanodesSimulator.h"
 
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
-#include "utils/trace.h"
-#include "utils/utils.h"
+#include "hexanodesSimulator.h"
+#include "../../utils/trace.h"
+#include "../../utils/utils.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -74,6 +74,7 @@ void HexanodesSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCod
 
     // Finally, add block to the world
     ((HexanodesWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
 } // Hexanodes namespace

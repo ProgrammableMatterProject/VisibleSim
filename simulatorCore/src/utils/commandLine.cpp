@@ -1,12 +1,11 @@
-#include "utils/commandLine.h"
 
 #include <iostream>
 #include <cstdlib>
-
-#include "stats/statsIndividual.h"
-#include "gui/openglViewer.h"
-#include "base/simulator.h"
-#include "utils/trace.h"
+#include "commandLine.h"
+#include "../stats/statsIndividual.h"
+#include "../gui/openglViewer.h"
+#include "../base/simulator.h"
+#include "trace.h"
 
 void CommandLine::help() const {
     cerr << TermColor::BWhite << "VisibleSim options:" << TermColor::Reset << endl;
@@ -51,12 +50,43 @@ CommandLine::CommandLine(int argc, char *argv[], BlockCodeBuilder bcb) {
 }
 
 void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
+    appName = argv[0];
+
     try {
         /* Reading the command line */
         argv++;
         argc--;
         while ( (argc > 0) && (argv[0][0] == '-')) {
             switch(argv[0][1]) {
+                // Composite argument example: --foo 13
+                case '-': {
+                    string varg = string(argv[0] + 2); // argv[0] without "--"
+
+                    if (varg == string("replay")) { //
+                        replayEnabled = true;
+                        if (argc > 1 and argv[1] and argv[1][0] != '-') { // filename supplied
+                            try {
+                                replayFilename = string(argv[1]);
+                                argc--;
+                                argv++;
+                            } catch(std::logic_error&) {
+                                stringstream err;
+                                err << "replay filename could not be parsed."
+                                    << " Found replayFilename = " << argv[1] << endl;
+                                throw CLIParsingError(err.str());
+                            }
+                            cerr << "--replay option provided with value: "
+                                 << replayFilename << endl;
+                        }
+                        cout << "--replay option enabled" << endl;
+                    } else if (varg == string("debug-replay")) {
+                        replayEnabled = true;
+                        ReplayExporter::enableDebugging();
+                        cout << "--debug-replay option enabled" << endl;
+                    }
+                    break;
+                }
+
                 case 'p':   {
                     //if (programPath != "")
                     //   help();
@@ -150,8 +180,11 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                 } break;
 
                 case 'f' : {
-                    //fullScreen = true;
                     GlutContext::setFullScreenMode(true);
+                } break;
+
+                case 'w' : {
+                    GlutContext::setShadowsMode(false);
                 } break;
 
                 case 'k' : {
@@ -196,8 +229,7 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                 default:
                     // Simulate static virtual function call, through a (actually static)
                     //  class member function
-                    // @warning this is a very hacky method as it requires the user blockcode
-                    //  to check whether or not the constructor's argument is NULL
+                    // @warning this is a very hacky method as it requires the user blockcode                    //  to check whether or not the constructor's argument is NULL
                     BlockCode *bc = bcb(NULL);
                     bool parsed = bc->parseUserCommandLineArgument(argc, &argv);
                     delete bc;

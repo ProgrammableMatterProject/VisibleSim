@@ -9,9 +9,8 @@
 #define CATOMS2DGLBLOCK_H_
 
 #include <string>
-#include "gui/objLoader.h"
-
-#include "base/glBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../base/glBlock.h"
 
 namespace Catoms2D {
 class Catoms2DGlBlock:public GlBlock {

@@ -28,7 +28,10 @@ public:
     virtual ~RequestTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
-    virtual Message* clone() const override { return new RequestTargetCellMessage(*this); }
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new RequestTargetCellMessage(*this);
+    }
     virtual string getName() const override { return "RequestTargetCell"; }
 };
 
@@ -41,7 +44,10 @@ public:
     virtual ~ProvideTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
-    virtual Message* clone() const override { return new ProvideTargetCellMessage(*this); }
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new ProvideTargetCellMessage(*this);
+    }
     virtual string getName() const override { return "ProvideTargetCell"; }
 };
 
@@ -51,7 +57,10 @@ public:
     virtual ~TileInsertionReadyMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
-    virtual Message* clone() const override { return new TileInsertionReadyMessage(*this); }
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new TileInsertionReadyMessage(*this);
+    }
     virtual string getName() const override { return "TileInsertionReady"; }
 };
 
@@ -65,7 +74,10 @@ public:
     virtual ~InitiateFeedingMechanismMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*) override;
-    virtual Message* clone() const override { return new InitiateFeedingMechanismMessage(*this); }
+    virtual Message* clone() const override {
+        adjustClonedMessageCount();
+        return new InitiateFeedingMechanismMessage(*this);
+    }
     virtual string getName() const override { return "InitiateFeedingMechanism"; }
 };
 

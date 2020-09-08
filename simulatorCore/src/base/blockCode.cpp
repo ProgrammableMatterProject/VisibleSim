@@ -11,25 +11,24 @@
 #include "events/scheduler.h"
 #include "base/buildingBlock.h"
 #include "base/world.h"
-#include "grid/lattice.h"
 
 using namespace std;
 
 namespace BaseSimulator {
 
-Target *BlockCode::target = NULL;
+Target *BlockCode::target = nullptr;
 
 BlockCode::InterfaceNotConnectedException::
 InterfaceNotConnectedException(BlockCode* bc, const Message* msg,
                                const P2PNetworkInterface* itf) {
     stringstream ss;
-    int itfId = bc->hostBlock->getInterfaceId(itf);
+    uint8_t itfId = bc->hostBlock->getInterfaceBId(itf);
     Cell3DPosition nPos;
     bool err = not bc->hostBlock->getNeighborPos(itfId, nPos);
     ss <<  "Trying to send " << msg->getMessageName() << " through unconnected interface: "
        << " { sender = #" << bc->hostBlock->blockId
        << " at " << bc->hostBlock->position
-       << ", itfId = " << itfId
+       << ", itfId = " << (int)itfId
        << ", nPos = " << (string)(err ? "#ERROR" : bc->hostBlock->position.to_string())
        << " }" << endl;
     m_msg = ss.str();
@@ -44,11 +43,10 @@ BlockCode::BlockCode(BuildingBlock *host) : hostBlock(host) {
     }
 }
 
-
 BlockCode::~BlockCode() {
     if (target) {
         delete target;
-        target = NULL;
+        target = nullptr;
     }
 
     eventFuncMap.clear();
@@ -63,7 +61,7 @@ void BlockCode::addMessageEventFunc2(int type, eventFunc2 func) {
 }
 
 int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,Time t0,Time dt) {
-    return sendMessage(NULL, msg, dest, t0, dt);
+    return sendMessage(nullptr, msg, dest, t0, dt);
 }
 
 int BlockCode::sendMessage(HandleableMessage*msg,
@@ -119,7 +117,7 @@ int BlockCode::sendMessage(const char*msgString, Message*msg,
 int BlockCode::sendMessageToAllNeighbors(Message*msg,Time t0,Time dt,int nexcept,...) {
     va_list args;
     va_start(args,nexcept);
-    int ret = sendMessageToAllNeighbors(NULL, msg, t0, dt, nexcept, args);
+    int ret = sendMessageToAllNeighbors(nullptr, msg, t0, dt, nexcept, args);
     va_end(args);
 
     return ret;
@@ -157,7 +155,9 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
         }
     }
 
+    Message::adjustClonedMessageCount();
     delete msg;
+
     return n;
 }
 
@@ -202,7 +202,11 @@ void BlockCode::onTap(int face) {
 bool BlockCode::loadNextTarget() {
     target = Target::loadNextTarget();
 
-    return target != NULL;
+    return target != nullptr;
+}
+
+string BlockCode::onInterfaceDraw() {
+    return "#Modules: " + to_string(BaseSimulator::getWorld()->lattice->nbModules);
 }
 
 } // BaseSimulator namespace

@@ -13,9 +13,9 @@
 
 #include <utility>
 #include <vector>
-#include "robots/hexanodes/hexanodesWorld.h"
-#include "grid/cell3DPosition.h"
-#include "grid/lattice.h"
+#include "hexanodesWorld.h"
+#include "../../grid/cell3DPosition.h"
+#include "../../grid/lattice.h"
 
 using namespace std;
 
@@ -31,10 +31,10 @@ public:
 
     HexanodesMotion(HHLattice::Direction fId,motionDirection dir,vector<HHLattice::Direction> obs)
     :fromConId(fId),direction(dir),obstacleDirs(obs) {};
-    inline Cell3DPosition getFinalPos(const Cell3DPosition &nodePos) {
+    inline Cell3DPosition getFinalPos(const Cell3DPosition &nodePos) const {
         return getWorld()->lattice->getCellInDirection(nodePos,(direction==CW?(fromConId+1)%6:(fromConId+5)%6));
     }
-    inline HHLattice::Direction getToConId() {
+    inline HHLattice::Direction getToConId() const {
         return (HHLattice::Direction )((fromConId+(direction==CW?5:1))%6);
     }
 };

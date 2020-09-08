@@ -7,13 +7,12 @@
  *      Author: Pierre
  */
 
-#include "motion/translationEvents.h"
-#include "base/world.h"
-#include "utils/utils.h"
+#include "../motion/translationEvents.h"
+#include "../base/world.h"
 
 using namespace BaseSimulator::utils;
 
-const int ANIMATION_DELAY=40000;
+const int ANIMATION_DELAY=100000;
 const int COM_DELAY=2000;
 
 namespace BaseSimulator {
@@ -50,13 +49,14 @@ void TranslationStartEvent::consume() {
     Scheduler *scheduler = getScheduler();
     BuildingBlock *bb = concernedBlock;
     World::getWorld()->disconnectBlock(bb, false);
-    bb->setColor(DARKGREY);
+    // bb->setColor(DARKGREY);
 
     Time t = scheduler->now() + ANIMATION_DELAY;
     Vector3D motionPosition = bb->getPositionVector();
     Vector3D motionStep =  finalPosition - motionPosition;
     motionStep.setLength(0.1);
     scheduler->schedule(new TranslationStepEvent(t, bb, finalPosition, motionStep, motionPosition));
+
 }
 
 const string TranslationStartEvent::getEventName() {
@@ -108,9 +108,9 @@ void TranslationStepEvent::consume() {
     wrl->updateGlData(bb, motionGlPos);
     Scheduler *scheduler = getScheduler();
 
-    double v = (finalPosition - motionPosition) * motionStep;
+    double v = abs((finalPosition - motionPosition) * motionStep);
     if (v<EPS) {
-        scheduler->schedule(new TranslationStopEvent(scheduler->now() + ANIMATION_DELAY,
+        scheduler->schedule(new TranslationStopEvent(scheduler->now() + COM_DELAY,
                                                 bb, finalPosition));
     } else {
         scheduler->schedule(new TranslationStepEvent(scheduler->now() + ANIMATION_DELAY, bb,
@@ -149,7 +149,7 @@ void TranslationStopEvent::consume() {
     BuildingBlock *bb = concernedBlock;
     World *wrld = getWorld();
     bb->setPosition(Cell3DPosition(finalPosition.pt[0], finalPosition.pt[1], finalPosition.pt[2]));
-    wrld->updateGlData(bb);
+    wrld->updateGlData(bb,bb->position);
 
 #ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);
@@ -158,7 +158,7 @@ void TranslationStopEvent::consume() {
     OUTPUT << "connect Block " << bb->blockId << "\n";
     wrld->connectBlock(bb, false);
     Scheduler *scheduler = getScheduler();
-    scheduler->schedule(new TranslationEndEvent(scheduler->now() + ANIMATION_DELAY, bb));
+    scheduler->schedule(new TranslationEndEvent(scheduler->now() + COM_DELAY, bb));
 }
 
 const string TranslationStopEvent::getEventName() {
@@ -187,7 +187,7 @@ TranslationEndEvent::~TranslationEndEvent() {
 void TranslationEndEvent::consume() {
     EVENT_CONSUME_INFO();
     BuildingBlock *bb = concernedBlock;
-    concernedBlock->blockCode->processLocalEvent(EventPtr(new TranslationEndEvent(date + COM_DELAY,bb)));
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new TranslationEndEvent(date,bb)));
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(bb->stats);
 }

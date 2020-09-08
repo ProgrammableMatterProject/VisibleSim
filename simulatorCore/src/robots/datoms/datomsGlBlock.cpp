@@ -4,7 +4,7 @@
  * \date 28/01/2018
  * \author Benoît Piranda
  */
-#include "robots/datoms/datomsGlBlock.h"
+#include "datomsGlBlock.h"
 
 namespace Datoms {
 
@@ -23,7 +23,7 @@ void DatomsGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         ptrObj->setLightedColor(color);
     }
     glDisable(GL_CULL_FACE);
-    if (color[3] > 0) ptrObj->glDraw(currentModel);
+    if (visible) ptrObj->glDraw(currentModel);
     glEnable(GL_CULL_FACE);
     glPopMatrix();
 }

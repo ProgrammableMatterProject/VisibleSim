@@ -6,9 +6,9 @@
  *      Author: Benoît, Pierre
  */
 
-#include "robots/catoms2D/catoms2DRotationEvents.h"
-#include "robots/catoms2D/catoms2DWorld.h"
-#include "utils/utils.h"
+#include "catoms2DRotationEvents.h"
+#include "catoms2DWorld.h"
+#include "../../utils/utils.h"
 
 using namespace BaseSimulator::utils;
 

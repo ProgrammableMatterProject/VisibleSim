@@ -6,10 +6,10 @@
  */
 
 #include <iostream>
-#include "robots/catoms3D/catoms3DSimulator.h"
 #include <string.h>
-#include "utils/trace.h"
-#include "utils/utils.h"
+#include "catoms3DSimulator.h"
+#include "../../utils/trace.h"
+#include "../../utils/utils.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

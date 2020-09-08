@@ -15,11 +15,14 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "robots/hexanodes/hexanodesWorld.h"
-#include "robots/hexanodes/hexanodesBlock.h"
-#include "robots/hexanodes/hexanodesMotionEngine.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
+#include "../../replay/replayExporter.h"
+#include "../../events/events.h"
+#include "hexanodesWorld.h"
+#include "hexanodesBlock.h"
+#include "hexanodesGlBlock.h"
+#include "hexanodesMotionEngine.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -197,13 +200,14 @@ void HexanodesWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPos
     HexanodesGlBlock *glBlock = new HexanodesGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     module->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     module->setColor(col);
-        cout << "addBlock(" << pos << ")" << endl;
-        module->setPositionAndOrientation(pos,orientation);
-        cout << "module->position = " << module->position << endl;
-        lattice->insert(module, pos);
+    module->setPositionAndOrientation(pos,orientation);
+    lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     linkBlock(pos);
+
 }
 
 /**
@@ -250,8 +254,6 @@ void HexanodesWorld::glDraw() {
 
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
-
-    glDrawBackground();
 }
 
 void HexanodesWorld::glDrawShadows() {
@@ -261,8 +263,6 @@ void HexanodesWorld::glDrawShadows() {
         ((HexanodesGlBlock*)pair.second)->glDrawShadows(objBlockForPicking);
     }
     unlock();
-
-    glPopMatrix();
 }
 
 void HexanodesWorld::glDrawId() {
@@ -289,7 +289,7 @@ void HexanodesWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void HexanodesWorld::glDrawSpecificBg() {
+void HexanodesWorld::glDrawBackground() {
     static const GLfloat white[]={1.0,1.0,1.0,1.0},
     gray[]={0.2,0.2,0.2,1.0},black[]={0.0,0.0,0.0,1.0};
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
@@ -322,64 +322,13 @@ void HexanodesWorld::glDrawSpecificBg() {
 void HexanodesWorld::loadTextures(const string &str) {
     string path = str+"/hexanodesgrid.tga";
     int lx,ly;
-    idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureWall = loadTexture(path.c_str(),lx,ly);
     path=str+"/../smartBlocksTextures/digits.tga";
-    idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureDigits = loadTexture(path.c_str(),lx,ly);
 }
 
-void HexanodesWorld::updateGlData(BuildingBlock *bb) {
-    HexanodesGlBlock *glblc = (HexanodesGlBlock*)bb->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setPosition(lattice->gridToWorldPosition(bb->position));
-            glblc->setColor(bb->color);
-            unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Color &color) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setColor(color);
-            unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, bool visible) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setVisible(visible);
-            unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Vector3D &position) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setPosition(position);
-        unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Cell3DPosition &position) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setPosition(lattice->gridToWorldPosition(position));
-        unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Matrix &mat) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
+void HexanodesWorld::updateGlData(BuildingBlock*blc, const Matrix &mat) {
+    HexanodesGlBlock *glblc = (HexanodesGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         glblc->mat = mat;

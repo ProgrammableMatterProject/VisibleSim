@@ -9,11 +9,11 @@
 #define NETWORK_H_
 
 #include <deque>
-#include <string.h>
+#include <string>
 
-#include "utils/tDefs.h"
-#include "comm/rate.h"
-#include "base/buildingBlock.h"
+#include "rate.h"
+#include "../utils/tDefs.h"
+#include "../base/buildingBlock.h"
 
 using namespace std;
 
@@ -38,12 +38,10 @@ typedef std::shared_ptr<Message> MessagePtr;
 
 class Message {
 protected:
-    static bID nextId;
-    //static unsigned int nextId;
-    static bID nbMessages;
-    //static unsigned int nbMessages;
+    static uint64_t nextId;
+    static uint64_t nbMessages;
 public:
-    bID id;
+    uint64_t id;
     //unsigned int id;
     unsigned int type;
     P2PNetworkInterface *sourceInterface, *destinationInterface;
@@ -55,7 +53,7 @@ public:
     static uint64_t getNbMessages();
     virtual string getMessageName() const;
     static void incrementMessageCounts() { nextId++; nbMessages++; }
-
+    static inline void adjustClonedMessageCount() { nbMessages++; }
 
     virtual unsigned int size() const { return(4); }
     /**
@@ -102,14 +100,14 @@ public :
 
 class P2PNetworkInterface {
 protected:
-    static bID nextId;
+    static uint64_t nextId;
     static int defaultDataRate;
 
     BaseSimulator::Rate* dataRate;
 public:
 
-    bID globalId;
-    bID localId;
+    uint64_t globalId;
+    uint64_t localId;
     deque<MessagePtr> outgoingQueue;
 
     P2PNetworkInterface *connectedInterface;

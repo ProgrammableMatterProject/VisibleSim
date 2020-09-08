@@ -13,14 +13,14 @@
 
 #include <vector>
 
-#include "base/buildingBlock.h"
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "grid/cell3DPosition.h"
-#include "robots/nodes2D/nodes2DBlock.h"
-#include "gui/objLoader.h"
-#include "utils/trace.h"
+#include "../../base/buildingBlock.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "../../grid/cell3DPosition.h"
+#include "nodes2DBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../utils/trace.h"
 
 //!< \namespace Nodes2D
 namespace Nodes2D {
@@ -52,7 +52,13 @@ public:
         OUTPUT << "I'm a Nodes2DWorld" << endl;
     }
 
-    virtual Nodes2DBlock* getBlockById(int bId) override {
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_NODE2D; };
+
+    Nodes2DBlock* getBlockById(int bId) override {
         return((Nodes2DBlock*)World::getBlockById(bId));
     }
 
@@ -65,28 +71,24 @@ public:
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
      */
-    virtual void linkBlock(const Cell3DPosition &pos) override;
+    void linkBlock(const Cell3DPosition &pos) override;
 
-        virtual void glDraw() override;
-        virtual void glDrawShadows() override;
-        virtual void glDrawId() override;
-    virtual void glDrawIdByMaterial() override;
-    void updateGlData(BuildingBlock *bb) override;
-    void updateGlData(Nodes2DBlock*blc,const Color &color);
-    void updateGlData(Nodes2DBlock*blc, bool visible);
-    void updateGlData(Nodes2DBlock*blc, const Cell3DPosition &position);
-    void updateGlData(Nodes2DBlock*blc, const Vector3D &position);
+    void glDraw() override;
+    void glDrawShadows() override;
+    void glDrawId() override;
+    void glDrawIdByMaterial() override;
+    void glDrawBackground() override;
+    using World::updateGlData; // Fix hidden virtual func compiler warnings when using clang++
     void updateGlData(Nodes2DBlock*blc, const Matrix &mat);
-    virtual void setSelectedFace(int n) override;
-    virtual void exportConfiguration() override;
+    void setSelectedFace(int n) override;
+    void exportConfiguration() override;
 
     virtual void disconnectBlock(BuildingBlock *block);
-        virtual void glDrawSpecificBg() override;
 
-        virtual void createPopupMenu(int ix, int iy) override;
-        virtual void menuChoice(int n) override;
+    void createPopupMenu(int ix, int iy) override;
+    void menuChoice(int n) override;
 
-        vector<Nodes2DMotion*>getAllMotionsForModule(Nodes2DBlock*nb);
+    vector<Nodes2DMotion*>getAllMotionsForModule(Nodes2DBlock*nb);
 /**
  * \brief load the background textures (internal)
  */

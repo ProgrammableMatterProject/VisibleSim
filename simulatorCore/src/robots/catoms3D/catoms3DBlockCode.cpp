@@ -6,9 +6,9 @@
  */
 
 #include <iostream>
-#include "robots/catoms3D/catoms3DBlockCode.h"
-#include "utils/trace.h"
-#include "robots/catoms3D/catoms3DWorld.h"
+#include "catoms3DBlockCode.h"
+#include "../../utils/trace.h"
+#include "catoms3DWorld.h"
 
 using namespace std;
 

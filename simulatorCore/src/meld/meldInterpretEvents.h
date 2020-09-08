@@ -1,10 +1,10 @@
 #ifndef MELDINTERPEVENTS_H_
 #define MELDINTERPEVENTS_H_
 
-#include "base/buildingBlock.h"
-#include "meld/meldInterpretVM.h"
-#include "events/events.h"
-#include "comm/network.h"
+#include "../base/buildingBlock.h"
+#include "meldInterpretVM.h"
+#include "../events/events.h"
+#include "../comm/network.h"
 
 //We'll see later for a debugger
 //#include "meld/meldProcessDebugger.h"

@@ -16,7 +16,7 @@
 #include "robots/catoms3D/catoms3DBlock.h"
 #include "events/scheduler.h"
 #include "events/events.h"
-#include "csg/csgUtils.h"
+//#include "csg/csgUtils.h"
 #include "stoyUtils.h"
 #include "meshUtils.h"
 #include "bitmapUtils.h"

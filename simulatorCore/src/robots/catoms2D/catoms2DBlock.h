@@ -10,11 +10,12 @@
 
 #include <stdexcept>
 
-#include "base/buildingBlock.h"
-#include "robots/catoms2D/catoms2DBlockCode.h"
-#include "robots/catoms2D/catoms2DGlBlock.h"
-#include "grid/lattice.h"
-#include "robots/catoms2D/catoms2DMotionEngine.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/buildingBlock.h"
+#include "catoms2DBlockCode.h"
+#include "catoms2DGlBlock.h"
+#include "catoms2DMotionEngine.h"
+#include "../../grid/lattice.h"
 
 class Catoms2DRotationMove;
 
@@ -69,6 +70,16 @@ public:
 
     bool canRotate(RelativeDirection::Direction d) const;
     void rotate(RelativeDirection::Direction d, Time t = 0);
+    /**
+     * @copydoc BuildingBlock::canMoveTo
+     */
+    virtual bool canMoveTo(const Cell3DPosition& dest) const override;
+
+    /**
+     * @copydoc BuildingBlock::moveTo
+     */
+    virtual bool moveTo(const Cell3DPosition& dest) override;
+
 
     // MeldInterpreter
     /**

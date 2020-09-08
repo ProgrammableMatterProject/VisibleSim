@@ -6,12 +6,13 @@
  */
 
 #include <iostream>
-
-#include "base/buildingBlock.h"
-#include "base/world.h"
+#include "buildingBlock.h"
+#include "world.h"
 #include "simulator.h"
-#include "events/scheduler.h"
-#include "utils/trace.h"
+#include "../events/scheduler.h"
+#include "../utils/trace.h"
+#include "../clock/clock.h"
+#include "../replay/replayExporter.h"
 
 using namespace std;
 
@@ -26,16 +27,16 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 //
 //===========================================================================================================
 
-  BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
+BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "BuildingBlock constructor (id:" << nextId << ")" << endl;
 #endif
 
     if (bId < 0) {
-      blockId = nextId;
-      nextId++;
+        blockId = nextId;
+        nextId++;
     } else {
-      blockId = bId;
+        blockId = bId;
     }
 
     state.store(ALIVE);
@@ -48,7 +49,7 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
     buildNewBlockCode = bcb;
 
     if (utils::StatsIndividual::enable) {
-      stats = new StatsIndividual();
+        stats = new StatsIndividual();
     }
 
     for (int i = 0; i < nbInterfaces; i++) {
@@ -61,8 +62,8 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 
     // Parse user configuration from configuration file, only performed once
     if (!userConfigHasBeenParsed) {
-      userConfigHasBeenParsed = true;
-      blockCode->parseUserElements(Simulator::getSimulator()->getConfigDocument());
+        userConfigHasBeenParsed = true;
+        blockCode->parseUserElements(Simulator::getSimulator()->getConfigDocument());
     }
 
     isMaster = false;
@@ -74,12 +75,12 @@ BuildingBlock::~BuildingBlock() {
     OUTPUT << "BuildingBlock destructor" << endl;
 #endif
 
-    if (clock != NULL) {
+    if (clock != nullptr) {
         delete clock;
     }
 
-    if (stats != NULL) {
-            delete stats;
+    if (stats != nullptr) {
+        delete stats;
     }
 
     for (P2PNetworkInterface *p2p : P2PNetworkInterfaces)
@@ -90,14 +91,20 @@ short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
     for (unsigned short int i = 0; i < P2PNetworkInterfaces.size(); i++) {
         if (itf == P2PNetworkInterfaces[i]) return i;
     }
-
     return -1;
+}
+
+uint8_t BuildingBlock::getInterfaceBId(const P2PNetworkInterface* itf) const {
+    for (size_t i = 0; i < P2PNetworkInterfaces.size(); i++) {
+        if (itf == P2PNetworkInterfaces[i]) return static_cast<uint8_t>(i);
+    }
+    return static_cast<uint8_t>(255);
 }
 
 bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {
     P2PNetworkInterface *ni1, *ni2;
-    ni1 = NULL;
-    ni2 = NULL;
+    ni1 = nullptr;
+    ni2 = nullptr;
     if (!getP2PNetworkInterfaceByBlockRef(destBlock)) {
         // creation of the new network interface
         OUTPUT << "adding a new interface to block " << destBlock->blockId << endl;
@@ -112,7 +119,7 @@ bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock)
         destBlock->P2PNetworkInterfaces.push_back(ni2);
     }
 
-    if (ni1!=NULL && ni2!=NULL) {
+    if (ni1!=nullptr && ni2!=nullptr) {
         ni1->connect(ni2);
         return (true);
     } else {
@@ -145,7 +152,7 @@ P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlo
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destBlockId) const {
@@ -156,39 +163,48 @@ P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destB
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
-unsigned short BuildingBlock::getNbNeighbors() const {
-  unsigned short n = 0;
-/*  P2PNetworkInterface *p;
-  vector<P2PNetworkInterface*>::const_iterator it;
-  for (it = P2PNetworkInterfaces.begin(); it != P2PNetworkInterfaces.end(); ++it) {
-    p = *it;
-    if (p->isConnected()) {
-      n++;
-    }
-  }*/
+uint8_t BuildingBlock::getNbNeighbors() const {
+    uint8_t n = 0;
+
     for (const P2PNetworkInterface* p2p : P2PNetworkInterfaces) {
         n+=p2p->isConnected();
     }
 
-  return n;
+    return n;
 }
+
+void BuildingBlock::breakP2PNetworkInterface(BuildingBlock *bb) {
+    if (bb==nullptr) return;
+    P2PNetworkInterface *p2p_12 = getP2PNetworkInterfaceByBlockRef(bb);
+    P2PNetworkInterface *p2p_21 = bb->getP2PNetworkInterfaceByBlockRef(this);
+    assert(p2p_12!= nullptr && p2p_21!= nullptr);
+
+    auto match = std::find(P2PNetworkInterfaces.begin(), P2PNetworkInterfaces.end(), p2p_12);
+    getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), this, match-P2PNetworkInterfaces.begin()));
+    match = std::find(bb->P2PNetworkInterfaces.begin(), bb->P2PNetworkInterfaces.end(), p2p_21);
+    getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), bb, match-bb->P2PNetworkInterfaces.begin()));
+
+    p2p_12->connectedInterface=nullptr;
+    p2p_21->connectedInterface=nullptr;
+}
+
 
 vector<BuildingBlock*> BuildingBlock::getNeighbors() const {
     vector<BuildingBlock*> res;
     for (P2PNetworkInterface* p2p:P2PNetworkInterfaces) {
-      if (p2p->isConnected()) {
-          res.push_back(p2p->connectedInterface->hostBlock);
-      }
+        if (p2p->isConnected()) {
+            res.push_back(p2p->connectedInterface->hostBlock);
+        }
     }
     return res;
 }
 
 
-bool BuildingBlock::getNeighborPos(short connectorId,Cell3DPosition &pos) const {
-  Lattice *lattice = getWorld()->lattice;
+bool BuildingBlock::getNeighborPos(uint8_t connectorId,Cell3DPosition &pos) const {
+    Lattice *lattice = getWorld()->lattice;
     vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(position);
     pos = position + nCells[connectorId];
     return lattice->isInGrid(pos);
@@ -228,7 +244,7 @@ void BuildingBlock::processLocalEvent() {
     }
 
     if (pev->eventType == EVENT_NI_RECEIVE ) {
-      utils::StatsIndividual::decIncommingMessageQueueSize(stats);
+        utils::StatsIndividual::decIncommingMessageQueueSize(stats);
     }
 
     if (blockCode->availabilityDate < getScheduler()->now()) blockCode->availabilityDate = getScheduler()->now();
@@ -240,20 +256,33 @@ void BuildingBlock::processLocalEvent() {
 void BuildingBlock::setColor(int idColor) {
     const GLfloat *col = tabColors[idColor%12];
     color.set(col[0],col[1],col[2],col[3]);
-    getWorld()->updateGlData(this);
+    // getWorld()->updateGlData(this); // separate update color and update position
+    getWorld()->updateGlData(this,color);
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(), blockId, color);
 }
 
 void BuildingBlock::setColor(const Color &c) {
     if (state.load() >= ALIVE) {
         color = c;
-        getWorld()->updateGlData(this);
+        // getWorld()->updateGlData(this); // separate update color and update position
+        getWorld()->updateGlData(this,color);
+
+        if (ReplayExporter::isReplayEnabled())
+            ReplayExporter::getInstance()->writeColorUpdate(getScheduler()->now(),blockId, color);
     }
 }
 
 void BuildingBlock::setPosition(const Cell3DPosition &p) {
     if (state.load() >= ALIVE) {
         position = p;
-        getWorld()->updateGlData(this);
+        // getWorld()->updateGlData(this); // separate update color and update position
+        getWorld()->updateGlData(this,p);
+
+        if (ReplayExporter::isReplayEnabled())
+            ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                               blockId, position, orientationCode);
     }
 }
 
@@ -267,34 +296,39 @@ ruint BuildingBlock::getRandomUint() {
 }
 
 void BuildingBlock::setClock(Clock *c) {
-  if (clock != NULL) {
-    delete clock;
-  }
-  clock = c;
+    if (clock != nullptr) {
+        delete clock;
+    }
+    clock = c;
 }
 
 Time BuildingBlock::getLocalTime(Time simTime) const {
-  if (clock == NULL) {
-    cerr << "device has no internal clock" << endl;
-    return 0;
-  }
-  return clock->getTime(simTime);
+    if (clock == nullptr) {
+        cerr << "device has no internal clock" << endl;
+        return 0;
+    }
+    return clock->getTime(simTime);
 }
 
 Time BuildingBlock::getLocalTime() const {
-    if (clock == NULL) {
-      cerr << "device has no internal clock" << endl;
-      return 0;
+    if (clock == nullptr) {
+        cerr << "device has no internal clock" << endl;
+        return 0;
     }
     return clock->getTime();
 }
 
 Time BuildingBlock::getSimulationTime(Time localTime) const {
-    if (clock == NULL) {
-      cerr << "device has no internal clock" << endl;
-      return localTime;
+    if (clock == nullptr) {
+        cerr << "device has no internal clock" << endl;
+        return localTime;
     }
     return clock->getSimulationTime(localTime);
+}
+
+std::ostream& operator<<(std::ostream &stream, BuildingBlock const& bb) {
+    stream << "#" << bb.blockId;
+    return stream;
 }
 
 /*************************************************
@@ -315,5 +349,25 @@ int BuildingBlock::getFaceForNeighborID(int nId) const {
 
     return -1;
 }
+
+void BuildingBlock::serialize(std::ofstream &bStream) {
+    bStream.write((char*)&blockId, sizeof(ReplayTags::u4));
+    bStream.write((char*)&position, 3*sizeof(ReplayTags::u2));
+    bStream.write((char*)&orientationCode, sizeof(ReplayTags::u1));
+    ReplayTags::u1 u1color[3];
+    for (std::size_t i=0;i<3; i++) {
+        u1color[i] = static_cast<int>(color.rgba[i] * 255.0);
+        if (u1color[i]<0) u1color[i]=0;
+        else if (u1color[i]>255) u1color[i]=255;
+    }
+    bStream.write((char*)&u1color, 3*sizeof(ReplayTags::u1));
+}
+
+void BuildingBlock::serialize_cleartext(std::ofstream &dbStream) {
+    dbStream << (int)blockId << ";"
+             << position[0] << "," << position[1] << ","<< position[2] << "," << (int) orientationCode << ";"
+             << (int)(color[0]*255) << "," << (int)(color[1]*255) << ","<< (int)(color[2]*255) << endl;
+}
+
 
 } // BaseSimulator namespace

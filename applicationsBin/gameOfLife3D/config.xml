@@ -1,0 +1,170 @@
+<?xml version="1.0" standalone="no" ?>
+
+<world gridSize="11,10,10" windowSize="1800,900">
+	
+	<blockList color="0,255,0" size="1,1,1" blockSize="40,40,41" >
+
+  <!-- This configures a moving pattern -->
+
+		<block position="2,4,2"/>
+		<block position="2,4,3"/>
+		<block position="2,4,4"/>
+		<block position="2,4,5"/> 
+		<block position="2,4,6"/>
+		<block position="3,4,2"/>
+		<block position="3,4,3"/>
+		<block position="3,4,4"/>
+		<block position="3,4,5"/> 
+		<block position="3,4,6"/>
+		<block position="4,4,2"/>
+		<block position="4,4,3"/>
+		<block position="4,4,4"/>
+		<block position="4,4,5"/> 
+		<block position="4,4,6"/>
+		<block position="5,4,2"/>
+		<block position="5,4,3"/>
+		<block position="5,4,4"/>
+		<block position="5,4,5"/>
+		<block position="5,4,6"/> 
+		<block position="6,4,2"/>
+		<block position="6,4,3"/>
+		<block position="6,4,4"/>
+		<block position="6,4,5"/>
+		<block position="6,4,6"/>
+		<block position="2,5,2"/>
+		<block position="2,5,3"/>
+		<block position="2,5,4"/>
+		<block position="2,5,5"/> 
+		<block position="2,5,6"/>
+		<block position="3,5,2"/>
+		<block position="3,5,3"/>
+		<block position="3,5,4"/>
+		<block position="3,5,5"/> 
+		<block position="3,5,6"/>
+		<block position="4,5,2"/>
+		<block position="4,5,3"/>
+		<block position="4,5,4"/>
+		<block position="4,5,5"/> 
+		<block position="4,5,6"/>
+		<block position="5,5,2"/>
+		<block position="5,5,3"/>
+		<block position="5,5,4"/>
+		<block position="5,5,5"/>
+		<block position="5,5,6"/> 
+		<block position="6,5,2"/>
+		<block position="6,5,3"/>
+		<block position="6,5,4"/>
+		<block position="6,5,5"/>
+		<block position="6,5,6"/>
+		<block position="2,6,2"/>
+		<block position="2,6,3"/>
+		<block position="2,6,4"/>
+		<block position="2,6,5"/> 
+		<block position="2,6,6"/>
+		<block position="3,6,2"/>
+		<block position="3,6,3" alive="true"/>
+		<block position="3,6,4" alive="true"/>
+		<block position="3,6,5" alive="true"/>
+		<block position="3,6,6"/>
+		<block position="4,6,2"/>
+		<block position="4,6,3"/>
+		<block position="4,6,4"/>
+		<block position="4,6,5"/> 
+		<block position="4,6,6"/>
+		<block position="5,6,2"/>
+		<block position="5,6,3"/>
+		<block position="5,6,4"/>
+		<block position="5,6,5"/>
+		<block position="5,6,6"/> 
+		<block position="6,6,2"/>
+		<block position="6,6,3"/>
+		<block position="6,6,4"/>
+		<block position="6,6,5"/>
+		<block position="6,6,6"/>
+		
+		
+		
+		<!-- <block position="2,4,2"/>
+		<block position="2,4,3"/>
+		<block position="2,4,4"/>
+		<block position="2,4,5"/> 
+		<block position="2,4,6"/>
+		<block position="3,4,2"/>
+		<block position="3,4,3"/>
+		<block position="3,4,4"/>
+		<block position="3,4,5"/> 
+		<block position="3,4,6"/>
+		<block position="4,4,2"/>
+		<block position="4,4,3"/>
+		<block position="4,4,4"/>
+		<block position="4,4,5"/> 
+		<block position="4,4,6"/>
+		<block position="5,4,2"/>
+		<block position="5,4,3"/>
+		<block position="5,4,4"/>
+		<block position="5,4,5"/>
+		<block position="5,4,6"/> 
+		<block position="6,4,2"/>
+		<block position="6,4,3"/>
+		<block position="6,4,4"/>
+		<block position="6,4,5"/>
+		<block position="6,4,6"/>
+		<block position="2,5,2" alive="true"/>
+		<block position="2,5,3"/>
+		<block position="2,5,4" alive="true"/>
+		<block position="2,5,5"/> 
+		<block position="2,5,6" alive="true"/>
+		<block position="3,5,2"/>
+		<block position="3,5,3" alive="true"/>
+		<block position="3,5,4"/>
+		<block position="3,5,5" alive="true"/> 
+		<block position="3,5,6"/>
+		<block position="4,5,2" alive="true"/>
+		<block position="4,5,3"/>
+		<block position="4,5,4" alive="true"/>
+		<block position="4,5,5"/> 
+		<block position="4,5,6" alive="true"/>
+		<block position="5,5,2"/>
+		<block position="5,5,3" alive="true"/>
+		<block position="5,5,4"/>
+		<block position="5,5,5" alive="true"/>
+		<block position="5,5,6"/> 
+		<block position="6,5,2" alive="true"/>
+		<block position="6,5,3"/>
+		<block position="6,5,4" alive="true"/>
+		<block position="6,5,5"/>
+		<block position="6,5,6" alive="true"/>
+		<block position="2,6,2"/>
+		<block position="2,6,3"/>
+		<block position="2,6,4"/>
+		<block position="2,6,5"/> 
+		<block position="2,6,6"/>
+		<block position="3,6,2"/>
+		<block position="3,6,3"/>
+		<block position="3,6,4"/>
+		<block position="3,6,5"/> 
+		<block position="3,6,6"/>
+		<block position="4,6,2"/>
+		<block position="4,6,3"/>
+		<block position="4,6,4"/>
+		<block position="4,6,5"/> 
+		<block position="4,6,6"/>
+		<block position="5,6,2"/>
+		<block position="5,6,3"/>
+		<block position="5,6,4"/>
+		<block position="5,6,5"/>
+		<block position="5,6,6"/> 
+		<block position="6,6,2"/>
+		<block position="6,6,3"/>
+		<block position="6,6,4"/>
+		<block position="6,6,5"/>
+		<block position="6,6,6"/> -->
+ 
+
+ 
+ 
+
+	</blockList>
+</world>
+
+

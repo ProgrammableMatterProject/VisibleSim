@@ -1,7 +1,7 @@
-#include "robots/catoms3D/catoms3DMotionRules.h"
-#include "robots/catoms3D/catoms3DRotationEvents.h"
-#include "robots/catoms3D/catoms3DWorld.h"
-#include "robots/catoms3D/catoms3DMotionEngine.h"
+#include "catoms3DMotionRules.h"
+#include "catoms3DRotationEvents.h"
+#include "catoms3DWorld.h"
+#include "catoms3DMotionEngine.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -27,9 +27,9 @@ const short neighborConnector[12][6] = {
     { 10, 1, 3, 6, 8, 9 }, // Con11 LEFT
 };
 
-const ConnectorOrientation defaultOrientation[12] = {
-    UP, DOWN, LEFT, RIGHT, LEFT, RIGHT, UP, DOWN, RIGHT, LEFT, RIGHT, LEFT
-};
+// const ConnectorOrientation defaultOrientation[12] = {
+//     UP, DOWN, LEFT, RIGHT, LEFT, RIGHT, UP, DOWN, RIGHT, LEFT, RIGHT, LEFT
+// };
 
 ConnectorDirection
 Catoms3DMotionRules::getMirrorConnectorDirection(ConnectorDirection d,

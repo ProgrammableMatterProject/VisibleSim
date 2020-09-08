@@ -5,7 +5,7 @@
  * \author Benoît Piranda
  */
 
-#include "math/vector3D.h"
+#include "vector3D.h"
 
 // lecture d'un Vector3D dans un flux
 istream& operator>>(istream& f,Vector3D&p)

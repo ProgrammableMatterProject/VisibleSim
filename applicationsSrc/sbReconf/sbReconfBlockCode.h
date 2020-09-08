@@ -80,7 +80,6 @@ class SbReconfBlockCode : public SmartBlocks::SmartBlocksBlockCode {
     bool _isHead,_isEnd,_isHeadOfLine;
     bool _activity;
     int _currentMove,_nbreWellPlacedBlocks,_nbreGoalCells;//_currentStage;
-    int _numPrev;
     int nbreOfWaitedAnswers;
     SmartBlocks::SmartBlocksBlock *block;
     SmartBlocks::SmartBlocksWorld *wrl;
@@ -98,6 +97,9 @@ class SbReconfBlockCode : public SmartBlocks::SmartBlocksBlockCode {
     int tabStatsData[10];
     int nbreStats;
 public:
+    bool _isBorder,_isTrain, _isSingle, wellPlaced;
+    int _numPrev;
+
     Scheduler *scheduler;
     SmartBlocks::SmartBlocksBlock *smartBlock;
 

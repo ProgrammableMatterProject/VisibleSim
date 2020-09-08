@@ -7,19 +7,21 @@
 
 #include <iostream>
 #include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <signal.h>
+#include <csignal>
 
-#include "robots/catoms3D/catoms3DWorld.h"
-#include "robots/catoms3D/catoms3DBlock.h"
-#include "robots/catoms3D/catoms3DMotionEngine.h"
-#include "utils/trace.h"
-#include "utils/configExporter.h"
-#include "robots/catoms3D/catoms3DRotationEvents.h"
-#include "base/simulator.h"
-#include "robots/catoms3D/catoms3DSimulator.h"
+#include "../../base/simulator.h"
+#include "../../utils/trace.h"
+#include "../../utils/configExporter.h"
+#include "../../replay/replayExporter.h"
+#include "catoms3DWorld.h"
+#include "catoms3DBlock.h"
+#include "catoms3DGlBlock.h"
+#include "catoms3DMotionEngine.h"
+#include "catoms3DRotationEvents.h"
+#include "catoms3DSimulator.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -39,7 +41,8 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << TermColor::LifecycleColor << "Catoms3DWorld constructor" << TermColor::Reset << endl;
 #endif
-
+    idTextureGrid = 0;
+    idTextureHexa = 0;
     if (GlutContext::GUIisEnabled) {
 /* Toggle to use catoms3D with max connector size (no rotation) but very simple models*/
 #define CATOMS3D_TEXTURE_ID 0
@@ -220,10 +223,10 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (catom->blockId, (BaseSimulator::BuildingBlock*)catom));
 
-    // FIXME: Adversarial start, randomly initiate start event
-    std::mt19937 rng;
-    rng.seed(Simulator::getSimulator()->getCmdLine().getSimulationSeed());
-    std::uniform_int_distribution<std::mt19937::result_type> u500(0,500);
+    // // FIXME: Adversarial start, randomly initiate start event
+    // std::mt19937 rng;
+    // rng.seed(Simulator::getSimulator()->getSimulationSeed());
+    // std::uniform_int_distribution<std::mt19937::result_type> u500(0,500);
     // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + u500(rng), catom));
     // getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + 1000, catom));
@@ -232,6 +235,8 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
 
     catom->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     catom->setPositionAndOrientation(pos,orientation);
     catom->setColor(col);
     lattice->insert(catom, pos);
@@ -284,131 +289,98 @@ void Catoms3DWorld::glDraw() {
     unlock();
     glPopMatrix();
 
-    // draw the goal surface
-    /*if (buildingBlocksMap.begin()!=buildingBlocksMap.end()) {
-        map<bID, BuildingBlock*>::iterator it = buildingBlocksMap.begin();
-        it->second->blockCode->target->glDraw();
-    }*/
-/*	GLfloat mat_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
-    GLfloat mat_diffuse[] = { 0.8, 0.2, 0.8, 1.0 };
-    GLfloat mat_specular[] = { 0.8, 0.8, 0.8, 1.0 };
-    GLfloat mat_shininess[] = { 50.0 };
-
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-    enableTexture(false);
-    glPushMatrix();
-        // Nurbs surface
-    //glScalef(45,45,45);
-        //Nurbs car
-        //glScalef(33.33,33.33,33.33);
-        //Nurbs mirror
-        glScalef(10,10,10);
-    gluBeginSurface(theNurb);
-    gluNurbsSurface(theNurb,
-        S_NUMKNOTS, sknots,
-        T_NUMKNOTS, tknots,
-        4 * T_NUMPOINTS,
-        4,
-        &ctlpoints[0][0][0],
-        S_ORDER, T_ORDER,
-        GL_MAP2_VERTEX_4);
-    gluEndSurface(theNurb);
-
-    glPopMatrix();
-*/
-
     BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
 
 // material for the grid walls
-    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-        gray[]={0.2f,0.2f,0.2f,1.0f};
+/*
+    if (background) {
+        static const GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f},
+                gray[] = {0.2f, 0.2f, 0.2f, 1.0f};
 
-    glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-    glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-    glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+        glMaterialfv(GL_FRONT, GL_AMBIENT, gray);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+        glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+        glMaterialf(GL_FRONT, GL_SHININESS, 40.0);
 
-    glPushMatrix();
-    enableTexture(true);
-    glBindTexture(GL_TEXTURE_2D,idTextureGrid);
-    glTranslatef(0,0,lattice->gridScale[2]*(0.5-M_SQRT2_2));
-    glScalef(lattice->gridSize[0]*lattice->gridScale[0],lattice->gridSize[1]*lattice->gridScale[1],lattice->gridSize[2]*lattice->gridScale[2]*M_SQRT2_2);
-    glBegin(GL_QUADS);
-    // bottom
-    glNormal3f(0,0,1.0f);
-    glTexCoord2f(0,0);
-    glVertex3f(0.0f,0.0f,-0.0f);
-    glTexCoord2f(0.5f*lattice->gridSize[0],0);
-    glVertex3f(1.0f,0.0f,0.0f);
-    glTexCoord2f(0.5f*lattice->gridSize[0],0.5f*lattice->gridSize[1]);
-    glVertex3f(1.0,1.0,0.0f);
-    glTexCoord2f(0,0.5f*lattice->gridSize[1]);
-    glVertex3f(0.0,1.0,0.0f);
-    // top
-    glNormal3f(0,0,-1.0f);
-    glTexCoord2f(0,0);
-    glVertex3f(0.0f,0.0f,1.0f);
-    glTexCoord2f(0.5f*lattice->gridSize[0],0);
-    glVertex3f(0.0,1.0,1.0f);
-    glTexCoord2f(0.5f*lattice->gridSize[0],0.5f*lattice->gridSize[1]);
-    glVertex3f(1.0,1.0,1.0f);
-    glTexCoord2f(0,0.5f*lattice->gridSize[1]);
-    glVertex3f(1.0f,0.0f,1.0f);
-    glEnd();
-    // draw hexa
-    glBindTexture(GL_TEXTURE_2D,idTextureHexa);
-    glBegin(GL_QUADS);
-    // left
-    glNormal3f(1.0f,0,0);
-    glTexCoord2f(0,0);
-    glVertex3f(0.0f,0.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[1]/3.0f,0);
-    glVertex3f(0.0f,1.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
-    glVertex3f(0.0,1.0,1.0f);
-    glTexCoord2f(0,lattice->gridSize[2]/1.5f);
-    glVertex3f(0.0,0.0,1.0f);
-    // right
-    glNormal3f(-1.0f,0,0);
-    glTexCoord2f(0,0);
-    glVertex3f(1.0f,0.0f,0.0f);
-    glTexCoord2f(0,lattice->gridSize[2]/1.5f);
-    glVertex3f(1.0,0.0,1.0f);
-    glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
-    glVertex3f(1.0,1.0,1.0f);
-    glTexCoord2f(lattice->gridSize[1]/3.0f,0);
-    glVertex3f(1.0f,1.0f,0.0f);
-    // back
-    glNormal3f(0,-1.0f,0);
-    glTexCoord2f(0,0);
-    glVertex3f(0.0f,1.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[0]/3.0f,0);
-    glVertex3f(1.0f,1.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
-    glVertex3f(1.0f,1.0,1.0f);
-    glTexCoord2f(0,lattice->gridSize[2]/1.5f);
-    glVertex3f(0.0,1.0,1.0f);
-    // front
-    glNormal3f(0,1.0,0);
-    glTexCoord2f(0,0);
-    glVertex3f(0.0f,0.0f,0.0f);
-    glTexCoord2f(0,lattice->gridSize[2]/1.5f);
-    glVertex3f(0.0,0.0,1.0f);
-    glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
-    glVertex3f(1.0f,0.0,1.0f);
-    glTexCoord2f(lattice->gridSize[0]/3.0f,0);
-    glVertex3f(1.0f,0.0f,0.0f);
-    glEnd();
-    glPopMatrix();
-    // draw the axes
-    glPushMatrix();
-    objRepere->glDraw();
-    glPopMatrix();
-
+        glPushMatrix();
+        enableTexture(true);
+        glBindTexture(GL_TEXTURE_2D, idTextureGrid);
+        glTranslatef(0, 0, lattice->gridScale[2] * (0.5 - M_SQRT2_2));
+        glScalef(lattice->gridSize[0] * lattice->gridScale[0], lattice->gridSize[1] * lattice->gridScale[1],
+                 lattice->gridSize[2] * lattice->gridScale[2] * M_SQRT2_2);
+        glBegin(GL_QUADS);
+        // bottom
+        glNormal3f(0, 0, 1.0f);
+        glTexCoord2f(0, 0);
+        glVertex3f(0.0f, 0.0f, -0.0f);
+        glTexCoord2f(0.5f * lattice->gridSize[0], 0);
+        glVertex3f(1.0f, 0.0f, 0.0f);
+        glTexCoord2f(0.5f * lattice->gridSize[0], 0.5f * lattice->gridSize[1]);
+        glVertex3f(1.0, 1.0, 0.0f);
+        glTexCoord2f(0, 0.5f * lattice->gridSize[1]);
+        glVertex3f(0.0, 1.0, 0.0f);
+        // top
+        glNormal3f(0, 0, -1.0f);
+        glTexCoord2f(0, 0);
+        glVertex3f(0.0f, 0.0f, 1.0f);
+        glTexCoord2f(0.5f * lattice->gridSize[0], 0);
+        glVertex3f(0.0, 1.0, 1.0f);
+        glTexCoord2f(0.5f * lattice->gridSize[0], 0.5f * lattice->gridSize[1]);
+        glVertex3f(1.0, 1.0, 1.0f);
+        glTexCoord2f(0, 0.5f * lattice->gridSize[1]);
+        glVertex3f(1.0f, 0.0f, 1.0f);
+        glEnd();
+        // draw hexa
+        glBindTexture(GL_TEXTURE_2D, idTextureHexa);
+        glBegin(GL_QUADS);
+        // left
+        glNormal3f(1.0f, 0, 0);
+        glTexCoord2f(0, 0);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        glTexCoord2f(lattice->gridSize[1] / 3.0f, 0);
+        glVertex3f(0.0f, 1.0f, 0.0f);
+        glTexCoord2f(lattice->gridSize[1] / 3.0f, lattice->gridSize[2] / 1.5f);
+        glVertex3f(0.0, 1.0, 1.0f);
+        glTexCoord2f(0, lattice->gridSize[2] / 1.5f);
+        glVertex3f(0.0, 0.0, 1.0f);
+        // right
+        glNormal3f(-1.0f, 0, 0);
+        glTexCoord2f(0, 0);
+        glVertex3f(1.0f, 0.0f, 0.0f);
+        glTexCoord2f(0, lattice->gridSize[2] / 1.5f);
+        glVertex3f(1.0, 0.0, 1.0f);
+        glTexCoord2f(lattice->gridSize[1] / 3.0f, lattice->gridSize[2] / 1.5f);
+        glVertex3f(1.0, 1.0, 1.0f);
+        glTexCoord2f(lattice->gridSize[1] / 3.0f, 0);
+        glVertex3f(1.0f, 1.0f, 0.0f);
+        // back
+        glNormal3f(0, -1.0f, 0);
+        glTexCoord2f(0, 0);
+        glVertex3f(0.0f, 1.0f, 0.0f);
+        glTexCoord2f(lattice->gridSize[0] / 3.0f, 0);
+        glVertex3f(1.0f, 1.0f, 0.0f);
+        glTexCoord2f(lattice->gridSize[0] / 3.0f, lattice->gridSize[2] / 1.5f);
+        glVertex3f(1.0f, 1.0, 1.0f);
+        glTexCoord2f(0, lattice->gridSize[2] / 1.5f);
+        glVertex3f(0.0, 1.0, 1.0f);
+        // front
+        glNormal3f(0, 1.0, 0);
+        glTexCoord2f(0, 0);
+        glVertex3f(0.0f, 0.0f, 0.0f);
+        glTexCoord2f(0, lattice->gridSize[2] / 1.5f);
+        glVertex3f(0.0, 0.0, 1.0f);
+        glTexCoord2f(lattice->gridSize[0] / 3.0f, lattice->gridSize[2] / 1.5f);
+        glVertex3f(1.0f, 0.0, 1.0f);
+        glTexCoord2f(lattice->gridSize[0] / 3.0f, 0);
+        glVertex3f(1.0f, 0.0f, 0.0f);
+        glEnd();
+        glPopMatrix();
+        // draw the axes
+        glPushMatrix();
+        objRepere->glDraw();
+        glPopMatrix();
+    }*/
     lattice->glDraw();
 
     // if (BlockCode::target and dynamic_cast<TargetCSG*>(BlockCode::target)) {
@@ -441,7 +413,7 @@ void Catoms3DWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void Catoms3DWorld::glDrawSpecificBg() {
+void Catoms3DWorld::glDrawBackground() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
         gray[]={0.2f,0.2f,0.2f,1.0f};
         glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
@@ -529,13 +501,13 @@ void Catoms3DWorld::glDrawSpecificBg() {
 void Catoms3DWorld::loadTextures(const string &str) {
     string path = str+"//hexa.tga";
     int lx,ly;
-    idTextureHexa = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureHexa = loadTexture(path.c_str(),lx,ly);
     path = str+"//textureCarre.tga";
-    idTextureGrid = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    idTextureGrid = loadTexture(path.c_str(),lx,ly);
 }
 
 void Catoms3DWorld::updateGlData(BuildingBlock *bb) {
-    Catoms3DGlBlock *glblc = (Catoms3DGlBlock*)bb->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)bb->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -546,7 +518,7 @@ void Catoms3DWorld::updateGlData(BuildingBlock *bb) {
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Color &color) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -556,7 +528,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Color &color) {
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, bool visible) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -566,7 +538,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, bool visible) {
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vector3D &position) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -576,7 +548,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vector3D &position) {
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         //cout << "update pos:" << position << endl;
@@ -586,7 +558,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Cell3DPosition &positi
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrix &mat) {
-    Catoms3DGlBlock *glblc = blc->getGlBlock();
+    auto *glblc = (Catoms3DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         glblc->mat = mat;
@@ -618,7 +590,7 @@ void Catoms3DWorld::setSelectedFace(int n) {
 }
 
 void Catoms3DWorld::exportConfiguration() {
-    Catoms3DConfigExporter exporter = Catoms3DConfigExporter(this);
+    auto exporter = Catoms3DConfigExporter(this);
     exporter.exportConfiguration();
 }
 
@@ -630,8 +602,7 @@ bool addAdd(ObjLoader::ObjData*obj,const Vector3D &pos) {
     Vector3D center(pos[0]+c->v[0],pos[1]+c->v[1],pos[2]+c->v[2]);
 
     // calculate distance to min center
-    float dmin=1e32;
-    float d;
+    double dmin=1e32,d;
     for(Vector3D v:tabAddCenter) {
         d=(v-center).norme2();
         if (d<dmin) {
@@ -689,10 +660,10 @@ bool Catoms3DWorld::exportSTLModel(string title) {
     // select catom in the border
     vector <Catoms3DBlock*> borderBlocks;
     cout << "step #1: " << endl;
-    for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
+    for (const auto& pair : buildingBlocksMap) {
         if (pair.second->getState() != BuildingBlock::REMOVED
             and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
-            Catoms3DBlock *bb = (Catoms3DBlock *)pair.second;
+            auto *bb = (Catoms3DBlock *)pair.second;
             if (bb->getNbNeighbors()<12) { // soit 12 voisins
                 bb->setColor(RED);
                 borderBlocks.push_back(bb);
@@ -724,7 +695,7 @@ bool Catoms3DWorld::exportSTLModel(string title) {
 
     lock();
     for (auto block: borderBlocks) {
-        GlBlock *glblock = block->getGlBlock();
+        auto *glblock = (Catoms3DGlBlock*)block->getGlBlock();
         file << "solid catom#" << glblock->blockId << endl;
         pos.set(glblock->position[0],glblock->position[1],glblock->position[2]);
         cell = lattice->worldToGridPosition(pos);

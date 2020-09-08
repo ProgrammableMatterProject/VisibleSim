@@ -1,5 +1,5 @@
 #include <iostream>
-#include "comm/rate.h"
+#include "rate.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

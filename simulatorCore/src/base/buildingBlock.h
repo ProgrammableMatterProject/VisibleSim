@@ -12,14 +12,15 @@
 #include <random>
 #include <atomic>
 #include <memory>
+#include <cstddef>
 
-#include "utils/tDefs.h"
-#include "base/glBlock.h"
-#include "base/blockCode.h"
-#include "clock/clock.h"
-#include "grid/cell3DPosition.h"
-#include "stats/statsIndividual.h"
-#include "utils/random.h"
+#include "../utils/tDefs.h"
+#include "../base/glBlock.h"
+#include "../base/blockCode.h"
+#include "../clock/clock.h"
+#include "../grid/cell3DPosition.h"
+#include "../stats/statsIndividual.h"
+#include "../utils/random.h"
 
 class Event;
 typedef std::shared_ptr<Event> EventPtr;
@@ -71,6 +72,7 @@ public:
     bool isMaster; //!< indicates is the block is a master block
     GlBlock *ptrGlBlock; //!< ptr to the GL object corresponding to this block
     BlockCodeBuilder buildNewBlockCode; //!< function ptr to the block's blockCodeBuilder
+    uint8_t orientationCode; //!< Identifier of the modules connector's along the x-axis
     utils::StatsIndividual *stats = NULL; //!< Module stats collected during the simulation
     /**
      * @brief BuildingBlock constructor
@@ -94,6 +96,8 @@ public:
         return P2PNetworkInterfaces;
     }
 
+    void breakP2PNetworkInterface(BuildingBlock *bb);
+
     /**
      * @brief Getter for a specific P2PNetworkInterface
      * @param i : index of interface to return
@@ -105,7 +109,8 @@ public:
      * @param itf : interface for which to determine id
      * @return the id of the interface, or -1 if it could not be found
      */
-    short getInterfaceId(const P2PNetworkInterface* itf) const;
+    [[deprecated]] short getInterfaceId(const P2PNetworkInterface* itf) const;
+    uint8_t getInterfaceBId(const P2PNetworkInterface* itf) const;
     /**
      * @brief Getter for a specific P2PNetworkInterface, identified by its direction
      * For all blocks that cannot rotate, the direction will always be equal to the index in the P2PNetworkInterfaces array.
@@ -196,12 +201,12 @@ public:
      * @brief Returns the number of interfaces for this block
      * @return number of interface for this block
      */
-    inline unsigned short getNbInterfaces() const {	return P2PNetworkInterfaces.size(); };
+    inline unsigned short getNbInterfaces() const { return P2PNetworkInterfaces.size(); };
     /**
      * @brief Returns the number of neighbors (connected interfaces) for this block
      * @return number of neighbor for this block
      */
-    unsigned short getNbNeighbors() const;
+    uint8_t getNbNeighbors() const;
 
     /**
      * @return Returns a vector of pointers to all neighbor module
@@ -224,7 +229,7 @@ public:
      * @param connectorId : id of the face in the direction of the neighbors
      * @param pos : position of the neighbor in the grid
      */
-    virtual bool getNeighborPos(short connectorId,Cell3DPosition &pos) const;
+    virtual bool getNeighborPos(uint8_t connectorId,Cell3DPosition &pos) const;
     /**
      * @brief Atomic getter for the block's state
      * No guarantee that state value will remain the same, it just avoids
@@ -290,7 +295,40 @@ public:
      */
     int getFaceForNeighborID(int nId) const;
     void setBlinkMode(bool b) { ptrGlBlock->isHighlighted=b; };
+
+    /**
+     * @param dest destination of the candidate motion
+     * @return true if the module can move to cell dest
+     */
+    virtual bool canMoveTo(const Cell3DPosition& dest) const = 0;
+
+    /**
+     * Moves module to lattice cell dest if possible
+     * @param dest destination of the motion
+     * @return true if motion is possible and has been scheduled, false otherwise
+     */
+    virtual bool moveTo(const Cell3DPosition& dest) = 0;
+
+    /**
+     * Serializes (converts to a stream of bits) relevant data from the building block object
+     *  for the purpose of simulation replay
+     *
+     *  By default, serializes as: <id><position><orientation><color>
+     *  Extra attributes can be serialized in children classes
+     *
+     * @param bStream output binary stream
+     */
+    virtual void serialize(std::ofstream &bStream);
+
+    /**
+     * Clear-text equivalent of the BuildingBlock::serialize function, for debugging purpose
+     * @see BuildingBlock::serialize
+     * @param dbStream output binary stream
+     */
+    virtual void serialize_cleartext(std::ofstream &dbStream);
 };
+
+std::ostream& operator<<(std::ostream &stream, BuildingBlock const& bb);
 
 } // BaseSimulator namespace
 

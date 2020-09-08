@@ -8,12 +8,12 @@
 #define CONFIGEXPORTER_H__
 
 #define TIXML_USE_STL	1
-#include "deps/TinyXML/tinyxml.h"
+#include "../deps/TinyXML/tinyxml.h"
 
-#include "base/world.h"
-#include "base/buildingBlock.h"
-#include "gui/openglViewer.h"
-#include "gui/camera.h"
+#include "../base/world.h"
+#include "../base/buildingBlock.h"
+#include "../gui/openglViewer.h"
+#include "../gui/camera.h"
 
 using namespace std;
 

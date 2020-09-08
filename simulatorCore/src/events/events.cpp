@@ -8,10 +8,10 @@
 
 #include <iostream>
 #include <sstream>
-#include "events/events.h"
-#include "events/scheduler.h"
-#include "base/blockCode.h"
-#include "stats/statsIndividual.h"
+#include "events.h"
+#include "scheduler.h"
+#include "../base/blockCode.h"
+#include "../stats/statsIndividual.h"
 
 int Event::nextId = 0;
 unsigned int Event::nbLivingEvents = 0;

@@ -1,13 +1,13 @@
-#include "utils/configExporter.h"
 
 #include <iostream>
 #include <vector>
 
-#include "base/simulator.h"
-#include "robots/catoms3D/catoms3DBlock.h"
-#include "robots/datoms/datomsBlock.h"
-#include "robots/catoms2D/catoms2DBlock.h"
-#include "utils/utils.h"
+#include "configExporter.h"
+#include "../base/simulator.h"
+#include "../robots/catoms3D/catoms3DBlock.h"
+#include "../robots/datoms/datomsBlock.h"
+#include "../robots/catoms2D/catoms2DBlock.h"
+#include "utils.h"
 
 namespace BaseSimulator {
 

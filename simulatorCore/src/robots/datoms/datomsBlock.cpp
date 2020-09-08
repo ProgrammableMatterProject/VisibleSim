@@ -6,11 +6,12 @@
  */
 
 #include <iostream>
-#include "robots/datoms/datomsBlock.h"
-#include "base/buildingBlock.h"
-#include "robots/datoms/datomsWorld.h"
-#include "robots/datoms/datomsSimulator.h"
-#include "utils/trace.h"
+#include "datomsBlock.h"
+#include "../../base/buildingBlock.h"
+#include "datomsWorld.h"
+#include "datomsSimulator.h"
+#include "../../utils/trace.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 
@@ -36,9 +37,9 @@ void DatomsBlock::setVisible(bool visible) {
     getWorld()->updateGlData(this,visible);
 }
 
-Matrix DatomsBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code) {
-    short orientation = code%12;
-    short up = code/12;
+Matrix DatomsBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,uint8_t code) {
+    uint8_t orientation = code%12;
+    uint8_t up = code/12;
 
     Matrix M1,M2,M3,M;
     M1.setRotationZ(tabOrientationAngles[orientation][2]);
@@ -55,23 +56,27 @@ void DatomsBlock::setPosition(const Cell3DPosition &p) {
     setPositionAndOrientation(p, orientationCode);
 }
 
-void DatomsBlock::setPositionAndOrientation(const Cell3DPosition &pos, short code) {
+void DatomsBlock::setPositionAndOrientation(const Cell3DPosition &pos, uint8_t code) {
     orientationCode = code;
     position = pos;
 
     Matrix M=getMatrixFromPositionAndOrientation(pos,code);
     getWorld()->updateGlData(this,M);
     getWorld()->updateGlData(this,position); // necessary for picking
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                           blockId, position, orientationCode);
 }
 
-short DatomsBlock::getOrientationFromMatrix(const Matrix &mat) {
+uint8_t DatomsBlock::getOrientationFromMatrix(const Matrix &mat) {
     Vector3D x(1.0,0.0,0.0,0.0); // Vector3D X
     Vector3D v;
     //p = mat*x;
     Matrix mat_1;
     mat.inverse(mat_1);
 
-    short current=-1;
+    uint8_t current=-1;
     double psmax=-1;
     for (int i=0; i<12; i++) {
         x.set(tabConnectorPositions[i],3);
@@ -118,7 +123,7 @@ int DatomsBlock::getDirection(P2PNetworkInterface *given_interface) const {
     return -1;
 }
 
-short DatomsBlock::getAbsoluteDirection(short connector) const {
+uint8_t DatomsBlock::getAbsoluteDirection(uint8_t connector) const {
     Cell3DPosition conPos; // cell adjacent to connector
     bool posIsValid = getNeighborPos(connector, conPos);
 
@@ -127,7 +132,7 @@ short DatomsBlock::getAbsoluteDirection(short connector) const {
     return lattice->getDirection(position, conPos);
 }
 
-short DatomsBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos, short nDirection) const {
+uint8_t DatomsBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos, uint8_t nDirection) const {
     // cout << "pAND: " << "nPos: " << nPos << "/" << nDirection << endl
     //      << "\tPosition: " << position << endl;
 
@@ -149,7 +154,7 @@ std::ostream& operator<<(std::ostream &stream, DatomsBlock const& bb) {
     return stream;
 }
 
-bool DatomsBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const {
+bool DatomsBlock::getNeighborPos(uint8_t connectorID,Cell3DPosition &pos) const {
     Vector3D realPos;
 
     DatomsWorld *wrl = getWorld();
@@ -166,12 +171,12 @@ bool DatomsBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const {
 }
 
 P2PNetworkInterface *DatomsBlock::getInterface(const Cell3DPosition& pos) const {
-    short conId = getConnectorId(pos);
+    uint8_t conId = getConnectorId(pos);
 
     return conId >= 0 ? P2PNetworkInterfaces[conId] : NULL;
 }
 
-short DatomsBlock::getConnectorId(const Cell3DPosition& pos) const {
+uint8_t DatomsBlock::getConnectorId(const Cell3DPosition& pos) const {
     DatomsWorld *wrl = getWorld();
 
     if (!wrl->lattice->isInGrid(pos))
@@ -210,7 +215,7 @@ DatomsBlock* DatomsBlock::getNeighborOnCell(const Cell3DPosition &pos) const {
     return static_cast<DatomsBlock*>(lattice->getBlock(pos));
 }
 
-bool DatomsBlock::areOrientationsInverted(short otherOriCode) const {
+bool DatomsBlock::areOrientationsInverted(uint8_t otherOriCode) const {
     return ((orientationCode / 12) + (otherOriCode / 12)) == 1;
 }
 
@@ -238,5 +243,13 @@ void DatomsBlock::removeNeighbor(P2PNetworkInterface *ni) {
 // bool DatomsBlock::canRotateToPosition(const Cell3DPosition &pos) const {
 //     return Catoms3DMotionEngine::findMotionPivot(this, pos, faceReq) != NULL;
 // }
+
+bool DatomsBlock::canMoveTo(const Cell3DPosition& dest) const {
+    throw NotImplementedException("canMoveTo not implemented yet");
+}
+
+bool DatomsBlock::moveTo(const Cell3DPosition& dest) {
+    throw NotImplementedException("moveTo not implemented yet");
+}
 
 }

@@ -1,8 +1,8 @@
 #include <climits>
 
-#include "grid/lattice.h"
-#include "utils/utils.h"
-#include "utils/trace.h"
+#include "lattice.h"
+#include "../utils/utils.h"
+#include "../utils/trace.h"
 
 using namespace BaseSimulator;
 using namespace utils;
@@ -68,15 +68,15 @@ Cell3DPosition Lattice::getGridUpperBounds(int z) const {
 
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
     // try {
-        int index = getIndex(p);
-        if (not isInGrid(p))
-            throw OutOfLatticeInsertionException(p);
-        else if (not isFree(p))
-            throw DoubleInsertionException(p);
-        else {
-            grid[index] = bb;
-            if (p[2] >= 3) nbModules++; // FIXME: remove 'and p[2] >= 3'
-        }
+    int index = getIndex(p);
+    if (not isInGrid(p))
+        throw OutOfLatticeInsertionException(p);
+    else if (not isFree(p))
+        throw DoubleInsertionException(p);
+    else {
+        grid[index] = bb;
+        if (count) nbModules++;
+    }
     // } catch (DoubleInsertionException const& e) {
     //     cerr << e.what();
     //     VS_ASSERT(false);//FIXME: should be handled by the user, but catch clauses in main are not catching the exceptions for some reason.
@@ -89,7 +89,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
 
 void Lattice::remove(const Cell3DPosition &p, bool count) {
     grid[getIndex(p)] = NULL;
-    if (p[2] >= 3) nbModules--; // FIXME: remove and p[2] >= 3
+    if (count) nbModules--;
 }
 
 BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) const {
@@ -180,7 +180,7 @@ short Lattice::getDirection(const Cell3DPosition &p, const Cell3DPosition &neigh
 }
 
 bool Lattice::cellsAreAdjacent(const Cell3DPosition &p1, const Cell3DPosition &p2) const {
-    for (const Cell3DPosition pos : getNeighborhood(p1))
+    for (const Cell3DPosition& pos : getNeighborhood(p1))
         if (p2 == pos) return true;
 
     return false;
@@ -267,7 +267,7 @@ HLattice::HLattice() : Lattice2D() {}
 HLattice::HLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice2D(gsz,gsc) {}
 HLattice::~HLattice() {}
 
-Vector3D HLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D HLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[2] = M_SQRT3_2 * pos[2];
@@ -285,6 +285,10 @@ Vector3D HLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const 
   cout << "---------------------------------------------------------" << endl;*/
 
     return res;
+}
+
+Vector3D HLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Vector3D HLattice::gridToWorldPosition(const Cell3DPosition &pos) const {
@@ -331,37 +335,38 @@ Cell3DPosition HLattice::getCellInDirection(const Cell3DPosition &pRef, int dire
  ************************************************************/
 
 const string HLattice::directionName[] = {"Right","TopRight","TopLeft",
-                                                             "Left","BottomLeft","BottomRight"};
+                                          "Left","BottomLeft","BottomRight"};
 
 short HLattice::getOppositeDirection(short d) const {
     switch (Direction(d)) {
-    case BottomLeft:
-        return TopRight;
-        break;
-    case Left:
-        return Right;
-        break;
-    case TopLeft:
-        return BottomRight;
-        break;
-    case BottomRight:
-        return TopLeft;
-        break;
-    case Right:
-        return Left;
-        break;
-    case TopRight:
-        return BottomLeft;
-        break;
-    default:
-        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-        return -1;
-        break;
+        case BottomLeft:
+            return TopRight;
+            break;
+        case Left:
+            return Right;
+            break;
+        case TopLeft:
+            return BottomRight;
+            break;
+        case BottomRight:
+            return TopLeft;
+            break;
+        case Right:
+            return Left;
+            break;
+        case TopRight:
+            return BottomLeft;
+            break;
+        default:
+            ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+            return -1;
+            break;
     }
 }
 
 string HLattice::getDirectionString(short d) const {
-    return directionName[d];
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
 }
 
 /********************* HHLattice *********************/
@@ -369,7 +374,7 @@ HHLattice::HHLattice() : HLattice() {}
 HHLattice::HHLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : HLattice(gsz,gsc) {}
 HHLattice::~HHLattice() {}
 
-Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D HHLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[2] = 0;
@@ -377,6 +382,11 @@ Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const
     res.pt[0] = pos[0]+0.5*pos[1];
 
     return res;
+}
+
+
+Vector3D HHLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Vector3D HHLattice::gridToWorldPosition(const Cell3DPosition &pos) const {
@@ -417,13 +427,15 @@ Cell3DPosition HHLattice::getCellInDirection(const Cell3DPosition &pRef, int dir
 
 const string HHLattice::directionName[] = {"East","NorthEast","NorthWest","West","SouthWest","SouthEst"};
 
-    short HHLattice::getOppositeDirection(short d) const {
-        return (d+3)%6;
-    }
+short HHLattice::getOppositeDirection(short d) const {
+    return (d+3)%6;
+}
 
-    string HHLattice::getDirectionString(short d) const {
-        return directionName[d];
-    }
+string HHLattice::getDirectionString(short d) const {
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
+
+}
 
 
 /********************* SLattice *********************/
@@ -435,8 +447,12 @@ vector<Cell3DPosition> SLattice::getRelativeConnectivity(const Cell3DPosition &p
     return nCells;
 }
 
-Vector3D SLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D SLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     return Vector3D(pos[0], pos[1], 0, 0);
+}
+
+Vector3D SLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Cell3DPosition SLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
@@ -461,27 +477,29 @@ const string SLattice::directionName[] = {"North","East","South","West"};
 
 short SLattice::getOppositeDirection(short d) const {
     switch(d) {
-    case North :
-        return South;
-        break;
-    case East :
-        return West;
-        break;
-    case South :
-        return North;
-        break;
-    case West :
-        return East;
-        break;
-    default:
-        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-        return -1;
-        break;
+        case North :
+            return South;
+            break;
+        case East :
+            return West;
+            break;
+        case South :
+            return North;
+            break;
+        case West :
+            return East;
+            break;
+        default:
+            ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+            return -1;
+            break;
     }
 }
 
 string SLattice::getDirectionString(short d) const {
-    return directionName[d];
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
+
 }
 
 
@@ -499,8 +517,7 @@ vector<Cell3DPosition> FCCLattice::getRelativeConnectivity(const Cell3DPosition 
     return IS_EVEN(p[2]) ? nCellsEven : nCellsOdd;
 }
 
-
-Vector3D FCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D FCCLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[3] = 1.0;
@@ -514,8 +531,11 @@ Vector3D FCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) cons
     }
 
 //    OUTPUT << "world :"<< res << endl;
-
     return res;
+}
+
+Vector3D FCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Cell3DPosition FCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
@@ -573,27 +593,29 @@ const string FCCLattice::directionName[] =
 
 short FCCLattice::getOppositeDirection(short d) const {
     switch (Direction(d)) {
-    case C0East:	return C6West; break;
-    case C1North:	return C7South; break;
-    case C2TopNE:	return C8BottomSW; break;
-    case C3TopNW:	return C9BottomSE; break;
-    case C4TopSW:	return C10BottomNE; break;
-    case C5TopSE:	return C11BottomNW; break;
-    case C6West:	return C0East; break;
-    case C7South:	return C1North; break;
-    case C8BottomSW:	return C2TopNE; break;
-    case C9BottomSE:	return C3TopNW; break;
-    case C10BottomNE:	return C4TopSW; break;
-    case C11BottomNW:	return C5TopSE; break;
-    default:
-        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-        return -1;
-        break;
+        case C0East:	return C6West; break;
+        case C1North:	return C7South; break;
+        case C2TopNE:	return C8BottomSW; break;
+        case C3TopNW:	return C9BottomSE; break;
+        case C4TopSW:	return C10BottomNE; break;
+        case C5TopSE:	return C11BottomNW; break;
+        case C6West:	return C0East; break;
+        case C7South:	return C1North; break;
+        case C8BottomSW:	return C2TopNE; break;
+        case C9BottomSE:	return C3TopNW; break;
+        case C10BottomNE:	return C4TopSW; break;
+        case C11BottomNW:	return C5TopSE; break;
+        default:
+            ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+            return -1;
+            break;
     }
 }
 
 string FCCLattice::getDirectionString(short d) const {
-    return directionName[d];
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
+
 }
 
 Cell3DPosition FCCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const
@@ -770,7 +792,7 @@ vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosit
     return nCells;
 }
 
-Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D SkewFCCLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[3] = 1.0;
@@ -781,6 +803,11 @@ Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) 
 //		OUTPUT << "gridToUnscaledWorldPosition" << pos << " -> " << res << endl;
 
     return res;
+}
+
+
+Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Cell3DPosition SkewFCCLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
@@ -839,12 +866,6 @@ Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, in
     return pRef + getRelativeConnectivity(pRef)[direction];
 }
 
-/************************************************************
- *   SkewFCCLattice::glDraw()
- ************************************************************/
-void SkewFCCLattice::glDraw() {
-}
-
 /********************* SCLattice *********************/
 SCLattice::SCLattice() : Lattice3D() { }
 SCLattice::SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
@@ -854,8 +875,12 @@ vector<Cell3DPosition> SCLattice::getRelativeConnectivity(const Cell3DPosition &
     return nCells;
 }
 
-Vector3D SCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+Vector3D SCLattice::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
     return Vector3D(pos[0], pos[1], pos[2], 0);
+}
+
+Vector3D SCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
 }
 
 Cell3DPosition SCLattice::unscaledWorldToGridPosition(const Vector3D &pos) const {
@@ -870,21 +895,23 @@ Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) const {
 
 short SCLattice::getOppositeDirection(short d) const {
     switch (Direction(d)) {
-    case Front:	return Back; break;
-    case Back:	return Front; break;
-    case Left:	return Right; break;
-    case Right:	return Left; break;
-    case Top:	return Bottom; break;
-    case Bottom:	return Top; break;
-    default:
-        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-        return -1;
-        break;
+        case Front:	return Back; break;
+        case Back:	return Front; break;
+        case Left:	return Right; break;
+        case Right:	return Left; break;
+        case Top:	return Bottom; break;
+        case Bottom:	return Top; break;
+        default:
+            ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+            return -1;
+            break;
     }
 }
 
 string SCLattice::getDirectionString(short d) const {
-    return directionName[d];
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
+
 }
 
 Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {

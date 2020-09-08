@@ -5,8 +5,8 @@
  *      Author: andre
  */
 
-#include "robots/blinkyBlocks/blinkyBlocksEvents.h"
-#include "robots/blinkyBlocks/blinkyBlocksScheduler.h"
+#include "blinkyBlocksEvents.h"
+//#include "robots/blinkyBlocks/blinkyBlocksScheduler.h"
 
 namespace BlinkyBlocks {
 

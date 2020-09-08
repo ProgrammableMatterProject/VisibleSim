@@ -1,14 +1,14 @@
-#include "meld/meldInterpretVM.h"
 
 #include <iostream>
 #include <cassert>
 
-#include "meld/meldInterpretEvents.h"
-#include "meld/meldInterpretMessages.h"
-#include "meld/meldInterpretScheduler.h"
-#include "events/events.h"
-#include "motion/translationEvents.h"
-#include "base/world.h"
+#include "meldInterpretVM.h"
+#include "meldInterpretEvents.h"
+#include "meldInterpretMessages.h"
+#include "meldInterpretScheduler.h"
+#include "../events/events.h"
+#include "../motion/translationEvents.h"
+#include "../base/world.h"
 
 //#define DEBUG_INSTRS
 //#define LOG_DEBUG

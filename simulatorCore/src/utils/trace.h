@@ -13,7 +13,7 @@
 #include <sstream>
 #include <cstring>
 
-#include "utils/tDefs.h"
+#include "tDefs.h"
 
 #define LOGFILE
 
@@ -46,18 +46,7 @@ public:
 
     void flush();
 
-    ConsoleStream& operator<<(const char* value ) {
-        int l=strlen(value);
-        if (value[l-1]=='\n') {
-            string s(value);
-            s = s.substr(0,l-1);
-            stream << s;
-            flush();
-        } else {
-            stream << value;
-        }
-        return *this;
-    }
+    ConsoleStream& operator<<(const char* value );
 
     template<typename T>
     ConsoleStream& operator<<( T const& value ) {

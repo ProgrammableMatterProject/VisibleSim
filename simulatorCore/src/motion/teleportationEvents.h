@@ -11,8 +11,8 @@
 #ifndef TELEPORTATIONEVENTS_H_
 #define TELEPORTATIONEVENTS_H_
 
-#include "base/buildingBlock.h"
-#include "events/events.h"
+#include "../base/buildingBlock.h"
+#include "../events/events.h"
 
 namespace BaseSimulator {
 

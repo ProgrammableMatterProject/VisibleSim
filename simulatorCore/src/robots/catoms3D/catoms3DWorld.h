@@ -10,15 +10,15 @@
 
 #include <vector>
 
-#include "base/buildingBlock.h"
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "grid/cell3DPosition.h"
-#include "robots/catoms3D/catoms3DBlock.h"
-#include "gui/objLoader.h"
-#include "utils/trace.h"
-#include "robots/catoms3D/catoms3DMotionRules.h"
+#include "../../base/buildingBlock.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "../../grid/cell3DPosition.h"
+#include "../../robots/catoms3D/catoms3DBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../utils/trace.h"
+#include "catoms3DMotionRules.h"
 
 //!< \namespace Catoms3D
 namespace Catoms3D {
@@ -107,7 +107,6 @@ protected:
   };
 */
 
-
 /*GLfloat ctlpoints[S_NUMPOINTS][T_NUMPOINTS][4] = {
   {{7.807,3.748,0,1},{5.747,3.585,3.032,1},{5.674,6.975,3.032,1},{5.678,8.589,3.032,1},{5.729,10.203,3.032,1},{5.833,11.817,3.032,1},{5.945,13.43,3.032,1},{5.945,15.044,3.032,1}},
   {{6.707,4.201,0,1},{6.303,5.362,0,1},{6.303,6.975,0,1},{6.303,8.589,0,1},{6.303,10.203,0,1},{6.303,11.817,0,1},{6.303,13.43,0,1},{6.303,15.044,0,1}},
@@ -118,7 +117,6 @@ protected:
   };
 */
 
-
     GLfloat ctlpoints[S_NUMPOINTS][T_NUMPOINTS][4] = {
         {{15.802,6.132,2.914,1},{14.144,6.132,2.193,1},{12.487,6.132,1.483,1},{10.829,6.132,0.881,1},{9.171,6.132,0.408,1},{7.513,6.132,0.192,1},{5.856,6.132,0.068,1},{4.198,6.132,0,1}},
         {{15.802,7.6792,5.402,1},{14.144,7.6792,8.383,1},{12.487,7.6792,8.459,1},{10.829,7.6792,8.102,1},{9.171,7.6792,7.353,1},{7.513,7.6792,6.414,1},{5.856,7.6792,5.031,1},{4.198,7.6792,1.356,1}},
@@ -127,7 +125,6 @@ protected:
         {{15.802,12.3208,5.772,1},{14.144,12.3208,8.067,1},{12.487,12.3208,8.042,1},{10.829,12.3208,7.71,1},{9.171,12.3208,7.12,1},{7.513,12.3208,6.306,1},{5.856,12.3208,4.862,1},{4.198,12.3208,1.354,1}},
         {{15.802,13.868,2.918,1},{14.144,13.868,2.191,1},{12.487,13.868,1.498,1},{10.829,13.868,0.86,1},{9.171,13.868,0.42,1},{7.513,13.868,0.157,1},{5.856,13.868,0.034,1},{4.198,13.868,0,1}},
     };
-
 
 /*GLfloat ctlpoints[S_NUMPOINTS][T_NUMPOINTS][4] = {
   {{15.802,6.132,2.914,1},{15.802,7.6792,5.402,1},{15.802,9.2264,7.538,1},{15.802,10.7736,7.541,1},{15.802,12.3208,5.772,1},{15.802,13.868,2.918,1},{14.144,6.132,2.193,1},{14.144,7.6792,8.383,1}},
@@ -138,7 +135,7 @@ protected:
   {{5.856,12.3208,4.862,1},{5.856,13.868,0.034,1},{4.198,6.132,0,1},{4.198,7.6792,1.356,1},{4.198,9.2264,2.135,1},{4.198,10.7736,2.134,1},{4.198,12.3208,1.354,1},{4.198,13.868,0,1}},
   };
 */
-    GLUnurbsObj *theNurb;
+    //GLUnurbsObj *theNurb;
 
     virtual ~Catoms3DWorld();
 public:
@@ -155,6 +152,12 @@ public:
         OUTPUT << "I'm a Catoms3DWorld" << endl;
     }
 
+    /**
+     * Return an ID of the type of current Blocks
+     * @return byte value of Block type from 'replayTags.h' list
+     */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_C3D; };
+
     virtual Catoms3DBlock* getBlockById(int bId) override {
         return((Catoms3DBlock*)World::getBlockById(bId));
     }
@@ -170,11 +173,11 @@ public:
      */
     virtual void linkBlock(const Cell3DPosition &pos) override;
 
-    virtual void glDraw() override;
-    virtual void glDrawId() override;
-    virtual void glDrawIdByMaterial() override;
-    virtual void glDrawSpecificBg() override;
-    virtual void updateGlData(BuildingBlock *bb) override;
+    void glDraw() override;
+    void glDrawId() override;
+    void glDrawIdByMaterial() override;
+    void glDrawBackground() override;
+    void updateGlData(BuildingBlock *bb) override;
 
     using World::updateGlData; // Suppresses hiding warning
     void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
@@ -206,8 +209,6 @@ inline void deleteWorld() {
 }
 
 inline Catoms3DWorld* getWorld() { return(Catoms3DWorld::getWorld()); }
-
-
 } // Catoms3D namespace
 
 #endif /* CATOMS3DWORLD_H_ */

@@ -1,4 +1,4 @@
-#include "robots/slidingCubes/slidingCubesGlBlock.h"
+#include "slidingCubesGlBlock.h"
 
 namespace SlidingCubes {
 
@@ -21,16 +21,12 @@ void SlidingCubesGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     glPopMatrix();
 }
 
-void SlidingCubesGlBlock::setPrevNext(int p,int n) {
-    prevId = p;
-    nextId = n;
-}
-
+/*
 string SlidingCubesGlBlock::getPopupInfo() {
     ostringstream out;
     out << blockId;
     if (popupString!="") out << ":" << popupString;
     return out.str();
 }
-
+*/
 }

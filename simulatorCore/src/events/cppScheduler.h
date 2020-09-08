@@ -11,9 +11,9 @@
 #include <thread>
 #include <functional>
 
-#include "events/scheduler.h"
-#include "comm/network.h"
-#include "utils/trace.h"
+#include "scheduler.h"
+#include "../comm/network.h"
+#include "../utils/trace.h"
 
 class CPPScheduler : public BaseSimulator::Scheduler {
 protected:

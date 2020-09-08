@@ -12,12 +12,12 @@
 
 #include <inttypes.h>
 #include <string>
-#include "base/buildingBlock.h"
-#include "events/uniqueEventsId.h"
-#include "comm/network.h"
-#include "utils/color.h"
-#include "utils/tDefs.h"
-#include "utils/random.h"
+#include "../base/buildingBlock.h"
+#include "uniqueEventsId.h"
+#include "../comm/network.h"
+#include "../utils/color.h"
+#include "../utils/tDefs.h"
+#include "../utils/random.h"
 
 using namespace std;
 using namespace BaseSimulator;

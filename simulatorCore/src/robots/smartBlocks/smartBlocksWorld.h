@@ -8,11 +8,11 @@
 #ifndef SMARTBLOCKSWORLD_H_
 #define SMARTBLOCKSWORLD_H_
 
-#include "gui/openglViewer.h"
-#include "base/world.h"
-#include "math/vector3D.h"
-#include "robots/smartBlocks/smartBlocksBlock.h"
-#include "events/scheduler.h"
+#include "../../gui/openglViewer.h"
+#include "../../base/world.h"
+#include "../../math/vector3D.h"
+#include "smartBlocksBlock.h"
+#include "../../events/scheduler.h"
 
 namespace SmartBlocks {
 
@@ -26,10 +26,10 @@ public:
                                                        for this type of catom,
                                                        used to deduce selected Block / face */
 
-    SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+    [[maybe_unused]] SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                      int argc, char *argv[]);
 
-    GLuint idTextureFloor,idTextureDigits;
+    GLuint idTextureFloor;
 
     static void deleteWorld();
     static SmartBlocksWorld* getWorld() {
@@ -41,18 +41,24 @@ public:
         cout << "I'm a SmartBlocksWorld" << endl;
     }
 
+/**
+ * Return an ID of the type of current Blocks
+ * @return byte value of Block type from 'replayTags.h' list
+ */
+    ReplayTags::u1 getBlockType() override { return ReplayTags::MODULE_TYPE_SMARTBLOCKS; };
+
     virtual void addBlock(bID blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
                           const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false) override;
 
     void linkBlock(const Cell3DPosition &pos) override;
     void loadTextures(const string &str) override;
-    virtual void glDraw() override;
-    virtual void glDrawId() override;
-    virtual void glDrawIdByMaterial() override;
-    virtual void glDrawSpecificBg() override;
-    virtual void setSelectedFace(int n) override;
-    virtual void exportConfiguration() override;
+    void glDraw() override;
+    void glDrawId() override;
+    void glDrawIdByMaterial() override;
+    void glDrawBackground() override;
+    void setSelectedFace(int n) override;
+    void exportConfiguration() override;
 };
 
 inline void deleteWorld() {

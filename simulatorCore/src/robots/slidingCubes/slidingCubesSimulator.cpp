@@ -8,8 +8,8 @@
 #include <iostream>
 #include <string.h>
 
-#include "robots/slidingCubes/slidingCubesSimulator.h"
-#include "utils/trace.h"
+#include "slidingCubesSimulator.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 
@@ -60,6 +60,7 @@ void SlidingCubesSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, Block
 
     // Finally, add block to the world
     ((SlidingCubesWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
+    world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
 } // SlidingCubes namespace

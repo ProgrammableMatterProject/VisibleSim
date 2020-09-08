@@ -1,7 +1,7 @@
-#include "robots/datoms/datomsMotionEngine.h"
-
-#include "utils/utils.h"
 #include <vector>
+#include "../../utils/utils.h"
+#include "datomsMotionEngine.h"
+
 
 const DatomsMotionRulesLink* DatomsMotionEngine::findConnectorLink(const DatomsBlock *module,
                                         short conFrom, short conTo) {

@@ -10,8 +10,8 @@
 
 #include <string>
 
-#include "events/scheduler.h"
-#include "utils/tDefs.h"
+#include "tDefs.h"
+#include "../events/scheduler.h"
 
 using namespace std;
 
@@ -41,6 +41,10 @@ private:
     bool fullScreen = false;
     bool terminalOnly = false;
     string configFile = "config.xml";
+    string appName;
+
+    bool replayEnabled = false; //<! indicates if simulation capture for replay is enabled
+    string replayFilename;           //!< name of the replay file, provided with --replay <name>
 
     bool simulationSeedSet = false;
     int simulationSeed = 0;
@@ -52,6 +56,11 @@ public:
     ~CommandLine() {};
 
     void print() const;
+
+    string getApplicationName() const { return appName; }
+
+    bool isReplayEnabled() const{ return replayEnabled; }
+    string getReplayFilename() const { return replayFilename; }
 
     bool randomWorldRequested() const;
     int getRandomTopology() const { return topology; }

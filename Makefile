@@ -13,9 +13,10 @@ OS = $(shell uname -s)
 VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks -lsimDatoms -lsimNodes2D -lsimHexanodes
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -Wsuggest-override -fno-stack-protector
+TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -fno-stack-protector
 
-ifeq ($(CXX),g++)
+# only use -Wsuggest-override with gcc
+ifeq (g++,$(filter g++,$(CXX) $(CC), $(CPP)))
   TEMP_CCFLAGS += -Wsuggest-override
 endif
 
@@ -34,7 +35,7 @@ endif
 # TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of messages
 # TEMP_CCFLAGS += -DDEBUG_VM_MESSAGES #     : trace the messages sent to the multicores VM
 # TEMP_CCFLAGS += -DDEBUG_OBJECT_LIFECYCLE #: trace objects construction and destruction
-# TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates
+TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates
 # TEMP_CCFLAGS += -DDEBUG_NEIGHBORHOOD #: trace robot neighborhood updates and interface linking
 TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
@@ -69,7 +70,7 @@ SUBDIRS = simulatorCore/src applicationsSrc
 
 GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 
-.PHONY: subdirs $(SUBDIRS) test doc
+.PHONY: subdirs $(SUBDIRS) test doc replay
 #.PHONY: subdirs $(SUBDIRS) test doc
 
 .NOTPARALLEL: applicationsSrc/
@@ -82,8 +83,12 @@ $(SUBDIRS):
 test: subdirs
 	@$(MAKE) -C applicationsSrc test;
 
+replay: simulatorCore/src
+	@$(MAKE) -C utilities/replay GLOBAL_INCLUDES=$(GLOBAL_INCLUDES) GLOBAL_LIBS=$(GLOBAL_LIBS) GLOBAL_CCFLAGS=$(GLOBAL_CCFLAGS) LOCAL_INCLUDES=$(LOCAL_INCLUDES);
+
 doc:
 	@$(MAKE) -C doc;
+
 clean:
 	rm -f *~ *.o
 	@for dir in $(SUBDIRS); do \
@@ -92,3 +97,5 @@ clean:
 
 realclean: clean
 	$(MAKE) -C applicationsSrc APPDIR=../../applicationsBin realclean; \
+	$(MAKE) -C doc clean; \
+	$(MAKE) -C replay clean; \

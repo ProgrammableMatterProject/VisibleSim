@@ -12,10 +12,9 @@
 #define NODES2DGLBLOCK_H_
 
 #include <string>
-#include "gui/objLoader.h"
-
-#include "math/matrix44.h"
-#include "base/glBlock.h"
+#include "../../gui/objLoader.h"
+#include "../../math/matrix44.h"
+#include "../../base/glBlock.h"
 
 namespace Nodes2D {
 class Nodes2DGlBlock:public GlBlock {
@@ -26,8 +25,9 @@ public :
     Nodes2DGlBlock(bID id);
     virtual ~Nodes2DGlBlock() {};
 
+    void setDisplayedValue(int n) { displayedValue = n; }
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
-        void glDrawShadows(ObjLoader::ObjLoader *ptrObj) override;
+    void glDrawShadows(ObjLoader::ObjLoader *ptrObj) override;
     void glDrawId(ObjLoader::ObjLoader *ptrObj, int n) override;
     void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj, int &n) override;
 };

@@ -5,23 +5,23 @@
  *      Author: Ben
  */
 
-#include "gui/openglViewer.h"
 
 #include <string>
 #include <chrono>
-#include <errno.h>
+#include <cerrno>
 #include <sys/stat.h>
 #include <future>
 
-#include "base/world.h"
-#include "events/scheduler.h"
-#include "base/simulator.h"
-#include "events/events.h"
-#include "utils/trace.h"
-#include "utils/utils.h"
-#include "utils/global.h"
+#include "openglViewer.h"
+#include "../base/world.h"
+#include "../events/scheduler.h"
+#include "../base/simulator.h"
+#include "../events/events.h"
+#include "../utils/trace.h"
+#include "../utils/utils.h"
+#include "../utils/global.h"
 
-// #define showStatsFPS	0
+// #define showStatsFPS  0
 
 //===========================================================================================================
 //
@@ -40,6 +40,7 @@ int GlutContext::lastMotionTime=0;
 int GlutContext::lastMousePos[2];
 //bool GlutContext::showLinks=false;
 bool GlutContext::fullScreenMode=false;
+bool GlutContext::enableShadows=true;
 bool GlutContext::saveScreenMode=false;
 GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
 // GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
@@ -50,14 +51,23 @@ GlutHelpWindow *GlutContext::helpWindow=NULL;
 int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
+bool GlutContext::enableShowFPS = false;
+bool GlutContext::showGrid = true;
+bool GlutContext::hasGradientBackground = false;
+float GlutContext::bgColor[3] = {0.3,0.3,0.8};
+float GlutContext::bgColor2[3] = {0.8,0.8,0.8};
+//GLint GlutContext::mainWinId=0; // TODO new interface with subWindows
+//GLint GlutContext::consoleWinId=0; // TODO new interface with subWindows
 unsigned int GlutContext::nbModules = 0;
 long unsigned int GlutContext::timestep = 0;
 
 std::string animationDirName;
 
 void GlutContext::init(int argc, char **argv) {
+    cout << "initGlut" << endl;
     if (GUIisEnabled) {
         glutInit(&argc,argv);
+
         glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
         glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 
@@ -68,12 +78,11 @@ void GlutContext::init(int argc, char **argv) {
             puts("ERREUR : echec à la création de la fenêtre graphique");
             exit(EXIT_FAILURE);
         }
-
         if(fullScreenMode) {
             glutFullScreen();
         }
 
-        initShaders();
+        initShaders(enableShadows);
 
         ////// GL parameters /////////////////////////////////////
         glEnable(GL_DEPTH_TEST);
@@ -82,14 +91,18 @@ void GlutContext::init(int argc, char **argv) {
         glCullFace(GL_BACK);
         glEnable(GL_NORMALIZE);
 
-        glClearColor(0.3f,0.3f,0.8f,0.0f);
+        glClearColor(bgColor[0],bgColor[1],bgColor[2],1.0f);
 
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
         glEnable(GL_NORMALIZE);
 
         glutReshapeFunc(reshapeFunc);
-        glutDisplayFunc(drawFunc);
+        if (enableShadows) {
+            glutDisplayFunc(drawFunc);
+        } else {
+            glutDisplayFunc(drawFuncNoShadows);
+        }
         glutMouseFunc(mouseFunc);
         glutMotionFunc(motionFunc);
         glutPassiveMotionFunc(passiveMotionFunc);
@@ -245,7 +258,6 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
                 camera->mouseZoom(10);
                 break;
         }
-        //cout << *camera << endl;
     } else { // selection of the clicked block
         if (state==GLUT_UP) {
             int n=selectFunc(x,y);
@@ -256,7 +268,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             if (n) {
                 GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n);
                 glB->toggleHighlight();
-                glB->fireSelectedTrigger();
+                              glB->fireSelectedTrigger();
             } else BaseSimulator::getWorld()->setselectedGlBlock(-1);
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
@@ -287,10 +299,10 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case 27 : case 'q' : case 'Q' : // quit
             glutLeaveMainLoop();
             break;
-        case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
-        case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
-        case '+' : camera->mouseZoom(0.5); break;
-        case '-' : camera->mouseZoom(-0.5); break;
+        /*case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
+        case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;*/
+        case '+' : camera->mouseZoom(2.5); break;
+        case '-' : camera->mouseZoom(-2.5); break;
         case 'T' : case 't' :
             if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
                 mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
@@ -304,7 +316,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
 //          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
 //          case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
-        case 'd' : getScheduler()->stop(getScheduler()->now()); break;
+        // case 'd' : getScheduler()->stop(getScheduler()->now()); break;
         case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
             //case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
         case 'z' : {
@@ -315,13 +327,22 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             }
         }
             break;
-        case 'w' : case 'W' :
+        case 'f' : case 'F' :
             fullScreenMode = !fullScreenMode;
             if (fullScreenMode) {
                 glutFullScreen();
             } else {
                 glutReshapeWindow(initialScreenWidth,initialScreenHeight);
                 glutPositionWindow(0,0);
+            }
+            break;
+        case 'g' : // enable/disable shadows
+            enableShadows = !enableShadows;
+            initShaders(enableShadows);
+            if (enableShadows) {
+                glutDisplayFunc(drawFunc);
+            } else {
+                glutDisplayFunc(drawFuncNoShadows);
             }
             break;
         case 'h' :
@@ -332,6 +353,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             break;
         case 'i' : case 'I' :
             mainWindow->openClose();
+            //glutPostRedisplay();
             break;
         case 'S' : {
             if (not saveScreenMode) {
@@ -402,10 +424,29 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             cout << "Screenshot saved to files: " << ssName
                  << " and " << ssNameJpg << endl;
         } break;
+        case 'm' : {
+            const string& bsname = myBasename(Simulator::configFileName);
+            const string& ssName = generateTimestampedFilename("capture_" + bsname.substr(0, bsname.size()-4), "ppm");
+            string ssNamePNG = ssName;
+            ssNamePNG.replace(ssName.length() - 3, 3, "png");
+            saveScreen(ssName.c_str());
+#ifndef WIN32
+            (void)std::async([ssNamePNG, ssName](){
+                int r = system(string("convert " + ssName + " PNG:" + ssNamePNG
+                                      + " >/dev/null 2>/dev/null").c_str());
+                if (r == 0)
+                    system(string("rm -rf " + ssName
+                                  + " >/dev/null 2>/dev/null").c_str());
+            });
+#endif
+            cout << "Screenshot saved to files: " << ssName
+                 << " and " << ssNamePNG << endl;
+        } break;
 
-        case 'B' : {
-            World *world = BaseSimulator::getWorld();
-            world->toggleBackground();
+        case 'B' : case 'b' : {
+            /*World *world = BaseSimulator::getWorld();
+            world->toggleBackground();*/
+            showGrid = !showGrid;
         } break;
         case 32: { // SPACE
             Scheduler *scheduler = getScheduler();
@@ -432,6 +473,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                 cout << "Cannot change color: No selected block" << endl;
             }
         } break;
+        case ',': enableShowFPS = !enableShowFPS; break;
         default: { // Pass on key press to user blockcode handler
             // NOTE: Since C++ does not handle static virtual functions, we need
             //  to get a pointer to a blockcode and call onUserKeyPressed from
@@ -491,16 +533,15 @@ void GlutContext::idleFunc(void) {
     std::chrono::milliseconds timespan(20);
     std::this_thread::sleep_for(timespan);
 
-#ifdef showStatsFPS
-    calculateFPS();
-#endif
+    if (enableShowFPS) calculateFPS();
+
     if (saveScreenMode) {
         static int num=0;
-        char title[32], title2[32];
-        strncpy(title, animationDirName.c_str(), sizeof(title));
-        strncat(title, "/save%04d.ppm", sizeof(title) - strlen(title) - 1);
+        char title[32], titleFormat[32];
+        strncpy(titleFormat, animationDirName.c_str(), sizeof(titleFormat));
+        strncat(titleFormat, "/save%04d.ppm", sizeof(titleFormat) - strlen(titleFormat) - 1);
 
-        sprintf(title,title2,num++);
+        sprintf(title,titleFormat,num++);
 
         string titleStr = string(title);
         string titleJpg = titleStr;
@@ -522,9 +563,12 @@ void GlutContext::idleFunc(void) {
         if (tm-lastMotionTime>100) {
             int n=selectFunc(lastMousePos[0],lastMousePos[1]);
             if (n) {
-                GlBlock *slct=BaseSimulator::getWorld()->getBlockByNum(n);
+                World *wrl = BaseSimulator::getWorld();
+                GlBlock *slct=wrl->getBlockByNum(n);
                 popup->setCenterPosition(lastMousePos[0],screenHeight - lastMousePos[1]);
-                popup->setInfo(slct->getPopupInfo());
+                //popup->setInfo(slct->getPopupInfo());
+                ostringstream out;
+                out << slct->blockId << " - " << wrl->lattice->worldToGridPosition(slct->getPosition()) <<"\n";
                 popup->show(true);
             } else {
                 popup->show(false);
@@ -551,48 +595,26 @@ void GlutContext::calculateFPS(void) {
     }
 }
 
-void GlutContext::calculateSimulationInfo(void) {
-    // // Compute rotation time
-    // Time motionDuration = Rotations3D::rotationDelayMultiplier * Rotations3D::ANIMATION_DELAY;
-
-    // // Calculate time step
-    // timestep = round(getScheduler()->now() / (motionDuration));
-
-    // Update number of modules (disregard deletions, compensate for moving modules)
-    nbModules = BaseSimulator::getWorld()->lattice->nbModules;
-}
-
 void GlutContext::showFPS(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     char str[32];
 
-    glColor4f(1.0,1.0,1.0,0.75);
-    glPushMatrix();
-    glTranslatef(50,75,0);
-    glBegin(GL_QUADS);
-    glVertex2i(0,0);
-    glVertex2i(200,0);
-    glVertex2i(200,30);
-    glVertex2i(0,30);
-    glEnd();
-    glPopMatrix();
     sprintf(str, "FPS: %4.2f", fps);
-    glColor4f(0.0,0.0,0.0,0.75);
-    GlutWindow::drawString(50, 75, str, font);
-    cout << str << endl;
+    glColor4f(1.0,1.0,0.0,0.75);
+    GlutWindow::drawString(30, screenHeight-40, str, font);
 }
 
 void GlutContext::showSimulationInfo(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
-    char str[32];
-
     glColor4f(1.0,1.0,1.0,0.75);
 
-    // sprintf(str,"Timestep: %lu", timestep);
-    // GlutWindow::drawString(50, 50, str, font);
-
-    sprintf(str,"Nb modules: %u", nbModules);
-    GlutWindow::drawString(50, 25, str, font);
+    World *wrl = getWorld();
+    BuildingBlock *bb = wrl->getSelectedBuildingBlock() ?: wrl->getMap().begin()->second;
+    if (bb) {
+      string info = bb->blockCode->onInterfaceDraw();
+      int n = count(info.begin(),info.end(),'\n');
+      GlutWindow::drawString(40, 25+n*20, info.c_str(), font,20);
+    }
 }
 
 void GlutContext::drawFunc(void) {
@@ -606,10 +628,37 @@ void GlutContext::drawFunc(void) {
 
     shadowedRenderingStep2(screenWidth,screenHeight);
 
+    /* Clear and background */
+    if (hasGradientBackground) {
+        glDisable(GL_LIGHTING);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glDisable(GL_DEPTH_TEST);
+        glBegin(GL_QUADS);
+        glColor3fv(bgColor);
+        glVertex2f(-1.0,-1.0);
+        glVertex2f(1.0,-1.0);
+        glColor3fv(bgColor2);
+        glVertex2f(1.0, 1.0);
+        glVertex2f(-1.0, 1.0);
+        glEnd();
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
     shadowedRenderingStep3(camera);
     glPushMatrix();
     wrl->glDraw();
+
+    if (showGrid) {
+        wrl->glDrawBackground();
+    }
     glPopMatrix();
+
     shadowedRenderingStep4();
 
     // drawing of the interface
@@ -617,7 +666,7 @@ void GlutContext::drawFunc(void) {
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
+    //glPushMatrix(); // update BPI, no glPopMatrix without !
     glLoadIdentity();
     gluOrtho2D(0,screenWidth,0,screenHeight);
     glMatrixMode(GL_MODELVIEW);
@@ -631,17 +680,82 @@ void GlutContext::drawFunc(void) {
     }
     if (helpWindow) helpWindow->glDraw();
 
-#ifdef showStatsFPS
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
-    //showFPS();
-    calculateSimulationInfo();
+    if (enableShowFPS) showFPS();
     showSimulationInfo();
-#endif
+
+    glEnable(GL_DEPTH_TEST);
 
     glFlush();
+    glutSwapBuffers();
+}
+
+void GlutContext::drawFuncNoShadows() {
+    World *wrl = BaseSimulator::getWorld();
+    Camera*camera=wrl->getCamera();
+
+    /* Clear and background */
+    if (hasGradientBackground) {
+        glDisable(GL_LIGHTING);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glDisable(GL_DEPTH_TEST);
+        glBegin(GL_QUADS);
+        glColor3fv(bgColor);
+        glVertex2f(-1.0,-1.0);
+        glVertex2f(1.0,-1.0);
+        glColor3fv(bgColor2);
+        glVertex2f(1.0, 1.0);
+        glVertex2f(-1.0, 1.0);
+        glEnd();
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    noshadowRenderingStart(camera);
+    glPushMatrix();
+    wrl->glDraw();
+
+    if (showGrid) {
+        wrl->glDrawBackground();
+    }
+    glPopMatrix();
+    noshadowRenderingStop();
+
+    // drawing of the interface
+    glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glMatrixMode(GL_PROJECTION);
+    //glPushMatrix(); // update BPI, no glPopMatrix !
+    glLoadIdentity();
+    gluOrtho2D(0,screenWidth,0,screenHeight);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    mainWindow->glDraw();
+    // debugWindow->glDraw();
+    popup->glDraw();
+    if (popupMenu && popupMenu->isVisible) {
+        popupMenu->glDraw();
+        if (popupSubMenu && popupSubMenu->isVisible) popupSubMenu->glDraw();
+    }
+    if (helpWindow) helpWindow->glDraw();
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+
+    if (enableShowFPS) showFPS();
+    showSimulationInfo();
+
     glEnable(GL_DEPTH_TEST);
+
+    glFlush();
     glutSwapBuffers();
 }
 
@@ -742,7 +856,7 @@ void GlutContext::mainLoop() {
         std::this_thread::sleep_for(timespan);
 /*    char c='r';
       cin >> c;*/
-//		Scheduler *s = getScheduler();
+//    Scheduler *s = getScheduler();
 //    if (c=='r') {
         cout << "Run simulation..." << endl;
         cout.flush();
@@ -795,5 +909,9 @@ bool GlutContext::saveScreen(const char *title) {
 }
 
 void GlutContext::setFullScreenMode(bool b) {
-    fullScreenMode = true;
+    fullScreenMode =b;
+}
+
+void GlutContext::setShadowsMode(bool b) {
+    enableShadows = b;
 }

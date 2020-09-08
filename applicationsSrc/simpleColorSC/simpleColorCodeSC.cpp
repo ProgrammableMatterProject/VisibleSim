@@ -3,7 +3,9 @@
 Color myTabColors[8]={RED,ORANGE,YELLOW,GREEN,CYAN,BLUE,MAGENTA,GREY};
 
 void SimpleColorCode::startup() {
-    addMessageEventFunc(BROADCAST_MSG,_myBroadcastFunc);
+    addMessageEventFunc2(BROADCAST_MSG,
+                         std::bind(&SimpleColorCode::myBroadcastFunc, this,
+                                   std::placeholders::_1, std::placeholders::_2));
     console << "start\n";
     srand(time(NULL));
     if (hostBlock->blockId==1) { // master id is 1
@@ -16,7 +18,9 @@ void SimpleColorCode::startup() {
     }
 }
 
-void SimpleColorCode::myBroadcastFunc(const MessageOf<int>*msg, P2PNetworkInterface*sender) {
+void SimpleColorCode::myBroadcastFunc(const std::shared_ptr<Message> _msg,
+                                      P2PNetworkInterface* sender) {
+    MessageOf<int>*msg = static_cast<MessageOf<int>*>(_msg.get());
     int d = *msg->getData()+1;
     console << "receives d=" << d << " from " << sender->getConnectedBlockId() << "\n";
     if (distance==-1 || distance>d) {
@@ -26,9 +30,3 @@ void SimpleColorCode::myBroadcastFunc(const MessageOf<int>*msg, P2PNetworkInterf
         sendMessageToAllNeighbors("Broadcast",new MessageOf<int>(BROADCAST_MSG,distance),100,200,1,sender);
     }
 };
-
-void _myBroadcastFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
-    SimpleColorCode *cb = (SimpleColorCode*)codebloc;
-    MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
-    cb->myBroadcastFunc(msgType,sender);
-}

@@ -2,25 +2,22 @@
  * blinkyBlocksBlock.cpp
  *
  *  Created on: 23 mars 2013
- *      Author: dom
+ *      Author: dom, André, Pierre, Benoît
  */
 
 #include <iostream>
 
-#include "utils/tDefs.h"
-#include "robots/blinkyBlocks/blinkyBlocksBlock.h"
-#include "base/buildingBlock.h"
-#include "robots/blinkyBlocks/blinkyBlocksWorld.h"
-#include "robots/blinkyBlocks/blinkyBlocksSimulator.h"
-#include "robots/blinkyBlocks/blinkyBlocksEvents.h"
-#include "utils/trace.h"
-#include "clock/clock.h"
-#include "meld/meldInterpretEvents.h"
-#include "grid/lattice.h"
-
-#ifdef ENABLE_MELDPROCESS
-#include "meld/meldProcessEvents.h"
-#endif
+#include "../../utils/tDefs.h"
+#include "blinkyBlocksBlock.h"
+#include "../../base/buildingBlock.h"
+#include "blinkyBlocksWorld.h"
+#include "blinkyBlocksSimulator.h"
+#include "blinkyBlocksEvents.h"
+#include "../../utils/trace.h"
+#include "../../clock/clock.h"
+#include "../../meld/meldInterpretEvents.h"
+#include "../../grid/lattice.h"
+#include "../../motion/teleportationEvents.h"
 
 using namespace std;
 
@@ -32,6 +29,7 @@ namespace BlinkyBlocks {
 
   BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
+      orientationCode=0;
 #ifdef DEBUG_OBJECT_LIFECYCLE
       OUTPUT << "BlinkyBlocksBlock constructor" << endl;
 #endif
@@ -102,19 +100,23 @@ void BlinkyBlocksBlock::stopBlock(Time date, State s) {
     if (s == STOPPED) {
         // patch en attendant l'objet 3D qui modelise un BB stopped
         color = Color(0.1, 0.1, 0.1, 0.5);
-    }
+				getWorld()->updateGlData(this,color);
+		}
 
-    getWorld()->updateGlData(this);
-
-#ifdef ENABLE_MELDPROCESS
-    if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
-        getScheduler()->schedule(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
-    }
-#endif
 
     if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
         getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
     }
+}
+
+bool BlinkyBlocksBlock::moveTo(const Cell3DPosition& dest)  {
+    cerr << "(warning) " << *this << " attempting to move to " << dest
+         << " even though BlinkyBlocks has no motion capability. Teleporting... " << endl;
+
+    getScheduler()->schedule(
+        new TeleportationStartEvent(getScheduler()->now(), this, dest));
+
+    return true;
 }
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {

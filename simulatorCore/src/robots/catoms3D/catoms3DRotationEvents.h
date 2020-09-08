@@ -11,12 +11,12 @@
 #ifndef ROTATION3DEVENTS_H_
 #define ROTATION3DEVENTS_H_
 
-#include "math/matrix44.h"
-#include "robots/catoms3D/catoms3DBlock.h"
-#include "events/events.h"
-#include "utils/global.h"
-
 #include <random>
+#include "../../math/matrix44.h"
+#include "../../events/events.h"
+#include "../../utils/global.h"
+#include "catoms3DBlock.h"
+
 using namespace Catoms3D;
 
 namespace Catoms3D {
@@ -75,7 +75,8 @@ public:
     bool nextStep(Matrix &m);
     void getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation);
     void exportMatrix(const Matrix& m);
-
+    [[nodiscard]] inline Vector3D getAxe1() const { return axe1; };
+    [[nodiscard]] inline Vector3D getAxe2() const { return axe2; };
 protected :
     short exportMatrixCount = 0;
     bool firstRotation;

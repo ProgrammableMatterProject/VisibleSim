@@ -3,12 +3,11 @@
  * @author Pierre Thalamy
  * @date 21/07/2016
  */
-#include "grid/target.h"
-#include "utils/utils.h"
-#include "csg/csgParser.h"
-#include "csg/csgUtils.h"
-#include "robots/catoms3D/catoms3DWorld.h"
-#include "deps/Eigen/Dense"
+#include "target.h"
+#include "../utils/utils.h"
+#include "../csg/csgParser.h"
+#include "../base/world.h"
+#include "../deps/Eigen/Dense"
 
 #include <algorithm>
 
@@ -332,9 +331,8 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     offsetBoundingBox = false;
     element->QueryBoolAttribute("offset", &offsetBoundingBox);
 
-    char* csgBin = CSGParser::parseCsg(str);
-    CsgUtils csgUtils;
-    csgRoot = csgUtils.readCSGBuffer(csgBin);
+    CSGParser parser;
+    csgRoot = parser.parseCSG(str);
     csgRoot->toString();
 
     const char *attr = element->Attribute("translate");

@@ -6,8 +6,8 @@
  */
 
 #include <iostream>
-#include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
-#include "utils/trace.h"
+#include "blinkyBlocksBlockCode.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 

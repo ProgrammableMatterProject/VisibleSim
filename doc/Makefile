@@ -5,7 +5,7 @@ all: doc
 doc:	html/
 
 
-html:
-	Doxygen Doxyfile
+html/:
+	doxygen Doxyfile
 clean:
 	rm -rf html/ xml/

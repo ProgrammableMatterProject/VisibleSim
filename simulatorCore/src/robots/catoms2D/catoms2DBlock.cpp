@@ -6,13 +6,12 @@
  */
 
 #include <iostream>
-#include "robots/catoms2D/catoms2DBlock.h"
-#include "base/buildingBlock.h"
-#include "robots/catoms2D/catoms2DWorld.h"
-#include "robots/catoms2D/catoms2DSimulator.h"
-
-#include "robots/catoms2D/catoms2DRotationEvents.h"
-#include "utils/trace.h"
+#include "catoms2DBlock.h"
+#include "../../base/buildingBlock.h"
+#include "catoms2DWorld.h"
+#include "catoms2DSimulator.h"
+#include "catoms2DRotationEvents.h"
+#include "../../utils/trace.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -372,5 +371,15 @@ void Catoms2DBlock::rotate(RelativeDirection::Direction d, Time t) {
         cerr << "#" << blockId << " cannot rotate: no pivot available" << endl;
     }
 }
+
+
+bool Catoms2DBlock::canMoveTo(const Cell3DPosition& dest) const {
+    throw NotImplementedException("canMoveTo not implemented yet, please use canRotate()");
+}
+
+bool Catoms2DBlock::moveTo(const Cell3DPosition& dest) {
+    throw NotImplementedException("moveTo not implemented yet, please use canRotateTo()");
+}
+
 
 }

@@ -1,10 +1,15 @@
 #include <iostream>
-#include "utils/random.h"
+#include "random.h"
+#include "../base/simulator.h"
 
 using namespace std;
 
 namespace BaseSimulator {
 namespace utils {
+
+int Random::getSimulationSeed() {
+    return Simulator::getSimulator()->getSimulationSeed();
+}
 
 doubleRNG Random::getUniformDoubleRNG(ruint seed, rdouble min, rdouble max) {
     uintRNG gen(seed);

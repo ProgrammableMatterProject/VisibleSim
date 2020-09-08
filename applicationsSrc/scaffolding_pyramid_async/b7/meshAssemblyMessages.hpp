@@ -29,7 +29,10 @@ public:
     virtual ~RequestTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new RequestTargetCellMessage(*this); }
+    virtual Message* clone() const {
+        adjustClonedMessageCount();
+        return new RequestTargetCellMessage(*this);
+    }
     virtual string getName() const { return "RequestTargetCell{" + srcPos.to_string()
             + ", " + to_string(srcId) + "}"; }
 };
@@ -43,7 +46,10 @@ public:
     virtual ~ProvideTargetCellMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new ProvideTargetCellMessage(*this); }
+    virtual Message* clone() const {
+        adjustClonedMessageCount();
+        return new ProvideTargetCellMessage(*this);
+    }
     virtual string getName() const { return "ProvideTargetCell{" + tPos.to_string()
             + ", " + dstPos.to_string() + "}"; }
 };
@@ -59,7 +65,10 @@ public:
     virtual ~CoordinatorReadyMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new CoordinatorReadyMessage(*this); }
+    virtual Message* clone() const {
+        adjustClonedMessageCount();
+        return new CoordinatorReadyMessage(*this);
+    }
     virtual string getName() const { return "CoordinatorReady"; }
 };
 
@@ -71,7 +80,10 @@ public:
     virtual ~TileNotReadyMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new TileNotReadyMessage(*this); }
+    virtual Message* clone() const {
+        adjustClonedMessageCount();
+        return new TileNotReadyMessage(*this);
+    }
     virtual string getName() const { return "TileNotReady"; }
 };
 
@@ -81,7 +93,10 @@ public:
     virtual ~TileInsertionReadyMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new TileInsertionReadyMessage(*this); }
+    virtual Message* clone() const {
+        adjustClonedMessageCount();
+        return new TileInsertionReadyMessage(*this);
+    }
     virtual string getName() const { return "TileInsertionReady"; }
 };
 
@@ -112,7 +127,13 @@ public:
     virtual ~ProbePivotLightStateMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new ProbePivotLightStateMessage(*this); }
+    virtual Message* clone() const {
+
+        adjustClonedMessageCount();
+        adjustClonedMessageCount()
+            ;
+        return new ProbePivotLightStateMessage(*this);
+    }
     virtual string getName() const { return "ProbePivotLightState{" + srcPos.to_string()
             + ", " + targetPos.to_string()
             + ", " + MeshRuleMatcher::component_to_string(finalComponent)
@@ -135,7 +156,10 @@ public:
     virtual ~GreenLightIsOnMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new GreenLightIsOnMessage(*this); }
+    virtual Message* clone() const {
+        adjustClonedMessageCount();
+        return new GreenLightIsOnMessage(*this);
+    }
     virtual string getName() const { return "GreenLightIsOn{" + srcPos.to_string()
             + ", " + dstPos.to_string() + "}";
     }
@@ -154,7 +178,10 @@ public:
     virtual ~FinalTargetReachedMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() const { return new FinalTargetReachedMessage(*this); }
+    virtual Message* clone() const {
+        adjustClonedMessageCount();
+        return new FinalTargetReachedMessage(*this);
+    }
     virtual string getName() const { return "FinalTargetReached{" + finalPos.to_string() +"}";
     }
 };

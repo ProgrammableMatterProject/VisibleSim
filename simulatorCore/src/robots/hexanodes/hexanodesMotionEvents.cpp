@@ -8,10 +8,10 @@
  *      Author: Pierre Thalamy
  */
 
-#include "robots/hexanodes/hexanodesMotionEvents.h"
-#include "base/world.h"
-#include "utils/utils.h"
-#include "robots/hexanodes/hexanodesBlock.h"
+#include "hexanodesMotionEvents.h"
+#include "../../base/world.h"
+#include "../../utils/utils.h"
+#include "hexanodesBlock.h"
 
 using namespace BaseSimulator::utils;
 
@@ -87,7 +87,7 @@ void HexanodesMotionStopEvent::consume() {
     Hexanodes::HexanodesBlock *bb = (Hexanodes::HexanodesBlock*)concernedBlock;
     World *wrld = getWorld();
     bb->setPositionAndOrientation(finalPosition,finalOrientation);
-    wrld->updateGlData(bb);
+    wrld->updateGlData(bb,bb->position);
 
 #ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);

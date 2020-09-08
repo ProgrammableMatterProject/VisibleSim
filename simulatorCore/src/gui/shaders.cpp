@@ -1,18 +1,24 @@
-#include "gui/shaders.h"
-#include "utils/trace.h"
-#include "utils/color.h"
+#include "../gui/shaders.h"
+#include "../utils/color.h"
+#ifdef DEBUG_GRAPHICS
+    #include "../utils/trace.h"
+#endif
 
 GLuint depth_tex,id_fb,color_rb;
 bool useShaders=true;
 GLhandleARB shadersProgram;
 GLint locTex,locShadowMap,locTextureEnable;
 
+static const float ambientLightColor[4] = {0.25,0.25,0.25,1.0};
+static const float diffuseLightColor[4] = {0.75,0.75,0.75,1.0};
+static const float specularLightColor[4] = {0.75,0.75,0.75,1.0};
+
 void enableTexture(bool enable) {
     glUniform1iARB(locTextureEnable,enable);
 }
 
-GLcharARB *lectureCodeShader(const char* titre)
-{ GLint tailleFichier;
+GLcharARB *lectureCodeShader(const char* titre) {
+    GLint tailleFichier;
   ifstream fin(titre);
   if (!fin.is_open()) return NULL;
   fin.seekg(0, ios_base::end);
@@ -42,8 +48,12 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
     FShader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
 // loading the Vertex Program source
     code = lectureCodeShader(titreVP);
+
     if (!code) {
+#ifdef DEBUG_GRAPHICS
         ERRPUT << "error: " << titreVP << " not found."<< endl;
+#endif
+
         exit(-1);
     }
     glShaderSourceARB(VShader, 1, (const GLcharARB**) &code, NULL);
@@ -59,8 +69,10 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
 // loading the Fragment Program source
     code = lectureCodeShader(titreFP);
     if (!code) {
+#ifdef DEBUG_GRAPHICS
         ERRPUT << "error: " << titreFP << " not found."<< endl;
         exit(-1);
+#endif
     }
     glShaderSourceARB(FShader, 1, (const GLcharARB**) &code, NULL);
 // Compile the Fragment program
@@ -85,62 +97,80 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
     return prog;
 }
 
-void initShaders() {
+void initShaders(bool activateShadows) {
 #ifdef DEBUG_GRAPHICS
     OUTPUT << "initShaders" << endl;
 #endif
-  glewInit();
 
-  glClearColor (0.6f, 0.6f, 0.6f, 1.0f);	// Black Background
-  glClearDepth (1.0f);						// Depth Buffer Setup
-  glDepthFunc (GL_LEQUAL);					// The Type Of Depth Testing (Less Or Equal)
-  glEnable (GL_DEPTH_TEST);					// Enable Depth Testing
-  glShadeModel (GL_SMOOTH);					// Select Smooth Shading
-  glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Set Perspective Calculations To Most Accurate
+    glewInit();
 
-  shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
-                              "../../simulatorCore/resources/shaders/pointtex.frag");
-  glEnable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
+    glClearDepth (1.0f);						// Depth Buffer Setup
+    glDepthFunc (GL_LEQUAL);					// The Type Of Depth Testing (Less Or Equal)
+    glEnable (GL_DEPTH_TEST);					// Enable Depth Testing
+    glShadeModel (GL_SMOOTH);					// Select Smooth Shading
+    glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Set Perspective Calculations To Most Accurate
 
-  locTex = glGetUniformLocationARB(shadersProgram, "tex");
-  if (locTex==-1) {
+
+    if (activateShadows) {
+      shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtexShadows.vert",
+                                  "../../simulatorCore/resources/shaders/pointtexShadows.frag");
+    } else {
+      shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
+                                  "../../simulatorCore/resources/shaders/pointtex.frag");
+    }
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+    locTex = glGetUniformLocationARB(shadersProgram, "tex");
+#ifdef DEBUG_GRAPHICS
+    if (locTex==-1) {
       ERRPUT << "erreur affectation : tex\n";
-  }
-  locShadowMap = glGetUniformLocationARB(shadersProgram, "shadowMap");
-  if (locShadowMap ==-1) {
-      ERRPUT << "erreur affectation : shadowMap\n";
-  }
-  locTextureEnable = glGetUniformLocationARB(shadersProgram, "textureEnable");
-  if (locTextureEnable  ==-1) {
-      ERRPUT << "erreur affectation : textureEnable\n";
-  }
+    }
+#endif
+    locTextureEnable = glGetUniformLocationARB(shadersProgram, "textureEnable");
+#ifdef DEBUG_GRAPHICS
+    if (locTextureEnable  ==-1) {
+        ERRPUT << "erreur affectation : textureEnable\n";
+    }
+#endif
 
-  // texture pour le shadow mapping
-  glGenFramebuffersEXT(1, &id_fb);	// identifiant pour la texture
-  glGenTextures(1, &depth_tex);													// and a new texture used as a color buffer
-  glGenRenderbuffersEXT(1, &color_rb);											// And finaly a new depthbuffer
-
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,id_fb);	// switch to the new framebuffer
-  // initialize color texture
-  glBindTexture(GL_TEXTURE_2D, depth_tex);										// Bind the colorbuffer texture
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);				// make it linear filterd
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-  glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL );
-  glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D, depth_tex, 0); // attach it to the framebuffer
-
-  // initialize depth renderbuffer
-  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, color_rb);							// bind the depth renderbuffer
-  glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT,GL_RGBA,2048, 2048);	// get the data space for it
-  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_RENDERBUFFER_EXT, color_rb); // bind it to the renderbuffer
-
-  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    if (activateShadows) {
+        locShadowMap = glGetUniformLocationARB(shadersProgram, "shadowMap");
+#ifdef DEBUG_GRAPHICS
+        if (locShadowMap == -1) {
+            ERRPUT << "erreur affectation : shadowMap\n";
+        }
+#endif
+        // texture pour le shadow mapping
+        glGenFramebuffersEXT(1, &id_fb);	// id for the frameBuffer
+        glGenTextures(1, &depth_tex);		// and a new texture used as a color buffer
+        glGenRenderbuffersEXT(1, &color_rb); // And finaly a new depthbuffer
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,id_fb);	// switch to the new framebuffer
+        // initialize color texture
+        glBindTexture(GL_TEXTURE_2D, depth_tex);										// Bind the colorbuffer texture
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);				// make it linear filterd
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL );
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D, depth_tex, 0); // attach it to the framebuffer
+        // initialize depth renderbuffer
+        glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, color_rb);							// bind the depth renderbuffer
+        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT,GL_RGBA,2048, 2048);	// get the data space for it
+        glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_RENDERBUFFER_EXT, color_rb); // bind it to the renderbuffer
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    } else {
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);				// make it linear filterd
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
 
 #ifdef DEBUG_GRAPHICS
   OUTPUT << "Shaders initialized." << endl;
 #endif
+    cout << "Shaders initialized." << endl;
 }
 
 void shadowedRenderingStep1(Camera *camera) {
@@ -174,8 +204,7 @@ void shadowedRenderingStep2(int w,int h) {
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0); // d�sactive le rendu en texture
 
     glClearDepth (1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // done by background management
 }
 
 void shadowedRenderingStep3(Camera *camera) {
@@ -198,7 +227,6 @@ void shadowedRenderingStep3(Camera *camera) {
     mat.inverse(mat_1);
 
     glMatrixMode(GL_TEXTURE);
-
     glLoadMatrixf(mBias);			// The bias matrix to convert to a 0 to 1 ratio
 
     glMultMatrixf(camera->ls.matP);
@@ -215,9 +243,9 @@ void shadowedRenderingStep3(Camera *camera) {
     glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, camera->ls.dir );
     glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle);
 
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE.rgba);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, WHITE.rgba);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE.rgba);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLightColor);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLightColor);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLightColor);
 
 // activation du programme de shader
     if(useShaders && shadersProgram) {
@@ -227,7 +255,6 @@ void shadowedRenderingStep3(Camera *camera) {
     }
 
     glUniform1iARB(locTex, 0);
-
     glUniform1iARB(locShadowMap , 1);
 
     glActiveTextureARB(GL_TEXTURE1_ARB);
@@ -239,13 +266,12 @@ void shadowedRenderingStep3(Camera *camera) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC_ARB, GL_LEQUAL);
 
     glActiveTextureARB(GL_TEXTURE0_ARB);
-    glEnable(GL_TEXTURE_2D);
 }
 
 void shadowedRenderingStep4() {
-    glActiveTextureARB(GL_TEXTURE1);
+    glActiveTextureARB(GL_TEXTURE1_ARB);
     glDisable(GL_TEXTURE_2D);
-    glActiveTextureARB(GL_TEXTURE0);
+    glActiveTextureARB(GL_TEXTURE0_ARB);
     glDisable(GL_TEXTURE_2D);
 
     if(useShaders) glUseProgramObjectARB(0);
@@ -273,10 +299,171 @@ GLint shaderCompilationStatus(GLhandleARB shader) {
 #ifdef DEBUG_GRAPHICS
         OUTPUT << "warning: Impossible de compiler le program :\n" << log  <<endl;
 #endif
+        cout << "warning: Impossible de compiler le program :\n" << log  <<endl;
     } else {
 #ifdef DEBUG_GRAPHICS
         OUTPUT << "compilation OK" << endl;
 #endif
+        cout << "compilation OK" << endl;
     }
     return compile_status;
 }
+
+void noshadowRenderingStart(Camera *camera) {
+    glClearDepth (1.0f);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    camera->glProjection();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    camera->glLookAt();
+    glColor3f(1,1,1);												// set the color to white
+
+    // placement de la source de lumière
+    glLightfv(GL_LIGHT0, GL_POSITION, camera->ls.pos);
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, camera->ls.dir );
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle);
+
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLightColor);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLightColor);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLightColor);
+// activation du programme de shader
+    if(useShaders && shadersProgram) {
+        glUseProgramObjectARB(shadersProgram);
+    } else {
+        glEnable(GL_LIGHTING);
+    }
+
+    glUniform1iARB(locTex, 0);
+    glBindTexture(GL_TEXTURE_2D,0);
+    enableTexture(true);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+}
+
+void noshadowRenderingStop() {
+    glActiveTexture(GL_TEXTURE0);
+    glDisable(GL_TEXTURE_2D);
+
+    if(useShaders) glUseProgramObjectARB(0);
+    glFlush ();	// Flush The GL Rendering Pipeline
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// loadTextures
+// lecture de l'identifiant de texture
+GLuint loadTexture(const char *titre, int &tw, int &th) {
+    unsigned char *image;
+    GLuint id = 0;
+#ifdef DEBUG_GRAPHICS
+    OUTPUT << "loading " << titre << endl;
+#endif
+    if (!(image = lectureTarga(titre, tw, th))) {
+#ifdef DEBUG_GRAPHICS
+        ERRPUT << "Error : can't open " << titre << endl;
+#endif
+    } else {
+        glGenTextures(1, &id);
+        glBindTexture(GL_TEXTURE_2D, id);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, tw, th, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        delete[] image;
+    }
+    return id;
+}
+
+unsigned char *lectureTarga(const char *titre, int &width, int &height, bool turn) {
+#define DEF_targaHeaderLength            12
+#define DEF_targaHeaderContent        "\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+
+    ifstream fin;
+    char *pData;
+    streampos maxLen = 0;
+
+    fin.open(titre, ios::binary);
+    if (!fin.is_open()) return NULL;
+
+// calcul la longueur du fichier
+    fin.seekg(0, ios::end);
+    maxLen = fin.tellg();
+    fin.seekg(0, ios::beg);
+
+    // allocation de la mémoire pour le fichier
+    pData = new char[int(maxLen)];
+
+    // lecture des données du fichier
+    fin.read(pData, maxLen);
+
+    fin.close();
+
+    int commentOffset = int((unsigned char) *pData);
+    if (memcmp(pData + 1, DEF_targaHeaderContent, DEF_targaHeaderLength - 1) != 0) {
+#ifdef DEBUG_GRAPHICS
+        ERRPUT << "Format non reconnu : " << titre << endl;
+#endif
+        return 0;
+    }
+    unsigned char smallArray[2];
+
+    memcpy(smallArray, pData + DEF_targaHeaderLength + 0, 2);
+    width = smallArray[0] + smallArray[1] * 0x0100;
+
+    memcpy(smallArray, pData + DEF_targaHeaderLength + 2, 2);
+    height = smallArray[0] + smallArray[1] * 0x0100;
+
+    memcpy(smallArray, pData + DEF_targaHeaderLength + 4, 2);
+    int depth = smallArray[0];
+//	int pixelBitFlags = smallArray[ 1 ];
+
+    if ((width <= 0) || (height <= 0))
+        return 0;
+
+    // Only allow 24-bit and 32-bit!
+    bool is24Bit(depth == 24);
+    bool is32Bit(depth == 32);
+    if (!(is24Bit || is32Bit))
+        return 0;
+
+    // Make it a BGRA array for now.
+    int bodySize(width * height * 4);
+    unsigned char *pBuffer = new unsigned char[bodySize];
+    if (is32Bit) {
+        // Easy, just copy it.
+        memcpy(pBuffer, pData + DEF_targaHeaderLength + 6 + commentOffset, bodySize);
+    } else if (is24Bit) {
+        int bytesRead = DEF_targaHeaderLength + 6 + commentOffset;
+        for (int loop = 0; loop < bodySize; loop += 4, bytesRead += 3) {
+            memcpy(pBuffer + loop, pData + bytesRead, 3);
+            pBuffer[loop + 3] = 255;            // Force alpha to max.
+        }
+    } else return NULL;
+
+    // Swap R & B (convert to RGBA).
+    for (int loop = 0; loop < bodySize; loop += 4) {
+        unsigned char tempC = pBuffer[loop + 0];
+        pBuffer[loop + 0] = pBuffer[loop + 2];
+        pBuffer[loop + 2] = tempC;
+    }
+
+    delete[] pData;
+
+
+    if (turn) {
+        unsigned char *pBufferRet = new unsigned char[bodySize],
+                *ptr1 = pBuffer + width * (height - 1) * 4, *ptr2 = pBufferRet;
+        for (int loop = 0; loop < height; loop++) {
+            memcpy(ptr2, ptr1, width * 4);
+            ptr2 += width * 4;
+            ptr1 -= width * 4;
+        }
+        delete[] pBuffer;
+        return pBufferRet;
+    }
+    // Ownership moves out.
+    return pBuffer;
+}
+

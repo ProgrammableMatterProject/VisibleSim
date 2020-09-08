@@ -1,6 +1,6 @@
 /*! @file lattice.h
  * @brief Header file for the lattice simulation environment.
- * @author pthalamy
+ * @author pthalamy, bpiranda
  *
  * Inspired by github.com/nazandre:VisibleSimConfigGenerator
  *
@@ -12,11 +12,11 @@
 #include <string>
 #include <vector>
 
-#include "utils/utils.h"
-#include "utils/exceptions.h"
-#include "base/buildingBlock.h"
-#include "math/vector3D.h"
-#include "grid/cell3DPosition.h"
+#include "cell3DPosition.h"
+#include "../utils/utils.h"
+#include "../utils/exceptions.h"
+#include "../base/buildingBlock.h"
+#include "../math/vector3D.h"
 
 namespace BaseSimulator {
 
@@ -54,10 +54,29 @@ public:
         }
     };
 
+    class Separator {
+    public:
+        Vector3D normal,pointA;
+
+        Separator(const Vector3D &_n, const Vector3D &_p):normal(_n),pointA(_p) {};
+        Separator(float cp_a,float cp_b,float cp_c,float cp_d) {
+            normal.set(cp_a,cp_b,cp_c);
+            normal.normer_interne();
+            float k = -cp_d/(cp_a+cp_b+cp_c);
+            pointA.set(k*cp_a,k*cp_b,k*cp_c,1);
+        }
+
+        bool isFront(const Vector3D&B) {
+            Vector3D AB=B-pointA;
+            return (AB * normal>0);
+        }
+    };
+
 protected:
     static const string directionName[];
 
     map<const Cell3DPosition, Color> mapHighlightedCells;
+    Separator *separator= nullptr;
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< Labels for a lattice cell's neighboring cells (virtual)
     /**
@@ -83,7 +102,7 @@ public:
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
     BuildingBlock **grid; //!< The grid as a 1-Dimensional array of BuildingBlock pointers
-    unsigned int nbModules = 0; //!< The number of modules currently part of the lattice
+    size_t nbModules = 0; //!< The number of modules currently part of the lattice
 
     /**
      * @param z if z != -1, returns the bounds for the grid at height z
@@ -301,6 +320,31 @@ public:
      * @return the cell in the direction opposite to d relative pRef
      */
     Cell3DPosition getOppositeCell(const Cell3DPosition& pRef, short d) const;
+
+    /**
+     * @brief Create a new separator from the cartesian plane equation ax+by+cz+d=0
+     * @param cp_a a parameter of the cartesian plane
+     * @param cp_b b parameter of the cartesian plane
+     * @param cp_c c parameter of the cartesian plane
+     * @param cp_d d parameter of the cartesian plane
+     */
+    void addSeparator(float cp_a,float cp_b,float cp_c,float cp_d) {
+        if (separator) delete separator;
+        separator = new Separator(cp_a,cp_b,cp_c,cp_d);
+    }
+
+    void addSeparator(Separator *ptr) {
+        if (separator) delete separator;
+        separator=ptr;
+    }
+
+    inline bool hasSeparator() {
+        return separator!= nullptr;
+    }
+
+    bool isFront(const Vector3D &p) {
+        return separator!= nullptr && separator->isFront(p);
+    }
 };
 
 /*! @brief 2-Dimensional Lattice abstract class
@@ -446,6 +490,14 @@ public:
     ~SLattice();
 
     /**
+     * Static base function for world to Slattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
+    /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
@@ -521,6 +573,14 @@ public:
     ~HLattice();
 
     /**
+     * Static base function for world to Hlattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
+    /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
@@ -590,6 +650,14 @@ public:
      * @brief HLattice destructor.
      */
     ~HHLattice();
+
+    /**
+     * Static base function for world to HH lattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
 
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
@@ -753,6 +821,14 @@ public:
     ~FCCLattice();
 
     /**
+     * Static base function for world to FCC lattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
+    /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
@@ -784,7 +860,7 @@ public:
     bool isPositionBlocked(const Cell3DPosition &pos, const Cell3DPosition &ignore) const;
     // bool isPositionBlockable(const Cell3DPosition &pos);
 
-    void glDraw() const override;
+    virtual void glDraw() const override;
 };
 
 
@@ -844,6 +920,14 @@ public:
     virtual Cell3DPosition getGridUpperBounds(int z = -1) const override;
 
     /**
+     * Static base function for world to SkewFCC lattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
+    /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
@@ -870,8 +954,6 @@ public:
      * @copydoc Lattice::getCellDistance
      */
     virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2) const override;
-
-    virtual void glDraw();
 
     /**
      * An FCC lattice cell is blocked if there are two occupied cells on opposite directions
@@ -918,6 +1000,15 @@ public:
      * @brief SCLattice destructor.
      */
     ~SCLattice();
+
+    /**
+     * Static base function for world to SC lattice coordinate conversion
+     * @param pos input position
+     * @return world position
+     * @note Used by VisibleSim replayer
+     */
+    static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */

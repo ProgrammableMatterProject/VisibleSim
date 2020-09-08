@@ -1,7 +1,7 @@
-#include "robots/datoms/datomsMotionRules.h"
+#include "datomsMotionRules.h"
 #include "deformationEvents.h"
-#include "robots/datoms/datomsWorld.h"
-#include "robots/datoms/datomsMotionEngine.h"
+#include "datomsWorld.h"
+#include "datomsMotionEngine.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -239,7 +239,7 @@ vector<pair<Cell3DPosition,Vector3D>> DatomsMotionRulesLink::getBlockingCellsLis
 
     Vector3D Vm,Vcomp;
 
-    for (const BlockingCell bc:tabBlockingCellDirections) {
+    for (const BlockingCell& bc:tabBlockingCellDirections) {
         Vm = bc.relPos;
         Vm.setPoint(true);
         Vm = pivot->getGlBlock()->mat*Vm;
@@ -260,7 +260,7 @@ vector<pair<DatomsBlock*,PistonId>> DatomsMotionRulesLink::getBlockingDatoms(con
     //OUTPUT << "getBlockingModulesList " << endl;
     Vector3D Vm,Vcomp;
 
-    for (const BlockingCell bc:tabBlockingCellDirections) {
+    for (const BlockingCell& bc:tabBlockingCellDirections) {
         Vm = bc.relPos;
         Vm.setPoint(true);
         Vm = pivot->getGlBlock()->mat*Vm;

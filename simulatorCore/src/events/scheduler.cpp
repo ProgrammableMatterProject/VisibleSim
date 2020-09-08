@@ -7,14 +7,13 @@
 
 #include <cstdint>
 #include <iostream>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdint>
 
-#include "gui/openglViewer.h"
-#include "assert.h"
-#include "events/scheduler.h"
-#include "utils/trace.h"
-#include "stdint.h"
-#include "stats/statsIndividual.h"
+#include "../gui/openglViewer.h"
+#include "scheduler.h"
+#include "../utils/trace.h"
+#include "../stats/statsIndividual.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;

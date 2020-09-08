@@ -6,22 +6,25 @@
  */
 
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 
-#include "robots/smartBlocks/smartBlocksWorld.h"
-#include "robots/smartBlocks/smartBlocksBlock.h"
-#include "events/scheduler.h"
-#include "utils/configExporter.h"
+#include "smartBlocksWorld.h"
+#include "smartBlocksBlock.h"
+#include "smartBlocksGlBlock.h"
+#include "../../events/scheduler.h"
+#include "../../events/events.h"
+#include "../../utils/configExporter.h"
+#include "../../replay/replayExporter.h"
 
 using namespace std;
 
 namespace SmartBlocks {
 
-SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+[[maybe_unused]] SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                                    int argc, char *argv[]):World(argc, argv) {
     cout << TermColor::LifecycleColor << "SmartBlocksWorld constructor" << TermColor::Reset << endl;
-
+    idTextureFloor=0;
     if (GlutContext::GUIisEnabled) {
         objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
                                             "smartBlockSimple.obj");
@@ -40,7 +43,7 @@ SmartBlocksWorld::~SmartBlocksWorld() {
 
 void SmartBlocksWorld::deleteWorld() {
     delete((SmartBlocksWorld*)world);
-    world=NULL;
+    world=nullptr;
 }
 
 void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
@@ -51,17 +54,20 @@ void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     else if (blockId == 0)
         blockId = incrementBlockId();
 
-    SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId, bcb);
+    auto *smartBlock = new SmartBlocksBlock(blockId, bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (smartBlock->blockId, (BaseSimulator::BuildingBlock*)smartBlock) );
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), smartBlock));
 
-    SmartBlocksGlBlock *glBlock = new SmartBlocksGlBlock(blockId);
+    auto *glBlock = new SmartBlocksGlBlock(blockId);
     mapGlBlocks.insert(make_pair(blockId, glBlock));
     smartBlock->setGlBlock(glBlock);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     smartBlock->setPosition(pos);
     smartBlock->setColor(col);
 
+    
     if (lattice->isInGrid(pos)) {
         lattice->insert(smartBlock, pos);
     } else {
@@ -72,7 +78,7 @@ void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 
 void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
     SmartBlocksBlock *ptrNeighbor;
-    SmartBlocksBlock *ptrBlock = (SmartBlocksBlock*)lattice->getBlock(pos);
+    auto *ptrBlock = (SmartBlocksBlock*)lattice->getBlock(pos);
     vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
     Cell3DPosition nPos;
 
@@ -90,16 +96,17 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
                 " to #" << ptrNeighbor->blockId << endl;
 #endif
         } else {
-            (ptrBlock)->getInterface(SLattice::Direction(i))->connect(NULL);
+            (ptrBlock)->getInterface(SLattice::Direction(i))->connect(nullptr);
         }
     }
 }
 
 void SmartBlocksWorld::glDraw() {
-        /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
-          -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
         glDisable(GL_TEXTURE_2D);
         lock();
+        BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+        if (bb) bb->blockCode->onGlDraw();
+
         for (const auto& pair : mapGlBlocks) {
             ((SmartBlocksGlBlock*)pair.second)->glDraw(objBlock);
         }
@@ -108,12 +115,6 @@ void SmartBlocksWorld::glDraw() {
         /*// drawing the mobiles
           Physics::glDraw();
         */
-        glPopMatrix();
-
-        BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
-        if (bb) bb->blockCode->onGlDraw();
-
-        glDrawBackground();
 }
 
 void SmartBlocksWorld::glDrawIdByMaterial() {
@@ -132,7 +133,6 @@ void SmartBlocksWorld::glDrawIdByMaterial() {
 
 void SmartBlocksWorld::glDrawId() {
     glPushMatrix();
-    glDisable(GL_TEXTURE_2D);
     lock();
     for (const auto& pair : mapGlBlocks) {
         ((SmartBlocksGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
@@ -141,7 +141,7 @@ void SmartBlocksWorld::glDrawId() {
     glPopMatrix();
 }
 
-void SmartBlocksWorld::glDrawSpecificBg() {
+void SmartBlocksWorld::glDrawBackground() {
     static const GLfloat white[]={1.0,1.0,1.0,1.0},
         gray[]={0.2,0.2,0.2,1.0};
 
@@ -158,29 +158,23 @@ void SmartBlocksWorld::glDrawSpecificBg() {
     glBegin(GL_QUADS);
     glTexCoord2f(0,0);
     glVertex3f(0.0f,0.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[0],0);
+    glTexCoord2f(static_cast<float>(lattice->gridSize[0])/4.0f,0); // textureCarre is a used as a 4x4 square texture
     glVertex3f(1.0f,0.0f,0.0f);
-    glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+    glTexCoord2f(static_cast<float>(lattice->gridSize[0])/4.0f,static_cast<float>(lattice->gridSize[1])/4.0f);
     glVertex3f(1.0,1.0,0.0f);
-    glTexCoord2f(0,lattice->gridSize[1]);
+    glTexCoord2f(0,static_cast<float>(lattice->gridSize[1])/4.0f);
     glVertex3f(0.0,1.0,0.0f);
     glEnd();
     glPopMatrix();
     // draw the axes
     objRepere->glDraw();
-
-    glPushMatrix();
 }
 
 void SmartBlocksWorld::loadTextures(const string &str) {
     if (GlutContext::GUIisEnabled) {
-        //string path = str+"/circuit.tga";
-        string path = str+"/bois.tga";
+        string path = str+"/textureCarre.tga";
         int lx,ly;
-        idTextureFloor = GlutWindow::loadTexture(path.c_str(),lx,ly);
-
-        path=str+"/../smartBlocksTextures/digits.tga";
-        idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
+        idTextureFloor = loadTexture(path.c_str(),lx,ly);
     }
 }
 
@@ -193,8 +187,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     else if (name == "Material__71") numSelectedFace = SLattice::West;
     else if (name == "Material__68") numSelectedFace = SLattice::North;
     else {
-        numSelectedFace = 4;	// Top
-        return;
+        numSelectedFace = 4;  // Top
     }
 
     // cerr << "SET " << name << " = " << numSelectedFace << " = "
@@ -202,7 +195,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
 }
 
 void SmartBlocksWorld::exportConfiguration() {
-    SmartBlocksConfigExporter exporter = SmartBlocksConfigExporter(this);
+    auto exporter = SmartBlocksConfigExporter(this);
     exporter.exportConfiguration();
 }
 

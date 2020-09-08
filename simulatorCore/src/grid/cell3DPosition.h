@@ -11,7 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include "math/vector3D.h"
+#include "../math/vector3D.h"
 
 using namespace std;
 
@@ -52,6 +52,24 @@ public:
     friend const Cell3DPosition operator -(const Cell3DPosition&,const Cell3DPosition&);
     friend const Cell3DPosition operator *(const Cell3DPosition&,const Cell3DPosition&);
     friend const Cell3DPosition operator *(int,const Cell3DPosition&);
+
+    /**
+     * Serializes (converts to a stream of bits) the Cell3DPosition
+     *  for the purpose of simulation replay
+     *
+     *  By default, serializes as: <x><y><z>
+     *
+     * @param bStream output binary stream
+     */
+    void serialize(std::ofstream &bStream);
+
+    /**
+     * Clear-text equivalent of the Cell3DPosition::serialize function, for debugging purpose
+     * @see Cell3DPosition::serialize
+     * @param dbStream output binary stream
+     */
+    void serialize_cleartext(std::ofstream &dbStream);
+
 };
 
 #endif // CELL3DPOSITION_H

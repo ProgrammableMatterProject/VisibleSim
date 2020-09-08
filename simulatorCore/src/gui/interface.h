@@ -14,9 +14,9 @@
 #include <memory.h>
 #include <map>
 
-#include "base/glBlock.h"
-#include "utils/color.h"
-#include "grid/cell3DPosition.h"
+#include "../base/glBlock.h"
+#include "../utils/color.h"
+#include "../grid/cell3DPosition.h"
 
 #ifndef GLUT
 #define GLUT
@@ -54,8 +54,6 @@ public :
     virtual bool passiveMotionFunc(int mx,int my);
     virtual int keyFunc(int charcode);
     virtual void reshapeFunc(int wx,int wy,int mw,int mh) {};
-    static GLuint loadTexture(const char *titre,int &tw,int &th);
-    static unsigned char *lectureTarga(const char *titre, int& width, int& height ,bool retourner=false);
     static GLfloat drawString(GLfloat x,GLfloat y,const char *str,void* mode=GLUT_BITMAP_8_BY_13,GLint height=13);
     GLfloat drawString(GLfloat x,GLfloat y,const char *str, TextMode mode);
     virtual void setTextSize(TextSize ts);
@@ -186,6 +184,7 @@ public :
     void glDraw() override;
     void addTrace(bID id,const string &str,const Color &color);
     void select(GlBlock *sb);
+    bool passiveMotionFunc(int mx,int my) override;
     inline bool hasselectedGlBlock()  { return selectedGlBlock!=NULL; };
     inline bool isOpened() { return openningLevel!=0; }
     virtual void setTextSize(TextSize ts) override;

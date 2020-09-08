@@ -7,9 +7,10 @@
  *      Author: Benoit Piranda, Pierre Thalamy
  */
 
-#include "robots/catoms3D/catoms3DRotationEvents.h"
-#include "robots/catoms3D/catoms3DWorld.h"
-#include "robots/catoms3D/catoms3DMotionEngine.h"
+#include "catoms3DRotationEvents.h"
+#include "catoms3DWorld.h"
+#include "catoms3DMotionEngine.h"
+#include "../../replay/replayExporter.h"
 
 using namespace BaseSimulator::utils;
 using namespace Catoms3D;
@@ -103,7 +104,6 @@ Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Time t, Catoms3DBlock *m,
         throw NoRotationPathForFaceException(m->position, pivot->position, tPos, faceReq);
     }
 
-
     // Get valid links on surface of m
     const Catoms3DMotionRulesLink* link =
         Catoms3DMotionEngine::findConnectorLink(m, fromConM, toConM, faceReq);
@@ -118,6 +118,11 @@ Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Time t, Catoms3DBlock *m,
 
     rot.conFromP = fromConP;
     rot.conToP = toCon;
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeCatoms3DMotion(getScheduler()->now(), rot.mobile->blockId,
+                Catoms3DRotation::ANIMATION_DELAY*Catoms3DRotation::nbRotationSteps/2,
+                rot.pivot->blockId,(faceReq==RotationLinkType::HexaFace?3:4),rot.getAxe1(), rot.getAxe2());
 }
 
 Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Catoms3DRotationStartEvent *ev) : BlockEvent(ev) {
@@ -242,7 +247,7 @@ Catoms3DRotationStopEvent::~Catoms3DRotationStopEvent() {
 void Catoms3DRotationStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
-    // cout << "[t-" << getScheduler()->now() << "] rotation stop" << endl;
+        // cout << "[t-" << getScheduler()->now() << "] rotation stop" << endl;
 
     Catoms3DWorld *wrld=Catoms3DWorld::getWorld();
     Scheduler *scheduler = getScheduler();
@@ -328,9 +333,8 @@ void Catoms3DRotation::init(const Matrix& m) {
 
 
 void Catoms3DRotation::exportMatrix(const Matrix& m) {
-#define ROTATION_STEP_MATRIX_EXPORT
+// #define ROTATION_STEP_MATRIX_EXPORT
 #ifdef ROTATION_STEP_MATRIX_EXPORT
-
     Catoms3DBlock* block = static_cast<Catoms3DBlock*>
         (BaseSimulator::getWorld()->getBlockById(catomId));
 
@@ -345,9 +349,7 @@ void Catoms3DRotation::exportMatrix(const Matrix& m) {
         block->blockCode->onBlockSelected();
 
         OUTPUT << catomId << "|";
-
         // OUTPUT << block->color << "|";
-
         OUTPUT << "(matrix3 "
                << "[" << m.m[0] << "," << m.m[4] << "," << m.m[8] << "] "
                << "[" << m.m[1] << "," << m.m[5] << "," << m.m[9] << "] "
@@ -423,6 +425,14 @@ Catoms3DRotation::Catoms3DRotation(const Catoms3DBlock *mobile, const Catoms3DBl
     A1D1 = (0.5+0.5*rprim)*AB+shift*V;
     A1C1 = (0.5-0.5*rprim)*AB+shift*V;
 }
+/*
+bool Catoms3DRotation::setMatrixAt(Time t) {
+    if (t>2*ANIMATION_DELAY) return 0;
+    if (t<ANIMATION_DELAY) {
+
+    }
+    return true;
+}*/
 
 bool Catoms3DRotation::nextStep(Matrix &m) {
     if (firstRotation) {
@@ -457,9 +467,7 @@ bool Catoms3DRotation::nextStep(Matrix &m) {
         m = finalMatrix * m;
 //        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
     }
-
     exportMatrix(m);
-
     return step == 0;
 }
 
