@@ -860,7 +860,7 @@ public:
     bool isPositionBlocked(const Cell3DPosition &pos, const Cell3DPosition &ignore) const;
     // bool isPositionBlockable(const Cell3DPosition &pos);
 
-    void glDraw() const override;
+    virtual void glDraw() const override;
 };
 
 
@@ -954,8 +954,6 @@ public:
      * @copydoc Lattice::getCellDistance
      */
     virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2) const override;
-
-    virtual void glDraw();
 
     /**
      * An FCC lattice cell is blocked if there are two occupied cells on opposite directions

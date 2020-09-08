@@ -394,7 +394,7 @@ bool SlidingCubesWorld::exportSTLModel(string title) {
     // select robotBlock in the border
     vector <SlidingCubesBlock*> borderBlocks;
     cout << "step #1: " << endl;
-    for (const std::pair<bID, BuildingBlock*>& pair : buildingBlocksMap) {
+    for (const auto& pair : buildingBlocksMap) {
         if (pair.second->getState() != BuildingBlock::REMOVED
             and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
             SlidingCubesBlock *rb = (SlidingCubesBlock *)pair.second;

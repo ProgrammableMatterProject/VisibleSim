@@ -180,7 +180,7 @@ short Lattice::getDirection(const Cell3DPosition &p, const Cell3DPosition &neigh
 }
 
 bool Lattice::cellsAreAdjacent(const Cell3DPosition &p1, const Cell3DPosition &p2) const {
-    for (const Cell3DPosition pos : getNeighborhood(p1))
+    for (const Cell3DPosition& pos : getNeighborhood(p1))
         if (p2 == pos) return true;
 
     return false;
@@ -864,12 +864,6 @@ bool SkewFCCLattice::cellIsBlocked(const Cell3DPosition& pos) const {
 
 Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
     return pRef + getRelativeConnectivity(pRef)[direction];
-}
-
-/************************************************************
- *   SkewFCCLattice::glDraw()
- ************************************************************/
-void SkewFCCLattice::glDraw() {
 }
 
 /********************* SCLattice *********************/

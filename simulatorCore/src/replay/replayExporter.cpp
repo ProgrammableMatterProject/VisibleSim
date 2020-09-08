@@ -174,7 +174,7 @@ void ReplayExporter::writeKeyFrame(Time date) {
         *debugFile << nbModules << endl;
     }
 
-    for (const pair<bID, BuildingBlock*>& pair:BaseSimulator::getWorld()->buildingBlocksMap) {
+    for (const auto& pair:BaseSimulator::getWorld()->buildingBlocksMap) {
         pair.second->serialize(*exportFile);
         if (debug) pair.second->serialize_cleartext(*debugFile);
     }

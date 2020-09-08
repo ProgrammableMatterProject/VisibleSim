@@ -27,9 +27,9 @@ const short neighborConnector[12][6] = {
     { 10, 1, 3, 6, 8, 9 }, // Con11 LEFT
 };
 
-const ConnectorOrientation defaultOrientation[12] = {
-    UP, DOWN, LEFT, RIGHT, LEFT, RIGHT, UP, DOWN, RIGHT, LEFT, RIGHT, LEFT
-};
+// const ConnectorOrientation defaultOrientation[12] = {
+//     UP, DOWN, LEFT, RIGHT, LEFT, RIGHT, UP, DOWN, RIGHT, LEFT, RIGHT, LEFT
+// };
 
 ConnectorDirection
 Catoms3DMotionRules::getMirrorConnectorDirection(ConnectorDirection d,

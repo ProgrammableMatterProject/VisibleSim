@@ -170,24 +170,24 @@ public:
      * @param blc : Block to update
      * @param p : Position to set to blc's glBlock
      */
-        virtual void updateGlData(BuildingBlock *bb, const Color &c);
-        /**
-         * @brief Set position p to glBlock associated with block blc
-         *	 *
-         * @param blc : Block to update
-         * @param p : Position in the grid to set to blc's glBlock
-         */
-        virtual void updateGlData(BuildingBlock *bb, const Cell3DPosition &p);
-        /**
-         * @brief Set position p to glBlock associated with block blc
-         *
-         * Used when glBlocks and their corresponding BuildingBlock have different positions,
-         *  as it is the case during motion events
-         *
-         * @param blc : Block to update
-         * @param p : Position to set to blc's glBlock
-         */
-        virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
+    virtual void updateGlData(BuildingBlock *bb, const Color &c);
+    /**
+     * @brief Set position p to glBlock associated with block blc
+     *	 *
+     * @param blc : Block to update
+     * @param p : Position in the grid to set to blc's glBlock
+     */
+    virtual void updateGlData(BuildingBlock *bb, const Cell3DPosition &p);
+    /**
+     * @brief Set position p to glBlock associated with block blc
+     *
+     * Used when glBlocks and their corresponding BuildingBlock have different positions,
+     *  as it is the case during motion events
+     *
+     * @param blc : Block to update
+     * @param p : Position to set to blc's glBlock
+     */
+    virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
     /**
      * @brief Creates a block and adds it to the simulation
      *
@@ -260,9 +260,9 @@ public:
     virtual void setSelectedFace(int n) = 0;
 
 /**
-     * @brief Returns the Glblock of id n
-     * @param n : id of the Glblock to retrieve
-     */
+ * @brief Returns the Glblock of id n
+ * @param n : id of the Glblock to retrieve
+ */
     inline GlBlock* getBlockByNum(bID n) {
         auto const &glBlock = mapGlBlocks.find(n);
         return glBlock != mapGlBlocks.end() ? (*glBlock).second : nullptr;
@@ -284,15 +284,15 @@ public:
     /**
      * @brief Draws the environment of the world and all included blocks
      */
-        virtual void glDraw() {};
-        /**
-         * @brief Draws all blocks for shadows, list of objects that produce shadows
-         */
-        virtual void glDrawShadows() { glDraw(); };
-        /**
-         * @brief Draws the block ids of the block contained in the world
-         */
-        virtual void glDrawId() {};
+    virtual void glDraw() {};
+    /**
+     * @brief Draws all blocks for shadows, list of objects that produce shadows
+     */
+    virtual void glDrawShadows() { glDraw(); };
+    /**
+     * @brief Draws the block ids of the block contained in the world
+     */
+    virtual void glDrawId() {};
     /**
      * @brief Draws the blocks material used for user interactions
      */
@@ -388,8 +388,8 @@ public:
      */
     virtual void simulatePolymer() {}
     /**
-    * @brief get bounding box coordinate from centers of glBlocks
-    */
+     * @brief get bounding box coordinate from centers of glBlocks
+     */
     void getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax);
     bool hasBlinkingBlocks() { return isBlinkingBlocks;};
 

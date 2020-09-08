@@ -325,57 +325,6 @@ void Nodes2DWorld::loadTextures(const string &str) {
     idTextureDigits = loadTexture(path.c_str(),lx,ly);
 }
 
-void Nodes2DWorld::updateGlData(BuildingBlock *bb) {
-    Nodes2DGlBlock *glblc = (Nodes2DGlBlock*)bb->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setPosition(lattice->gridToWorldPosition(bb->position));
-            glblc->setColor(bb->color);
-            unlock();
-    }
-}
-
-void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Color &color) {
-    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setColor(color);
-            unlock();
-    }
-}
-
-void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, bool visible) {
-    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setVisible(visible);
-            unlock();
-    }
-}
-
-void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Vector3D &position) {
-    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setPosition(position);
-        unlock();
-    }
-}
-
-void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Cell3DPosition &position) {
-    auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setPosition(lattice->gridToWorldPosition(position));
-        unlock();
-    }
-}
-
 void Nodes2DWorld::updateGlData(Nodes2DBlock*blc, const Matrix &mat) {
     auto glblc = (Nodes2DGlBlock*)blc->getGlBlock();
     if (glblc) {

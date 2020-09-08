@@ -327,59 +327,8 @@ void HexanodesWorld::loadTextures(const string &str) {
     idTextureDigits = loadTexture(path.c_str(),lx,ly);
 }
 
-void HexanodesWorld::updateGlData(BuildingBlock *bb) {
-    HexanodesGlBlock *glblc = (HexanodesGlBlock*)bb->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setPosition(lattice->gridToWorldPosition(bb->position));
-            glblc->setColor(bb->color);
-            unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Color &color) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setColor(color);
-            unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, bool visible) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-            lock();
-            //cout << "update pos:" << position << endl;
-            glblc->setVisible(visible);
-            unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Vector3D &position) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setPosition(position);
-        unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Cell3DPosition &position) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-        //cout << "update pos:" << position << endl;
-        glblc->setPosition(lattice->gridToWorldPosition(position));
-        unlock();
-    }
-}
-
-void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Matrix &mat) {
-    HexanodesGlBlock *glblc = blc->getGlBlock();
+void HexanodesWorld::updateGlData(BuildingBlock*blc, const Matrix &mat) {
+    HexanodesGlBlock *glblc = (HexanodesGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
         glblc->mat = mat;

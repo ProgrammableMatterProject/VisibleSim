@@ -13,9 +13,10 @@ OS = $(shell uname -s)
 VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks -lsimOkteen -lsimDatoms -lsimNodes2D -lsimHexanodes
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -Wsuggest-override -fno-stack-protector
+TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -fno-stack-protector
 
-ifeq ($(CXX),g++)
+# only use -Wsuggest-override with gcc
+ifeq (g++,$(filter g++,$(CXX) $(CC), $(CPP)))
   TEMP_CCFLAGS += -Wsuggest-override
 endif
 

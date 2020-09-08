@@ -124,7 +124,6 @@ void World::updateGlData(BuildingBlock *bb, const Cell3DPosition &p) {
     }
 }
 
-
 void World::updateGlData(BuildingBlock*blc, Vector3D &p) {
     GlBlock *glblc = blc->getGlBlock();
     if (glblc) {

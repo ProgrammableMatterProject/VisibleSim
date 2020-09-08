@@ -33,7 +33,7 @@ void OkteenGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     } else {
         ptrObj->setLightedColor(color);
     }
-    if (color[3] > 0) ptrObj->glDraw();
+    if (visible) ptrObj->glDraw();
     glPopMatrix();
 }
 

@@ -78,11 +78,7 @@ public:
     void glDrawId() override;
     void glDrawIdByMaterial() override;
     void glDrawBackground() override;
-    void updateGlData(BuildingBlock *bb) override;
-    void updateGlData(Nodes2DBlock*blc,const Color &color);
-    void updateGlData(Nodes2DBlock*blc, bool visible);
-    void updateGlData(Nodes2DBlock*blc, const Cell3DPosition &position);
-    void updateGlData(Nodes2DBlock*blc, const Vector3D &position);
+    using World::updateGlData; // Fix hidden virtual func compiler warnings when using clang++
     void updateGlData(Nodes2DBlock*blc, const Matrix &mat);
     void setSelectedFace(int n) override;
     void exportConfiguration() override;
