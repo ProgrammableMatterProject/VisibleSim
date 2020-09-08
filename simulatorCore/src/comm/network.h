@@ -39,7 +39,7 @@ typedef std::shared_ptr<Message> MessagePtr;
 class Message {
 protected:
     static uint64_t nextId;
-    static size_t nbMessages;
+    static uint64_t nbMessages;
 public:
     uint64_t id;
     //unsigned int id;

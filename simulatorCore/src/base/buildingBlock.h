@@ -96,6 +96,8 @@ public:
         return P2PNetworkInterfaces;
     }
 
+    void breakP2PNetworkInterface(BuildingBlock *bb);
+
     /**
      * @brief Getter for a specific P2PNetworkInterface
      * @param i : index of interface to return

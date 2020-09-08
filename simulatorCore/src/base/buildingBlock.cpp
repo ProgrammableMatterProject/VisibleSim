@@ -75,28 +75,33 @@ BuildingBlock::~BuildingBlock() {
     OUTPUT << "BuildingBlock destructor" << endl;
 #endif
 
-    delete clock;
-    delete stats;
+    if (clock != nullptr) {
+        delete clock;
+    }
+
+    if (stats != nullptr) {
+        delete stats;
+    }
 
     for (P2PNetworkInterface *p2p : P2PNetworkInterfaces)
         delete p2p;
 }
 
-    short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
-        for (unsigned short int i = 0; i < P2PNetworkInterfaces.size(); i++) {
-            if (itf == P2PNetworkInterfaces[i]) return i;
-        }
-        return -1;
+short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
+    for (unsigned short int i = 0; i < P2PNetworkInterfaces.size(); i++) {
+        if (itf == P2PNetworkInterfaces[i]) return i;
     }
+    return -1;
+}
 
-    uint8_t BuildingBlock::getInterfaceBId(const P2PNetworkInterface* itf) const {
-        for (size_t i = 0; i < P2PNetworkInterfaces.size(); i++) {
-            if (itf == P2PNetworkInterfaces[i]) return static_cast<uint8_t>(i);
-        }
-        return static_cast<uint8_t>(255);
+uint8_t BuildingBlock::getInterfaceBId(const P2PNetworkInterface* itf) const {
+    for (size_t i = 0; i < P2PNetworkInterfaces.size(); i++) {
+        if (itf == P2PNetworkInterfaces[i]) return static_cast<uint8_t>(i);
     }
+    return static_cast<uint8_t>(255);
+}
 
-    bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {
+bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {
     P2PNetworkInterface *ni1, *ni2;
     ni1 = nullptr;
     ni2 = nullptr;
@@ -163,19 +168,29 @@ P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destB
 
 uint8_t BuildingBlock::getNbNeighbors() const {
     uint8_t n = 0;
-/*  P2PNetworkInterface *p;
-    vector<P2PNetworkInterface*>::const_iterator it;
-    for (it = P2PNetworkInterfaces.begin(); it != P2PNetworkInterfaces.end(); ++it) {
-    p = *it;
-    if (p->isConnected()) {
-    n++;
-    }
-    }*/
+
     for (const P2PNetworkInterface* p2p : P2PNetworkInterfaces) {
         n+=p2p->isConnected();
     }
+
     return n;
 }
+
+void BuildingBlock::breakP2PNetworkInterface(BuildingBlock *bb) {
+    if (bb==nullptr) return;
+    P2PNetworkInterface *p2p_12 = getP2PNetworkInterfaceByBlockRef(bb);
+    P2PNetworkInterface *p2p_21 = bb->getP2PNetworkInterfaceByBlockRef(this);
+    assert(p2p_12!= nullptr && p2p_21!= nullptr);
+
+    auto match = std::find(P2PNetworkInterfaces.begin(), P2PNetworkInterfaces.end(), p2p_12);
+    getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), this, match-P2PNetworkInterfaces.begin()));
+    match = std::find(bb->P2PNetworkInterfaces.begin(), bb->P2PNetworkInterfaces.end(), p2p_21);
+    getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), bb, match-bb->P2PNetworkInterfaces.begin()));
+
+    p2p_12->connectedInterface=nullptr;
+    p2p_21->connectedInterface=nullptr;
+}
+
 
 vector<BuildingBlock*> BuildingBlock::getNeighbors() const {
     vector<BuildingBlock*> res;
@@ -350,8 +365,8 @@ void BuildingBlock::serialize(std::ofstream &bStream) {
 
 void BuildingBlock::serialize_cleartext(std::ofstream &dbStream) {
     dbStream << (int)blockId << ";"
-        << position[0] << "," << position[1] << ","<< position[2] << "," << (int) orientationCode << ";"
-        << (int)(color[0]*255) << "," << (int)(color[1]*255) << ","<< (int)(color[2]*255) << endl;
+             << position[0] << "," << position[1] << ","<< position[2] << "," << (int) orientationCode << ";"
+             << (int)(color[0]*255) << "," << (int)(color[1]*255) << ","<< (int)(color[2]*255) << endl;
 }
 
 

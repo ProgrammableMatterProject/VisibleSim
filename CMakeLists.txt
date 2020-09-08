@@ -1225,4 +1225,3 @@ add_library(SmartBlocks SHARED
 
     add_executable(stressTestSB applicationsSrc/stressTestSB/stressTestSB.cpp applicationsSrc/stressTestSB/stressTestSBBlockCode.cpp)
     target_link_libraries(stressTestSB ${FREEGLUT_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} ${LIBSMARTBLOCKS})
-

@@ -16,7 +16,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = tetris.cpp tetrisCode.cpp
+SRCS = tetris.cpp tetrisCode.cpp utils.cpp coords.cpp tmn1.cpp tmn2.cpp tmn3.cpp tmn4.cpp tmn5.cpp tmn6.cpp tmn7.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/tetris

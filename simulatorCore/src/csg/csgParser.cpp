@@ -1,5 +1,6 @@
 #include "csgParser.h"
 #include <algorithm>
+#include <cassert>
 
 enum KEYWORDS {KW_UNION,KW_INTERSECTION,KW_DIFFERENCE,KW_TRANSLATE,KW_ROTATE,KW_SCALE,KW_CUBE,KW_CYLINDER,KW_SPHERE,KW_TORUS,KW_COLOR,KW_AFFECT,KW_MODULE};
 const size_t CSGParser::keywordsCount = 13;

@@ -6,13 +6,11 @@
  */
 
 #include <iostream>
-#include "blockCode.h"
-#include "../utils/trace.h"
-#include "../events/scheduler.h"
-#include "buildingBlock.h"
-#include "world.h"
-#include "../grid/lattice.h"
-#include "../grid/target.h"
+#include "base/blockCode.h"
+#include "utils/trace.h"
+#include "events/scheduler.h"
+#include "base/buildingBlock.h"
+#include "base/world.h"
 
 using namespace std;
 
