@@ -386,6 +386,11 @@ public:
     void getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax);
     bool hasBlinkingBlocks() { return isBlinkingBlocks;};
 
+    /**
+     * Simulates a linear splitting of the lattice, according to the separation description
+     *  stored in Lattice. Effectively disconnects modules across this separation.
+     * @return false if the splitting could not be done because of a missing separator description
+     */
     bool separate();
 };
 

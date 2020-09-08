@@ -342,6 +342,8 @@ bool World::separate() {
             }
         }
     }
+
+    return true;
 }
 
 } // BaseSimulator namespace
