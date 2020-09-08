@@ -566,9 +566,9 @@ void GlutContext::idleFunc(void) {
                 World *wrl = BaseSimulator::getWorld();
                 GlBlock *slct=wrl->getBlockByNum(n);
                 popup->setCenterPosition(lastMousePos[0],screenHeight - lastMousePos[1]);
-                //popup->setInfo(slct->getPopupInfo());
                 ostringstream out;
-                out << slct->blockId << " - " << wrl->lattice->worldToGridPosition(slct->getPosition()) <<"\n";
+                out << slct->blockId << " - " << wrl->lattice->worldToGridPosition(slct->getPosition());
+                popup->setInfo(out.str());
                 popup->show(true);
             } else {
                 popup->show(false);

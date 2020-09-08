@@ -41,8 +41,8 @@ void MaxFlowSCCode::startup() {
         mainPathState = BFS;
         mainPathIn = module->blockId;
         mainPathOld.push_back(module->blockId);
-        vector2string(mainPathOut,module->getGlBlock()->popupString);
-        module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
+        // vector2string(mainPathOut,module->getGlBlock()->popupString);
+        // module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
         isSource=true;
         int t0=messageDelay;
         sendMessageToAllNeighbors("BFS",new MessageOf<bID>(BFS_MSG,module->blockId),t0,messageDelayError,0);
@@ -108,8 +108,8 @@ void MaxFlowSCCode::ProcBFS(std::shared_ptr<Message> _msg, P2PNetworkInterface*s
             t0+=messageDelayCons;
             sendMessageToAllNeighbors("BFS",new MessageOf<bID>(BFS_MSG,msgData),t0,messageDelayError,0);
         }
-        vector2string(mainPathOut,module->getGlBlock()->popupString);
-        module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
+        // vector2string(mainPathOut,module->getGlBlock()->popupString);
+        // module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
 
     } else if (mainPathState==Streamline && aug1PathState==NONE && msgFrom!=mainPathIn && msgFrom!=mainPathOut && !isIn(pathsOld,msgData)) {
 /**DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG**/
@@ -156,8 +156,8 @@ void MaxFlowSCCode::ProcConfirmEdge(std::shared_ptr<Message> msg,
     console << "rec. ConfirmEdge\n";
     if (mainPathState==BFS) {
         mainPathOut.push_back(msgFrom);
-        vector2string(mainPathOut,module->getGlBlock()->popupString);
-        module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
+        // vector2string(mainPathOut,module->getGlBlock()->popupString);
+        // module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
 
         module->setColor(isSource?RED:CYAN);
     } else if (aug1PathState==BFS) {
@@ -204,7 +204,7 @@ void MaxFlowSCCode::ProcCutOff(std::shared_ptr<Message> msg,
         mainPathState=NONE;
         mainPathIn=0;
         mainPathOut.clear();
-        module->getGlBlock()->popupString="";
+        // module->getGlBlock()->popupString="";
         module->setColor(ORANGE);
     }
     if (aug1PathState!=NONE && (isMainPathRemoved || msgFrom==aug1PathIn)) {
@@ -378,15 +378,15 @@ void MaxFlowSCCode::ProcConfirmStreamline(std::shared_ptr<Message> msg,
             mainPathState = NONE;
             mainPathIn = 0;
             mainPathOut.clear();
-            module->getGlBlock()->popupString="";
+            // module->getGlBlock()->popupString="";
             module->setColor(ORANGE);
             aug1PathState = NONE;
             aug1PathIn = 0;
             aug1PathOut.clear();
         } else {
             mainPathOut=aug2PathOut;
-            vector2string(mainPathOut,module->getGlBlock()->popupString);
-            module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
+            // vector2string(mainPathOut,module->getGlBlock()->popupString);
+            // module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
             module->setColor(CYAN);
         }
         aug2PathState = NONE;
