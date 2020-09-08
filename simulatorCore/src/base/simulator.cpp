@@ -509,7 +509,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
     }
     /* reading the xml file */
     xmlWorldNode = xmlDoc->FirstChild("world");
-
+    Lattice::Separator *ptrSeparator= nullptr;
     if (xmlWorldNode) {
         TiXmlElement* worldElement = xmlWorldNode->ToElement();
         const char *attr= worldElement->Attribute("gridSize");
@@ -543,6 +543,22 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             GlutContext::screenWidth = GlutContext::initialScreenWidth;
             GlutContext::screenHeight = GlutContext::initialScreenHeight;
             cerr << "warning [DEPRECATED]: place windowSize in visual tag!" << endl;
+        }
+
+        attr = worldElement->Attribute("separatorPlane");
+        if (attr) {
+            string str=attr;
+            int pos1 = str.find_first_of(','),
+                pos2 = str.find_first_of(',',pos1+1);
+            float a = stof(str.substr(0,pos1));
+            float b = stof(str.substr(pos1+1,pos2-pos1-1));
+            pos1=pos2;
+            pos2 = str.find_first_of(',',pos1+1);
+            float c = stof(str.substr(pos1+1,pos2-pos1-1));
+            float d = stof(str.substr(pos2+1,str.length()-pos1-1));
+
+            cerr << "separator: a=" << a << "\tb=" << b << "\tc=" << c << "\td=" << d << endl;
+            ptrSeparator = new Lattice::Separator(a,b,c,d);
         }
 
         attr=worldElement->Attribute("maxSimulationTime");
@@ -590,6 +606,9 @@ void Simulator::parseWorld(int argc, char*argv[]) {
         loadWorld(Cell3DPosition(lx,ly,lz),
                   Vector3D(0, 0, 0), // Always use default blocksize
                   argc, argv);
+        if (ptrSeparator) {
+            getWorld()->lattice->addSeparator(ptrSeparator);
+        }
     } else {
         stringstream error;
         error << "No world in XML configuration file" << "\n";

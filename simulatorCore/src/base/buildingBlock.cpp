@@ -74,11 +74,11 @@ BuildingBlock::~BuildingBlock() {
     OUTPUT << "BuildingBlock destructor" << endl;
 #endif
 
-    if (clock != NULL) {
+    if (clock != nullptr) {
         delete clock;
     }
 
-    if (stats != NULL) {
+    if (stats != nullptr) {
             delete stats;
     }
 
@@ -96,8 +96,8 @@ short BuildingBlock::getInterfaceId(const P2PNetworkInterface* itf) const {
 
 bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {
     P2PNetworkInterface *ni1, *ni2;
-    ni1 = NULL;
-    ni2 = NULL;
+    ni1 = nullptr;
+    ni2 = nullptr;
     if (!getP2PNetworkInterfaceByBlockRef(destBlock)) {
         // creation of the new network interface
         OUTPUT << "adding a new interface to block " << destBlock->blockId << endl;
@@ -112,7 +112,7 @@ bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock)
         destBlock->P2PNetworkInterfaces.push_back(ni2);
     }
 
-    if (ni1!=NULL && ni2!=NULL) {
+    if (ni1!=nullptr && ni2!=nullptr) {
         ni1->connect(ni2);
         return (true);
     } else {
@@ -145,7 +145,7 @@ P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlo
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destBlockId) const {
@@ -156,8 +156,23 @@ P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destB
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
+
+void BuildingBlock::breakP2PNetworkInterface(BuildingBlock *bb) {
+    if (bb==nullptr) return;
+    P2PNetworkInterface *p2p_12 = getP2PNetworkInterfaceByBlockRef(bb);
+    P2PNetworkInterface *p2p_21 = bb->getP2PNetworkInterfaceByBlockRef(this);
+    assert(p2p_12!= nullptr && p2p_21!= nullptr);
+
+    auto match = std::find(P2PNetworkInterfaces.begin(), P2PNetworkInterfaces.end(), p2p_12);
+    getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), this, match-P2PNetworkInterfaces.begin()));
+    match = std::find(bb->P2PNetworkInterfaces.begin(), bb->P2PNetworkInterfaces.end(), p2p_21);
+    getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), bb, match-bb->P2PNetworkInterfaces.begin()));
+
+    p2p_12->connectedInterface=nullptr;
+    p2p_21->connectedInterface=nullptr;
+  }
 
 unsigned short BuildingBlock::getNbNeighbors() const {
   unsigned short n = 0;
@@ -270,14 +285,14 @@ ruint BuildingBlock::getRandomUint() {
 }
 
 void BuildingBlock::setClock(Clock *c) {
-  if (clock != NULL) {
+  if (clock != nullptr) {
     delete clock;
   }
   clock = c;
 }
 
 Time BuildingBlock::getLocalTime(Time simTime) const {
-  if (clock == NULL) {
+  if (clock == nullptr) {
     cerr << "device has no internal clock" << endl;
     return 0;
   }
@@ -285,7 +300,7 @@ Time BuildingBlock::getLocalTime(Time simTime) const {
 }
 
 Time BuildingBlock::getLocalTime() const {
-    if (clock == NULL) {
+    if (clock == nullptr) {
       cerr << "device has no internal clock" << endl;
       return 0;
     }
@@ -293,7 +308,7 @@ Time BuildingBlock::getLocalTime() const {
 }
 
 Time BuildingBlock::getSimulationTime(Time localTime) const {
-    if (clock == NULL) {
+    if (clock == nullptr) {
       cerr << "device has no internal clock" << endl;
       return localTime;
     }

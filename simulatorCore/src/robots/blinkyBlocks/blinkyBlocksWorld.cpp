@@ -135,6 +135,7 @@ void BlinkyBlocksWorld::glDrawShadows() {
     if (bb) bb->blockCode->onGlDraw();
 
     lattice->glDraw();
+    glPopMatrix();
 }
 
 void BlinkyBlocksWorld::glDrawId() {

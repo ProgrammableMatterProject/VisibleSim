@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="32,2,31" windowSize="1800,900" separatorPlane="1,0,0,-20">
+
+  <blockList color="0,255,0" size="1,1,1" blockSize="40,40,41" >
+
+    <csg content="color(255,0,0); cube([31,1,30]);"/>
+
+  </blockList>
+</world>
