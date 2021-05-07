@@ -1,0 +1,48 @@
+<?xml version="1.0" standalone="no" ?>
+<parameters globalMass="0.06106" nofIterations="15000" globalSupportZ="0" />
+<world gridSize="9,9,6" windowSize="1800,900">
+    <camera target="136.913,166.58,78.2052" directionSpherical="-906169,29.1752,400" angle="45.000000" near="1.000000" far="1500.000000" />
+	  <blockList  size="1,1,1" blockSize="40,40,41" >
+
+ 	<block position="2,2,0" color="0,255,0" />
+ 	<block position="3,2,0" color="0,255,0" />
+ 	<block position="4,2,0" color="0,255,0" />
+ 	<block position="5,2,0" color="0,255,0" />
+ 	<block position="6,2,0" color="0,255,0" />
+ 	<block position="7,2,0" color="0,255,0" centroid="1" />
+ 	<block position="2,3,0" color="0,255,0" />
+ 	<block position="2,4,0" color="0,255,0" />
+ 	<block position="2,5,0" color="0,255,0" />
+ 	<block position="2,6,0" color="0,255,0" />
+ 	<block position="2,7,0" color="0,255,0" />
+
+ 	<block position="2,7,1" color="0,255,0" />
+ 	<block position="7,2,1" color="0,255,0" />
+
+ 	<block position="2,7,2" color="0,255,0" />
+ 	<block position="7,2,2" color="0,255,0" />
+
+ 	<block position="2,2,3" color="0,255,0" />
+ 	<block position="3,2,3" color="0,255,0" />
+ 	<block position="4,2,3" color="0,255,0" />
+ 	<block position="5,2,3" color="0,255,0" />
+ 	<block position="6,2,3" color="0,255,0" />
+ 	<block position="7,2,3" color="0,255,0" />
+ 	<block position="2,3,3" color="0,255,0" />
+ 	<block position="2,4,3" color="0,255,0" />
+ 	<block position="2,5,3" color="0,255,0" />
+ 	<block position="2,6,3" color="0,255,0" />
+ 	<block position="2,7,3" color="0,255,0" />
+
+
+<!--        <block position="10,2,5" color="0,255,0" stabilityCheck="simplified" /-->
+
+</blockList>
+	<targetList>
+		<target format="grid">
+
+		<cell position="2,2,4" color="255,255,255" />
+
+		</target>
+	</targetList>
+</world>
