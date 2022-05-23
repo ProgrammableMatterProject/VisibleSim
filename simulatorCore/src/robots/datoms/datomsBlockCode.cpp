@@ -35,18 +35,15 @@ void DatomsBlockCode::processLocalEvent(EventPtr pev) {
 
     switch (pev->eventType) {
         case EVENT_DEFORMATION_END: {
-#ifdef verbose
+//#ifdef verbose
             info.str("");
-            info << "rec.: EVENT_MOTION_END";
+            info << "rec.: EVENT_DEFORMATION_END";
             scheduler->trace(info.str(),hostBlock->blockId);
-#endif
-            DatomsBlock*c3d = (DatomsBlock*)hostBlock;
-            c3d->setPositionAndOrientation(c3d->position,c3d->orientationCode);
+//#endif
+            DatomsBlock*datom = (DatomsBlock*)hostBlock;
+            datom->setPositionAndOrientation(datom->position,datom->orientationCode);
             onMotionEnd();
         }  break;
-                case EVENT_TELEPORTATION_END: {
-                    onMotionEnd();
-                }
     }
 }
 

@@ -71,11 +71,18 @@ ConfigExporter::ConfigExporter(World *_world) {
     if (Simulator::configFileName.empty()) {
         exportedConfigNameRoot = "export";
     } else {
-        size_t config_pos = Simulator::configFileName.find("config_");
+        auto cfName=Simulator::configFileName;
+        string rep="";
+        auto pos=cfName.rfind('/');
+        if (pos!=string::npos) {
+            rep = cfName.substr(0,pos+1);
+            cfName = cfName.substr(pos+1);
+        }
+        size_t config_pos = cfName.find("config_");
         if (config_pos == string::npos) // no config_ pattern
-            exportedConfigNameRoot = string("export_").append(Simulator::configFileName);
+            exportedConfigNameRoot = rep + string("export_").append(cfName);
         else
-            exportedConfigNameRoot = string("export_")
+            exportedConfigNameRoot = rep + string("export_")
                 .append(Simulator::configFileName.substr(config_pos + 7, string::npos));
 
         // trim extension
@@ -116,15 +123,11 @@ void ConfigExporter::exportCameraAndLightSource() {
         TiXmlElement *cam = new TiXmlElement("camera");
         Vector3D target = camera->getTarget();
         Vector3D ds = camera->getDirectionSpherical();
-        cam->SetAttribute("target", toXmlAttribute(target.pt[0],
-                                                   target.pt[1],
-                                                   target.pt[2]));
-        cam->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
-                                                               ds.pt[1],
-                                                               ds.pt[2]));
-        cam->SetAttribute("angle", to_string(camera->getAngle()));
-        cam->SetAttribute("near", to_string(camera->getNearPlane()));
-        cam->SetAttribute("far", to_string(camera->getFarPlane()));
+        cam->SetAttribute("target", toXmlAttribute(target[0],target[1],target[2]).c_str());
+        cam->SetAttribute("directionSpherical", toXmlAttribute(ds[0],ds[1],ds[2]).c_str());
+        cam->SetAttribute("angle", camera->getAngle());
+        cam->SetAttribute("near", camera->getNearPlane());
+        cam->SetAttribute("far", camera->getFarPlane());
 
         worldElt->LinkEndChild(cam);
 
@@ -134,23 +137,19 @@ void ConfigExporter::exportCameraAndLightSource() {
         float *lsTarget = ls->getTarget();
         ds = ls->getDirectionSpherical();
 
-        spotlight->SetAttribute("target", toXmlAttribute(lsTarget[0],
-                                                         lsTarget[1],
-                                                         lsTarget[2]));
-        spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
-                                                                     ds.pt[1],
-                                                                     ds.pt[2]));
-        spotlight->SetAttribute("angle", to_string(ls->getAngle()));
+        spotlight->SetAttribute("target", toXmlAttribute(lsTarget[0],lsTarget[1],lsTarget[2]).c_str());
+        spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds[0],ds[1],ds[2]).c_str());
+        spotlight->SetAttribute("angle", ls->getAngle());
         worldElt->LinkEndChild(spotlight);
     }
 }
 
 void ConfigExporter::exportWorld() {
     worldElt = new TiXmlElement("world");
-    worldElt->SetAttribute("gridSize", toXmlAttribute(world->lattice->gridSize));
+    worldElt->SetAttribute("gridSize", toXmlAttribute(world->lattice->gridSize).c_str());
     if (GlutContext::GUIisEnabled) {
         worldElt->SetAttribute("windowSize",
-                               toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight));
+                               toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight).c_str());
     }
 
     config->LinkEndChild(worldElt);
@@ -160,7 +159,7 @@ void ConfigExporter::exportBlockList() {
     blockListElt = new TiXmlElement("blockList");
     Vector3D blockSize = world->lattice->gridScale;
     map<bID, BaseSimulator::BuildingBlock*> blocks = world->getMap();
-    blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
+    blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize).c_str());
 
     for(auto const& idBBPair : blocks) {
         if (idBBPair.second->getState() != BuildingBlock::REMOVED
@@ -174,18 +173,14 @@ void ConfigExporter::exportBlockList() {
 void ConfigExporter::exportBlock(BuildingBlock *bb) {
     BuildingBlock *blc = bb;
     TiXmlElement *bbElt = new TiXmlElement("block");
-    float *color = blc->color.rgba;
     Cell3DPosition pos = blc->position;
 
-    bbElt->SetAttribute("position", toXmlAttribute(pos));
-    bbElt->SetAttribute("color", toXmlAttribute(color[0] * 255,
-                                                color[1] * 255,
-                                                color[2] * 255));
-    if (bb->isMaster)
-            bbElt->SetAttribute("master", "true");
+    bbElt->SetAttribute("position", toXmlAttribute(pos).c_str());
+    bbElt->SetAttribute("color", toXmlAttribute(blc->color[0],
+                                                blc->color[1],
+                                                blc->color[2]).c_str());
 
     exportAdditionalAttribute(bbElt, bb);
-
     blockListElt->LinkEndChild(bbElt);
 }
 

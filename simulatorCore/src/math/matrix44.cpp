@@ -9,7 +9,7 @@
 
 Matrix::Matrix(const float *tab)
 { int i=16;
-  double *ptr=m;
+  float *ptr=m;
   while (i--)
   { *ptr++ = *tab++;
   }
@@ -24,7 +24,7 @@ istream& operator>>(istream& f,Matrix&p)
 }
 
 // �criture d'un Matrix dans un flux
-ostream& operator<<(ostream& f,Matrix&p)
+ostream& operator<<(ostream& f,const Matrix&p)
 { f << "|" << p.m[0] << "," << p.m[1] << "," << p.m[2] << "," << p.m[3] << "|" << endl;
   f << "|" << p.m[4] << "," << p.m[5] << "," << p.m[6] << "," << p.m[7] << "|" << endl;
   f << "|" << p.m[8] << "," << p.m[9] << "," << p.m[10] << "," << p.m[11] << "|" << endl;
@@ -33,25 +33,25 @@ ostream& operator<<(ostream& f,Matrix&p)
 }
 
 const Vector3D operator *(const Matrix p1, const Vector3D p2)
-{ Vector3D r;
+{ float x=0,y=0,z=0,w=0;
   for (int i=0; i<4; i++)
-  { r.pt[0] += p1.m[i]*p2.pt[i];
-    r.pt[1] += p1.m[i+4]*p2.pt[i];
-    r.pt[2] += p1.m[i+8]*p2.pt[i];
-    r.pt[3] += p1.m[i+12]*p2.pt[i];
+  { x += p1.m[i]*p2[i];
+    y += p1.m[i+4]*p2[i];
+    z += p1.m[i+8]*p2[i];
+    w += p1.m[i+12]*p2[i];
   }
-  return r;
+  return Vector3D(x,y,z,w);
 }
 
 const Vector3D operator *(const Vector3D p1, const Matrix p2)
-{ Vector3D r;
+{ float x,y,z,w;
   for (int i=0; i<4; i++)
-  { r.pt[0] += p2.m[i*4]*p1.pt[i];
-    r.pt[1] += p2.m[i*4+1]*p1.pt[i];
-    r.pt[2] += p2.m[i*4+2]*p1.pt[i];
-    r.pt[3] += p2.m[i*4+3]*p1.pt[i];
+  { x += p2.m[i*4]*p1[i];
+    y += p2.m[i*4+1]*p1[i];
+    z += p2.m[i*4+2]*p1[i];
+    w += p2.m[i*4+3]*p1[i];
   }
-  return r;
+  return Vector3D(x,y,z,w);
 }
 
 const Matrix operator *(const Matrix p1, const Matrix p2)
@@ -69,21 +69,21 @@ const Matrix operator *(const Matrix p1, const Matrix p2)
   return r;
 }
 
-void Matrix::setRotationX(double a)
+void Matrix::setRotationX(float a)
 { identity();
-  double cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
+  float cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
   m[5]=m[10]=cs; m[6]=-sn; m[9]=sn;
 }
 
-void Matrix::setRotationY(double a)
+void Matrix::setRotationY(float a)
 { identity();
-  double cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
+  float cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
   m[0]=m[10]=cs; m[2]=sn; m[8]=-sn;
 }
 
-void Matrix::setRotationZ(double a)
+void Matrix::setRotationZ(float a)
 { identity();
-  double cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
+  float cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
   m[0]=m[5]=cs; m[1]=-sn; m[4]=sn;
 }
 
@@ -145,10 +145,10 @@ void Matrix::transpose(Matrix &t) const
   t.m[15] = m[15];
 }
 
-void Matrix::set(double x00,double x10,double x20,double x30,
-                  double x01,double x11,double x21,double x31,
-                  double x02,double x12,double x22,double x32,
-                  double x03,double x13,double x23,double x33)
+void Matrix::set(float x00,float x10,float x20,float x30,
+                  float x01,float x11,float x21,float x31,
+                  float x02,float x12,float x22,float x32,
+                  float x03,float x13,float x23,float x33)
 { m[0] = x00;
   m[1] = x10;
   m[2] = x20;
@@ -180,27 +180,27 @@ void Matrix::setGLmat(const Matrix &R,const Vector3D &T)
   m[9] = R.m[6];
   m[10] = R.m[10];
   m[11] = R.m[14];
-  m[12] = T.pt[0];
-  m[13] = T.pt[1];
-  m[14] = T.pt[2];
+  m[12] = T[0];
+  m[13] = T[1];
+  m[14] = T[2];
   m[15] = 1.0;
 
 }
 
-void Matrix::setRotation(double a,const Vector3D &V)
+void Matrix::setRotation(float a,const Vector3D &V)
 { double cosa=cos(a*M_PI/180.),sina=sin(a*M_PI/180.),c1=1.0-cosa;
 
-  m[0] = V.pt[0]*V.pt[0]*c1 + cosa;
-  m[1] = V.pt[0]*V.pt[1]*c1 - V.pt[2]*sina;
-  m[2] = V.pt[0]*V.pt[2]*c1 + V.pt[1]*sina;
+  m[0] = V[0]*V[0]*c1 + cosa;
+  m[1] = V[0]*V[1]*c1 - V[2]*sina;
+  m[2] = V[0]*V[2]*c1 + V[1]*sina;
   m[3] = 0.0;
-  m[4] = V.pt[0]*V.pt[1]*c1 + V.pt[2]*sina;
-  m[5] = V.pt[1]*V.pt[1]*c1 + cosa;
-  m[6] = V.pt[1]*V.pt[2]*c1 - V.pt[0]*sina;
+  m[4] = V[0]*V[1]*c1 + V[2]*sina;
+  m[5] = V[1]*V[1]*c1 + cosa;
+  m[6] = V[1]*V[2]*c1 - V[0]*sina;
   m[7] = 0.0;
-  m[8] = V.pt[0]*V.pt[2]*c1 - V.pt[1]*sina;
-  m[9] = V.pt[1]*V.pt[2]*c1 + V.pt[0]*sina;
-  m[10] = V.pt[2]*V.pt[2]*c1 + cosa;
+  m[8] = V[0]*V[2]*c1 - V[1]*sina;
+  m[9] = V[1]*V[2]*c1 + V[0]*sina;
+  m[10] = V[2]*V[2]*c1 + cosa;
   m[11] = 0.0;
   m[12] = 0.0;
   m[13] = 0.0;

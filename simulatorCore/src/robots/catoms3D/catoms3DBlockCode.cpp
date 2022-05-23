@@ -27,11 +27,6 @@ Catoms3DBlockCode::~Catoms3DBlockCode() {
 #endif
 }
 
-void Catoms3DBlockCode::addDebugAttributes(Scheduler *scheduler) {
- /*   Catoms3DBlock *catom = (Catoms3DBlock*)(hostBlock);
-    scheduler->addKeyword(new KeywordT<short>("orientationCode",&catom->orientationCode,"orientation of the block"));*/
-}
-
 void Catoms3DBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
@@ -45,8 +40,8 @@ void Catoms3DBlockCode::processLocalEvent(EventPtr pev) {
             info << "rec.: EVENT_MOTION_END";
             scheduler->trace(info.str(),hostBlock->blockId);
 #endif
-            Catoms3DBlock*c3d = (Catoms3DBlock*)hostBlock;
-            c3d->setPositionAndOrientation(c3d->position,c3d->orientationCode);
+            //Catoms3DBlock*c3d = (Catoms3DBlock*)hostBlock;
+            //c3d->setPositionAndOrientation(c3d->position,c3d->orientationCode);
             onMotionEnd();
         }  break;
                 case EVENT_TELEPORTATION_END: {

@@ -24,7 +24,9 @@ public :
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
     void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;
     void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) override;
-		void fireSelectedTrigger() override;
+    void fireSelectedTrigger() override;
+    string getInfo() override;
+//    string getPopupInfo() override;
 };
 }
 #endif /* CATOMS3DGLBLOCK_H_ */

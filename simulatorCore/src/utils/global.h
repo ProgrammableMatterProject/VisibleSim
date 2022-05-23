@@ -10,7 +10,5 @@
 #pragma once
 
 namespace BaseSimulator {
-
      inline float motionDelayMultiplier = 1.0f;
-
-};
+}

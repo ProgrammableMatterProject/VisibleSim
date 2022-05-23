@@ -95,6 +95,6 @@ public:
     getAllDeformationsForModule(const DatomsBlock* m);
 };
 
-};
+}
 
 #endif // __DATOMS_MOTION_ENGINE_H__

@@ -292,7 +292,7 @@ SetColorEvent::SetColorEvent(Time t, BuildingBlock *conBlock, float r, float g, 
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_SET_COLOR;
     randomNumber = conBlock->getRandomUint();
-    color = Color(r, g, b, a);
+    color.set(r*a, g*a, b*a);
 }
 
 SetColorEvent::SetColorEvent(Time t, BuildingBlock *conBlock, Color &c): BlockEvent(t, conBlock) {

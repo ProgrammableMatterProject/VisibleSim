@@ -8,8 +8,6 @@
  *
  */
 
-
-
 #include <fstream>
 #include <ctime>
 #include <sstream>
@@ -31,6 +29,12 @@ std::string Backtrace(int skip = 1);
 
 int utils::m_mod(int l, int mod) {
     VS_ASSERT_MSG(mod != 0, "Modulus cannot be 0!");
+    if (l>0) {
+        return l % mod;
+    } else {
+        return (l==0 || (-l)%mod==0)?0:mod - ((-l) % mod);
+    }
+    cout << "(" << l << "%" << mod << ")= " <<(l < 0 and l % mod != 0 ? mod - (-l % mod) : l % mod) << endl;
     return l < 0 and l % mod != 0 ? mod - (-l % mod) : l % mod;
 }
 
@@ -53,7 +57,7 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
               << ":" << TermColor::BWhite << line << std::endl << std::endl << TermColor::Reset;
 
     if (msg) std::cerr << TermColor::BRed << "Reason: " <<
-                 TermColor::BWhite << msg << TermColor::Reset << endl;
+                       TermColor::BWhite << msg << TermColor::Reset << endl;
 
     std::cerr << TermColor::BRed << "Context Module: ";
     if (contextModule) {
@@ -95,7 +99,11 @@ bool utils::assert_handler(bool cond, const char *file, const int line,
 
 bool utils::assert_stack_print() {
     cerr << "--------- StackTrace ---------" << endl;
+#ifdef WIN32
+    cerr << "Not available in Windows context" << endl;
+#else
     cerr << utils::Backtrace(3);
+#endif
     cerr << "--------- END ---------" << endl;
 
     return true;
@@ -199,6 +207,8 @@ char *utils::myBasename(char const *path) {
  *  For printing stacktrace, to be used with our custom-defined asserts.
  */
 
+#ifndef WIN32
+
 #include <execinfo.h> // for backtrace
 #include <dlfcn.h>    // for dladdr
 #include <cxxabi.h>   // for __cxa_demangle
@@ -239,3 +249,4 @@ std::string utils::Backtrace(int skip)
         trace_buf << "[truncated]\n";
     return trace_buf.str();
 }
+#endif

@@ -62,15 +62,15 @@ size_t CSGParser::readVector(const string &line, size_t pos1, size_t pos2, Vecto
     string parameters = line.substr(beginKeyword, endKeyword-beginKeyword+1);
     endKeyword = parameters.find_first_of(',');
     string expr = parameters.substr(0, endKeyword);
-    v.pt[0] = readExpression(expr);
+    v.set(0,readExpression(expr));
     beginKeyword = endKeyword+1;
     endKeyword = parameters.find_first_of(',',beginKeyword);
     expr = parameters.substr(beginKeyword, endKeyword-beginKeyword);
-    v.pt[1] = readExpression(expr);
+    v.set(1,readExpression(expr));
     beginKeyword = endKeyword+1;
     endKeyword = parameters.length();
     expr = parameters.substr(beginKeyword, endKeyword-beginKeyword);
-    v.pt[2] = readExpression(expr);
+    v.set(2,readExpression(expr));
     return res;
 }
 

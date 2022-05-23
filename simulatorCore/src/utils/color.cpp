@@ -1,35 +1,29 @@
 #include "color.h"
 #include "exceptions.h" //@TODO BP REMOVE
 
-Color::Color() {
-    memset(rgba,0,4*sizeof(GLfloat));
+Color::Color(float r,float g,float b) {
+    set(r,g,b);
 }
 
-Color::Color(float r,float g,float b,float a) {
-    rgba[0]=r;
-    rgba[1]=g;
-    rgba[2]=b;
-    rgba[3]=a;
+Color::Color(int r, int g, int b) {
+    set(r,g,b);
 }
 
-Color::Color(unsigned short r, unsigned short g, unsigned short b, unsigned short a,
-             bool integers) {
-    rgba[0] = r / 255.0f;
-    rgba[1] = g / 255.0f;
-    rgba[2] = b / 255.0f;
-    rgba[3] = a / 255.0f;
+void Color::set(GLfloat r,GLfloat g, GLfloat b) {
+    _rgb[0]=uint8_t(clamp(int(r*255.0),0,255));
+    _rgb[1]=uint8_t(clamp(int(g*255.0),0,255));
+    _rgb[2]=uint8_t(clamp(int(b*255.0),0,255));
 }
 
-void Color::set(GLfloat r,GLfloat g, GLfloat b, GLfloat a) {
-    rgba[0]=r;
-    rgba[1]=g;
-    rgba[2]=b;
-    rgba[3]=a;
+void Color::set(int r,int g, int b) {
+    _rgb[0]=uint8_t(clamp(r,0,255));
+    _rgb[1]=uint8_t(clamp(g,0,255));
+    _rgb[2]=uint8_t(clamp(b,0,255));
 }
 
 // écriture d'une couleur dans un flux
 ostream& operator<<(ostream& f,const Color&p)
-{ f << "(" << p.rgba[0] << "," << p.rgba[1] << "," << p.rgba[2] << "," << p.rgba[3] << ")";
+{ f << "(" << to_string(p._rgb[0]) << "," << to_string(p._rgb[1]) << "," << to_string(p._rgb[2]) << ")";
   return f;
 }
 
@@ -39,4 +33,13 @@ void Color::serialize(std::ofstream &bStream) {
 
 void Color::serialize_cleartext(std::ofstream &dbStream) {
     throw BaseSimulator::NotImplementedException(); // @TODO BP
+}
+
+void Color::glMaterial(GLenum face, GLenum pname) const {
+    GLfloat v[4];
+    v[0] = float(_rgb[0])/255.0f;
+    v[1] = float(_rgb[1])/255.0f;
+    v[2] = float(_rgb[2])/255.0f;
+    v[3]=1.0;
+    glMaterialfv(face,pname,v);
 }

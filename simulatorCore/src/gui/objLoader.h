@@ -11,9 +11,8 @@
 
 #ifndef OBJLOADER_H_
 #define OBJLOADER_H_
-
-#ifdef WIN32
-#include <windows.h>
+#ifdef MSVC
+//#include <windows.h>
 #endif
 #include <cstdlib>
 #include <string>
@@ -68,6 +67,10 @@ public :
     void set(GLfloat *tabV,GLfloat *tabN,GLfloat *tabT);
     bool operator==(const Sommet &s);
     bool isCloseTo(const Sommet &s,float threshold2);
+    Vector3D toVector3D() {
+        return Vector3D(v[0],v[1],v[2],1.0);
+    }
+
 };
 
 class FaceTri {
@@ -128,7 +131,9 @@ public :
     GLuint objectNumber;
     char nom[128],nomOriginal[64];
     Mtl *objMtl;
-  Point3 *center;
+    Point3 *center;
+    Point3 BBmin,BBmax;
+
     ObjData(const char*);
     ~ObjData();
     void addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3);
@@ -138,6 +143,9 @@ public :
     void createVertexArray();
     void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1=-1,bool invNormal=false) const;
     const Point3* getCenter() { return center;	}
+
+    bool isInside(const Vector3D &pos);
+    bool intersectFace(const FaceTri& tri,const Vector3D& pos,const Vector3D& dir);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -156,11 +164,13 @@ public:
     void glDraw(GLuint n);
     void glDrawIdByMaterial(int &i);
     void glDrawId(int i);
-    void setLightedColor(GLfloat *color);
-    void setLightedColor(GLubyte *color);
+    void setLightedColor(const GLfloat *color);
+    void setLightedColor(const GLubyte *color);
     inline string getObjMtlName(int pos) { return tabObj[pos]->objMtl->name; };
     ObjData* getObjDataByName(const string &name) const;
     void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1) const;
+    void getBB(Vector3D &BBmin,Vector3D &BBmax);
+    bool isInside(const Vector3D &pos);
 };
 
 }

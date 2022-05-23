@@ -14,6 +14,10 @@
 
 #include "../utils/utils.h"
 #include "../base/simulator.h"
+#include "replayMotionEvent.h"
+#include "motions/replayMotion.h"
+#include "motions/replayCatoms3DMotion.h"
+#include "../robots/catoms2D/catoms2DBlock.h"
 
 using namespace BaseSimulator;
 using namespace ReplayTags;
@@ -43,7 +47,10 @@ string ReplayExporter::buildExportFilename() const {
     const string& cliFilename = Simulator::getSimulator()->getCmdLine().getReplayFilename();
     if (not cliFilename.empty())
         return cliFilename;
-
+#ifdef WIN32
+    //TODO Construction sous Winwows
+    return "Replay";
+#endif
     auto& cmdLine = Simulator::getSimulator()->getCmdLine();
 
     string appName = cmdLine.getApplicationName();
@@ -67,10 +74,10 @@ string ReplayExporter::buildExportFilename() const {
 string ReplayExporter::debugFilenameFromExportFilename(const string& exportFn) const {
     string str = string(exportFn);
 
-    // std::size_t ext = str.find_last_of(".");
+    std::size_t ext = str.find_last_of(".");
 
 //    return str.replace(str.begin() + ext, str.end(), ".txt");
-    return "debug.txt";
+    return "debug";
 }
 
 
@@ -101,6 +108,7 @@ void ReplayExporter::writeHeader() {
     const u1 moduleType = BaseSimulator::getWorld()->getBlockType();
     const Cell3DPosition& gridSize = BaseSimulator::getWorld()->lattice->gridSize;
 
+    MinDurationBetweenKeyframes = max(minDelayBeforeKeyframe(),MinDurationBetweenKeyframes);
     exportFile->write((char*)&moduleType, sizeof(u1));
     exportFile->write((char*)&gridSize, 3*sizeof(u2)); // xyz
 
@@ -137,12 +145,13 @@ void ReplayExporter::writeKeyFramesIndex() {
 
     //  and write all key frame pairs (kfp) to file
     for (const auto& kfp : keyFramesIndex) {
-        s8 pos = (s8)kfp.second;
-
+        s8 initPos = (s8)kfp.second.first;
+        s8 eventPos = (s8)kfp.second.second;
         exportFile->write((char*)&kfp.first, sizeof(u8));
-        exportFile->write((char*)&pos, sizeof(s8));
+        exportFile->write((char*)&initPos, sizeof(s8));
+        exportFile->write((char*)&eventPos, sizeof(s8));
 
-        if (debug) *debugFile << kfp.first << " " << pos << endl;
+        if (debug) *debugFile << kfp.first << " " << initPos <<" "<<eventPos<< endl;
     }
 
     if (debug) *debugFile << "-- END KEY FRAME INDEX --" << endl;
@@ -157,15 +166,16 @@ void ReplayExporter::writeSimulationEndTime() {
 
 void ReplayExporter::writeKeyFrameIfNeeded(Time date) {
     //if (date > (lastKeyFrameExportDate + keyFrameSaveFrequency)) {
-    if (date>lastKeyFrameExportDate && nbEventsBeforeKeyframe<=0) {
-        writeKeyFrame(date);
-        lastKeyFrameExportDate = date;
+    if (date>lastKeyFrameExportDate+MinDurationBetweenKeyframes && nbEventsBeforeKeyframe<=0) {
+            writeKeyFrame(date);
+            lastKeyFrameExportDate = date;
+
     }
 }
 
 void ReplayExporter::writeKeyFrame(Time date) {
-    keyFramesIndex.insert(make_pair(date, exportFile->tellp()));
 
+    streampos initPos = exportFile->tellp();
     u4 nbModules = BaseSimulator::getWorld()->lattice->nbModules;
     exportFile->write((char*)&nbModules, sizeof(u4));
     if (debug) {
@@ -174,14 +184,34 @@ void ReplayExporter::writeKeyFrame(Time date) {
         *debugFile << nbModules << endl;
     }
 
-    for (const auto& pair:BaseSimulator::getWorld()->buildingBlocksMap) {
+    for (const pair<bID, BuildingBlock*>& pair:BaseSimulator::getWorld()->buildingBlocksMap) {
         pair.second->serialize(*exportFile);
         if (debug) pair.second->serialize_cleartext(*debugFile);
     }
 
     if (debug) {
         *debugFile << "-- END KEY FRAME #" << keyFramesIndex.size() << endl;
+        *debugFile << "-- MOTION EVENTS FOR KEYFRAME #" << keyFramesIndex.size() << endl;
     }
+
+    /*--------------------- TRANSITION EVENTS ----------------------*/
+
+    while(!motionQueue.empty())
+    {
+        ReplayMotionEvent *motion = motionQueue.front();
+        motionQueue.pop();
+        if(motion->getEndDate()>= date)
+        {
+            motion->write(exportFile,debugFile,debug);
+        }
+
+    }
+    if (debug) {
+        *debugFile << "-- END MOTION EVENTS FOR KEYFRAME #" << keyFramesIndex.size() << endl;
+    }
+
+    keyFramesIndex.insert(make_pair(date, make_pair(initPos,exportFile->tellp())));
+
     nbEventsBeforeKeyframe=NumberOfEventsBetweenKeyFrames;
 }
 
@@ -191,9 +221,9 @@ void ReplayExporter::writeColorUpdate(Time date, bID bid, const Color& color) {
     exportFile->write((char*)&bid, sizeof(bID));
     u1 u1color[3];
     for (std::size_t i=0;i<3; i++) {
-        u1color[i] = static_cast<int>(color.rgba[i] * 255.0);
-        if (u1color[i]<0) u1color[i]=0;
-        else if (u1color[i]>255) u1color[i]=255;
+        u1color[i] = color[i];
+        /*if (u1color[i]<0) u1color[i]=0;
+        else if (u1color[i]>255) u1color[i]=255;*/
     }
     exportFile->write((char*)&u1color,3*sizeof(u1));
 
@@ -216,15 +246,22 @@ void ReplayExporter::writeDisplayUpdate(Time date, bID bid, uint16_t value) {
 }
 
 void ReplayExporter::writePositionUpdate(Time date, bID bid, const Cell3DPosition& pos, uint8_t orientation) {
-    exportFile->write((char*)&date, sizeof(Time));
-    exportFile->write((char*)&EVENT_POSITION_UPDATE, sizeof(u1));
-    exportFile->write((char*)&bid, sizeof(bID));
-    exportFile->write((char*)&pos.pt,3*sizeof(u2));
-    exportFile->write((char*)&orientation,sizeof(u1));
-    if (debug) {
-        *debugFile << "Pos:" << date << " " << (int)EVENT_POSITION_UPDATE << " " << bid << " " << pos[0] << " " << pos[1] << " " << pos[2] << " " << (int)orientation << endl;
+    if( std::find(movingBlocks.begin(),movingBlocks.end(),bid)!=movingBlocks.end())
+    {
+        movingBlocks.remove(bid);
+    } else
+    {
+        exportFile->write((char*)&date, sizeof(Time));
+        exportFile->write((char*)&EVENT_POSITION_UPDATE, sizeof(u1));
+        exportFile->write((char*)&bid, sizeof(bID));
+        exportFile->write((char*)&pos.pt,3*sizeof(u2));
+        exportFile->write((char*)&orientation,sizeof(u1));
+        if (debug) {
+            *debugFile << "Pos:" << date << " " << (int)EVENT_POSITION_UPDATE << " " << bid << " " << pos[0] << " " << pos[1] << " " << pos[2] << " " << (int)orientation << endl;
+        }
+        nbEventsBeforeKeyframe--;
     }
-    nbEventsBeforeKeyframe--;
+
 }
 
 void ReplayExporter::writeAddModule(Time date, bID bid) {
@@ -250,36 +287,37 @@ void ReplayExporter::writeRemoveModule(Time date, bID bid) {
 }
 
 void ReplayExporter::writeMotion(Time date, bID bid, Time duration_us,
-                                 const Cell3DPosition& destination) {
-    exportFile->write((char*)&date, sizeof(Time));
-    exportFile->write((char*)&EVENT_MOTION, sizeof(u1));
-    exportFile->write((char*)&bid, sizeof(bID));
-    exportFile->write((char*)&duration_us, sizeof(u8));
-    exportFile->write((char*)&destination.pt,3*sizeof(u2));
+                                 const Cell3DPosition& destination, Cell3DPosition& origin) {
 
-    if (debug) {
-        *debugFile << "Motion:" << date << " " << (int)EVENT_MOTION << " " << bid
-            << " " << (int)duration_us << " " << " " << destination[0] << " " << destination[1] << " " << destination[2] << endl;
-    }
-    nbEventsBeforeKeyframe--;
+/*    ReplayMotion *motion = new ReplayMotion(date, bid, duration_us,destination, origin);
+    motion->write(exportFile,debugFile,debug);
+    motionQueue.push(motion);
+    movingBlocks.push_back(bid);
+
+    nbEventsBeforeKeyframe--;*/
 }
 
-void ReplayExporter::writeCatoms3DMotion(Time date, bID bid, Time duration_us,
+void ReplayExporter::writeCatoms3DMotion(Time date, bID bid, Time duration_us,Cell3DPosition& destination,
+                                         short finalOrientation,Cell3DPosition& origin, short originOrientation,
                                  u4 fixedBlockId, u1 type, Vector3D axe1, Vector3D axe2) {
-    exportFile->write((char*)&date, sizeof(Time));
-    exportFile->write((char*)&EVENT_MOTION_CATOMS3D, sizeof(u1));
-    exportFile->write((char*)&bid, sizeof(bID));
-    exportFile->write((char*)&duration_us, sizeof(u8));
-    exportFile->write((char*)&fixedBlockId,sizeof(u4));
-    exportFile->write((char*)&type,sizeof(u1));
-    exportFile->write((char*)&axe1.pt,3*sizeof(u2));
-    exportFile->write((char*)&axe2.pt,3*sizeof(u2));
 
-    if (debug) {
-        *debugFile << "Motion:" << date << " " << (int)EVENT_MOTION_CATOMS3D << " " << bid
-                   << " " << (int)duration_us << " "  << endl;
-    }
-    nbEventsBeforeKeyframe--;
+
+
+ /*   ReplayCatoms3DMotion *motion = new ReplayCatoms3DMotion(date, bid, duration_us,destination,finalOrientation,
+                                                            origin,originOrientation, fixedBlockId,type,axe1,axe2);
+    motion->write(exportFile,debugFile,debug);
+    motionQueue.push(motion);
+    movingBlocks.push_back(bid);
+
+    nbEventsBeforeKeyframe--;*/
+}
+
+void ReplayExporter::writeCatoms2DMotion(Time date, bID bid, Time duration_us,
+                                         const Cell3DPosition& destination, Cell3DPosition& origin,
+                                         Catoms2D::RelativeDirection::Direction direction)
+
+{
+    
 }
 
 void ReplayExporter::writeConsoleTrace(Time date, bID bid, const string& trace) {
@@ -294,4 +332,18 @@ void ReplayExporter::writeConsoleTrace(Time date, bID bid, const string& trace) 
     }
     nbEventsBeforeKeyframe--;
 */
+}
+
+Time ReplayExporter::minDelayBeforeKeyframe()
+{
+    const u1 moduleType = BaseSimulator::getWorld()->getBlockType();
+    switch(moduleType)
+    {
+        case MODULE_TYPE_SLIDINGCUBE:
+            return 1002000;
+        case MODULE_TYPE_SMARTBLOCKS:
+            return 1002000;
+        default:
+            return 0;
+    }
 }

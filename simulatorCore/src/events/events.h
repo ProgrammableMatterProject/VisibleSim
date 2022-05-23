@@ -8,9 +8,8 @@
 #ifndef EVENTS_H_
 #define EVENTS_H_
 
-//class BuildingBlock;
 
-#include <inttypes.h>
+#include <cinttypes>
 #include <string>
 #include "../base/buildingBlock.h"
 #include "uniqueEventsId.h"

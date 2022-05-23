@@ -18,7 +18,14 @@ HexanodesGlBlock::HexanodesGlBlock(bID id):GlBlock(id), displayedValue(id) {
 }
 
 void HexanodesGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
+    static GLint lx,ly;
+#ifdef WIN32
+    static GLint idTextureDigits = loadTexture((string(ROOT_DIR) + "/simulatorCore/resources/textures/smartBlocksTextures/digits.tga").c_str(),lx,ly);
+#else
+    static GLint idTextureDigits = loadTexture("../../simulatorCore/resources/textures/smartBlocksTextures/digits.tga",lx,ly);
+#endif
     glPushMatrix();
+
 
     mat.glMultMatrix();
     if (isHighlighted) {
@@ -46,9 +53,8 @@ void HexanodesGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         GLfloat dx = 20.0/digits;
         GLfloat x,s,t;
         int n=displayedValue;
-        HexanodesWorld *wrld = (HexanodesWorld*)getWorld();
         enableTexture(true);
-        glBindTexture(GL_TEXTURE_2D,wrld->idTextureDigits);
+        glBindTexture(GL_TEXTURE_2D,idTextureDigits);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         GLfloat gray[]={0.2,0.2,0.2,1.0};

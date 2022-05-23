@@ -55,6 +55,7 @@ public :
     static float bgColor2[3];
     static unsigned int nbModules;
     static long unsigned int timestep;
+    static bool editMode;
 //	bool showLinks;
 
     static void init(int argc, char **argv);
@@ -66,6 +67,7 @@ public :
     static void setShadowsMode(bool b);
 private :
     static void passiveMotionFunc(int x,int y);
+    static void passiveMotionEditFunc(int x,int y);
     static void motionFunc(int x,int y);
     static void mouseFunc(int button,int state,int x,int y);
     static void keyboardFunc(unsigned char c, int x, int y);

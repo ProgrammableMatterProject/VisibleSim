@@ -14,7 +14,7 @@
 #include <utility>
 #include <vector>
 #include "hexanodesWorld.h"
-#include "../../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 #include "../../grid/lattice.h"
 
 using namespace std;
@@ -37,6 +37,9 @@ public:
     inline HHLattice::Direction getToConId() const {
         return (HHLattice::Direction )((fromConId+(direction==CW?5:1))%6);
     }
+    inline HHLattice::Direction getFinalOrientation(uint8_t nodeOrient) const {
+        return (HHLattice::Direction)((nodeOrient+(direction==CW?2:4))%6);
+    }
 };
 
 class HexanodesMotionEngine {
@@ -49,6 +52,6 @@ public:
     vector<HexanodesMotion*> getAllMotionsForModule(BuildingBlock *nb,const HHLattice*hl);
 };
 
-};
+}
 
 #endif // __HEXANODES_MOTION_ENGINE_H__

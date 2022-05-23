@@ -16,7 +16,7 @@
 #include "../../base/buildingBlock.h"
 #include "datomsBlockCode.h"
 #include "datomsGlBlock.h"
-#include "../../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 #include "../../utils/utils.h"
 
 using namespace BaseSimulator::utils;
@@ -195,8 +195,6 @@ public:
      */
     std::bitset<12> getLocalNeighborhoodState() const;
 
-
-    // MeldInterpreter
     /**
      * @copydoc BuildingBlock::addNeighbor
      */

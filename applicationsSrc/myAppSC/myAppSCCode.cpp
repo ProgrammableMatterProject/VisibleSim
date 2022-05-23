@@ -61,7 +61,7 @@ void MyAppSCCode::parseUserBlockElements(TiXmlElement *config) {
 void MyAppSCCode::onMotionEnd() {
     // complete with your code
     console << " End of motion to " << module->position << "\n";
-    /*if (!tryToMove()) {
+    if (!tryToMove()) {
         // search a neighbor in (x,y-1,z)
         Cell3DPosition prevPos(module->position[0], module->position[1] - 1, module->position[2]);
         auto p2p=findNeighborAt(prevPos);
@@ -69,7 +69,7 @@ void MyAppSCCode::onMotionEnd() {
             module->setColor(GREEN);
             sendMessage(new Message(ELECT_MSG_ID), p2p, 200000, 0);
         }
-    }*/
+    }
 }
 
 bool MyAppSCCode::tryToMove() {

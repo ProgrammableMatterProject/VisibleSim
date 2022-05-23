@@ -20,7 +20,6 @@
 using namespace std;
 
 namespace ObjLoader {
-
     int extraire(const char *src, char *dest, int size_dest) {
         int i = 0;
         while (size_dest-- && *src != ' ' && *src != 10 && *src != 13) {
@@ -31,7 +30,7 @@ namespace ObjLoader {
         return i;
     }
 
-#ifdef WIN32
+#ifdef WIN32_VS
     void __cdecl odprintf(const char *format, ...)
     {
     char    buf[4096], *p = buf;
@@ -58,33 +57,31 @@ namespace ObjLoader {
 /////////////////////////////////////////////////////////////////////////////
 // class ObjLoader
     ObjLoader::ObjLoader(const char *rep, const char *titre) {
-
         vector<Point3> tabVertex;
         vector<Point3> tabNormal;
         vector<Point2> tabTexture;
-        char txt[256];
+        string fullTitle;
         GLuint currentObjectNumber = 0;
 
-#ifdef WIN32
-        sprintf_s(txt,256,"%s\\%s",rep,titre);
-#else
-        sprintf(txt, "%s/%s", rep, titre);
+        fullTitle = string(rep) + "/" + titre;
+#ifdef DEBUG_GRAPHICS
+        OUTPUT << "Open " << fullTitle  << " file..."<< endl;
 #endif
 
-        ifstream fin(txt);
+        ifstream fin(fullTitle);
 
         if (!fin.is_open()) {
-            cerr << "File error: " << txt << endl;
+            cerr << "File error: " << fullTitle << endl;
             exit(EXIT_FAILURE);
         }
 
 #ifdef DEBUG_GRAPHICS
-        OUTPUT << "Open " << txt  << " file..."<< endl;
+        OUTPUT << "Open " << fullTitle  << " file..."<< endl;
 #endif
         mtls = nullptr;
 
         // chargement des points
-        char ligne[255], str_pt1[64], str_pt2[64], str_pt3[64], str_pt4[64];
+        char ligne[255], str_pt1[64], str_pt2[64], str_pt3[64], str_pt4[64], txt[256];
         Point2 p2;
         Point3 p3;
         ObjData *objCourant;
@@ -241,7 +238,7 @@ namespace ObjLoader {
                                         Mtl *ptrMtl = mtls->getMtlByName(str_pt1);
                                         if (objCourant->objMtl == nullptr) {
                                             objCourant->objMtl = ptrMtl;
-#ifdef WIN32
+#ifdef WIN32_VS
                                             sprintf_s(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->nom);
 #else
                                             sprintf(objCourant->nom, "%s_%s", objCourant->nomOriginal, ptrMtl->name);
@@ -264,7 +261,7 @@ namespace ObjLoader {
 #endif
                                             } else {
                                                 char nom2[128];
-#ifdef WIN32
+#ifdef WIN32_VS
                                                 sprintf_s(nom2,"%s_%s",nom,ptrMtl->nom);
 #else
                                                 sprintf(nom2, "%s_%s", nom, ptrMtl->name);
@@ -273,7 +270,7 @@ namespace ObjLoader {
                                                 objCourant->objectNumber = currentObjectNumber;
                                                 tabObj.push_back(objCourant);
                                                 objCourant->objMtl = ptrMtl;
-#ifdef WIN32
+#ifdef WIN32_VS
                                                 sprintf_s(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->nom);
 #else
                                                 sprintf(objCourant->nom, "%s_%s", objCourant->nomOriginal,
@@ -347,15 +344,15 @@ namespace ObjLoader {
         }
     }
 
-    void ObjLoader::setLightedColor(GLfloat *color) {
-        memcpy(ptrMtlLighted->Ka, color, 4 * sizeof(GLfloat));
-        memcpy(ptrMtlLighted->Kd, color, 4 * sizeof(GLfloat));
-        /*ptrMtlLighted->Ka[0] = color[0] * 0.3f;
-        ptrMtlLighted->Ka[1] = color[1] * 0.3f;
-        ptrMtlLighted->Ka[2] = color[2] * 0.3f;*/
+    void ObjLoader::setLightedColor(const GLfloat *color) {
+        ptrMtlLighted->Ka[0] = color[0]/255.0;
+        ptrMtlLighted->Ka[1] = color[1]/255.0;
+        ptrMtlLighted->Ka[2] = color[2]/255.0;
+        ptrMtlLighted->Ka[3] = color[3];
+        memcpy(ptrMtlLighted->Kd, ptrMtlLighted->Ka, 4 * sizeof(GLfloat));
     }
 
-    void ObjLoader::setLightedColor(GLubyte *color) {
+    void ObjLoader::setLightedColor(const GLubyte *color) {
         ptrMtlLighted->Ka[0] = GLfloat(color[0]) / 255.0;
         ptrMtlLighted->Ka[1] = GLfloat(color[1]) / 255.0;
         ptrMtlLighted->Ka[2] = GLfloat(color[2]) / 255.0;
@@ -390,7 +387,7 @@ namespace ObjLoader {
         pos2 = (int) str_ind.find_last_of('/');
         str[pos1] = 0;
 
-#ifdef WIN32
+#ifdef WIN32_VS
         if (sscanf_s(str,"%d",&vert)<=0) vert=0;
         str[pos2]=0;
         if (sscanf_s(str+pos1+1,"%d",&tex)<=0) tex=0;
@@ -417,7 +414,27 @@ namespace ObjLoader {
         }
     }
 
-/////////////////////////////////////////////////////////////////////////////
+    void ObjLoader::getBB(Vector3D &BBmin, Vector3D &BBmax) {
+        auto it=tabObj.begin();
+        if (it==tabObj.end()) return;
+        BBmin.set((*it)->BBmin.v[0],(*it)->BBmin.v[1],(*it)->BBmin.v[2]);
+        BBmax.set((*it)->BBmax.v[0],(*it)->BBmax.v[1],(*it)->BBmax.v[2]);
+        it++;
+        while (it!=tabObj.end()) {
+            BBmin.setMin((*it)->BBmin.v[0],(*it)->BBmin.v[1],(*it)->BBmin.v[2]);
+            BBmax.setMax((*it)->BBmax.v[0],(*it)->BBmax.v[1],(*it)->BBmax.v[2]);
+            it++;
+        }
+    }
+
+    bool ObjLoader::isInside(const Vector3D &pos) {
+        auto it=tabObj.begin();
+        while (it!=tabObj.end() && !(*it)->isInside(pos)) {
+            it++;
+        }
+        return it!=tabObj.end();
+    }
+///////////////////////////////////////////////////////////////
 // class ObjData
     ObjData::ObjData(const char *str) {
         objMtl = nullptr;
@@ -425,7 +442,9 @@ namespace ObjLoader {
         tabVertices = nullptr;
         tabIndices = nullptr;
         center = nullptr;
-#ifdef WIN32
+        BBmin.v[0]=1e6; BBmin.v[1]=1e6; BBmin.v[2]=1e6;
+        BBmax.v[0]=-1e6; BBmax.v[1]=-1e6; BBmax.v[2]=-1e6;
+#ifdef WIN32_VS
         strncpy_s(nomOriginal,str,64);
 #else
         strncpy(nomOriginal, str, 64);
@@ -433,6 +452,19 @@ namespace ObjLoader {
     }
 
     ObjData::~ObjData() {
+        auto pv = tabVertex.begin();
+        while (pv != tabVertex.end()) {
+            delete *pv;
+            pv++;
+        }
+        tabVertex.clear();
+        auto pi = tabFaces.begin();
+        while (pi != tabFaces.end()) {
+            delete *pi;
+            pi++;
+        }
+        tabFaces.clear();
+
         delete[] tabVertices;
         delete[] tabIndices;
         delete center;
@@ -566,6 +598,12 @@ namespace ObjLoader {
             p++;
             i++;
         }
+        if (s.v[0]<BBmin.v[0]) BBmin.v[0]=s.v[0];
+        if (s.v[1]<BBmin.v[1]) BBmin.v[1]=s.v[1];
+        if (s.v[2]<BBmin.v[2]) BBmin.v[2]=s.v[2];
+        if (s.v[0]>BBmax.v[0]) BBmax.v[0]=s.v[0];
+        if (s.v[1]>BBmax.v[1]) BBmax.v[1]=s.v[1];
+        if (s.v[2]>BBmax.v[2]) BBmax.v[2]=s.v[2];
         tabVertex.push_back(new Sommet(s));
         return i;
     }
@@ -576,7 +614,8 @@ namespace ObjLoader {
         vertexPosNrmTx *ptrV = tabVertices;
 
         center = new Point3(0, 0, 0);
-        vector<Sommet *>::const_iterator pv = tabVertex.begin();
+        //vector<Sommet *>::const_iterator pv = tabVertex.begin();
+        auto pv = tabVertex.begin();
         int n = 0;
         while (pv != tabVertex.end()) {
             ptrV->x = (*pv)->v[0];
@@ -608,19 +647,6 @@ namespace ObjLoader {
             pi++;
         }
 
-        pv = tabVertex.begin();
-        while (pv != tabVertex.end()) {
-            delete *pv;
-            pv++;
-        }
-        tabVertex.clear();
-        pi = tabFaces.begin();
-        while (pi != tabFaces.end()) {
-            delete *pi;
-            pi++;
-        }
-        tabFaces.clear();
-
         // prepare the VBO
         glGenBuffers(1, &vboId);
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
@@ -638,12 +664,57 @@ namespace ObjLoader {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVboId);
     }
 
+    bool ObjData::intersectFace(const FaceTri &tri, const Vector3D &pos, const Vector3D &dir) {
+        const float EPSILON = 0.0000001;
+        Vector3D vertex0 = tabVertex[tri.ind[0]]->toVector3D();
+        Vector3D vertex1 = tabVertex[tri.ind[1]]->toVector3D();
+        Vector3D vertex2 = tabVertex[tri.ind[2]]->toVector3D();
+        Vector3D edge1, edge2, h, s, q;
+        float a,f,u,v;
+        edge1 = vertex1 - vertex0;
+        edge2 = vertex2 - vertex0;
+        h = dir ^ edge2;
+        a = edge1 * h;
+        if (a > -EPSILON && a < EPSILON)
+            return false;    // Le rayon est parallèle au triangle.
+
+        f = 1.0f/a;
+        s = pos - vertex0;
+        u = f * (s * h);
+        if (u < 0.0 || u > 1.0) return false;
+        q = s ^ edge1;
+        v = f * (dir *q);
+        if (v < 0.0 || u + v > 1.0) return false;
+
+        // On calcule t pour savoir ou le point d'intersection se situe sur la ligne.
+        float t = f * (edge2 *q);
+        return (t > EPSILON);
+        /*if (t > EPSILON) // Intersection avec le rayon
+        {
+            outIntersectionPoint = rayOrigin + rayVector * t;
+            return true;
+        }
+        else // On a bien une intersection de droite, mais pas de rayon.
+            return false;*/
+    }
+
+    bool ObjData::isInside(const Vector3D &pos) {
+        // count the number of intersections between a ray and the borders
+        Vector3D direction(2,1,5);
+        direction.normer_interne();
+
+        int n=0;
+        for (auto &f:tabFaces) {
+            n+=intersectFace(*f,pos,direction);
+        }
+        return n%2==1;
+    }
 /////////////////////////////////////////////////////////////////////////////
 // class mtlLib
     MtlLib::MtlLib(const char *rep, const char *titre) {
         char txt[256];
         Mtl *currentMtl;
-#ifdef WIN32
+#ifdef WIN32_VS
         sprintf_s(txt,256,"%s\\%s",rep,titre);
 #else
         sprintf(txt, "%s/%s", rep, titre);
@@ -651,7 +722,7 @@ namespace ObjLoader {
         ifstream fin(txt);
         if (!fin.is_open()) {
             char erreur[1024];
-#ifdef WIN32
+#ifdef WIN32_VS
             sprintf_s(erreur,1024,"File error : %s",txt);
 #else
             sprintf(erreur, "File error : '%s'", txt);
@@ -678,7 +749,7 @@ namespace ObjLoader {
                         break;
                     case 'n' : { // le nom du mat�riau (newmtl)
                         currentMtl = new Mtl();
-#ifdef WIN32
+#ifdef WIN32_VS
                         int lng = (int)strlen(ligne);
                         currentMtl->nom = new char[lng];
                         strncpy_s(currentMtl->nom,lng,ligne+i+7,lng);
@@ -694,7 +765,7 @@ namespace ObjLoader {
                         break;
                     case 'K' :
                         if (ligne[i + 1] == 'a') { // Ka
-#ifdef WIN32
+#ifdef WIN32_VS
                             sscanf_s(ligne+i+2,"%f %f %f",&currentMtl->Ka[0],&currentMtl->Ka[1],&currentMtl->Ka[2]);
 #else
                             sscanf(ligne + i + 2, "%f %f %f", &currentMtl->Ka[0], &currentMtl->Ka[1],
@@ -703,7 +774,7 @@ namespace ObjLoader {
                             currentMtl->Ka[3] = 1.0;
                             //OUTPUT << "Ka :" << currentMtl->Ka.v[0] << "," << currentMtl->Ka.v[1] << "," << currentMtl->Ka.v[2] << endl;
                         } else if (ligne[i + 1] == 'd') { // Kd
-#ifdef WIN32
+#ifdef WIN32_VS
                             sscanf_s(ligne+i+2,"%f %f %f",&currentMtl->Kd[0],&currentMtl->Kd[1],&currentMtl->Kd[2]);
 #else
                             sscanf(ligne + i + 2, "%f %f %f", &currentMtl->Kd[0], &currentMtl->Kd[1],
@@ -712,7 +783,7 @@ namespace ObjLoader {
                             currentMtl->Kd[3] = 1.0;
                             //OUTPUT << "Kd :" << currentMtl->Kd.v[0] << "," << currentMtl->Kd.v[1] << "," << currentMtl->Kd.v[2] << endl;
                         } else if (ligne[i + 1] == 's') { // Ks
-#ifdef WIN32
+#ifdef WIN32_VS
                             sscanf_s(ligne+i+2,"%f %f %f",&currentMtl->Ks[0],&currentMtl->Ks[1],&currentMtl->Ks[2]);
 #else
                             sscanf(ligne + i + 2, "%f %f %f", &currentMtl->Ks[0], &currentMtl->Ks[1],
@@ -721,7 +792,7 @@ namespace ObjLoader {
                             currentMtl->Ks[3] = 1.0;
                             //OUTPUT << "Ks :" << currentMtl->Ks.v[0] << "," << currentMtl->Ks.v[1] << "," << currentMtl->Ks.v[2] << endl;
                         } else if (ligne[i + 1] == 'e') { // Ke
-#ifdef WIN32
+#ifdef WIN32_VS
                             sscanf_s(ligne+i+2,"%f %f %f",&currentMtl->Ke[0],&currentMtl->Ke[1],&currentMtl->Ke[2]);
 #else
                             sscanf(ligne + i + 2, "%f %f %f", &currentMtl->Ke[0], &currentMtl->Ke[1],
@@ -733,7 +804,7 @@ namespace ObjLoader {
                         break;
                     case 'N' :
                         if (ligne[i + 1] == 's') { // Ns
-#ifdef WIN32
+#ifdef WIN32_VS
                             sscanf_s(ligne+i+2,"%f",&currentMtl->Ns);
 #else
                             sscanf(ligne + i + 2, "%f", &currentMtl->Ns);
@@ -761,7 +832,7 @@ namespace ObjLoader {
                             currentMtl->Kd[2]=1.;*/
                             currentMtl->Kd[3] = 1.;
                             currentMtl->mapKd = new char[strlen(rep) + str.length() + 2 - pos];
-#ifdef WIN32
+#ifdef WIN32_VS
                             strncpy_s(currentMtl->mapKd,lng,ligne+pos+1,lng);
 #else
                             sprintf(currentMtl->mapKd, "%s/%s", rep, txt + pos + 1);
@@ -811,7 +882,7 @@ namespace ObjLoader {
         if (tabMtl.empty()) {
             Mtl *current = new Mtl();
             current->name = new char[20];
-#ifdef WIN32
+#ifdef WIN32_VS
             strncpy_s(current->name,20,"mtl_default_loader",20);
 #else
             strncpy(current->name, "mtl_default_loader", 20);
@@ -843,12 +914,12 @@ namespace ObjLoader {
         mapKd = nullptr;
         name = nullptr;
         glTexId = 0;
-    };
+    }
 
     Mtl::~Mtl() {
         delete[] name;
         delete[] mapKd;
-    };
+    }
 
     void Mtl::glBind() {
         glMaterialfv(GL_FRONT, GL_AMBIENT, Ka);
@@ -896,3 +967,4 @@ namespace ObjLoader {
     }
 
 }
+

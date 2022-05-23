@@ -177,7 +177,7 @@ class CSGColor : public CSGNode {
 private:
     Color color;
 public:
-    explicit CSGColor(const Vector3D& p_vec) { color.set(p_vec[0],p_vec[1],p_vec[2]); };
+    explicit CSGColor(const Vector3D& p_vec):color(p_vec) {};
     void toString() const override;
     bool isInside(const Vector3D &point, Color &color) const override;
     bool isInBorder(const Vector3D &p, Color &color, double border) const override;

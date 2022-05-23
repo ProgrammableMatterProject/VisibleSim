@@ -8,7 +8,7 @@
 #ifndef SCENARIO_H_
 #define SCENARIO_H_
 
-#include "Cell3DPosition.h"
+#include "math/Cell3DPosition.h"
 #include "base/world.h"
 #include "events/scheduler.h"
 

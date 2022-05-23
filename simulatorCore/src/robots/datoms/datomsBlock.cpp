@@ -161,9 +161,11 @@ bool DatomsBlock::getNeighborPos(uint8_t connectorID,Cell3DPosition &pos) const 
     const Vector3D bs = wrl->lattice->gridScale;
 
     realPos.set(tabConnectorPositions[connectorID],3,1);
-    realPos.pt[0] *= bs[0];
+    /*realPos.pt[0] *= bs[0];
     realPos.pt[1] *= bs[1];
-    realPos.pt[2] *= bs[2];
+    realPos.pt[2] *= bs[2];*/
+    realPos*=bs;
+    realPos.set(3,1.0); // to check
     realPos = ((DatomsGlBlock*)ptrGlBlock)->mat*realPos;
     if (realPos[2]<0) return false;
     pos = wrl->lattice->worldToGridPosition(realPos);
@@ -189,17 +191,18 @@ uint8_t DatomsBlock::getConnectorId(const Cell3DPosition& pos) const {
     realPos = m_1*realPos;
 
     const Vector3D bs = wrl->lattice->gridScale;
-    realPos.pt[0] /= bs[0];
+    /*realPos.pt[0] /= bs[0];
     realPos.pt[1] /= bs[1];
-    realPos.pt[2] /= bs[2];
+    realPos.pt[2] /= bs[2];*/
+    realPos/=bs;
 
     double x,y,z,d=1;
     int i=0;
 
     while (i<12 && d>0.1) {
-        x = tabConnectorPositions[i][0]-realPos.pt[0];
-        y = tabConnectorPositions[i][1]-realPos.pt[1];
-        z = tabConnectorPositions[i][2]-realPos.pt[2];
+        x = tabConnectorPositions[i][0]-realPos[0];
+        y = tabConnectorPositions[i][1]-realPos[1];
+        z = tabConnectorPositions[i][2]-realPos[2];
         d=x*x+y*y+z*z;
         i++;
     }

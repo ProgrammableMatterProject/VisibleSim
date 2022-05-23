@@ -21,12 +21,12 @@ DatomsMotionEngine::getAllDeformationsForModule(const DatomsBlock* m) {
 
     for (short i=0; i<12; i++) {
         P2PNetworkInterface *p2p = m->getInterface(i);
-        if (p2p->connectedInterface!=NULL) { // if connected
+        if (p2p!=nullptr && p2p->connectedInterface!=nullptr) { // if connected
             DatomsBlock *pivot=(DatomsBlock *)m->getInterface(i)->connectedInterface->hostBlock;
             vector<DatomsMotionRulesLink*>v;
             short j = pivot->getInterfaceId(m->getInterface(i)->connectedInterface);
 
-            //OUTPUT << "Interface #" << m->blockId << ":" << i << " / #" << pivot->blockId << ":" << j << endl;
+//            OUTPUT << "Interface #" << m->blockId << ":" << i << " / #" << pivot->blockId << ":" << j << endl;
 
             if (getMotionRules()->getValidMotionList(pivot,j,v)) { // list of theoretical motion
                 for (DatomsMotionRulesLink* validRule : v) {
@@ -34,7 +34,7 @@ DatomsMotionEngine::getAllDeformationsForModule(const DatomsBlock* m) {
 
                     Deformation d = validRule->getDeformations(m,pivot,blockingDatoms);
                     allDeformations.push_back(make_pair(validRule, d));
-                    //OUTPUT << validRule->getConFromID() << "=>" << validRule->getConToID() << endl << "-------------------------" << endl;
+//                    OUTPUT << validRule->getConFromID() << "=>" << validRule->getConToID() << "-------------------------" << endl;
                 }
             }
         }

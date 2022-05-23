@@ -71,7 +71,8 @@ public:
         { nbLivingEvents = livingEvents; nbLivingMessages = livingMessages; };
     //!< Updates the max events queue size counter if new size is greater than previous size
     inline void updateLargestEventsQueueSize(uint64_t newSize)
-        {  largestEventsQueueSize = largestEventsQueueSize < newSize ? newSize : largestEventsQueueSize; };
+        {  if (largestEventsQueueSize < newSize) largestEventsQueueSize = newSize;
+        };
     inline void setEndEventsQueueSize(uint64_t endSize)
         {  endEventsQueueSize = endSize; };
 

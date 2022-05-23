@@ -31,12 +31,6 @@ private:
     bool schedulerAutoStop = false;
     Time maximumDate = 0;
 
-
-    bool meldDebugger = false;
-    string programPath = "program.bb";
-    string vmPath = "";
-    int vmPort = 0;
-
     bool stats = false;
     bool fullScreen = false;
     bool terminalOnly = false;
@@ -67,10 +61,7 @@ public:
     int getRandomTopologyParameter() const { return topologyParameter; }
     bool getTerminalOnly() const { return terminalOnly; }
     int getSchedulerMode() const { return schedulerMode; }
-    bool getMeldDebugger() const { return meldDebugger; }
-    string getProgramPath() const { return programPath; }
-    string getVMPath() const { return vmPath; }
-    int getVMPort() const { return vmPort; }
+
     string getConfigFile() const { return configFile; }
     bool getStats() const { return stats; }
     bool getFullScreen() const { return fullScreen; }

@@ -17,29 +17,30 @@ void enableTexture(bool enable) {
     glUniform1iARB(locTextureEnable,enable);
 }
 
-GLcharARB *lectureCodeShader(const char* titre) {
-    GLint tailleFichier;
-  ifstream fin(titre);
-  if (!fin.is_open()) return NULL;
-  fin.seekg(0, ios_base::end);
-  tailleFichier = GLint(fin.tellg());
-  fin.close();
+string lectureCodeShader(const char* title) {
+    ifstream fin(title);
+    if (!fin.is_open()) return string("");
 
-  // Memory allocation
-  GLcharARB *code = new GLcharARB[tailleFichier+1];
+#ifdef DEBUG_GRAPHICS
+    fin.seekg(0, ifstream::end);
+    int tailleFichier = fin.tellg();
+    cout << title << " file size=" << tailleFichier << endl;
+    fin.seekg(0, ifstream::beg);
+#endif
+    // Memory allocation
+    string code,line;
+    while (!fin.eof()) {
+        getline(fin,line);
+        code+=line+'\n';
+    }
+    fin.close();
 
-  // Load shader file
-  fin.open(titre);
-  fin.read((char*)code, tailleFichier);
-  code[tailleFichier] = '\0';
-  fin.close();
-
-  return code;
+    return code;
 }
 
 GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
     GLhandleARB VShader,FShader;
-    GLcharARB* code;
+    string code;
     GLhandleARB prog;
 
 // create an Object Shader for the Vertex Program
@@ -49,11 +50,10 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
 // loading the Vertex Program source
     code = lectureCodeShader(titreVP);
 
-    if (!code) {
+    if (code.empty()) {
 #ifdef DEBUG_GRAPHICS
         ERRPUT << "error: " << titreVP << " not found."<< endl;
 #endif
-
         exit(-1);
     }
     glShaderSourceARB(VShader, 1, (const GLcharARB**) &code, NULL);
@@ -65,10 +65,9 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
 
     shaderCompilationStatus(VShader);
 
-    delete [] code;
 // loading the Fragment Program source
     code = lectureCodeShader(titreFP);
-    if (!code) {
+    if (code.empty()) {
 #ifdef DEBUG_GRAPHICS
         ERRPUT << "error: " << titreFP << " not found."<< endl;
         exit(-1);
@@ -82,8 +81,6 @@ GLhandleARB loadShader(const char *titreVP, const char *titreFP) {
     glCompileShaderARB(FShader);
 
     shaderCompilationStatus(FShader);
-
-    delete [] code;
 
 // Create the object program
     prog = glCreateProgramObjectARB();
@@ -110,7 +107,23 @@ void initShaders(bool activateShadows) {
     glShadeModel (GL_SMOOTH);					// Select Smooth Shading
     glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Set Perspective Calculations To Most Accurate
 
-
+#ifdef WIN32
+    if (activateShadows) {
+        string vertFile = ROOT_DIR;
+        vertFile+="/simulatorCore/resources/shaders/pointtexShadows.vert";
+        cout << vertFile << endl;
+        string fragFile = ROOT_DIR;
+        fragFile+="/simulatorCore/resources/shaders/pointtexShadows.frag";
+        shadersProgram = loadShader(vertFile.c_str(),fragFile.c_str());
+    } else {
+        string vertFile = ROOT_DIR;
+        vertFile+="/simulatorCore/resources/shaders/pointtex.vert";
+        cout << vertFile << endl;
+        string fragFile = ROOT_DIR;
+        fragFile+="/simulatorCore/resources/shaders/pointtex.frag";
+        shadersProgram = loadShader(vertFile.c_str(),fragFile.c_str());
+    }
+#else
     if (activateShadows) {
       shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtexShadows.vert",
                                   "../../simulatorCore/resources/shaders/pointtexShadows.frag");
@@ -118,7 +131,7 @@ void initShaders(bool activateShadows) {
       shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
                                   "../../simulatorCore/resources/shaders/pointtex.frag");
     }
-
+#endif
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
@@ -231,7 +244,7 @@ void shadowedRenderingStep3(Camera *camera) {
 
     glMultMatrixf(camera->ls.matP);
     glMultMatrixf(camera->ls.matMV);
-    glMultMatrixd(mat_1.m);
+    glMultMatrixf(mat_1.m);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

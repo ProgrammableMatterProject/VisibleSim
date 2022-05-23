@@ -9,6 +9,7 @@
 #include "catoms2DRotationEvents.h"
 #include "catoms2DWorld.h"
 #include "../../utils/utils.h"
+#include "../../replay/replayExporter.h"
 
 using namespace BaseSimulator::utils;
 
@@ -105,6 +106,9 @@ void Catoms2DRotationStartEvent::consume() {
     cerr << "----------" << endl;
 #endif
     scheduler->schedule(new Catoms2DRotationStepEvent(scheduler->now() + stepDuration, rb,pivot,angle,sens,remaining));
+
+   /* if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeCatoms2DMotion(getScheduler()->now(),rb->blockId,duration,);*/
 }
 
 const string Catoms2DRotationStartEvent::getEventName() {

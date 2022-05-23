@@ -26,7 +26,7 @@ typedef std::int64_t s8;
 typedef struct KeyframeBlock {
     int id;
     short x,y,z;
-    u1 rotation;
+    u2 rotation;
     u1 r,g,b;
     u2 displayedValue;
 } KeyFrameBlock;
@@ -36,6 +36,7 @@ typedef struct Keyframe {
     int id;
     u8 time;
     u8 position;
+    u8 eventPosition;
     int blockCount = 0;
 } KeyFrame;
 
@@ -66,6 +67,7 @@ const u1 MODULE_TYPE_NODE2D = (u1)5;
 const u1 MODULE_TYPE_OKTEEN = (u1)6;
 const u1 MODULE_TYPE_SLIDINGCUBE = (u1)7;
 const u1 MODULE_TYPE_SMARTBLOCKS = (u1)8;
+const u1 MODULE_TYPE_VCELLS = (u1)9;
 
 /* EVENT TYPES */
 const u1 EVENT_COLOR_UPDATE = (u1)0; // Message Length : 3*1 = 3 Bytes

@@ -11,6 +11,7 @@
 #include "../../gui/objLoader.h"
 #include "../../math/matrix44.h"
 #include "../../base/glBlock.h"
+#include "math/cell3DPosition.h"
 
 namespace Datoms {
 class DatomsGlBlock:public GlBlock {
@@ -23,6 +24,7 @@ public :
     virtual ~DatomsGlBlock() {};
 
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+    string getPopupInfo() override;
 };
 }
 #endif /* DATOMSGLBLOCK_H_ */

@@ -21,12 +21,9 @@ ConsoleStream& ConsoleStream::operator<<(const char* value ) {
     } else {
         stream << value;
     }
-
     if (ReplayExporter::isReplayEnabled())
         ReplayExporter::getInstance()->writeConsoleTrace(getScheduler()->now(),
                                                          blockId, value);
-
-
     return *this;
 }
 
@@ -34,4 +31,4 @@ ConsoleStream& ConsoleStream::operator<<(const char* value ) {
 void ConsoleStream::flush() {
     scheduler->trace(stream.str(),blockId);
     stream.str("");
-};
+}

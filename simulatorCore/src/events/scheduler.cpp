@@ -96,6 +96,8 @@ bool Scheduler::schedule(Event *ev) {
     eventsMapSize++;
 
     StatsCollector::getInstance().updateLargestEventsQueueSize(eventsMapSize);
+    // print stats for debug
+    //std::cout <<"stat\t" << (pev->getConcernedBlock()?pev->getConcernedBlock()->blockId:0) << "\t" << Scheduler::currentDate << "\t" << eventsMapSize << "\t" << pev->eventType <<std::endl;
 
     unlock();
 

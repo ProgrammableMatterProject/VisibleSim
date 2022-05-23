@@ -80,8 +80,6 @@ public:
      */
     virtual bool moveTo(const Cell3DPosition& dest) override;
 
-
-    // MeldInterpreter
     /**
      * @copydoc BuildingBlock::addNeighbor
      */

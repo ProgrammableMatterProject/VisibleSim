@@ -20,7 +20,7 @@ public :
     SmartBlocksGlBlock(bID id) : GlBlock(id), displayedValue(noDisplay) {};
     virtual ~SmartBlocksGlBlock() {};
 
-    /*	virtual string getPopupInfo();*/
+    string getPopupInfo() override;
     void setDisplayedValue(uint16_t n) { displayedValue=n; }
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
     virtual void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;

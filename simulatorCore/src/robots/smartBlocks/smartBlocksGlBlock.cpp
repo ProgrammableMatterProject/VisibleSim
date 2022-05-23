@@ -1,12 +1,14 @@
 #include "smartBlocksGlBlock.h"
 
-static const char digitTexturePath[]="../../simulatorCore/resources/textures/smartBlocksTextures/digits.tga";
-
 namespace SmartBlocks {
 
 void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     static GLint lx,ly;
-    static GLint idTextureDigits = loadTexture(digitTexturePath,lx,ly);
+#ifdef WIN32
+    static GLint idTextureDigits = loadTexture((string(ROOT_DIR) + "/simulatorCore/resources/textures/smartBlocksTextures/digits.tga").c_str(),lx,ly);
+#else
+    static GLint idTextureDigits = loadTexture("../../simulatorCore/resources/textures/smartBlocksTextures/digits.tga",lx,ly);
+#endif
 
     glPushMatrix();
     glTranslatef(position[0]+12.5,position[1]+12.5,position[2]);
@@ -24,7 +26,7 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     ptrObj->glDraw();
 
     if (displayedValue<noDisplay) {
-        int digits = 1;
+        int digits = 2;
         if (displayedValue>9) digits=2;
         if (displayedValue>99) digits=3;
         GLfloat dx = 20.0/digits;
@@ -52,8 +54,13 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         }
         glDisable(GL_BLEND);
     }
-
     glPopMatrix();
+}
+
+string SmartBlocksGlBlock::getPopupInfo() {
+    string out=to_string(blockId) + " - (" + to_string((int)(position[0]/25.0f)) +
+            "," + to_string((int)(position[1]/25.0f)) + ")\n";
+    return out;
 }
 
 void SmartBlocksGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int n) {
@@ -69,6 +76,5 @@ void SmartBlocksGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n)
     ptrObj->glDrawIdByMaterial(n);
     glPopMatrix();
 }
-
 
 }

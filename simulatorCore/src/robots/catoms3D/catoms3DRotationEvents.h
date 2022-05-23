@@ -77,6 +77,7 @@ public:
     void exportMatrix(const Matrix& m);
     [[nodiscard]] inline Vector3D getAxe1() const { return axe1; };
     [[nodiscard]] inline Vector3D getAxe2() const { return axe2; };
+    uint8_t getCode(){return (angle1 == 45 ? 4 : 3);}
 protected :
     short exportMatrixCount = 0;
     bool firstRotation;
@@ -91,7 +92,7 @@ protected :
     friend std::ostream& operator<<(std::ostream &stream, Catoms3DRotation const& rots);
 };
 std::ostream& operator<<(std::ostream &stream, Catoms3DRotation const& rots);
-};
+}
 
 //===========================================================================================================
 //

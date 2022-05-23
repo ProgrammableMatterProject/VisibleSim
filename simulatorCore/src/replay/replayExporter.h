@@ -12,14 +12,20 @@
 
 #include <fstream>
 #include <map>
+#include <queue>
+#include <list>
 #include "../utils/tDefs.h"
 #include "../utils/color.h"
 #include "../utils/exceptions.h"
 #include "../base/buildingBlock.h"
-#include "../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 #include "replayTags.h"
+#include "replayMotionEvent.h"
+#include "../robots/catoms2D/catoms2DBlock.h"
+
 using namespace std;
 using namespace ReplayTags;
+class ReplayMotionEvent;
 /**
  * Configuration exporter that outputs all relevant simulation data to an export file
  *  for simulation reconstruction using a player.
@@ -37,11 +43,13 @@ class ReplayExporter {
      * Saves a key frame every <N> MICROSECONDS (us)
      * @attention In MICROSECONDS
      */
-    static inline const Time keyFrameSaveFrequency = 50000; //@TODO: BP changer à un compte d'évènements
+    static inline Time MinDurationBetweenKeyframes = 0;
     Time lastKeyFrameExportDate = 0; //!< Date of the last key frame export
     const int NumberOfEventsBetweenKeyFrames=256;
-    int nbEventsBeforeKeyframe;
 
+    int nbEventsBeforeKeyframe;
+    queue<ReplayMotionEvent*> motionQueue;
+    list<bID> movingBlocks;
     ofstream* exportFile = nullptr;     //!< binary export file
     ofstream* debugFile = nullptr;      //!< corresponding clear text export file for debugging
 
@@ -56,7 +64,7 @@ class ReplayExporter {
      * Keeps track of all key frames that have been written to the files.
      *  matching their position in the file to their date in the simulation
      */
-    std::map<Time, streampos> keyFramesIndex;
+    std::map<Time, pair<streampos,streampos>> keyFramesIndex;
 
     /**
      * @return a filename string with format replay_<appName>_<confName>_timestamp.vs
@@ -167,9 +175,13 @@ public:
     void writePositionUpdate(Time date, bID bid, const Cell3DPosition& pos,uint8_t orientation);
     void writeAddModule(Time date, bID bid);
     void writeRemoveModule(Time date, bID bid);
-    void writeMotion(Time date, bID bid, Time duration_us, const Cell3DPosition& destination);
+    void writeMotion(Time date, bID bid, Time duration_us, const Cell3DPosition& destination,Cell3DPosition& origin);
     void writeConsoleTrace(Time date, bID bid, const string& trace);
-    void writeCatoms3DMotion(Time date, bID bid, Time duration_us, u4 fixedBlockId, u1 type, Vector3D axe1, Vector3D axe2);
+    void writeCatoms3DMotion(Time date, bID bid, Time duration_us,Cell3DPosition& destination, short finalOrientation,
+                             Cell3DPosition& origin, short originOrientation, u4 fixedBlockId, u1 type, Vector3D axe1, Vector3D axe2);
+    void writeCatoms2DMotion(Time date, bID bid, Time duration_us,
+                                             const Cell3DPosition& destination, Cell3DPosition& origin,
+                                             Catoms2D::RelativeDirection::Direction direction);
     /**
      * Write the date of end of simulation at the end of the export file
      *
@@ -193,4 +205,8 @@ public:
      * @return true if simulation data is being exported for this instance of the simulation
      */
     static bool isReplayEnabled();
+
+    Time minDelayBeforeKeyframe();
+
+    static void setMinDelayBeoreKeyframe(u8 delay){MinDurationBetweenKeyframes = delay;}
 };

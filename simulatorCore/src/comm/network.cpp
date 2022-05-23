@@ -86,7 +86,7 @@ P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 #endif
 #endif
     hostBlock = b;
-    connectedInterface = nullptr;
+    connectedInterface = NULL;
     availabilityDate = 0;
     globalId = nextId;
     nextId++;
@@ -94,7 +94,7 @@ P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 }
 
 void P2PNetworkInterface::setDataRate(Rate *r) {
-  assert(r != nullptr);
+  assert(r != NULL);
   delete dataRate;
   dataRate = r;
 }
@@ -115,11 +115,11 @@ void P2PNetworkInterface::send(Message *m) {
 bool P2PNetworkInterface::addToOutgoingBuffer(MessagePtr msg) {
     stringstream info;
 
-    if (connectedInterface != nullptr) {
+    if (connectedInterface != NULL) {
         outgoingQueue.push_back(msg);
         BaseSimulator::utils::StatsIndividual::incOutgoingMessageQueueSize(hostBlock->stats);
         if (availabilityDate < BaseSimulator::getScheduler()->now()) availabilityDate = BaseSimulator::getScheduler()->now();
-        if (outgoingQueue.size() == 1 && messageBeingTransmitted == nullptr) { //TODO
+        if (outgoingQueue.size() == 1 && messageBeingTransmitted == NULL) { //TODO
             BaseSimulator::getScheduler()->schedule(new NetworkInterfaceStartTransmittingEvent(availabilityDate,this));
         }
         return(true);
@@ -174,10 +174,10 @@ void P2PNetworkInterface::send() {
 }
 
 void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
-    // test ajouté par Ben, gestion du cas : connect(nullptr)
+    // test ajouté par Ben, gestion du cas : connect(NULL)
     if (ni) { // Connection
         if (ni->connectedInterface != this) {
-            if (ni->connectedInterface != nullptr) {
+            if (ni->connectedInterface != NULL) {
                 OUTPUT << "ERROR : connecting to an already connected P2PNetwork interface" << endl;
                 ni->connectedInterface->hostBlock->removeNeighbor(ni->connectedInterface);
                 ni->hostBlock->removeNeighbor(ni);
@@ -186,11 +186,11 @@ void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
             hostBlock->addNeighbor(ni->connectedInterface, ni->hostBlock);
             ni->hostBlock->addNeighbor(ni, ni->connectedInterface->hostBlock);
         }
-    } else if (connectedInterface != nullptr) {
+    } else if (connectedInterface != NULL) {
         // disconnect this interface and the remote one
         hostBlock->removeNeighbor(this);
         connectedInterface->hostBlock->removeNeighbor(connectedInterface);
-        connectedInterface->connectedInterface = nullptr;
+        connectedInterface->connectedInterface = NULL;
     }
     connectedInterface = ni;
 }
@@ -202,5 +202,5 @@ Time P2PNetworkInterface::getTransmissionDuration(MessagePtr &m) {
 }
 
 bool P2PNetworkInterface::isConnected() const {
-  return connectedInterface != nullptr;
+  return connectedInterface != NULL;
 }

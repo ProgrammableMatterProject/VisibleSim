@@ -27,9 +27,7 @@ void Camera::updatePositionFromAngles() {
     double OCamx = distance*cos(phi)*cos(theta),
            OCamy = distance*cos(phi)*sin(theta),
            OCamz = distance*sin(phi);
-    position.pt[0] = target.pt[0] + OCamx;
-    position.pt[1] = target.pt[1] + OCamy;
-    position.pt[2] = target.pt[2] + OCamz;
+    position.set(target[0] + OCamx,target[1] + OCamy,target[2] + OCamz);
     Xcam.set(OCamy,-OCamx,0);
     Xcam.normer_interne();
     Ycam.set(-OCamx*OCamz,-OCamy*OCamz,OCamx*OCamx+OCamy*OCamy);

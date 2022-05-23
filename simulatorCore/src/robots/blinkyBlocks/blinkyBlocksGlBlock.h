@@ -15,10 +15,13 @@ namespace BlinkyBlocks {
 class BlinkyBlocksGlBlock:public GlBlock {
 protected :
 public :
+    uint8_t rotCoef;
     BlinkyBlocksGlBlock(bID id) : GlBlock(id) {};
     virtual ~BlinkyBlocksGlBlock() {};
 
     virtual void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+    void setRotation(short rotCode) { rotCoef=rotCode; };
+    virtual string getInfo() override;
 };
 }
 #endif /* BLINKYBLOCKSGLBLOCK_H_ */

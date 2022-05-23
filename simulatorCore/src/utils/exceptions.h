@@ -5,7 +5,7 @@
 
 #include "utils.h"
 #include "color.h"
-#include "../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 
 namespace BaseSimulator {
 

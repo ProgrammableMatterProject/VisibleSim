@@ -119,10 +119,7 @@ Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Time t, Catoms3DBlock *m,
     rot.conFromP = fromConP;
     rot.conToP = toCon;
 
-    if (ReplayExporter::isReplayEnabled())
-        ReplayExporter::getInstance()->writeCatoms3DMotion(getScheduler()->now(), rot.mobile->blockId,
-                Catoms3DRotation::ANIMATION_DELAY*Catoms3DRotation::nbRotationSteps/2,
-                rot.pivot->blockId,(faceReq==RotationLinkType::HexaFace?3:4),rot.getAxe1(), rot.getAxe2());
+
 }
 
 Catoms3DRotationStartEvent::Catoms3DRotationStartEvent(Catoms3DRotationStartEvent *ev) : BlockEvent(ev) {
@@ -172,6 +169,22 @@ void Catoms3DRotationStartEvent::consume() {
     scheduler->schedule(
         new Catoms3DRotationStepEvent(scheduler->now()+Catoms3DRotation::getNextRotationEventDelay(),
                                 catom, rot));
+
+    //TODO ORIENTATION
+    Cell3DPosition nil;
+    short  originOrientation;
+
+    rot.getFinalPositionAndOrientation(position,orientation);
+    //rot.getFinalPositionAndOrientation(nil,finalOrientation);
+    originOrientation = catom->getOrientationFromMatrix(catom->getGlBlock()->mat);
+    //cout<<"Begin orientation : "<<originOrientation<<endl;
+    //cout<<"End orientation : "<<orientation<<endl;
+
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writeCatoms3DMotion(getScheduler()->now(), rot.mobile->blockId,
+                                                           Catoms3DRotation::ANIMATION_DELAY, position,orientation,catom->position,originOrientation,
+                                                           rot.pivot->blockId,rot.getCode(),rot.getAxe1(), rot.getAxe2());
+    //(link->getMRLT() == HexaFace?3:4)
 }
 
 const string Catoms3DRotationStartEvent::getEventName() {
@@ -333,7 +346,7 @@ void Catoms3DRotation::init(const Matrix& m) {
 
 
 void Catoms3DRotation::exportMatrix(const Matrix& m) {
-// #define ROTATION_STEP_MATRIX_EXPORT
+//#define ROTATION_STEP_MATRIX_EXPORT
 #ifdef ROTATION_STEP_MATRIX_EXPORT
     Catoms3DBlock* block = static_cast<Catoms3DBlock*>
         (BaseSimulator::getWorld()->getBlockById(catomId));
@@ -424,6 +437,20 @@ Catoms3DRotation::Catoms3DRotation(const Catoms3DBlock *mobile, const Catoms3DBl
 
     A1D1 = (0.5+0.5*rprim)*AB+shift*V;
     A1C1 = (0.5-0.5*rprim)*AB+shift*V;
+
+    /*cout<<"-----DEBUGG----- "<<endl;
+    cout<<"Mobile id :"<<mobile->blockId<<endl;
+    cout<<"Fixed id :"<<fixe->blockId<<endl;
+    cout<<"Radius : "<<rprim<<endl;
+    cout<<"axe 1 : "<<axe1<<endl;
+    cout<<"axe 2 : "<<axe2<<endl;
+    cout<<"Angle : "<<ang1<<endl;
+    cout<<"---axis---"<<endl;
+    cout<<"A0C0 : "<<A0C0<<endl;
+    cout<<"A0D0 : "<<A0D0<<endl;
+    cout<<"A1C1 : "<<A1C1<<endl;
+    cout<<"A1D1 : "<<A1D1<<endl;
+    cout<<"-----End DEBUGG----- "<<endl;*/
 }
 /*
 bool Catoms3DRotation::setMatrixAt(Time t) {
@@ -448,7 +475,9 @@ bool Catoms3DRotation::nextStep(Matrix &m) {
         matTAD.setTranslation(A0D0);
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = initialMatrix * m;
-//        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
+
+
+        //OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
 
         if (step==Catoms3DRotation::nbRotationSteps)
             firstRotation=false;
@@ -465,8 +494,14 @@ bool Catoms3DRotation::nextStep(Matrix &m) {
         matTAD.setTranslation(A1D1);
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = finalMatrix * m;
-//        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
+        //OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
     }
+    /*cout<<"################## STEP #######################"<<endl;
+    OUTPUT << initialMatrix.m[0] << " " << initialMatrix.m[1] << " " << initialMatrix.m[2] << " " << initialMatrix.m[3] << "\n "
+           << initialMatrix.m[4] << " " << initialMatrix.m[5] << " " << initialMatrix.m[6] << " " << initialMatrix.m[7] << "\n "
+           << initialMatrix.m[8] << " " << initialMatrix.m[9] << " " << initialMatrix.m[10] << " " << initialMatrix.m[11] << "\n "
+           << initialMatrix.m[12] << " " << initialMatrix.m[13] << " " << initialMatrix.m[14] << " " << initialMatrix.m[15] << endl;
+    cout<<"################## END STEP 1#######################"<<endl;*/
     exportMatrix(m);
     return step == 0;
 }

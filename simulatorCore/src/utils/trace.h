@@ -15,8 +15,13 @@
 
 #include "tDefs.h"
 
+
 #define LOGFILE
 
+#ifdef REPLAY
+    #define OUTPUT cout
+    #define ERRPUT cerr
+#else
 #ifdef LOGFILE
     extern std::ofstream log_file;
     #define OUTPUT log_file
@@ -24,6 +29,7 @@
 #else
     #define OUTPUT cout
     #define ERRPUT cerr
+#endif
 #endif
 
 using namespace std;

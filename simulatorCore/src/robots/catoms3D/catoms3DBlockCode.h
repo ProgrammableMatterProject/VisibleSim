@@ -30,7 +30,6 @@ public:
 
     virtual void processLocalEvent(EventPtr pev) override;
 
-    void addDebugAttributes(Scheduler* scheduler) override;
 };
 }
 

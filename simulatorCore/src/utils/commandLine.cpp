@@ -11,10 +11,6 @@ void CommandLine::help() const {
     cerr << TermColor::BWhite << "VisibleSim options:" << TermColor::Reset << endl;
     cerr << "\t " << TermColor::BMagenta << "-f " << TermColor::Reset
          << "\t\t\tFull screen mode" << endl;
-    cerr << "\t " << TermColor::BMagenta << "-p <program>" << TermColor::Reset
-         << "\t\tPath to a Meld program file (Meld only)" << endl;
-    cerr << "\t " << TermColor::BMagenta << "-D " << TermColor::Reset
-         << "\t\t\tDebugger mode (Meld only)" << endl;
     cerr << "\t " << TermColor::BMagenta << "-c <config>" << TermColor::Reset
          << "\t\tPath to the XML configuration file" << endl;
     cerr << "\t " << TermColor::BMagenta << "-r " << TermColor::Reset
@@ -29,8 +25,6 @@ void CommandLine::help() const {
          << "\tScheduler mode:\t(Default) Stop simulation when event list is empty\n"
          << "\t\t " << TermColor::BMagenta << "(maxDate)" << TermColor::Reset << "\tin microseconds, the scheduler will stop when the event list is empty, or when the maximum date has been reached\n"
          << "\t\t " << TermColor::BMagenta << "inf" << TermColor::Reset << "\t\tthe simulation will have an infinite duration and can only be stopped when the user presses the 'Q' key" << endl;
-    cerr << "\t " << TermColor::BMagenta << "-m <VMpath>:<VMport>" << TermColor::Reset
-         << "\tPath to the MeldVM directory and port" << endl;
     cerr << "\t " << TermColor::BMagenta << "-k " << TermColor::Reset
          << "\t\t\tModule type for generic Block Code execution. Options: {BB, RB, SB, C2D, C3D, MR}" << endl;
     cerr << "\t " << TermColor::BMagenta << "-g " << TermColor::Reset
@@ -42,7 +36,11 @@ void CommandLine::help() const {
     cerr << "\t " << TermColor::BMagenta << "-a <seed>" << TermColor::Reset
          << "\t\tSet simulation seed" << endl;
     cerr << "\t " << TermColor::BMagenta << "-e " << TermColor::Reset << "\t\t\tExport configuration when simulation finishes" << endl;
+    cerr << "\t " << TermColor::BMagenta << "--replay <export> " << TermColor::Reset << "\t\t\tEnables replay export <export> is the name of the export file" << endl;
+    cerr << "\t " << TermColor::BMagenta << "--replay-min-delay <delay>" << TermColor::Reset << "\t\t\tin microsecond, minimum delay between two export keyframes (advanced)" << endl;
+    cerr << "\t " << TermColor::BMagenta << "--debug-replay" << TermColor::Reset << "\t\t\tCreate a text file for the export replay file (used for debugging purpose)" << endl;
     cerr << "\t " << TermColor::BMagenta << "-h " << TermColor::Reset << "\t\t\tHelp" << endl;
+
 }
 
 CommandLine::CommandLine(int argc, char *argv[], BlockCodeBuilder bcb) {
@@ -84,40 +82,29 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                         ReplayExporter::enableDebugging();
                         cout << "--debug-replay option enabled" << endl;
                     }
+                    else if (varg == string("replay-min-delay"))
+                    {
+                        if (argc > 1 and argv[1] and argv[1][0] != '-') { // filename supplied
+                            u8 duration;
+                            try {
+                                sscanf(argv[1],"%lu",&duration);
+
+                                ReplayExporter::setMinDelayBeoreKeyframe(duration);
+                                argc--;
+                                argv++;
+                            } catch(std::logic_error&) {
+                                stringstream err;
+                                err << "replay min delay could not be parsed."
+                                    << " Found min delay = " << argv[1] << endl;
+                                throw CLIParsingError(err.str());
+                            }
+                            cerr << "--replay-min-delay option provided with value: "
+                                 << duration << endl;
+                        }
+
+                    }
                     break;
                 }
-
-                case 'p':   {
-                    //if (programPath != "")
-                    //   help();
-
-                    if (argc < 1) {
-                        throw CLIParsingError("No meld program provided after -p");
-                    }
-
-                    programPath = argv[1];
-                    argc--;
-                    argv++;
-                } break;
-
-                case 'm': {             // MeldVM Path and Port
-                    stringstream vm(argv[1]); // <vmPath:vmPort>
-                    cerr << &argv[1] << endl;
-                    string portStr;
-                    std::getline(vm, vmPath, ':');
-                    std::getline(vm, portStr, ':');
-                    try {
-                        vmPort = stoi(portStr);
-                    } catch(std::invalid_argument&) {
-                        throw CLIParsingError("MeldVM port must be a number!");
-                    }
-                    argc--;
-                    argv++;
-                } break;
-
-                case 'D': {
-                    meldDebugger = true;
-                } break;
 
                 case 'r': {
                     if (schedulerMode == CMD_LINE_UNDEFINED)
@@ -187,14 +174,10 @@ void CommandLine::read(int argc, char *argv[], BlockCodeBuilder bcb) {
                     GlutContext::setShadowsMode(false);
                 } break;
 
-                case 'k' : {
-                    // Already handled by meld blockCode, nothing to do
-                    argc--;
-                    argv++;
-                } break;
-
                 case 'l' : {
+#ifdef LOGFILE
                     log_file.open("simulation.log");
+#endif
                 } break;
 
                 case 'g' : {

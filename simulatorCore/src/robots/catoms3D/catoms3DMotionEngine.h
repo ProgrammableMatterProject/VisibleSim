@@ -167,6 +167,6 @@ public:
                              RotationLinkType faceReq = RotationLinkType::Any);
 };
 
-};
+}
 
 #endif // __CATOMS3D_MOTION_ENGINE_H__

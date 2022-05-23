@@ -4,6 +4,7 @@
  * \date 28/01/2018
  * \author Benoît Piranda
  */
+#include <iostream>
 #include "datomsGlBlock.h"
 
 namespace Datoms {
@@ -23,9 +24,23 @@ void DatomsGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
         ptrObj->setLightedColor(color);
     }
     glDisable(GL_CULL_FACE);
-    if (visible) ptrObj->glDraw(currentModel);
+    //if (color[3] > 0) ptrObj->glDraw(currentModel);
+    glRotatef(45.0f,0.0f,0.0f,1.0f);
+    glRotatef(45.0f,0.0f,1.0f,0.0f);
+    ptrObj->glDraw(1);
     glEnable(GL_CULL_FACE);
     glPopMatrix();
 }
+
+string DatomsGlBlock::getPopupInfo() {
+    string out;
+    Cell3DPosition res;
+    res.pt[2] = round((2 * position[2]) / (M_SQRT2 * 10) - 0.5);
+    res.pt[1] = round(position[1] / 10 - 0.5 - res.pt[2] / 2.0);
+    res.pt[0] = round(position[0] / 10 - 0.5 - res.pt[2] / 2.0);
+    out = to_string(blockId) + " - (" + to_string(res[0]) + "," + to_string(res[1]) + "," + to_string(res[2]) + ")";
+    return out;
+}
+
 
 }

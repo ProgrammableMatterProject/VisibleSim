@@ -37,7 +37,7 @@
 #include <cfloat>
 
 #define TIXML_USE_STL	1
-#include "cell3DPosition.h"
+#include "../math/cell3DPosition.h"
 #include "../deps/TinyXML/tinyxml.h"
 #include "../utils/color.h"
 #include "../utils/exceptions.h"
@@ -287,70 +287,6 @@ public:
     virtual void unhighlight() const override;
 
 };  // class TargetCSG
-
-//<! @brief A target modeling a surface by a point cloud
-class TargetSurface : public Target {
-    // Stores the points of the point cloud
-    vector<Vector3D> pcl; //!< the point cloud
-    vector<float> coeffs; //!< the coefficients of the interpolating polynom
-    string method;
-    int S_NUMPOINTS;
-    int S_ORDER;
-    int S_NUMKNOTS;
-    int T_NUMPOINTS;
-    int T_ORDER;
-    int T_NUMKNOTS;
-    vector<float> sknots;
-    vector<float> tknots;
-    vector<vector<vector<float>>> ctlpoints;
-    float *float_sknots,*float_tknots,***float_ctlpoints;
-    GLUnurbsObj *theNurb;
-protected:
-    /**
-     * @brief Add a cell to the target cells container
-     * @param pos position of the target cell
-     * @param c color of the cell. If none provided, defaults to (0,0,0,0)
-     */
-    void addTargetCell(const Cell3DPosition &pos, const Color c = Color());
-
-    float calculateNurbs(float u, float v, int coord) const;
-
-    float dist(float x1, float y1, float x2, float y2) const;
-
-    //!< @copydoc Target::print
-    virtual void print(ostream& where) const override;
-public:
-    /**
-     * @copydoc Target::Target
-     * XML Description Format:
-     * <target format="surface">
-     *   <method meth="type">
-     *     <cell position="x,y,z" color="r,g,b"/>
-     *     ...
-     *   </method>
-     * </target>
-     */
-    TargetSurface(TiXmlNode *targetNode);
-    virtual ~TargetSurface() {};
-
-    //!< @copydoc Target::getTargetColor
-    //!< a cell is in the target grid if it is at the same level or under as the surface described for a couple (x,y)
-    virtual bool isInTarget(const Cell3DPosition &pos) const override;
-    //!< @copydoc Target::getTargetColor
-    //!< @throws InvalidPositionException is cell at position pos is not part of the target
-    virtual const Color getTargetColor(const Cell3DPosition &pos) const override;
-
-    void highlight() const override {
-        throw NotImplementedException("TargetSurface::highlight");
-    }
-
-    void unhighlight() const override {
-        throw NotImplementedException("TargetSurface::unhighlight");
-    }
-
-    virtual void glDraw() override;
-};  // class TargetSurface
-
 
 } // namespace BaseSimulator
 

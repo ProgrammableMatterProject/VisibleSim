@@ -1,6 +1,6 @@
 #include "catoms3DGlBlock.h"
 #include "catoms3DBlock.h"
-#include "catoms3DWorld.h"
+//#include "catoms3DWorld.h"
 
 namespace Catoms3D {
 
@@ -8,7 +8,7 @@ void Catoms3DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     glPushMatrix();
     mat.glMultMatrix();
     if (isHighlighted) {
-        GLfloat n = 0.5+1.5*(1.0-(glutGet(GLUT_ELAPSED_TIME)%1000)/1000.0);
+        GLfloat n = 1.0+1.5*(1.0-(glutGet(GLUT_ELAPSED_TIME)%1000)/1000.0);
         GLfloat c[4];
         c[0]=color[0]*n;
         c[1]=color[1]*n;
@@ -39,13 +39,31 @@ void Catoms3DGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
 }
 
 void Catoms3DGlBlock::fireSelectedTrigger() { 
-    Lattice *lattice = World::getWorld()->lattice;
+    /*Lattice *lattice = World::getWorld()->lattice;
     const Cell3DPosition& bbPos = lattice->worldToGridPosition(getPosition());
     Catoms3DBlock* catom = static_cast<Catoms3DBlock*>(lattice->getBlock(bbPos));
  
     // custom user debug procedure
-    if (catom and catom->blockCode) catom->blockCode->onBlockSelected();
+    if (catom and catom->blockCode) catom->blockCode->onBlockSelected();*/
+}
+
+string Catoms3DGlBlock::getInfo() {
+        ostringstream out;
+        out << blockId << endl;
+        out << fixed;
+        out.precision(1);
+        int z = (int)((position[2]-3)/7.07);
+        //out << "pp=(" << position[0] << ","<< position[1] << ","<< position[2] << ")  ";
+        out << "Pos=(" << (int)((position[0]-5.0*(z%2==1))/10) << "," << (int)((position[1]-5.0*(z%2==1))/10) << "," <<  z << ") ";
+        out << "Col=(" << (int)(color[0]) << "," << (int)(color[1]) << "," << (int)(color[2]) << ")";
+        return out.str();
+}
+
+/*string Catoms3DGlBlock::getPopupInfo() {
+    string str="(" + to_string(int((mat[3]-5)/10)) + "," + to_string(int((mat[7]-5)/10)) + "," + to_string(int((mat[11]-3.5355)/7.07107)) + ")";
+    return str;
+}*/
+
 }
 
 
-}

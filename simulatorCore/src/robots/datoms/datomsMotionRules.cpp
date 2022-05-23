@@ -239,7 +239,7 @@ vector<pair<Cell3DPosition,Vector3D>> DatomsMotionRulesLink::getBlockingCellsLis
 
     Vector3D Vm,Vcomp;
 
-    for (const BlockingCell& bc:tabBlockingCellDirections) {
+    for (const BlockingCell bc:tabBlockingCellDirections) {
         Vm = bc.relPos;
         Vm.setPoint(true);
         Vm = pivot->getGlBlock()->mat*Vm;
@@ -260,7 +260,7 @@ vector<pair<DatomsBlock*,PistonId>> DatomsMotionRulesLink::getBlockingDatoms(con
     //OUTPUT << "getBlockingModulesList " << endl;
     Vector3D Vm,Vcomp;
 
-    for (const BlockingCell& bc:tabBlockingCellDirections) {
+    for (const BlockingCell bc:tabBlockingCellDirections) {
         Vm = bc.relPos;
         Vm.setPoint(true);
         Vm = pivot->getGlBlock()->mat*Vm;
