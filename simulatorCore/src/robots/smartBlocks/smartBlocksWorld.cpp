@@ -26,15 +26,23 @@ namespace SmartBlocks {
     cout << TermColor::LifecycleColor << "SmartBlocksWorld constructor" << TermColor::Reset << endl;
     idTextureFloor=0;
     if (GlutContext::GUIisEnabled) {
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
-                                            "smartBlockSimple.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
-                                                      "smartBlockPicking.obj");
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
-                                             "repere25.obj");
+        string directory;
+#ifdef WIN32
+        directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/smartBlocksTextures";
+#else
+        directory = "../../simulatorCore/resources/textures/smartBlocksTextures";
+#endif
+        objBlock = new ObjLoader::ObjLoader(directory.c_str(),"smartBlockSimple.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader(directory.c_str(),"smartBlockPicking.obj");
+#ifdef WIN32
+        directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/latticeTextures";
+#else
+        directory = "../../simulatorCore/resources/textures/latticeTextures";
+#endif
+        objRepere = new ObjLoader::ObjLoader(directory.c_str(),"repere25.obj");
     }
 
-    lattice = new SLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+    lattice = new SLattice(gridSize, gridScale.isZero() ? defaultBlockSize : gridScale);
 }
 
 SmartBlocksWorld::~SmartBlocksWorld() {
@@ -48,7 +56,7 @@ void SmartBlocksWorld::deleteWorld() {
 
 void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
                                 const Cell3DPosition &pos, const Color &col,
-                                short orientation, bool master) {
+                                uint8_t orient) {
     if (blockId > maxBlockId)
         maxBlockId = blockId;
     else if (blockId == 0)

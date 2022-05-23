@@ -46,14 +46,19 @@ void Catoms2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
                                   int argc, char *argv[]) {
     world = new Catoms2DWorld(gridSize, gridScale, argc,argv);
 
+#ifdef WIN32
+    string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/latticeTextures";
+#else
+    string directory = "../../simulatorCore/resources/textures/latticeTextures";
+#endif
     if (GlutContext::GUIisEnabled)
-        world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
+        world->loadTextures(directory);
 
     World::setWorld(world);
 }
 
 void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                                  const Cell3DPosition &pos, const Color &color, bool master) {
+                                  const Cell3DPosition &pos, const Color &color, uint8_t orient) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
     //  here, using the blockElt TiXmlElement.
@@ -61,7 +66,7 @@ void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCode
     // @todo: parse angle orientation
 
     // Finally, add block to the world
-    ((Catoms2DWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
+    ((Catoms2DWorld*)world)->addBlock(blockId, bcb, pos, color, 0);
     world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 

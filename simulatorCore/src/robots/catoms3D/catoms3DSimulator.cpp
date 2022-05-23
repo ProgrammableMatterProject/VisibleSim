@@ -39,6 +39,7 @@ void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder
                                         bool useSkewedFCCLattice) {
     simulator = new Catoms3DSimulator(argc, argv, bcb);
     ((Catoms3DSimulator*)simulator)->useSkewedFCCLattice = useSkewedFCCLattice;
+    cout << "createSimulator:" << int(((Catoms3DSimulator*)simulator)->useSkewedFCCLattice) << endl;
     simulator->parseConfiguration(argc, argv);
     simulator->startSimulation();
 }
@@ -46,31 +47,30 @@ void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder
 void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                                   int argc, char *argv[]) {
     world = new Catoms3DWorld(gridSize, gridScale, argc, argv);
-
+#ifdef WIN32
+    string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/latticeTextures";
+#else
+    string directory = "../../simulatorCore/resources/textures/latticeTextures";
+#endif
     if (GlutContext::GUIisEnabled)
-        world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
+        world->loadTextures(directory);
 
     World::setWorld(world);
 }
 
 void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId,
                                   BlockCodeBuilder bcb, const Cell3DPosition &pos,
-                                  const Color &color, bool master) {
+                                  const Color &color, uint8_t orient) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
     //  here, using the blockElt TiXmlElement.
-    // set the orientation
-    int orientation = 0;
-    const char *attr = blockElt->Attribute("orientation");
-    if (attr) {
-        orientation = atoi(attr);
-#ifdef DEBUG_WORLD_LOAD
-        OUTPUT << "orientation : " << orientation << endl;
-#endif
+    if (orient>23) {
+        uniform_int_distribution<short> distribution(0,23);
+        orient= distribution(generator);
     }
 
     // Finally, add block to the world
-    ((Catoms3DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    ((Catoms3DWorld*)world)->addBlock(blockId, bcb, pos, color, orient);
     world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 

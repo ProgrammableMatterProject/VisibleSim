@@ -16,11 +16,16 @@ namespace SlidingCubes {
     class SlidingCubesGlBlock:public GlBlock {
     protected :
     public :
+        Matrix mat{};
+
         SlidingCubesGlBlock(bID id) : GlBlock(id) {};
         virtual ~SlidingCubesGlBlock() {};
 
-        //string getPopupInfo() override;
+        string getInfo() override;
+        string getPopupInfo() override;
         void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+        void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;
+        void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) override;
     };
 }
 #endif /* SLIDINGCUBESGLBLOCK_H_ */

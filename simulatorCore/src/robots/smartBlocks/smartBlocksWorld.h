@@ -49,7 +49,7 @@ public:
 
     virtual void addBlock(bID blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
                           const Cell3DPosition &pos, const Color &col,
-                          short orientation = 0, bool master = false) override;
+                          uint8_t orient = 0) override;
 
     void linkBlock(const Cell3DPosition &pos) override;
     void loadTextures(const string &str) override;

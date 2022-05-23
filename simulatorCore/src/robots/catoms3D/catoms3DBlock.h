@@ -13,7 +13,7 @@
 
 #include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
-#include "../../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 #include "../../utils/utils.h"
 #include "catoms3DBlockCode.h"
 #include "catoms3DGlBlock.h"
@@ -55,8 +55,7 @@ enum RotationLinkType { HexaFace, OctaFace, Any, None }; //!< Kind of face to be
 */
 class Catoms3DBlock : public BaseSimulator::BuildingBlock {
 public :
-    // uint8_t orientationCode; //!< number of the connector that is along the x axis.
-    int distanceToBorder; // for printing optimisation
+    // for printing optimisation
     const Catoms3DBlock *pivot; //!< if currently rotating, pivot a pointer to its motion pivot
 public:
     /**
@@ -154,9 +153,9 @@ public:
     static Matrix getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,uint8_t code);
     /**
        @brief Set the catom in the grid according to a cell position and an orientation code
-       @param pos: position of the cell constaining the catom
+       @param pos: position of the cell containing the catom
        @param code: orientation code (number of the connector aligned with x axis)*/
-    void setPositionAndOrientation(const Cell3DPosition &pos,uint8_t code);
+    void setPositionAndOrientation(const Cell3DPosition &pos,uint8_t code) override;
 
     /**
      * @param otherOriCode Some other catom's orientation code
@@ -204,7 +203,6 @@ public:
      */
     std::bitset<12> getLocalNeighborhoodState() const;
 
-    // MeldInterpreter
     /**
      * @copydoc BuildingBlock::addNeighbor
      */

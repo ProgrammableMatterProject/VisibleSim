@@ -14,7 +14,7 @@
 #include "../../gui/openglViewer.h"
 #include "../../base/world.h"
 #include "../../math/vector3D.h"
-#include "../../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 #include "../../gui/objLoader.h"
 #include "../../utils/trace.h"
 #include "datomsBlock.h"
@@ -62,7 +62,7 @@ public:
 
 
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation, bool master) override;
+                          uint8_t orient) override;
     inline DatomsMotionRules *getMotionRules() { return motionRules; };
 
     /**

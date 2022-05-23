@@ -16,6 +16,12 @@ using namespace BaseSimulator::utils;
 
 namespace Datoms {
 
+#ifdef WIN32
+    string textureDirectory = string(ROOT_DIR) + "/simulatorCore/resources/textures/";
+#else
+    string textureDirectory = "../../simulatorCore/resources/textures/";
+#endif
+
 void DatomsSimulator::help() {
     cerr << "VisibleSim:" << endl;
     cerr << "Datoms" << endl;
@@ -42,23 +48,23 @@ void DatomsSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &
     world = new DatomsWorld(gridSize, gridScale, argc, argv);
 
     if (GlutContext::GUIisEnabled)
-        world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
+        world->loadTextures(textureDirectory+"/latticeTextures");
 
     World::setWorld(world);
 }
 
 void DatomsSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                                  const Cell3DPosition &pos, const Color &color, bool master) {
+                                  const Cell3DPosition &pos, const Color &color, uint8_t orient) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
     //  here, using the blockElt TiXmlElement.
 
     // set the orientation
-    short orientation = 0;
+    short rotCode = 0;
     const char *attr = blockElt->Attribute("orientation");
     if (attr) {
-        orientation = atoi(attr);
-        OUTPUT << "orientation: " << orientation << endl;
+        rotCode = atoi(attr);
+        OUTPUT << "orientation: " << rotCode << endl;
     }
 
     // set the compressed piston
@@ -66,12 +72,13 @@ void DatomsSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBu
     attr = blockElt->Attribute("piston");
     if (attr) {
         string str = attr;
-      if (str=="2345") piston = Piston2345;
+        if (str=="2345") piston = Piston2345;
     }
     OUTPUT << "piston: " << piston << endl;
+    rotCode+=piston*64;
 
     // Finally, add block to the world
-    ((DatomsWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    ((DatomsWorld*)world)->addBlock(blockId, bcb, pos, color, rotCode);
     world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 

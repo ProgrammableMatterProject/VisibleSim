@@ -32,6 +32,10 @@ public:
 
     P2PNetworkInterface *getInterfaceDestId(int id) const;
     int getDirection(P2PNetworkInterface*) const override;
+    Cell3DPosition getRelativePosition(short i) const;
+    Cell3DPosition getRelativePosition(P2PNetworkInterface *port) const;
+    bool getNeighborPos(uint8_t connectorId,Cell3DPosition &pos) const override;
+    P2PNetworkInterface *getInterfaceToNeighborPos(const Cell3DPosition &pos);
 
     /* schedule the appropriate event for this action */
     /* void tap(Time date); Now a generic event in buildingBlock.cpp */
@@ -43,7 +47,7 @@ public:
     void stopBlock(Time date, State s);
     void pauseClock(Time delay, Time start);
 
-
+    void setPositionAndOrientation(const Cell3DPosition &p, uint8_t orient) override { setPosition(p); };
     /**
      * @copydoc BuildingBlock::canMoveTo
      */
@@ -53,6 +57,7 @@ public:
      * @copydoc BuildingBlock::moveTo
      */
     bool moveTo(const Cell3DPosition& dest) override;
+
 };
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);

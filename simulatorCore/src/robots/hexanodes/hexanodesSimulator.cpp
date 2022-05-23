@@ -21,6 +21,11 @@ using namespace BaseSimulator::utils;
 
 namespace Hexanodes {
 
+#ifdef WIN32
+    string textureDirectory = string(ROOT_DIR) + "/simulatorCore/resources/textures/";
+#else
+    string textureDirectory = "../../simulatorCore/resources/textures/";
+#endif
 void HexanodesSimulator::help() {
     cerr << "VisibleSim:" << endl;
     cerr << "Hexanodes" << endl;
@@ -47,17 +52,17 @@ void HexanodesSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilde
 }
 
 void HexanodesSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-                      int argc, char *argv[]) {
+                                   int argc, char *argv[]) {
     world = new HexanodesWorld(gridSize, gridScale, argc, argv);
 
     if (GlutContext::GUIisEnabled)
-        world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
+        world->loadTextures(textureDirectory+"/latticeTextures");
 
     World::setWorld(world);
 }
 
 void HexanodesSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                                  const Cell3DPosition &pos, const Color &color, bool master) {
+                                  const Cell3DPosition &pos, const Color &color, uint8_t orient) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
     //  here, using the blockElt TiXmlElement.
@@ -73,7 +78,7 @@ void HexanodesSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCod
     }
 
     // Finally, add block to the world
-    ((HexanodesWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    ((HexanodesWorld*)world)->addBlock(blockId, bcb, pos, color, orientation);
     world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 

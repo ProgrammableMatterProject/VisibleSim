@@ -17,7 +17,7 @@
 #include "../../gui/openglViewer.h"
 #include "../../base/world.h"
 #include "../../math/vector3D.h"
-#include "../../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 #include "hexanodesBlock.h"
 #include "../../gui/objLoader.h"
 #include "../../utils/trace.h"
@@ -63,7 +63,7 @@ public:
     }
 
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation, bool master) override;
+                          uint8_t orient) override;
 
     GLuint idTextureWall, idTextureDigits;
 
@@ -79,8 +79,12 @@ public:
     void glDrawId() override;
     void glDrawIdByMaterial() override;
 
-    using World::updateGlData; // Fix hidden virtual func compiler warnings when using clang++
-    void updateGlData(BuildingBlock*blc, const Matrix &mat);
+    void updateGlData(BuildingBlock *bb) override;
+    void updateGlData(HexanodesBlock*blc,const Color &color);
+    void updateGlData(HexanodesBlock*blc, bool visible);
+    void updateGlData(HexanodesBlock*blc, const Cell3DPosition &position);
+    void updateGlData(HexanodesBlock*blc, const Vector3D &position);
+    void updateGlData(HexanodesBlock*blc, const Matrix &mat);
     void setSelectedFace(int n) override;
     void exportConfiguration() override;
 

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 #include <sys/types.h>
 #include <csignal>
 
@@ -25,20 +25,27 @@ using namespace std;
 using namespace BaseSimulator::utils;
 
 namespace Catoms2D {
-
+#ifdef WIN32
+    string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/catoms2DTextures";
+#else
+    string directory = "../../simulatorCore/resources/textures/catoms2DTextures";
+#endif
 Catoms2DWorld::Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                              int argc, char *argv[]):World(argc, argv) {
     OUTPUT << TermColor::LifecycleColor << "Catoms2DWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms2DTextures",
-                                            "catom2D.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms2DTextures",
-                                                      "catom2Dpicking.obj");
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
+        objBlock = new ObjLoader::ObjLoader(directory.c_str(),"catom2D.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader(directory.c_str(),"catom2Dpicking.obj");
+#ifdef WIN32
+        directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/latticeTextures";
+#else
+        directory = "../../simulatorCore/resources/textures/latticeTextures";
+#endif
+        objRepere = new ObjLoader::ObjLoader(directory.c_str(),"repere25.obj");
     }
 
-    lattice = new HLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+    lattice = new HLattice(gridSize, gridScale.isZero() ? defaultBlockSize : gridScale);
 }
 
 Catoms2DWorld::~Catoms2DWorld() {
@@ -53,7 +60,7 @@ void Catoms2DWorld::deleteWorld() {
 }
 void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
                              const Cell3DPosition &pos, const Color &col,
-                             short orientation, bool master) {
+                             uint8_t orient) {
     if (blockId > maxBlockId)
         maxBlockId = blockId;
     else if (blockId == 0)
@@ -73,7 +80,6 @@ void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
         ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     catom2D->setPosition(pos);
     catom2D->setColor(col);
-    catom2D->isMaster=master;
 
     // cerr << "ADDING BLOCK #" << blockId << " pos:" << pos << " color:" << col << endl;
 

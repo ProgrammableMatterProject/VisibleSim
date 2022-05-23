@@ -49,7 +49,7 @@ public:
     void setDisplayedValue(uint16_t n);
     void disableDisplay() { setDisplayedValue(SmartBlocksGlBlock::noDisplay); }
 
-
+    void setPositionAndOrientation(const Cell3DPosition &p, uint8_t orient) { setPosition(p); };
     /**
      * @param dest
      * @return true if the module can move to position dest
@@ -81,6 +81,7 @@ public:
      * @param dbStream output binary stream
      */
     void serialize_cleartext(std::ofstream &dbStream) override;
+
 };
 
 }

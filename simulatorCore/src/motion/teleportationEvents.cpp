@@ -12,6 +12,7 @@
 #include "../base/world.h"
 //#include "../robots/catoms3D/catoms3DWorld.h"
 #include "../utils/utils.h"
+#include "../replay/replayExporter.h"
 
 using namespace BaseSimulator::utils;
 
@@ -26,15 +27,26 @@ namespace BaseSimulator {
 //
 //===========================================================================================================
 
-TeleportationStartEvent::TeleportationStartEvent(Time t,
-                                                 BuildingBlock *block,
-                                                 const Cell3DPosition &fpos): BlockEvent(t,block) {
-    EVENT_CONSTRUCTOR_INFO();
-    eventType = EVENT_TELEPORTATION_START;
-    finalPosition = fpos;
-}
+    TeleportationStartEvent::TeleportationStartEvent(Time t,
+                                                     BuildingBlock *block,
+                                                     const Cell3DPosition &fpos): BlockEvent(t,block) {
+        EVENT_CONSTRUCTOR_INFO();
+        eventType = EVENT_TELEPORTATION_START;
+        finalPosition = fpos;
+        finalOrientation = 0;
+    }
 
-TeleportationStartEvent::TeleportationStartEvent(TeleportationStartEvent *ev) : BlockEvent(ev) {
+    TeleportationStartEvent::TeleportationStartEvent(Time t,
+                                                     BuildingBlock *block,
+                                                     const Cell3DPosition &fpos,
+                                                     uint8_t orient): BlockEvent(t,block) {
+        EVENT_CONSTRUCTOR_INFO();
+        eventType = EVENT_TELEPORTATION_START;
+        finalPosition = fpos;
+        finalOrientation = orient;
+    }
+
+    TeleportationStartEvent::TeleportationStartEvent(TeleportationStartEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
 }
 
@@ -52,7 +64,7 @@ void TeleportationStartEvent::consume() {
     if (getWorld()->lattice->isInGrid(finalPosition)) {
         bb->blockCode->console << " starting Teleportation to " << finalPosition
                                << " at " << t << "\n";
-        scheduler->schedule(new TeleportationStopEvent(t, bb, finalPosition));
+        scheduler->schedule(new TeleportationStopEvent(t, bb, finalPosition,finalOrientation));
     } else {
         OUTPUT << "ERROR: trying to teleport module to a position outside of lattice"
                << endl;
@@ -69,10 +81,11 @@ const string TeleportationStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-TeleportationStopEvent::TeleportationStopEvent(Time t, BuildingBlock *block,const Cell3DPosition &fpos): BlockEvent(t,block) {
+TeleportationStopEvent::TeleportationStopEvent(Time t, BuildingBlock *block,const Cell3DPosition &fpos,uint8_t orient): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_TELEPORTATION_STOP;
     finalPosition = fpos;
+    finalOrientation = orient;
 }
 
 TeleportationStopEvent::~TeleportationStopEvent() {
@@ -84,7 +97,10 @@ void TeleportationStopEvent::consume() {
 
     BuildingBlock *bb = concernedBlock;
     World *wrld = getWorld();
-    bb->setPosition(finalPosition);
+    bb->setPositionAndOrientation(finalPosition,finalOrientation);
+    if (ReplayExporter::isReplayEnabled())
+        ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
+                                                           bb->blockId, bb->position, bb->orientationCode);
     wrld->updateGlData(bb,bb->position);
 
 #ifdef COLOR_MOTION_DEBUG

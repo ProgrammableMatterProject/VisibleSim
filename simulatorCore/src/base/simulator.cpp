@@ -11,12 +11,10 @@
 #include <climits>
 #include <unordered_set>
 
-#include "../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 #include "../utils/trace.h"
 #include "../utils/utils.h"
 #include "../utils/global.h"
-#include "../meld/meldInterpretVM.h"
-#include "../meld/meldInterpretScheduler.h"
 #include "../events/cppScheduler.h"
 #include "../gui/openglViewer.h"
 #include "../grid/target.h"
@@ -32,7 +30,6 @@ Simulator* simulator = nullptr;
 
 Simulator* Simulator::simulator = nullptr;
 
-Simulator::Type	Simulator::type = CPP; // CPP code by default
 bool Simulator::regrTesting = false; // No regression testing by default
 
 Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv, _bcb) {
@@ -109,26 +106,7 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
     int sl = cmdLine.getSchedulerLength();
     int sm = cmdLine.getSchedulerMode();
 
-    // Create a scheduler of the same type as target BlockCode
-    switch(getType()) {
-        case MELDINTERPRET:
-            MeldInterpret::MeldInterpretScheduler::createScheduler();
-            break;
-        case MELDPROCESS:
-#ifdef MELDPROCESSVM
-            MeldProcess::MeldProcessScheduler::createScheduler();
-#else
-            cerr << "error: MeldProcess not compiled in this version. "
-                 << "Please enable MELDPROCESS in simulatorCore/src/Makefile to enable it, and try again"
-                 << endl;
-            exit(EXIT_FAILURE);
-#endif
-            break;
-        case CPP:
-            CPPScheduler::createScheduler();
-            break;
-    }
-
+    CPPScheduler::createScheduler();
     scheduler = getScheduler();
 
     // Set the scheduler execution mode on start, if enabled
@@ -137,9 +115,12 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
             cerr << "error: Realtime mode cannot be used when in terminal mode" << endl;
             exit(EXIT_FAILURE);
         }
+        if(GlutContext::GUIisEnabled)
+        {
+            scheduler->setSchedulerMode(sm);
+            scheduler->setAutoStart(true);
+        }
 
-        scheduler->setSchedulerMode(sm);
-        scheduler->setAutoStart(true);
     }
 
     if (!GlutContext::GUIisEnabled) {
@@ -158,9 +139,6 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 
 void Simulator::parseConfiguration(int argc, char*argv[]) {
     try {
-        // Identify the type of the simulation (CPP / Meld Process / MeldInterpret)
-        readSimulationType(argc, argv);
-
         // Configure the simulation world
         parseWorld(argc, argv);
         initializeIDPool();
@@ -170,6 +148,7 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 
         // Parse and configure the remaining items
         parseBlockList();
+        parseLinks();
         parseCameraAndSpotlight();
         parseObstacles();
         parseTarget();
@@ -313,44 +292,34 @@ bID Simulator::countNumberOfModules() {
     // cout << "count" << endl;
     // Count modules from blockBox elements
     for(TiXmlNode *child = xmlBlockListNode->FirstChild("blockBox"); child; child = child->NextSibling("blockBox")) {
-        Vector3D boxOrigin(0,0,0);
+        Cell3DPosition boxOrigin(0,0,0);
         element = child->ToElement();
         attr = element->Attribute("boxOrigin");
         if (attr) {
             cout << "origin" << endl;
             string str(attr);
             int pos1 = str.find_first_of(','),
-  pos2 = str.find_last_of(',');
-            boxOrigin.pt[0] = stof(str.substr(0,pos1));
-            boxOrigin.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
-            boxOrigin.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
+            pos2 = str.find_last_of(',');
+            boxOrigin.pt[0] = max(0,stoi(str.substr(0,pos1)));
+            boxOrigin.pt[1] = max(0,stoi(str.substr(pos1+1,pos2-pos1-1)));
+            boxOrigin.pt[2] = max(0,stoi(str.substr(pos2+1,str.length()-pos1-1)));
         }
-        Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
-                         world->lattice->gridSize[1]*world->lattice->gridScale[1],
-                         world->lattice->gridSize[2]*world->lattice->gridScale[2]);
+        Cell3DPosition boxDest(world->lattice->gridSize[0]-1,
+                         world->lattice->gridSize[1]-1,
+                         world->lattice->gridSize[2]-1);
         attr = element->Attribute("boxSize");
         if (attr) {
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            boxDest.pt[0] = boxOrigin.pt[0] + stof(str.substr(0,pos1));
-            boxDest.pt[1] = boxOrigin.pt[1] + stof(str.substr(pos1+1,pos2-pos1-1));
-            boxDest.pt[2] = boxOrigin.pt[2] + stof(str.substr(pos2+1,str.length()-pos1-1));
+            boxDest.pt[0] = min(world->lattice->gridSize[0]-1,boxOrigin.pt[0] + stoi(str.substr(0,pos1)));
+            boxDest.pt[1] = min(world->lattice->gridSize[1]-1,boxOrigin.pt[1] + stoi(str.substr(pos1+1,pos2-pos1-1)));
+            boxDest.pt[2] = min(world->lattice->gridSize[2]-1,boxOrigin.pt[2] + stoi(str.substr(pos2+1,str.length()-pos1-1)));
             cout << "boxDest" << endl;
         }
-        Vector3D pos;
-        Cell3DPosition position;
-        for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
-            for (short iy=0; iy<world->lattice->gridSize[1]; iy++) {
-                for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
-                    position.set(ix,iy,iz);
-                    pos = world->lattice->gridToWorldPosition(position);
-                    if (pos.isInBox(boxOrigin,boxDest)) {
-                        moduleCount++;
-                    }
-                }
-            }
-        }
+
+        moduleCount=(boxDest[0]-boxOrigin[0])*(boxDest[1]-boxOrigin[1])*(boxDest[2]-boxOrigin[2]);
+
     }
     // cout << "count=" << moduleCount << endl;
 
@@ -429,30 +398,8 @@ void Simulator::initializeIDPool() {
             break;
     } // switch
 
-    // cerr << "{";
-    // for (bID id : IDPool)
-    //  cerr << id << ", ";
-    // cerr << "}" << endl;
 }
 
-void Simulator::readSimulationType(int argc, char*argv[]) {
-    if(getType() == MELDINTERPRET) {
-        string programPath = cmdLine.getProgramPath();
-        bool debugging = cmdLine.getMeldDebugger();
-
-        if (!file_exists(programPath)) {
-            cerr << "error: no Meld program was provided, or default file \"./program.bb\" does not exist"
-                 << endl;
-            exit(1);
-        }
-        OUTPUT << "Loading " << programPath << " with MeldInterpretVM" << endl;
-        MeldInterpret::MeldInterpretVM::setConfiguration(programPath, debugging);
-        if(debugging){
-            //Don't know what to do yet
-            cerr << "warning: MeldInterpreter debugging not implemented yet" << endl;
-        }
-    }
-}
 
 void Simulator::parseWorld(int argc, char*argv[]) {
     TiXmlNode *xmlVisualNode = xmlDoc->FirstChild("visuals");
@@ -511,7 +458,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
     }
     /* reading the xml file */
     xmlWorldNode = xmlDoc->FirstChild("world");
-    Lattice::Separator *ptrSeparator= nullptr;
+
     if (xmlWorldNode) {
         TiXmlElement* worldElement = xmlWorldNode->ToElement();
         const char *attr= worldElement->Attribute("gridSize");
@@ -547,22 +494,6 @@ void Simulator::parseWorld(int argc, char*argv[]) {
             cerr << "warning [DEPRECATED]: place windowSize in visual tag!" << endl;
         }
 
-        attr = worldElement->Attribute("separatorPlane");
-        if (attr) {
-            string str=attr;
-            int pos1 = str.find_first_of(','),
-                pos2 = str.find_first_of(',',pos1+1);
-            float a = stof(str.substr(0,pos1));
-            float b = stof(str.substr(pos1+1,pos2-pos1-1));
-            pos1=pos2;
-            pos2 = str.find_first_of(',',pos1+1);
-            float c = stof(str.substr(pos1+1,pos2-pos1-1));
-            float d = stof(str.substr(pos2+1,str.length()-pos1-1));
-
-            cerr << "separator: a=" << a << "\tb=" << b << "\tc=" << c << "\td=" << d << endl;
-            ptrSeparator = new Lattice::Separator(a,b,c,d);
-        }
-
         attr=worldElement->Attribute("maxSimulationTime");
         if (attr) {
             string str=attr;
@@ -584,20 +515,6 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 //         // Get Blocksize
 //         float blockSize[3] = {0.0,0.0,0.0};
         xmlBlockListNode = xmlWorldNode->FirstChild("blockList");
-//         // if (xmlBlockListNode) {
-//             TiXmlElement *blockListElement = xmlBlockListNode->ToElement();
-//             attr = blockListElement->Attribute("blockSize");
-//             if (attr) {
-//                 string str(attr);
-//                 int pos1 = str.find_first_of(','),
-//                     pos2 = str.find_last_of(',');
-//                 blockSize[0] = atof(str.substr(0,pos1).c_str());
-//                 blockSize[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-//                 blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-// #ifdef DEBUG_CONF_PARSING
-//                 OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
-// #endif
-//             }
         if (not xmlBlockListNode)  {
             stringstream error;
             error << "No blockList element in XML configuration file" << "\n";
@@ -608,9 +525,6 @@ void Simulator::parseWorld(int argc, char*argv[]) {
         loadWorld(Cell3DPosition(lx,ly,lz),
                   Vector3D(0, 0, 0), // Always use default blocksize
                   argc, argv);
-        if (ptrSeparator) {
-            getWorld()->lattice->addSeparator(ptrSeparator);
-        }
     } else {
         stringstream error;
         error << "No world in XML configuration file" << "\n";
@@ -643,10 +557,8 @@ void Simulator::parseCameraAndSpotlight() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                Vector3D target;
-                target.pt[0] = stof(str.substr(0,pos1));
-                target.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
-                target.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
+                Vector3D target(stof(str.substr(0,pos1)),stof(str.substr(pos1+1,pos2-pos1-1)),
+                           stof(str.substr(pos2+1,str.length()-pos1-1)));
                 world->getCamera()->setTarget(target);
             }
 
@@ -696,9 +608,9 @@ void Simulator::parseCameraAndSpotlight() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                target.pt[0] = stof(str.substr(0,pos1));
-                target.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
-                target.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
+                target.set(stof(str.substr(0,pos1)),
+                           stof(str.substr(pos1+1,pos2-pos1-1)),
+                           stof(str.substr(pos2+1,str.length()-pos1-1)));
             }
 
             attr=lightElement->Attribute("directionSpherical");
@@ -742,31 +654,37 @@ void Simulator::parseBlockList() {
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            defaultColor.rgba[0] = stof(str.substr(0,pos1))/255.0;
-            defaultColor.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
-            defaultColor.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
+            defaultColor.set(stoi(str.substr(0,pos1)),
+                             stoi(str.substr(pos1+1,pos2-pos1-1)),
+                             stoi(str.substr(pos2+1,str.length()-pos1-1)));
 #ifdef DEBUG_CONF_PARSING
             OUTPUT << "new default color :" << defaultColor << endl;
 #endif
         }
-
-        /* Reading a catoms */
+        uint8_t defaultOrientation = 0;
+        attr= element->Attribute("orientation");
+        if (attr) {
+            defaultOrientation = stoi(attr);
+#ifdef DEBUG_CONF_PARSING
+            OUTPUT << "new default orientation :" << defaultOrientation << endl;
+#endif
+        }
+        /* Reading a block */
         TiXmlNode *block = xmlBlockListNode->FirstChild("block");
         Cell3DPosition position;
         Color color;
-        bool master;
+        uint8_t orient=defaultOrientation;
         while (block) {
             element = block->ToElement();
             color=defaultColor;
-            master=false;
             attr = element->Attribute("color");
             if (attr) {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.set(stof(str.substr(0,pos1))/255.0,
-                          stof(str.substr(pos1+1,pos2-pos1-1))/255.0,
-                          stof(str.substr(pos2+1,str.length()-pos1-1))/255.0);
+                color.set(stoi(str.substr(0,pos1)),
+                          stoi(str.substr(pos1+1,pos2-pos1-1)),
+                          stoi(str.substr(pos2+1,str.length()-pos1-1)));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new color :" << defaultColor << endl;
 #endif
@@ -786,14 +704,13 @@ void Simulator::parseBlockList() {
                 position.pt[1] = iy;
                 position.pt[2] = iz;
             }
-            attr = element->Attribute("master");
+
+            orient=defaultOrientation;
+            attr = element->Attribute("orientation");
             if (attr) {
-                string str(attr);
-                if (str.compare("true")==0 || str.compare("1")==0) {
-                    master=true;
-                }
+                orient = stoi(attr);
 #ifdef DEBUG_CONF_PARSING
-                OUTPUT << "master : " << master << endl;
+                OUTPUT << "new orientation :" << orient << endl;
 #endif
             }
 
@@ -809,7 +726,7 @@ void Simulator::parseBlockList() {
 
             // cerr << "addBlock(" << currentID << ") pos = " << position << endl;
             loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++],
-                      bcb, position, color, master);
+                      bcb, position, color, orient);
 
             block = block->NextSibling("block");
         } // end while (block)
@@ -832,13 +749,23 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.rgba[0] = stof(str.substr(0,pos1))/255.0;
-                color.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
-                color.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
+                color.set(stoi(str.substr(0,pos1)),
+                          stoi(str.substr(pos1+1,pos2-pos1-1)),
+                          stoi(str.substr(pos2+1,str.length()-pos1-1)));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "line color :" << color << endl;
 #endif
             }
+
+            orient=defaultOrientation;
+            attr = element->Attribute("orientation");
+            if (attr) {
+                orient = stoi(attr);
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "line orientation :" << orient << endl;
+#endif
+            }
+
             attr = element->Attribute("line");
             if (attr) {
                 line = atoi(attr);
@@ -858,7 +785,7 @@ void Simulator::parseBlockList() {
                     if (str[i]=='1') {
                         position.pt[0]=i;
                         loadBlock(element, ids == ORDERED ? ++indexBlock:IDPool[indexBlock++],
-                                  bcb, position, color, false);
+                                  bcb, position, color, orient);
                     }
                 }
             }
@@ -881,39 +808,48 @@ void Simulator::parseBlockList() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.rgba[0] = stof(str.substr(0,pos1))/255.0;
-                color.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
-                color.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
+                color.set(stoi(str.substr(0,pos1)),
+                          stoi(str.substr(pos1+1,pos2-pos1-1)),
+                          stoi(str.substr(pos2+1,str.length()-pos1-1)));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "box color :" << color << endl;
 #endif
             }
 
-            Vector3D boxOrigin(0,0,0);
+            orient=defaultOrientation;
+            attr = element->Attribute("orientation");
+            if (attr) {
+                orient = stoi(attr);
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "box orientation :" << orient << endl;
+#endif
+            }
+
+            Cell3DPosition boxOrigin(0,0,0);
             attr = element->Attribute("boxOrigin");
             if (attr) {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                boxOrigin.pt[0] = stof(str.substr(0,pos1));
-                boxOrigin.pt[1] = stof(str.substr(pos1+1,pos2-pos1-1));
-                boxOrigin.pt[2] = stof(str.substr(pos2+1,str.length()-pos1-1));
+                boxOrigin.pt[0] = max(0,stoi(str.substr(0,pos1)));
+                boxOrigin.pt[1] = max(0,stoi(str.substr(pos1+1,pos2-pos1-1)));
+                boxOrigin.pt[2] = max(0,stoi(str.substr(pos2+1,str.length()-pos1-1)));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new boxOrigine:" << boxOrigin << endl;
 #endif
             }
 
-            Vector3D boxDest(world->lattice->gridSize[0]*world->lattice->gridScale[0],
-                             world->lattice->gridSize[1]*world->lattice->gridScale[1],
-                             world->lattice->gridSize[2]*world->lattice->gridScale[2]);
+            Cell3DPosition boxDest(world->lattice->gridSize[0]-1,
+                             world->lattice->gridSize[1]-1,
+                             world->lattice->gridSize[2]-1);
             attr = element->Attribute("boxSize");
             if (attr) {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                boxDest.pt[0] = boxOrigin.pt[0] + stof(str.substr(0,pos1));
-                boxDest.pt[1] = boxOrigin.pt[1] + stof(str.substr(pos1+1,pos2-pos1-1));
-                boxDest.pt[2] = boxOrigin.pt[2] + stof(str.substr(pos2+1,str.length()-pos1-1));
+                boxDest.pt[0] = min(world->lattice->gridSize[0]-1,boxOrigin.pt[0] + stoi(str.substr(0,pos1)));
+                boxDest.pt[1] = min(world->lattice->gridSize[1]-1,boxOrigin.pt[1] + stoi(str.substr(pos1+1,pos2-pos1-1)));
+                boxDest.pt[2] = min(world->lattice->gridSize[2]-1,boxOrigin.pt[2] + stoi(str.substr(pos2+1,str.length()-pos1-1)));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new boxDest:" << boxDest << endl;
 #endif
@@ -921,22 +857,13 @@ void Simulator::parseBlockList() {
 
             assert(world->lattice!=nullptr);
 
-            Vector3D pos;
-            for (short iz=0; iz<world->lattice->gridSize[2]; iz++) {
-                for (short iy=0; iy<world->lattice->gridSize[1]; iy++) {
-                    for (short ix=0; ix<world->lattice->gridSize[0]; ix++) {
+            for (short iz=boxOrigin[2]; iz<boxDest[2]; iz++) {
+                for (short iy=boxOrigin[1]; iy<boxDest[1]; iy++) {
+                    for (short ix=boxOrigin[0]; ix<boxDest[0]; ix++) {
                         position.set(ix,iy,iz);
-                        pos = world->lattice->gridToWorldPosition(position);
-
-                        if (pos.isInBox(boxOrigin,boxDest)) {
-                            if (position == Cell3DPosition(1,0,0)) {
-                                cout << "isInBox: " << pos.isInBox(boxOrigin,boxDest) << endl;
-                            }
-
-                            loadBlock(element,
+                        loadBlock(element,
                                       ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                      bcb, position, color, false);
-                        }
+                                      bcb, position, color, orient);
                     }
                 }
             }
@@ -948,9 +875,8 @@ void Simulator::parseBlockList() {
         block = xmlBlockListNode->FirstChild("csg");
         if (block) {
             TiXmlElement *element = block->ToElement();
-            string str = element->Attribute("content");
 
-            Vector3D translate = Vector3D(0,0,0);
+            /*Vector3D translate = Vector3D(0,0,0);
             attr = element->Attribute("translate");
             if (attr) {
                 string str(attr);
@@ -964,6 +890,15 @@ void Simulator::parseBlockList() {
                 OUTPUT << "csg translate :" << translate << endl;
 #endif
             }
+*/
+            orient=defaultOrientation;
+            attr = element->Attribute("orientation");
+            if (attr) {
+                orient = stoi(attr);
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "csg block orientation :" << orient << endl;
+#endif
+            }
 
             BoundingBox bb;
             bool boundingBox = true;
@@ -972,6 +907,7 @@ void Simulator::parseBlockList() {
             element->QueryBoolAttribute("offset", &offsetBoundingBox);
 
             CSGParser parser;
+            string str = element->Attribute("content");
             CSGNode *csgRoot = parser.parseCSG(str);
             csgRoot->toString();
 
@@ -987,13 +923,15 @@ void Simulator::parseBlockList() {
                         csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
                         if (offsetBoundingBox) {
-                            csgPos.pt[0] += bb.P0[0] - 1.0;
+                            /*csgPos.pt[0] += bb.P0[0] - 1.0;
                             csgPos.pt[1] += bb.P0[1] - 1.0;
-                            csgPos.pt[2] += bb.P0[2] - 1.0;
+                            csgPos.pt[2] += bb.P0[2] - 1.0;*/
+                            csgPos+=bb.P0-Vector3D(1,1,1);
                         } else {
-                            csgPos.pt[0] += bb.P0[0];
+                            /*csgPos.pt[0] += bb.P0[0];
                             csgPos.pt[1] += bb.P0[1];
-                            csgPos.pt[2] += bb.P0[2];
+                            csgPos.pt[2] += bb.P0[2];*/
+                            csgPos+=bb.P0;
                         }
 
                         if (world->lattice->isInGrid(position)
@@ -1004,12 +942,88 @@ void Simulator::parseBlockList() {
                             and not world->lattice->cellHasBlock(position)) {
                             loadBlock(element,
                                       ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                      bcb, position, color, false);
+                                      bcb, position, color, orient);
                         }
                     }
                 }
             }
         }
+
+        // reading a Obj Mesh
+        block = xmlBlockListNode->FirstChild("mesh");
+        if (block) {
+            TiXmlElement *element = block->ToElement();
+            ObjLoader::ObjLoader *obj=nullptr;
+            attr = element->Attribute("file");
+            if (attr) {
+                obj = new ObjLoader::ObjLoader(".",attr);
+            }
+
+            orient=defaultOrientation;
+            attr = element->Attribute("orientation");
+            if (attr) {
+                orient = stoi(attr);
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "csg block orientation :" << orient << endl;
+#endif
+            }
+
+            if (obj) {
+                Vector3D BBmin,BBmax;
+                obj->getBB(BBmin,BBmax);
+                cout << "Mesh BB" << BBmin << "/" << BBmax << endl;
+                Vector3D worldPos;
+                for (short iz = 0; iz <= world->lattice->getGridUpperBounds()[2]; iz++) {
+                    const Cell3DPosition& glb = world->lattice->getGridLowerBounds(iz);
+                    const Cell3DPosition& ulb = world->lattice->getGridUpperBounds(iz);
+                    /*cout << "glb" << glb << endl;
+                    cout << "ulb" << ulb << endl;*/
+                    for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                        for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                            position.set(ix,iy,iz);
+                            if (world->lattice->isInGrid(position)) {
+                                worldPos = world->lattice->gridToUnscaledWorldPosition(position);
+                                /*if (obj->isIn(position)) {
+                                    loadBlock(element,
+                                              ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
+                                              bcb, position, color, orient, false);
+                                }*/
+                            }
+                        }
+                    }
+                }
+            }
+            /*Vector3D csgPos;
+            for (short iz = 0; iz <= world->lattice->getGridUpperBounds()[2]; iz++) {
+                const Cell3DPosition& glb = world->lattice->getGridLowerBounds(iz);
+                const Cell3DPosition& ulb = world->lattice->getGridUpperBounds(iz);
+                for (short iy = glb[1]; iy <= ulb[1]; iy++) {
+                    for (short ix = glb[0]; ix <= ulb[0]; ix++) {
+                        position.set(ix,iy,iz);
+                        csgPos = world->lattice->gridToUnscaledWorldPosition(position);
+
+
+                            csgPos+=bb.P0-Vector3D(1,1,1);
+                        } else {
+
+                            csgPos+=bb.P0;
+                        }
+
+                        if (world->lattice->isInGrid(position)
+                            and csgRoot->isInside(csgPos, color)
+                            // @note Ignore position already filled through other means
+                            // this can be used to initialize some parameters on select
+                            // modules using `<block>` elements
+                            and not world->lattice->cellHasBlock(position)) {
+                            loadBlock(element,
+                                      ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
+                                      bcb, position, color, orient, false);
+                        }
+                    }
+                }
+            }*/
+        }
+
     } else { // end if
 
         cerr << "warning: no Block List in configuration file" << endl;
@@ -1035,9 +1049,9 @@ void Simulator::parseObstacles() {
             string str(attr);
             int pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
-            defaultColor.rgba[0] = stof(str.substr(0,pos1))/255.0;
-            defaultColor.rgba[1] = stof(str.substr(pos1+1,pos2-pos1-1))/255.0;
-            defaultColor.rgba[2] = stof(str.substr(pos2+1,str.length()-pos1-1))/255.0;
+            defaultColor.set(stoi(str.substr(0,pos1)),
+                             stoi(str.substr(pos1+1,pos2-pos1-1)),
+                             stoi(str.substr(pos2+1,str.length()-pos1-1)));
         }
 
         nodeObstacle = nodeObstacle->FirstChild("obstacle");
@@ -1051,9 +1065,9 @@ void Simulator::parseObstacles() {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
                     pos2 = str.find_last_of(',');
-                color.set(stof(str.substr(0,pos1))/255.0,
-                          stof(str.substr(pos1+1,pos2-pos1-1))/255.0,
-                          stof(str.substr(pos2+1,str.length()-pos1-1))/255.0);
+                color.set(stoi(str.substr(0,pos1)),
+                          stoi(str.substr(pos1+1,pos2-pos1-1)),
+                          stoi(str.substr(pos2+1,str.length()-pos1-1)));
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "color :" << color << endl;
 #endif
@@ -1097,12 +1111,11 @@ void Simulator::startSimulation() {
     // Connect all blocks – TODO: Check if needed to do it here (maybe all blocks are linked on addition)
     world->linkBlocks();
 
-    // Finalize scheduler configuration and start simulation if autoStart is enabled
+    // Finalize scheduler configuration
     Scheduler *scheduler = getScheduler();
     //scheduler->sem_schedulerStart->post();
     scheduler->setState(Scheduler::NOTSTARTED);
-    if (scheduler->willAutoStart())
-        scheduler->start(scheduler->getSchedulerMode());
+
 
     // Start replay export if enabled
     if (cmdLine.isReplayEnabled()) {
@@ -1112,6 +1125,9 @@ void Simulator::startSimulation() {
         // ReplayExporter::getInstance()->exportKeyframe();
     }
 
+    //start simulation if autoStart is enabled
+    if (scheduler->willAutoStart())
+        scheduler->start(scheduler->getSchedulerMode());
     // Enter graphical main loop
     GlutContext::mainLoop();
 }

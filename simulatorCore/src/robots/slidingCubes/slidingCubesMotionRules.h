@@ -7,7 +7,8 @@
 
 //!< \namespace SlidingCubes
 namespace SlidingCubes {
-enum NeighborDirection {SOUTH, EAST, TOP, BOTTOM, WEST, NORTH, NUM_CONDIRS};
+enum NeighborDirection {PlusX=0, PlusY, PlusZ, MinusX, MinusY, MinusZ, NUM_CONDIRS};
+//enum NeighborDirection {SOUTH, EAST, TOP, BOTTOM, WEST, NORTH, NUM_CONDIRS};
 
 class SlidingCubesMotionRule {
 protected :
@@ -18,9 +19,7 @@ protected :
 public :
     SlidingCubesMotionRule(NeighborDirection _pivot,bool _isRotation): pivot(_pivot), isRot(_isRotation) {};
     virtual ~SlidingCubesMotionRule();
-    Cell3DPosition getFinalPosition(const SlidingCubesBlock *rb) const {
-        return rb->position+mustBeFree[0];
-    }
+    virtual void getFinalPositionAndOrientation(const SlidingCubesBlock *sc,Cell3DPosition &position, short &orientation)=0;
     virtual bool isValid(const SlidingCubesBlock *rb);
     inline bool isRotation() { return isRot; }
     inline short getFromID() { return (int)(pivot); }
@@ -33,6 +32,10 @@ public :
 
     SlidingCubesTranslationMotionRule(NeighborDirection _pivot,NeighborDirection _direction);
     short getToID() override { return (int)(direction);};
+    void getFinalPositionAndOrientation(const SlidingCubesBlock *sc,Cell3DPosition &position, short &orientation) {
+        position = sc->position+mustBeFree[0];
+        orientation = sc->orientationCode;
+    }
 };
 
 class SlidingCubesRotationMotionRule:public SlidingCubesMotionRule {
@@ -41,6 +44,19 @@ public :
 
     SlidingCubesRotationMotionRule(NeighborDirection _pivot,NeighborDirection _axe);
     short getToID() override { return (int)(axe);};
+    void getFinalPositionAndOrientation(const SlidingCubesBlock *sc,Cell3DPosition &position, short &orientation) {
+        position = sc->position+mustBeFree[0];
+        Matrix m;
+        switch (axe) {
+            case PlusX: m.setRotationX(180.0); break;
+            case PlusY: m.setRotationY(180.0); break;
+            case PlusZ: m.setRotationZ(180.0); break;
+            case MinusX: m.setRotationX(-180.0); break;
+            case MinusY: m.setRotationY(-180.0); break;
+            case MinusZ: m.setRotationZ(-180.0); break;
+        }
+        orientation = SlidingCubesBlock::getOrientationFromMatrix(m*sc->getGlBlock()->mat);
+    }
 };
 
 /**

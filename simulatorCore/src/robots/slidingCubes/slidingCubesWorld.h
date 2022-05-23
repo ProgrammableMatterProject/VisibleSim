@@ -18,6 +18,7 @@
 #include "../../events/scheduler.h"
 #include "../../utils/trace.h"
 #include "slidingCubesMotionRules.h"
+#include "slidingCubesSimulator.h"
 
 namespace SlidingCubes {
 
@@ -29,7 +30,7 @@ class SlidingCubesWorld : public BaseSimulator::World {
                                                        used to deduce selected Block / face */
 protected:
     GLuint idTextureWall = 0;
-        SlidingCubesMotionRules *motionRules;
+    SlidingCubesMotionRules *motionRules;
     virtual ~SlidingCubesWorld();
 public:
     SlidingCubesWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
@@ -60,7 +61,7 @@ public:
      * @copydoc World::addBlock
      */
     void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation = 0, bool master = false) override;
+                  uint8_t orient = 0) override;
     /**
      * \copydoc World::linkBlock
      */
@@ -87,6 +88,7 @@ public:
     void glDrawBackground() override;
 
     using World::updateGlData; // Suppresses hiding warning
+    void updateGlData(SlidingCubesBlock*blc, const Matrix &mat);
 
     /**
      * @copydoc World::setSelectedFace

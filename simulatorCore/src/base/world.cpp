@@ -16,6 +16,13 @@ using namespace std;
 
 namespace BaseSimulator {
 
+#ifdef WIN32
+    string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/menuTextures/";
+#else
+    string directory = "../../simulatorCore/resources/textures/menuTextures/";
+#endif
+
+
 World *World::world = nullptr;
 map<bID, BuildingBlock*>World::buildingBlocksMap;
 unordered_map <bID, GlBlock*>World::mapGlBlocks;
@@ -124,6 +131,7 @@ void World::updateGlData(BuildingBlock *bb, const Cell3DPosition &p) {
     }
 }
 
+
 void World::updateGlData(BuildingBlock*blc, Vector3D &p) {
     GlBlock *glblc = blc->getGlBlock();
     if (glblc) {
@@ -139,6 +147,7 @@ void World::linkBlocks() {
     const Cell3DPosition& ub = lattice->getGridUpperBounds();
     Cell3DPosition p;
 
+    OUTPUT << "Link blocks..." << lb << "/" << ub << endl;
     for (p.pt[2] = lb.pt[2]; p[2] <= ub.pt[2]; p.pt[2]++) { // z
         for (p.pt[1] = lb.pt[1]; p[1] <= ub.pt[1]; p.pt[1]++) { // y
             for (p.pt[0] = lb.pt[0]; p[0] <= ub.pt[0]; p.pt[0]++) { // x
@@ -296,11 +305,11 @@ void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
 void World::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
         GlutContext::popupMenu = new GlutPopupMenuWindow(nullptr,0,0,200,180);
-        GlutContext::popupMenu->addButton(1,"../../simulatorCore/resources/textures/menuTextures/menu_add.tga");
-        GlutContext::popupMenu->addButton(2,"../../simulatorCore/resources/textures/menuTextures/menu_del.tga");
-        GlutContext::popupMenu->addButton(3,"../../simulatorCore/resources/textures/menuTextures/menu_tap.tga");
-        GlutContext::popupMenu->addButton(4,"../../simulatorCore/resources/textures/menuTextures/menu_save.tga");
-        GlutContext::popupMenu->addButton(5,"../../simulatorCore/resources/textures/menuTextures/menu_cancel.tga");
+        GlutContext::popupMenu->addButton(1,directory+"menu_add.tga");
+        GlutContext::popupMenu->addButton(2,directory+"menu_del.tga");
+        GlutContext::popupMenu->addButton(3,directory+"menu_tap.tga");
+        GlutContext::popupMenu->addButton(4,directory+"menu_save.tga");
+        GlutContext::popupMenu->addButton(5,directory+"menu_cancel.tga");
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
@@ -329,25 +338,6 @@ void World::getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float
         if (zmax<pos[2]) zmax=pos[2];
     }
     unlock();
-}
-
-bool World::separate() {
-    if (!lattice->hasSeparator()) return false;
-
-    for (auto bb:buildingBlocksMap) {
-        bool state=lattice->isFront(bb.second->position);
-        if (state) { // on cherche un voisin qui est not front
-            for (auto neighbor:bb.second->getNeighbors()) {
-                if (!lattice->isFront(neighbor->position)) {
-                    /*neighbor->setColor(LIGHTBLUE);
-                    bb.second->setColor(BLUE);*/
-                    bb.second->breakP2PNetworkInterface(neighbor);
-                }
-            }
-        }
-    }
-
-    return true;
 }
 
 } // BaseSimulator namespace

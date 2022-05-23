@@ -11,7 +11,7 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
 
@@ -29,7 +29,11 @@ using namespace BaseSimulator::utils;
 
 //! \namespace Hexanodes
 namespace Hexanodes {
-
+#ifdef WIN32
+    string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/hexanodesTextures";
+#else
+    string directory = "../../simulatorCore/resources/textures/hexanodesTextures";
+#endif
 /**
    \brief Constructor
    \param gridSize : size of the grid
@@ -42,11 +46,11 @@ HexanodesWorld::HexanodesWorld(const Cell3DPosition &gridSize, const Vector3D &g
     OUTPUT << TermColor::LifecycleColor << "HexanodesWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-            objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/hexanodesTextures","hexanodes.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/hexanodesTextures","hexanodes_picking.obj");
+            objBlock = new ObjLoader::ObjLoader(directory.c_str(),"hexanodes.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader(directory.c_str(),"hexanodes_picking.obj");
         //objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
     }
-    lattice = new HHLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+    lattice = new HHLattice(gridSize, gridScale.isZero() ? defaultBlockSize : gridScale);
         nodeMotionEngine = new HexanodesMotionEngine();
 }
 
@@ -134,7 +138,7 @@ void HexanodesWorld::menuChoice(int n) {
             GlutContext::popupSubMenu->show(false);
             GlutContext::popupMenu->show(false);
             if (bb->getNeighborPos(HHLattice::Direction(numSelectedFace),nPos)) {
-                addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0,false);
+                addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0);
                 linkBlock(nPos);
                 linkNeighbors(nPos);
             } else {
@@ -145,7 +149,7 @@ void HexanodesWorld::menuChoice(int n) {
             GlutContext::popupSubMenu->show(false);
             GlutContext::popupMenu->show(false);
             if (bb->getNeighborPos(HHLattice::Direction(numSelectedFace),nPos)) {
-                addBlock(0, bb->buildNewBlockCode,nPos,bb->color,bb->orientationCode,false);
+                addBlock(0, bb->buildNewBlockCode,nPos,bb->color,bb->orientationCode);
                 linkBlock(nPos);
                 linkNeighbors(nPos);
             } else {
@@ -157,7 +161,7 @@ void HexanodesWorld::menuChoice(int n) {
             GlutContext::popupMenu->show(false);
             if (bb->getNeighborPos(HHLattice::Direction(numSelectedFace),nPos)) {
                 int orient = rand()%24;
-                addBlock(0, bb->buildNewBlockCode,nPos,bb->color,orient,false);
+                addBlock(0, bb->buildNewBlockCode,nPos,bb->color,orient);
                 linkBlock(nPos);
                 linkNeighbors(nPos);
             } else {
@@ -185,7 +189,7 @@ void HexanodesWorld::menuChoice(int n) {
 
 
 void HexanodesWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                             short orientation, bool master) {
+                              uint8_t orient) {
     if (blockId > maxBlockId)
         maxBlockId = blockId;
     else if (blockId == 0)
@@ -203,7 +207,7 @@ void HexanodesWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPos
     if (ReplayExporter::isReplayEnabled())
         ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     module->setColor(col);
-    module->setPositionAndOrientation(pos,orientation);
+    module->setPositionAndOrientation(pos,orient);
     lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     linkBlock(pos);
@@ -327,8 +331,59 @@ void HexanodesWorld::loadTextures(const string &str) {
     idTextureDigits = loadTexture(path.c_str(),lx,ly);
 }
 
-void HexanodesWorld::updateGlData(BuildingBlock*blc, const Matrix &mat) {
-    HexanodesGlBlock *glblc = (HexanodesGlBlock*)blc->getGlBlock();
+void HexanodesWorld::updateGlData(BuildingBlock *bb) {
+    HexanodesGlBlock *glblc = (HexanodesGlBlock*)bb->getGlBlock();
+    if (glblc) {
+            lock();
+            //cout << "update pos:" << position << endl;
+            glblc->setPosition(lattice->gridToWorldPosition(bb->position));
+            glblc->setColor(bb->color);
+            unlock();
+    }
+}
+
+void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Color &color) {
+    HexanodesGlBlock *glblc = blc->getGlBlock();
+    if (glblc) {
+            lock();
+            //cout << "update pos:" << position << endl;
+            glblc->setColor(color);
+            unlock();
+    }
+}
+
+void HexanodesWorld::updateGlData(HexanodesBlock*blc, bool visible) {
+    HexanodesGlBlock *glblc = blc->getGlBlock();
+    if (glblc) {
+            lock();
+            //cout << "update pos:" << position << endl;
+            glblc->setVisible(visible);
+            unlock();
+    }
+}
+
+void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Vector3D &position) {
+    HexanodesGlBlock *glblc = blc->getGlBlock();
+    if (glblc) {
+        lock();
+        //cout << "update pos:" << position << endl;
+        glblc->setPosition(position);
+        unlock();
+    }
+}
+
+void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Cell3DPosition &position) {
+    HexanodesGlBlock *glblc = blc->getGlBlock();
+    if (glblc) {
+        lock();
+        //cout << "update pos:" << position << endl;
+        glblc->setPosition(lattice->gridToWorldPosition(position));
+        unlock();
+    }
+}
+
+void HexanodesWorld::updateGlData(HexanodesBlock*blc, const Matrix &mat) {
+    HexanodesGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
         lock();
         glblc->mat = mat;

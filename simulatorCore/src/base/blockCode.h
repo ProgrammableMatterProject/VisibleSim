@@ -1,7 +1,7 @@
 /*
  * @file blockCode.h
  * @date 22 mars 2013
- * @author dom
+ * @author dom, bpiranda
  * @brief Defines a single instance of the distributed program that is executed independantly by each module
  */
 
@@ -69,6 +69,10 @@ public:
  * @brief BlockCode destructor
  */
     virtual ~BlockCode();
+
+    bID getId() const;
+    void setColor(const Color &);
+    void setColor(int idColor);
 
 /**
  * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it. Has to be overriden in the child class.
@@ -202,6 +206,13 @@ public:
      * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
      */
     virtual void onUserKeyPressed(unsigned char c, int x, int y) {};
+
+    /**
+     * User-implemented keyboard handler function that gets called when
+     *  a key press event could not be caught by openglViewer
+     * @note call is made from GlutContext::SpecialFunc (openglViewer.h)
+     */
+    virtual void onUserArrowKeyPressed(unsigned char c, int x, int y) {};
 
     /**
      * Called by world during GL drawing phase, can be used by a user

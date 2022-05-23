@@ -54,7 +54,7 @@ public:
     }
 
     void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                          short orientation = 0, bool master = false) override;
+                          uint8_t orient = 0) override;
     void loadTextures(const string &str) override;
 
     /**

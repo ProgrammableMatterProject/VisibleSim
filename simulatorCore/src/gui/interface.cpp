@@ -26,20 +26,20 @@ const int SLIDING_WINDOW_STANDARD_WIDTH = 400;
 const int SLIDING_WINDOW_LARGE_WIDTH = 600;
 
 GlutWindow::GlutWindow(GlutWindow *parent, GLuint pid, GLint px, GLint py,
-                       GLint pw, GLint ph, const char *titreTexture)
+                       GLint pw, GLint ph, const string &titreTexture)
         : id(pid) {
     if (parent) parent->addChild(this);
     isVisible = true;
     setGeometry(px, py, pw, ph);
-    if (titreTexture) {
+    if (titreTexture=="") {
+        idTexture=0;
+    } else {
         if (pw == 0 || ph == 0) {
-            idTexture = loadTexture(titreTexture, w, h);
+            idTexture = loadTexture(titreTexture.c_str(), w, h);
         } else {
             int iw, ih;
-            idTexture = loadTexture(titreTexture, iw, ih);
+            idTexture = loadTexture(titreTexture.c_str(), iw, ih);
         }
-    } else {
-        idTexture = 0;
     }
 }
 
@@ -129,6 +129,7 @@ GLfloat GlutWindow::drawString(GLfloat x, GLfloat y, const char *str, void *mode
         if (*str == '\n') {
             y -= height;
             glRasterPos2f(x, y);
+            glutBitmapCharacter(mode, '\\');
         } else {
             glutBitmapCharacter(mode, *str);
         }
@@ -153,7 +154,7 @@ GLfloat GlutWindow::drawString(GLfloat x0, GLfloat y, const char *str, TextMode 
     while (*str) {
         if (*str == '\n') {
             y -= height;
-            glRasterPos2f(x0, y);
+            x=x0;
         } else {
             glRasterPos2d(x, y);
             glutBitmapCharacter(tm, *str);
@@ -175,18 +176,21 @@ void GlutWindow::setTextSize(TextSize ts) {
 /***************************************************************************************/
 /* GlutSlidingMainWindow */
 /***************************************************************************************/
-GlutSlidingMainWindow::GlutSlidingMainWindow(GLint px, GLint py, GLint pw, GLint ph, const char *titreTexture) :
-        GlutWindow(NULL, 1, px, py, pw, ph, titreTexture) {
+GlutSlidingMainWindow::GlutSlidingMainWindow(GLint px, GLint py, GLint pw, GLint ph, const string &titreTexture) :
+        GlutWindow(nullptr, 1, px, py, pw, ph, titreTexture) {
     openningLevel = 0;
-    buttonOpen = new GlutButton(this, ID_SW_BUTTON_OPEN, 5, 68, 32, 32,
-                                "../../simulatorCore/resources/textures/UITextures/boutons_fg.tga");
-    buttonClose = new GlutButton(this, ID_SW_BUTTON_CLOSE, 5, 26, 32, 32,
-                                 "../../simulatorCore/resources/textures/UITextures/boutons_fd.tga", false);
-    buttonSize = new GlutButton(this, ID_SW_BUTTON_SIZE, pw + SLIDING_WINDOW_STANDARD_WIDTH - 40, ph - 40, 32, 32,
-                                "../../simulatorCore/resources/textures/UITextures/boutons_zoom.tga");
+#ifdef WIN32
+    string dir = string(ROOT_DIR) + "/simulatorCore/resources/textures/UITextures/";
+#else
+    string dir = "../../simulatorCore/resources/textures/UITextures/";
+#endif
+    buttonOpen = new GlutButton(this, ID_SW_BUTTON_OPEN, 5, 68, 32, 32,dir+"boutons_fg.tga");
+    buttonClose = new GlutButton(this, ID_SW_BUTTON_CLOSE, 5, 26, 32, 32,dir+"boutons_fd.tga", false);
+    buttonSize = new GlutButton(this, ID_SW_BUTTON_SIZE, pw + SLIDING_WINDOW_STANDARD_WIDTH - 40,
+                                ph - 40, 32, 32, dir+"boutons_zoom.tga");
     slider = new GlutSlider(this, ID_SW_SLD, pw + SLIDING_WINDOW_STANDARD_WIDTH - 20, 5, ph - 60,
-                            "../../simulatorCore/resources/textures/UITextures/slider.tga", (ph - 60) / 13);
-    selectedGlBlock = NULL;
+                            "slider.tga", (ph - 60) / 13);
+    selectedGlBlock = nullptr;
     slider->isVisible = false;
     buttonSize->isVisible = false;
 }
@@ -255,6 +259,24 @@ void GlutSlidingMainWindow::glDraw() {
                     ss = i + 1;
                 }
             }
+
+            glColor3ubv(selectedGlBlock->color);
+            //glColor3f(selectedGlBlock->color[0]/255.0f,selectedGlBlock->color[1]/255.0f,selectedGlBlock->color[2]/255.0f);
+            // draw a rectangle with the block color
+            glBegin(GL_QUADS);
+            glVertex2i(w-90,posy+13);
+            glVertex2i(w-40,posy+13);
+            glVertex2i(w-40,posy+28);
+            glVertex2i(w-90,posy+28);
+            glEnd();
+            glColor3f(1.0, 1.0, 1.0);
+            glBegin(GL_LINE_LOOP);
+            glVertex2i(w-90,posy+13);
+            glVertex2i(w-40,posy+13);
+            glVertex2i(w-40,posy+28);
+            glVertex2i(w-90,posy+28);
+            glEnd();
+
             multimap<Time, BlockDebugData *>::iterator it = traces.begin();
             //GLfloat posy = h-65;
             stringstream line;
@@ -262,7 +284,7 @@ void GlutSlidingMainWindow::glDraw() {
             int s, cs;
             while (it != traces.end() && posy > 0) {
                 if (((*it).second)->blockId == selectedGlBlock->blockId) {
-                    if (pos) {
+                    if (pos>0) {
                         pos--;
                     } else {
                         ((*it).second)->color.glColor();
@@ -308,7 +330,6 @@ bool GlutSlidingMainWindow::passiveMotionFunc(int mx,int my) {
         isVisible=showButtons;
         return true;
     }
-
     return false;
 }
 
@@ -407,7 +428,7 @@ void GlutSlidingMainWindow::select(GlBlock *sb) {
     } else {
         slider->setDataTextLines(traces.size());
     }
-};
+}
 
 void GlutSlidingMainWindow::setTextSize(TextSize ts) {
     // first close the window
@@ -430,15 +451,17 @@ void GlutSlidingMainWindow::setTextSize(TextSize ts) {
 /***************************************************************************************/
 /* GlutSlidingDebugWindow */
 /***************************************************************************************/
-GlutSlidingDebugWindow::GlutSlidingDebugWindow(GLint px, GLint py, GLint pw, GLint ph, const char *titreTexture) :
-        GlutWindow(NULL, 2, px, py, pw, ph, titreTexture) {
+GlutSlidingDebugWindow::GlutSlidingDebugWindow(GLint px, GLint py, GLint pw, GLint ph, const string &titreTexture) :
+        GlutWindow(nullptr, 2, px, py, pw, ph, titreTexture) {
+#ifdef WIN32
+    string dir=string(ROOT_DIR)+"/simulatorCore/resources/textures/UITextures/";
+#else
+    string dir="../../simulatorCore/resources/textures/UITextures/";
+#endif
     openningLevel = 0;
-    buttonOpen = new GlutButton(this, ID_SD_BUTTON_OPEN, 5, 168, 32, 32,
-                                "../../simulatorCore/resources/textures/UITextures/boutons_fg.tga");
-    buttonClose = new GlutButton(this, ID_SD_BUTTON_CLOSE, 5, 126, 32, 32,
-                                 "../../simulatorCore/resources/textures/UITextures/boutons_fd.tga", false);
-    slider = new GlutSlider(this, ID_SD_SLD, pw + 400 - 20, 5, ph - 75,
-                            "../../simulatorCore/resources/textures/UITextures/slider.tga", (ph - 60) / 13);
+    buttonOpen = new GlutButton(this, ID_SD_BUTTON_OPEN, 5, 168, 32, 32,"boutons_fg.tga");
+    buttonClose = new GlutButton(this, ID_SD_BUTTON_CLOSE, 5, 126, 32, 32,"boutons_fd.tga", false);
+    slider = new GlutSlider(this, ID_SD_SLD, pw + 400 - 20, 5, ph - 75,dir+"slider.tga", (ph - 60) / 13);
     input = new GlutInputWindow(this, ID_SD_INPUT, pw + 10, ph - 66, 380, 36);
     debugId = 1;
 }
@@ -496,7 +519,11 @@ void GlutSlidingDebugWindow::glDraw() {
         if (input->hasFocus) {
             drawString(w - 85, h - 20.0, "DEBUG MODE");
             char c[6];
+#ifdef WIN32
+            sprintf(c, "%u", debugId);
+#else
             sprintf(c, "%" PRIu32, debugId);
+#endif
             drawString(w / 2 - 45, h - 20.0, c);
         }
 
@@ -571,7 +598,7 @@ void GlutSlidingDebugWindow::reshapeFunc(int mx, int my, int mw, int mh) {
 /* GlutButton */
 /***************************************************************************************/
 
-GlutButton::GlutButton(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint pw, GLint ph, const char *titreTexture,
+GlutButton::GlutButton(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint pw, GLint ph, const string &titreTexture,
                        bool pia) :
         GlutWindow(parent, pid, px, py, pw, ph, titreTexture) {
     isActive = pia;
@@ -636,7 +663,7 @@ bool GlutButton::passiveMotionFunc(int mx, int my) {
 /***************************************************************************************/
 
 GlutRotationButton::GlutRotationButton(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint pw, GLint ph,
-                                       const char *titreTexture, bool blue, uint8_t idSrc, uint8_t idDest,
+                                       const string &titreTexture, bool blue, uint8_t idSrc, uint8_t idDest,
                                        Cell3DPosition &pos, short orientation, float cw) : GlutWindow(parent, pid, px,
                                                                                                       py, pw, ph,
                                                                                                       titreTexture) {
@@ -715,13 +742,14 @@ bool GlutRotationButton::passiveMotionFunc(int mx, int my) {
 /***************************************************************************************/
 
 GlutRBMotionButton::GlutRBMotionButton(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint pw, GLint ph,
-                                       const char *titreTexture, bool isRotation, uint8_t idDest, Cell3DPosition &pos,
-                                       float cw) : GlutWindow(parent, pid, px, py, pw, ph, titreTexture) {
+                                       const string &titreTexture, bool isRotation, uint8_t idDest, Cell3DPosition &pos,
+                                       short orient,float cw) : GlutWindow(parent, pid, px, py, pw, ph, titreTexture) {
     isBlue = isRotation;
     actionID = 6 + isRotation;
     directionID = idDest;
     isHighlighted = false;
     finalPosition = pos;
+    finalOrientation = orient;
     characterWidth = cw;
 }
 
@@ -791,7 +819,7 @@ bool GlutRBMotionButton::passiveMotionFunc(int mx, int my) {
 /***************************************************************************************/
 
 GlutRotation2DButton::GlutRotation2DButton(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint pw, GLint ph,
-                                           const char *titreTexture, bool blue, uint8_t idSrc, uint8_t idDest,
+                                           const string &titreTexture, bool blue, uint8_t idSrc, uint8_t idDest,
                                            Cell3DPosition &pos, short orientation, float cw) : GlutWindow(parent, pid,
                                                                                                           px, py, pw,
                                                                                                           ph,
@@ -872,7 +900,7 @@ bool GlutRotation2DButton::passiveMotionFunc(int mx, int my) {
 /***************************************************************************************/
 
 GlutPopupWindow::GlutPopupWindow(GlutWindow *parent, GLint px, GLint py, GLint pw, GLint ph)
-        : GlutWindow(parent, 99, px, py, pw, ph, NULL) {
+        : GlutWindow(parent, 99, px, py, pw, ph, "") {
     isVisible = false;
 }
 
@@ -900,11 +928,11 @@ void GlutPopupWindow::glDraw() {
 /***************************************************************************************/
 
 GlutPopupMenuWindow::GlutPopupMenuWindow(GlutWindow *parent, GLint px, GLint py, GLint pw, GLint ph)
-        : GlutWindow(parent, 49, px, py, pw, ph, NULL) {
+        : GlutWindow(parent, 49, px, py, pw, ph, "") {
     isVisible = false;
 }
 
-void GlutPopupMenuWindow::addButton(int i, const char *titre, GlutPopupMenuWindow *subMenuWindow) {
+void GlutPopupMenuWindow::addButton(int i, const string&titre, GlutPopupMenuWindow *subMenuWindow) {
     int py = 0;
     std::vector<GlutWindow *>::const_iterator cb = children.begin();
     while (cb != children.end()) {
@@ -972,17 +1000,17 @@ GlutWindow *GlutPopupMenuWindow::getButton(unsigned int id) {
     if (cb != children.end()) {
         return (*cb);
     }
-    return NULL;
+    return nullptr;
 }
 
 
 /***************************************************************************************/
 /* GlutHelpWindow */
 /***************************************************************************************/
-GlutHelpWindow::GlutHelpWindow(GlutWindow *parent, GLint px, GLint py, GLint pw, GLint ph, const char *textFile)
-        : GlutWindow(parent, -1, px, py, pw, ph, NULL) {
+GlutHelpWindow::GlutHelpWindow(GlutWindow *parent, GLint px, GLint py, GLint pw, GLint ph, const string &textFile)
+        : GlutWindow(parent, -1, px, py, pw, ph, "") {
     isVisible = false;
-    text = NULL;
+    text = nullptr;
 
     //GlutButton *btn = new GlutButton(this, 999,pw-35,ph-35,32,32,"../../simulatorCore/resources/textures/UITextures/close.tga");
 
@@ -1045,7 +1073,7 @@ int GlutHelpWindow::mouseFunc(int button, int state, int mx, int my) {
 /***************************************************************************************/
 /* GlutSlider */
 /***************************************************************************************/
-GlutSlider::GlutSlider(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint ph, const char *titreTexture, int ntl)
+GlutSlider::GlutSlider(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint ph, const string &titreTexture, int ntl)
         : GlutWindow(parent, pid, px, py, 11, ph, titreTexture) {
     dataTextLines = 0;
     dataPosition = 0;
@@ -1192,7 +1220,7 @@ int GlutSlider::mouseFunc(int button, int state, int mx, int my) {
 /***************************************************************************************/
 
 GlutInputWindow::GlutInputWindow(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint pw, GLint ph) :
-        GlutWindow(parent, pid, px, py, pw, ph, NULL) {
+        GlutWindow(parent, pid, px, py, pw, ph, "") {
     hasFocus = false;
 }
 

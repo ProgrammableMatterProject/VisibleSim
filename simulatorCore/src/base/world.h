@@ -21,7 +21,7 @@
 #include "../utils/tDefs.h"
 #include "../utils/trace.h"
 #include "../utils/utils.h"
-#include "../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 #include "../grid/lattice.h"
 #include "../events/scheduler.h"
 #include "../gui/objLoader.h"
@@ -170,24 +170,24 @@ public:
      * @param blc : Block to update
      * @param p : Position to set to blc's glBlock
      */
-    virtual void updateGlData(BuildingBlock *bb, const Color &c);
-    /**
-     * @brief Set position p to glBlock associated with block blc
-     *	 *
-     * @param blc : Block to update
-     * @param p : Position in the grid to set to blc's glBlock
-     */
-    virtual void updateGlData(BuildingBlock *bb, const Cell3DPosition &p);
-    /**
-     * @brief Set position p to glBlock associated with block blc
-     *
-     * Used when glBlocks and their corresponding BuildingBlock have different positions,
-     *  as it is the case during motion events
-     *
-     * @param blc : Block to update
-     * @param p : Position to set to blc's glBlock
-     */
-    virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
+        virtual void updateGlData(BuildingBlock *bb, const Color &c);
+        /**
+         * @brief Set position p to glBlock associated with block blc
+         *	 *
+         * @param blc : Block to update
+         * @param p : Position in the grid to set to blc's glBlock
+         */
+        virtual void updateGlData(BuildingBlock *bb, const Cell3DPosition &p);
+        /**
+         * @brief Set position p to glBlock associated with block blc
+         *
+         * Used when glBlocks and their corresponding BuildingBlock have different positions,
+         *  as it is the case during motion events
+         *
+         * @param blc : Block to update
+         * @param p : Position to set to blc's glBlock
+         */
+        virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
     /**
      * @brief Creates a block and adds it to the simulation
      *
@@ -198,11 +198,10 @@ public:
      * @param orientation : For C2D, the rotation angle of the block on its axis.
      *                      For C3D, the number of the block's connector on the x axis.
      *                      0 by default and for all other blocks
-     * @param master : indicates if the block is a master block. false by default
      */
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb,
                           const Cell3DPosition &pos, const Color &col,
-                          short orientation = 0, bool master = false) = 0;
+                          uint8_t orient = 0) = 0;
     /**
      * @brief Deletes a block from the simulation after disconnecting it and all of
      *  its neighbors and notifying them
@@ -260,10 +259,20 @@ public:
     virtual void setSelectedFace(int n) = 0;
 
 /**
- * @brief Returns the Glblock of id n
- * @param n : id of the Glblock to retrieve
- */
-    inline GlBlock* getBlockByNum(bID n) {
+     * @brief Returns the Glblock of id n
+     * @param n : id of the Glblock to retrieve
+     */
+    inline BuildingBlock* getBlock(bID n) {
+        auto const &block = buildingBlocksMap.find(n);
+        return block != buildingBlocksMap.end() ? (*block).second : nullptr;
+    };
+
+
+/**
+     * @brief Returns the Glblock of id n
+     * @param n : id of the Glblock to retrieve
+     */
+    inline GlBlock* getGlBlock(bID n) {
         auto const &glBlock = mapGlBlocks.find(n);
         return glBlock != mapGlBlocks.end() ? (*glBlock).second : nullptr;
     };
@@ -284,15 +293,15 @@ public:
     /**
      * @brief Draws the environment of the world and all included blocks
      */
-    virtual void glDraw() {};
-    /**
-     * @brief Draws all blocks for shadows, list of objects that produce shadows
-     */
-    virtual void glDrawShadows() { glDraw(); };
-    /**
-     * @brief Draws the block ids of the block contained in the world
-     */
-    virtual void glDrawId() {};
+        virtual void glDraw() {};
+        /**
+         * @brief Draws all blocks for shadows, list of objects that produce shadows
+         */
+        virtual void glDrawShadows() { glDraw(); };
+        /**
+         * @brief Draws the block ids of the block contained in the world
+         */
+        virtual void glDrawId() {};
     /**
      * @brief Draws the blocks material used for user interactions
      */
@@ -346,6 +355,12 @@ public:
     virtual void loadTextures(const string &str) { };
 
     /**
+     * Get the number of selected face and -1 if none
+     */
+    virtual int getNumSelectedFace() {
+        return numSelectedFace;
+    }
+    /**
      * @brief Returns the BuildingBlock corresponding to the selected GlBlock
      * @return a pointer to the BuildingBlock corresponding to the selected GlBlock, or nullptr if there is none
      */
@@ -388,17 +403,10 @@ public:
      */
     virtual void simulatePolymer() {}
     /**
-     * @brief get bounding box coordinate from centers of glBlocks
-     */
+    * @brief get bounding box coordinate from centers of glBlocks
+    */
     void getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax);
     bool hasBlinkingBlocks() { return isBlinkingBlocks;};
-
-    /**
-     * Simulates a linear splitting of the lattice, according to the separation description
-     *  stored in Lattice. Effectively disconnects modules across this separation.
-     * @return false if the splitting could not be done because of a missing separator description
-     */
-    bool separate();
 };
 
 /**
@@ -417,6 +425,8 @@ static inline World* getWorld() { return(World::getWorld()); }
  * @brief Global setter for the world
  */
 static inline void setWorld(World* _world) { World::setWorld(_world); }
+
+
 
 } // BaseSimulator namespace
 

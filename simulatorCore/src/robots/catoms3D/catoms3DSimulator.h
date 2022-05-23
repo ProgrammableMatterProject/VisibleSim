@@ -24,8 +24,6 @@ protected:
     virtual ~Catoms3DSimulator();
 
 public:
-    bool testMode;
-
     /// CUSTOMIZATION PARAMETERS
     bool useSkewedFCCLattice; //!< Indicates whether an FCC lattice with a skewed Z axis should be used instead for a normal FCC lattice, for FCC simulations
     ////////////////////////////
@@ -41,13 +39,14 @@ public:
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                int argc, char *argv[]) override;
     virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                           const Cell3DPosition &pos, const Color &color, bool master) override;
+                           const Cell3DPosition &pos, const Color &color, uint8_t orient) override;
     virtual void printInfo() override { OUTPUT << "I'm a Catoms3DSimulator" << endl; }
     void help();
 };
 
 inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb,
                             bool useSkewedFCCLattice = false) {
+    cout << "createSimulator:" << int(useSkewedFCCLattice) << endl;
     Catoms3DSimulator::createSimulator(argc, argv, bcb, useSkewedFCCLattice);
 }
 

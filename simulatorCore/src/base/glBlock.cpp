@@ -1,6 +1,5 @@
 #include "glBlock.h"
 #include "../gui/objLoader.h"
-
 #include <sstream>
 
 GlBlock::GlBlock(bID id):blockId(id) {
@@ -42,9 +41,9 @@ void GlBlock::setColor(const Vector3D &col) {
 }
 
 void GlBlock::setColor(const Color &col) {
-    color[0] = GLubyte(col[0]*255.0);
-    color[1] = GLubyte(col[1]*255.0);
-    color[2] = GLubyte(col[2]*255.0);
+    color[0] = col[0];
+    color[1] = col[1];
+    color[2] = col[2];
 }
 
 bool GlBlock::isVisible() {
@@ -66,15 +65,22 @@ string GlBlock::getInfo() {
     out << fixed;
     out.precision(1);
     out << "Pos=(" << position[0] << "," << position[1] << "," << position[2] << ") ";
-    out << "Col=(" << (int)(color[0] * 255) << "," << (int)(color[1] * 255) << "," << (int)(color[2] * 255) << ")";
+    out << "Col=(" << (int)(color[0]) << "," << (int)(color[1]) << "," << (int)(color[2]) << ")";
+    return out.str();
+}
 
+string GlBlock::getPopupInfo() {
+    ostringstream out;
+    out << "#" << blockId << ": (" << position[0] << ","<< position[1] << ","<< position[2] << ")";
+    if (popupInfoString!="") { out << "(" << popupInfoString << ")"; }
+    out << "\n";
     return out.str();
 }
 
 void GlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int n) {
     glPushMatrix();
     glTranslatef(position[0],position[1],position[2]);
-        ptrObj->glDrawId(n);
+		ptrObj->glDrawId(n);
     glPopMatrix();
 }
 
@@ -84,3 +90,4 @@ void GlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
         ptrObj->glDrawIdByMaterial(n);
     glPopMatrix();
 }
+

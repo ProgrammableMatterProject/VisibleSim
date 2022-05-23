@@ -8,7 +8,6 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
 
@@ -27,6 +26,11 @@ using namespace BaseSimulator::utils;
 //! \namespace Datoms
 namespace Datoms {
 
+#ifdef WIN32
+    string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/datomsTextures";
+#else
+    string directory = "../../simulatorCore/resources/textures/datomsTextures";
+#endif
 /**
    \brief Constructor
    \param gridSize : size of the grid
@@ -39,13 +43,19 @@ DatomsWorld::DatomsWorld(const Cell3DPosition &gridSize, const Vector3D &gridSca
     OUTPUT << TermColor::LifecycleColor << "DatomsWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-        //objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures","datoms.obj");
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures","datomVS_piston.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures", "datoms_picking.obj");
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D_Zinc.obj");
+        //objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures","datomVS_piston.obj");
+        //objBlock = new ObjLoader::ObjLoader(directory.c_str(),"datomsThick.obj");
+        objBlock = new ObjLoader::ObjLoader(directory.c_str(),"datomVS_piston.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader(directory.c_str(), "datoms_picking.obj");
+#ifdef WIN32
+        string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/catoms3DTextures";
+#else
+        string directory = "../../simulatorCore/resources/textures/catoms3DTextures";
+#endif
+        objRepere = new ObjLoader::ObjLoader(directory.c_str(),"repereCatom3D.obj");
     }
 
-    lattice = new SkewFCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+    lattice = new SkewFCCLattice(gridSize, gridScale.isZero() ? defaultBlockSize : gridScale);
     motionRules = new DatomsMotionRules();
 }
 
@@ -134,7 +144,7 @@ void DatomsWorld::menuChoice(int n) {
         GlutContext::popupSubMenu->show(false);
         GlutContext::popupMenu->show(false);
         if (bb->getNeighborPos(numSelectedFace,nPos)) {
-            addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0,false);
+            addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0);
             linkBlock(nPos);
             linkNeighbors(nPos);
         } else {
@@ -145,7 +155,7 @@ void DatomsWorld::menuChoice(int n) {
         GlutContext::popupSubMenu->show(false);
         GlutContext::popupMenu->show(false);
         if (bb->getNeighborPos(numSelectedFace,nPos)) {
-            addBlock(0, bb->buildNewBlockCode,nPos,bb->color,bb->orientationCode,false);
+            addBlock(0, bb->buildNewBlockCode,nPos,bb->color,bb->orientationCode);
             linkBlock(nPos);
             linkNeighbors(nPos);
         } else {
@@ -157,7 +167,7 @@ void DatomsWorld::menuChoice(int n) {
         GlutContext::popupMenu->show(false);
         if (bb->getNeighborPos(numSelectedFace,nPos)) {
             int orient = rand()%24;
-            addBlock(0, bb->buildNewBlockCode,nPos,bb->color,orient,false);
+            addBlock(0, bb->buildNewBlockCode,nPos,bb->color,orient);
             linkBlock(nPos);
             linkNeighbors(nPos);
         } else {
@@ -184,7 +194,7 @@ void DatomsWorld::menuChoice(int n) {
 }
 
 void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-                             short orientation, bool master) {
+                           uint8_t orient) {
     if (blockId > maxBlockId) {
         maxBlockId = blockId;
     } else if (blockId == 0) {
@@ -193,10 +203,10 @@ void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
 
     DatomsBlock *datom = new DatomsBlock(blockId,bcb);
 
-    PistonId pId = (PistonId)(orientation >> 8);
-    orientation = orientation & 0xFF;
+    PistonId pId = (PistonId)(orient/64);
+    orient = orient % 64;
     if (pId==0) pId=AllPistonsOff;
-    cout << "ID=" << blockId << "  piston=" << pId << "  pos=" << pos << "  orient=" << orientation << endl;
+    cout << "ID=" << blockId << "  piston=" << pId << "  pos=" << pos << "  orient=" << orient << endl;
 
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                             (datom->blockId, (BaseSimulator::BuildingBlock*)datom));
@@ -212,7 +222,7 @@ void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
     datom->setGlBlock(glBlock);
     if (ReplayExporter::isReplayEnabled())
         ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
-    datom->setPositionAndOrientation(pos,orientation);
+    datom->setPositionAndOrientation(pos,orient);
     datom->setColor(col);
     lattice->insert(datom, pos);
 
@@ -374,16 +384,16 @@ void DatomsWorld::glDrawBackground() {
         glPopMatrix();
         // draw the axes
         glPushMatrix();
-                glScalef(0.2f,0.2f,0.2f);
+        glScalef(0.2f,0.2f,0.2f);
         objRepere->glDraw();
         glPopMatrix();
 }
 
 void DatomsWorld::loadTextures(const string &str) {
-    string path = str+"//hexa.tga";
+    string path = str+"/hexa.tga";
     int lx,ly;
     idTextureHexa = loadTexture(path.c_str(),lx,ly);
-    path = str+"//textureCarre.tga";
+    path = str+"/textureCarre.tga";
     idTextureGrid = loadTexture(path.c_str(),lx,ly);
 }
 

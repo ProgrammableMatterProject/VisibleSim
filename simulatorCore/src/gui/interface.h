@@ -16,14 +16,14 @@
 
 #include "../base/glBlock.h"
 #include "../utils/color.h"
-#include "../grid/cell3DPosition.h"
+#include "math/cell3DPosition.h"
 
 #ifndef GLUT
 #define GLUT
 #endif
 
 // Forward declare the BaseSimulator namespace
-namespace BaseSimulator {};
+namespace BaseSimulator {}
 
 using namespace std;
 using namespace BaseSimulator;
@@ -44,7 +44,7 @@ public :
     GLint x,y,w,h;
     bool isVisible;
 
-    GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
+    GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const string &titreTexture);
     virtual ~GlutWindow();
     virtual void clearChildren();
     inline void setGeometry(GLint px,GLint py,GLint pw,GLint ph) { x=px; y=py; w=pw; h=ph; };
@@ -70,7 +70,7 @@ class GlutButton : public GlutWindow {
     bool isDown;
     bool isHighlighted;
 public :
-  GlutButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool pia=true);
+  GlutButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const string &titreTexture,bool pia=true);
   virtual ~GlutButton() {};
     void addSubMenu(GlutWindow *child);
     inline void activate(bool v) { isActive=v; };
@@ -89,7 +89,7 @@ public :
     Cell3DPosition finalPosition;
     short finalOrientation;
 
-    GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw=0.0625);
+    GlutRotationButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const string &titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw=0.0625);
     virtual ~GlutRotationButton() {};
     int mouseFunc(int button,int state,int x,int y) override;
     bool passiveMotionFunc(int mx,int my) override;
@@ -103,8 +103,9 @@ class GlutRBMotionButton : public GlutWindow {
     float characterWidth;
 public :
     Cell3DPosition finalPosition;
+    short finalOrientation;
 
-    GlutRBMotionButton (GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool isRotation,uint8_t idDest,Cell3DPosition &pos,float cw=0.125);
+    GlutRBMotionButton (GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const string &titreTexture,bool isRotation,uint8_t idDest,Cell3DPosition &pos,short orient,float cw=0.125);
     virtual ~GlutRBMotionButton () {};
     int mouseFunc(int button,int state,int x,int y) override;
     bool passiveMotionFunc(int mx,int my) override;
@@ -120,7 +121,7 @@ public :
     Cell3DPosition finalPosition;
     short finalOrientation;
 
-    GlutRotation2DButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw=0.0625);
+    GlutRotation2DButton(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const string &titreTexture,bool blue,uint8_t idSrc,uint8_t idDest,Cell3DPosition &pos, short orientation,float cw=0.0625);
     virtual ~GlutRotation2DButton() {};
     int mouseFunc(int button,int state,int x,int y) override;
     bool passiveMotionFunc(int mx,int my) override;
@@ -143,7 +144,7 @@ class GlutSlider : public GlutWindow {
     bool mouseDown;
     int currentMousePos;
 public :
-    GlutSlider(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint ph,const char *titreTexture,int ntl);
+    GlutSlider(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint ph,const string &titreTexture,int ntl);
     virtual ~GlutSlider();
     void setDataTextLines(int dtl) { dataTextLines=dtl; dataPosition=0; update(); };
     void incDataTextLines() { dataTextLines++; update(); };
@@ -175,7 +176,7 @@ class GlutSlidingMainWindow : public GlutWindow {
     GlutSlider *slider;
     GlBlock *selectedGlBlock;
 public :
-    GlutSlidingMainWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
+    GlutSlidingMainWindow(GLint px,GLint py,GLint pw,GLint ph,const string &titreTexture);
     virtual ~GlutSlidingMainWindow();
 
     void openClose();
@@ -201,7 +202,7 @@ class GlutSlidingDebugWindow : public GlutWindow {
     GlutInputWindow* input;
     vector <BlockDebugData*> tabDebug;
 public :
-    GlutSlidingDebugWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
+    GlutSlidingDebugWindow(GLint px,GLint py,GLint pw,GLint ph,const string &titreTexture);
     virtual ~GlutSlidingDebugWindow();
 
 /*	inline void open() { openningLevel++; };
@@ -232,7 +233,7 @@ public :
 
     void setCenterPosition(int ix,int iy) { x=ix-w/2; y=iy; };
     void addButton(GlutWindow *button);
-    void addButton(int id,const char *titre,GlutPopupMenuWindow *subMenu=NULL);
+    void addButton(int id,const string &titre,GlutPopupMenuWindow *subMenu=NULL);
     GlutWindow *getButton(unsigned int id);
     int mouseFunc(int button,int state,int x,int y) override;
     void glDraw() override;
@@ -243,7 +244,7 @@ public :
 class GlutHelpWindow : public GlutWindow {
     unsigned char* text;
 public :
-    GlutHelpWindow(GlutWindow *parent,GLint px,GLint py,GLint pw,GLint ph,const char *textFile);
+    GlutHelpWindow(GlutWindow *parent,GLint px,GLint py,GLint pw,GLint ph,const string &textFile);
     virtual ~GlutHelpWindow();
 
     int mouseFunc(int button,int state,int x,int y) override;

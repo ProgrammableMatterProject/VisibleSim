@@ -33,7 +33,6 @@ extern Simulator *simulator;
  */
 class Simulator {
 public:
-    enum Type {CPP = 0, MELDPROCESS = 1, MELDINTERPRET = 2};
     enum IDScheme {ORDERED = 0, MANUAL, RANDOM};
 
     static bool regrTesting;			//!< Indicates if this simulation instance is performing regression testing
@@ -50,9 +49,6 @@ public:
      *  @brief Statically deletes this instance of the simulator
      */
     static void deleteSimulator();
-
-    inline static void setType (Type t) { type = t; };
-    inline static Type getType () { return type; };
     inline CommandLine& getCmdLine() { return cmdLine; }
 
     virtual void printInfo() { cout << "I'm a Simulator" << endl; }
@@ -85,8 +81,6 @@ public:
     inline int getSimulationSeed() { return seed; }
 
 protected:
-    static Type type;			//!< Type of simulation, i.e. language of the user program
-
     int seed; //!< Simulation seed, used for every randomized operation
     uintRNG generator; //!< Simulation random generator, used for every randomized operation, except for the id distribution
 
@@ -104,16 +98,6 @@ protected:
     int schedulerMaxDate = 0;		//!< Maximum simulation date
     vector<bID> IDPool; //!< Vector whose size is the number of blocks in the configuration and that contains blockIds to be assigned to the block, in their order of appearance in the configuration file (by default: {1,2,3,...,n})
     IDScheme ids = ORDERED; //!< Determines what module ID distribution scheme the simulator is using. ORDERED by default
-
-    /*!
-     *  @brief Identify the type of the simulation (CPP / Meld Process / Meld Interpreter)
-     *   from the command line
-     *
-     *  @param argc The number of command line arguments
-     *  @param argv The command line arguments
-     *
-     */
-    void readSimulationType(int argc, char*argv[]);
 
     /*!
      *  @brief Parses the configuration file for World information common to all blocks.
@@ -145,8 +129,6 @@ protected:
      *  @attention The xmlBlockListNode attribute has to be initialized before calling this function.
      */
     void initializeIDPool();
-
-
 
     /*!
      *  @brief Initializes IDPool with n ID distanced by step and shuffled
@@ -182,7 +164,7 @@ protected:
         /*! @fn loadScheduler(int maximumDate)
      *  @brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock
      *
-     *  MeldProcessScheduler, MeldInterpretScheduler, or CPPScheduler
+     *  Only c++ is supported
      *
      *  @param maximumDate : maximum simulation date none by default
      *
@@ -205,6 +187,11 @@ protected:
      *
      */
     void parseBlockList();
+
+    /*
+     * @brief Parses the list of links especially for VCell block
+     */
+    virtual void parseLinks() {};
 
     /*!
      *  @brief Parses the configuration for obstacles information
@@ -231,14 +218,13 @@ protected:
      *  @brief Parses the config file for any required additional block attribute, and add it to the world
      *
      *  @param blockElt The current block XML element for parsing additional attributes
-     *  @param master id of the block to add
+     *  @param blockId id of the block to add
      *  @param buildingBlockCodeBuildingFunction function pointer to the user blockCode
      *  @param pos Position of the block to add
-     *  @param master True if the block is a master block, false otherwise
      *
      */
     virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                           const Cell3DPosition &pos, const Color &color, bool master)=0;
+                           const Cell3DPosition &pos, const Color &color, uint8_t orient)=0;
 
     Simulator(int argc, char *argv[], BlockCodeBuilder bcb);
     virtual ~Simulator();

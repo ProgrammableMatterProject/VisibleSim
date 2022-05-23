@@ -55,9 +55,9 @@ namespace Catoms3D {
 
     void Catoms3DBlock::setPosition(const Cell3DPosition &p) {
         setPositionAndOrientation(p, orientationCode);
-        if (ReplayExporter::isReplayEnabled())
+        /*if (ReplayExporter::isReplayEnabled())
             ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
-                                                               blockId, position, orientationCode);
+                                                               blockId, position, orientationCode);*/
     }
 
     void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &pos, uint8_t code) {
@@ -77,8 +77,8 @@ namespace Catoms3D {
         Vector3D x(1.0, 0.0, 0.0, 0.0); // Vector3D X
         Vector3D v;
         //p = mat*x;
-        Matrix mat_1;
-        mat.inverse(mat_1);
+        /*Matrix mat_1;
+        mat.inverse(mat_1);*/
 
         uint8_t current = -1;
         double psmax = -1;
@@ -103,7 +103,7 @@ namespace Catoms3D {
         /*OUTPUT << "----- ref -----" << endl;
           OUTPUT << M << endl;
           OUTPUT << "----- mat -----" << endl;*/
-        M3 = mat;
+        //M3 = mat;
         //OUTPUT << M3 << endl;
 
         M2 = mat * M;
@@ -164,9 +164,8 @@ namespace Catoms3D {
         const Vector3D bs = wrl->lattice->gridScale;
 
         realPos.set(tabConnectorPositions[connectorID], 3, 1);
-        realPos.pt[0] *= bs[0];
-        realPos.pt[1] *= bs[1];
-        realPos.pt[2] *= bs[2];
+        realPos *= bs;
+        realPos.set(3,1.0); // A vérifier
         realPos = ((Catoms3DGlBlock *) ptrGlBlock)->mat * realPos;
         if (realPos[2] < 0) return false;
         pos = wrl->lattice->worldToGridPosition(realPos);
@@ -174,6 +173,8 @@ namespace Catoms3D {
     }
 
     P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition &pos) const {
+        Catoms3DWorld *wrl = getWorld();
+        if (not wrl->lattice->cellsAreAdjacent(position, pos)) return NULL;
         uint8_t conId = getConnectorId(pos);
 
         return conId >= 0 ? P2PNetworkInterfaces[conId] : NULL;
@@ -192,17 +193,18 @@ namespace Catoms3D {
         realPos = m_1 * realPos;
 
         const Vector3D bs = wrl->lattice->gridScale;
-        realPos.pt[0] /= bs[0];
+        /*realPos.pt[0] /= bs[0];
         realPos.pt[1] /= bs[1];
-        realPos.pt[2] /= bs[2];
+        realPos.pt[2] /= bs[2];*/
+        realPos/=bs;
 
         double x, y, z, d = 1;
         int i = 0;
 
         while (i < 12 && d > 0.1) {
-            x = tabConnectorPositions[i][0] - realPos.pt[0];
-            y = tabConnectorPositions[i][1] - realPos.pt[1];
-            z = tabConnectorPositions[i][2] - realPos.pt[2];
+            x = tabConnectorPositions[i][0] - realPos[0];
+            y = tabConnectorPositions[i][1] - realPos[1];
+            z = tabConnectorPositions[i][2] - realPos[2];
             d = x * x + y * y + z * z;
             i++;
         }

@@ -26,6 +26,8 @@ public :
     GLubyte color[3];
     bID blockId;
     bool visible;
+   string popupInfoString;
+
 
     GlBlock(bID id);
     GlBlock(bID id,const Vector3D &pos, const Vector3D &col);
@@ -38,6 +40,8 @@ public :
     virtual void setVisible(bool visible);
     virtual void toggleHighlight();
     virtual string getInfo();
+    virtual string getPopupInfo();
+    void setPopupInfo(const string &str) { popupInfoString=str; };
     virtual const Vector3D getPosition() { return Vector3D(position[0],position[1],position[2],1); };
 
     /**

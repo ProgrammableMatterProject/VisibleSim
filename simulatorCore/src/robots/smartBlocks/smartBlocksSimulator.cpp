@@ -38,14 +38,20 @@ void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vecto
                                      int argc, char *argv[]) {
     world = new SmartBlocksWorld(gridSize, gridScale, argc,argv);
 
-    if (GlutContext::GUIisEnabled)
-        world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
-
+    if (GlutContext::GUIisEnabled) {
+        string directory;
+#ifdef WIN32
+        directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/latticeTextures";
+#else
+        directory = "../../simulatorCore/resources/textures/latticeTextures";
+#endif
+        world->loadTextures(directory);
+    }
     World::setWorld(world);
 }
 
 void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                                     const Cell3DPosition &pos, const Color &color, bool master) {
+                                     const Cell3DPosition &pos, const Color &color, uint8_t orient) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
     //  here, using the blockElt TiXmlElement.
@@ -53,7 +59,7 @@ void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockC
     // ...Parsing code...
 
     // Finally, add block to the world
-    ((SmartBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
+    ((SmartBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0);
     world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 
