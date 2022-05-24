@@ -19,7 +19,7 @@ using namespace std;
 namespace SlidingCubes {
 
     SlidingCubesBlock::SlidingCubesBlock(int bId, BlockCodeBuilder bcb)
-            : BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
+            : BaseSimulator::BuildingBlock(bId, bcb, 6) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
         OUTPUT << "SlidingCubesBlock constructor" << endl;
 #endif
@@ -126,12 +126,12 @@ namespace SlidingCubes {
 
     int SlidingCubesBlock::getDirection(P2PNetworkInterface *given_interface) const {
         if (!given_interface) {
-            return SCLattice::Direction(0);
+            return -1;
         }
         for (int i(0); i < 6; ++i) {
-            if (P2PNetworkInterfaces[i] == given_interface) return SCLattice::Direction(i);
+            if (P2PNetworkInterfaces[i] == given_interface) return i;
         }
-        return SCLattice::Direction(0);
+        return -1;
     }
 
     bool SlidingCubesBlock::getNeighborPos(uint8_t connectorID, Cell3DPosition &pos) const {
@@ -148,12 +148,12 @@ namespace SlidingCubes {
     }
 
     P2PNetworkInterface *SlidingCubesBlock::getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) const {
-        if (pos[0] == -1) return P2PNetworkInterfaces[SCLattice::North];
-        else if (pos[0] == 1) return P2PNetworkInterfaces[SCLattice::South];
-        else if (pos[1] == -1) return P2PNetworkInterfaces[SCLattice::West];
-        else if (pos[1] == 1) return P2PNetworkInterfaces[SCLattice::East];
-        else if (pos[2] == -1) return P2PNetworkInterfaces[SCLattice::Bottom];
-        else if (pos[2] == 1) return P2PNetworkInterfaces[SCLattice::Top];
+        if (pos[0] == -1) return P2PNetworkInterfaces[SCLattice2::MinusX];
+        else if (pos[0] == 1) return P2PNetworkInterfaces[SCLattice2::PlusX];
+        else if (pos[1] == -1) return P2PNetworkInterfaces[SCLattice2::MinusY];
+        else if (pos[1] == 1) return P2PNetworkInterfaces[SCLattice2::PlusY];
+        else if (pos[2] == -1) return P2PNetworkInterfaces[SCLattice2::MinusZ];
+        else if (pos[2] == 1) return P2PNetworkInterfaces[SCLattice2::PlusZ];
 
         return NULL;
     }
@@ -194,9 +194,8 @@ namespace SlidingCubes {
             itRule++;
         }
         if (found) {
-            setPositionAndOrientation(finalPos, finalOrient);
             auto scheduler = getScheduler();
-            scheduler->schedule(new TeleportationStartEvent(scheduler->now() + 200000, this, finalPos, finalOrient));
+            scheduler->schedule(new TeleportationStartEvent(scheduler->now() + 1000000, this, finalPos, finalOrient));
         }
         return found;
     }

@@ -136,7 +136,6 @@ namespace SlidingCubes {
         for (auto p: motionRules) {
             delete p;
         }
-
         motionRules.clear();
     }
 
@@ -155,8 +154,6 @@ namespace SlidingCubes {
     }
 
     std::ostream &operator<<(std::ostream &stream, SlidingCubesMotionRule const &mr) {
-
-
         return stream;
     }
 

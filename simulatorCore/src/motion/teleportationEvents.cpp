@@ -62,7 +62,7 @@ void TeleportationStartEvent::consume() {
 
     Time t = scheduler->now() + ANIMATION_DELAY;
     if (getWorld()->lattice->isInGrid(finalPosition)) {
-        bb->blockCode->console << " starting Teleportation to " << finalPosition
+        bb->blockCode->console << " starting Teleportation from " << bb->position << " to " << finalPosition
                                << " at " << t << "\n";
         scheduler->schedule(new TeleportationStopEvent(t, bb, finalPosition,finalOrientation));
     } else {

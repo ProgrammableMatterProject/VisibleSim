@@ -993,8 +993,8 @@ namespace BaseSimulator {
  * Used by SlidingCubes
  *
  */
-    class SCLattice2 : public SCLattice {
-        static vector<Cell3DPosition> nCells;
+    class SCLattice2 : public Lattice3D {
+        static vector<Cell3DPosition> nCells2;
     public:
         static inline const string directionName[] = { "+X", "+Y", "+Z","-X", "-Y", "-Z" };
         enum Direction { PlusX=0, PlusY, PlusZ, MinusX, MinusY, MinusZ, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
@@ -1022,8 +1022,36 @@ namespace BaseSimulator {
         virtual short getOppositeDirection(short d) const override;
         //!< @copydoc Lattice::getDirectionString
         virtual string getDirectionString(short d) const override;
-        static Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
+        static Cell3DPosition getNeighborRelativePos(Direction d) { return nCells2[d]; };
 
+        /**
+         * Static base function for world to SC lattice coordinate conversion
+         * @param pos input position
+         * @return world position
+         * @note Used by VisibleSim replayer
+         */
+        static Vector3D gridToUnscaledWorldPosition_base(const Cell3DPosition &pos);
+
+        /**
+         * @copydoc Lattice::gridToUnscaledWorldPosition
+         */
+        virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) const override;
+        /**
+         * @copydoc Lattice::unscaledWorldToGridPosition
+         */
+        virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) const override;
+        /**
+         * @copydoc Lattice::worldToGridPosition
+         */
+        virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) const override;
+        /**
+         * @copydoc Lattice::getRelativeConnectivity
+         */
+        virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) const override;
+        /**
+         * @copydoc Lattice::getMaxNumNeighbors
+         */
+        virtual inline const int getMaxNumNeighbors() const override { return MAX_NB_NEIGHBORS; }
     };
 
 

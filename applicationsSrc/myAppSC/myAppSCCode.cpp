@@ -12,6 +12,14 @@ MyAppSCCode::MyAppSCCode(SlidingCubesBlock *host) : SlidingCubesBlockCode(host),
 
 void MyAppSCCode::startup() {
     console << "start " << module->blockId << "\n";
+
+    for (int i=0; i<6; i++) {
+        auto p2p =module->getInterface(SCLattice2::Direction(i));
+        if (p2p->isConnected()) {
+            cout << i << ":" << p2p->getConnectedBlockBId() << endl;
+        }
+    }
+
     if (isLeader) { // Master id is 1
         module->setColor(RED);
         tryToMove();
@@ -37,13 +45,13 @@ void MyAppSCCode::myElectFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface
 
 P2PNetworkInterface *MyAppSCCode::findNeighborAt(const Cell3DPosition &pos) {
     int i = 0;
-    while (i<6 && (!module->getInterface(SCLattice::Direction(i))->isConnected() ||
-           module->getInterface(SCLattice::Direction(i))->connectedInterface->hostBlock->position != pos)) {
+    while (i<6 && (!module->getInterface(SCLattice2::Direction(i))->isConnected() ||
+           module->getInterface(SCLattice2::Direction(i))->connectedInterface->hostBlock->position != pos)) {
         i++;
     }
     cout << "found=" << i << endl;
     if (i < 6) {
-        return module->getInterface(SCLattice::Direction(i));
+        return module->getInterface(SCLattice2::Direction(i));
     }
     return nullptr;
 }
@@ -61,6 +69,14 @@ void MyAppSCCode::parseUserBlockElements(TiXmlElement *config) {
 void MyAppSCCode::onMotionEnd() {
     // complete with your code
     console << " End of motion to " << module->position << "\n";
+    cout << "module: " << module->blockId << endl;
+    for (int i=0; i<6; i++) {
+        auto p2p =module->getInterface(SCLattice2::Direction(i));
+        if (p2p->isConnected()) {
+            cout << i << ":" << p2p->getConnectedBlockBId() << endl;
+        }
+    }
+
     if (!tryToMove()) {
         // search a neighbor in (x,y-1,z)
         Cell3DPosition prevPos(module->position[0], module->position[1] - 1, module->position[2]);
@@ -92,4 +108,8 @@ bool MyAppSCCode::tryToMove() {
         return true;
     }
     return false;
+}
+
+void MyAppSCCode::onTap(int face) {
+    std::cout << "Block 'tapped':" << module->blockId << std::endl; // complete with your code
 }

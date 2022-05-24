@@ -173,10 +173,9 @@ namespace SlidingCubes {
                     wrld->disconnectBlock(rb);
                     rb->setPositionAndOrientation(pos, orient);
                     wrld->connectBlock(rb);
-                    //}
                 } else {
-                    cout << "menu world:" << n << endl;
-                    World::menuChoice(n); // For all non-catoms2D-specific cases
+                    //cout << "menu world:" << n << endl;
+                    World::menuChoice(n); // For all non-specific cases
                 }
                 break;
         }
@@ -223,17 +222,17 @@ namespace SlidingCubes {
             nPos = pos + nRelCells[i];
             ptrNeighbor = (SlidingCubesBlock *) lattice->getBlock(nPos);
             if (ptrNeighbor) {
-                (ptrBlock)->getInterface(SCLattice::Direction(i))->
-                        connect(ptrNeighbor->getInterface(SCLattice::Direction(
+                (ptrBlock)->getInterface(SCLattice2::Direction(i))->
+                        connect(ptrNeighbor->getInterface(SCLattice2::Direction(
                         lattice->getOppositeDirection(i))));
 
 #ifdef DEBUG_NEIGHBORHOOD
-                OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << lattice->getDirectionString(i) <<
-                    " to #" << ptrNeighbor->blockId << ":"
+                OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << int(i) << lattice->getDirectionString(i) <<
+                    " to #" << ptrNeighbor->blockId << ":" << int(lattice->getOppositeDirection(i))
                        << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
 #endif
             } else {
-                (ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
+                (ptrBlock)->getInterface(SCLattice2::Direction(i))->connect(nullptr);
             }
         }
     }
@@ -473,8 +472,8 @@ namespace SlidingCubes {
             cell = lattice->worldToGridPosition(pos);
 
             // top connector
-            if (!block->getInterface(SCLattice::Direction::Top)->isConnected() ||
-                block->getInterface(SCLattice::Direction::Top)->connectedInterface->hostBlock == NULL) {
+            if (!block->getInterface(SCLattice2::Direction::PlusZ)->isConnected() ||
+                block->getInterface(SCLattice2::Direction::PlusZ)->connectedInterface->hostBlock == NULL) {
                 pos.set(glblock->position[0] - 5.0, glblock->position[1] - 5.0, glblock->position[2] + 5.0);
                 v1.set(10.0, 0.0, 0.0);
                 v2.set(0.0, 10.0, 0.0);
@@ -482,8 +481,8 @@ namespace SlidingCubes {
                 saveStlRect(file, pos, v1, v2, N);
             }
             // bottom connector
-            if (!block->getInterface(SCLattice::Direction::Bottom)->isConnected() ||
-                block->getInterface(SCLattice::Direction::Bottom)->connectedInterface->hostBlock == NULL) {
+            if (!block->getInterface(SCLattice2::Direction::MinusZ)->isConnected() ||
+                block->getInterface(SCLattice2::Direction::MinusZ)->connectedInterface->hostBlock == NULL) {
                 pos.set(glblock->position[0] + 5.0, glblock->position[1] - 5.0, glblock->position[2] - 5.0);
                 v1.set(-10.0, 0.0, 0.0);
                 v2.set(0.0, 10.0, 0.0);
@@ -491,8 +490,8 @@ namespace SlidingCubes {
                 saveStlRect(file, pos, v1, v2, N);
             }
             // left connector
-            if (!block->getInterface(SCLattice::Direction::North)->isConnected() ||
-                block->getInterface(SCLattice::Direction::North)->connectedInterface->hostBlock == NULL) {
+            if (!block->getInterface(SCLattice2::Direction::MinusX)->isConnected() ||
+                block->getInterface(SCLattice2::Direction::MinusX)->connectedInterface->hostBlock == NULL) {
                 pos.set(glblock->position[0] - 5.0, glblock->position[1] + 5.0, glblock->position[2] - 5.0);
                 v1.set(0.0, -10.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
@@ -500,8 +499,8 @@ namespace SlidingCubes {
                 saveStlRect(file, pos, v1, v2, N);
             }
             // right connector
-            if (!block->getInterface(SCLattice::Direction::South)->isConnected() ||
-                block->getInterface(SCLattice::Direction::South)->connectedInterface->hostBlock == NULL) {
+            if (!block->getInterface(SCLattice2::Direction::PlusX)->isConnected() ||
+                block->getInterface(SCLattice2::Direction::PlusX)->connectedInterface->hostBlock == NULL) {
                 pos.set(glblock->position[0] + 5.0, glblock->position[1] - 5.0, glblock->position[2] - 5.0);
                 v1.set(0.0, 10.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
@@ -509,8 +508,8 @@ namespace SlidingCubes {
                 saveStlRect(file, pos, v1, v2, N);
             }
             // back connector
-            if (!block->getInterface(SCLattice::Direction::East)->isConnected() ||
-                block->getInterface(SCLattice::Direction::East)->connectedInterface->hostBlock == NULL) {
+            if (!block->getInterface(SCLattice2::Direction::PlusY)->isConnected() ||
+                block->getInterface(SCLattice2::Direction::PlusY)->connectedInterface->hostBlock == NULL) {
                 pos.set(glblock->position[0] + 5.0, glblock->position[1] + 5.0, glblock->position[2] - 5.0);
                 v1.set(-10.0, 0.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
@@ -518,16 +517,14 @@ namespace SlidingCubes {
                 saveStlRect(file, pos, v1, v2, N);
             }
             // front connector
-            if (!block->getInterface(SCLattice::Direction::West)->isConnected() ||
-                block->getInterface(SCLattice::Direction::West)->connectedInterface->hostBlock == NULL) {
+            if (!block->getInterface(SCLattice2::Direction::MinusY)->isConnected() ||
+                block->getInterface(SCLattice2::Direction::MinusY)->connectedInterface->hostBlock == NULL) {
                 pos.set(glblock->position[0] - 5.0, glblock->position[1] - 5.0, glblock->position[2] - 5.0);
                 v1.set(10.0, 0.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
                 N.set(0.0, 1.0, 0.0);
                 saveStlRect(file, pos, v1, v2, N);
             }
-
-
             file << "        endsolid rb#" << glblock->blockId << endl;
         }
         unlock();
@@ -536,6 +533,5 @@ namespace SlidingCubes {
 
         return true;
     }
-
 
 } // SlidingCube namespace

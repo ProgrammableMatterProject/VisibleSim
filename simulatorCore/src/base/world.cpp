@@ -165,7 +165,6 @@ void World::linkBlocks() {
 
 void World::linkNeighbors(const Cell3DPosition &pos) {
     vector<Cell3DPosition> nCells = lattice->getActiveNeighborCells(pos);
-
     // Check neighbors for each interface
     for (Cell3DPosition nPos : nCells) {
         linkBlock(nPos);
@@ -175,7 +174,7 @@ void World::linkNeighbors(const Cell3DPosition &pos) {
 
 void World::connectBlock(BuildingBlock *block, bool count) {
     Cell3DPosition pos = block->position;
-    OUTPUT << "Connect Block " << block->blockId << " pos = " << pos << endl;
+    //OUTPUT << "Connect Block " << block->blockId << " pos = " << pos << endl;
     lattice->insert(block, pos, count);
     linkBlock(pos);
     linkNeighbors(pos);
@@ -283,7 +282,7 @@ void World::createHelpWindow() {
 
 void World::tapBlock(Time date, bID bId, int face) {
     BuildingBlock *bb = getBlockById(bId);
-    // cerr << bb->blockId << " : " << bb->position << " : " << face << endl;
+    cerr << bb->blockId << " : " << bb->position << " : " << face << endl;
     bb->tap(date, face < lattice->getMaxNumNeighbors() ? face : -1);
 }
 

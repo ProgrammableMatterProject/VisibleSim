@@ -65,7 +65,7 @@ void SlidingCubesReplayWorld::addBlock(bID blockId, KeyframeBlock block) {
     pos.pt[0] = gridScale*block.x;
     pos.pt[1] = gridScale*block.y;
     pos.pt[2] = gridScale*block.z;
-    Vector3D newPos = SCLattice::gridToUnscaledWorldPosition_base(pos);
+    Vector3D newPos = SCLattice2::gridToUnscaledWorldPosition_base(pos);
     glBlock->setPosition(newPos);
 
     Color col;
@@ -85,7 +85,7 @@ void SlidingCubesReplayWorld::updatePosition(u4 blockId, KeyframeBlock block)
     pos.pt[1] = block.y*gridScale;
     pos.pt[2] = block.z*gridScale;
 
-    Vector3D newPos = SCLattice::gridToUnscaledWorldPosition_base(pos);
+    Vector3D newPos = SCLattice2::gridToUnscaledWorldPosition_base(pos);
 
     for (const auto& pair : mapGlBlocks) {
         if(pair.first==blockId)

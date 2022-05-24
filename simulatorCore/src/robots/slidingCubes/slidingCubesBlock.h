@@ -48,7 +48,7 @@ namespace SlidingCubes {
 
         P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) const;
 
-        inline P2PNetworkInterface *getInterface(SCLattice::Direction d) const {
+        inline P2PNetworkInterface *getInterface(SCLattice2::Direction d) const {
             return P2PNetworkInterfaces[d];
         }
 

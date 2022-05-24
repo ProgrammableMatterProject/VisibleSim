@@ -89,7 +89,6 @@ public:
 
     using World::updateGlData; // Suppresses hiding warning
     void updateGlData(SlidingCubesBlock*blc, const Matrix &mat);
-
     /**
      * @copydoc World::setSelectedFace
      */

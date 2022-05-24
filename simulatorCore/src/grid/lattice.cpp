@@ -88,7 +88,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p, bool count) {
 }
 
 void Lattice::remove(const Cell3DPosition &p, bool count) {
-    grid[getIndex(p)] = NULL;
+    grid[getIndex(p)] = nullptr;
     if (count) nbModules--;
 }
 
@@ -1008,7 +1008,7 @@ Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int dir
 }
 
 /********************* SCLattice2 *********************/
-vector<Cell3DPosition> SCLattice2::nCells{
+vector<Cell3DPosition> SCLattice2::nCells2{
         Cell3DPosition(1,0,0), // +X
         Cell3DPosition(0,1,0), // +Y
         Cell3DPosition(0,0,1),  // +Z
@@ -1016,8 +1016,8 @@ vector<Cell3DPosition> SCLattice2::nCells{
         Cell3DPosition(0,-1,0),  // -Y
         Cell3DPosition(0,0,-1)  // -Z
 }; //!< Vector containing relative position of neighboring cells
-SCLattice2::SCLattice2() : SCLattice() { }
-SCLattice2::SCLattice2(const Cell3DPosition &gsz, const Vector3D &gsc) : SCLattice(gsz,gsc) {}
+SCLattice2::SCLattice2() : Lattice3D() { }
+SCLattice2::SCLattice2(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
 SCLattice2::~SCLattice2() { }
 
 short SCLattice2::getOppositeDirection(short d) const {
@@ -1031,5 +1031,28 @@ string SCLattice2::getDirectionString(short d) const {
 }
 
 Cell3DPosition SCLattice2::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
-    return pRef + nCells[direction];
+    return pRef + nCells2[direction];
 }
+
+Vector3D SCLattice2::gridToUnscaledWorldPosition_base(const Cell3DPosition &pos) {
+    return Vector3D(pos[0], pos[1], pos[2], 0);
+}
+
+Vector3D SCLattice2::gridToUnscaledWorldPosition(const Cell3DPosition &pos) const {
+    return gridToUnscaledWorldPosition_base(pos);
+}
+
+Cell3DPosition SCLattice2::unscaledWorldToGridPosition(const Vector3D &pos) const {
+    return Cell3DPosition(pos[0], pos[1], pos[2]);
+}
+
+Cell3DPosition SCLattice2::worldToGridPosition(const Vector3D &pos) const {
+    return Cell3DPosition(pos[0] / gridScale[0],
+                          pos[1] / gridScale[1],
+                          pos[2] / gridScale[2]);
+}
+
+vector<Cell3DPosition> SCLattice2::getRelativeConnectivity(const Cell3DPosition &p) const {
+    return nCells2;
+}
+

@@ -44,6 +44,13 @@ public :
   */
     void onMotionEnd() override;
 
+/**
+  * @brief This function is called when a module is tapped by the user. Prints a message to the console by default.
+     Can be overloaded in the user blockCode
+  * @param face face that has been tapped
+  */
+    void onTap(int face) override;
+
     bool tryToMove();
     P2PNetworkInterface *findNeighborAt(const Cell3DPosition &pos);
 

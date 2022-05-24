@@ -436,7 +436,6 @@ void HexanodesWorld::disconnectBlock(BuildingBlock *block) {
             toBlock->connectedInterface = NULL;
         }
     }
-
     lattice->remove(block->position);
 }
 
