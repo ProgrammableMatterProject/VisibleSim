@@ -39,7 +39,7 @@ public:
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                int argc, char *argv[]) override;
     virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                           const Cell3DPosition &pos, const Color &color, bool master) override;
+                           const Cell3DPosition &pos, const Color &color, uint8_t orient) override;
     virtual void printInfo() override { OUTPUT << "I'm a Nodes2DSimulator" << endl; }
     void help();
 };

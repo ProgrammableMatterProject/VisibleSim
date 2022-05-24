@@ -10,14 +10,10 @@ OUTDIRS = $(LDIR) $(DEPDIR) $(OBJDIR)
 TINYXMLSRCS = deps/TinyXML/tinyxml.cpp deps/TinyXML/tinyxmlerror.cpp deps/TinyXML/tinyxmlparser.cpp
 OUTDIRS += $(OBJDIR)/deps/TinyXML $(DEPDIR)/deps/TinyXML
 
-MELD_DIR = meld
-MELDINTERPRET_SRCS_NODIR = meldInterpretScheduler.cpp meldInterpretVM.cpp meldInterpretMessages.cpp meldInterpretEvents.cpp
-MELDINTERPRET_SRCS = $(MELDINTERPRET_SRCS_NODIR:%=$(MELD_DIR)/%)
-
 TARGETENCODING_SRCS = csg/csg.cpp csg/csgParser.cpp # csg/csgUtils.cpp
 OUTDIRS += $(OBJDIR)/csg $(DEPDIR)/csg
 
-BASESIMULATOR_SRCS = $(MELDINTERPRET_SRCS) $(TINYXMLSRCS) $(TARGETENCODING_SRCS) base/simulator.cpp base/buildingBlock.cpp base/blockCode.cpp events/scheduler.cpp base/world.cpp comm/network.cpp events/events.cpp base/glBlock.cpp gui/interface.cpp gui/openglViewer.cpp gui/shaders.cpp math/vector3D.cpp math/matrix44.cpp utils/color.cpp gui/camera.cpp gui/objLoader.cpp gui/vertexArray.cpp utils/trace.cpp clock/clock.cpp clock/qclock.cpp clock/clockNoise.cpp stats/configStat.cpp utils/commandLine.cpp events/cppScheduler.cpp grid/cell3DPosition.cpp utils/configExporter.cpp grid/lattice.cpp grid/target.cpp stats/statsCollector.cpp motion/translationEvents.cpp stats/statsIndividual.cpp utils/random.cpp comm/rate.cpp motion/teleportationEvents.cpp utils/utils.cpp replay/replayExporter.cpp
+BASESIMULATOR_SRCS = $(MELDINTERPRET_SRCS) $(TINYXMLSRCS) $(TARGETENCODING_SRCS) base/simulator.cpp base/buildingBlock.cpp base/blockCode.cpp events/scheduler.cpp base/world.cpp comm/network.cpp events/events.cpp base/glBlock.cpp gui/interface.cpp gui/openglViewer.cpp gui/shaders.cpp math/vector3D.cpp math/matrix44.cpp utils/color.cpp gui/camera.cpp gui/objLoader.cpp gui/vertexArray.cpp utils/trace.cpp clock/clock.cpp clock/qclock.cpp clock/clockNoise.cpp stats/configStat.cpp utils/commandLine.cpp events/cppScheduler.cpp math/cell3DPosition.cpp utils/configExporter.cpp grid/lattice.cpp grid/target.cpp stats/statsCollector.cpp motion/translationEvents.cpp stats/statsIndividual.cpp utils/random.cpp comm/rate.cpp motion/teleportationEvents.cpp utils/utils.cpp replay/replayExporter.cpp
 
 BASESIMULATOR_OBJS = $(BASESIMULATOR_SRCS:%.cpp=$(OBJDIR)/%.o)
 BASESIMULATOR_DEPS = $(BASESIMULATOR_SRCS:%.cpp=$(DEPDIR)/%.depends)
@@ -75,8 +71,8 @@ OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
 OUT = $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNodes2D.a $(LDIR)/libsimHexanodes.a
 
-CORE_DIRS = base/ clock/ comm/ deps/ grid/ gui/ math/ meld/ motion/ stats/ robots/ events/ utils/ replay/
-CORE_INC_DIRS = $(CORE_DIRS) $(BLINKYBLOCKS_DIR) $(SLIDINGCUBES_DIR) $(CATOMS2D_DIR) $(CATOMS3D_DIR) $(SMARTBLOCKS_DIR) $(DATOMS_DIR) $(NODES2D_DIR) $(HEXANODES_DIR) $(MELD_DIR)
+CORE_DIRS = base/ clock/ comm/ deps/ grid/ gui/ math/ motion/ stats/ robots/ events/ utils/ replay/
+CORE_INC_DIRS = $(CORE_DIRS) $(BLINKYBLOCKS_DIR) $(SLIDINGCUBES_DIR) $(CATOMS2D_DIR) $(CATOMS3D_DIR) $(SMARTBLOCKS_DIR) $(DATOMS_DIR) $(NODES2D_DIR) $(HEXANODES_DIR)
 
 OUTDIRS += $(CORE_INC_DIRS:%=$(DEPDIR)/%) $(CORE_INC_DIRS:%=$(OBJDIR)/%)
 INCLUDES = $(GLOBAL_INCLUDES) -I. # $(CORE_INC_DIRS:%=-I%)

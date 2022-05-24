@@ -56,7 +56,7 @@ void Nodes2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D 
 }
 
 void Nodes2DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-                                  const Cell3DPosition &pos, const Color &color, bool master) {
+                                  const Cell3DPosition &pos, const Color &color, uint8_t orient) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
     //  here, using the blockElt TiXmlElement.
@@ -72,7 +72,7 @@ void Nodes2DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeB
     }
 
     // Finally, add block to the world
-    ((Nodes2DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+    ((Nodes2DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation);
     world->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);
 }
 

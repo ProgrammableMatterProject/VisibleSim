@@ -59,7 +59,7 @@ public:
     P2PNetworkInterface* getNextInterface(RelativeDirection::Direction dir,
                                           P2PNetworkInterface *p2p,
                                           bool connected = false) const;
-
+    void setPositionAndOrientation(const Cell3DPosition &p, uint8_t orient) override {}
     // Motion
     bool isBlocked() const;
     bool canMove(const Catoms2DRotationMove &m) const;

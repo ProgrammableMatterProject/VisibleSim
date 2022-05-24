@@ -17,7 +17,7 @@
 #include "../../base/buildingBlock.h"
 #include "nodes2DBlockCode.h"
 #include "nodes2DGlBlock.h"
-#include "../../grid/cell3DPosition.h"
+#include "../../math/cell3DPosition.h"
 #include "../../grid/lattice.h"
 #include "../../utils/utils.h"
 
@@ -110,7 +110,7 @@ public:
      *       @brief Set the catom in the grid according to a cell position and an orientation code
      *       @param pos: position of the cell constaining the catom
      *       @param code: orientation code (number of the connector aligned with x axis)*/
-    void setPositionAndOrientation(const Cell3DPosition &pos,uint8_t code);
+    void setPositionAndOrientation(const Cell3DPosition &pos,uint8_t code) override;
 
     void setDisplayedValue(int n);
 
