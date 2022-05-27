@@ -15,19 +15,20 @@
 
 namespace BlinkyBlocks {
 
-class BlinkyBlocksBlock;
+    class BlinkyBlocksBlock;
 
-class BlinkyBlocksBlockCode : public BaseSimulator::BlockCode {
-public:
+    class BlinkyBlocksBlockCode : public BaseSimulator::BlockCode {
+    public:
 
-    BlinkyBlocksBlockCode(BlinkyBlocksBlock *host);
-    virtual ~BlinkyBlocksBlockCode() override;
+        BlinkyBlocksBlockCode(BlinkyBlocksBlock *host);
 
-    virtual void processLocalEvent(EventPtr pev) override {
-        // Do not remove, used by sample blockcode
-        BlockCode::processLocalEvent(pev);
-    }
-};
+        virtual ~BlinkyBlocksBlockCode() override;
+
+       virtual void processLocalEvent(EventPtr pev) override {
+            // Do not remove, used by sample blockcode
+            BlockCode::processLocalEvent(pev);
+        }
+    };
 
 }
 

@@ -21,7 +21,11 @@ public :
 
     virtual void glDraw(ObjLoader::ObjLoader *ptrObj) override;
     void setRotation(short rotCode) { rotCoef=rotCode; };
-    virtual string getInfo() override;
+    string getInfo() override;
+
+    string getPopupInfo() override;
+
+
 };
 }
 #endif /* BLINKYBLOCKSGLBLOCK_H_ */
