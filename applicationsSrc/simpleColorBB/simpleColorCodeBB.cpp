@@ -30,4 +30,4 @@ void SimpleColorCode::myBroadcastFunc(MessagePtr anonMsg, P2PNetworkInterface*se
         hostBlock->setColor(myTabColors[distance%8]);
         sendMessageToAllNeighbors("Broadcast",new MessageOf<int>(BROADCAST_MSG,distance),100,200,1,sender);
     }
-};
+}
