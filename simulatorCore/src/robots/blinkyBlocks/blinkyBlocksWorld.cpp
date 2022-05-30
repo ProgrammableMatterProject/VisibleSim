@@ -112,7 +112,6 @@ namespace BlinkyBlocks {
     void BlinkyBlocksWorld::glDraw() {
         glPushMatrix();
         glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-        glDisable(GL_TEXTURE_2D);
         lock();
         for (const auto& pair : mapGlBlocks) {
             ((BlinkyBlocksGlBlock*)pair.second)->glDraw(objBlock);
@@ -125,6 +124,22 @@ namespace BlinkyBlocks {
         if (bb) bb->blockCode->onGlDraw();
 
         lattice->glDraw();
+
+        if (GlutContext::editMode && bb) {
+            Cell3DPosition nPos;
+            if (bb->getNeighborPos(numSelectedFace, nPos)) {
+                static const GLfloat transpRed[4] = {255.0, 0, 0, 0.5};
+                auto pos = lattice->gridToWorldPosition(nPos);
+                glPushMatrix();
+                glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+                glTranslatef(pos[0],pos[1],pos[2]);
+                objBlock->setLightedColor(transpRed);
+                objBlock->glDraw();
+                glPopMatrix();
+            } else {
+                cerr << "Position out of the grid" << endl;
+            }
+        }
     }
 
     void BlinkyBlocksWorld::glDrawShadows() {
@@ -159,7 +174,7 @@ namespace BlinkyBlocks {
 
     void BlinkyBlocksWorld::glDrawIdByMaterial() {
         glPushMatrix();
-        glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
+        glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 
         glDisable(GL_TEXTURE_2D);
         int n;

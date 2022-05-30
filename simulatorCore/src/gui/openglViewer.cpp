@@ -60,7 +60,7 @@ float GlutContext::bgColor2[3] = {0.8, 0.8, 0.8};
 //GLint GlutContext::consoleWinId=0; // TODO new interface with subWindows
 unsigned int GlutContext::nbModules = 0;
 long unsigned int GlutContext::timestep = 0;
-bool GlutContext::editMode=false;
+bool GlutContext::editMode = false;
 
 std::string animationDirName;
 
@@ -448,22 +448,23 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             if (editMode) {
                 getWorld()->exportConfiguration();
             } else {
-            const string &bsname = myBasename(Simulator::configFileName);
-            const string &ssName = generateTimestampedFilename("capture_" + bsname.substr(0, bsname.size() - 4), "ppm");
-            string ssNameJpg = ssName;
-            ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
-            saveScreen(ssName.c_str());
+                const string &bsname = myBasename(Simulator::configFileName);
+                const string &ssName = generateTimestampedFilename("capture_" + bsname.substr(0, bsname.size() - 4),
+                                                                   "ppm");
+                string ssNameJpg = ssName;
+                ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
+                saveScreen(ssName.c_str());
 #ifndef WIN32
-            (void)std::async([ssNameJpg, ssName](){
-                                          int r = system(string("convert " + ssName + " " + ssNameJpg
+                (void)std::async([ssNameJpg, ssName](){
+                                              int r = system(string("convert " + ssName + " " + ssNameJpg
+                                                                    + " >/dev/null 2>/dev/null").c_str());
+                                              if (r == 0)
+                                                  system(string("rm -rf " + ssName
                                                                 + " >/dev/null 2>/dev/null").c_str());
-                                          if (r == 0)
-                                              system(string("rm -rf " + ssName
-                                                            + " >/dev/null 2>/dev/null").c_str());
-                                      });
+                                          });
 #endif
-            cout << "Screenshot saved to files: " << ssName
-                 << " and " << ssNameJpg << endl;
+                cout << "Screenshot saved to files: " << ssName
+                     << " and " << ssNameJpg << endl;
             }
             break;
         case 'm' : {
@@ -529,23 +530,25 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case ',':
             enableShowFPS = !enableShowFPS;
             break;
-            case GLUT_KEY_DELETE : case 127 : case 'd' :{
+        case GLUT_KEY_DELETE :
+        case 127 :
+        case 'd' : {
             auto wrld = BaseSimulator::getWorld();
-            auto bb=wrld->getSelectedBuildingBlock();
+            auto bb = wrld->getSelectedBuildingBlock();
             if (editMode && bb) {
                 wrld->deleteBlock(bb);
             }
         }
             break;
-        case 'a': {
+        /*case 'a': {
             auto wrld = BaseSimulator::getWorld();
-            auto bb=wrld->getSelectedBuildingBlock();
+            auto bb = wrld->getSelectedBuildingBlock();
             if (editMode && bb) {
-                auto nsf=wrld->getNumSelectedFace();
-                if (nsf!=-1) {
+                auto nsf = wrld->getNumSelectedFace();
+                if (nsf != -1) {
                     Cell3DPosition nPos;
                     if (bb->getNeighborPos(nsf, nPos)) {
-                        if(not wrld->lattice->cellHasBlock(nPos)) {
+                        if (not wrld->lattice->cellHasBlock(nPos)) {
                             wrld->addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
                             wrld->linkBlock(nPos);
                             wrld->linkNeighbors(nPos);
@@ -553,7 +556,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                     }
                 }
             }
-        }
+        }*/
         default: { // Pass on key press to user blockcode handler
             // NOTE: Since C++ does not handle static virtual functions, we need
             //  to get a pointer to a blockcode and call onUserKeyPressed from
@@ -615,10 +618,10 @@ void GlutContext::specialFunc(int key, int x, int y) {
             break;
         case GLUT_KEY_INSERT: {
             auto wrld = BaseSimulator::getWorld();
-            auto bb=wrld->getSelectedBuildingBlock();
+            auto bb = wrld->getSelectedBuildingBlock();
             if (editMode && bb) {
-                auto nsf=wrld->getNumSelectedFace();
-                if (nsf!=-1) {
+                auto nsf = wrld->getNumSelectedFace();
+                if (nsf != -1) {
                     Cell3DPosition nPos;
                     if (bb->getNeighborPos(nsf, nPos)) {
                         wrld->addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
@@ -630,7 +633,7 @@ void GlutContext::specialFunc(int key, int x, int y) {
         }
             break;
         case GLUT_KEY_F12 : {
-            editMode=!editMode;
+            editMode = !editMode;
             if (editMode) {
                 glutPassiveMotionFunc(passiveMotionEditFunc);
                 glutSetWindowTitle("VisibleSim [EDIT Mode]");
