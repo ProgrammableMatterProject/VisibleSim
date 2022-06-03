@@ -580,6 +580,10 @@ add_executable(rainbow applicationsSrc/rainbow/rainbow.cpp applicationsSrc/rainb
 target_link_libraries(rainbow -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS rainbow RUNTIME DESTINATION applicationsBin/rainbow)
 
+add_executable(ants applicationsSrc/ants/ants.cpp applicationsSrc/ants/antsCode.cpp)
+target_link_libraries(ants -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS ants RUNTIME DESTINATION applicationsBin/rainbow)
+
 add_executable(demoMotionsC3D applicationsSrc/demoMotionsC3D/demoMotionsC3D.cpp applicationsSrc/demoMotionsC3D/demoMotionsC3DCode.cpp)
 target_link_libraries(demoMotionsC3D -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS demoMotionsC3D RUNTIME DESTINATION applicationsBin/demoMotionsC3D)
