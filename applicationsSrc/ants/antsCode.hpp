@@ -6,13 +6,18 @@
 #include "robots/blinkyBlocks/blinkyBlocksBlockCode.h"
 
 static const int MOVE_MSG_ID = 1001;
+static const int IT_WAKEUP_ID = 2001;
+
 
 using namespace BlinkyBlocks;
 
 class AntsCode : public BlinkyBlocksBlockCode {
 private:
     BlinkyBlocksBlock *module = nullptr;
-    uint16_t Nants;
+    uint16_t Nants=0;
+    uint32_t pheromone=0;
+    uint32_t tabCoef[6]={0,0,0,0,0,0};
+    vector<uint8_t > 
 public :
     AntsCode(BlinkyBlocksBlock *host);
 
@@ -25,6 +30,7 @@ public :
   */
     void startup() override;
 
+    void setColor();
 /**
   * @brief Message handler for the message 'move'
   * @param _msg Pointer to the message received by the module, requires casting
@@ -47,6 +53,7 @@ public :
   */
     void parseUserBlockElements(TiXmlElement *config) override;
 
+    virtual void onInterruption(uint64_t mode) override;
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {

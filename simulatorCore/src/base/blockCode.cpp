@@ -186,6 +186,10 @@ namespace BaseSimulator {
             case EVENT_TELEPORTATION_END: {
                 onMotionEnd();
             } break;
+            case EVENT_INTERRUPTION:{
+                std::shared_ptr<InterruptionEvent> itev = std::static_pointer_cast<InterruptionEvent>(pev);
+                onInterruption(itev->mode);
+            } break;
         }
     }
 

@@ -228,6 +228,8 @@ public:
      * @return a string (can be multi-line with `\n`) to display on the GUI
      */
     virtual string onInterfaceDraw();
+
+    virtual void onInterruption(uint64_t mode) {};
 };
 
 } // BaseSimulator namespace
