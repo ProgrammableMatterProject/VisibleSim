@@ -1,6 +1,6 @@
 #include "antsCode.hpp"
 
-uint64_t pheromoneMax=1;
+uint64_t pheromoneMax=100;
 
 AntsCode::AntsCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host),module(host) {
     // @warning Do not remove block below, as a blockcode with a NULL host might be created
@@ -24,7 +24,7 @@ void AntsCode::startup() {
 }
 
 void AntsCode::setColor() {
-    float r = pheromone/pheromoneMax;
+    float r = (1.0*pheromone)/pheromoneMax;
     module->setColor(Color(0.0f,r,1.0f-r));
 }
 
@@ -33,8 +33,8 @@ void AntsCode::myMoveFunc(std::shared_ptr<Message>_msg, P2PNetworkInterface*send
     MessageOf<pair<uint8_t,uint16_t>>* msg = static_cast<MessageOf<pair<uint8_t,uint16_t>>*>(_msg.get());
     pair<uint8_t,uint16_t> msgData = *msg->getData();
 
-    //auto senderDir=module->getNbNeighbors()>1?module->getDirection(sender):6;
-    auto senderDir=module->getDirection(sender);
+    auto senderDir=module->getNbNeighbors()>1?module->getDirection(sender):6;
+    //auto senderDir=module->getDirection(sender);
     for (int i=0; i<msgData.first; i++) {
         ants.push_back(senderDir);
     }
@@ -70,19 +70,19 @@ void AntsCode::onInterruptionEvent(uint64_t data) {
                     module->getInterface(possibleDirs[0]),2000,0);
         pheromones[possibleDirs[0]]++;
     } else {
-        cout << "Possible: " << possibleDirs.size() << "/" << sumPheromones << endl;
+        /*cout << "Possible: " << possibleDirs.size() << "/" << sumPheromones << endl;
         for (auto &p:possibleDirs) {
             cout << int(p) << ":" << int(pheromones[p]) << endl;
-        }
+        }*/
         uint32_t p = rand()%sumPheromones;
-        cout << "p= " << p << endl;
+        //cout << "p= " << p << endl;
         int i=0;
         uint32_t s=pheromones[possibleDirs[i]];
         while (p>s) {
             i++;
             s+=pheromones[possibleDirs[i]]+1;
         }
-        cout << "i=" << i << endl;
+        //cout << "i=" << i << endl;
         // direction is in possibleDirs[i]
         sendMessage(new MessageOf<pair<uint8_t,uint32_t>>(MOVE_MSG_ID,pair<uint8_t,uint32_t>(1,pheromone)),
                     module->getInterface(possibleDirs[i]),2000,0);
