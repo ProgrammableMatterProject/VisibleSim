@@ -73,6 +73,7 @@ public:
     bID getId() const;
     void setColor(const Color &);
     void setColor(int idColor);
+    void scheduleInterruption(uint64_t delay,uint64_t data=0);
 
 /**
  * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it. Has to be overriden in the child class.
@@ -229,7 +230,10 @@ public:
      */
     virtual string onInterfaceDraw();
 
-    virtual void onInterruption(uint64_t mode) {};
+    /**
+     * Callback function called when an interruption event occurs
+     */
+    virtual void onInterruptionEvent(uint64_t data) {};
 };
 
 } // BaseSimulator namespace

@@ -14,13 +14,12 @@ using namespace BlinkyBlocks;
 class AntsCode : public BlinkyBlocksBlockCode {
 private:
     BlinkyBlocksBlock *module = nullptr;
-    uint16_t Nants=0;
-    uint32_t pheromone=0;
-    uint32_t tabCoef[6]={0,0,0,0,0,0};
-    vector<uint8_t > 
+    vector<uint8_t> ants; // 4 bits for the entry port E, 1 bit for pheromone P 0x000PEEEE
+    uint32_t pheromone;
+    uint32_t pheromones[6];
+    bool isNest, isFood;
 public :
     AntsCode(BlinkyBlocksBlock *host);
-
     ~AntsCode() {};
 
 /**
@@ -30,7 +29,9 @@ public :
   */
     void startup() override;
 
-    void setColor();
+    Time getRandomTime();
+    void updateColor();
+    void onInterruptionEvent(uint64_t data) override;
 /**
   * @brief Message handler for the message 'move'
   * @param _msg Pointer to the message received by the module, requires casting
@@ -53,7 +54,6 @@ public :
   */
     void parseUserBlockElements(TiXmlElement *config) override;
 
-    virtual void onInterruption(uint64_t mode) override;
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
