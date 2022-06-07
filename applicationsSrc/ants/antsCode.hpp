@@ -12,10 +12,12 @@ using namespace BlinkyBlocks;
 class AntsCode : public BlinkyBlocksBlockCode {
 private:
     BlinkyBlocksBlock *module = nullptr;
-    uint16_t Nants;
+    //uint16_t Nants;
+    vector<uint8_t> ants;
+    uint32_t pheromone;
+    uint32_t pheromones[6];
 public :
     AntsCode(BlinkyBlocksBlock *host);
-
     ~AntsCode() {};
 
 /**
@@ -25,6 +27,9 @@ public :
   */
     void startup() override;
 
+    Time getRandomTime();
+    void setColor();
+    void onInterruptionEvent(uint64_t data) override;
 /**
   * @brief Message handler for the message 'move'
   * @param _msg Pointer to the message received by the module, requires casting
