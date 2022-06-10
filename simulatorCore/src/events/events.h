@@ -322,15 +322,25 @@ public:
 /** InterruptionEvent is meant to be used as an interruption triggered by one module
  * it is meant to model this behavior to enable module actions such as periodically
  * checking some sensor information or updating its state based on local information **/
+template <class T>
 class InterruptionEvent : public BlockEvent {
 public:
-    uint64_t mode; //!< A used-defined identifier for non general-purpose interruptions
+    T data; //!< A used-defined identifier for non general-purpose interruptions
 
-    InterruptionEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t mode);
-    InterruptionEvent(InterruptionEvent *ev);
-    ~InterruptionEvent();
-    void consumeBlockEvent() override;
-    const virtual string getEventName() override;
+    InterruptionEvent(Time t, BaseSimulator::BuildingBlock *conBlock, T c_data): BlockEvent(t, conBlock),data(c_data) {
+        EVENT_CONSTRUCTOR_INFO();
+        eventType = EVENT_INTERRUPTION;
+    }
+    InterruptionEvent(InterruptionEvent *ev) : BlockEvent(ev) {
+        EVENT_CONSTRUCTOR_INFO();
+        data = ev->data;
+    }
+    ~InterruptionEvent() {EVENT_DESTRUCTOR_INFO();}
+    void consumeBlockEvent() override {
+        EVENT_CONSUME_INFO();
+        concernedBlock->scheduleLocalEvent(EventPtr(new InterruptionEvent(this)));
+    }
+    const virtual string getEventName() override { return("InterruptionEvent"); };
 };
 
 #endif /* EVENTS_H_ */

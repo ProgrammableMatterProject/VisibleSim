@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include "blockCode.h"
-#include "../events/scheduler.h"
 #include "world.h"
 
 using namespace std;
@@ -189,8 +188,7 @@ namespace BaseSimulator {
                 onMotionEnd();
             } break;
             case EVENT_INTERRUPTION:{
-                std::shared_ptr<InterruptionEvent> itev = std::static_pointer_cast<InterruptionEvent>(pev);
-                onInterruptionEvent(itev->mode);
+                onInterruptionEvent(pev);
             } break;
         }
     }
@@ -222,11 +220,5 @@ namespace BaseSimulator {
 
     void BlockCode::setColor(int idColor) {
         if (hostBlock) hostBlock->setColor(idColor);
-    }
-
-    void BlockCode::scheduleInterruption(uint64_t delay, uint64_t data) {
-        getScheduler()->schedule(
-                new InterruptionEvent(getScheduler()->now()+delay,
-                                      hostBlock,data));
     }
 } // BaseSimulator namespace

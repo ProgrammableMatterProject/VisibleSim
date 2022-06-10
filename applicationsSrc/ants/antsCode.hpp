@@ -31,7 +31,7 @@ public :
 
     Time getRandomTime();
     void updateColor();
-    void onInterruptionEvent(uint64_t data) override;
+    void onInterruptionEvent(shared_ptr<Event> event) override;
 /**
   * @brief Message handler for the message 'move'
   * @param _msg Pointer to the message received by the module, requires casting

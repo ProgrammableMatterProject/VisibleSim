@@ -21,8 +21,8 @@ void AntsCode::startup() {
     console << "start " << getId() << "\n";
     updateColor();
     if (!ants.empty()) {
-        //getScheduler()->schedule(new InterruptionEvent(getRandomTime(), module, 0));
-        scheduleInterruption(getRandomTime(), 0);
+        auto scheduler=getScheduler();
+        scheduler->schedule(new InterruptionEvent<int>(scheduler->now()+getRandomTime(), module, 1));
     }
     for (int i = 0; i < 6; i++) { pheromones[i] = 0; }
 }
@@ -54,12 +54,14 @@ void AntsCode::myMoveFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *se
     pheromones[senderDir] = msgData.second;
     updateColor();
     if (!ants.empty()) {
-        //getScheduler()->schedule(new InterruptionEvent(getRandomTime(), module, 0));
-        scheduleInterruption(getRandomTime());
+        auto scheduler=getScheduler();
+        scheduler->schedule(new InterruptionEvent<int>(scheduler->now()+getRandomTime(), module, 2));
     }
 }
 
-void AntsCode::onInterruptionEvent(uint64_t data) {
+void AntsCode::onInterruptionEvent(shared_ptr<Event> event) {
+    auto value = static_cast<int>(static_pointer_cast<InterruptionEvent<int>>(event)->data);
+    cout << "Value=" << value << endl;
     if (ants.empty()) return;
     uint8_t antFrom = ants.back() & 0x0f;
     uint8_t antReturns = ants.back() & 0xf0;
@@ -113,8 +115,8 @@ void AntsCode::onInterruptionEvent(uint64_t data) {
     }
     updateColor();
     if (!ants.empty()) {
-        //getScheduler()->schedule(new InterruptionEvent(getRandomTime(), module, 0));
-        scheduleInterruption(getRandomTime());
+        auto scheduler=getScheduler();
+        scheduler->schedule(new InterruptionEvent<int>(scheduler->now()+getRandomTime(), module, 4));
     }
 }
 
