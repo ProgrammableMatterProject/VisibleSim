@@ -1,7 +1,12 @@
 #include "antsCode.hpp"
 #include <vector>
+#include <random>
+#include <cmath>
 
-uint64_t pheromoneMax = 2;
+uint64_t pheromoneMax = 10;
+random_device rd;
+default_random_engine re(rd());
+int param_a=10;
 
 AntsCode::AntsCode(BlinkyBlocksBlock *host) : BlinkyBlocksBlockCode(host), module(host) {
     // @warning Do not remove block below, as a blockcode with a NULL host might be created
@@ -34,8 +39,8 @@ void AntsCode::updateColor() {
 }
 
 void AntsCode::myMoveFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender) {
-    MessageOf<pair<uint8_t, uint16_t>> *msg = static_cast<MessageOf<pair<uint8_t, uint16_t>> *>(_msg.get());
-    pair<uint8_t, uint16_t> msgData = *msg->getData();
+    MessageOf<pair<uint8_t, uint32_t>> *msg = static_cast<MessageOf<pair<uint8_t, uint32_t>> *>(_msg.get());
+    pair<uint8_t, uint32_t> msgData = *msg->getData();
     bool findFood=msgData.first!=0;
 
     if (isNest && findFood) {
@@ -60,9 +65,10 @@ void AntsCode::myMoveFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *se
 }
 
 void AntsCode::onInterruptionEvent(shared_ptr<Event> event) {
-    auto value = static_cast<int>(static_pointer_cast<InterruptionEvent<int>>(event)->data);
-    cout << "Value=" << value << endl;
+    //auto value = static_cast<int>(static_pointer_cast<InterruptionEvent<int>>(event)->data);
+    //cout << "Value=" << value << endl;
     if (ants.empty()) return;
+    setColor(ants.size());
     uint8_t antFrom = ants.back() & 0x0f;
     uint8_t antReturns = ants.back() & 0xf0;
 
@@ -83,7 +89,7 @@ void AntsCode::onInterruptionEvent(shared_ptr<Event> event) {
     for (int i = 0; i < 6; i++) {
         if (module->hasNeighbor(i) && i != antFrom) {
             possibleDirs.push_back(i);
-            sumPheromones += pheromones[i]+1;
+            sumPheromones += param_a+pheromones[i];
         }
     }
     if (possibleDirs.empty()) { // locked !
@@ -97,17 +103,18 @@ void AntsCode::onInterruptionEvent(shared_ptr<Event> event) {
     } else {
         cout << "Possible: " << possibleDirs.size() << "/" << sumPheromones << endl;
         for (auto &p:possibleDirs) {
-            cout << int(p) << ":" << int(pheromones[p]) << endl;
+            cout << int(p) << "(" << module->getInterface(p)->getConnectedBlockId() << "):" << int(pheromones[p]) << endl;
         }
-        uint32_t p = rand() % sumPheromones;
+        uniform_int_distribution<uint32_t>uniform_dist(0,sumPheromones-1);
+        uint32_t p=uniform_dist(re);
         cout << "p= " << p << endl;
         int i = 0;
-        uint32_t s = pheromones[possibleDirs[i]];
+        uint32_t s = param_a+pheromones[possibleDirs[i]];
         while (p > s) {
             i++;
-            s += pheromones[possibleDirs[i]] + 1;
+            s += param_a+pheromones[possibleDirs[i]];
         }
-        //cout << "i=" << i << endl;
+        cout << "interface=" << i << " -> " << module->getInterface(possibleDirs[i])->getConnectedBlockId() << endl;
         // direction is in possibleDirs[i]
         sendMessage(msg.c_str(),new MessageOf<pair<uint8_t, uint32_t>>(MOVE_MSG_ID, pair<uint8_t, uint32_t>(antReturns, pheromone)),
                     module->getInterface(possibleDirs[i]), 2000, 0);

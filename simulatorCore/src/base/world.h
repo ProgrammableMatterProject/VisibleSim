@@ -399,14 +399,14 @@ public:
     virtual bool exportSTLModel(string title) { return false; };
 
     /**
-     * @brief Simulate Polymer surface
-     */
-    virtual void simulatePolymer() {}
-    /**
     * @brief get bounding box coordinate from centers of glBlocks
     */
     void getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax);
     bool hasBlinkingBlocks() { return isBlinkingBlocks;};
+
+    virtual void onEndOfSimulation() {
+        buildingBlocksMap.begin()->second->blockCode->onEndOfSimulation();
+    }
 };
 
 /**

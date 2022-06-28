@@ -242,6 +242,10 @@ namespace BaseSimulator {
          * Callback function called when an interruption event occurs
          */
         virtual void onInterruptionEvent(shared_ptr<Event> event) {};
+
+        virtual void onEndOfSimulation() {
+            cout << "-----------------------------\nEnd of simulation" << endl;
+        }
     };
 
 } // BaseSimulator namespace

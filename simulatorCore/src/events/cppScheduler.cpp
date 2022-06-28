@@ -185,6 +185,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
             && !terminate.load()) {
             getWorld()->exportConfiguration();
         }
+        getWorld()->onEndOfSimulation();
 
         // if autoStop is enabled, terminate simulation
         if (willAutoStop() && !terminate.load()) {
@@ -192,7 +193,6 @@ void *CPPScheduler::startPaused(/*void *param*/) {
         }
 
         printStats();
-
     }
 
     terminate.store(true);
