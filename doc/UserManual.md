@@ -3,11 +3,11 @@
 This manual is intended to be used by new users of VisibleSim, to get them started writing distributed applications for modular robots. 
 
 ## Doxygen Documentation
-The source code and API are documented using [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
+The source code and API are documented using [Doxygen](https://doxygen.nl/).
 ### Viewing 
 First, if the `doc` folder does not exist yet, simply run `make doc` from the root directory to build it.  Then, you can `doc/html/index.html` in your favorite browser. 
 ### Contributing
-For now, please refer to the [Official Doxygen Documentation](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html) for advices on how to document the source code.
+For now, please refer to the [Official Doxygen Documentation](https://doxygen.nl/manual/docblocks.html) for advices on how to document the source code.
 
 ## Repository Organisation
 ### Project Tree
