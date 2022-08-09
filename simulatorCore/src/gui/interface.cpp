@@ -189,7 +189,7 @@ GlutSlidingMainWindow::GlutSlidingMainWindow(GLint px, GLint py, GLint pw, GLint
     buttonSize = new GlutButton(this, ID_SW_BUTTON_SIZE, pw + SLIDING_WINDOW_STANDARD_WIDTH - 40,
                                 ph - 40, 32, 32, dir+"boutons_zoom.tga");
     slider = new GlutSlider(this, ID_SW_SLD, pw + SLIDING_WINDOW_STANDARD_WIDTH - 20, 5, ph - 60,
-                            "slider.tga", (ph - 60) / 13);
+                            "slider.tga");
     selectedGlBlock = nullptr;
     slider->isVisible = false;
     buttonSize->isVisible = false;
@@ -396,6 +396,7 @@ void GlutSlidingMainWindow::reshapeFunc(int mx, int my, int mw, int mh) {
 }
 
 void GlutSlidingMainWindow::updateSliderWindow() {
+    slider->setTextSize(currentTextSize);
     slider->setGeometry(w - 20, 5, 11, h - 60);
     slider->isVisible = (openningLevel > 0);
     buttonSize->isVisible = (openningLevel > 0);
@@ -447,11 +448,10 @@ void GlutSlidingMainWindow::setTextSize(TextSize ts) {
     updateSliderWindow();
 }
 
-
 /***************************************************************************************/
 /* GlutSlidingDebugWindow */
 /***************************************************************************************/
-GlutSlidingDebugWindow::GlutSlidingDebugWindow(GLint px, GLint py, GLint pw, GLint ph, const string &titreTexture) :
+/*GlutSlidingDebugWindow::GlutSlidingDebugWindow(GLint px, GLint py, GLint pw, GLint ph, const string &titreTexture) :
         GlutWindow(nullptr, 2, px, py, pw, ph, titreTexture) {
 #ifdef WIN32
     string dir=string(ROOT_DIR)+"/simulatorCore/resources/textures/UITextures/";
@@ -461,7 +461,7 @@ GlutSlidingDebugWindow::GlutSlidingDebugWindow(GLint px, GLint py, GLint pw, GLi
     openningLevel = 0;
     buttonOpen = new GlutButton(this, ID_SD_BUTTON_OPEN, 5, 168, 32, 32,"boutons_fg.tga");
     buttonClose = new GlutButton(this, ID_SD_BUTTON_CLOSE, 5, 126, 32, 32,"boutons_fd.tga", false);
-    slider = new GlutSlider(this, ID_SD_SLD, pw + 400 - 20, 5, ph - 75,dir+"slider.tga", (ph - 60) / 13);
+    slider = new GlutSlider(this, ID_SD_SLD, pw + 400 - 20, 5, ph - 75,dir+"slider.tga");
     input = new GlutInputWindow(this, ID_SD_INPUT, pw + 10, ph - 66, 380, 36);
     debugId = 1;
 }
@@ -593,14 +593,13 @@ void GlutSlidingDebugWindow::reshapeFunc(int mx, int my, int mw, int mh) {
     slider->update();
     input->setGeometry(mw + 10, mh - 66, 380, 30);
 }
-
+*/
 /***************************************************************************************/
 /* GlutButton */
 /***************************************************************************************/
 
 GlutButton::GlutButton(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint pw, GLint ph, const string &titreTexture,
-                       bool pia) :
-        GlutWindow(parent, pid, px, py, pw, ph, titreTexture) {
+                       bool pia) : GlutWindow(parent, pid, px, py, pw, ph, titreTexture) {
     isActive = pia;
     isDown = false;
     isHighlighted = false;
@@ -1073,11 +1072,11 @@ int GlutHelpWindow::mouseFunc(int button, int state, int mx, int my) {
 /***************************************************************************************/
 /* GlutSlider */
 /***************************************************************************************/
-GlutSlider::GlutSlider(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint ph, const string &titreTexture, int ntl)
+GlutSlider::GlutSlider(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint ph, const string &titreTexture)
         : GlutWindow(parent, pid, px, py, 11, ph, titreTexture) {
     dataTextLines = 0;
     dataPosition = 0;
-    nbreTextLines = ntl;
+    nbreTextLines = (currentTextSize==TextSize::TEXTSIZE_STANDARD)?h/15:h/24;
     update();
 }
 
@@ -1086,28 +1085,48 @@ GlutSlider::~GlutSlider() {
 }
 
 void GlutSlider::update() {
+    nbreTextLines = (currentTextSize==TextSize::TEXTSIZE_STANDARD)?h/15:h/24;
     bool isFull = (dataTextLines == 0 || nbreTextLines >= dataTextLines);
     double s = isFull ? 1.0 : nbreTextLines / double(dataTextLines);
-    buttonHeight = int(s * (h - 20));
-    buttonY = isFull ? 10 : int((dataTextLines - dataPosition - nbreTextLines) * (h - 20) / double(dataTextLines)) + 10;
+    buttonHeight = int(s * h);
+    buttonY = isFull ? 0 : int((dataTextLines - dataPosition - nbreTextLines) * h / double(dataTextLines));
+    cout << "currentTextSize=" << int(currentTextSize) << endl;
+    cout << "dataTextLines=" << dataTextLines << endl;
+    cout << "dataPosition=" << dataPosition << endl;
+    cout << "nbreTextLines=" << nbreTextLines << endl;
+    cout << "buttonY=" << buttonY << endl;
+    cout << "buttonHeight=" << buttonHeight << endl;
 }
 
 void GlutSlider::glDraw() {
-    int byhy = buttonY + buttonHeight,
-            byhy_2 = buttonY + buttonHeight / 2;
+    int byhy = buttonY + buttonHeight;
     glPushMatrix();
     glTranslatef(x, y, 0);
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_LIGHTING);
-    glColor3f(0.5, 0.5, 0.5);
     // free area inf
+    glColor3f(0.25,0.25,0.25);
     glBegin(GL_QUADS);
-    glVertex2i(0, 10);
-    glVertex2i(w, 10);
+    glVertex2i(0, 0);
+    glVertex2i(w, 0);
     glVertex2i(w, buttonY);
     glVertex2i(0, buttonY);
-    glEnd();
     // free area sup
+    glVertex2i(0, byhy);
+    glVertex2i(w, byhy);
+    glVertex2i(w, h);
+    glVertex2i(0, h);
+    glEnd();
+
+    glColor3f(0.0,1.0,0.0);
+    glBegin(GL_QUADS);
+    glVertex2i(0, buttonY);
+    glVertex2i(w, buttonY);
+    glVertex2i(w, byhy);
+    glVertex2i(0, byhy);
+    glEnd();
+
+    /*glColor3f(0.5, 0.5, 0.5);
     glBegin(GL_QUADS);
     glVertex2i(0, byhy);
     glVertex2i(w, byhy);
@@ -1159,7 +1178,7 @@ void GlutSlider::glDraw() {
     glVertex2i(0, byhy);
     glTexCoord2f(1, 25.0 / 35.0);
     glVertex2i(w, byhy);
-    glEnd();
+    glEnd();*/
     glPopMatrix();
 }
 
@@ -1169,25 +1188,25 @@ int GlutSlider::mouseFunc(int button, int state, int mx, int my) {
         if (!isFull) {
             buttonY += my - currentMousePos;
             currentMousePos = my;
-            dataPosition = dataTextLines - nbreTextLines - int((buttonY - 10) * dataTextLines / (h - 20));
+            dataPosition = dataTextLines - nbreTextLines - int(buttonY * dataTextLines / h);
             if (dataPosition <= 0) {
                 dataPosition = 0;
-                buttonY = int((dataTextLines - nbreTextLines) * (h - 20) / double(dataTextLines)) + 10;;
+                buttonY = int((dataTextLines - nbreTextLines) * h / double(dataTextLines));
             } else if (dataPosition > dataTextLines - nbreTextLines) {
                 dataPosition = dataTextLines - nbreTextLines;
-                buttonY = 10;
+                buttonY = 0;
             }
         }
     } else {
         if (mx < x || mx > x + w || my < y || my > y + h) return 0;
         if (state == GLUT_DOWN) {
             mouseDown = true;
-            if (my < 10) {
+            if (my < 0) {
                 // upper button
                 dataPosition++;
                 if (dataPosition > dataTextLines - nbreTextLines) dataPosition = dataTextLines - nbreTextLines;
                 update();
-            } else if (my > h - 10) {
+            } else if (my > h) {
                 // lower button
                 dataPosition--;
                 if (dataPosition > dataTextLines - nbreTextLines) dataPosition = dataTextLines - nbreTextLines;

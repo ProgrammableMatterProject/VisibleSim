@@ -30,6 +30,7 @@ void AntsCode::startup() {
         scheduler->schedule(new InterruptionEvent<int>(scheduler->now()+getRandomTime(), module, 1));
     }
     for (int i = 0; i < 6; i++) { pheromones[i] = 0; }
+    if (isFood) module->setBlinkMode(true);
 }
 
 void AntsCode::updateColor() {

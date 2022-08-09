@@ -49,7 +49,6 @@ namespace BaseSimulator {
     public:
         BuildingBlock *hostBlock;   //!< The block to which this instance of the user program belongs
         Time availabilityDate = 0; //!< If the host is busy, the date at which it will be available
-        std::multimap<int, eventFunc> eventFuncMap; //!< container of function pointers to message handlers, indexed by message typeID
         std::multimap<int, eventFunc2> eventFuncMap2; //!< container of function pointers to message handlers, indexed by message typeID
 
         Scheduler *scheduler; //!< pointer to the single instance of scheduler of the simulation
@@ -133,12 +132,6 @@ namespace BaseSimulator {
          * @return true if a target has been loaded, false otherwise (No target remaining in config file)
          */
         static bool loadNextTarget();
-
-        /**
-         * @brief Add a new message handler to the block code, for message with message type type
-         * @param type ID of the message for which a handler needs to be registered
-         * @param eventFunc the message handling function as a std::function */
-        [[deprecated]] void addMessageEventFunc(int type, eventFunc);
 
         /**
          * @brief Add a new message handler to the block code, for message with message type type

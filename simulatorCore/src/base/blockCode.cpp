@@ -45,12 +45,7 @@ namespace BaseSimulator {
             delete target;
             target = nullptr;
         }
-
-        eventFuncMap.clear();
-    }
-
-    void BlockCode::addMessageEventFunc(int type,eventFunc func) {
-        eventFuncMap.insert(pair<int,eventFunc>(type,func));
+        eventFuncMap2.clear();
     }
 
     void BlockCode::addMessageEventFunc2(int type, eventFunc2 func) {
@@ -166,12 +161,8 @@ namespace BaseSimulator {
             case EVENT_NI_RECEIVE: {
                 message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
                 // search message id in eventFuncMap
-                multimap<int, eventFunc>::iterator im = eventFuncMap.find(message->type);
                 multimap<int, eventFunc2>::iterator im2 = eventFuncMap2.find(message->type);
-                if (im != eventFuncMap.end()) {
-                    P2PNetworkInterface *recv_interface = message->destinationInterface;
-                    (*im).second(this, message, recv_interface);
-                } else if (im2 != eventFuncMap2.end()) {
+                if (im2 != eventFuncMap2.end()) {
                     P2PNetworkInterface *recv_interface = message->destinationInterface;
                     (*im2).second(message, recv_interface);
                 } else {

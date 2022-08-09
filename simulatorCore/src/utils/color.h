@@ -67,26 +67,20 @@ inline static const Color CYAN(0.0f,1.0f,1.0f);
 inline static const Color MAGENTA(1.0f,0.0f,1.0f);
 inline static const Color LIGHTBLUE(173,216,230);
 inline static const Color GOLD(255,215,0);
-inline static const Color PINK(1.0f,192/255.0f,203/255.0f);
+inline static const Color PINK(1.0f,0.753f,0.796f);
 inline static const Color GREY(0.5f,0.5f,0.5f);
 inline static const Color LIGHTGREY(0.75f,0.75f,0.75f);
 inline static const Color DARKGREY(0.25f,0.25f,0.25f);
 inline static const Color ORANGE(1.0f,0.64706f,0.0f);
-inline static const Color DARKORANGE(1.0f,0.549f,0.0f);
+inline static const Color DARKBLUE(0.0f,0.0f,0.6f);
 inline static const Color BLACK(0.0f,0.0f,0.0f);
-inline static const Color BROWN(102, 51, 0);
-inline static const Color DARKGREEN(6, 240, 46);
+inline static const Color BROWN(0.6, 0.3, 0);
+inline static const Color DARKGREEN(0, 0.6, 0);
+inline static const Color PURPLE(0.5, 0, 0.5);
 
-/*static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},
-                                         {0.0,1.0,0.0,1.0},{0.0,0.0,1.0,1.0},
-                                         {0.274509804,0.509803922,0.705882353,1.0},
-                                         {0.815686275,0.125490196,0.564705882,1.0},{0.5,0.5,0.5,1.0},
-                                         {0.980392157,0.5,0.456,1.0},{0.549019608,0.5,0.5,1.0},
-                                         {0.980392157,0.843137255,0.0,1.0},
-                                         {0.094117647,0.545098039,0.094117647,1.0}};
-*/
-#define NB_COLORS 12
-inline static const Color Colors[NB_COLORS] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK, GOLD, BROWN, GREY};
+#define NB_COLORS 20
+inline static const Color Colors[NB_COLORS] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK, GOLD,
+                                               BROWN, GREY,LIGHTGREY,DARKGREY,DARKGREEN,LIGHTGREEN,DARKBLUE,LIGHTBLUE,PURPLE,BLACK };
 
 class TermColor {
 public:
