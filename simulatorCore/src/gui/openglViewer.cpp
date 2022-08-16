@@ -264,7 +264,10 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             GlBlock *slct=BaseSimulator::getWorld()->getselectedGlBlock();
             // unselect current if exists
             if (slct) slct->toggleHighlight();
-            // set n-1 block selected block (no selected block if n=0
+            //hide context menu if showed
+            if (popupMenu && popupMenu->isVisible) popupMenu->show(false);
+            if (popupSubMenu && popupSubMenu->isVisible) popupSubMenu->show(false);
+            // set n-1 block select->d block (no selected block if n=0
             if (n) {
                 GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n);
                 glB->toggleHighlight();
