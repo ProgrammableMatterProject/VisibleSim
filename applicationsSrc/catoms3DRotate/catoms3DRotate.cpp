@@ -1,7 +1,7 @@
 #include <iostream>
 #include "robots/catoms3D/catoms3DSimulator.h"
 #include "robots/catoms3D/catoms3DBlockCode.h"
-#include "robots/catoms3D/catoms3DRotateCode.h"
+#include "catoms3DRotateCode.h"
 
 using namespace std;
 using namespace Catoms3D;

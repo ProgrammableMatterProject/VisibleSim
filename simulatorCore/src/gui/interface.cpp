@@ -1090,12 +1090,12 @@ void GlutSlider::update() {
     double s = isFull ? 1.0 : nbreTextLines / double(dataTextLines);
     buttonHeight = int(s * h);
     buttonY = isFull ? 0 : int((dataTextLines - dataPosition - nbreTextLines) * h / double(dataTextLines));
-    cout << "currentTextSize=" << int(currentTextSize) << endl;
+    /*cout << "currentTextSize=" << int(currentTextSize) << endl;
     cout << "dataTextLines=" << dataTextLines << endl;
     cout << "dataPosition=" << dataPosition << endl;
     cout << "nbreTextLines=" << nbreTextLines << endl;
     cout << "buttonY=" << buttonY << endl;
-    cout << "buttonHeight=" << buttonHeight << endl;
+    cout << "buttonHeight=" << buttonHeight << endl;*/
 }
 
 void GlutSlider::glDraw() {

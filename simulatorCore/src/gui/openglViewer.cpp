@@ -540,23 +540,6 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             }
         }
             break;
-        /*case 'a': {
-            auto wrld = BaseSimulator::getWorld();
-            auto bb = wrld->getSelectedBuildingBlock();
-            if (editMode && bb) {
-                auto nsf = wrld->getNumSelectedFace();
-                if (nsf != -1) {
-                    Cell3DPosition nPos;
-                    if (bb->getNeighborPos(nsf, nPos)) {
-                        if (not wrld->lattice->cellHasBlock(nPos)) {
-                            wrld->addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
-                            wrld->linkBlock(nPos);
-                            wrld->linkNeighbors(nPos);
-                        }
-                    }
-                }
-            }
-        }*/
         default: { // Pass on key press to user blockcode handler
             // NOTE: Since C++ does not handle static virtual functions, we need
             //  to get a pointer to a blockcode and call onUserKeyPressed from

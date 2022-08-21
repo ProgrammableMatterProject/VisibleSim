@@ -176,9 +176,9 @@ void ConfigExporter::exportBlock(BuildingBlock *bb) {
     Cell3DPosition pos = blc->position;
 
     bbElt->SetAttribute("position", toXmlAttribute(pos).c_str());
-    bbElt->SetAttribute("color", toXmlAttribute(blc->color[0],
-                                                blc->color[1],
-                                                blc->color[2]).c_str());
+    bbElt->SetAttribute("color", toXmlAttribute(int(blc->color[0]),
+                                                int(blc->color[1]),
+                                                int(blc->color[2])).c_str());
 
     exportAdditionalAttribute(bbElt, bb);
     blockListElt->LinkEndChild(bbElt);

@@ -596,6 +596,16 @@ add_executable(myAppSC applicationsSrc/myAppSC/myAppSC.cpp applicationsSrc/myApp
 target_link_libraries(myAppSC -lSlidingCubes -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS myAppSC RUNTIME DESTINATION applicationsBin/myAppSC)
 
+add_executable(demo01_SC applicationsSrc/demo01_SC/demo01_SC.cpp applicationsSrc/demo01_SC/demo01_SCCode.cpp applicationsSrc/demo01_SC/demo01_SCCode.hpp)
+target_link_libraries(demo01_SC -lSlidingCubes -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS demo01_SC RUNTIME DESTINATION applicationsBin/demo01_SC)
+
+add_executable(catoms3DRotate applicationsSrc/catoms3DRotate/catoms3DRotate.cpp applicationsSrc/catoms3DRotate/catoms3DRotateCode.cpp)
+target_link_libraries(catoms3DRotate -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS catoms3DRotate RUNTIME DESTINATION applicationsBin/catoms3DRotate)
+
+
+
 #################################################################################
 ############################ REPLAYER ###########################################
 #################################################################################

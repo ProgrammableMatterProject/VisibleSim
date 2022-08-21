@@ -346,7 +346,7 @@ void Catoms3DRotation::init(const Matrix& m) {
 
 
 void Catoms3DRotation::exportMatrix(const Matrix& m) {
-//#define ROTATION_STEP_MATRIX_EXPORT
+#define ROTATION_STEP_MATRIX_EXPORT
 #ifdef ROTATION_STEP_MATRIX_EXPORT
     Catoms3DBlock* block = static_cast<Catoms3DBlock*>
         (BaseSimulator::getWorld()->getBlockById(catomId));
@@ -437,20 +437,6 @@ Catoms3DRotation::Catoms3DRotation(const Catoms3DBlock *mobile, const Catoms3DBl
 
     A1D1 = (0.5+0.5*rprim)*AB+shift*V;
     A1C1 = (0.5-0.5*rprim)*AB+shift*V;
-
-    /*cout<<"-----DEBUGG----- "<<endl;
-    cout<<"Mobile id :"<<mobile->blockId<<endl;
-    cout<<"Fixed id :"<<fixe->blockId<<endl;
-    cout<<"Radius : "<<rprim<<endl;
-    cout<<"axe 1 : "<<axe1<<endl;
-    cout<<"axe 2 : "<<axe2<<endl;
-    cout<<"Angle : "<<ang1<<endl;
-    cout<<"---axis---"<<endl;
-    cout<<"A0C0 : "<<A0C0<<endl;
-    cout<<"A0D0 : "<<A0D0<<endl;
-    cout<<"A1C1 : "<<A1C1<<endl;
-    cout<<"A1D1 : "<<A1D1<<endl;
-    cout<<"-----End DEBUGG----- "<<endl;*/
 }
 /*
 bool Catoms3DRotation::setMatrixAt(Time t) {

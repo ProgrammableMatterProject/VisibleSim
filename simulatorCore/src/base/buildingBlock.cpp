@@ -238,7 +238,7 @@ namespace BaseSimulator {
     }
 
     void BuildingBlock::setColor(int idColor) {
-        color = Colors[idColor%12];
+        color = Colors[idColor%NB_COLORS];
         // getWorld()->updateGlData(this); // separate update color and update position
         getWorld()->updateGlData(this,color);
 

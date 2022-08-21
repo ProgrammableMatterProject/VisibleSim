@@ -74,9 +74,9 @@ inline static const Color DARKGREY(0.25f,0.25f,0.25f);
 inline static const Color ORANGE(1.0f,0.64706f,0.0f);
 inline static const Color DARKBLUE(0.0f,0.0f,0.6f);
 inline static const Color BLACK(0.0f,0.0f,0.0f);
-inline static const Color BROWN(0.6, 0.3, 0);
-inline static const Color DARKGREEN(0, 0.6, 0);
-inline static const Color PURPLE(0.5, 0, 0.5);
+inline static const Color BROWN(0.6f, 0.3f, 0.0f);
+inline static const Color DARKGREEN(0.0f, 0.6f, 0.0f);
+inline static const Color PURPLE(0.5f, 0.0f, 0.5f);
 
 #define NB_COLORS 20
 inline static const Color Colors[NB_COLORS] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK, GOLD,

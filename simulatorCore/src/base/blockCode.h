@@ -76,6 +76,11 @@ namespace BaseSimulator {
 
         void setColor(int idColor);
 
+/**
+ * @brief Provides the list of connected interfaces to the current module
+ *
+ */
+        map<short,P2PNetworkInterface *> getAllConnectedInterfaces();
 
 /**
  * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it. Has to be overriden in the child class.

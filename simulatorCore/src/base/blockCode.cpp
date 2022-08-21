@@ -124,6 +124,18 @@ namespace BaseSimulator {
         return ret;
     }
 
+    map<short,P2PNetworkInterface *> BlockCode::getAllConnectedInterfaces() {
+        map<short,P2PNetworkInterface *> res;
+        P2PNetworkInterface *p2p;
+        for (short i=0; i<hostBlock->getNbInterfaces(); i++) {
+            p2p = hostBlock->getInterface(i);
+            if(p2p->connectedInterface) {
+                res[i]=p2p;
+            }
+        }
+        return res;
+    }
+
     int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
                                              Time t0, Time dt, int nexcept, va_list args) {
         P2PNetworkInterface *tabExceptions[hostBlock->getNbInterfaces()];
