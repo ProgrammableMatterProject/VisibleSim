@@ -149,7 +149,7 @@ void ConfigExporter::exportWorld() {
     worldElt = new TiXmlElement("world");
     worldElt->SetAttribute("gridSize", toXmlAttribute(world->lattice->gridSize));
     if (GlutContext::GUIisEnabled) {
-        worldElt->SetAttribute("windowSize",
+        worldElt->SetAttribute("visual",
                                toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight));
     }
 
