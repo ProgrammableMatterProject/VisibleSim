@@ -510,18 +510,13 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             BaseSimulator::getWorld()->exportSTLModel("model.stl");
             cout << "Exported STL model to file: model.stl" << endl;
             break;
-        case '1' :
-        case '2' :
-        case '3' :
-        case '4' :
-        case '5' :
-        case '6' :
-        case '7' :
-        case '8' : {
+        case '0' : case '1' : case '2' : case '3' : case '4' : case '5' : case '6' : case '7' : case '8' :
+        case '9' : {
             BuildingBlock *bb = BaseSimulator::getWorld()->getSelectedBuildingBlock();
             if (bb) {
-                cout << "Changed color of building block #" << bb->blockId << endl;
-                bb->setColor(c - '0');
+                int colorNum = c - '0';
+                cout << "Changed color of building block #" << bb->blockId << "to " << ColorNames[colorNum] << endl;
+                bb->setColor(colorNum);
             } else {
                 cout << "Cannot change color: No selected block" << endl;
             }

@@ -20,12 +20,14 @@ class ObjLoader;
 using namespace std;
 
 class GlBlock {
-public :
+protected :
+    bool visible;
     bool isHighlighted;
+
+public :
     GLfloat position[3];
     GLubyte color[3];
     bID blockId;
-    bool visible;
    string popupInfoString;
 
 
@@ -39,6 +41,7 @@ public :
     virtual bool isVisible();
     virtual void setVisible(bool visible);
     virtual void toggleHighlight();
+    inline void setHighlight(bool v) { isHighlighted=v; }
     virtual string getInfo();
     virtual string getPopupInfo();
     void setPopupInfo(const string &str) { popupInfoString=str; };

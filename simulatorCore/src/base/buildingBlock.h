@@ -323,7 +323,7 @@ namespace BaseSimulator {
          */
         int getFaceForNeighborID(int nId) const;
 
-        void setBlinkMode(bool b) { ptrGlBlock->isHighlighted = b; };
+        void setBlinkMode(bool b) { ptrGlBlock->setHighlight(b); };
 
         /**
          * @brief Return if there is a neighbor in direction dir of the current robot

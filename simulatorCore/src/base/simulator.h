@@ -89,7 +89,7 @@ protected:
     World *world;				//!< Simulation world to be instantiated and configured
 
     TiXmlDocument *xmlDoc;		//!< TinyXMLDocument for the configuration file
-    TiXmlNode* xmlWorldNode; //!< world XML node from the configuration file
+    //TiXmlNode* xmlWorldNode; //!< world XML node from the configuration file
     TiXmlNode* xmlBlockListNode; //!< blockList XML node from the configuration file
 
     BlockCodeBuilder bcb; //!< Function pointer to the target BlockCode builder
@@ -100,6 +100,28 @@ protected:
     IDScheme ids = ORDERED; //!< Determines what module ID distribution scheme the simulator is using. ORDERED by default
 
     /*!
+     *  @brief Parses the configuration file for main information common to the simulator blocks.
+     *
+     *  Calls the loadWorld virtual function to instantiate the right subclass of World with the parsed data.
+     *
+     *  @param argc The number of command line arguments
+     *  @param argv The command line arguments
+     * @return return a pointer to the world entry
+     */
+    TiXmlNode*parseVS(TiXmlNode* parent,int argc, char*argv[]);
+
+/*!
+     *  @brief Parses the configuration file for World information common to all blocks.
+     *
+     *  Calls the loadWorld virtual function to instantiate the right subclass of World with the parsed data.
+     *
+     *  @param argc The number of command line arguments
+     *  @param argv The command line arguments
+     *  @return return a pointer to the world entry
+     */
+    TiXmlNode* parseWorld(TiXmlNode* parent,int argc, char*argv[]);
+
+/*!
      *  @brief Parses the configuration file for World information common to all blocks.
      *
      *  Calls the loadWorld virtual function to instantiate the right subclass of World with the parsed data.
@@ -108,7 +130,7 @@ protected:
      *  @param argv The command line arguments
      *
      */
-    void parseWorld(int argc, char*argv[]);
+    bool parseVisuals(TiXmlNode* parent);
 
     /*!
      *  @brief Examines the configuration file's blockList attribute and determine the ID distribution scheme to be used
@@ -158,8 +180,7 @@ protected:
      *  @brief Parses the configuration file's attributes related to the behavioral customization of VisibleSim (e.g., adjusting the rotation speed of catoms)
      *  @throw ParsingException if any of the customization variable is ill-formatted
      */
-    void parseCustomizations();
-
+    void parseCustomizations(TiXmlNode* parent);
 
         /*! @fn loadScheduler(int maximumDate)
      *  @brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock
@@ -178,7 +199,7 @@ protected:
      *
      *
      */
-    void parseCameraAndSpotlight();
+    bool parseCameraAndSpotlight(TiXmlNode* parent);
 
     /*! @fn parseBlockList()
      *  @brief Parses the configuration for block information common to all blocks
@@ -188,19 +209,14 @@ protected:
      */
     void parseBlockList();
 
-    /*
-     * @brief Parses the list of links especially for VCell block
-     */
-    virtual void parseLinks() {};
-
-    /*!
+   /*!
      *  @brief Parses the configuration for obstacles information
      *
      */
-    void parseObstacles();
+    void parseObstacles(TiXmlNode* parent);
 
     //<! @brief Parses the configuration for target information, and instantiate them
-    void parseTarget();
+    void parseTarget(TiXmlNode* parent);
 
     /*! @fn virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[])
      *  @brief Calls the createWorld function from the target world subclass to instantiate it

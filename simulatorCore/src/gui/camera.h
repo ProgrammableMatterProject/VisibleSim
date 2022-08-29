@@ -37,6 +37,7 @@ public :
   GLfloat falloffAngle,near_plane,far_plane;
   GLfloat matMV[16],matMV_1[16],matP[16];
   GLfloat theta,phi,distance;
+  bool showCone;
 
   LightSource();
   void calcMatrixs();
@@ -51,8 +52,9 @@ class Camera {
   Vector3D position,target,Xcam,Ycam;
   int mouse[2];
   double sensibilityX,sensibilityY;
-  double w_h,near_plane,far_plane,angle;
+  double w_h,near_plane,far_plane,fov;
   bool targetMotion;
+
 public :
   LightSource ls;
 
@@ -69,8 +71,8 @@ public :
   void setW_H(double r) { w_h=r; };
   void setNearFar(double n,double f) { near_plane=n; far_plane=f; };
   void getNearFar(double &n,double &f) { n=near_plane; f=far_plane; };
-  void setAngle(double a) { angle=a; };
-  inline const double getAngle() { return angle; };
+  void setFOV(double a) { fov=a; };
+  inline const double getAngle() { return fov; };
   inline const double getNearPlane() { return near_plane; };
   inline const double getFarPlane() { return far_plane; };
   inline void setTarget(const Vector3D &p) { target=p; updatePositionFromAngles(); }
@@ -81,6 +83,7 @@ public :
   void setLightParameters(const Vector3D &t,double th,double ph, double d,double angle,double nearplane,double farplane);
   void glProjection();
   void initFromGridSize(const Vector3D &v);
+  void showLightCone(bool v) { ls.showCone=v; }
   const Vector3D getDirectionSpherical();
 
   friend ostream& operator<<(ostream& f,const Camera &c);

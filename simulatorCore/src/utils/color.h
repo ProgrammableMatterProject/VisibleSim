@@ -57,31 +57,34 @@ public :
 
 };
 
-inline static const Color WHITE(1.0f,1.0f,1.0f);
-inline static const Color RED(1.0f,0.0f,0.0f);
-inline static const Color GREEN(0.0f,1.0f,0.0f);
-inline static const Color LIGHTGREEN(0.75f,1.0f,0.25f);
-inline static const Color BLUE(0.0f,0.0f,1.0f);
-inline static const Color YELLOW(1.0f,1.0f,0.0f);
-inline static const Color CYAN(0.0f,1.0f,1.0f);
-inline static const Color MAGENTA(1.0f,0.0f,1.0f);
+inline static const Color WHITE(255,255,255);
+inline static const Color RED(255,0.0,0.0);
+inline static const Color GREEN(0.0,255,0.0);
+inline static const Color LIGHTGREEN(192,255,64);
+inline static const Color BLUE(0,0,255);
+inline static const Color YELLOW(255,255,0);
+inline static const Color CYAN(0,255,255);
+inline static const Color MAGENTA(255,0,255);
 inline static const Color LIGHTBLUE(173,216,230);
 inline static const Color GOLD(255,215,0);
-inline static const Color PINK(1.0f,0.753f,0.796f);
-inline static const Color GREY(0.5f,0.5f,0.5f);
-inline static const Color LIGHTGREY(0.75f,0.75f,0.75f);
-inline static const Color DARKGREY(0.25f,0.25f,0.25f);
-inline static const Color ORANGE(1.0f,0.64706f,0.0f);
-inline static const Color DARKBLUE(0.0f,0.0f,0.6f);
-inline static const Color BLACK(0.0f,0.0f,0.0f);
-inline static const Color BROWN(0.6f, 0.3f, 0.0f);
-inline static const Color DARKGREEN(0.0f, 0.6f, 0.0f);
-inline static const Color PURPLE(0.5f, 0.0f, 0.5f);
+inline static const Color PINK(255,192,203);
+inline static const Color GREY(128,128,128);
+inline static const Color LIGHTGREY(192,192,192);
+inline static const Color DARKGREY(64,64,64);
+inline static const Color ORANGE(255,165,0);
+inline static const Color DARKBLUE(0,0,153);
+inline static const Color BLACK(0,0,0);
+inline static const Color BROWN(153,76, 0);
+inline static const Color DARKGREEN(0, 153, 0);
+inline static const Color PURPLE(128, 0, 128);
 
 #define NB_COLORS 20
 inline static const Color Colors[NB_COLORS] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK, GOLD,
                                                BROWN, GREY,LIGHTGREY,DARKGREY,DARKGREEN,LIGHTGREEN,DARKBLUE,LIGHTBLUE,PURPLE,BLACK };
 
+inline static const string ColorNames[NB_COLORS] = {"RED", "ORANGE", "YELLOW", "GREEN", "CYAN", "BLUE", "WHITE",
+                                                   "MAGENTA", "PINK", "GOLD", "BROWN", "GREY", "LIGHTGREY" ,"DARKGREY",
+                                                   "DARKGREEN","LIGHTGREEN","DARKBLUE","LIGHTBLUE","PURPLE","BLACK"};
 class TermColor {
 public:
 #ifndef WIN32

@@ -3,6 +3,7 @@ project(VisibleSim)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long -Wpedantic")
+add_definitions(-DDEBUG_CONF_PARSING)
 
 include_directories(simulatorCore/src)
 

@@ -90,11 +90,11 @@ void Camera::setLightParameters(const Vector3D &t, double th,double ph,double d,
 }
 
 void Camera::glProjection() {
-    gluPerspective(angle,w_h,near_plane,far_plane);
+    gluPerspective(fov,w_h,near_plane,far_plane);
 }
 
 void Camera::updateIntrinsics(double a,double rwh,double np,double fp) {
-    angle=a;
+    fov=a;
     w_h = rwh;
     near_plane=np;
     far_plane=fp;
@@ -191,6 +191,6 @@ void Camera::initFromGridSize(const Vector3D &v) {
     setDistance(3.0 * d);
     setDirection(-30.0 - 90.0, 30.0);
     setNearFar(0.25 * d, 5.0 * d);
-    setAngle(35.0);
+    setFOV(35.0);
     setLightParameters(target, -30.0, 30.0, 3.0 * d, 30.0, 0.25 * d, 4.0 * d);
 }
