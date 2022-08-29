@@ -291,7 +291,7 @@ void Catoms3DWorld::glDraw() {
     // draw catoms
     lock();
     for (const auto& pair : mapGlBlocks) {
-        if (pair.second->visible) ((Catoms3DGlBlock*)pair.second)->glDraw(objBlock);
+        if (pair.second->isVisible()) ((Catoms3DGlBlock*)pair.second)->glDraw(objBlock);
     }
     unlock();
     glPopMatrix();

@@ -1,7 +1,6 @@
 #include <climits>
 #include "catoms3DRotateCode.h"
 
-
 bool distanceCalculated=false;
 vector<unsigned int> tabCellByDistance;
 

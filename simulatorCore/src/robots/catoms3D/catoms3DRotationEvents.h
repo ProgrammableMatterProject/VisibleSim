@@ -82,7 +82,7 @@ protected :
     short exportMatrixCount = 0;
     bool firstRotation;
     short step;
-    Matrix initialMatrix,finalMatrix;
+    Matrix initialMatrix,finalMatrixLocal,finalMatrixCatom;
     Vector3D A0C0,A0D0,A1C1,A1D1;
     Vector3D axe1;
     Vector3D axe2;

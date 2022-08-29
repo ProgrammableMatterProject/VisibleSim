@@ -15,7 +15,7 @@ using namespace std;
 const string Lattice::directionName[] = {"unknown"};
 
 Lattice::Lattice() {
-    grid = NULL;
+    grid = nullptr;
 }
 
 Lattice::Lattice(const Cell3DPosition &gsz, const Vector3D &gsc) {
@@ -23,16 +23,16 @@ Lattice::Lattice(const Cell3DPosition &gsz, const Vector3D &gsc) {
     gridScale = gsc;
 
     if (gsz[0] <= 0 || gsz[1] <= 0 || gsz[2] <= 0) {
-        cerr << "error: Incorrect lattice size: size in any direction cannot be negative or null" << endl;
+        cerr << "error: Incorrect lattice size: size in any direction cannot be negative or nullptr" << endl;
         throw InvalidDimensionsException(gsz);
     }
 
     grid = new BuildingBlock*[gridSize[0] * gridSize[1] * gridSize[2]];
-    // Initializes grid to NULL
+    // Initializes grid to nullptr
     BuildingBlock **ptr = grid;
     int i=gridSize[0] * gridSize[1] * gridSize[2];
     while (i--) {
-        *ptr=NULL;
+        *ptr=nullptr;
         ptr++;
     }
 
@@ -93,21 +93,21 @@ void Lattice::remove(const Cell3DPosition &p, bool count) {
 }
 
 BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) const {
-    return isInGrid(p) ? grid[getIndex(p)] : NULL;
+    return isInGrid(p) ? grid[getIndex(p)] : nullptr;
 }
 
 bool Lattice::isFree(const Cell3DPosition &p) const {
     if (!isInGrid(p))
         return false;
     else
-        return (getBlock(p) == NULL);
+        return (getBlock(p) == nullptr);
 }
 
 bool Lattice::cellHasBlock(const Cell3DPosition &p) const {
     if (!isInGrid(p)) {
         return false;
     } else {
-        return (getBlock(p) != NULL);
+        return (getBlock(p) != nullptr);
     }
 }
 

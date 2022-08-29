@@ -339,7 +339,7 @@ void Catoms3DRotation::init(const Matrix& m) {
     firstRotation=true;
     step=0;
     initialMatrix=m;
-    finalMatrix=m*finalMatrix;
+    finalMatrixCatom=m*finalMatrixLocal;
 
     exportMatrix(initialMatrix);
 }
@@ -409,24 +409,23 @@ Catoms3DRotation::Catoms3DRotation(const Catoms3DBlock *mobile, const Catoms3DBl
 
     Matrix mr;
     mr.setRotation(angle1,axe1);
-    finalMatrix = matTAB*(mr*(matTBA*mr));
+    finalMatrixLocal = matTAB*(mr*(matTBA*mr));
 
-    m  = MA*finalMatrix;
+    m  = MA*finalMatrixLocal;
     m.inverse(MA_1);
     m = MA_1*MB;
     AB = m*Vector3D(0,0,0,1);
 
-    finalMatrix.inverse(MA_1);
+    finalMatrixLocal.inverse(MA_1);
     axe2 = (MA_1*ax2).normer();
-
 
     matTAB.setTranslation(AB);
     matTBA.setTranslation(-AB);
     mr.setRotation(angle2,axe2);
     m = matTAB*(mr*(matTBA*mr));
-    finalMatrix = finalMatrix*m;
+    finalMatrixLocal = finalMatrixLocal*m;
 
-    m = MA*finalMatrix;
+    m = MA*finalMatrixLocal;
     m.inverse(MA_1);
     m = MA_1*MB;
     AB = m*Vector3D(0,0,0,1);
@@ -479,7 +478,7 @@ bool Catoms3DRotation::nextStep(Matrix &m) {
         matTDC.setTranslation(-A1D1+A1C1);
         matTAD.setTranslation(A1D1);
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
-        m = finalMatrix * m;
+        m = finalMatrixCatom * m;
         //OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
     }
     /*cout<<"################## STEP #######################"<<endl;
@@ -493,12 +492,12 @@ bool Catoms3DRotation::nextStep(Matrix &m) {
 }
 
 void Catoms3DRotation::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
-    Vector3D p(0,0,0,1),q = finalMatrix * p;
+    Vector3D p(0,0,0,1),q = finalMatrixCatom * p;
 
 //    OUTPUT << "final=" << q << endl;
     position = Catoms3D::getWorld()->lattice->worldToGridPosition(q);
 //    OUTPUT << "final grid=" << position << endl;
-    orientation=Catoms3DBlock::getOrientationFromMatrix(finalMatrix);
+    orientation=Catoms3DBlock::getOrientationFromMatrix(finalMatrixCatom);
 }
 
 

@@ -174,10 +174,10 @@ namespace Catoms3D {
 
     P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition &pos) const {
         Catoms3DWorld *wrl = getWorld();
-        if (not wrl->lattice->cellsAreAdjacent(position, pos)) return NULL;
+        if (not wrl->lattice->cellsAreAdjacent(position, pos)) return nullptr;
         uint8_t conId = getConnectorId(pos);
 
-        return conId >= 0 ? P2PNetworkInterfaces[conId] : NULL;
+        return conId >= 0 ? P2PNetworkInterfaces[conId] : nullptr;
     }
 
     uint8_t Catoms3DBlock::getConnectorId(const Cell3DPosition &pos) const {
@@ -215,7 +215,7 @@ namespace Catoms3D {
     Catoms3DBlock *Catoms3DBlock::getNeighborOnCell(const Cell3DPosition &pos) const {
         Lattice *lattice = getWorld()->lattice;
 
-        if (!lattice->cellsAreAdjacent(position, pos)) return NULL;
+        if (!lattice->cellsAreAdjacent(position, pos)) return nullptr;
 
         return static_cast<Catoms3DBlock *>(lattice->getBlock(pos));
     }
@@ -254,12 +254,12 @@ namespace Catoms3D {
         if (itfId and itfId->isConnected())
             return static_cast<Catoms3DBlock *>(itfId->connectedInterface->hostBlock);
 
-        return NULL;
+        return nullptr;
     }
 
     bool Catoms3DBlock::canRotateToPosition(const Cell3DPosition &pos,
                                             RotationLinkType faceReq) const {
-        return Catoms3DMotionEngine::findMotionPivot(this, pos, faceReq) != NULL;
+        return Catoms3DMotionEngine::findMotionPivot(this, pos, faceReq) != nullptr;
     }
 
     std::bitset<12> Catoms3DBlock::getLocalNeighborhoodState() const {
@@ -289,11 +289,11 @@ namespace Catoms3D {
     }
 
     bool Catoms3DBlock::canMoveTo(const Cell3DPosition &dest) const {
-        return canRotateToPosition(dest);
+        return Catoms3DMotionEngine::isNotLockedForMotion(position,dest) && canRotateToPosition(dest);
     }
 
     bool Catoms3DBlock::moveTo(const Cell3DPosition &dest) {
-        if (not canRotateToPosition(dest))
+        if (not canMoveTo(dest))
             return false;
 
         getScheduler()->schedule(

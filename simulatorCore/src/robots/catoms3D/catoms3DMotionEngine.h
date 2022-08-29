@@ -165,6 +165,8 @@ public:
     static const vector<Cell3DPosition>
     getAllReachablePositions(const Catoms3DBlock* m,
                              RotationLinkType faceReq = RotationLinkType::Any);
+
+    static bool isNotLockedForMotion(const Cell3DPosition &origin,const Cell3DPosition &final);
 };
 
 }

@@ -486,9 +486,9 @@ void Catoms3DMotionRulesLink::addBlockingConnector(int n) {
 bool Catoms3DMotionRulesLink::isValid(const Catoms3DBlock *c3d) {
     vector<int>::const_iterator ci = tabBlockingIDs.begin();
 // final position (connector) must be free
-    if (c3d->getInterface(conTo->ID)->connectedInterface!=NULL) return false;
+    if (c3d->getInterface(conTo->ID)->connectedInterface!=nullptr) return false;
 // all blocking connectors must be free
-    while (ci!=tabBlockingIDs.end() && c3d->getInterface(*ci)->connectedInterface==NULL) {
+    while (ci!=tabBlockingIDs.end() && c3d->getInterface(*ci)->connectedInterface==nullptr) {
         ci++;
     }
     // if (ci!=tabBlockingIDs.end()) OUTPUT << "blocking: "<< *ci << endl;
