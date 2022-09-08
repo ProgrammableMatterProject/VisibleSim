@@ -22,13 +22,13 @@ using namespace std;
 class GlBlock {
 protected :
     bool visible;
-    bool isHighlighted;
+    bool highlighted;
 
 public :
     GLfloat position[3];
     GLubyte color[3];
     bID blockId;
-   string popupInfoString;
+    string popupInfoString;
 
 
     GlBlock(bID id);
@@ -41,7 +41,8 @@ public :
     virtual bool isVisible();
     virtual void setVisible(bool visible);
     virtual void toggleHighlight();
-    inline void setHighlight(bool v) { isHighlighted=v; }
+    inline void setHighlight(bool v) { highlighted=v; }
+    inline bool isHighlighted() { return highlighted; }
     virtual string getInfo();
     virtual string getPopupInfo();
     void setPopupInfo(const string &str) { popupInfoString=str; };

@@ -115,7 +115,7 @@ namespace BlinkyBlocks {
         lock();
         for (const auto& pair : mapGlBlocks) {
             ((BlinkyBlocksGlBlock*)pair.second)->glDraw(objBlock);
-            isBlinkingBlocks |= ((BlinkyBlocksGlBlock*)pair.second)->isHighlighted;
+            isBlinkingBlocks |= ((BlinkyBlocksGlBlock*)pair.second)->isHighlighted();
         }
         unlock();
         glPopMatrix();

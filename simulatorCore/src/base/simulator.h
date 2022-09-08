@@ -252,6 +252,12 @@ public:
     inline TiXmlDocument *getConfigDocument() { return xmlDoc; }
 
     inline BlockCodeBuilder getBlockCodeBuilder() { return bcb; }
+
+    static Cell3DPosition extractCell3DPositionFromString(string str);
+    static pair<int,int> extract2DpointFromString(string str);
+    static Vector3D extractVector3DFromString(string str);
+    static Color extractColorFromString(string str);
+    static bool extractBoolFromString(string str);
 };
 
 inline void deleteSimulator() {

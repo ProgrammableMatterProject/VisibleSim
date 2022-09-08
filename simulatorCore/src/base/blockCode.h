@@ -210,26 +210,32 @@ namespace BaseSimulator {
         /**
          * User-implemented keyboard handler function that gets called when
          *  a key press event could not be caught by openglViewer
+         * @param c key code that was pressed (see openglViewer.cpp)
+         * @param x location of the pointer on the x axis
+         * @param y location of the pointer on the y axis
          * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
          */
         virtual void onUserKeyPressed(unsigned char c, int x, int y) {};
 
         /**
-         * User-implemented keyboard handler function that gets called when
-         *  a key press event could not be caught by openglViewer
+         * @brief User-implemented keyboard handler function that gets called when
+         *  a special key press event is produced
+         * @param c key code that was pressed (see openglViewer.cpp)
+         * @param x location of the pointer on the x axis
+         * @param y location of the pointer on the y axis
          * @note call is made from GlutContext::SpecialFunc (openglViewer.h)
          */
         virtual void onUserArrowKeyPressed(unsigned char c, int x, int y) {};
 
         /**
-         * Called by world during GL drawing phase, can be used by a user
+         * @brief Called by world during GL drawing phase, can be used by a user
          *  to draw custom Gl content into the simulated world
          * @note call is made from World::GlDraw
          */
         virtual void onGlDraw() {};
 
         /**
-         * Called by openglviewer during interface drawing phase, can be used by a user
+         * @brief Called by openglviewer during interface drawing phase, can be used by a user
          *  to draw a custom Gl string onto the bottom-left corner of the GUI
          * @note call is made from OpenGlViewer::drawFunc
          * @return a string (can be multi-line with `\n`) to display on the GUI
@@ -237,7 +243,7 @@ namespace BaseSimulator {
         virtual string onInterfaceDraw();
 
         /**
-         * Callback function called when an interruption event occurs
+         * @brief Callback function called when an interruption event occurs
          */
         virtual void onInterruptionEvent(shared_ptr<Event> event) {};
 

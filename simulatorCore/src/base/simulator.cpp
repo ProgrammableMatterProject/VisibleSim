@@ -33,7 +33,7 @@ namespace BaseSimulator {
     bool Simulator::regrTesting = false; // No regression testing by default
 
 /********************************************************************************************/
-    Cell3DPosition extractCell3DPositionFromString(string str) {
+    Cell3DPosition Simulator::extractCell3DPositionFromString(string str) {
         auto pos1 = str.find_first_of('('),
                 pos2 = str.find_last_of(')');
         if (pos1 != string::npos && pos2 != string::npos && pos1 != pos2) {
@@ -48,7 +48,7 @@ namespace BaseSimulator {
         } else return {0,0,0};
     }
 
-    pair<int,int> extract2DpointFromString(string str) {
+    pair<int,int> Simulator::extract2DpointFromString(string str) {
         auto pos1 = str.find_first_of('('),
                 pos2 = str.find_last_of(')');
         if (pos1 != string::npos && pos2 != string::npos && pos1 != pos2) {
@@ -61,7 +61,7 @@ namespace BaseSimulator {
         } else return {0,0};
     }
 
-    Vector3D extractVector3DFromString(string str) {
+    Vector3D Simulator::extractVector3DFromString(string str) {
         auto pos1 = str.find_first_of('('),
                 pos2 = str.find_last_of(')');
         if (pos1 != string::npos && pos2 != string::npos && pos1 != pos2) {
@@ -75,7 +75,7 @@ namespace BaseSimulator {
         } else return {0.0f,0.0f,0.0f};
     }
 
-    Color extractColorFromString(string str) {
+    Color Simulator::extractColorFromString(string str) {
         // formqt R,G,B
         auto pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
@@ -108,7 +108,7 @@ namespace BaseSimulator {
         }
     }
 
-    bool extractBoolFromString(string str) {
+    bool Simulator::extractBoolFromString(string str) {
         toLowercase(str);
         return (str == "true" || str == "yes"|| str == "ok" || str == "1" || str == "show");
     }
@@ -250,7 +250,7 @@ namespace BaseSimulator {
         const char *attr = element->Attribute("ids");
         if (attr) {
             string str(attr);
-
+            toUppercase(str);
             if (str.compare("MANUAL") == 0)
                 return MANUAL;
             else if (str.compare("ORDERED") == 0)
@@ -292,7 +292,7 @@ namespace BaseSimulator {
 
     bID Simulator::parseRandomStep() {
         TiXmlElement *element = xmlBlockListNode->ToElement();
-        const char *attr = element->Attribute("step");
+        const char *attr = element->Attribute("idStep");
         if (attr) {                // READ Step
             try {
                 string str(attr);
@@ -450,7 +450,6 @@ namespace BaseSimulator {
                         "block")) {
                     element = child->ToElement();
                     attr = element->Attribute("id");
-
                     if (attr) {
                         try {
                             string str(attr);
@@ -747,6 +746,15 @@ namespace BaseSimulator {
                 }
 
                 attr = lightElement->Attribute("directionSpherical");
+                if (attr) {
+                    auto vect= extractVector3DFromString(attr);
+                    az = -90.0 + vect[0];
+                    ele = vect[1];
+                    dist = vect[2];
+                    cerr << "warning [DEPRECATED]: use [thetaPhiDist] instead of [directionSpherical]!" << endl;
+                }
+
+                attr = lightElement->Attribute("thetaPhiDist");
                 if (attr) {
                     auto vect= extractVector3DFromString(attr);
                     az = -90.0 + vect[0];

@@ -80,8 +80,8 @@ void Camera::setLightParameters(const Vector3D &t, double th,double ph,double d,
     ls.target[0] = t[0];
     ls.target[1] = t[1];
     ls.target[2] = t[2];
-    ls.theta=th*M_PI/180;
-    ls.phi=ph*M_PI/180;
+    ls.theta=th*M_PI/180.0;
+    ls.phi=ph*M_PI/180.0;
     ls.distance=d;
     ls.falloffAngle=angle;
     ls.near_plane=nearplane;
@@ -161,23 +161,63 @@ void LightSource::calcMatrixs() {
     mat.inverse(mat_1);
     mat_1.fillArray(matMV_1);
     glLoadIdentity ();
-    gluPerspective(falloffAngle*2., 1.0f, near_plane, far_plane);
+    gluPerspective(falloffAngle*2.0, 1.0f, near_plane, far_plane);
     glGetFloatv(GL_MODELVIEW_MATRIX, matP); // mémorisation de la matrice de projection pour la source
     glPopMatrix();
 }
 
-void LightSource::draw() {
+void LightSource::glDraw() {
+    static const float color1[4] = {1.0,1.0,0.0,1.0};
+    Vector3D vertical(0,0,1);
+    Vector3D direction(dir[0],dir[1],dir[2]);
+    direction.normer_interne();
+    Vector3D right = direction ^ vertical;
+    right.normer_interne();
+    vertical = (right ^ direction).normer();
+    double d=tan(falloffAngle*360.0/M_PI);
+
+    glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE, color1);
+    Vector3D cornerTR = far_plane*(direction + d*(right+vertical));
+    Vector3D cornerTL = far_plane*(direction + d*(-right+vertical));
+    Vector3D cornerBR = far_plane*(direction + d*(right-vertical));
+    Vector3D cornerBL = far_plane*(direction + d*(-right-vertical));
     glPushMatrix();
     glTranslatef(pos[0],pos[1],pos[2]);
-    glutSolidCone(1.0,1.0,10.0,10.0);
+
+    glBegin(GL_LINES);
+    glVertex3f(0,0,0);
+    glVertex3f(cornerTR[0],cornerTR[1],cornerTR[2]);
+    glVertex3f(0,0,0);
+    glVertex3f(cornerTL[0],cornerTL[1],cornerTL[2]);
+    glVertex3f(0,0,0);
+    glVertex3f(cornerBR[0],cornerBR[1],cornerBR[2]);
+    glVertex3f(0,0,0);
+    glVertex3f(cornerBL[0],cornerBL[1],cornerBL[2]);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(cornerTR[0],cornerTR[1],cornerTR[2]);
+    glVertex3f(cornerTL[0],cornerTL[1],cornerTL[2]);
+    glVertex3f(cornerBL[0],cornerBL[1],cornerBL[2]);
+    glVertex3f(cornerBR[0],cornerBR[1],cornerBR[2]);
+    glEnd();
+
+    cornerTR = near_plane*(direction + d*(right+vertical));
+    cornerTL = near_plane*(direction + d*(-right+vertical));
+    cornerBR = near_plane*(direction + d*(right-vertical));
+    cornerBL = near_plane*(direction + d*(-right-vertical));
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(cornerTR[0],cornerTR[1],cornerTR[2]);
+    glVertex3f(cornerTL[0],cornerTL[1],cornerTL[2]);
+    glVertex3f(cornerBL[0],cornerBL[1],cornerBL[2]);
+    glVertex3f(cornerBR[0],cornerBR[1],cornerBR[2]);
+    glEnd();
+
     glPopMatrix();
 }
-
 
 const Vector3D LightSource::getDirectionSpherical() {
     return Vector3D(90.0 + (theta * 180.0 / M_PI), phi * 180.0 / M_PI, distance, 0);
 }
-
 
 ostream& operator<<(ostream& f,const Camera &c)
 { f << "(" << c.phi*180.0/M_PI << "," << c.theta*180.0/M_PI << "," << c.distance << ")";

@@ -279,6 +279,11 @@ void shadowedRenderingStep3(Camera *camera) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC_ARB, GL_LEQUAL);
 
     glActiveTextureARB(GL_TEXTURE0_ARB);
+
+    if (camera->ls.showCone) {
+        camera->ls.glDraw();
+    }
+
 }
 
 void shadowedRenderingStep4() {

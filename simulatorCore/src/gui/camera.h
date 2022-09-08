@@ -37,11 +37,11 @@ public :
   GLfloat falloffAngle,near_plane,far_plane;
   GLfloat matMV[16],matMV_1[16],matP[16];
   GLfloat theta,phi,distance;
-  bool showCone;
+  bool showCone=false;
 
   LightSource();
   void calcMatrixs();
-  void draw();
+  void glDraw();
   const Vector3D getDirectionSpherical();
   inline float* getTarget() { return (float *)target; };
   inline double getAngle() { return (180.0 / M_PI) * atan(far_plane / (2.0 * distance)); };

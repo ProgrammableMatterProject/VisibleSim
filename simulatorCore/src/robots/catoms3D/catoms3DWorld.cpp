@@ -301,17 +301,10 @@ void Catoms3DWorld::glDraw() {
     if (bb!= nullptr) bb->blockCode->onGlDraw();
     lattice->glDraw();
 
-    // if (BlockCode::target and dynamic_cast<TargetCSG*>(BlockCode::target)) {
-    //     glScalef(lattice->gridScale[0], lattice->gridScale[1], lattice->gridScale[2]);
-    //     static_cast<TargetCSG*>(BlockCode::target)->highlight();
-    // }
     if (GlutContext::editMode && numSelectedFace!=13 && bb) {
         Cell3DPosition nPos;
         if (bb->getNeighborPos(numSelectedFace,nPos)) {
             static const GLfloat transpRed[4] ={255.0,0,0,0.5};
-            /*addBlock(0, bb->buildNewBlockCode, nPos,bb->color,0,false);
-            linkBlock(nPos);
-            linkNeighbors(nPos);*/
             Matrix mat = Catoms3DBlock::getMatrixFromPositionAndOrientation(nPos, bb->orientationCode);
             glPushMatrix();
             mat.glMultMatrix();

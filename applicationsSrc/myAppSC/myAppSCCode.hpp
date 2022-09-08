@@ -12,7 +12,6 @@ using namespace SlidingCubes;
 class MyAppSCCode : public SlidingCubesBlockCode {
 private:
     SlidingCubesBlock *module = nullptr;
-    bool isLeader;
 public :
     MyAppSCCode(SlidingCubesBlock *host);
 

@@ -551,7 +551,7 @@ The `blockList` element describes the starting physical position and color of mo
 There are several types of children elements that can be used to describe the ensemble, and that can be combined: `block`, `blocksLine`, and `blocksBox`.
 
 ```xml
-<blockList color="r,g,b" ids="[MANUAL|ORDERED|RANDOM]" step="sp" seed="sd">
+<blockList color="r,g,b" ids="[MANUAL|ORDERED|RANDOM]" idStep="sp" seed="sd">
 	<!-- Description of all blocks in simulation -->
 	<block position="x,y,z" color="r,g,b" master="true/false" id="i"/>;
 	<!-- ... -->
