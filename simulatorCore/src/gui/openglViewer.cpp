@@ -613,7 +613,9 @@ void GlutContext::specialFunc(int key, int x, int y) {
                         wrld->addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
                         wrld->linkBlock(nPos);
                         wrld->linkNeighbors(nPos);
-                        wrld->setselectedGlBlock()
+                        GlBlock *slct = BaseSimulator::getWorld()->getselectedGlBlock();
+                        if (slct) slct->toggleHighlight();
+                        wrld->setselectedGlBlock(-1);
                     }
                 }
             }
