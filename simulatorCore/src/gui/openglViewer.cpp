@@ -613,6 +613,7 @@ void GlutContext::specialFunc(int key, int x, int y) {
                         wrld->addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
                         wrld->linkBlock(nPos);
                         wrld->linkNeighbors(nPos);
+                        wrld->setselectedGlBlock()
                     }
                 }
             }
@@ -675,11 +676,6 @@ void GlutContext::idleFunc(void) {
                 //cout << "#" << n << endl;
                 World *wrl = BaseSimulator::getWorld();
                 GlBlock *slct = wrl->getGlBlock(n);
-                popup->setCenterPosition(lastMousePos[0], screenHeight - lastMousePos[1]);
-                popup->setInfo(slct->getPopupInfo());
-                //ostringstream out;
-                //out << slct->blockId << " - " << wrl->lattice->worldToGridPosition(slct->getPosition()) << "\n";
-                popup->show(true);
                 if (editMode) {
                     GlBlock *slct = BaseSimulator::getWorld()->getselectedGlBlock();
                     if (slct) slct->toggleHighlight();
@@ -692,6 +688,10 @@ void GlutContext::idleFunc(void) {
                     int nf = selectFaceFunc(lastMousePos[0], lastMousePos[1]);
                     //cout << "selectFaceFunc=" << nf << endl;
                     BaseSimulator::getWorld()->setSelectedFace(nf);
+                } else {
+                    popup->setCenterPosition(lastMousePos[0], screenHeight - lastMousePos[1]);
+                    popup->setInfo(slct->getPopupInfo());
+                    popup->show(true);
                 }
             } else {
                 popup->show(false);

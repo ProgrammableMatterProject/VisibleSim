@@ -609,9 +609,9 @@ add_executable(catoms3DRotate applicationsSrc/catoms3DRotate/catoms3DRotate.cpp 
 target_link_libraries(catoms3DRotate -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS catoms3DRotate RUNTIME DESTINATION applicationsBin/catoms3DRotate)
 
-add_executable(myApp applicationsSrc/myApp/myApp.cpp applicationsSrc/myApp/myAppCode.cpp applicationsSrc/myApp/myAppCode.hpp)
-target_link_libraries(myApp -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
-install(TARGETS myApp RUNTIME DESTINATION applicationsBin/myApp)
+#add_executable(myApp applicationsSrc/myApp/myApp.cpp applicationsSrc/myApp/myAppCode.cpp applicationsSrc/myApp/myAppCode.hpp)
+#target_link_libraries(myApp -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+#install(TARGETS myApp RUNTIME DESTINATION applicationsBin/myApp)
 
 
 #################################################################################
