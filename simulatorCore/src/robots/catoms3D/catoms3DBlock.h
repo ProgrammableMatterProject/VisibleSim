@@ -41,10 +41,11 @@ const float tabOrientationAngles[12][3] = { {0,0,0}, {180.0f,0.0f,-90.0f}, {-90.
    tabConnectorPositions[i] : coordinates of connector #i
 
 */
-const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_2},
+const float tabConnectorPositions[13][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_2},
                                              {-0.5,0.5,M_SQRT2_2},{-0.5,-0.5,M_SQRT2_2},{0.5,-0.5,M_SQRT2_2},
                                              {-1,0,0}, {0,-1,0}, {-0.5,-0.5,-M_SQRT2_2},
-                                             {0.5,-0.5,-M_SQRT2_2},{0.5,0.5,-M_SQRT2_2},{-0.5,0.5,-M_SQRT2_2}};
+                                             {0.5,-0.5,-M_SQRT2_2},{0.5,0.5,-M_SQRT2_2},{-0.5,0.5,-M_SQRT2_2},
+                                             {0,0,0}};
 
 class Catoms3DBlockCode;
 
