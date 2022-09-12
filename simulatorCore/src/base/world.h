@@ -243,10 +243,13 @@ public:
     inline GlBlock* setselectedGlBlock(int n) {
         auto const &glBlock = mapGlBlocks.find(n);
 
-        selectedGlBlock= (glBlock != mapGlBlocks.end()) ? (*glBlock).second : nullptr;
-
-        if (selectedGlBlock) numSelectedGlBlock = n;
-
+        if (glBlock != mapGlBlocks.end()) {
+            selectedGlBlock = (*glBlock).second;
+            numSelectedGlBlock = n;
+        } else {
+            selectedGlBlock = nullptr;
+            numSelectedGlBlock = -1;
+        }
         return selectedGlBlock;
     };
 

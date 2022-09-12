@@ -21,13 +21,9 @@ Demo01_SCCode::Demo01_SCCode(SlidingCubesBlock *host):SlidingCubesBlockCode(host
 
 void Demo01_SCCode::startup() {
     console << "start " << module->blockId << "\n";
-    if (sourceDir!=Cell3DPosition(0,0,0)) { // code for module#1 only
+    if (sourceDir!=Cell3DPosition(0,0,0)) { // code for module whith sourceDir
         setColor(RED);
         auto connectors = getAllConnectedInterfaces();
-        for (auto p:connectors) {
-            p.second->
-        }
-
         if (connectors.find(SCLattice2::PlusX)!=connectors.end()) { // if connected send PURPLE color
             sendMessage(new MessageOf<int>(BROADCAST_MSG_ID, 18), connectors[SCLattice2::PlusX], 1000, 0);
         }

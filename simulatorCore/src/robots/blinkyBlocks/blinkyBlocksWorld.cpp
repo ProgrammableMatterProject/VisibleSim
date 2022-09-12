@@ -120,19 +120,16 @@ namespace BlinkyBlocks {
         unlock();
         glPopMatrix();
 
-        BuildingBlock *bb = getSelectedBuildingBlock() ? getSelectedBuildingBlock(): getMap().begin()->second;
-        if (bb) bb->blockCode->onGlDraw();
-
+        BuildingBlock *bb = getSelectedBuildingBlock();
         lattice->glDraw();
-
         if (GlutContext::editMode && bb) {
             Cell3DPosition nPos;
             if (bb->getNeighborPos(numSelectedFace, nPos)) {
                 static const GLfloat transpRed[4] = {255.0, 0, 0, 0.5};
                 auto pos = lattice->gridToWorldPosition(nPos);
                 glPushMatrix();
-                glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-                glTranslatef(pos[0],pos[1],pos[2]);
+                glTranslated(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+                glTranslated(pos[0],pos[1],pos[2]);
                 objBlock->setLightedColor(transpRed);
                 objBlock->glDraw();
                 glPopMatrix();
