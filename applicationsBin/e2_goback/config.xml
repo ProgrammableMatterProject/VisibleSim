@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no" ?>
+<vs>
+<visuals>
+	<window size="1800x900" backgroundColor="0xffffff" gradientColor="0x00ffff"/>
+	<render shadows="true" grid="true"/>
+</visuals>
+<world gridSize="10,10,5" >
+	<blockList color="128,128,128">
+		<blockBox boxOrigin="1,1,0" boxSize="8,8,3"></blockBox>
+		<block position="5,2,3" leader="true" color="255,255,0"/>
+		<block position="0,8,1" />
+	</blockList>
+</world>
+</vs>

@@ -1,3 +1,4 @@
+
 # Get current directory's name
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
@@ -15,15 +16,18 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS =  C3DRotate.cpp C3DRotateCode.cpp
+SRCS = myApp.cpp myAppCode.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/C3DRotate
+OUT = $(APPDIR)/myApp
 #
-# MODULELIB is the library for your target module type: -lsim<module_name>
-MODULELIB = -lsimCatoms3D
+# MODULELIB is the library for your target module type: -lsimBlinkyBlocks
+MODULELIB = -lsimBlinkyBlocks
 # TESTS contains the commands that will be executed when `make test` is called
-TESTS = ../../utilities/blockCodeTest.sh C3DRotate $(OUT)
+TESTS = ../../utilities/blockCodeTest.sh myApp $(OUT)
+#
+# CUSTOM_LIBS are the external dependencies of your blockcode, empty by default
+CUSTOM_LIBS =
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -40,23 +44,23 @@ else
 INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 endif
 
-INCLUDES += $(LOCAL_INCLUDES)
-
 ifeq ($(GLOBAL_LIBS), )
-	ifeq ($(OS),Darwin)
+ifeq ($(OS),Darwin)
 LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib /usr/local/lib/libmuparser.dylib $(MODULELIB)
-	else
+else
 LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -L/usr/X11/lib -lglut -lGL -lGLU -lGLEW -lpthread -lm -ldl -lmuparser $(MODULELIB)
-	endif				#OS
+endif				#OS
 else
 LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
 endif				#GLOBAL_LIBS
 
+LIBS += $(CUSTOM_LIBS)
+
 ifeq ($(GLOBAL_CCFLAGS),)
 CCFLAGS = -g -Wall -std=c++17 -Wsuggest-override -fno-stack-protector
-	ifeq ($(OS), Darwin)
-	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
-	endif
+ifeq ($(OS), Darwin)
+CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
+endif
 else
 CCFLAGS = $(GLOBAL_CCFLAGS)
 endif

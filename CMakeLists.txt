@@ -609,6 +609,23 @@ add_executable(catoms3DRotate applicationsSrc/catoms3DRotate/catoms3DRotate.cpp 
 target_link_libraries(catoms3DRotate -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS catoms3DRotate RUNTIME DESTINATION applicationsBin/catoms3DRotate)
 
+#
+#add_executable(demoReconfStairs applicationsSrc/demoReconfStairs/demoReconfStairs.cpp applicationsSrc/demoReconfStairs/demoReconfStairsCode.cpp)
+#target_link_libraries(demoReconfStairs -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+#install(TARGETS demoReconfStairs RUNTIME DESTINATION applicationsBin/demoReconfStairs)
+
+add_executable(e1_flooding applicationsSrc/e1_flooding/e1_flooding.cpp applicationsSrc/e1_flooding/e1_floodingCode.cpp)
+target_link_libraries(e1_flooding -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS e1_flooding RUNTIME DESTINATION applicationsBin/e1_flooding)
+
+add_executable(e2_goback applicationsSrc/e2_goback/e2_goback.cpp applicationsSrc/e2_goback/e2_gobackCode.cpp)
+target_link_libraries(e2_goback -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS e2_goback RUNTIME DESTINATION applicationsBin/e2_goback)
+
+add_executable(e3_lightpath applicationsSrc/e3_lightpath/e3_lightpath.cpp applicationsSrc/e3_lightpath/e3_lightpathCode.cpp)
+target_link_libraries(e3_lightpath -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS e3_lightpath RUNTIME DESTINATION applicationsBin/e3_lightpath)
+
 #add_executable(myApp applicationsSrc/myApp/myApp.cpp applicationsSrc/myApp/myAppCode.cpp applicationsSrc/myApp/myAppCode.hpp)
 #target_link_libraries(myApp -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 #install(TARGETS myApp RUNTIME DESTINATION applicationsBin/myApp)

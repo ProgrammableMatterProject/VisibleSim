@@ -27,7 +27,8 @@ void Demo01_SCCode::startup() {
         if (connectors.find(SCLattice2::PlusX)!=connectors.end()) { // if connected send PURPLE color
             sendMessage(new MessageOf<int>(BROADCAST_MSG_ID, 18), connectors[SCLattice2::PlusX], 1000, 0);
         }
-	} else if (sourceOmni) { // code for module#3 only
+	}
+    if (sourceOmni) { // code for module#3 only
         setColor(WHITE);
         auto connectors = getAllConnectedInterfaces();
         int i=1;
@@ -52,4 +53,15 @@ void Demo01_SCCode::parseUserBlockElements(TiXmlElement *config) {
     sourceOmni = Simulator::extractBoolFromString(attr);
 }
 
-
+void Demo01_SCCode::parseUserElements(TiXmlDocument *config) {
+    TiXmlNode *node = config->FirstChild("parameters");
+    if (!node) return;
+    TiXmlElement *element = node->ToElement();
+    const char *attr = element->Attribute("myColor");
+    if (attr) {
+        myColor=Simulator::extractColorFromString(attr);
+        std::cout << "myColor = " << myColor << std::endl;
+    } else {
+        myColor=GREY;
+    }
+}

@@ -76,6 +76,7 @@ namespace BaseSimulator {
 
         void setColor(int idColor);
 
+        void setVisible(bool v);
 /**
  * @brief Provides the list of connected interfaces to the current module
  *
