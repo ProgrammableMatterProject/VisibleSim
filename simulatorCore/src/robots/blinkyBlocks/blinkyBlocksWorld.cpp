@@ -24,7 +24,7 @@ namespace BlinkyBlocks {
 #ifdef WIN32
     string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/blinkyBlocksTextures";
 #else
-    string directory = "../../simulatorCore/resources/textures/blinkyBlocksTextures";
+    string directory = "../../../simulatorCore/resources/textures/blinkyBlocksTextures";
 #endif
 
     BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
@@ -32,8 +32,7 @@ namespace BlinkyBlocks {
         OUTPUT << TermColor::LifecycleColor << "BlinkyBlocksWorld constructor" << TermColor::Reset << endl;
 
         if (GlutContext::GUIisEnabled) {
-            //objBlock = new ObjLoader::ObjLoader(directory.c_str(),"blinkyBlockCentered.obj");
-            objBlock = new ObjLoader::ObjLoader(directory.c_str(),"blinkyBlock_texture.obj");
+            objBlock = new ObjLoader::ObjLoader(directory.c_str(),"blinkyBlockCentered.obj");
             objBlockForPicking = new ObjLoader::ObjLoader(directory.c_str(),"blinkyBlockPickingCentered.obj");
 #ifdef WIN32
             directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/latticeTextures";
