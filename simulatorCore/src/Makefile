@@ -54,11 +54,11 @@ DATOMS_SRCS = $(DATOMS_SRCS_NODIR:%=$(DATOMS_DIR)/%)
 DATOMS_OBJS = $(DATOMS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 DATOMS_DEPS = $(DATOMS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-NODES2D_DIR = robots/nodes2D
-NODES2D_SRCS_NODIR = nodes2DSimulator.cpp nodes2DBlock.cpp nodes2DBlockCode.cpp nodes2DWorld.cpp nodes2DGlBlock.cpp nodes2DMotionEngine.cpp nodes2DMotionEvents.cpp
-NODES2D_SRCS = $(NODES2D_SRCS_NODIR:%=$(NODES2D_DIR)/%)
-NODES2D_OBJS = $(NODES2D_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
-NODES2D_DEPS = $(NODES2D_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
+#NODES2D_DIR = robots/nodes2D
+#NODES2D_SRCS_NODIR = nodes2DSimulator.cpp nodes2DBlock.cpp nodes2DBlockCode.cpp nodes2DWorld.cpp nodes2DGlBlock.cpp nodes2DMotionEngine.cpp nodes2DMotionEvents.cpp
+#NODES2D_SRCS = $(NODES2D_SRCS_NODIR:%=$(NODES2D_DIR)/%)
+#NODES2D_OBJS = $(NODES2D_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
+#NODES2D_DEPS = $(NODES2D_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
 HEXANODES_DIR = robots/hexanodes
 HEXANODES_SRCS_NODIR = hexanodesSimulator.cpp hexanodesBlock.cpp hexanodesBlockCode.cpp hexanodesWorld.cpp hexanodesGlBlock.cpp hexanodesMotionEngine.cpp hexanodesMotionEvents.cpp
