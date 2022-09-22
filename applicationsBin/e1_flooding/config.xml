@@ -1,4 +1,5 @@
 <?xml version="1.0" standalone="no" ?>
+<!-- -->
 <vs>
     <visuals>
         <window size="1800x900" backgroundColor="0xffffff" gradientColor="0x00ffff"/>
