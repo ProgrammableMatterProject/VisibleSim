@@ -7,7 +7,7 @@
  **/
 
 #include <iostream>
-#include "E1_FloodingCode.hpp"
+#include "e1_floodingCode.hpp"
 
 using namespace std;
 using namespace BlinkyBlocks;
