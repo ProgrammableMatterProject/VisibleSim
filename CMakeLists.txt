@@ -577,10 +577,6 @@ add_executable(simpleColorBB applicationsSrc/simpleColorBB/simpleColorBB.cpp app
 target_link_libraries(simpleColorBB -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS simpleColorBB RUNTIME DESTINATION applicationsBin/simpleColorBB)
 
-add_executable(rainbow applicationsSrc/rainbow/rainbow.cpp applicationsSrc/rainbow/rainbowCode.cpp)
-target_link_libraries(rainbow -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
-install(TARGETS rainbow RUNTIME DESTINATION applicationsBin/rainbow)
-
 add_executable(ants applicationsSrc/ants/ants.cpp applicationsSrc/ants/antsCode.cpp)
 target_link_libraries(ants -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS ants RUNTIME DESTINATION applicationsBin/rainbow)
