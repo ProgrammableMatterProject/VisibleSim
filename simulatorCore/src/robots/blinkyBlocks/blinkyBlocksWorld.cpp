@@ -24,7 +24,7 @@ namespace BlinkyBlocks {
 #ifdef WIN32
     string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/blinkyBlocksTextures";
 #else
-    string directory = "../../../simulatorCore/resources/textures/blinkyBlocksTextures";
+    string directory = "../../simulatorCore/resources/textures/blinkyBlocksTextures";
 #endif
 
     BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
