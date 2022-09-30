@@ -32,7 +32,8 @@ namespace BlinkyBlocks {
         OUTPUT << TermColor::LifecycleColor << "BlinkyBlocksWorld constructor" << TermColor::Reset << endl;
 
         if (GlutContext::GUIisEnabled) {
-            objBlock = new ObjLoader::ObjLoader(directory.c_str(),"blinkyBlockCentered.obj");
+            objBlock = new ObjLoader::ObjLoader(directory.c_str(),"blinkyBlock_texture.obj");
+            //objBlock = new ObjLoader::ObjLoader(directory.c_str(),"blinkyBlockCentered.obj");
             objBlockForPicking = new ObjLoader::ObjLoader(directory.c_str(),"blinkyBlockPickingCentered.obj");
 #ifdef WIN32
             directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/latticeTextures";
