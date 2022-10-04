@@ -28,6 +28,8 @@
 //          GlutContext  (class)
 //
 //===========================================================================================================
+static const int DELAY_FOR_POPUP=200; // ms
+static const int FPS_DELAY=200; // ms
 
 bool GlutContext::GUIisEnabled = true;
 
@@ -672,7 +674,7 @@ void GlutContext::idleFunc(void) {
 
     if (lastMotionTime) {
         int tm = glutGet(GLUT_ELAPSED_TIME);
-        if (tm - lastMotionTime > 100) {
+        if (tm - lastMotionTime > DELAY_FOR_POPUP) {
             int n = selectFunc(lastMousePos[0], lastMousePos[1]);
             if (n) {
                 //cout << "#" << n << endl;
@@ -719,7 +721,7 @@ void GlutContext::calculateFPS(void) {
 
     //  Calculate time passed
     int timeInterval = currentTime - previousTime;
-    if (timeInterval > 200) {
+    if (timeInterval > FPS_DELAY) {
         fps = frameCount / (timeInterval / 1000.0f);
         previousTime = currentTime;
         frameCount = 0;

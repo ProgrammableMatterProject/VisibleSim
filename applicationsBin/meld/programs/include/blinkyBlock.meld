@@ -1,7 +1,0 @@
-// interfaceIDs
-const bottom = 0.
-const back = 1.
-const right = 2.
-const front = 3.
-const left = 4.
-const top = 5.

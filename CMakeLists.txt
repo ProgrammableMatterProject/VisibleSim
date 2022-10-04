@@ -45,13 +45,13 @@ IF (WIN32)
         ##########################################################
         ######Change Paths to match your library installation#####
         ##########################################################
-        set(FREEGLUT_INCLUDE_DIRS F:/freeglut-3.0.0/include)
-        set(FREEGLUT_LIBRARY_DIRS F:/freeglut-3.0.0/cmake-build-debug/lib)
+        set(FREEGLUT_INCLUDE_DIRS C:/VisibleSim/freeglut-3.2.1/include)
+        set(FREEGLUT_LIBRARY_DIRS C:/VisibleSim/freeglut-3.2.1/cmake-build-debug/lib)
         add_compile_definitions(GLEW_STATIC)
-        set(GLEW_INCLUDE_DIRS F:/glew-2.1.0/include)
-        set(GLEW_LIBRARY_DIRS F:/glew-2.1.0/build/cmake/cmake-build-debug/lib)
-        set(muparser_INCLUDE_DIRS F:/muparser-master/include)
-        set(muparser_LIBRARY_DIRS F:/muparser-master/cmake-build-debug)
+        set(GLEW_INCLUDE_DIRS C:/VisibleSim/glew-2.1.0/include)
+        set(GLEW_LIBRARY_DIRS C:/VisibleSim/glew-2.1.0/build/cmake/cmake-build-debug/lib)
+        set(muparser_INCLUDE_DIRS C:/VisibleSim/muparser-2.3.3-1/include)
+        set(muparser_LIBRARY_DIRS C:/VisibleSim/muparser-2.3.3-1/cmake-build-debug)
 
         ##########################################################
         ##########################################################
@@ -576,10 +576,6 @@ install(TARGETS stressTestSB RUNTIME DESTINATION ../applicationsBin/stressTestSB
 add_executable(simpleColorBB applicationsSrc/simpleColorBB/simpleColorBB.cpp applicationsSrc/simpleColorBB/simpleColorCodeBB.cpp)
 target_link_libraries(simpleColorBB -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS simpleColorBB RUNTIME DESTINATION applicationsBin/simpleColorBB)
-
-add_executable(rainbow applicationsSrc/rainbow/rainbow.cpp applicationsSrc/rainbow/rainbowCode.cpp)
-target_link_libraries(rainbow -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
-install(TARGETS rainbow RUNTIME DESTINATION applicationsBin/rainbow)
 
 add_executable(ants applicationsSrc/ants/ants.cpp applicationsSrc/ants/antsCode.cpp)
 target_link_libraries(ants -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #

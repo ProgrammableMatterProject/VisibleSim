@@ -1,4 +1,0 @@
-type neighborCount(node, int).
-
-!neighborCount(A, N), N > 1 -o !setColor2(A, 1).
-!neighborCount(A, 0) -o !setColor2(A, 5).

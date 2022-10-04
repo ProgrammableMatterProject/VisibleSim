@@ -110,7 +110,7 @@ namespace BaseSimulator {
 
     bool Simulator::extractBoolFromString(string str) {
         toLowercase(str);
-        return (str == "true" || str == "yes"|| str == "ok" || str == "1" || str == "show");
+        return (str == "true" || str == "yes"|| str == "ok" || str == "1" || str == "show" || str=="on");
     }
 /********************************************************************************************/
 
@@ -210,6 +210,9 @@ namespace BaseSimulator {
         try {
             TiXmlNode *xmlWorldNode = nullptr;
             auto xmlVSNode = xmlDoc->FirstChild("vs");
+#ifdef DEBUG_CONF_PARSING
+            OUTPUT << "VS :" << (xmlVSNode?"OK":"NO") << endl;
+#endif
             if (xmlVSNode) {
                 cout << "vs tag: ok" << endl;
                 xmlWorldNode = parseVS(xmlVSNode, argc, argv);
@@ -494,6 +497,9 @@ namespace BaseSimulator {
 
     bool Simulator::parseVisuals(TiXmlNode *parent) {
         TiXmlNode *xmlVisualsNode = parent->FirstChild("visuals");
+#ifdef DEBUG_CONF_PARSING
+        OUTPUT << "visuals node: " << (xmlVisualsNode?"OK":"NO") << endl;
+#endif
         if (!xmlVisualsNode) return false;
         TiXmlNode *windowNode = xmlVisualsNode->FirstChild("window");
         if (windowNode) {
@@ -834,7 +840,7 @@ namespace BaseSimulator {
                 if (attr) {
                     color = extractColorFromString(attr);
 #ifdef DEBUG_CONF_PARSING
-                    OUTPUT << "new color :" << defaultColor << endl;
+                    OUTPUT << "new color :" << color << endl;
 #endif
                 }
                 attr = element->Attribute("position");
@@ -847,7 +853,7 @@ namespace BaseSimulator {
                 if (attr) {
                     orient = stoi(attr);
 #ifdef DEBUG_CONF_PARSING
-                    OUTPUT << "new orientation :" << orient << endl;
+                    OUTPUT << "new orientation :" << int(orient) << endl;
 #endif
                 }
 
@@ -861,7 +867,6 @@ namespace BaseSimulator {
                     throw ParsingException(error.str());
                 }
 
-                // cerr << "addBlock(" << currentID << ") pos = " << position << endl;
                 loadBlock(element, ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
                           bcb, position, color, orient);
 
