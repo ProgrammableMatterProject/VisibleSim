@@ -228,4 +228,8 @@ namespace BaseSimulator {
     void BlockCode::setVisible(bool v) {
         if (hostBlock) hostBlock->getGlBlock()->setVisible(v);
     }
+
+    Color BlockCode::getColor() const {
+        return (hostBlock?hostBlock->color:BLACK);
+    }
 } // BaseSimulator namespace

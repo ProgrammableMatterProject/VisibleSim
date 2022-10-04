@@ -10,7 +10,7 @@
         <spotlight target="100,100,50" thetaPhiDist="80,34,500" fov="25" show="0" near="350" far="800"/>
         <blockList color="128,128,128">
             <block position="1,1,0"/>
-            <block position="2,1,0" leader="true" color="255,255,0"/>
+            <block position="2,1,0" leader="true" color="255,255,0" />
             <block position="3,1,0"/>
             <block position="4,1,0"/>
             <block position="2,2,0"/>
