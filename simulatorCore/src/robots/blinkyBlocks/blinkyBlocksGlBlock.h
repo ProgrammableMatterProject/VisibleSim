@@ -20,6 +20,8 @@ public :
     virtual ~BlinkyBlocksGlBlock() {};
 
     virtual void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+    virtual void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;
+    virtual void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) override;
     void setRotation(short rotCode) { rotCoef=rotCode; };
     string getInfo() override;
 

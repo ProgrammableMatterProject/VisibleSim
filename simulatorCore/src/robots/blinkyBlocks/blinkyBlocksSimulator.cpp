@@ -144,7 +144,7 @@ namespace BlinkyBlocks {
         // Any additional configuration file parsing exclusive to this type of block should be performed
         //  here, using the blockElt TiXmlElement.
         // set the orientation
-        if (orient) {
+        if (orient==255) {
                 uniform_int_distribution<short> distribution(0,3);
                 orient= distribution(generator);
         }

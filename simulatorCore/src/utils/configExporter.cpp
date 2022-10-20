@@ -78,17 +78,22 @@ ConfigExporter::ConfigExporter(World *_world) {
             rep = cfName.substr(0,pos+1);
             cfName = cfName.substr(pos+1);
         }
-        size_t config_pos = cfName.find("config_");
+        size_t config_pos = cfName.find("config_",0);
+        cout << "config_pos=" << int(config_pos) << endl;
         if (config_pos == string::npos) // no config_ pattern
             exportedConfigNameRoot = rep + string("export_").append(cfName);
         else
-            exportedConfigNameRoot = rep + string("export_")
-                .append(Simulator::configFileName.substr(config_pos + 7, string::npos));
+            exportedConfigNameRoot = rep + string("export_") + cfName.substr(config_pos + 7, string::npos);
+        cout << "configFileName=" << cfName << " (" << config_pos+7 << ")" << endl;
+        cout << "rep=" << rep << endl;
+        cout << "exportedConfigNameRoot=" << exportedConfigNameRoot << endl;
 
         // trim extension
         exportedConfigNameRoot = exportedConfigNameRoot
             .substr(0, exportedConfigNameRoot.size()-4);
     }
+
+    cout << "exportedConfigNameRoot=" << exportedConfigNameRoot << endl;
 
     configName = Simulator::regrTesting ?
         ".confCheck.xml" : generateTimestampedFilename(exportedConfigNameRoot, "xml");

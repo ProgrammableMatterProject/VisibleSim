@@ -825,7 +825,7 @@ namespace BaseSimulator {
             if (attr) {
                 defaultOrientation = stoi(attr);
 #ifdef DEBUG_CONF_PARSING
-                OUTPUT << "new default orientation :" << defaultOrientation << endl;
+                OUTPUT << "new default orientation :" << int(defaultOrientation) << endl;
 #endif
             }
             /* Reading a block */

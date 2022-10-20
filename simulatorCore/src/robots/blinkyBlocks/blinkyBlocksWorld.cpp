@@ -121,6 +121,8 @@ namespace BlinkyBlocks {
         glPopMatrix();
 
         BuildingBlock *bb = getSelectedBuildingBlock();
+        if (bb==nullptr && !getMap().empty()) bb=getMap().begin()->second;
+        if (bb!= nullptr) bb->blockCode->onGlDraw();
         lattice->glDraw();
         if (GlutContext::editMode && bb) {
             Cell3DPosition nPos;
@@ -285,16 +287,17 @@ namespace BlinkyBlocks {
         numSelectedGlBlock=n/numPickingTextures;
         string name = objBlockForPicking->getObjMtlName(n%numPickingTextures);
 
-        if (name=="_blinkyBlockPickingface_top") numSelectedFace=SCLattice::Top;
-        else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=SCLattice::Bottom;
-        else if (name=="_blinkyBlockPickingface_right") numSelectedFace=SCLattice::South;
-        else if (name=="_blinkyBlockPickingface_left") numSelectedFace=SCLattice::North;
-        else if (name=="_blinkyBlockPickingface_front") numSelectedFace=SCLattice::West;
-        else if (name=="_blinkyBlockPickingface_back") numSelectedFace=SCLattice::East;
+        if (name=="_blinkyBlockPickingface_top") numSelectedFace=SCLattice::Direction::Top;
+        else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=SCLattice::Direction::Bottom;
+        else if (name=="_blinkyBlockPickingface_right") numSelectedFace=SCLattice::Direction::South;
+        else if (name=="_blinkyBlockPickingface_left") numSelectedFace=SCLattice::Direction::North;
+        else if (name=="_blinkyBlockPickingface_front") numSelectedFace=SCLattice::Direction::West;
+        else if (name=="_blinkyBlockPickingface_back") numSelectedFace=SCLattice::Direction::East;
         else {
             cerr << "warning: Unrecognized picking face" << endl;
-            numSelectedFace = 7;	// UNDEFINED
+            numSelectedFace = SCLattice::Direction::MAX_NB_NEIGHBORS;	// UNDEFINED
         }
+        cout << name << "->" << int(numSelectedFace) << endl;
     }
 
 /**
