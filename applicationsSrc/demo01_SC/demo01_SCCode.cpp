@@ -21,6 +21,7 @@ Demo01_SCCode::Demo01_SCCode(SlidingCubesBlock *host):SlidingCubesBlockCode(host
 
 void Demo01_SCCode::startup() {
     console << "start " << module->blockId << "\n";
+    setColor(startColor);
     if (sourceDir!=Cell3DPosition(0,0,0)) { // code for module whith sourceDir
         setColor(RED);
         auto connectors = getAllConnectedInterfaces();
@@ -48,20 +49,16 @@ void Demo01_SCCode::parseUserBlockElements(TiXmlElement *config) {
     sourceDir=Cell3DPosition(0,0,0);
     sourceOmni=false;
     const char *attr = config->Attribute("sourceDir");
-    sourceDir = Simulator::extractCell3DPositionFromString(attr);
+
+    sourceDir = (attr!=nullptr?Simulator::extractCell3DPositionFromString(attr):Cell3DPosition(0,0,0));
     attr = config->Attribute("sourceOmni");
-    sourceOmni = Simulator::extractBoolFromString(attr);
+    sourceOmni = (attr!=nullptr?Simulator::extractBoolFromString(attr):false);
 }
 
 void Demo01_SCCode::parseUserElements(TiXmlDocument *config) {
     TiXmlNode *node = config->FirstChild("parameters");
     if (!node) return;
     TiXmlElement *element = node->ToElement();
-    const char *attr = element->Attribute("myColor");
-    if (attr) {
-        myColor=Simulator::extractColorFromString(attr);
-        std::cout << "myColor = " << myColor << std::endl;
-    } else {
-        myColor=GREY;
-    }
+    const char *attr = element->Attribute("startColor");
+    startColor=(attr!=nullptr?Simulator::extractColorFromString(attr):GREY);
 }

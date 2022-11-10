@@ -20,9 +20,8 @@ using namespace SlidingCubes;
 class Demo01_SCCode : public SlidingCubesBlockCode {
 private:
     SlidingCubesBlock *module = nullptr;
-    bool spurceOmni=false;
-    Color myColor=BLACK;
     bool sourceOmni;
+    Color startColor;
     Cell3DPosition sourceDir;
 public :
     Demo01_SCCode(SlidingCubesBlock *host);

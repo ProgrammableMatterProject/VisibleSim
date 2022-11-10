@@ -24,21 +24,23 @@ class Neighborhood {
     uint8_t state;
     bool border;
     SCLattice::Direction from,to;
-    int turning;
+    uint8_t turning;
     bool externalBorder;
+    bool isolated;
 public:
     Neighborhood()  {
         validity = state=0;
         from=to=SCLattice::Direction::MAX_NB_NEIGHBORS;
         border=false;
         externalBorder=false;
+        isolated=true;
     }
     uint8_t getState() const { return state; }
     uint8_t getValidity() const { return validity; }
     int8_t getTurning() const { return turning; }
     bool isExternalBorder() const { return externalBorder; }
     SCLattice::Direction getTo() { return to; }
-    void setNeighbor(short dx,short dy,bool value);
+    //void setNeighbor(short dx,short dy,bool value);
     void setNeighbor(SCLattice::Direction dir,bool value);
     void setExternalBorder(bool v) { externalBorder=v; }
     bool isDefined() { return validity==255; }

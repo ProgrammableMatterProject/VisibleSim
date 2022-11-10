@@ -63,9 +63,7 @@ void BordersCode::startup() {
             sendMessage(new MessageOf<uint8_t>(POSITION_MSG_ID, code), p2p, 1000 + 100 * dir, 0);
         }
     }
-    setColor(RED);
-
-
+    setColor(BLACK);
 }
 
 void BordersCode::myPositionFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender) {
@@ -88,6 +86,12 @@ void BordersCode::myPositionFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
             setColor(GREEN);
             order=0;
             sendMessage(new MessageOf<pair<uint16_t,int8_t>>(LEADER_MSG_ID, make_pair(getId(),neighborhood.getTurning())), module->getInterface((*it)[2]), 1000, 0);
+        } else {
+            if (neighborhood.getState()==255) { // internal module
+                setColor(WHITE);
+            } else { // invalid value
+                setColor(PINK);
+            }
         }
     }
 }
@@ -97,12 +101,13 @@ void BordersCode::myLeaderFunc(std::shared_ptr<Message>_msg, P2PNetworkInterface
     pair<uint16_t,int8_t> msgData = *msg->getData();
 
     console << "Rec.L " << int(msgData.first) << "," << int(msgData.second) << "\n";
+    if (!neighborhood.isBorder()) return; // error
     auto myId = getId();
     if (msgData.first==myId) {
         isLeader=true;
         order=0;
         neighborhood.setExternalBorder(msgData.second>0);
-        setColor(msgData.second>0);
+        setColor(YELLOW);
         sendMessage(new MessageOf<pair<uint16_t,uint8_t>>(DISTANCE_MSG_ID, make_pair(1,neighborhood.isExternalBorder())),
                     module->getInterface(neighborhood.getTo()), 1000, 0);
     } else {
@@ -120,11 +125,11 @@ void BordersCode::myDistanceFunc(std::shared_ptr<Message>_msg, P2PNetworkInterfa
 
     console << "Rec.D " << int(msgData.first) << "," << int(msgData.second) << "\n";
     if (isLeader) {
-        setColor(neighborhood.isExternalBorder()?RED:YELLOW);
+        setColor(neighborhood.isExternalBorder()?BROWN:BLUE);
     } else {
         order = msgData.first;
         neighborhood.setExternalBorder(msgData.second);
-        setColor(msgData.second);
+        setColor(msgData.second?YELLOW:CYAN);
         sendMessage(new MessageOf<pair<uint16_t,uint8_t>>(DISTANCE_MSG_ID, make_pair(order+1,msgData.second)),
                         module->getInterface(neighborhood.getTo()), 1000, 0);
     }
@@ -149,23 +154,18 @@ void Neighborhood::setNeighbor(SCLattice::Direction dir, bool value) {
             if (value) state |= 0b00001000; else state &= 0b11110111;
             break;
     }
-}
-
-void Neighborhood::setNeighbor(short dx, short dy, bool value) {
-    uint8_t code = 0;
-    if (dy == -1) {
-        code = 1 >> (dx);
-    } else if (dy == 0) {
-        code = (dx == -1 ? 8 : 16);
-    } else if (dy == 1) {
-        code = 0b00100000 >> (dx);
-    }
-    validity |= code;
-    if (value) state |= code; else state &= (255 - code);
+    bool WestPres = (validity & 2) && (state & 2);
+    bool NorthPres = (validity & 8) && (state & 8);
+    bool EastPres = (validity & 64) && (state & 64);
+    bool SouthPres = (validity & 16) && (state & 16);
+    isolated=!((WestPres && (NorthPres || SouthPres)) ||
+       (EastPres && (NorthPres || SouthPres)) ||
+       (NorthPres && (EastPres || WestPres)) ||
+       (SouthPres && (EastPres || WestPres)));
 }
 
 uint8_t Neighborhood::getNeighborCode(SCLattice::Direction dir) {
-    uint8_t res = 0;
+    uint8_t res = (isolated?0:4);
     switch (dir) {
         case SCLattice::Direction::South :
             res |= (state & 2) != 0;
@@ -184,6 +184,7 @@ uint8_t Neighborhood::getNeighborCode(SCLattice::Direction dir) {
             res |= ((state & 16) != 0) << 1;
             break;
     }
+
     return res;
 }
 
@@ -194,21 +195,29 @@ bool Neighborhood::merge(SCLattice::Direction dir, uint8_t code) {
             validity |= 0b00100001; // 1 & 32
             state |= ((code & 1) != 0);
             state |= (((code & 2) != 0) << 5);
+            // isolate sets 8
+            if ((code & 4)==0) state &= (255-8);
             break;
         case SCLattice::Direction::West :
             validity |= 0b00000101; // 4 & 1
             state |= ((code & 1) != 0) << 2;
             state |= (((code & 2) != 0));
+            // isolate sets 2
+            if ((code & 4)==0) state &= (255-2);
             break;
         case SCLattice::Direction::South :
             validity |= 0b10000100; // 128 & 4
             state |= ((code & 1) != 0) << 7;
             state |= (((code & 2) != 0) << 2);
+            // isolate sets 16
+            if ((code & 4)==0) state &= (255-16);
             break;
         case SCLattice::Direction::East :
             validity |= 0b10100000; // 32 & 128
             state |= ((code & 1) != 0) << 5;
             state |= (((code & 2) != 0)) << 7;
+            // isolate sets 64
+            if ((code & 4)==0) state &= (255-64);
             break;
     }
     return validity != oldValidity;
@@ -241,11 +250,11 @@ void Neighborhood::complete() {
  / which draws a 3x3x10 box in each cell of the grid.
  * This function is executed once by the first or the selected module */
 void BordersCode::onGlDraw() {
-    static const float red[4]={1.2f,0.2f,0.2f,1.0f};
-    static const float green[4]={0.2f,1.2f,0.2f,1.0f};
+    static const float red[4]={1.8f,0.2f,0.2f,1.0f};
 
     auto bbs=BlinkyBlocksWorld::getWorld()->getMap();
     int ix,iy;
+    float jx,jy;
     for (auto &bb:bbs) {
         auto nh = static_cast<BordersCode*>(bb.second->blockCode)->getNeiborhood();
 
@@ -257,19 +266,35 @@ void BordersCode::onGlDraw() {
             glRotatef(-90.0f*(float)(glBc->rotCoef),0,0,1.0f);
 
             nh.getFromPosition(ix,iy);
+            jx=ix/10.0;
+            jy=iy/10.0;
+            glDisable(GL_TEXTURE_2D);
             glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,red);
-            glLineWidth(10);
-            glBegin(GL_LINES);
-            glVertex3f(ix,iy,0.0);
-            glVertex3f(0.0,0.0,0.0);
+            glNormal3f(0,0,1);
+            glBegin(GL_QUADS);
+            glVertex3f(ix+jy,iy-jx,0.0);
+            glVertex3f(ix-jy,iy+jx,0.0);
+            glVertex3f(-jy-jx,+jx-jy,0.0);
+            glVertex3f(+jy-jx,-jx-jy,0.0);
             glEnd();
             nh.getToPosition(ix,iy);
-            glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,green);
-            glBegin(GL_LINES);
+            jx=ix/3.0;
+            jy=iy/3.0;
+            glNormal3f(0,0,1);
+            glBegin(GL_TRIANGLES);
             glVertex3f(ix,iy,0.0);
-            glVertex3f(0.0,0.0,0.0);
+            glVertex3f(-jy+jx,jx+jy,0.0);
+            glVertex3f(jy+jx,-jx+jy,0.0);
             glEnd();
-            glLineWidth(1);
+
+            jx=ix/10.0;
+            jy=iy/10.0;
+            glBegin(GL_QUADS);
+            glVertex3f(ix/3.0+jy,iy/3.0-jx,0.0);
+            glVertex3f(ix/3.0-jy,iy/3.0+jx,0.0);
+            glVertex3f(-jy,+jx,0.0);
+            glVertex3f(+jy,-jx,0.0);
+            glEnd();
 
             glPopMatrix();
         }
