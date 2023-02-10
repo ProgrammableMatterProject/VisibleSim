@@ -39,7 +39,8 @@ namespace BaseSimulator {
         World *world;          //!< pointer to the world to export
         TiXmlDocument *config; //!< the TiXML Document used for export
         string configName;     //!< the name of the output configuration file
-        TiXmlElement *worldElt; //!< a pointer to the world XML element of the document
+        //TiXmlElement *worldElt; //!< a pointer to the world XML element of the document
+        TiXmlElement *vsElt; //!< a pointer to the world XML element of the document
         TiXmlElement *blockListElt; //!< a pointer to the blockList XML element of the document
     public:
         /**
@@ -68,18 +69,23 @@ namespace BaseSimulator {
         /**
          * @brief Exports the camera and lightSource (Current position and orientation) to the configuration file.
          */
-        void exportCameraAndLightSource();
+        void exportCameraAndLightSource(TiXmlElement *worldElt);
 
         /**
          * @brief Exports the world and window attributes to the configuration file
          */
-        void exportWorld();
+        void exportVisuals(TiXmlElement *vsElt);
+
+        /**
+         * @brief Exports the world and window attributes to the configuration file
+         */
+        void exportWorld(TiXmlElement *vsElt);
 
         /**
          * @brief Initializes the blockList XML element and calls exportBlock on each block for export.
          *  The default color of the blockList will be the one of the user selected block.
          */
-        void exportBlockList();
+        void exportBlockList(TiXmlElement *worldElt);
 
         /**
          * @brief Exports all the generic attributes of a BuildingBlock

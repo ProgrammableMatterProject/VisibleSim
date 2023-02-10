@@ -19,186 +19,220 @@ namespace BaseSimulator {
  * @brief Formats two variable for XML attribute export
  * @return a string with format "x,y"
  */
-template<typename T>
-static string toXmlAttribute(T a, T b) {
-    std::ostringstream out;
-    out << a << "," << b;
-    return out.str();
-}
-template string toXmlAttribute<int>(int, int);
+    template<typename T>
+    static string toXmlAttribute(T a, T b) {
+        std::ostringstream out;
+        out << a << "," << b;
+        return out.str();
+    }
+
+    template string toXmlAttribute<int>(int, int);
 
 /**
  * @brief Formats three variable for XML attribute export
  * @return a string with format "x,y,z"
  */
-template<typename T>
-static string toXmlAttribute(T a, T b, T c) {
-    std::ostringstream out;
-    out << a << "," << b << "," << c ;
-    return out.str();
-}
+    template<typename T>
+    static string toXmlAttribute(T a, T b, T c) {
+        std::ostringstream out;
+        out << a << "," << b << "," << c;
+        return out.str();
+    }
 
-template string toXmlAttribute<int>(int, int, int);
-template string toXmlAttribute<double>(double, double, double);
-template string toXmlAttribute<short>(short, short, short);
-template string toXmlAttribute<float>(float, float, float);
+    template string toXmlAttribute<int>(int, int, int);
+
+    template string toXmlAttribute<double>(double, double, double);
+
+    template string toXmlAttribute<short>(short, short, short);
+
+    template string toXmlAttribute<float>(float, float, float);
 
 /**
  * @brief Formats a Cell3DPosition variable for XML attribute export
  * @return a string with format "pos.x,pos.y,pos.z"
  */
-string toXmlAttribute(Cell3DPosition &pos) {
-    return toXmlAttribute(pos[0], pos[1], pos[2]);
-}
+    string toXmlAttribute(Cell3DPosition &pos) {
+        return toXmlAttribute(pos[0], pos[1], pos[2]);
+    }
 
 /**
  * @brief Formats a Vector3D variable for XML attribute export
  * @return a string with format "pos.x,pos.y,pos.z"
  */
-string toXmlAttribute(Vector3D &pos) {
-    return toXmlAttribute(pos[0], pos[1], pos[2]);
-}
+    string toXmlAttribute(Vector3D &pos) {
+        return toXmlAttribute(pos[0], pos[1], pos[2]);
+    }
 
-/************************************************************
- *   Configuration Exporters Implementation
- ************************************************************/
+/**
+ * @brief Formats a Vector3D variable for XML attribute export
+ * @return a string with format "pos.x,pos.y,pos.z"
+ */
+    string toXmlAttribute(Color &pos) {
+        char str[8];
+        sprintf(str, "#%02X%02X%02X", pos[0],pos[1],pos[2]);
+        return str;
+    }
 
-ConfigExporter::ConfigExporter(World *_world) {
-    world = _world;
-    config = new TiXmlDocument();
+    /************************************************************
+    *   Configuration Exporters Implementation
+    ************************************************************/
 
-    string exportedConfigNameRoot;
-    if (Simulator::configFileName.empty()) {
-        exportedConfigNameRoot = "export";
-    } else {
-        auto cfName=Simulator::configFileName;
-        string rep="";
-        auto pos=cfName.rfind('/');
-        if (pos!=string::npos) {
-            rep = cfName.substr(0,pos+1);
-            cfName = cfName.substr(pos+1);
+    ConfigExporter::ConfigExporter(World *_world) {
+        world = _world;
+        config = new TiXmlDocument();
+
+        string exportedConfigNameRoot;
+        if (Simulator::configFileName.empty()) {
+            exportedConfigNameRoot = "export";
+        } else {
+            auto cfName = Simulator::configFileName;
+            string rep = "";
+            auto pos = cfName.rfind('/');
+            if (pos != string::npos) {
+                rep = cfName.substr(0, pos + 1);
+                cfName = cfName.substr(pos + 1);
+            }
+            size_t config_pos = cfName.find("config_", 0);
+            cout << "config_pos=" << int(config_pos) << endl;
+            if (config_pos == string::npos) // no config_ pattern
+                exportedConfigNameRoot = rep + string("export_").append(cfName);
+            else
+                exportedConfigNameRoot = rep + string("export_") + cfName.substr(config_pos + 7, string::npos);
+            cout << "configFileName=" << cfName << " (" << config_pos + 7 << ")" << endl;
+            cout << "rep=" << rep << endl;
+            cout << "exportedConfigNameRoot=" << exportedConfigNameRoot << endl;
+
+            // trim extension
+            exportedConfigNameRoot = exportedConfigNameRoot
+                    .substr(0, exportedConfigNameRoot.size() - 4);
         }
-        size_t config_pos = cfName.find("config_",0);
-        cout << "config_pos=" << int(config_pos) << endl;
-        if (config_pos == string::npos) // no config_ pattern
-            exportedConfigNameRoot = rep + string("export_").append(cfName);
-        else
-            exportedConfigNameRoot = rep + string("export_") + cfName.substr(config_pos + 7, string::npos);
-        cout << "configFileName=" << cfName << " (" << config_pos+7 << ")" << endl;
-        cout << "rep=" << rep << endl;
+
         cout << "exportedConfigNameRoot=" << exportedConfigNameRoot << endl;
 
-        // trim extension
-        exportedConfigNameRoot = exportedConfigNameRoot
-            .substr(0, exportedConfigNameRoot.size()-4);
+        configName = Simulator::regrTesting ?
+                     ".confCheck.xml" : generateTimestampedFilename(exportedConfigNameRoot, "xml");
+        config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
     }
 
-    cout << "exportedConfigNameRoot=" << exportedConfigNameRoot << endl;
-
-    configName = Simulator::regrTesting ?
-        ".confCheck.xml" : generateTimestampedFilename(exportedConfigNameRoot, "xml");
-    config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
-}
-
-ConfigExporter::ConfigExporter(World *_world, const string& _filename) {
-    world = _world;
-    config = new TiXmlDocument();
-    configName = _filename;
-    config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
-}
-
-ConfigExporter::~ConfigExporter() {
-    delete config;
-}
-
-void ConfigExporter::exportConfiguration() {
-    exportWorld();
-    exportCameraAndLightSource();
-    exportBlockList();
-    config->SaveFile(configName);
-
-    cerr << "Configuration exported to file: " << configName << endl;
-}
-
-void ConfigExporter::exportCameraAndLightSource() {
-    if (GlutContext::GUIisEnabled) {
-        // Export Camera
-        Camera *camera = world->getCamera();
-
-        TiXmlElement *cam = new TiXmlElement("camera");
-        Vector3D target = camera->getTarget();
-        Vector3D ds = camera->getDirectionSpherical();
-        cam->SetAttribute("target", toXmlAttribute(target[0],target[1],target[2]).c_str());
-        cam->SetAttribute("directionSpherical", toXmlAttribute(ds[0],ds[1],ds[2]).c_str());
-        cam->SetAttribute("angle", camera->getAngle());
-        cam->SetAttribute("near", camera->getNearPlane());
-        cam->SetAttribute("far", camera->getFarPlane());
-
-        worldElt->LinkEndChild(cam);
-
-        // Export LightSource
-        TiXmlElement *spotlight = new TiXmlElement("spotlight");
-        LightSource *ls = &camera->ls;
-        float *lsTarget = ls->getTarget();
-        ds = ls->getDirectionSpherical();
-
-        spotlight->SetAttribute("target", toXmlAttribute(lsTarget[0],lsTarget[1],lsTarget[2]).c_str());
-        spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds[0],ds[1],ds[2]).c_str());
-        spotlight->SetAttribute("angle", ls->getAngle());
-        worldElt->LinkEndChild(spotlight);
-    }
-}
-
-void ConfigExporter::exportWorld() {
-    worldElt = new TiXmlElement("world");
-    worldElt->SetAttribute("gridSize", toXmlAttribute(world->lattice->gridSize).c_str());
-    if (GlutContext::GUIisEnabled) {
-        worldElt->SetAttribute("windowSize",
-                               toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight).c_str());
+    ConfigExporter::ConfigExporter(World *_world, const string &_filename) {
+        world = _world;
+        config = new TiXmlDocument();
+        configName = _filename;
+        config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
     }
 
-    config->LinkEndChild(worldElt);
-}
-
-void ConfigExporter::exportBlockList() {
-    blockListElt = new TiXmlElement("blockList");
-    Vector3D blockSize = world->lattice->gridScale;
-    map<bID, BaseSimulator::BuildingBlock*> blocks = world->getMap();
-    blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize).c_str());
-
-    for(auto const& idBBPair : blocks) {
-        if (idBBPair.second->getState() != BuildingBlock::REMOVED
-            and (idBBPair.second->ptrGlBlock and idBBPair.second->ptrGlBlock->isVisible()))
-            exportBlock(idBBPair.second);
+    ConfigExporter::~ConfigExporter() {
+        delete config;
     }
 
-    worldElt->LinkEndChild(blockListElt);
-}
+    void ConfigExporter::exportConfiguration() {
+        vsElt = new TiXmlElement("vs");
+        exportVisuals(vsElt);
+        exportWorld(vsElt);
+        config->LinkEndChild(vsElt);
 
-void ConfigExporter::exportBlock(BuildingBlock *bb) {
-    BuildingBlock *blc = bb;
-    TiXmlElement *bbElt = new TiXmlElement("block");
-    Cell3DPosition pos = blc->position;
+        config->SaveFile(configName);
 
-    bbElt->SetAttribute("position", toXmlAttribute(pos).c_str());
-    bbElt->SetAttribute("color", toXmlAttribute(int(blc->color[0]),
-                                                int(blc->color[1]),
-                                                int(blc->color[2])).c_str());
+        cerr << "Configuration exported to file: " << configName << endl;
+    }
 
-    exportAdditionalAttribute(bbElt, bb);
-    blockListElt->LinkEndChild(bbElt);
-}
+    void ConfigExporter::exportCameraAndLightSource(TiXmlElement *worldElt) {
+        if (GlutContext::GUIisEnabled) {
+            // Export Camera
+            Camera *camera = world->getCamera();
 
-void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("orientation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
-}
+            TiXmlElement *cam = new TiXmlElement("camera");
+            Vector3D target = camera->getTarget();
+            Vector3D ds = camera->getDirectionSpherical();
+            cam->SetAttribute("target", toXmlAttribute(target[0], target[1], target[2]).c_str());
+            cam->SetAttribute("directionSpherical", toXmlAttribute(ds[0], ds[1], ds[2]).c_str());
+            cam->SetAttribute("angle", camera->getAngle());
+            cam->SetAttribute("near", camera->getNearPlane());
+            cam->SetAttribute("far", camera->getFarPlane());
 
-void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("angle", static_cast<Catoms2D::Catoms2DBlock *>(bb)->angle);
-}
+            worldElt->LinkEndChild(cam);
 
-void DatomsConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("orientation", static_cast<Datoms::DatomsBlock *>(bb)->orientationCode);
-}
+            // Export LightSource
+            TiXmlElement *spotlight = new TiXmlElement("spotlight");
+            LightSource *ls = &camera->ls;
+            float *lsTarget = ls->getTarget();
+            ds = ls->getDirectionSpherical();
+
+            spotlight->SetAttribute("target", toXmlAttribute(lsTarget[0], lsTarget[1], lsTarget[2]).c_str());
+            spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds[0], ds[1], ds[2]).c_str());
+            spotlight->SetAttribute("angle", ls->getAngle());
+            worldElt->LinkEndChild(spotlight);
+        }
+    }
+
+    void ConfigExporter::exportVisuals(TiXmlElement *vsElt) {
+
+        TiXmlElement *visualsElt = new TiXmlElement("visuals");
+        if (GlutContext::GUIisEnabled) {
+            TiXmlElement *window = new TiXmlElement("window");
+            window->SetAttribute("size", toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight).c_str());
+            Color color(GlutContext::bgColor[0], GlutContext::bgColor[2], GlutContext::bgColor[3]);
+            window->SetAttribute("backgroundColor", toXmlAttribute(color).c_str());
+            if (GlutContext::hasGradientBackground) {
+                Color color(GlutContext::bgColor[0], GlutContext::bgColor[2], GlutContext::bgColor[3]);
+                window->SetAttribute("gradientColor", toXmlAttribute(color).c_str());
+            }
+            visualsElt->LinkEndChild(window);
+            TiXmlElement *render = new TiXmlElement("window");
+            render->SetAttribute("shadow", (GlutContext::enableShadows?"on":"off"));
+            render->SetAttribute("grid", (GlutContext::showGrid?"on":"off"));
+            visualsElt->LinkEndChild(render);
+        }
+        vsElt->LinkEndChild(visualsElt);
+    }
+
+
+    void ConfigExporter::exportWorld(TiXmlElement *vsElt) {
+
+        TiXmlElement *worldElt = new TiXmlElement("world");
+        worldElt->SetAttribute("gridSize", toXmlAttribute(world->lattice->gridSize).c_str());
+
+        exportCameraAndLightSource(worldElt);
+        exportBlockList(worldElt);
+        vsElt->LinkEndChild(worldElt);
+    }
+
+    void ConfigExporter::exportBlockList(TiXmlElement *worldElt) {
+        blockListElt = new TiXmlElement("blockList");
+        Vector3D blockSize = world->lattice->gridScale;
+        map<bID, BaseSimulator::BuildingBlock *> blocks = world->getMap();
+
+        for (auto const &idBBPair: blocks) {
+            if (idBBPair.second->getState() != BuildingBlock::REMOVED
+                and (idBBPair.second->ptrGlBlock and idBBPair.second->ptrGlBlock->isVisible()))
+                exportBlock(idBBPair.second);
+        }
+
+        worldElt->LinkEndChild(blockListElt);
+    }
+
+    void ConfigExporter::exportBlock(BuildingBlock *bb) {
+        BuildingBlock *blc = bb;
+        TiXmlElement *bbElt = new TiXmlElement("block");
+        Cell3DPosition pos = blc->position;
+
+        bbElt->SetAttribute("position", toXmlAttribute(pos).c_str());
+        bbElt->SetAttribute("color", toXmlAttribute(blc->color).c_str());
+
+        exportAdditionalAttribute(bbElt, bb);
+        blockListElt->LinkEndChild(bbElt);
+    }
+
+    void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
+        bbElt->SetAttribute("orientation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
+    }
+
+    void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
+        bbElt->SetAttribute("angle", static_cast<Catoms2D::Catoms2DBlock *>(bb)->angle);
+    }
+
+    void DatomsConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
+        bbElt->SetAttribute("orientation", static_cast<Datoms::DatomsBlock *>(bb)->orientationCode);
+    }
 
 }

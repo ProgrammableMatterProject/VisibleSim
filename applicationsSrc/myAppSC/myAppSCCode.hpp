@@ -12,6 +12,7 @@ using namespace SlidingCubes;
 class MyAppSCCode : public SlidingCubesBlockCode {
 private:
     SlidingCubesBlock *module = nullptr;
+    bool isLeader;
 public :
     MyAppSCCode(SlidingCubesBlock *host);
 
@@ -44,11 +45,19 @@ public :
     void onMotionEnd() override;
 
 /**
-  * @brief This function is called when a module is tapped by the user. Prints a message to the console by default.
-     Can be overloaded in the user blockCode
-  * @param face face that has been tapped
+  * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it.
+  * @param config : pointer to the TiXmlDocument representing the configuration file, all information related to VisibleSim's core have already been parsed
+  *
+  * Called from BuildingBlock constructor, only once.
   */
-    void onTap(int face) override;
+    void parseUserElements(TiXmlDocument *config) override;
+
+/**
+  * Call by world during GL drawing phase, can be used by a user
+  *  to draw custom Gl content into the simulated world
+  * @note call is made from World::GlDraw
+  */
+    void onGlDraw() override;
 
     bool tryToMove();
     P2PNetworkInterface *findNeighborAt(const Cell3DPosition &pos);
