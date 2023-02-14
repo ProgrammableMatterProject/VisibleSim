@@ -93,7 +93,7 @@ namespace SlidingCubes {
             short finalOrient = 0;
             for (auto &rule: tab) {
                 rule->getFinalPositionAndOrientation(sc, finalPos, finalOrient);
-                //cout << "printed: " << (*ci)->isRotation() << ":" << (*ci)->getToID() << "," << finalPos << endl;
+                cout << "printed: " << (rule->isRotation()?"Rot":"Trs") << ":" << rule->getToID() << "," << finalPos << endl;
                 rotateBlockSubMenu->addButton(
                         new GlutRBMotionButton(NULL, i++, 0, 0, 0, 0, menuDir + "menu_move_rb.tga", rule->isRotation(),
                                                rule->getToID(), finalPos, finalOrient));
