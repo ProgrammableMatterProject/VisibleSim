@@ -145,8 +145,8 @@ namespace BaseSimulator {
             Vector3D target = camera->getTarget();
             Vector3D ds = camera->getDirectionSpherical();
             cam->SetAttribute("target", toXmlAttribute(target[0], target[1], target[2]).c_str());
-            cam->SetAttribute("directionSpherical", toXmlAttribute(ds[0], ds[1], ds[2]).c_str());
-            cam->SetAttribute("angle", camera->getAngle());
+            cam->SetAttribute("thetaPhiDist", toXmlAttribute(ds[0], ds[1], ds[2]).c_str());
+            cam->SetAttribute("fov", camera->getAngle());
             cam->SetAttribute("near", camera->getNearPlane());
             cam->SetAttribute("far", camera->getFarPlane());
 
@@ -159,8 +159,8 @@ namespace BaseSimulator {
             ds = ls->getDirectionSpherical();
 
             spotlight->SetAttribute("target", toXmlAttribute(lsTarget[0], lsTarget[1], lsTarget[2]).c_str());
-            spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds[0], ds[1], ds[2]).c_str());
-            spotlight->SetAttribute("angle", ls->getAngle());
+            spotlight->SetAttribute("thetaPhiDist", toXmlAttribute(ds[0], ds[1], ds[2]).c_str());
+            spotlight->SetAttribute("fov", ls->getAngle());
             worldElt->LinkEndChild(spotlight);
         }
     }

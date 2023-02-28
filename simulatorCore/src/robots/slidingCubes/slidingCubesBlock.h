@@ -75,6 +75,11 @@ namespace SlidingCubes {
         virtual bool moveTo(const Cell3DPosition &dest) override;
 
         /**
+         * @copydoc BuildingBlock::moveTo
+         */
+        virtual vector<pair<Cell3DPosition,uint8_t>> getAllMotions() const override;
+
+        /**
        @brief Get the orientation code from the transformation matrix of the catom
        @param mat: homogeneous transformation matrix
        @return return orientation code. */

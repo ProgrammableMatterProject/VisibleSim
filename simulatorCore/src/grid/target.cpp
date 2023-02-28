@@ -8,6 +8,7 @@
 #include "../csg/csgParser.h"
 #include "../base/world.h"
 #include "../deps/Eigen/Dense"
+#include "base/simulator.h"
 
 #include <algorithm>
 
@@ -77,12 +78,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
 
         attr = element->Attribute("position");
         if (attr) {
-            string str(attr);
-            int pos1 = str.find_first_of(','),
-                pos2 = str.find_last_of(',');
-            position.pt[0] = atoi(str.substr(0,pos1).c_str());
-            position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
-            position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
+            position = BaseSimulator::Simulator::extractCell3DPositionFromString(attr);
         } else {
             stringstream error;
             error << "position attribute missing for target cell" << "\n";
@@ -90,12 +86,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
         }
         attr = element->Attribute("color");
         if (attr) {
-            string str(attr);
-            int pos1 = str.find_first_of(','),
-                pos2 = str.find_last_of(',');
-            color.set(atoi(str.substr(0,pos1).c_str()),
-                      atoi(str.substr(pos1+1,pos2-pos1-1).c_str()),
-                      atoi(str.substr(pos2+1,str.length()-pos1-1).c_str()));
+            color = BaseSimulator::Simulator::extractColorFromString(attr);
         }
         OUTPUT << "add target " << position << "," << color << endl;
         addTargetCell(position, color);
@@ -110,12 +101,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
         color = defaultColor;
         attr = element->Attribute("color");
         if (attr) {
-            string str(attr);
-            int pos1 = str.find_first_of(','),
-                pos2 = str.find_last_of(',');
-            color.set(atoi(str.substr(0,pos1).c_str()),
-                      atoi(str.substr(pos1+1,pos2-pos1-1).c_str()),
-                      atoi(str.substr(pos2+1,str.length()-pos1-1).c_str()));
+            color = BaseSimulator::Simulator::extractColorFromString(attr);
         }
 
         attr = element->Attribute("line");
@@ -335,12 +321,13 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
 
     const char *attr = element->Attribute("translate");
     if (attr) {
-        string str_attr(attr);
+        translate = BaseSimulator::Simulator::extractVector3DFromString(attr);
+/*        string str_attr(attr);
         int pos1 = str_attr.find_first_of(','),
             pos2 = str_attr.find_last_of(',');
             translate.set(atof(str_attr.substr(0,pos1).c_str()),
                           atof(str_attr.substr(pos1+1,pos2-pos1-1).c_str()),
-                          atof(str_attr.substr(pos2+1,str_attr.length()-pos1-1).c_str()));
+                          atof(str_attr.substr(pos2+1,str_attr.length()-pos1-1).c_str()));*/
     }
 
     if (boundingBox) csgRoot->boundingBox(bb);

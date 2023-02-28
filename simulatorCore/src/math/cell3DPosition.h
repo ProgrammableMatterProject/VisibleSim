@@ -24,6 +24,7 @@ public:
     constexpr Cell3DPosition(const Cell3DPosition& c):pt{ c.pt[0], c.pt[1], c.pt[2] } {};
 
     void set(short x,short y,short z);
+    int dist_taxi(const Cell3DPosition& p) const;
     double dist_euclid(const Cell3DPosition& p) const;
     double l2_norm() const;
     string to_string() const;

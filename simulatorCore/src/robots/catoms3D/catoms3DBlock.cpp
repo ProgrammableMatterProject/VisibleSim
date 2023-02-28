@@ -302,4 +302,21 @@ namespace Catoms3D {
         return true;
     }
 
+    vector<pair<Cell3DPosition,uint8_t>> Catoms3DBlock::getAllMotions() const {
+        vector<pair<Cell3DPosition,uint8_t>> res;
+        vector<std::pair<const Catoms3DMotionRulesLink*, Catoms3DRotation>> tab = Catoms3DMotionEngine::getAllRotationsForModule(this);
+        if (tab.empty()) return res;
+        Cell3DPosition finalPos;
+        short finalOrient;
+        auto lattice=Catoms3DWorld::getWorld()->lattice;
+        for(auto &elem:tab) {
+            elem.second.init(((Catoms3DGlBlock*)ptrGlBlock)->mat);
+            elem.second.getFinalPositionAndOrientation(finalPos,finalOrient);
+            cout << "Xpos:" << finalPos << endl;
+            if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
+                res.emplace_back(pair<Cell3DPosition,uint8_t>(finalPos, finalOrient));
+            }
+        }
+        return res;
+    }
 }

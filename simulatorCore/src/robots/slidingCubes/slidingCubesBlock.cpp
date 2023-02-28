@@ -200,4 +200,17 @@ namespace SlidingCubes {
         return found;
     }
 
+    vector<pair<Cell3DPosition,uint8_t>> SlidingCubesBlock::getAllMotions() const {
+        auto wrl = getWorld();
+        vector<pair<Cell3DPosition,uint8_t>> res;
+        vector<SlidingCubesMotionRule *> motions = wrl->getMotionRules()->getValidMotionList(this);
+
+        Cell3DPosition finalPos;
+        short finalOrient = 0;
+        for (auto &motion:motions) {
+            motion->getFinalPositionAndOrientation(this, finalPos, finalOrient);
+            res.emplace_back(pair<Cell3DPosition,uint8_t>(finalPos, finalOrient));
+        }
+        return res;
+    }
 }

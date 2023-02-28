@@ -180,6 +180,15 @@ bool Nodes2DBlock::moveTo(const Cell3DPosition& dest) {
     return false;
 }
 
+    vector<pair<Cell3DPosition, uint8_t>> Nodes2DBlock::getAllMotions() const {
+        vector<pair<Cell3DPosition, uint8_t>> res;
+        vector<Nodes2DMotion*> motions =
+                Nodes2D::getWorld()->getAllMotionsForModule(const_cast<Nodes2DBlock *>(this));
+        for (const auto *motion: motions) {
+            res.emplace_back(pair<Cell3DPosition, uint8_t>(motion->finalPos,motion->direction));
+        }
+        return res;
+    }
 void Nodes2DBlock::setDisplayedValue(int n) {
     static_cast<Nodes2DGlBlock*>(ptrGlBlock)->setDisplayedValue(n);
     if (ReplayExporter::isReplayEnabled())

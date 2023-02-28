@@ -58,6 +58,11 @@ public:
      */
     bool moveTo(const Cell3DPosition& dest) override;
 
+    /**
+     * @copydoc BuildingBlock::getAllMotions
+     */
+    virtual vector<pair<Cell3DPosition,uint8_t>> getAllMotions() const override;
+
 };
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);

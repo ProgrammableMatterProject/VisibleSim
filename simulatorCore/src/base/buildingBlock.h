@@ -346,6 +346,12 @@ namespace BaseSimulator {
         virtual bool moveTo(const Cell3DPosition &dest) = 0;
 
         /**
+         * Get the list of possible motions as a vector of pairs of (position and orientation code)
+         * @return the vector of possible motions
+         */
+        virtual vector<pair<Cell3DPosition,uint8_t>> getAllMotions() const = 0;
+
+        /**
          * Serializes (converts to a stream of bits) relevant data from the building block object
          *  for the purpose of simulation replay
          *

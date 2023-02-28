@@ -180,9 +180,19 @@ bool HexanodesBlock::moveTo(const Cell3DPosition& dest) {
             return true;
         }
     }
-
     return false;
 }
+
+    vector<pair<Cell3DPosition, uint8_t>> HexanodesBlock::getAllMotions() const {
+        vector<pair<Cell3DPosition, uint8_t>> res;
+        vector<HexanodesMotion *> motions =
+                Hexanodes::getWorld()->getAllMotionsForModule(const_cast<HexanodesBlock *>(this));
+        for (const auto *motion: motions) {
+            res.emplace_back(pair<Cell3DPosition, uint8_t>(motion->getFinalPos(position),
+                                                           motion->getFinalOrientation(orientationCode)));
+        }
+        return res;
+    }
 
 void HexanodesBlock::setDisplayedValue(int n) {
     static_cast<HexanodesGlBlock*>(ptrGlBlock)->setDisplayedValue(n);

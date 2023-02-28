@@ -1,0 +1,17 @@
+<!-- config.xml -->
+<?xml version="1.0" standalone="no" ?>
+<vs>
+	<visuals>
+		<window size="1280x720" backgroundColor="#b5b5de"  gradientColor="#ffffff" />
+		<render shadows="on" grid="on"/>
+	</visuals>
+	<goal position="1,8,0"/>
+	<world gridSize="5,10,3">
+		<blockList color="128,128,128">
+			<block position="1,1,0" color="128,128,128" leader="true"/>
+			<block position="1,2,0" color="128,128,128" />
+			<block position="1,3,0" color="128,128,128" />
+			<block position="1,4,0" color="128,128,128" />
+		</blockList>
+	</world>
+</vs>

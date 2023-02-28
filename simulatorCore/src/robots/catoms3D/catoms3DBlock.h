@@ -194,6 +194,11 @@ public:
     virtual bool moveTo(const Cell3DPosition& dest) override;
 
     /**
+     * @copydoc BuildingBlock::getAllMotions
+     */
+    virtual vector<pair<Cell3DPosition,uint8_t>> getAllMotions() const override;
+
+    /**
      * Queries each of the module interface to determine the state of the local neighborhood.
      *  i.e., for each connector, if one module is connected or not
      * @return a 12-bit bitset where the n-th bit is set to true if interface in direction n

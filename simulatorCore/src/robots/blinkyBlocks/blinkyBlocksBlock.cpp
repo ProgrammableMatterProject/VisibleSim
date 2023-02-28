@@ -62,37 +62,37 @@ namespace BlinkyBlocks {
     }
 
     Cell3DPosition BlinkyBlocksBlock::getRelativePosition(short i) const {
-        if (i<4) {
-            i = (i +4-orientationCode) % 4;
+        if (i < 4) {
+            i = (i + 4 - orientationCode) % 4;
         }
         return SCLattice::getNeighborRelativePos(SCLattice::Direction(i));
     }
 
     Cell3DPosition BlinkyBlocksBlock::getRelativePosition(P2PNetworkInterface *port) const {
-        int i=0;
+        int i = 0;
         auto p2p = P2PNetworkInterfaces.begin();
-        while (p2p!=P2PNetworkInterfaces.end() && port!=*p2p) {
+        while (p2p != P2PNetworkInterfaces.end() && port != *p2p) {
             i++;
             p2p++;
         }
-        assert(p2p!=P2PNetworkInterfaces.end());
-        if (i<4) {
-            i = (i +4-orientationCode) % 4;
+        assert(p2p != P2PNetworkInterfaces.end());
+        if (i < 4) {
+            i = (i + 4 - orientationCode) % 4;
         }
         return SCLattice::getNeighborRelativePos(SCLattice::Direction(i));
     }
 
-    bool BlinkyBlocksBlock::getNeighborPos(uint8_t connectorId,Cell3DPosition &pos) const {
+    bool BlinkyBlocksBlock::getNeighborPos(uint8_t connectorId, Cell3DPosition &pos) const {
         pos = position + getRelativePosition(connectorId);
         return getWorld()->lattice->isInGrid(pos);
     }
 
     P2PNetworkInterface *BlinkyBlocksBlock::getInterfaceToNeighborPos(const Cell3DPosition &pos) {
-        short i=0;
-        while (i<SCLattice::Direction::MAX_NB_NEIGHBORS && (position +getRelativePosition(i))!=pos) {
+        short i = 0;
+        while (i < SCLattice::Direction::MAX_NB_NEIGHBORS && (position + getRelativePosition(i)) != pos) {
             i++;
         }
-        return (i==SCLattice::Direction::MAX_NB_NEIGHBORS?nullptr:P2PNetworkInterfaces[i]);
+        return (i == SCLattice::Direction::MAX_NB_NEIGHBORS ? nullptr : P2PNetworkInterfaces[i]);
     }
 
     void BlinkyBlocksBlock::accel(Time date, int x, int y, int z) {
@@ -141,6 +141,13 @@ namespace BlinkyBlocks {
                 new TeleportationStartEvent(getScheduler()->now(), this, dest));
 
         return true;
+    }
+
+    vector<pair<Cell3DPosition, uint8_t>> BlinkyBlocksBlock::getAllMotions() const {
+        cerr << "BlinkyBlocks has no motion capability." << endl;
+
+        vector<pair<Cell3DPosition, uint8_t>> res;
+        return res;
     }
 
     std::ostream &operator<<(std::ostream &stream, BlinkyBlocksBlock const &bb) {

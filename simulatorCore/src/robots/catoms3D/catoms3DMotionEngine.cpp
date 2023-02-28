@@ -172,7 +172,7 @@ bool Catoms3DMotionEngine::isNotLockedForMotion(const Cell3DPosition &origin, co
     auto conn = lattice->getRelativeConnectivity(final);
     Cell3DPosition pos0, pos1;
     for (int i = 0; i < 6; i++) {
-        //cout << i << ": " << final+conn[i] << " " << int(lattice->isFree(final+conn[i])) << " -> " << final+conn[i+6] << int(lattice->isFree(final+conn[i+6]))<< endl;
+        cout << i << ": " << final+conn[i] << " " << int(lattice->isFree(final+conn[i])) << " -> " << final+conn[i+6] << int(lattice->isFree(final+conn[i+6]))<< endl;
         pos0 = final + conn[i];
         pos1 = final + conn[i + 6];
         if (pos0 != origin && pos1 != origin && !lattice->isFree(pos0) && !lattice->isFree(pos1)) return false;
@@ -187,12 +187,13 @@ Catoms3DMotionEngine::getAllRotationsForModule(const Catoms3DBlock *m) {
     if (m) {
         Cell3DPosition finalPos;
         short finalOrient;
-        for (const Cell3DPosition &nPos: World::getWorld()->lattice->
-                getFreeNeighborCells(m->position)) {
+        auto freeCells = World::getWorld()->lattice->getFreeNeighborCells(m->position);
+        for (const Cell3DPosition &nPos: freeCells) {
             const vector<std::pair<Catoms3DBlock *, const Catoms3DMotionRulesLink *>>
                     pivotLinkPairs = findPivotLinkPairsForTargetCell(m, nPos);
 
             for (const auto &pair: pivotLinkPairs) {
+                cout << "pair" << pair.first->position << endl;
                 if (pair.first and pair.second) {
                     Catoms3DRotation r = pair.second->getRotations(m, pair.first);
                     // filter final position that are blocked by far away obstacle

@@ -585,9 +585,13 @@ add_executable(demoMotionsC3D applicationsSrc/demoMotionsC3D/demoMotionsC3D.cpp 
 target_link_libraries(demoMotionsC3D -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS demoMotionsC3D RUNTIME DESTINATION applicationsBin/demoMotionsC3D)
 
+add_executable(DemoReconfC3D applicationsSrc/DemoReconfC3D/DemoReconfC3D.cpp applicationsSrc/DemoReconfC3D/DemoReconfC3DCode.cpp)
+target_link_libraries(DemoReconfC3D -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS DemoReconfC3D RUNTIME DESTINATION applicationsBin/DemoReconfC3D)
+
 add_executable(myMotionTest applicationsSrc/myMotionTest/myMotionTest.cpp applicationsSrc/myMotionTest/myMotionTestCode.cpp)
 target_link_libraries(myMotionTest -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
-install(TARGETS myMotionTest RUNTIME DESTINATION applicationsBin/demoMotionsC3D)
+install(TARGETS myMotionTest RUNTIME DESTINATION applicationsBin/myMotionTest)
 
 add_executable(hexanodes_demo applicationsSrc/hexanodes_demo/hexanodesDemo.cpp applicationsSrc/hexanodes_demo/hexanodesDemoBlockCode.cpp)
 target_link_libraries(hexanodes_demo -lHexanodes -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #

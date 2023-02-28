@@ -124,6 +124,17 @@ namespace SmartBlocks {
         return true;
     }
 
+    vector<pair<Cell3DPosition, uint8_t>> SmartBlocksBlock::getAllMotions() const {
+        vector<pair<Cell3DPosition, uint8_t>> res;
+        Lattice *lattice = getWorld()->lattice;
+        auto neighborhood = lattice->getNeighborhood(position);
+        for (auto &n:neighborhood) {
+            if (canMoveTo(n)) res.emplace_back(pair<Cell3DPosition,uint8_t>(n,orientationCode));
+        }
+        return res;
+    }
+
+
     void SmartBlocksBlock::setDisplayedValue(uint16_t n) {
         static_cast<SmartBlocksGlBlock *>(ptrGlBlock)->setDisplayedValue(n);
         if (ReplayExporter::isReplayEnabled())

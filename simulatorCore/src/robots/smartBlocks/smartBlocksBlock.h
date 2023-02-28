@@ -65,6 +65,11 @@ public:
     bool moveTo(const Cell3DPosition& dest) override;
 
     /**
+    * @copydoc BuildingBlock::getAllMotions
+    */
+    virtual vector<pair<Cell3DPosition,uint8_t>> getAllMotions() const override;
+
+    /**
      * Serializes (converts to a stream of bits) relevant data from the building block object
      *  for the purpose of simulation replay
      *
