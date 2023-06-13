@@ -64,7 +64,7 @@ bool MyAppMotionSCCode::tryToMove() {
     for (auto &motion:motions) {
         int d = abs(motion.first[1]-goalPosition[1]);
         cout << motion.first << "," << int(motion.second) << ":" << d << endl;
-        if (d<best_distance) {
+        if (d<best_distance || (d==best_distance && rand()%3==1 )) {
             cout << "best" << endl;
             best = &motion;
             best_distance = d;

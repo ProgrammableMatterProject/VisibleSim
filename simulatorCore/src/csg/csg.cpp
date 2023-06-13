@@ -7,6 +7,10 @@
 
 #define EPS 1e-10
 
+string vectorCode(double x,double y,double z) {
+    return to_string(int(x))+","+to_string(int(y))+","+to_string(int(z));
+}
+
 void CSGNode::glDraw() {
     throw NotImplementedException("CSGNode::glDraw");
 }
@@ -15,7 +19,12 @@ void CSGNode::glDraw() {
 CSGCube::CSGCube (const Vector3D &p_vec,bool p_center) : size_x(p_vec[0]), size_y(p_vec[1]), size_z(p_vec[2]), center(p_center) {}
 
 void CSGCube::toString() const {
-    cout << "cube([" << size_x << "," << size_y << "," <<  size_z << "]," << (center?"true":"false") << ")" << endl;
+    OUTPUT << "cube([" << size_x << "," << size_y << "," <<  size_z << "]," << (center?"true":"false") << ")" << endl;
+}
+
+string CSGCube::toCode() const {
+    string res="G"+vectorCode(size_x,size_y,size_z)+","+(center?"1":"0");
+    return res;
 }
 
 bool CSGCube::isInside(const Vector3D &p, Color &color) const {
@@ -123,6 +132,11 @@ void CSGSphere::toString() const {
     printf("sphere(%lf);\n", radius);
 }
 
+string CSGSphere::toCode() const {
+    string res="S"+to_string(int(radius));
+    return res;
+}
+
 bool CSGSphere::isInside(const Vector3D &p, Color &color) const {
     double dist = p[0]*p[0] + p[1]*p[1] + p[2]*p[2];
     return (dist <= radius*radius);
@@ -146,6 +160,11 @@ CSGCylinder::CSGCylinder (double h, double r, bool p_center) : height(h), radius
 void CSGCylinder::toString() const {
     printf("cylinder(%lf, %lf, %lf, %s);\n", height, radius, radius,
            center ? "true" : "false");
+}
+
+string CSGCylinder::toCode() const {
+    string res="Y"+to_string(int(height))+","+to_string(int(radius))+","+to_string(int(center));
+    return res;
 }
 
 bool CSGCylinder::isInside(const Vector3D &p, Color &color) const {
@@ -205,11 +224,16 @@ void CSGCylinder::boundingBox(BoundingBox &bb) {
 CSGCone::CSGCone(double p_height, double p_bottomRadius, double p_topRadius, bool p_center) : height(p_height), bottomRadius(p_bottomRadius), topRadius(p_topRadius), center(p_center) {}
 
 void CSGCone::toString() const {
-    cout << "cylinder(" << height << "," << bottomRadius << "," << topRadius << "," << (center ? "true" : "false") << endl;
+    OUTPUT << "cylinder(" << height << "," << bottomRadius << "," << topRadius << "," << (center ? "true" : "false") << endl;
+}
+
+string CSGCone::toCode() const {
+    string res="Y"+to_string(int(height))+","+to_string(int(bottomRadius))+","+to_string(int(topRadius))+","+to_string(int(center));
+    return res;
 }
 
 bool CSGCone::isInside(const Vector3D &p, Color &color) const {
-    double dist = sqrt(pow(p[0], 2) + pow(p[1], 2));
+    double dist = sqrt(p[0]*p[0] + p[1]*p[1]);
     double y = center?p[2]+height/2.0:p[2];
     if (y>=0 && y<=height) {
         return (dist <= (bottomRadius+y*(topRadius-bottomRadius)/height));
@@ -248,7 +272,12 @@ void CSGCone::boundingBox(BoundingBox &bb) {
 CSGTorus::CSGTorus(double p_radius1, double p_radius2) : radius1(p_radius1), radius2(p_radius2) {}
 
 void CSGTorus::toString() const {
-    cout << "torus(" << radius1 << "," << radius2 << ")" << endl;
+    OUTPUT << "torus(" << radius1 << "," << radius2 << ")" << endl;
+}
+
+string CSGTorus::toCode() const {
+    string res="O"+to_string(int(radius1))+","+to_string(int(radius2));
+    return res;
 }
 
 bool CSGTorus::isInside(const Vector3D &p, Color &color) const {
@@ -277,8 +306,21 @@ void CSGTorus::boundingBox(BoundingBox &bb) {
 /******************************************************************/
 void CSGTranslate::toString() const {
     printf("translate([%lf, %lf, %lf]) ", translate[0], translate[1], translate[2]);
-    for (unsigned int i = 0; i < children.size(); i++)
-        children[i]->toString();
+    for (auto &c:children) {
+        c->toString();
+    }
+}
+
+string CSGTranslate::toCode() const {
+    string res="T"+ vectorCode(translate[0], translate[1], translate[2]);
+    auto it=children.begin();
+    res+=(*it)->toCode();
+    it++;
+    while (it!=children.end()) {
+        res+="|"+(*it)->toCode();
+        it++;
+    }
+    return res;
 }
 
 bool CSGTranslate::isInside(const Vector3D &p, Color &color) const {
@@ -318,10 +360,23 @@ CSGRotate::CSGRotate(const Vector3D &p_vec):vec(p_vec) {
     rotate.inverse(rotate_1);
 }
 
+string CSGRotate::toCode() const {
+    string res="R"+ vectorCode(vec[0], vec[1], vec[2]);
+    auto it=children.begin();
+    res+=(*it)->toCode();
+    it++;
+    while (it!=children.end()) {
+        res+="|"+(*it)->toCode();
+        it++;
+    }
+    return res;
+}
+
 void CSGRotate::toString() const {
     printf("rotate([%lf, %lf, %lf]) ", vec[0], vec[1], vec[2]);
-    for (unsigned int i = 0; i < children.size(); i++)
-        children[i]->toString();
+    for (auto &c:children) {
+        c->toString();
+    }
 }
 
 bool CSGRotate::isInside(const Vector3D &p, Color &color) const {
@@ -353,8 +408,21 @@ void CSGRotate::boundingBox(BoundingBox &bb) {
 /******************************************************************/
 void CSGScale::toString() const {
     printf("scale([%lf, %lf, %lf]) ", scale[0], scale[1], scale[2]);
-    for (unsigned int i = 0; i < children.size(); i++)
-        children[i]->toString();
+    for (auto &c:children) {
+        c->toString();
+    }
+}
+
+string CSGScale::toCode() const {
+    string res="R"+ vectorCode(scale[0], scale[1], scale[2]);
+    auto it=children.begin();
+    res+=(*it)->toCode();
+    it++;
+    while (it!=children.end()) {
+        res+="|"+(*it)->toCode();
+        it++;
+    }
+    return res;
 }
 
 bool CSGScale::isInside(const Vector3D &p, Color &color) const {
@@ -384,9 +452,22 @@ void CSGScale::boundingBox(BoundingBox &bb) {
 /******************************************************************/
 void CSGUnion::toString() const {
     printf("union() {\n");
-    for (unsigned int i = 0; i < children.size(); i++)
-        children[i]->toString();
+    for (auto &c:children) {
+        c->toString();
+    }
     printf("}\n");
+}
+
+string CSGUnion::toCode() const {
+    string res="+";
+    auto it=children.begin();
+    res+=(*it)->toCode();
+    it++;
+    while (it!=children.end()) {
+        res+="|"+(*it)->toCode();
+        it++;
+    }
+    return res;
 }
 
 bool CSGUnion::isInside(const Vector3D &p, Color &color) const {
@@ -429,6 +510,18 @@ void CSGDifference::toString() const {
     printf("}\n");
 }
 
+string CSGDifference::toCode() const {
+    string res="/";
+    auto it=children.begin();
+    res+=(*it)->toCode();
+    it++;
+    while (it!=children.end()) {
+        res+="|"+(*it)->toCode();
+        it++;
+    }
+    return res;
+}
+
 bool CSGDifference::isInside(const Vector3D &p, Color &color) const {
     if (children.size() > 0 && children[0]->isInside(p, color)) {
         for (unsigned int i = 1; i < children.size(); i++) {
@@ -446,7 +539,7 @@ bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) c
             const Cell3DPosition pPos = static_cast<BaseSimulator::TargetCSG*>(BaseSimulator::BlockCode::target)->
                 CSGToGridPosition(p);
 
-            // cout << "\t" << pPos << " - p: " << p << endl;
+            // OUTPUT << "\t" << pPos << " - p: " << p << endl;
             if (border > 1.0) throw NotImplementedException("CSG difference border > 1.0");
 
             for (const Cell3DPosition& nPos : getWorld()->lattice->getNeighborhood(pPos)) {
@@ -479,6 +572,18 @@ void CSGIntersection::toString() const {
     printf("}\n");
 }
 
+string CSGIntersection::toCode() const {
+    string res="^";
+    auto it=children.begin();
+    res+=(*it)->toCode();
+    it++;
+    while (it!=children.end()) {
+        res+="|"+(*it)->toCode();
+        it++;
+    }
+    return res;
+}
+
 bool CSGIntersection::isInside(const Vector3D &p, Color &color) const {
     for (unsigned int i = 0; i < children.size(); i++) {
         if (!children[i]->isInside(p, color)) return false;
@@ -509,9 +614,23 @@ void CSGIntersection::boundingBox(BoundingBox &bb) {
 /******************************************************************/
 void CSGColor::toString() const {
     printf("color([%d, %d, %d]) ", color[0], color[1], color[2]);
-    for (unsigned int i = 0; i < children.size(); i++)
-        children[i]->toString();
+    for (auto &c:children) {
+        c->toString();
+    }
 }
+
+string CSGColor::toCode() const {
+    string res="#"+ vectorCode(color[0], color[1], color[2]);
+    auto it=children.begin();
+    res+=(*it)->toCode();
+    it++;
+    while (it!=children.end()) {
+        res+="|"+(*it)->toCode();
+        it++;
+    }
+    return res;
+}
+
 
 bool CSGColor::isInside(const Vector3D &p, Color &color) const {
     for (unsigned int i = 0; i < children.size(); i++) {

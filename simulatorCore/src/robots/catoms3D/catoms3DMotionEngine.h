@@ -166,6 +166,11 @@ public:
     getAllReachablePositions(const Catoms3DBlock* m,
                              RotationLinkType faceReq = RotationLinkType::Any);
 
+    /**
+     * Check if a 3D Catoms can reach the final position from the origin one
+     * @param origin initial position of the module
+     * @param final final position after one motion
+     */
     static bool isNotLockedForMotion(const Cell3DPosition &origin,const Cell3DPosition &final);
 };
 

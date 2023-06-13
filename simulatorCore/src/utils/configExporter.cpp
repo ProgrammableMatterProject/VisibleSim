@@ -64,12 +64,12 @@ namespace BaseSimulator {
     }
 
 /**
- * @brief Formats a Vector3D variable for XML attribute export
+ * @brief Formats a Color variable for XML attribute export
  * @return a string with format "pos.x,pos.y,pos.z"
  */
     string toXmlAttribute(Color &pos) {
         char str[8];
-        sprintf(str, "#%02X%02X%02X", pos[0],pos[1],pos[2]);
+        sprintf(str, "#%02X%02X%02X", pos[0], pos[1], pos[2]);
         return str;
     }
 
@@ -179,8 +179,8 @@ namespace BaseSimulator {
             }
             visualsElt->LinkEndChild(window);
             TiXmlElement *render = new TiXmlElement("window");
-            render->SetAttribute("shadow", (GlutContext::enableShadows?"on":"off"));
-            render->SetAttribute("grid", (GlutContext::showGrid?"on":"off"));
+            render->SetAttribute("shadow", (GlutContext::enableShadows ? "on" : "off"));
+            render->SetAttribute("grid", (GlutContext::showGrid ? "on" : "off"));
             visualsElt->LinkEndChild(render);
         }
         vsElt->LinkEndChild(visualsElt);

@@ -307,7 +307,7 @@ short FreeLattice::getOppositeDirection(short d) const {
             break;
         default:
             ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-            
+
             return -1;
             break;
     }
@@ -1055,4 +1055,3 @@ Cell3DPosition SCLattice2::worldToGridPosition(const Vector3D &pos) const {
 vector<Cell3DPosition> SCLattice2::getRelativeConnectivity(const Cell3DPosition &p) const {
     return nCells2;
 }
-

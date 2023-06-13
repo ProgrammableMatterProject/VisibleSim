@@ -16,17 +16,17 @@ namespace BaseSimulator {
     Target *BlockCode::target = nullptr;
 
     BlockCode::InterfaceNotConnectedException::
-    InterfaceNotConnectedException(BlockCode* bc, const Message* msg,
-                                   const P2PNetworkInterface* itf) {
+    InterfaceNotConnectedException(BlockCode *bc, const Message *msg,
+                                   const P2PNetworkInterface *itf) {
         stringstream ss;
         uint8_t itfId = bc->hostBlock->getInterfaceBId(itf);
         Cell3DPosition nPos;
         bool err = not bc->hostBlock->getNeighborPos(itfId, nPos);
-        ss <<  "Trying to send " << msg->getMessageName() << " through unconnected interface: "
+        ss << "Trying to send " << msg->getMessageName() << " through unconnected interface: "
            << " { sender = #" << bc->hostBlock->blockId
            << " at " << bc->hostBlock->position
-           << ", itfId = " << (int)itfId
-           << ", nPos = " << (string)(err ? "#ERROR" : bc->hostBlock->position.to_string())
+           << ", itfId = " << (int) itfId
+           << ", nPos = " << (string) (err ? "#ERROR" : bc->hostBlock->position.to_string())
            << " }" << endl;
         m_msg = ss.str();
     }
@@ -49,14 +49,14 @@ namespace BaseSimulator {
     }
 
     void BlockCode::addMessageEventFunc2(int type, eventFunc2 func) {
-        eventFuncMap2.insert(pair<int,eventFunc2>(type,func));
+        eventFuncMap2.insert(pair<int, eventFunc2>(type, func));
     }
 
-    int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,Time t0,Time dt) {
+    int BlockCode::sendMessage(Message *msg, P2PNetworkInterface *dest, Time t0, Time dt) {
         return sendMessage(nullptr, msg, dest, t0, dt);
     }
 
-    int BlockCode::sendMessage(HandleableMessage*msg,
+    int BlockCode::sendMessage(HandleableMessage *msg,
                                P2PNetworkInterface *dest, Time t0, Time dt) {
         // PTHY: t1: Risque que deux messages envoyés sequentiellement au même t0 ne soient pas envoyés dans l'ordre ???
         Time t1 = scheduler->now() + t0;
@@ -80,7 +80,7 @@ namespace BaseSimulator {
         return 0;
     }
 
-    int BlockCode::sendMessage(const char*msgString, Message*msg,
+    int BlockCode::sendMessage(const char *msgString, Message *msg,
                                P2PNetworkInterface *dest, Time t0, Time dt) {
         // PTHY: t1: Risque que deux messages envoyés sequentiellement au même t0 ne soient pas envoyés dans l'ordre ???
         Time t1 = scheduler->now() + t0;
@@ -105,52 +105,52 @@ namespace BaseSimulator {
         return 0;
     }
 
-    int BlockCode::sendMessageToAllNeighbors(Message*msg,Time t0,Time dt,int nexcept,...) {
+    int BlockCode::sendMessageToAllNeighbors(Message *msg, Time t0, Time dt, int nexcept, ...) {
         va_list args;
-        va_start(args,nexcept);
+        va_start(args, nexcept);
         int ret = sendMessageToAllNeighbors(nullptr, msg, t0, dt, nexcept, args);
         va_end(args);
 
         return ret;
     }
 
-    int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
-                                             Time t0,Time dt,int nexcept,...) {
+    int BlockCode::sendMessageToAllNeighbors(const char *msgString, Message *msg,
+                                             Time t0, Time dt, int nexcept, ...) {
         va_list args;
-        va_start(args,nexcept);
+        va_start(args, nexcept);
         int ret = sendMessageToAllNeighbors(msgString, msg, t0, dt, nexcept, args);
         va_end(args);
 
         return ret;
     }
 
-    map<short,P2PNetworkInterface *> BlockCode::getAllConnectedInterfaces() {
-        map<short,P2PNetworkInterface *> res;
+    map<short, P2PNetworkInterface *> BlockCode::getAllConnectedInterfaces() {
+        map<short, P2PNetworkInterface *> res;
         P2PNetworkInterface *p2p;
-        for (short i=0; i<hostBlock->getNbInterfaces(); i++) {
+        for (short i = 0; i < hostBlock->getNbInterfaces(); i++) {
             p2p = hostBlock->getInterface(i);
-            if(p2p->connectedInterface) {
-                res[i]=p2p;
+            if (p2p->connectedInterface) {
+                res[i] = p2p;
             }
         }
         return res;
     }
 
-    int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
+    int BlockCode::sendMessageToAllNeighbors(const char *msgString, Message *msg,
                                              Time t0, Time dt, int nexcept, va_list args) {
         P2PNetworkInterface *tabExceptions[hostBlock->getNbInterfaces()];
-        for (int i=0; i<nexcept; i++) {
-            tabExceptions[i] = va_arg(args,P2PNetworkInterface*);
+        for (int i = 0; i < nexcept; i++) {
+            tabExceptions[i] = va_arg(args, P2PNetworkInterface*);
         }
 
         P2PNetworkInterface *p2p;
-        int j,n=0;
-        for (int i=0; i<hostBlock->getNbInterfaces(); i++) {
+        int j, n = 0;
+        for (int i = 0; i < hostBlock->getNbInterfaces(); i++) {
             p2p = hostBlock->getInterface(i);
-            if(p2p->connectedInterface) { // on regarde si elle n'est pas dans les interdits
-                j=0;
-                while (j<nexcept && p2p!=tabExceptions[j]) j++;
-                if (j==nexcept) {
+            if (p2p->connectedInterface) { // on regarde si elle n'est pas dans les interdits
+                j = 0;
+                while (j < nexcept && p2p != tabExceptions[j]) j++;
+                if (j == nexcept) {
                     sendMessage(msgString, msg->clone(), p2p, t0, dt);
                     Message::incrementMessageCounts();
                     n++;
@@ -189,10 +189,12 @@ namespace BaseSimulator {
                 break;
             case EVENT_TELEPORTATION_END: {
                 onMotionEnd();
-            } break;
-            case EVENT_INTERRUPTION:{
+            }
+                break;
+            case EVENT_INTERRUPTION: {
                 onInterruptionEvent(pev);
-            } break;
+            }
+                break;
         }
     }
 
@@ -200,7 +202,7 @@ namespace BaseSimulator {
         stringstream info;
         info.str("");
         info << "Tapped on face " << lattice->getDirectionString(face);
-        scheduler->trace(info.str(),hostBlock->blockId);
+        scheduler->trace(info.str(), hostBlock->blockId);
     }
 
     bool BlockCode::loadNextTarget() {
@@ -214,7 +216,7 @@ namespace BaseSimulator {
     }
 
     bID BlockCode::getId() const {
-        return hostBlock?hostBlock->blockId:0;
+        return hostBlock ? hostBlock->blockId : 0;
     }
 
     void BlockCode::setColor(const Color &color) {
@@ -230,6 +232,6 @@ namespace BaseSimulator {
     }
 
     Color BlockCode::getColor() const {
-        return (hostBlock?hostBlock->color:BLACK);
+        return (hostBlock ? hostBlock->color : BLACK);
     }
 } // BaseSimulator namespace

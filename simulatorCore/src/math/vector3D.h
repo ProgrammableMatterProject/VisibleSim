@@ -20,8 +20,7 @@ using namespace std;
 /**
  * \class Vector3D vector3D.h
  */
-class Vector3D
-{
+class Vector3D {
     float _pt[4]; //!< x,y,z,w in a table (w=0 for a vector, w=1 for a point)
 public :
 
@@ -122,7 +121,7 @@ public :
    \param v2 : second vector
 */
     friend const Vector3D operator ^(const Vector3D,const Vector3D);
-    inline const double operator[](const int i) const { return _pt[i]; };
+    inline const float operator[](const int i) const { return _pt[i]; };
     inline void setPoint(bool v) { _pt[3]=(float)v; };
 /**
     \brief Returns a boolean indicating if one of the vector's component is zero

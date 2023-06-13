@@ -28,8 +28,8 @@
 //          GlutContext  (class)
 //
 //===========================================================================================================
-static const int DELAY_FOR_POPUP=200; // ms
-static const int FPS_DELAY=200; // ms
+static const int DELAY_FOR_POPUP = 200; // ms
+static const int FPS_DELAY = 200; // ms
 
 bool GlutContext::GUIisEnabled = true;
 

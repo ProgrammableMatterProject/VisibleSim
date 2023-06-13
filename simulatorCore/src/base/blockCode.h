@@ -70,12 +70,28 @@ namespace BaseSimulator {
  */
         virtual ~BlockCode();
 
+/**
+ * @brief shortcut to directly get the id of the module
+ * @return the id of the module
+ */
         bID getId() const;
 
-        void setColor(const Color &);
+/**
+ * @brief shortcut to directly set the color of the module
+ * @param c : the color to set
+ */
+        void setColor(const Color &c);
 
+/**
+ * @brief shortcut to directly set the color of the module
+ * @param idColor : number of the color
+ */
         void setColor(int idColor);
 
+/**
+ * @brief shortcut to directly set the color of the module
+ * @param v : visibility state of the module
+ */
         void setVisible(bool v);
 
  /**
@@ -84,7 +100,7 @@ namespace BaseSimulator {
  */
         Color getColor() const;
 
-        /**
+/**
  * @brief Provides the list of connected interfaces to the current module
  *
  */

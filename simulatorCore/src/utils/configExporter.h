@@ -40,7 +40,7 @@ namespace BaseSimulator {
         TiXmlDocument *config; //!< the TiXML Document used for export
         string configName;     //!< the name of the output configuration file
         //TiXmlElement *worldElt; //!< a pointer to the world XML element of the document
-        TiXmlElement *vsElt; //!< a pointer to the world XML element of the document
+        TiXmlElement *vsElt; //!< a pointer to the root XML element of the document
         TiXmlElement *blockListElt; //!< a pointer to the blockList XML element of the document
     public:
         /**
@@ -308,25 +308,6 @@ namespace BaseSimulator {
          * @brief Node Configuration Exporter destructor
          */
         virtual ~HexanodesConfigExporter() {};
-    };
-
-    /**
-     * @brief Vcells Configuration Exporter
-     */
-    class VcellsConfigExporter : public ConfigExporter {
-    public:
-        /**
-         * @brief SmartBlocks Configuration Exporter constructor
-         */
-        VcellsConfigExporter(World *_world) : ConfigExporter(_world) {};
-
-        VcellsConfigExporter(World *_world, const string &_filename)
-                : ConfigExporter(_world, _filename) {};
-
-        /**
-         * @brief SmartBlocks Configuration Exporter constructor
-         */
-        virtual ~VcellsConfigExporter() {};
     };
 
 } // BASESIMULATOR_NAMESPACE

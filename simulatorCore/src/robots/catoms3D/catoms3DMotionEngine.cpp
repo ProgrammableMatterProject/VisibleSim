@@ -172,7 +172,8 @@ bool Catoms3DMotionEngine::isNotLockedForMotion(const Cell3DPosition &origin, co
     auto conn = lattice->getRelativeConnectivity(final);
     Cell3DPosition pos0, pos1;
     for (int i = 0; i < 6; i++) {
-        cout << i << ": " << final+conn[i] << " " << int(lattice->isFree(final+conn[i])) << " -> " << final+conn[i+6] << int(lattice->isFree(final+conn[i+6]))<< endl;
+        cout << i << ": " << final + conn[i] << " " << int(lattice->isFree(final + conn[i])) << " -> "
+             << final + conn[i + 6] << int(lattice->isFree(final + conn[i + 6])) << endl;
         pos0 = final + conn[i];
         pos1 = final + conn[i + 6];
         if (pos0 != origin && pos1 != origin && !lattice->isFree(pos0) && !lattice->isFree(pos1)) return false;

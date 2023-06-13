@@ -11,13 +11,28 @@ static const int IT_WAKEUP_ID = 2001;
 
 using namespace BlinkyBlocks;
 
+enum AntsStates{ANTS_WAIT=0, ANTS_SEARCH, ANTS_TAKE_BACK, ANTS_BACK};
+// 0: wait
+// 1: chercher la nourriture,
+// 2: prendre la nourriture et faire demi-tour,
+// 3: se diriger vers le nid en déposant de la phéromone,
+// 4:déposer la nourriture dans le nid et faire demi-tour pour revenir à l’état initial.
+
+class AntsData {
+public:
+    uint16_t id;
+    AntsStates state;
+    uint16_t pheromone_reserve;
+    uint8_t from;
+};
+
 class AntsCode : public BlinkyBlocksBlockCode {
 private:
     BlinkyBlocksBlock *module = nullptr;
-    vector<uint8_t> ants; // 4 bits for the entry port E, 1 bit for pheromone P 0x000PEEEE
-    uint32_t pheromone;
-    uint32_t pheromones[6];
+    uint16_t pheromone;
+    uint16_t pheromones[6];
     bool isNest, isFood;
+    vector<AntsData> ants;
 public :
     AntsCode(BlinkyBlocksBlock *host);
     ~AntsCode() {};

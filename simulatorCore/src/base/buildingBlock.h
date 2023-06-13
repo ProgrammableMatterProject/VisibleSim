@@ -190,6 +190,13 @@ namespace BaseSimulator {
          * @param p :  the grid position (x,y,z) of the block as a Cell3DPosition
          */
         virtual void setPosition(const Cell3DPosition &p);
+
+        /**
+         * @brief Sets the grid position and orientation of the block
+         *
+         * @param p :  the grid position (x,y,z) of the block as a Cell3DPosition
+         * @param orient : the orientation code for the block
+         */
         virtual void setPositionAndOrientation(const Cell3DPosition &p, uint8_t orient)=0;
 
         /**

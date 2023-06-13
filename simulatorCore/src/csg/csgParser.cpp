@@ -2,9 +2,9 @@
 #include <algorithm>
 #include <cassert>
 
-enum KEYWORDS {KW_UNION,KW_INTERSECTION,KW_DIFFERENCE,KW_TRANSLATE,KW_ROTATE,KW_SCALE,KW_CUBE,KW_CYLINDER,KW_SPHERE,KW_TORUS,KW_COLOR,KW_AFFECT,KW_MODULE};
-const size_t CSGParser::keywordsCount = 13;
-const string CSGParser::keywords[keywordsCount] = {"union","intersection","difference","translate","rotate","scale","cube","cylinder","sphere","torus","color","=","module"};
+enum KEYWORDS {KW_UNION,KW_INTERSECTION,KW_DIFFERENCE,KW_TRANSLATE,KW_ROTATE,KW_SCALE,KW_CUBE,KW_CYLINDER,KW_SPHERE,KW_TORUS,KW_COLOR,KW_AFFECT,KW_MODULE,KW_LOOP};
+const size_t CSGParser::keywordsCount = 14;
+const string CSGParser::keywords[keywordsCount] = {"union","intersection","difference","translate","rotate","scale","cube","cylinder","sphere","torus","color","=","module","for"};
 static const std::string whitespaces (" \t\f\v\n\r");
 
 size_t CSGParser::readCubeParameters(const string &line, Vector3D &v,bool &center) {
@@ -26,19 +26,28 @@ size_t CSGParser::readCylinderParameters(const string &line, double &height, dou
     height = readExpression(expr);
     size_t beginKeyword = exprPos+1;
     exprPos = line.find_first_of(',',beginKeyword);
-    expr = line.substr(beginKeyword, exprPos-beginKeyword);
-    radiusBase = readExpression(expr);
-    beginKeyword = exprPos+1;
-    exprPos = line.find_first_of(',',beginKeyword);
-    expr = line.substr(beginKeyword, exprPos-beginKeyword);
-    if (exprPos!=string::npos && exprPos<endKeyword) {
-        radiusTop = readExpression(expr);
+    if (exprPos!=string::npos) {
+        expr = line.substr(beginKeyword, exprPos - beginKeyword);
+        radiusBase = readExpression(expr);
         beginKeyword = exprPos + 1;
-        center = (line.find("true",beginKeyword)!=string::npos);
-    } else { // default radiusTop=radiusBase
-        radiusTop=radiusBase;
+        exprPos = line.find_first_of(',', beginKeyword);
+        if (exprPos!=string::npos) {
+            expr = line.substr(beginKeyword, exprPos - beginKeyword);
+            radiusTop = readExpression(expr);
+            beginKeyword = exprPos + 1;
+            center = (line.find("true",beginKeyword)!=string::npos);
+        } else {
+            expr = line.substr(beginKeyword);
+            radiusTop = readExpression(expr);
+            center=false;
+        }
+    } else {
+        expr = line.substr(beginKeyword);
+        radiusBase = readExpression(expr);
         center=false;
+        radiusTop=radiusBase;
     }
+
     return endKeyword;
 }
 
@@ -90,20 +99,20 @@ void CSGParser::updateVariable(const string &instr) {
 }
 
 std::size_t CSGParser::createModule(const string &line, size_t initialPos) {
-    //cout << "createModule: '" << line.substr(initialPos,10) << "'" << endl;
+    //OUTPUT << "createModule: '" << line.substr(initialPos,10) << "'" << endl;
     // extract moduleId
     size_t posInstr=line.find_first_not_of(whitespaces,initialPos);
     size_t endInstr=line.find_first_of('(',posInstr+1);
     string moduleId =line.substr(posInstr,endInstr-posInstr);
-    //cout << "moduleId=" << moduleId << endl;
+    //OUTPUT << "moduleId=" << moduleId << endl;
     // extract parameters
     string moduleParam;
     posInstr = extractParametersString(line,endInstr,moduleParam);
-    //cout << "moduleParam=" << moduleParam << endl;
+    //OUTPUT << "moduleParam=" << moduleParam << endl;
     // extract code
     string moduleCode;
     posInstr = extractChildrenString(line,posInstr,moduleCode);
-    //cout << "moduleInstr=" << moduleCode << endl;
+    //OUTPUT << "moduleInstr=" << moduleCode << endl;
     // add module
     auto *pm = new CSGParserModule(moduleCode);
     // add parameters
@@ -126,12 +135,36 @@ std::size_t CSGParser::createModule(const string &line, size_t initialPos) {
     return posInstr;
 }
 
+std::size_t CSGParser::createLoop(const string &line, size_t initialPos,string &iteratorName,int &firstVal,int &nLoop,string &loopCode) {
+    OUTPUT << "createLoop: '" << line.substr(initialPos,10) << "'..." << endl;
+    size_t posInstr=line.find_first_not_of(whitespaces,initialPos+1);
+    OUTPUT << "Iterator: " << line[posInstr] << endl;
+    iteratorName = line.substr(posInstr,1);
+    posInstr=line.find_first_of('[',posInstr+1);
+    posInstr=line.find_first_not_of(whitespaces,posInstr);
+    size_t endInstr=line.find_first_of(':',posInstr+1);
+    OUTPUT << line.substr(posInstr+1,endInstr-posInstr-1) << endl;
+    double initValue = stod(line.substr(posInstr+1,endInstr-posInstr-1));
+    OUTPUT << "initValue=" << initValue << endl;
+    firstVal = int(initValue);
+    posInstr=line.find_first_not_of(whitespaces,endInstr+1);
+    endInstr=line.find_first_of(')',posInstr+1);
+    double lastValue = stod(line.substr(posInstr,endInstr-1));
+    nLoop = int (lastValue-firstVal+1);
+    OUTPUT << "lastValue=" << lastValue << endl;
+    OUTPUT << "nLoop=" << nLoop << endl;
+    posInstr=line.find_first_not_of(whitespaces,endInstr+1);
+    posInstr = extractChildrenString(line,posInstr,loopCode);
+    OUTPUT << "posInstr=" << posInstr << ": '" << line.substr(posInstr,10) << "'" << endl;
+    return posInstr;
+}
+
 double CSGParser::readExpression(const string &expr) {
     try {
         mu_p.SetExpr(expr);
         return mu_p.Eval();
     } catch (mu::Parser::exception_type &e) {
-        cout << e.GetMsg() << endl;
+        OUTPUT << e.GetMsg() << endl;
     }
     return 0;
 }
@@ -195,6 +228,9 @@ size_t CSGParser::readKeyword(const string &line, size_t initialPos, size_t &key
     if (keywordId==KW_MODULE) {  // special case Module
         endKeyword = line.find_first_of(whitespaces, beginKeyword);
         endKeyword = line.find_first_not_of(whitespaces, endKeyword);
+    } else if (keywordId==KW_LOOP) {
+        endKeyword = line.find_first_of(whitespaces, beginKeyword);
+        endKeyword = line.find_first_not_of(whitespaces, endKeyword);
     } else if (keywordId==keywordsCount) { // try module function call
         auto m_it = modules.begin();
         while (m_it!=modules.end() && keyword!=m_it->first){
@@ -210,9 +246,9 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
     CSGNode *node = nullptr;
     size_t keywordId;
 
-    //cout << "parseCSG(" << str << "," << pos << ")" << endl;
+//    OUTPUT << "parseCSG(" << str << "," << pos << ")" << endl;
     while ((pos = readKeyword(str, pos, keywordId)) != string::npos) {
-        //cout << "KeywordId=" << keywordId << "  pos=" << pos << "|" << str.substr(std::max(0,int(pos-2)),5) << endl;
+//        OUTPUT << "KeywordId=" << keywordId << "  pos=" << pos << "|" << str.substr(std::max(0,int(pos-2)),5) << endl;
         switch (keywordId) {
             case KW_UNION: { // union
                 string subline;
@@ -220,7 +256,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractChildrenString(str, pos, subline);
                 node = new CSGUnion();
 #ifdef DEBUG_CSG
-                cout << "union() " << endl;
+                OUTPUT << "union() " << endl;
 #endif
                 size_t subpos = 0;
                 CSGNode *child;
@@ -237,7 +273,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractChildrenString(str, pos, subline);
                 node = new CSGIntersection();
 #ifdef DEBUG_CSG
-                cout << "intersection() " << endl;
+                OUTPUT << "intersection() " << endl;
 #endif
                 size_t subpos = 0;
                 CSGNode *child;
@@ -254,7 +290,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractChildrenString(str, pos, subline);
                 node = new CSGDifference();
 #ifdef DEBUG_CSG
-                cout << "difference() " << endl;
+                OUTPUT << "difference() " << endl;
 #endif
                 size_t subpos = 0;
                 CSGNode *child;
@@ -271,7 +307,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractParametersString(str, pos, subline);
                 readVector(subline, 0, subline.length(), v);
 #ifdef DEBUG_CSG
-                cout << "translate([" << v[0] << "," << v[1] << "," << v[2] << "]) " << endl;
+                OUTPUT << "translate([" << v[0] << "," << v[1] << "," << v[2] << "]) " << endl;
 #endif
                 node = new CSGTranslate(v);
                 CSGNode *child = parseCSG(str, pos);
@@ -285,7 +321,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractParametersString(str, pos, subline);
                 readVector(subline, 0, subline.length(), v);
 #ifdef DEBUG_CSG
-                cout << "rotate([" << v[0] << "," << v[1] << "," << v[2] << "]) " << endl;
+                OUTPUT << "rotate([" << v[0] << "," << v[1] << "," << v[2] << "]) " << endl;
 #endif
                 node = new CSGRotate(v);
                 CSGNode *child = parseCSG(str, pos);
@@ -299,7 +335,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractParametersString(str, pos, subline);
                 readVector(subline, 0, subline.length(), v);
 #ifdef DEBUG_CSG
-                cout << "scale([" << v[0] << "," << v[1] << "," << v[2] << "]) " << endl;
+                OUTPUT << "scale([" << v[0] << "," << v[1] << "," << v[2] << "]) " << endl;
 #endif
                 node = new CSGScale(v);
                 CSGNode *child = parseCSG(str, pos);
@@ -314,7 +350,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractParametersString(str, pos, subline);
                 readCubeParameters(subline, v, center);
 #ifdef DEBUG_CSG
-                cout << "cube([" << v[0] << "," << v[1] << "," << v[2] << "]," << (center?"true":"false") << "); " << endl;
+                OUTPUT << "cube([" << v[0] << "," << v[1] << "," << v[2] << "]," << (center?"true":"false") << "); " << endl;
 #endif
                 node = new CSGCube(v, center);
                 pos = str.find(';',pos);
@@ -327,12 +363,15 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 string subline;
                 pos = extractParametersString(str, pos, subline);
                 readCylinderParameters(subline, height, baseRadius, topRadius, center);
-#ifdef DEBUG_CSG
-                cout << "cylinder(" << height << "," << baseRadius << "," << topRadius << "," << (center?"true":"false") << "); " << endl;
-#endif
                 if (baseRadius == topRadius) {
+#ifdef DEBUG_CSG
+                    OUTPUT << "cylinder(" << height << "," << baseRadius << "," << topRadius << "," << (center?"true":"false") << "); " << endl;
+#endif
                     node = new CSGCylinder(height, baseRadius, center);
                 } else {
+#ifdef DEBUG_CSG
+                    OUTPUT << "cone(" << height << "," << baseRadius << "," << topRadius << "," << (center?"true":"false") << "); " << endl;
+#endif
                     node = new CSGCone(height, baseRadius, topRadius, center);
                 }
                 pos = str.find(';',pos);
@@ -344,7 +383,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractParametersString(str, pos, subline);
                 double radius = readExpression(subline);
 #ifdef DEBUG_CSG
-                cout << "sphere(r=" << radius << "); " << endl;
+                OUTPUT << "sphere(r=" << radius << "); " << endl;
 #endif
                 node = new CSGSphere(radius);
                 pos = str.find(';',pos);
@@ -357,7 +396,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractParametersString(str, pos, subline);
                 readTorusParameters(subline, radius1,radius2);
 #ifdef DEBUG_CSG
-                cout << "torus(" << radius1 << "," << radius2 << "); " << endl;
+                OUTPUT << "torus(" << radius1 << "," << radius2 << "); " << endl;
 #endif
                 node = new CSGTorus(radius1,radius2);
                 pos = str.find(';',pos);
@@ -370,7 +409,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 pos = extractParametersString(str, pos, subline);
                 readVector(subline, 0, subline.length(), v);
 #ifdef DEBUG_CSG
-                cout << "color([" << v[0] << ',' << v[1] << ',' << v[2] << "])" << endl;
+                OUTPUT << "color([" << v[0] << ',' << v[1] << ',' << v[2] << "])" << endl;
 #endif
                 node = new CSGColor(v);
                 CSGNode *child = parseCSG(str, pos);
@@ -383,7 +422,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                 size_t endInstr = str.find_first_of(';',pos);
                 subline = str.substr(pos,endInstr-pos);
 #ifdef DEBUG_CSG
-                cout << "affectation:" << subline << endl;
+                OUTPUT << "affectation:" << subline << endl;
 #endif
                 updateVariable(subline);
                 pos = endInstr+1;
@@ -392,9 +431,36 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
             case KW_MODULE: { // module
                 pos = createModule(str,pos);
 #ifdef DEBUG_CSG
-                cout << "New module:" << pos << endl;
+                OUTPUT << "New module:" << pos << endl;
 #endif
-
+            }
+            break;
+            case KW_LOOP: { // for loop
+                string iteratorName,loopCode;
+                int iteratorFirst,nLoop;
+                pos = createLoop(str,pos,iteratorName,iteratorFirst,nLoop,loopCode);
+#ifdef DEBUG_CSG
+                OUTPUT << "New loop:" << pos << endl;
+#endif
+                node = new CSGUnion();
+#ifdef DEBUG_CSG
+                OUTPUT << "union() " << loopCode << endl;
+#endif
+                CSGNode *child;
+                double iteratorVar=iteratorFirst;
+                int pos2;
+                mu_p.DefineVar(iteratorName,&(iteratorVar));
+                for (int i=0; i<nLoop; i++) {
+                    size_t subpos = 0;
+                    CSGNode *childLoop= nullptr;
+                    while (subpos<loopCode.length()) {
+                        childLoop = parseCSG(loopCode, subpos);
+                        if (childLoop!=nullptr) node->addChild(childLoop);
+                    }
+                    iteratorVar++;
+                }
+                mu_p.RemoveVar(iteratorName);
+                return node;
             }
             break;
             default: {
@@ -406,12 +472,12 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                         i--;
                     }
 #ifdef DEBUG_CSG
-                    cout << "Call module:" << m_it->first << endl;
+                    OUTPUT << "Call module:" << m_it->first << endl;
 #endif
                     // add parameter in variables ! and init
                     string moduleParam;
                     extractParametersString(str,pos,moduleParam);
-                    //cout << "moduleParam:" << moduleParam << endl;
+                    //OUTPUT << "moduleParam:" << moduleParam << endl;
                     // first parameters
                     size_t posP=0,posId=0,endId;
                     i=0;
@@ -438,7 +504,7 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
                     return node;
                 } else {
 #ifdef DEBUG_CSG
-                    cout << "Default ?" << pos << ":" << str[pos] << endl;
+                    OUTPUT << int(keywordId) << " Default ? " << pos << ":" << str[pos] << endl;
 #endif
                 }
             }

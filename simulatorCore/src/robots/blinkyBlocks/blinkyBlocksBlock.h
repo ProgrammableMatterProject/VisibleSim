@@ -47,6 +47,9 @@ public:
     void stopBlock(Time date, State s);
     void pauseClock(Time delay, Time start);
 
+    /**
+     * @copydoc BuildingBlock::setPositionAndOrientation
+     */
     void setPositionAndOrientation(const Cell3DPosition &p, uint8_t orient) override { setPosition(p); };
     /**
      * @copydoc BuildingBlock::canMoveTo

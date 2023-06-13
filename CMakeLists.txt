@@ -4,6 +4,7 @@ project(VisibleSim)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long -Wpedantic")
 add_definitions(-DDEBUG_CONF_PARSING)
+add_definitions(-DDEBUG_CSG)
 
 include_directories(simulatorCore/src)
 
@@ -581,6 +582,10 @@ add_executable(ants applicationsSrc/ants/ants.cpp applicationsSrc/ants/antsCode.
 target_link_libraries(ants -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS ants RUNTIME DESTINATION applicationsBin/rainbow)
 
+add_executable(myApp applicationsSrc/myApp/myApp.cpp applicationsSrc/myApp/myAppCode.cpp)
+target_link_libraries(myApp -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS myApp RUNTIME DESTINATION applicationsBin/myApp)
+
 add_executable(demoMotionsC3D applicationsSrc/demoMotionsC3D/demoMotionsC3D.cpp applicationsSrc/demoMotionsC3D/demoMotionsC3DCode.cpp)
 target_link_libraries(demoMotionsC3D -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS demoMotionsC3D RUNTIME DESTINATION applicationsBin/demoMotionsC3D)
@@ -634,6 +639,19 @@ install(TARGETS borders RUNTIME DESTINATION applicationsBin/borders)
 add_executable(myAppMotionSC applicationsSrc/myAppMotionSC/myAppMotionSC.cpp applicationsSrc/myAppMotionSC/myAppMotionSCCode.cpp)
 target_link_libraries(myAppMotionSC -lSlidingCubes -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d)
 install(TARGETS myAppMotionSC RUNTIME DESTINATION applicationsBin/myAppMotionSC)
+
+add_executable(myStabilityApp applicationsSrc/myStabilityApp/myStabilityApp.cpp applicationsSrc/myStabilityApp/myStabilityAppCode.cpp applicationsSrc/myStabilityApp/vector2d.cpp  applicationsSrc/myStabilityApp/mypolygon.cpp)
+target_link_libraries(myStabilityApp -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d)
+install(TARGETS myStabilityApp RUNTIME DESTINATION applicationsBin/myStabilityApp)
+
+add_executable(myCSGapp applicationsSrc/myCSGapp/myCSGapp.cpp applicationsSrc/myCSGapp/myCSGappCode.cpp)
+target_link_libraries(myCSGapp -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS myCSGapp RUNTIME DESTINATION applicationsBin/myCSGapp)
+
+add_executable(myCSGappBB applicationsSrc/myCSGappBB/myCSGappBB.cpp applicationsSrc/myCSGappBB/myCSGappBBCode.cpp)
+target_link_libraries(myCSGappBB -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS myCSGappBB RUNTIME DESTINATION applicationsBin/myCSGappBB)
+
 #################################################################################
 ############################ REPLAYER ###########################################
 #################################################################################

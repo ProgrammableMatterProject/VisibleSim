@@ -3,7 +3,7 @@
 #include <random>
 #include <cmath>
 
-uint64_t pheromoneMax = 10;
+uint64_t pheromoneMax = 100;
 random_device rd;
 default_random_engine re(rd());
 int param_a=10;
@@ -40,24 +40,28 @@ void AntsCode::updateColor() {
 }
 
 void AntsCode::myMoveFunc(std::shared_ptr<Message> _msg, P2PNetworkInterface *sender) {
-    MessageOf<pair<uint8_t, uint32_t>> *msg = static_cast<MessageOf<pair<uint8_t, uint32_t>> *>(_msg.get());
-    pair<uint8_t, uint32_t> msgData = *msg->getData();
-    bool findFood=msgData.first!=0;
+    MessageOf<pair<AntsData,uint16_t>> *msg = static_cast<MessageOf<pair<AntsData,uint16_t>> *>(_msg.get());
+    pair<AntsData,uint16_t> msgData = *msg->getData();
+    AntsData antData = msgData.first;
 
-    if (isNest && findFood) {
-        console << "back to nest" << int(msgData.first) << "\n";
+    if (isNest && msg) {
+        console << "back to nest" << int(antData.id) << "\n";
         return;
     }
 
-    //auto senderDir = module->getNbNeighbors() > 1 ? module->getDirection(sender) : 6;
-    auto senderDir = module->getDirection(sender);
-    ants.push_back(senderDir+msgData.first);
-    console << "nAnts=" << ants.size() << "\n";
-    if (findFood) pheromone ++;
-    if (pheromone > pheromoneMax) {
-        pheromoneMax = pheromone;
+    antData.from = module->getDirection(sender);
+    if (antData.state==ANTS_BACK && antData.pheromone_reserve>0) {
+        pheromone++;
+        if (pheromone > pheromoneMax) {
+            pheromoneMax = pheromone;
+        }
+        antData.pheromone_reserve--;
     }
-    pheromones[senderDir] = msgData.second;
+
+    ants.push_back(antData);
+    console << "nAnts=" << ants.size() << "\n";
+
+    pheromones[antData.from] = msgData.second;
     updateColor();
     if (!ants.empty()) {
         auto scheduler=getScheduler();

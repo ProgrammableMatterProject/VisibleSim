@@ -11,7 +11,7 @@
 #include <climits>
 #include <unordered_set>
 
-#include "math/cell3DPosition.h"
+#include "../math/cell3DPosition.h"
 #include "../utils/trace.h"
 #include "../utils/utils.h"
 #include "../utils/global.h"
@@ -37,7 +37,7 @@ namespace BaseSimulator {
         auto pos1 = str.find_first_of('('),
                 pos2 = str.find_last_of(')');
         if (pos1 != string::npos && pos2 != string::npos && pos1 != pos2) {
-            str = str.substr(pos1+1,pos2-pos1-1);
+            str = str.substr(pos1 + 1, pos2 - pos1 - 1);
         }
         pos1 = str.find_first_of(',');
         pos2 = str.find_last_of(',');
@@ -45,34 +45,34 @@ namespace BaseSimulator {
             return {short(stoi(str.substr(0, pos1))),
                     short(stoi(str.substr(pos1 + 1, pos2 - pos1 - 1))),
                     short(stoi(str.substr(pos2 + 1, str.length() - pos1 - 1)))};
-        } else return {0,0,0};
+        } else return {0, 0, 0};
     }
 
-    pair<int,int> Simulator::extract2DpointFromString(string str) {
+    pair<int, int> Simulator::extract2DpointFromString(string str) {
         auto pos1 = str.find_first_of('('),
                 pos2 = str.find_last_of(')');
         if (pos1 != string::npos && pos2 != string::npos && pos1 != pos2) {
-            str = str.substr(pos1+1,pos2-pos1-1);
+            str = str.substr(pos1 + 1, pos2 - pos1 - 1);
         }
         pos1 = str.find_first_of(",x");
         if (pos1 != string::npos) {
             return {stoi(str.substr(0, pos1)),
                     stoi(str.substr(pos1 + 1, str.length() - pos1 - 1))};
-        } else return {0,0};
+        } else return {0, 0};
     }
 
     Vector3D Simulator::extractVector3DFromString(string str) {
         auto pos1 = str.find_first_of('('),
                 pos2 = str.find_last_of(')');
         if (pos1 != string::npos && pos2 != string::npos && pos1 != pos2) {
-            str = str.substr(pos1+1,pos2-pos1-1);
+            str = str.substr(pos1 + 1, pos2 - pos1 - 1);
         }
         pos1 = str.find_first_of(',');
         pos2 = str.find_last_of(',');
         if (pos1 != string::npos && pos2 != string::npos && pos1 != pos2) {
             return {stof(str.substr(0, pos1)), stof(str.substr(pos1 + 1, pos2 - pos1 - 1)),
-                            stof(str.substr(pos2 + 1, str.length() - pos1 - 1))};
-        } else return {0.0f,0.0f,0.0f};
+                    stof(str.substr(pos2 + 1, str.length() - pos1 - 1))};
+        } else return {0.0f, 0.0f, 0.0f};
     }
 
     Color Simulator::extractColorFromString(string str) {
@@ -80,9 +80,9 @@ namespace BaseSimulator {
         auto pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
         if (pos1 != string::npos && pos2 != string::npos && pos1 != pos2) {
-            return { stoi(str.substr(0, pos1)),
-                     stoi(str.substr(pos1 + 1, pos2 - pos1 - 1)),
-                     stoi(str.substr(pos2 + 1, str.length() - pos1 - 1))};
+            return {stoi(str.substr(0, pos1)),
+                    stoi(str.substr(pos1 + 1, pos2 - pos1 - 1)),
+                    stoi(str.substr(pos2 + 1, str.length() - pos1 - 1))};
         }
 
         // format 0xffffff or #ffffff
@@ -110,8 +110,9 @@ namespace BaseSimulator {
 
     bool Simulator::extractBoolFromString(string str) {
         toLowercase(str);
-        return (str == "true" || str == "yes"|| str == "ok" || str == "1" || str == "show" || str=="on");
+        return (str == "true" || str == "yes" || str == "ok" || str == "1" || str == "show" || str == "on");
     }
+
 /********************************************************************************************/
 
     Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb) : bcb(_bcb), cmdLine(argc, argv, _bcb) {
@@ -189,7 +190,6 @@ namespace BaseSimulator {
                 scheduler->setSchedulerMode(sm);
                 scheduler->setAutoStart(true);
             }
-
         }
 
         if (!GlutContext::GUIisEnabled) {
@@ -211,7 +211,7 @@ namespace BaseSimulator {
             TiXmlNode *xmlWorldNode = nullptr;
             auto xmlVSNode = xmlDoc->FirstChild("vs");
 #ifdef DEBUG_CONF_PARSING
-            OUTPUT << "VS :" << (xmlVSNode?"OK":"NO") << endl;
+            OUTPUT << "VS :" << (xmlVSNode ? "OK" : "NO") << endl;
 #endif
             if (xmlVSNode) {
                 cout << "vs tag: ok" << endl;
@@ -296,6 +296,12 @@ namespace BaseSimulator {
     bID Simulator::parseRandomStep() {
         TiXmlElement *element = xmlBlockListNode->ToElement();
         const char *attr = element->Attribute("idStep");
+        if (!attr) {
+            attr = element->Attribute("step");
+            if (attr) {
+                cerr << "Warning [step] attribute deprecated, use [idStep] instead!" << endl;
+            }
+        }
         if (attr) {                // READ Step
             try {
                 string str(attr);
@@ -498,7 +504,7 @@ namespace BaseSimulator {
     bool Simulator::parseVisuals(TiXmlNode *parent) {
         TiXmlNode *xmlVisualsNode = parent->FirstChild("visuals");
 #ifdef DEBUG_CONF_PARSING
-        OUTPUT << "visuals node: " << (xmlVisualsNode?"OK":"NO") << endl;
+        OUTPUT << "visuals node: " << (xmlVisualsNode ? "OK" : "NO") << endl;
 #endif
         if (!xmlVisualsNode) return false;
         TiXmlNode *windowNode = xmlVisualsNode->FirstChild("window");
@@ -509,7 +515,7 @@ namespace BaseSimulator {
             TiXmlElement *windowElement = windowNode->ToElement();
             auto attr = windowElement->Attribute("size");
             if (attr) {
-                auto res= extract2DpointFromString(attr);
+                auto res = extract2DpointFromString(attr);
                 // TODO: tester full
                 GlutContext::initialScreenWidth = res.first;
                 GlutContext::initialScreenHeight = res.second;
@@ -645,7 +651,7 @@ namespace BaseSimulator {
             }
 
             // Create the simulation world and lattice
-            loadWorld(gridSize,Vector3D(0, 0, 0), // Always use default blocksize
+            loadWorld(gridSize, Vector3D(0, 0, 0), // Always use default blocksize
                       argc, argv);
         } else {
             stringstream error;
@@ -706,7 +712,7 @@ namespace BaseSimulator {
                 attr = cameraElement->Attribute("directionSpherical");
                 if (attr) {
                     float az, ele, dist;
-                    auto vect= extractVector3DFromString(attr);
+                    auto vect = extractVector3DFromString(attr);
                     az = -90.0 + vect[0];
                     ele = vect[1];
                     dist = vect[2];
@@ -718,7 +724,7 @@ namespace BaseSimulator {
                 attr = cameraElement->Attribute("thetaPhiDist");
                 if (attr) {
                     float az, ele, dist;
-                    auto vect= extractVector3DFromString(attr);
+                    auto vect = extractVector3DFromString(attr);
                     az = -90.0 + vect[0];
                     ele = vect[1];
                     dist = vect[2];
@@ -753,7 +759,7 @@ namespace BaseSimulator {
 
                 attr = lightElement->Attribute("directionSpherical");
                 if (attr) {
-                    auto vect= extractVector3DFromString(attr);
+                    auto vect = extractVector3DFromString(attr);
                     az = -90.0 + vect[0];
                     ele = vect[1];
                     dist = vect[2];
@@ -762,7 +768,7 @@ namespace BaseSimulator {
 
                 attr = lightElement->Attribute("thetaPhiDist");
                 if (attr) {
-                    auto vect= extractVector3DFromString(attr);
+                    auto vect = extractVector3DFromString(attr);
                     az = -90.0 + vect[0];
                     ele = vect[1];
                     dist = vect[2];
@@ -1023,6 +1029,7 @@ namespace BaseSimulator {
                 string str = element->Attribute("content");
                 CSGNode *csgRoot = parser.parseCSG(str);
                 csgRoot->toString();
+                cout << "---------Encoding scene------------\n" << csgRoot->toCode() << endl;
 
                 if (boundingBox) csgRoot->boundingBox(bb);
 

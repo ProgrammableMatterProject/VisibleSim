@@ -55,9 +55,9 @@ namespace Catoms3D {
 
     void Catoms3DBlock::setPosition(const Cell3DPosition &p) {
         setPositionAndOrientation(p, orientationCode);
-        /*if (ReplayExporter::isReplayEnabled())
+        if (ReplayExporter::isReplayEnabled())
             ReplayExporter::getInstance()->writePositionUpdate(getScheduler()->now(),
-                                                               blockId, position, orientationCode);*/
+                                                               blockId, position, orientationCode);
     }
 
     void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &pos, uint8_t code) {
@@ -141,7 +141,7 @@ namespace Catoms3D {
     }
 
     uint8_t Catoms3DBlock::projectAbsoluteNeighborDirection(const Cell3DPosition &nPos,
-                                                          uint8_t nDirection) const {
+                                                            uint8_t nDirection) const {
         // cout << "pAND: " << "nPos: " << nPos << "/" << nDirection << endl
         //      << "\tPosition: " << position << endl;
 
@@ -165,7 +165,7 @@ namespace Catoms3D {
 
         realPos.set(tabConnectorPositions[connectorID], 3, 1);
         realPos *= bs;
-        realPos.set(3,1.0); // A vérifier
+        realPos.set(3, 1.0); // A vérifier
         realPos = ((Catoms3DGlBlock *) ptrGlBlock)->mat * realPos;
         if (realPos[2] < 0) return false;
         pos = wrl->lattice->worldToGridPosition(realPos);
@@ -196,7 +196,7 @@ namespace Catoms3D {
         /*realPos.pt[0] /= bs[0];
         realPos.pt[1] /= bs[1];
         realPos.pt[2] /= bs[2];*/
-        realPos/=bs;
+        realPos /= bs;
 
         double x, y, z, d = 1;
         int i = 0;
@@ -267,7 +267,7 @@ namespace Catoms3D {
         const vector<Cell3DPosition> localNeighborhood =
                 Catoms3DWorld::getWorld()->lattice->getNeighborhood(position);
 
-        for (const Cell3DPosition &nPos : localNeighborhood) {
+        for (const Cell3DPosition &nPos: localNeighborhood) {
             P2PNetworkInterface *itf = getInterface(nPos);
             bitset.set(getAbsoluteDirection(nPos), itf->isConnected());
         }
@@ -289,7 +289,7 @@ namespace Catoms3D {
     }
 
     bool Catoms3DBlock::canMoveTo(const Cell3DPosition &dest) const {
-        return Catoms3DMotionEngine::isNotLockedForMotion(position,dest) && canRotateToPosition(dest);
+        return Catoms3DMotionEngine::isNotLockedForMotion(position, dest) && canRotateToPosition(dest);
     }
 
     bool Catoms3DBlock::moveTo(const Cell3DPosition &dest) {
@@ -302,19 +302,20 @@ namespace Catoms3D {
         return true;
     }
 
-    vector<pair<Cell3DPosition,uint8_t>> Catoms3DBlock::getAllMotions() const {
-        vector<pair<Cell3DPosition,uint8_t>> res;
-        vector<std::pair<const Catoms3DMotionRulesLink*, Catoms3DRotation>> tab = Catoms3DMotionEngine::getAllRotationsForModule(this);
+    vector<pair<Cell3DPosition, uint8_t>> Catoms3DBlock::getAllMotions() const {
+        vector<pair<Cell3DPosition, uint8_t>> res;
+        vector<std::pair<const Catoms3DMotionRulesLink *, Catoms3DRotation>> tab = Catoms3DMotionEngine::getAllRotationsForModule(
+                this);
         if (tab.empty()) return res;
         Cell3DPosition finalPos;
         short finalOrient;
-        auto lattice=Catoms3DWorld::getWorld()->lattice;
-        for(auto &elem:tab) {
-            elem.second.init(((Catoms3DGlBlock*)ptrGlBlock)->mat);
-            elem.second.getFinalPositionAndOrientation(finalPos,finalOrient);
+        auto lattice = Catoms3DWorld::getWorld()->lattice;
+        for (auto &elem: tab) {
+            elem.second.init(((Catoms3DGlBlock *) ptrGlBlock)->mat);
+            elem.second.getFinalPositionAndOrientation(finalPos, finalOrient);
             cout << "Xpos:" << finalPos << endl;
             if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
-                res.emplace_back(pair<Cell3DPosition,uint8_t>(finalPos, finalOrient));
+                res.emplace_back(pair<Cell3DPosition, uint8_t>(finalPos, finalOrient));
             }
         }
         return res;

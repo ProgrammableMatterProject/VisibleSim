@@ -70,6 +70,7 @@ private:
     std::size_t readVector(const std::string &line, std::size_t pos1, std::size_t pos2, Vector3D &v);
     std::size_t readKeyword(const std::string &line, std::size_t initialPos, std::size_t &keywordId);
     std::size_t createModule(const std::string &line, std::size_t initialPos);
+    std::size_t createLoop(const string &line, size_t initialPos,string &iteratorName,int &firstVal,int &nLoop,string &loopCode);
 };
 
 #endif /* CSGPARSER_H_ */
