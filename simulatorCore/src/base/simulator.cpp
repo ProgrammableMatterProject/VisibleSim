@@ -1043,14 +1043,8 @@ namespace BaseSimulator {
                             csgPos = world->lattice->gridToUnscaledWorldPosition(position);
 
                             if (offsetBoundingBox) {
-                                /*csgPos.pt[0] += bb.P0[0] - 1.0;
-                                csgPos.pt[1] += bb.P0[1] - 1.0;
-                                csgPos.pt[2] += bb.P0[2] - 1.0;*/
                                 csgPos += bb.P0 - Vector3D(1, 1, 1);
                             } else {
-                                /*csgPos.pt[0] += bb.P0[0];
-                                csgPos.pt[1] += bb.P0[1];
-                                csgPos.pt[2] += bb.P0[2];*/
                                 csgPos += bb.P0;
                             }
 
@@ -1072,10 +1066,12 @@ namespace BaseSimulator {
             // reading a Obj Mesh
             block = xmlBlockListNode->FirstChild("mesh");
             if (block) {
+                cout << "load Mesh" << endl;
                 TiXmlElement *element = block->ToElement();
                 ObjLoader::ObjLoader *obj = nullptr;
                 attr = element->Attribute("file");
                 if (attr) {
+                    cout << "load OBJ" << endl;
                     obj = new ObjLoader::ObjLoader(".", attr);
                 }
 
@@ -1084,7 +1080,16 @@ namespace BaseSimulator {
                 if (attr) {
                     orient = stoi(attr);
 #ifdef DEBUG_CONF_PARSING
-                    OUTPUT << "csg block orientation :" << orient << endl;
+                    OUTPUT << "mesh block orientation :" << orient << endl;
+#endif
+                }
+
+                color = GREY;
+                attr = element->Attribute("color");
+                if (attr) {
+                    color = extractColorFromString(attr);
+#ifdef DEBUG_CONF_PARSING
+                    OUTPUT << "model color :" << color << endl;
 #endif
                 }
 
@@ -1102,46 +1107,19 @@ namespace BaseSimulator {
                             for (short ix = glb[0]; ix <= ulb[0]; ix++) {
                                 position.set(ix, iy, iz);
                                 if (world->lattice->isInGrid(position)) {
-                                    worldPos = world->lattice->gridToUnscaledWorldPosition(position);
-                                    /*if (obj->isIn(position)) {
+                                    worldPos = world->lattice->gridToUnscaledWorldPosition(position)+Vector3D(0.5,0.5,0.5);
+                                    if (obj->isInside(worldPos)) {
                                         loadBlock(element,
                                                   ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                                  bcb, position, color, orient, false);
-                                    }*/
+                                                  bcb, position, color, orient);
+                                    }
                                 }
                             }
                         }
                     }
+                } else {
+                    cerr << "OBJ file is missing...\n";
                 }
-                /*Vector3D csgPos;
-                for (short iz = 0; iz <= world->lattice->getGridUpperBounds()[2]; iz++) {
-                    const Cell3DPosition& glb = world->lattice->getGridLowerBounds(iz);
-                    const Cell3DPosition& ulb = world->lattice->getGridUpperBounds(iz);
-                    for (short iy = glb[1]; iy <= ulb[1]; iy++) {
-                        for (short ix = glb[0]; ix <= ulb[0]; ix++) {
-                            position.set(ix,iy,iz);
-                            csgPos = world->lattice->gridToUnscaledWorldPosition(position);
-
-
-                                csgPos+=bb.P0-Vector3D(1,1,1);
-                            } else {
-
-                                csgPos+=bb.P0;
-                            }
-
-                            if (world->lattice->isInGrid(position)
-                                and csgRoot->isInside(csgPos, color)
-                                // @note Ignore position already filled through other means
-                                // this can be used to initialize some parameters on select
-                                // modules using `<block>` elements
-                                and not world->lattice->cellHasBlock(position)) {
-                                loadBlock(element,
-                                          ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                          bcb, position, color, orient, false);
-                            }
-                        }
-                    }
-                }*/
             }
 
         } else { // end if

@@ -50,6 +50,7 @@ public :
     static int previousTime;
     static float fps;
     static bool enableShowFPS;
+    static bool enablePopup;
     static bool hasGradientBackground;
     static float bgColor[3];
     static float bgColor2[3];

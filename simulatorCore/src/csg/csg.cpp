@@ -28,43 +28,25 @@ string CSGCube::toCode() const {
 }
 
 bool CSGCube::isInside(const Vector3D &p, Color &color) const {
-    if (center) {
-        if (p[0] <= size_x/2.0 && p[0] >= -size_x/2.0 &&
-                p[1] <= size_y/2.0 && p[1] >= -size_y/2.0 &&
-                p[2] <= size_z/2.0 && p[2] >= -size_z/2.0)
-            return true;
-    }
-    else { // TOCHECK
-        if (p[0] <= size_x && p[0] >= 0 &&
-                p[1] <= size_y && p[1] >= 0 &&
-                p[2] <= size_z && p[2] >= 0)
-            return true;
-    }
-    return false;
+    return (center?(p[0]<=size_x/2.0 && p[0]>=-size_x/2.0 && p[1]<=size_y/2.0 && p[1]>=-size_y/2.0 && p[2]<=size_z/2.0 && p[2]>=-size_z/2.0):
+                   (p[0]<=size_x && p[0]>=0 && p[1]<=size_y && p[1]>=0 && p[2] <= size_z && p[2] >= 0));
 }
 
 bool CSGCube::isInBorder(const Vector3D &p, Color &color, double border) const {
-    if (center) {
-        if (isInside(p, color) &&  (
-                (p[0] <= size_x/2 && p[0] >= size_x/2 - border) ||
-                (p[1] <= size_y/2 && p[1] >= size_y/2 - border) ||
-                (p[2] <= size_z/2 && p[2] >= size_z/2 - border) ||
-                (p[0] >= -size_x/2 && p[0] <= -size_x/2 + border) ||
-                (p[1] >= -size_y/2 && p[1] <= -size_y/2 + border) ||
-                (p[2] >= -size_z/2 && p[2] <= -size_z/2 + border)))
-            return true;
-    }
-    else { // TOCHECK
-        if (isInside(p, color) && (
-                (p[0] <= size_x && p[0] >= size_x - border) ||
-                (p[1] <= size_y && p[1] >= size_y - border) ||
-                (p[2] <= size_z && p[2] >= size_z - border) ||
-                (p[0] >= 0 && p[0] <= 0 + border) ||
-                (p[1] >= 0 && p[1] <= 0 + border) ||
-                (p[2] >= 0 && p[2] <= 0 + border)))
-            return true;
-    }
-    return false;
+    return (center?((isInside(p, color) &&  (
+            (p[0] <= size_x/2 && p[0] >= size_x/2 - border) ||
+            (p[1] <= size_y/2 && p[1] >= size_y/2 - border) ||
+            (p[2] <= size_z/2 && p[2] >= size_z/2 - border) ||
+            (p[0] >= -size_x/2 && p[0] <= -size_x/2 + border) ||
+            (p[1] >= -size_y/2 && p[1] <= -size_y/2 + border) ||
+            (p[2] >= -size_z/2 && p[2] <= -size_z/2 + border)))):
+            ((isInside(p, color) && (
+                    (p[0] <= size_x && p[0] >= size_x - border) ||
+                    (p[1] <= size_y && p[1] >= size_y - border) ||
+                    (p[2] <= size_z && p[2] >= size_z - border) ||
+                    (p[0] >= 0 && p[0] <= 0 + border) ||
+                    (p[1] >= 0 && p[1] <= 0 + border) ||
+                    (p[2] >= 0 && p[2] <= 0 + border)))));
 }
 
 void CSGCube::boundingBox(BoundingBox &bb) {
@@ -169,21 +151,8 @@ string CSGCylinder::toCode() const {
 
 bool CSGCylinder::isInside(const Vector3D &p, Color &color) const {
     double dist = sqrt(p[0]*p[0] + p[1]*p[1]);
-    if (center) {
-        if (p[2] <= height/2. && p[2] >= -height/2.) {
-            if (dist <= radius) {
-                return true;
-            }
-        }
-    }
-    else {
-        if (p[2] <= height && p[2] >= 0) {
-            if (dist <= radius) {
-                return true;
-            }
-        }
-    }
-    return false;
+    return (center?(dist<=radius && p[2] <= height/2. && p[2] >= -height/2.):
+                        (dist<=radius && p[2] <= height && p[2] >= 0));
 }
 
 bool CSGCylinder::isInBorder(const Vector3D &p, Color &color, double border) const {
@@ -414,7 +383,7 @@ void CSGScale::toString() const {
 }
 
 string CSGScale::toCode() const {
-    string res="R"+ vectorCode(scale[0], scale[1], scale[2]);
+    string res="X" + vectorCode(scale[0]*100, scale[1]*100, scale[2]*100);
     auto it=children.begin();
     res+=(*it)->toCode();
     it++;
@@ -461,12 +430,11 @@ void CSGUnion::toString() const {
 string CSGUnion::toCode() const {
     string res="+";
     auto it=children.begin();
-    res+=(*it)->toCode();
-    it++;
     while (it!=children.end()) {
-        res+="|"+(*it)->toCode();
+        res+=(*it)->toCode();
         it++;
     }
+    res+="|";
     return res;
 }
 
@@ -513,12 +481,11 @@ void CSGDifference::toString() const {
 string CSGDifference::toCode() const {
     string res="/";
     auto it=children.begin();
-    res+=(*it)->toCode();
-    it++;
     while (it!=children.end()) {
-        res+="|"+(*it)->toCode();
+        res+=(*it)->toCode();
         it++;
     }
+    res+="|";
     return res;
 }
 
@@ -575,12 +542,11 @@ void CSGIntersection::toString() const {
 string CSGIntersection::toCode() const {
     string res="^";
     auto it=children.begin();
-    res+=(*it)->toCode();
-    it++;
     while (it!=children.end()) {
-        res+="|"+(*it)->toCode();
+        res+=(*it)->toCode();
         it++;
     }
+    res+="|";
     return res;
 }
 

@@ -44,17 +44,18 @@ int GlutContext::lastMousePos[2];
 bool GlutContext::fullScreenMode = false;
 bool GlutContext::enableShadows = true;
 bool GlutContext::saveScreenMode = false;
-GlutSlidingMainWindow *GlutContext::mainWindow = NULL;
-// GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
-GlutPopupWindow *GlutContext::popup = NULL;
-GlutPopupMenuWindow *GlutContext::popupMenu = NULL;
-GlutPopupMenuWindow *GlutContext::popupSubMenu = NULL;
-GlutHelpWindow *GlutContext::helpWindow = NULL;
+GlutSlidingMainWindow *GlutContext::mainWindow = nullptr;
+// GlutSlidingDebugWindow *GlutContext::debugWindow=nullptr;
+GlutPopupWindow *GlutContext::popup = nullptr;
+GlutPopupMenuWindow *GlutContext::popupMenu = nullptr;
+GlutPopupMenuWindow *GlutContext::popupSubMenu = nullptr;
+GlutHelpWindow *GlutContext::helpWindow = nullptr;
 int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
 bool GlutContext::enableShowFPS = false;
 bool GlutContext::showGrid = true;
+bool GlutContext::enablePopup = false;
 bool GlutContext::hasGradientBackground = false;
 float GlutContext::bgColor[3] = {0.3, 0.3, 0.8};
 float GlutContext::bgColor2[3] = {0.8, 0.8, 0.8};
@@ -123,7 +124,7 @@ void GlutContext::init(int argc, char **argv) {
 #endif
         // debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,
         //                                       "../../simulatorCore/resources/textures/UITextures/fenetre_ongletDBG.tga");
-        popup = new GlutPopupWindow(NULL, 0, 0, 180, 30);
+        popup = new GlutPopupWindow(nullptr, 0, 0, 180, 30);
     }
 }
 
@@ -139,7 +140,7 @@ void GlutContext::deleteContext() {
 void *GlutContext::lanceScheduler(void *param) {
     int mode = *(int *) param;
     BaseSimulator::getScheduler()->start(mode);
-    return (NULL);
+    return (nullptr);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -672,7 +673,7 @@ void GlutContext::idleFunc(void) {
         });
     }
 
-    if (lastMotionTime) {
+    if (lastMotionTime && GlutContext::enablePopup) {
         int tm = glutGet(GLUT_ELAPSED_TIME);
         if (tm - lastMotionTime > DELAY_FOR_POPUP) {
             int n = selectFunc(lastMousePos[0], lastMousePos[1]);

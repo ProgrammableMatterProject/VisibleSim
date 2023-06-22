@@ -135,27 +135,33 @@ std::size_t CSGParser::createModule(const string &line, size_t initialPos) {
     return posInstr;
 }
 
-std::size_t CSGParser::createLoop(const string &line, size_t initialPos,string &iteratorName,int &firstVal,int &nLoop,string &loopCode) {
-    OUTPUT << "createLoop: '" << line.substr(initialPos,10) << "'..." << endl;
+std::size_t CSGParser::createLoop(const string &line, size_t initialPos,string &iteratorName,double &firstVal,double &lastVal,double &step,string &loopCode) {
+    //OUTPUT << "createLoop: '" << line.substr(initialPos,10) << "'..." << endl;
     size_t posInstr=line.find_first_not_of(whitespaces,initialPos+1);
-    OUTPUT << "Iterator: " << line[posInstr] << endl;
+    //OUTPUT << "Iterator: " << line[posInstr] << endl;
     iteratorName = line.substr(posInstr,1);
-    posInstr=line.find_first_of('[',posInstr+1);
-    posInstr=line.find_first_not_of(whitespaces,posInstr);
-    size_t endInstr=line.find_first_of(':',posInstr+1);
-    OUTPUT << line.substr(posInstr+1,endInstr-posInstr-1) << endl;
-    double initValue = stod(line.substr(posInstr+1,endInstr-posInstr-1));
-    OUTPUT << "initValue=" << initValue << endl;
-    firstVal = int(initValue);
-    posInstr=line.find_first_not_of(whitespaces,endInstr+1);
-    endInstr=line.find_first_of(')',posInstr+1);
-    double lastValue = stod(line.substr(posInstr,endInstr-1));
-    nLoop = int (lastValue-firstVal+1);
-    OUTPUT << "lastValue=" << lastValue << endl;
-    OUTPUT << "nLoop=" << nLoop << endl;
+    size_t posInstr1=line.find_first_of('[',posInstr+1);
+    posInstr1=line.find_first_not_of(whitespaces,posInstr1);
+    size_t posInstr2=line.find_first_of(':',posInstr1+1);
+    //OUTPUT << line.substr(posInstr1+1,posInstr2-posInstr1-1) << endl;
+    firstVal = stod(line.substr(posInstr1+1,posInstr2-posInstr1-1));
+    //OUTPUT << "firstVal=" << firstVal << endl;
+    posInstr=line.find_first_not_of(whitespaces,posInstr2+1);
+    size_t endInstr=line.find_first_of(')',posInstr2+1);
+    posInstr = line.find_first_of(':',posInstr2+1);
+    if (posInstr==string::npos || posInstr>endInstr) { // default case : step=1
+        lastVal = stod(line.substr(posInstr2+1,endInstr-posInstr2));
+        step=1;
+    } else {
+        lastVal = stod(line.substr(posInstr+1,endInstr-posInstr));
+        step = stod(line.substr(posInstr2+1,posInstr-posInstr2));;
+    }
+
+    //OUTPUT << "lastVal=" << lastVal << endl;
+    //OUTPUT << "step=" << step << endl;
     posInstr=line.find_first_not_of(whitespaces,endInstr+1);
     posInstr = extractChildrenString(line,posInstr,loopCode);
-    OUTPUT << "posInstr=" << posInstr << ": '" << line.substr(posInstr,10) << "'" << endl;
+    //OUTPUT << "posInstr=" << posInstr << ": '" << line.substr(posInstr,10) << "'" << endl;
     return posInstr;
 }
 
@@ -437,8 +443,8 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
             break;
             case KW_LOOP: { // for loop
                 string iteratorName,loopCode;
-                int iteratorFirst,nLoop;
-                pos = createLoop(str,pos,iteratorName,iteratorFirst,nLoop,loopCode);
+                double iteratorFirst,iteratorLast,iteratorStep;
+                pos = createLoop(str,pos,iteratorName,iteratorFirst,iteratorLast,iteratorStep,loopCode);
 #ifdef DEBUG_CSG
                 OUTPUT << "New loop:" << pos << endl;
 #endif
@@ -446,18 +452,29 @@ CSGNode *CSGParser::parseCSG(const string &str, size_t &pos) {
 #ifdef DEBUG_CSG
                 OUTPUT << "union() " << loopCode << endl;
 #endif
-                CSGNode *child;
-                double iteratorVar=iteratorFirst;
+                CSGNode *child=nullptr;
                 int pos2;
-                mu_p.DefineVar(iteratorName,&(iteratorVar));
-                for (int i=0; i<nLoop; i++) {
-                    size_t subpos = 0;
-                    CSGNode *childLoop= nullptr;
-                    while (subpos<loopCode.length()) {
-                        childLoop = parseCSG(loopCode, subpos);
-                        if (childLoop!=nullptr) node->addChild(childLoop);
+                mu_p.DefineVar(iteratorName,&(iteratorFirst));
+                if (iteratorStep>0) {
+                    while (iteratorFirst<=iteratorLast) {
+                        size_t subpos = 0;
+                        CSGNode *childLoop= nullptr;
+                        while (subpos<loopCode.length()) {
+                            childLoop = parseCSG(loopCode, subpos);
+                            if (childLoop!=nullptr) node->addChild(childLoop);
+                        }
+                        iteratorFirst+=iteratorStep;
                     }
-                    iteratorVar++;
+                } else {
+                    while (iteratorFirst>=iteratorLast) {
+                        size_t subpos = 0;
+                        CSGNode *childLoop= nullptr;
+                        while (subpos<loopCode.length()) {
+                            childLoop = parseCSG(loopCode, subpos);
+                            if (childLoop!=nullptr) node->addChild(childLoop);
+                        }
+                        iteratorFirst+=iteratorStep;
+                    }
                 }
                 mu_p.RemoveVar(iteratorName);
                 return node;
