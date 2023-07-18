@@ -81,6 +81,7 @@ public :
   inline void setDistance(double d) { distance=d; updatePositionFromAngles(); }
   void glLookAt();
   void setLightParameters(const Vector3D &t,double th,double ph, double d,double angle,double nearplane,double farplane);
+  void setLightFromCamera();
   void glProjection();
   void initFromGridSize(const Vector3D &v);
   void showLightCone(bool v) { ls.showCone=v; }

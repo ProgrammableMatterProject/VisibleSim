@@ -7,8 +7,16 @@
 
 #define EPS 1e-10
 
+string numValue(double v) {
+    char buffer[20];
+    if (int (v)==v) snprintf(buffer, 20, "%d", int(v));
+    else snprintf(buffer, 20, "%.2f", v);
+
+    return string(buffer);
+}
+
 string vectorCode(double x,double y,double z) {
-    return to_string(int(x))+","+to_string(int(y))+","+to_string(int(z));
+    return numValue(x)+","+numValue(y)+","+numValue(z);
 }
 
 void CSGNode::glDraw() {
@@ -115,7 +123,7 @@ void CSGSphere::toString() const {
 }
 
 string CSGSphere::toCode() const {
-    string res="S"+to_string(int(radius));
+    string res="S"+numValue(radius);
     return res;
 }
 
@@ -145,7 +153,7 @@ void CSGCylinder::toString() const {
 }
 
 string CSGCylinder::toCode() const {
-    string res="Y"+to_string(int(height))+","+to_string(int(radius))+","+to_string(int(center));
+    string res="Y"+numValue(height)+","+numValue(radius)+","+to_string(int(center));
     return res;
 }
 
@@ -193,21 +201,18 @@ void CSGCylinder::boundingBox(BoundingBox &bb) {
 CSGCone::CSGCone(double p_height, double p_bottomRadius, double p_topRadius, bool p_center) : height(p_height), bottomRadius(p_bottomRadius), topRadius(p_topRadius), center(p_center) {}
 
 void CSGCone::toString() const {
-    OUTPUT << "cylinder(" << height << "," << bottomRadius << "," << topRadius << "," << (center ? "true" : "false") << endl;
+    OUTPUT << "cone(" << height << "," << bottomRadius << "," << topRadius << "," << (center ? "true" : "false") << endl;
 }
 
 string CSGCone::toCode() const {
-    string res="Y"+to_string(int(height))+","+to_string(int(bottomRadius))+","+to_string(int(topRadius))+","+to_string(int(center));
+    string res="N"+vectorCode(height,bottomRadius,topRadius)+","+to_string(int(center));
     return res;
 }
 
 bool CSGCone::isInside(const Vector3D &p, Color &color) const {
     double dist = sqrt(p[0]*p[0] + p[1]*p[1]);
     double y = center?p[2]+height/2.0:p[2];
-    if (y>=0 && y<=height) {
-        return (dist <= (bottomRadius+y*(topRadius-bottomRadius)/height));
-    }
-    return false;
+    return (y>=0 && y<=height)&&(dist <= (bottomRadius+y*(topRadius-bottomRadius)/height));
 }
 
 bool CSGCone::isInBorder(const Vector3D &p, Color &color, double border) const {
@@ -245,7 +250,7 @@ void CSGTorus::toString() const {
 }
 
 string CSGTorus::toCode() const {
-    string res="O"+to_string(int(radius1))+","+to_string(int(radius2));
+    string res="O"+numValue(radius1)+","+numValue(radius2);
     return res;
 }
 
@@ -383,7 +388,7 @@ void CSGScale::toString() const {
 }
 
 string CSGScale::toCode() const {
-    string res="X" + vectorCode(scale[0]*100, scale[1]*100, scale[2]*100);
+    string res="X" + vectorCode(scale[0], scale[1], scale[2]);
     auto it=children.begin();
     res+=(*it)->toCode();
     it++;
@@ -586,7 +591,9 @@ void CSGColor::toString() const {
 }
 
 string CSGColor::toCode() const {
-    string res="#"+ vectorCode(color[0], color[1], color[2]);
+    char colorStr[8];
+    snprintf(colorStr,8,"#%02X%02X%02X",color[0],color[1],color[2]);
+    string res(colorStr);
     auto it=children.begin();
     res+=(*it)->toCode();
     it++;

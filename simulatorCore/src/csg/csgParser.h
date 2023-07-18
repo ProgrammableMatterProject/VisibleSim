@@ -38,7 +38,7 @@ public :
 
 class CSGParser {
 public:
-    CSGParser() {};
+    CSGParser();
     ~CSGParser() {
         auto it=modules.begin();
         while (it!=modules.end()) {

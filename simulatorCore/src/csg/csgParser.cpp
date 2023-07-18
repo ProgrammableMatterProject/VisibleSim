@@ -7,6 +7,15 @@ const size_t CSGParser::keywordsCount = 14;
 const string CSGParser::keywords[keywordsCount] = {"union","intersection","difference","translate","rotate","scale","cube","cylinder","sphere","torus","color","=","module","for"};
 static const std::string whitespaces (" \t\f\v\n\r");
 
+double moduloOperator(double v, double w) {
+    return (int)v % max(1, (int)w);
+};
+
+CSGParser::CSGParser() {
+mu_p.DefineOprtChars("%");
+mu_p.DefineOprt("%", moduloOperator, mu::prINFIX);
+};
+
 size_t CSGParser::readCubeParameters(const string &line, Vector3D &v,bool &center) {
     size_t endKeyword = line.length();
     size_t beginKeyword = readVector(line,0, endKeyword, v);

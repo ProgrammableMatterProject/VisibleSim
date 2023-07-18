@@ -1071,8 +1071,13 @@ namespace BaseSimulator {
                 ObjLoader::ObjLoader *obj = nullptr;
                 attr = element->Attribute("file");
                 if (attr) {
-                    cout << "load OBJ" << endl;
-                    obj = new ObjLoader::ObjLoader(".", attr);
+                    auto configFile = cmdLine.getConfigFile();
+                    auto p = configFile.find_last_of('/');
+                    string configDir=".";
+                    if (p!=string::npos) configDir= configFile.substr(0,p);
+
+                    cout << "load OBJ" << configDir << "/" << attr << endl;
+                    obj = new ObjLoader::ObjLoader(configDir.c_str(), attr);
                 }
 
                 orient = defaultOrientation;
@@ -1093,10 +1098,21 @@ namespace BaseSimulator {
 #endif
                 }
 
+                float scale=1.0;
+                attr = element->Attribute("scale");
+                if (attr) {
+                    scale = atof(attr);
+#ifdef DEBUG_CONF_PARSING
+                    OUTPUT << "model scale :" << scale << endl;
+#endif
+                }
+
+
                 if (obj) {
                     Vector3D BBmin, BBmax;
                     obj->getBB(BBmin, BBmax);
                     cout << "Mesh BB" << BBmin << "/" << BBmax << endl;
+                    Vector3D origin = -scale*BBmin;
                     Vector3D worldPos;
                     for (short iz = 0; iz <= world->lattice->getGridUpperBounds()[2]; iz++) {
                         const Cell3DPosition &glb = world->lattice->getGridLowerBounds(iz);
@@ -1107,7 +1123,7 @@ namespace BaseSimulator {
                             for (short ix = glb[0]; ix <= ulb[0]; ix++) {
                                 position.set(ix, iy, iz);
                                 if (world->lattice->isInGrid(position)) {
-                                    worldPos = world->lattice->gridToUnscaledWorldPosition(position)+Vector3D(0.5,0.5,0.5);
+                                    worldPos = origin+(1.0/scale)*world->lattice->gridToUnscaledWorldPosition(position)+Vector3D(0.5,0.5,0.5);
                                     if (obj->isInside(worldPos)) {
                                         loadBlock(element,
                                                   ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],

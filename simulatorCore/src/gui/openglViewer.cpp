@@ -545,7 +545,10 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                 wrld->deleteBlock(bb);
             }
         }
-            break;
+        break;
+        case 'l' : {
+            BaseSimulator::getWorld()->camera->setLightFromCamera();
+        }
         default: { // Pass on key press to user blockcode handler
             // NOTE: Since C++ does not handle static virtual functions, we need
             //  to get a pointer to a blockcode and call onUserKeyPressed from

@@ -89,6 +89,19 @@ void Camera::setLightParameters(const Vector3D &t, double th,double ph,double d,
     ls.calcMatrixs();
 }
 
+void Camera::setLightFromCamera() {
+    ls.target[0] = target[0];
+    ls.target[1] = target[1];
+    ls.target[2] = target[2];
+    ls.theta=theta;
+    ls.phi=phi;
+    ls.distance=distance;
+    ls.falloffAngle=fov;
+    ls.near_plane=near_plane;
+    ls.far_plane=far_plane;
+    ls.calcMatrixs();
+}
+
 void Camera::glProjection() {
     gluPerspective(fov,w_h,near_plane,far_plane);
 }
