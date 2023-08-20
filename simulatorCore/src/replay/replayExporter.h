@@ -21,7 +21,6 @@
 #include "math/cell3DPosition.h"
 #include "replayTags.h"
 #include "replayMotionEvent.h"
-#include "../robots/catoms2D/catoms2DBlock.h"
 
 using namespace std;
 using namespace ReplayTags;
@@ -179,9 +178,6 @@ public:
     void writeConsoleTrace(Time date, bID bid, const string& trace);
     void writeCatoms3DMotion(Time date, bID bid, Time duration_us,Cell3DPosition& destination, short finalOrientation,
                              Cell3DPosition& origin, short originOrientation, u4 fixedBlockId, u1 type, Vector3D axe1, Vector3D axe2);
-    void writeCatoms2DMotion(Time date, bID bid, Time duration_us,
-                                             const Cell3DPosition& destination, Cell3DPosition& origin,
-                                             Catoms2D::RelativeDirection::Direction direction);
     /**
      * Write the date of end of simulation at the end of the export file
      *

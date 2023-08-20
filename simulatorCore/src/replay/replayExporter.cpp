@@ -17,7 +17,6 @@
 #include "replayMotionEvent.h"
 #include "motions/replayMotion.h"
 #include "motions/replayCatoms3DMotion.h"
-#include "../robots/catoms2D/catoms2DBlock.h"
 
 using namespace BaseSimulator;
 using namespace ReplayTags;
@@ -310,14 +309,6 @@ void ReplayExporter::writeCatoms3DMotion(Time date, bID bid, Time duration_us,Ce
     movingBlocks.push_back(bid);
 
     nbEventsBeforeKeyframe--;*/
-}
-
-void ReplayExporter::writeCatoms2DMotion(Time date, bID bid, Time duration_us,
-                                         const Cell3DPosition& destination, Cell3DPosition& origin,
-                                         Catoms2D::RelativeDirection::Direction direction)
-
-{
-    
 }
 
 void ReplayExporter::writeConsoleTrace(Time date, bID bid, const string& trace) {

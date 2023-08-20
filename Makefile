@@ -10,7 +10,7 @@
 OS = $(shell uname -s)
 
 # VisibleSim local libraries
-VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks -lsimDatoms -lsimNodes2D -lsimHexanodes
+VSIM_LIBS = -lsimCatoms3D -lsimSlidingCubes -lsimBlinkyBlocks -lsimSmartBlocks -lsimDatoms -lsimHexanodes
 
 #for debug version
 TEMP_CCFLAGS = -g -Wall -std=c++17 -DTINYXML_USE_STL -DTIXML_USE_STL -fno-stack-protector

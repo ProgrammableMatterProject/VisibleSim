@@ -10,7 +10,7 @@ OUTDIRS = $(LDIR) $(DEPDIR) $(OBJDIR)
 TINYXMLSRCS = deps/TinyXML/tinyxml.cpp deps/TinyXML/tinyxmlerror.cpp deps/TinyXML/tinyxmlparser.cpp
 OUTDIRS += $(OBJDIR)/deps/TinyXML $(DEPDIR)/deps/TinyXML
 
-TARGETENCODING_SRCS = csg/csg.cpp csg/csgParser.cpp # csg/csgUtils.cpp
+TARGETENCODING_SRCS = csg/csg.cpp csg/csgParser.cpp
 OUTDIRS += $(OBJDIR)/csg $(DEPDIR)/csg
 
 BASESIMULATOR_SRCS = $(MELDINTERPRET_SRCS) $(TINYXMLSRCS) $(TARGETENCODING_SRCS) base/simulator.cpp base/buildingBlock.cpp base/blockCode.cpp events/scheduler.cpp base/world.cpp comm/network.cpp events/events.cpp base/glBlock.cpp gui/interface.cpp gui/openglViewer.cpp gui/shaders.cpp math/vector3D.cpp math/matrix44.cpp utils/color.cpp gui/camera.cpp gui/objLoader.cpp gui/vertexArray.cpp utils/trace.cpp clock/clock.cpp clock/qclock.cpp clock/clockNoise.cpp stats/configStat.cpp utils/commandLine.cpp events/cppScheduler.cpp math/cell3DPosition.cpp utils/configExporter.cpp grid/lattice.cpp grid/target.cpp stats/statsCollector.cpp motion/translationEvents.cpp stats/statsIndividual.cpp utils/random.cpp comm/rate.cpp motion/teleportationEvents.cpp utils/utils.cpp replay/replayExporter.cpp
@@ -30,12 +30,6 @@ SLIDINGCUBES_SRCS = $(SLIDINGCUBES_SRCS_NODIR:%=$(SLIDINGCUBES_DIR)/%)
 SLIDINGCUBES_OBJS = $(SLIDINGCUBES_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 SLIDINGCUBES_DEPS = $(SLIDINGCUBES_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-CATOMS2D_DIR = robots/catoms2D
-CATOMS2D_SRCS_NODIR = catoms2DSimulator.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp catoms2DWorld.cpp catoms2DGlBlock.cpp catoms2DRotationEvents.cpp catoms2DMotionEngine.cpp
-CATOMS2D_SRCS = $(CATOMS2D_SRCS_NODIR:%=$(CATOMS2D_DIR)/%)
-CATOMS2D_OBJS = $(CATOMS2D_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
-CATOMS2D_DEPS = $(CATOMS2D_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
-
 CATOMS3D_DIR = robots/catoms3D
 CATOMS3D_SRCS_NODIR = catoms3DSimulator.cpp catoms3DBlock.cpp catoms3DBlockCode.cpp catoms3DWorld.cpp catoms3DGlBlock.cpp catoms3DRotationEvents.cpp catoms3DMotionRules.cpp catoms3DMotionEngine.cpp
 CATOMS3D_SRCS = $(CATOMS3D_SRCS_NODIR:%=$(CATOMS3D_DIR)/%)
@@ -54,25 +48,19 @@ DATOMS_SRCS = $(DATOMS_SRCS_NODIR:%=$(DATOMS_DIR)/%)
 DATOMS_OBJS = $(DATOMS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 DATOMS_DEPS = $(DATOMS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-#NODES2D_DIR = robots/nodes2D
-#NODES2D_SRCS_NODIR = nodes2DSimulator.cpp nodes2DBlock.cpp nodes2DBlockCode.cpp nodes2DWorld.cpp nodes2DGlBlock.cpp nodes2DMotionEngine.cpp nodes2DMotionEvents.cpp
-#NODES2D_SRCS = $(NODES2D_SRCS_NODIR:%=$(NODES2D_DIR)/%)
-#NODES2D_OBJS = $(NODES2D_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
-#NODES2D_DEPS = $(NODES2D_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
-
 HEXANODES_DIR = robots/hexanodes
 HEXANODES_SRCS_NODIR = hexanodesSimulator.cpp hexanodesBlock.cpp hexanodesBlockCode.cpp hexanodesWorld.cpp hexanodesGlBlock.cpp hexanodesMotionEngine.cpp hexanodesMotionEvents.cpp
 HEXANODES_SRCS = $(HEXANODES_SRCS_NODIR:%=$(HEXANODES_DIR)/%)
 HEXANODES_OBJS = $(HEXANODES_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 HEXANODES_DEPS = $(HEXANODES_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(SLIDINGCUBES_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS) $(DATOMS_SRCS) $(NODES2D_SRCS) $(HEXANODES_SRCS)
+SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(SLIDINGCUBES_SRCS) $(CATOMS3D_SRCS) $(DATOMS_SRCS) $(HEXANODES_SRCS)
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 
-OUT = $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNodes2D.a $(LDIR)/libsimHexanodes.a
+OUT = $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatom3D.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimHexanodes.a
 
 CORE_DIRS = base/ clock/ comm/ deps/ grid/ gui/ math/ motion/ stats/ robots/ events/ utils/ replay/
-CORE_INC_DIRS = $(CORE_DIRS) $(BLINKYBLOCKS_DIR) $(SLIDINGCUBES_DIR) $(CATOMS2D_DIR) $(CATOMS3D_DIR) $(SMARTBLOCKS_DIR) $(DATOMS_DIR) $(NODES2D_DIR) $(HEXANODES_DIR)
+CORE_INC_DIRS = $(CORE_DIRS) $(BLINKYBLOCKS_DIR) $(SLIDINGCUBES_DIR) $(CATOMS3D_DIR) $(SMARTBLOCKS_DIR) $(DATOMS_DIR) $(HEXANODES_DIR)
 
 OUTDIRS += $(CORE_INC_DIRS:%=$(DEPDIR)/%) $(CORE_INC_DIRS:%=$(OBJDIR)/%)
 INCLUDES = $(GLOBAL_INCLUDES) -I. # $(CORE_INC_DIRS:%=-I%)
@@ -102,7 +90,7 @@ $(OBJDIR)/%.o: %.cpp
 	$(POSTCOMPILE)
 
 
-all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimNodes2D.a $(LDIR)/libsimHexanodes.a
+all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimSlidingCubes.a $(LDIR)/libsimCatoms3D.a $(LDIR)/libsimDatoms.a $(LDIR)/libsimHexanodes.a
 
 ${OUTDIRS}:
 	@mkdir -p $@
@@ -115,10 +103,6 @@ $(LDIR)/libsimSlidingCubes.a: $(SLIDINGCUBES_OBJS)
 	@echo "Archiving SlidingCubes library..."
 	@ar rcs $(LDIR)/libsimSlidingCubes.a $(SLIDINGCUBES_OBJS)
 
-$(LDIR)/libsimCatoms2D.a: $(CATOMS2D_OBJS)
-	@echo "Archiving Catoms2D library..."
-	@ar rcs $(LDIR)/libsimCatoms2D.a $(CATOMS2D_OBJS)
-
 $(LDIR)/libsimCatoms3D.a: $(CATOMS3D_OBJS)
 	@echo "Archiving Catoms3D library..."
 	@ar rcs $(LDIR)/libsimCatoms3D.a $(CATOMS3D_OBJS)
@@ -130,10 +114,6 @@ $(LDIR)/libsimSmartBlocks.a: $(SMARTBLOCKS_OBJS)
 $(LDIR)/libsimDatoms.a: $(DATOMS_OBJS)
 	@echo "Archiving Datoms library..."
 	@ar rcs $(LDIR)/libsimDatoms.a $(DATOMS_OBJS)
-
-$(LDIR)/libsimNodes2D.a: $(NODES2D_OBJS)
-	@echo "Archiving Nodes2D library..."
-	@ar rcs $(LDIR)/libsimNodes2D.a $(NODES2D_OBJS)
 
 $(LDIR)/libsimHexanodes.a: $(HEXANODES_OBJS)
 	@echo "Archiving Hexanodes library..."

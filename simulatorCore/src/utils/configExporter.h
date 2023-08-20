@@ -172,31 +172,6 @@ namespace BaseSimulator {
     };
 
 /**
- * @brief Catoms2D Configuration Exporter
- */
-    class Catoms2DConfigExporter : public ConfigExporter {
-    public:
-        /**
-         * @brief Catoms2D Configuration Exporter constructor
-         */
-        Catoms2DConfigExporter(World *_world) : ConfigExporter(_world) {};
-
-        Catoms2DConfigExporter(World *_world, const string &_filename)
-                : ConfigExporter(_world, _filename) {};
-
-        /**
-         * @brief Catoms2D Configuration Exporter constructor
-         */
-        virtual ~Catoms2DConfigExporter() {};
-
-        /**
-         * @copydoc ConfigExporter::exportAdditionalAttribute
-         *  Exports the rotation attribute of a Catoms3DBlock
-         */
-        virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) override;
-    };
-
-/**
  * @brief SmartBlocks Configuration Exporter
  */
     class SmartBlocksConfigExporter : public ConfigExporter {

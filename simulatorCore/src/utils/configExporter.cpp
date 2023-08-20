@@ -6,7 +6,6 @@
 #include "../base/simulator.h"
 #include "../robots/catoms3D/catoms3DBlock.h"
 #include "../robots/datoms/datomsBlock.h"
-#include "../robots/catoms2D/catoms2DBlock.h"
 #include "utils.h"
 
 namespace BaseSimulator {
@@ -225,10 +224,6 @@ namespace BaseSimulator {
 
     void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
         bbElt->SetAttribute("orientation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
-    }
-
-    void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-        bbElt->SetAttribute("angle", static_cast<Catoms2D::Catoms2DBlock *>(bb)->angle);
     }
 
     void DatomsConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
