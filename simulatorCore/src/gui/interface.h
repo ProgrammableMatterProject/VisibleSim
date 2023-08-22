@@ -13,6 +13,7 @@
 #include <fstream>
 #include <memory.h>
 #include <map>
+#include <vector>
 
 #include "../base/glBlock.h"
 #include "../utils/color.h"
@@ -352,14 +353,14 @@ public :
 };
 
 class GlutHelpWindow : public GlutWindow {
-    unsigned char *text;
+    vector<string> columns;
+    string title;
 public :
     GlutHelpWindow(GlutWindow *parent, GLint px, GLint py, GLint pw, GLint ph, const string &textFile);
 
     virtual ~GlutHelpWindow();
 
     int mouseFunc(int button, int state, int x, int y) override;
-
     void glDraw() override;
 };
 

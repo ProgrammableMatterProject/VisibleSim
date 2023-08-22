@@ -129,7 +129,7 @@ GLfloat GlutWindow::drawString(GLfloat x, GLfloat y, const char *str, void *mode
         if (*str == '\n') {
             y -= height;
             glRasterPos2f(x, y);
-            glutBitmapCharacter(mode, '\\');
+//            glutBitmapCharacter(mode, '\\');
         } else {
             glutBitmapCharacter(mode, *str);
         }
@@ -1009,7 +1009,6 @@ GlutWindow *GlutPopupMenuWindow::getButton(unsigned int id) {
 GlutHelpWindow::GlutHelpWindow(GlutWindow *parent, GLint px, GLint py, GLint pw, GLint ph, const string &textFile)
         : GlutWindow(parent, -1, px, py, pw, ph, "") {
     isVisible = false;
-    text = nullptr;
 
     //GlutButton *btn = new GlutButton(this, 999,pw-35,ph-35,32,32,"../../simulatorCore/resources/textures/UITextures/close.tga");
 
@@ -1017,17 +1016,34 @@ GlutHelpWindow::GlutHelpWindow(GlutWindow *parent, GLint px, GLint py, GLint pw,
     if (!fin) {
         cerr << "cannot open file " << textFile << endl;
     } else {
-        stringstream out;
+        int width,height;
+        string buffer,text;
+        /*stringstream out;
+        // read the file
         out << fin.rdbuf();
-        string strout = out.str();
-        text = (unsigned char *) new char[strout.size() + 1];
-        memcpy(text, strout.c_str(), strout.size());
-        text[strout.size() - 1] = 0; // end of string
+
+        out >> width >> height;
+        out.getline(titre)*/
+        fin >> width >> height;
+        getline(fin,buffer);
+        w=width; h=height;
+        getline(fin,title);
+        cout << width << "," << height << endl << title << endl;
+        text="";
+        while (!fin.eof()) {
+            getline(fin,buffer);
+            if (buffer[0]=='-') {
+                columns.push_back(text);
+                text="";
+            } else {
+                text+=buffer+"\n";
+            }
+        }
     }
 }
 
 GlutHelpWindow::~GlutHelpWindow() {
-    delete[] text;
+    columns.clear();
 }
 
 void GlutHelpWindow::glDraw() {
@@ -1050,10 +1066,16 @@ void GlutHelpWindow::glDraw() {
         glVertex2i(w, h - 40);
         glVertex2i(0, h - 40);
         glEnd();
+        glColor4f(1.0, 1.0, 1.0, 1.0);
+        drawString(10, h-32, title.c_str(), GLUT_BITMAP_HELVETICA_18, 20);
         glColor4f(0.0, 0.0, 0.0, 1.0);
-        glRasterPos2f(10, h - 32);
-        glutBitmapString(GLUT_BITMAP_HELVETICA_18, text);
+        int tx=0;
+        for (auto &c:columns) {
+            drawString(tx, h-60, c.c_str(), GLUT_BITMAP_HELVETICA_18,20);
+            tx+=w/columns.size();
+        }
         glPopMatrix();
+
         GlutWindow::glDraw();
     }
 }

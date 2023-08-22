@@ -269,6 +269,12 @@ namespace BaseSimulator {
             }
         }
 
+        int a,b;
+    switch (a) {
+        case 3 : b=2;
+            break;
+        default : b=6;
+    }
         return ORDERED;
     }
 

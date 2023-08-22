@@ -323,13 +323,11 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case 'Q' : // quit
             glutLeaveMainLoop();
             break;
-            /*case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
-            case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;*/
         case '+' :
-            camera->mouseZoom(2.5);
+            camera->mouseZoom(10);
             break;
         case '-' :
-            camera->mouseZoom(-2.5);
+            camera->mouseZoom(-10);
             break;
         case 'T' :
         case 't' :
@@ -360,8 +358,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             }
         }
             break;
-        case 'f' :
-        case 'F' :
+        case 'w' :
             fullScreenMode = !fullScreenMode;
             if (fullScreenMode) {
                 glutFullScreen();
@@ -382,7 +379,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case 'h' :
             if (!helpWindow) {
                 //TODO : IFDEF REPLAY-> Changer l'aide
-                //BaseSimulator::getWorld()->createHelpWindow();
+                BaseSimulator::getWorld()->createHelpWindow();
             }
             helpWindow->showHide();
             break;
@@ -549,6 +546,11 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         case 'l' : {
             BaseSimulator::getWorld()->camera->setLightFromCamera();
         }
+        break;
+        case 'p' : {
+            enablePopup=!enablePopup;
+        }
+        break;
         default: { // Pass on key press to user blockcode handler
             // NOTE: Since C++ does not handle static virtual functions, we need
             //  to get a pointer to a blockcode and call onUserKeyPressed from
@@ -676,7 +678,7 @@ void GlutContext::idleFunc(void) {
         });
     }
 
-    if (lastMotionTime && GlutContext::enablePopup) {
+    if (lastMotionTime && (GlutContext::enablePopup||editMode)) {
         int tm = glutGet(GLUT_ELAPSED_TIME);
         if (tm - lastMotionTime > DELAY_FOR_POPUP) {
             int n = selectFunc(lastMousePos[0], lastMousePos[1]);
