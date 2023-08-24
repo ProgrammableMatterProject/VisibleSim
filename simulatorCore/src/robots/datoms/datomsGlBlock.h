@@ -24,7 +24,7 @@ public :
     virtual ~DatomsGlBlock() {};
 
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
-    string getPopupInfo() override;
+    string getPopupInfo() const override;
 };
 }
 #endif /* DATOMSGLBLOCK_H_ */

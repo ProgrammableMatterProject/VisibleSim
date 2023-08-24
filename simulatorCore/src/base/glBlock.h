@@ -30,7 +30,6 @@ public :
     bID blockId;
     string popupInfoString;
 
-
     GlBlock(bID id);
     GlBlock(bID id,const Vector3D &pos, const Vector3D &col);
     virtual ~GlBlock();
@@ -38,15 +37,15 @@ public :
     virtual void setPosition(const Vector3D &p);
     virtual void setColor(const Color &c);
     virtual void setColor(const Vector3D &c);
-    virtual bool isVisible();
+    virtual bool isVisible() const;
     virtual void setVisible(bool visible);
     virtual void toggleHighlight();
     inline void setHighlight(bool v) { highlighted=v; }
-    inline bool isHighlighted() { return highlighted; }
-    virtual string getInfo();
-    virtual string getPopupInfo();
+    inline bool isHighlighted() const { return highlighted; }
+    virtual string getInfo() const;
+    virtual string getPopupInfo() const;
     void setPopupInfo(const string &str) { popupInfoString=str; };
-    virtual const Vector3D getPosition() { return Vector3D(position[0],position[1],position[2],1); };
+    virtual const Vector3D getPosition() const;
 
     /**
      * Triggers the function of this GlBlock's BlockCode that should be called when this block is selected

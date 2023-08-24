@@ -20,12 +20,13 @@ public :
 
     Catoms3DGlBlock(bID id) : GlBlock(id) {};
     virtual ~Catoms3DGlBlock() {};
+    virtual const Vector3D getPosition() const;
 
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
     void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;
     void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) override;
     void fireSelectedTrigger() override;
-    string getInfo() override;
+    string getInfo() const override;
 //    string getPopupInfo() override;
 };
 }

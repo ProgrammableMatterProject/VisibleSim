@@ -1018,21 +1018,16 @@ GlutHelpWindow::GlutHelpWindow(GlutWindow *parent, GLint px, GLint py, GLint pw,
     } else {
         int width,height;
         string buffer,text;
-        /*stringstream out;
-        // read the file
-        out << fin.rdbuf();
-
-        out >> width >> height;
-        out.getline(titre)*/
+        // read first line with width and height of the window in pixels
         fin >> width >> height;
-        getline(fin,buffer);
+        getline(fin,buffer); // read the endline
         w=width; h=height;
-        getline(fin,title);
+        getline(fin,title); // read the title (second line)
         cout << width << "," << height << endl << title << endl;
         text="";
         while (!fin.eof()) {
             getline(fin,buffer);
-            if (buffer[0]=='-') {
+            if (buffer[0]=='-') { // "-" as first character is for changing the column
                 columns.push_back(text);
                 text="";
             } else {
@@ -1067,15 +1062,15 @@ void GlutHelpWindow::glDraw() {
         glVertex2i(0, h - 40);
         glEnd();
         glColor4f(1.0, 1.0, 1.0, 1.0);
-        drawString(10, h-32, title.c_str(), GLUT_BITMAP_HELVETICA_18, 20);
+        drawString(10, h-30, title.c_str(), GLUT_BITMAP_HELVETICA_18, 20);
+        drawString(11, h-30, title.c_str(), GLUT_BITMAP_HELVETICA_18, 20);
         glColor4f(0.0, 0.0, 0.0, 1.0);
-        int tx=0;
+        int tx=10;
         for (auto &c:columns) {
             drawString(tx, h-60, c.c_str(), GLUT_BITMAP_HELVETICA_18,20);
             tx+=w/columns.size();
         }
         glPopMatrix();
-
         GlutWindow::glDraw();
     }
 }

@@ -145,13 +145,18 @@ Vector3D Lattice::gridToWorldPosition(const Cell3DPosition &pos) const {
 
 vector<Cell3DPosition> Lattice::getFreeNeighborCells(const Cell3DPosition &pos) const {
     vector<Cell3DPosition> freeNeighborCells;
-
-    for (const Cell3DPosition &p : getNeighborhood(pos)) { // Check if each neighbor cell has an active node on it
+    for (auto &p : getNeighborhood(pos)) { // Check if each neighbor cell has an active node on it
         if (isFree(p)) {
             freeNeighborCells.push_back(p);         // Add its position to the result
         }
     }
 
+    const vector<Cell3DPosition> neighborhoodAway={{-1,-1,0},{-1,1,0},{1,-1,0},{1,1,0},{0,0,2},{0,0,-2}};
+    for (auto &p : neighborhoodAway) { // Check if each neighbor cell has an active node on it
+        if (isFree(p+pos)) {
+            freeNeighborCells.push_back(p+pos);         // Add its position to the result
+        }
+    }
     return freeNeighborCells;
 }
 

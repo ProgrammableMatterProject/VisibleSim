@@ -456,7 +456,7 @@ getMobileModuleLinkMatchingPivotLink(const Catoms3DMotionRulesLink* pivLink,
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void Catoms3DMotionRulesConnector::addLink(Catoms3DMotionRulesLink *lnk) {
@@ -465,14 +465,14 @@ void Catoms3DMotionRulesConnector::addLink(Catoms3DMotionRulesLink *lnk) {
 
 void Catoms3DMotionRulesLink::addBlockingConnectorsString(const string &str) {
     int n;
-    std::size_t found=str.find_first_of(","),prev=0;
+    std::size_t found=str.find_first_of(','),prev=0;
     while (found!=std::string::npos) {
-        n = stoi(str.substr(prev,found-prev).c_str());
+        n = stoi(str.substr(prev,found-prev));
         tabBlockingIDs.push_back(n);
         prev = found+1;
-        found=str.find_first_of(",",prev);
+        found=str.find_first_of(',',prev);
     }
-    n = stoi(str.substr(prev).c_str());
+    n = stoi(str.substr(prev));
     tabBlockingIDs.push_back(n);
 
     // add dest
@@ -538,7 +538,7 @@ vector<Cell3DPosition> Catoms3DMotionRulesLink::getBlockingCellsList(const Catom
     return tabPos;
 }
 
-std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mrl) {
+std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const &mrl) {
     stream << mrl.getConFromID() << " -> " << mrl.getConToID();
 
     switch (mrl.getMRLT()) {

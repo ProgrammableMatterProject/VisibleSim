@@ -19,13 +19,14 @@ bool Catoms3DRotateCode::tryToMove() {
     short finalOrient;
     Catoms3DRotation bestRotation;
     short bestDistance=-1;
+    cout << "possible motions :" << tab.size() << endl;
     for(auto &elem:tab) {
         elem.second.init(((Catoms3DGlBlock*)module->ptrGlBlock)->mat);
         elem.second.getFinalPositionAndOrientation(finalPos,finalOrient);
         if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
             /*rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i++,0,0,0,0,menuDir+"menu_link.tga",
                                                                  elem.first->isOctaFace(),elem.first->getConFromID(),elem.first->getConToID(),finalPos,finalOrient));*/
-            //cout << "possible motions:" << finalPos << endl;
+            cout << "possible motions:" << finalPos << endl;
             if (target->isInTarget(finalPos)) {
                 cout << "is in target:" << finalPos << endl;
                 auto it = std::find(previousCellsList.begin(), previousCellsList.end(), finalPos);

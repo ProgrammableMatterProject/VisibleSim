@@ -12,7 +12,7 @@ Keyboard:
           [i]: show/enlarge/hide console window
       [T]/[t]: toggle large/small console font
           [B]: toggle/hide background
-          [,]: show FPS
+          [p]: display/hide the data of the hovered module
 
 Run mode Only
       [r]/[R]: start in realtime/fastest mode

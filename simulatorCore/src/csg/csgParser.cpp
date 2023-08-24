@@ -9,12 +9,12 @@ static const std::string whitespaces (" \t\f\v\n\r");
 
 double moduloOperator(double v, double w) {
     return (int)v % max(1, (int)w);
-};
+}
 
 CSGParser::CSGParser() {
 mu_p.DefineOprtChars("%");
 mu_p.DefineOprt("%", moduloOperator, mu::prINFIX);
-};
+}
 
 size_t CSGParser::readCubeParameters(const string &line, Vector3D &v,bool &center) {
     size_t endKeyword = line.length();

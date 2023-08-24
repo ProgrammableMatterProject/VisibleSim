@@ -34,6 +34,10 @@ void GlBlock::setPosition(const Vector3D &pos) {
     position[2] = GLfloat(pos[2]);
 }
 
+const Vector3D GlBlock::getPosition() const {
+    return Vector3D(position[0],position[1],position[2],1);
+};
+
 void GlBlock::setColor(const Vector3D &col) {
     color[0] = GLubyte(col[0] * 255.0);
     color[1] = GLubyte(col[1] * 255.0);
@@ -46,7 +50,7 @@ void GlBlock::setColor(const Color &col) {
     color[2] = col[2];
 }
 
-bool GlBlock::isVisible() {
+bool GlBlock::isVisible() const {
     return visible;
 }
 
@@ -58,7 +62,7 @@ void GlBlock::toggleHighlight() {
     highlighted = !highlighted;
 }
 
-string GlBlock::getInfo() {
+string GlBlock::getInfo() const {
     ostringstream out;
     out << blockId << endl;
     out << fixed;
@@ -68,7 +72,7 @@ string GlBlock::getInfo() {
     return out.str();
 }
 
-string GlBlock::getPopupInfo() {
+string GlBlock::getPopupInfo() const {
     ostringstream out;
     out << "#" << blockId << ": (" << position[0] << "," << position[1] << "," << position[2] << ")";
     if (popupInfoString != "") { out << "(" << popupInfoString << ")"; }
