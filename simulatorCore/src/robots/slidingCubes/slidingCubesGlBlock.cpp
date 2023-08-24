@@ -34,7 +34,7 @@ namespace SlidingCubes {
         glPopMatrix();
     }
 
-    string SlidingCubesGlBlock::getInfo() {
+    string SlidingCubesGlBlock::getInfo() const {
         ostringstream out;
         out << blockId << endl;
         out << fixed;
@@ -45,7 +45,7 @@ namespace SlidingCubes {
         return out.str();
     }
 
-    string SlidingCubesGlBlock::getPopupInfo() {
+    string SlidingCubesGlBlock::getPopupInfo() const {
         ostringstream out;
         out << blockId << " -(" << int(position[0] / 10) << "," << int(position[1] / 10) << "," << int(position[2] / 10)
             << ") " << popupInfoString << "\n";

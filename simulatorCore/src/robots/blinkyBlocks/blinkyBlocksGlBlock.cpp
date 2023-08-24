@@ -39,7 +39,7 @@ namespace BlinkyBlocks {
     }
 
 
-    string BlinkyBlocksGlBlock::getInfo() {
+    string BlinkyBlocksGlBlock::getInfo() const {
         ostringstream out;
         out << blockId << endl;
         out << fixed;
@@ -49,7 +49,7 @@ namespace BlinkyBlocks {
         return out.str();
     }
 
-    string BlinkyBlocksGlBlock::getPopupInfo() {
+    string BlinkyBlocksGlBlock::getPopupInfo() const {
         ostringstream out;
         out << blockId << " -(" << int(position[0] / 40) << "," << int(position[1] / 40) << "," << int(position[2] / 40)
             << ") " << popupInfoString << "\n";

@@ -20,17 +20,13 @@ namespace SlidingCubes {
         Matrix mat{};
 
         SlidingCubesGlBlock(bID id) : GlBlock(id) {};
-
         virtual ~SlidingCubesGlBlock() {};
 
-        string getInfo() override;
-
-        string getPopupInfo() override;
+        string getInfo() const override;
+        string getPopupInfo() const override;
 
         void glDraw(ObjLoader::ObjLoader *ptrObj) override;
-
         void glDrawId(ObjLoader::ObjLoader *ptrObj, int n) override;
-
         void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj, int &n) override;
     };
 }

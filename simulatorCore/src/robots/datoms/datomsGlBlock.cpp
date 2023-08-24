@@ -32,7 +32,7 @@ void DatomsGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     glPopMatrix();
 }
 
-string DatomsGlBlock::getPopupInfo() {
+string DatomsGlBlock::getPopupInfo() const {
     string out;
     Cell3DPosition res;
     res.pt[2] = round((2 * position[2]) / (M_SQRT2 * 10) - 0.5);

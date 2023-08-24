@@ -57,7 +57,7 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     glPopMatrix();
 }
 
-string SmartBlocksGlBlock::getPopupInfo() {
+string SmartBlocksGlBlock::getPopupInfo() const {
     string out=to_string(blockId) + " - (" + to_string((int)(position[0]/25.0f)) +
             "," + to_string((int)(position[1]/25.0f)) + ")\n";
     return out;
