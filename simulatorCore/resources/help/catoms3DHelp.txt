@@ -1,4 +1,4 @@
-1200 450
+1200 470
 Interface Help
 Keyboard:
         [F12]: switch RUN Mode/EDIT Mode (see title bar)
@@ -30,12 +30,15 @@ Mouse:
         <MLB>: change the point of view
         <MRB>: change the focus point
       <Wheel>: zoom
- [Ctrl]+<MLB>: select a module
- [Ctrl]+<MRB>: open context menu
+ [Ctrl]+<MLB>: (over a module) select a module
+ [Ctrl]+<MRB>: (over a module) open module context menu
 
  Popup Menu
-             {Add block} add a module connected to the selected face
+             {Add catom} add a module connected to the selected face
+                         > choose the orientation
              {Delete block} delete the selected module
+             {Rotate to...} apply a motion from the connector (left ID)
+                         to the connector id on the right.
              {Tap} schedule a tap event for the selected module
              {Save} save the current configuration in the config file.
              {Cancel} close the menu

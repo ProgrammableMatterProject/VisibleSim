@@ -111,6 +111,7 @@ namespace Catoms3D {
 
         virtual void menuChoice(int n) override;
 
+        virtual void createHelpWindow() override;
 /**
  * \brief Export a 3D model in STL format to print the whole configuration
  * \param title : title of the STL file

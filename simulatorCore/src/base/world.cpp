@@ -276,12 +276,7 @@ void World::menuChoice(int n) {
 
 void World::createHelpWindow() {
     delete GlutContext::helpWindow;
-#ifdef WIN32
-    string helpDirectory = string(ROOT_DIR) + "/simulatorCore/resources/help/";
-#else
-    string helpDirectory = "../../simulatorCore/resources/help/";
-#endif
-    GlutContext::helpWindow = new GlutHelpWindow(nullptr,10,40,540,500,helpDirectory+"genericHelp.txt");
+    GlutContext::helpWindow = new GlutHelpWindow(nullptr,10,40,540,500,"genericHelp.txt");
 }
 
 void World::tapBlock(Time date, bID bId, int face) {

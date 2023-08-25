@@ -363,7 +363,7 @@ namespace BaseSimulator {
         /**
          * @brief Creates a new help window at a fixed location of the screen
          */
-        void createHelpWindow();
+        virtual void createHelpWindow();
 
         /**
          * @brief Getter for the camera instance of the simulation

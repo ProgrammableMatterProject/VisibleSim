@@ -25,6 +25,19 @@
 const int SLIDING_WINDOW_STANDARD_WIDTH = 400;
 const int SLIDING_WINDOW_LARGE_WIDTH = 600;
 
+#ifdef WIN32
+const string helpDirectory = string(ROOT_DIR) + "/simulatorCore/resources/help/";
+#else
+const string helpDirectory = "../../simulatorCore/resources/help/";
+#endif
+
+#ifdef WIN32
+const string UiTexturesDirectory = string(ROOT_DIR) + "/simulatorCore/resources/textures/UITextures/";
+#else
+const string UiTexturesDirectory = "../../simulatorCore/resources/textures/UITextures/";
+#endif
+
+
 GlutWindow::GlutWindow(GlutWindow *parent, GLuint pid, GLint px, GLint py,
                        GLint pw, GLint ph, const string &titreTexture)
         : id(pid) {
@@ -179,15 +192,11 @@ void GlutWindow::setTextSize(TextSize ts) {
 GlutSlidingMainWindow::GlutSlidingMainWindow(GLint px, GLint py, GLint pw, GLint ph, const string &titreTexture) :
         GlutWindow(nullptr, 1, px, py, pw, ph, titreTexture) {
     openningLevel = 0;
-#ifdef WIN32
-    string dir = string(ROOT_DIR) + "/simulatorCore/resources/textures/UITextures/";
-#else
-    string dir = "../../simulatorCore/resources/textures/UITextures/";
-#endif
-    buttonOpen = new GlutButton(this, ID_SW_BUTTON_OPEN, 5, 68, 32, 32,dir+"boutons_fg.tga");
-    buttonClose = new GlutButton(this, ID_SW_BUTTON_CLOSE, 5, 26, 32, 32,dir+"boutons_fd.tga", false);
+
+    buttonOpen = new GlutButton(this, ID_SW_BUTTON_OPEN, 5, 68, 32, 32,UiTexturesDirectory+"boutons_fg.tga");
+    buttonClose = new GlutButton(this, ID_SW_BUTTON_CLOSE, 5, 26, 32, 32,UiTexturesDirectory+"boutons_fd.tga", false);
     buttonSize = new GlutButton(this, ID_SW_BUTTON_SIZE, pw + SLIDING_WINDOW_STANDARD_WIDTH - 40,
-                                ph - 40, 32, 32, dir+"boutons_zoom.tga");
+                                ph - 40, 32, 32, UiTexturesDirectory+"boutons_zoom.tga");
     slider = new GlutSlider(this, ID_SW_SLD, pw + SLIDING_WINDOW_STANDARD_WIDTH - 20, 5, ph - 60,
                             "slider.tga");
     selectedGlBlock = nullptr;
@@ -448,152 +457,6 @@ void GlutSlidingMainWindow::setTextSize(TextSize ts) {
     updateSliderWindow();
 }
 
-/***************************************************************************************/
-/* GlutSlidingDebugWindow */
-/***************************************************************************************/
-/*GlutSlidingDebugWindow::GlutSlidingDebugWindow(GLint px, GLint py, GLint pw, GLint ph, const string &titreTexture) :
-        GlutWindow(nullptr, 2, px, py, pw, ph, titreTexture) {
-#ifdef WIN32
-    string dir=string(ROOT_DIR)+"/simulatorCore/resources/textures/UITextures/";
-#else
-    string dir="../../simulatorCore/resources/textures/UITextures/";
-#endif
-    openningLevel = 0;
-    buttonOpen = new GlutButton(this, ID_SD_BUTTON_OPEN, 5, 168, 32, 32,"boutons_fg.tga");
-    buttonClose = new GlutButton(this, ID_SD_BUTTON_CLOSE, 5, 126, 32, 32,"boutons_fd.tga", false);
-    slider = new GlutSlider(this, ID_SD_SLD, pw + 400 - 20, 5, ph - 75,dir+"slider.tga");
-    input = new GlutInputWindow(this, ID_SD_INPUT, pw + 10, ph - 66, 380, 36);
-    debugId = 1;
-}
-
-GlutSlidingDebugWindow::~GlutSlidingDebugWindow() {
-    // clean the vector
-    vector<BlockDebugData *>::iterator it = tabDebug.begin();
-    while (it != tabDebug.end()) {
-        delete (*it);
-        ++it;
-    }
-    tabDebug.clear();
-}
-
-void GlutSlidingDebugWindow::glDraw() {
-    // drawing of the tab
-    bindTexture();
-    glPushMatrix();
-    glTranslatef(x, y, 0.0);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0.0);
-    glVertex2i(0, 100);
-    glTexCoord2f(0.3125, 0.);
-    glVertex2i(40, 100);
-    glTexCoord2f(0.3125, 1);
-    glVertex2i(40, 228);
-    glTexCoord2f(0, 1);
-    glVertex2i(0, 228);
-    glEnd();
-
-    if (openningLevel) {
-        glDisable(GL_LIGHTING);
-        glDisable(GL_TEXTURE_2D);
-        glColor4f(0.7, 0.1, 0.1, 0.75);
-        glBegin(GL_QUADS);
-        glVertex2i(40, 0);
-        glVertex2i(w, 0);
-        glVertex2i(w, h);
-        glVertex2i(40, h);
-        glEnd();
-
-        glColor3f(0.25, 0.25, 0.25);
-        glBegin(GL_QUADS);
-        glVertex2i(50, 5);
-        glVertex2i(w - 25, 5);
-        glVertex2i(w - 25, h - 70);
-        glVertex2i(50, h - 70);
-        glEnd();
-
-        char str[256];
-        Time t = BaseSimulator::getScheduler()->now();
-        sprintf(str, "Current time : %d:%d", int(t / 1000), int((t % 1000)));
-        glColor3f(1.0, 1.0, 0.0);
-        drawString(45.0, h - 20.0, str);
-        if (input->hasFocus) {
-            drawString(w - 85, h - 20.0, "DEBUG MODE");
-            char c[6];
-#ifdef WIN32
-            sprintf(c, "%u", debugId);
-#else
-            sprintf(c, "%" PRIu32, debugId);
-#endif
-            drawString(w / 2 - 45, h - 20.0, c);
-        }
-
-        GLfloat posy = h - 80;
-        vector<BlockDebugData *>::reverse_iterator ci = tabDebug.rbegin();
-        while (ci != tabDebug.rend() && posy > 0) {
-            (*ci)->color.glColor();
-            posy = drawString(55.0, posy, (*ci)->str.c_str());
-            ci++;
-        }
-    }
-    glPopMatrix();
-    GlutWindow::glDraw();
-}
-
-int GlutSlidingDebugWindow::mouseFunc(int button, int state, int mx, int my) {
-    int n = GlutWindow::mouseFunc(button, state, mx, my);
-    switch (n) {
-        case ID_SD_BUTTON_OPEN :
-            openningLevel++;
-            x -= 400;
-            w += 400;
-            buttonOpen->activate(false);
-            buttonClose->activate(true);
-            break;
-        case ID_SD_BUTTON_CLOSE :
-            openningLevel--;
-            x += 400;
-            w -= 400;
-            buttonOpen->activate(true);
-            buttonClose->activate(false);
-            break;
-        case ID_SD_INPUT :
-            input->hasFocus = (getScheduler()->getMode() == SCHEDULER_MODE_DEBUG);
-            break;
-    }
-    return n;
-}
-
-int GlutSlidingDebugWindow::keyFunc(int charcode) {
-    bID id = 0;
-
-    vector<GlutWindow *>::const_iterator cw = children.begin();
-    while (cw != children.end()) {
-        id = (*cw)->keyFunc(charcode);
-        if (id == 1) return id;
-        if (id == 2) { // validation
-            string str = input->getTextAndClear();
-            if (!str.empty()) {
-                string result;
-                input->hasFocus = getScheduler()->debug(str, debugId, result);
-                BlockDebugData *bdd = new BlockDebugData(debugId, result, LIGHTBLUE);
-                tabDebug.push_back(bdd);
-                bdd = new BlockDebugData(debugId, str, YELLOW);
-                tabDebug.push_back(bdd);
-            }
-        }
-        cw++;
-    }
-    return id;
-}
-
-void GlutSlidingDebugWindow::reshapeFunc(int mx, int my, int mw, int mh) {
-    int sz = 400 * openningLevel;
-    setGeometry(mx - sz, my, mw + sz, mh);
-    slider->setGeometry(mw + 400 - 20, 5, 11, mh - 75);
-    slider->update();
-    input->setGeometry(mw + 10, mh - 66, 380, 30);
-}
-*/
 /***************************************************************************************/
 /* GlutButton */
 /***************************************************************************************/
@@ -1010,9 +873,7 @@ GlutHelpWindow::GlutHelpWindow(GlutWindow *parent, GLint px, GLint py, GLint pw,
         : GlutWindow(parent, -1, px, py, pw, ph, "") {
     isVisible = false;
 
-    //GlutButton *btn = new GlutButton(this, 999,pw-35,ph-35,32,32,"../../simulatorCore/resources/textures/UITextures/close.tga");
-
-    ifstream fin(textFile);
+    ifstream fin(helpDirectory+textFile);
     if (!fin) {
         cerr << "cannot open file " << textFile << endl;
     } else {
@@ -1022,11 +883,13 @@ GlutHelpWindow::GlutHelpWindow(GlutWindow *parent, GLint px, GLint py, GLint pw,
         fin >> width >> height;
         getline(fin,buffer); // read the endline
         w=width; h=height;
+        GlutButton *btn = new GlutButton(this, 999,w-35,h-35,32,32,UiTexturesDirectory+"close.tga");
         getline(fin,title); // read the title (second line)
-        cout << width << "," << height << endl << title << endl;
+        //cout << width << "," << height << endl << title << endl;
         text="";
         while (!fin.eof()) {
             getline(fin,buffer);
+            //cout << "[" << buffer << "]" << endl;
             if (buffer[0]=='-') { // "-" as first character is for changing the column
                 columns.push_back(text);
                 text="";

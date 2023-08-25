@@ -528,8 +528,12 @@ namespace Catoms3D {
         exporter.exportConfiguration();
     }
 
-    vector<Vector3D> tabAddCenter;
+    void Catoms3DWorld::createHelpWindow() {
+        delete GlutContext::helpWindow;
+        GlutContext::helpWindow = new GlutHelpWindow(nullptr,10,40,540,500,"catoms3DHelp.txt");
+    }
 
+    vector<Vector3D> tabAddCenter;
     bool addAdd(ObjLoader::ObjData *obj, const Vector3D &pos) {
 
         const ObjLoader::Point3 *c = obj->getCenter();

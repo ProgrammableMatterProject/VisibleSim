@@ -286,29 +286,6 @@ private :
     void setOpenCloseButtonPosition(bool openning);
 };
 
-/*class GlutSlidingDebugWindow : public GlutWindow {
-    int openningLevel;
-    bID debugId;
-    GlutButton *buttonOpen, *buttonClose;
-    GlutSlider *slider;
-    GlutInputWindow *input;
-    vector<BlockDebugData *> tabDebug;
-public :
-    GlutSlidingDebugWindow(GLint px, GLint py, GLint pw, GLint ph, const string &titreTexture);
-
-    virtual ~GlutSlidingDebugWindow();
-
-    int mouseFunc(int button, int state, int mx, int my) override;
-
-    int keyFunc(int charcode) override;
-
-    void reshapeFunc(int wx, int wy, int mw, int mh) override;
-
-    void glDraw() override;
-
-    inline bool isOpened() { return openningLevel != 0; }
-};*/
-
 class GlutPopupWindow : public GlutWindow {
     string info;
 public :
