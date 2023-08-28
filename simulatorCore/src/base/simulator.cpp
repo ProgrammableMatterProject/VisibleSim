@@ -76,7 +76,7 @@ namespace BaseSimulator {
     }
 
     Color Simulator::extractColorFromString(string str) {
-        // formqt R,G,B
+        // format R,G,B
         auto pos1 = str.find_first_of(','),
                 pos2 = str.find_last_of(',');
         if (pos1 != string::npos && pos2 != string::npos && pos1 != pos2) {

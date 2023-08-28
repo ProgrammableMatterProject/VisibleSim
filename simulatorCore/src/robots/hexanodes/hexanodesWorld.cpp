@@ -68,23 +68,23 @@ void HexanodesWorld::deleteWorld() {
 
 void HexanodesWorld::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
-        GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,202,215);
+        GlutContext::popupMenu = new GlutPopupMenuWindow(nullptr,0,0,202,215);
         // create submenu "Add"
-        GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,202,112);
+        GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(nullptr,0,0,202,112);
         addBlockSubMenu->id=50;
-        addBlockSubMenu->addButton(11,"../../simulatorCore/resources/textures/menuTextures/menu_add_normal.tga");
-        addBlockSubMenu->addButton(12,"../../simulatorCore/resources/textures/menuTextures/menu_add_same.tga");
-        addBlockSubMenu->addButton(13,"../../simulatorCore/resources/textures/menuTextures/menu_add_random.tga");
+        addBlockSubMenu->addButton(11,menuTextureDirectory + "menu_add_normal.tga");
+        addBlockSubMenu->addButton(12,menuTextureDirectory + "menu_add_same.tga");
+        addBlockSubMenu->addButton(13,menuTextureDirectory + "menu_add_random.tga");
         // create submenu "Rotate"
-        GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,116,40);
+        GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(nullptr,0,0,116,40);
         rotateBlockSubMenu->id=51;
 
-        GlutContext::popupMenu->addButton(1,"../../simulatorCore/resources/textures/menuTextures/menu_add_sub.tga",addBlockSubMenu);
-        GlutContext::popupMenu->addButton(2,"../../simulatorCore/resources/textures/menuTextures/menu_del.tga");
-        GlutContext::popupMenu->addButton(6,"../../simulatorCore/resources/textures/menuTextures/menu_rotate_sub.tga",rotateBlockSubMenu);
-        GlutContext::popupMenu->addButton(3,"../../simulatorCore/resources/textures/menuTextures/menu_tap.tga");
-        GlutContext::popupMenu->addButton(4,"../../simulatorCore/resources/textures/menuTextures/menu_save.tga");
-        GlutContext::popupMenu->addButton(5,"../../simulatorCore/resources/textures/menuTextures/menu_cancel.tga");
+        GlutContext::popupMenu->addButton(1,menuTextureDirectory + "menu_add_sub.tga",addBlockSubMenu);
+        GlutContext::popupMenu->addButton(2,menuTextureDirectory + "menu_del.tga");
+        GlutContext::popupMenu->addButton(6,menuTextureDirectory + "menu_rotate_sub.tga",rotateBlockSubMenu);
+        GlutContext::popupMenu->addButton(3,menuTextureDirectory + "menu_tap.tga");
+        GlutContext::popupMenu->addButton(4,menuTextureDirectory + "menu_save.tga");
+        GlutContext::popupMenu->addButton(5,menuTextureDirectory + "menu_cancel.tga");
     }
 
     // update rotateSubMenu depending on rotation/translation HexanodesCapabilities
@@ -107,7 +107,11 @@ void HexanodesWorld::createPopupMenu(int ix, int iy) {
             lattice->getCellInDirection(bb->position,(motion->direction==motionDirection::CW?(motion->fromConId+1)%6:(motion->fromConId+5)%6));
             uint8_t idDest = (motion->fromConId+(motion->direction==motionDirection::CW?5:1))%6;
             //cout << motion->direction << "/" << motion->fromConId << "finalPos="<< finalPos << "," << orient << "(" << (motion->direction==motionDirection::CCW?(motion->fromConId+1)%6:(motion->fromConId+5)%6) << ")" << endl;
-            rotateBlockSubMenu->addButton(new GlutRotation2DButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link_hexanodes.tga", motion->direction==CCW,motion->fromConId,idDest,finalPos,orient,0.083333333));
+            if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
+                rotateBlockSubMenu->addButton(
+                        new GlutRotation2DButton(nullptr,i++,0,0,0,0,menuTextureDirectory + "menu_link_hexanodes.tga", motion->direction==CCW,motion->fromConId,idDest,finalPos,orient,0.083333333)
+                        );
+            }
         }
     }
 
@@ -187,7 +191,6 @@ void HexanodesWorld::menuChoice(int n) {
     }
 }
 
-
 void HexanodesWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                               uint8_t orient) {
     if (blockId > maxBlockId)
@@ -238,7 +241,7 @@ void HexanodesWorld::linkBlock(const Cell3DPosition& pos) {
                    << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
 #endif
         } else {
-            module->getInterface(HHLattice::Direction(i))->connect(NULL);
+            module->getInterface(HHLattice::Direction(i))->connect(nullptr);
         }
     }
 }
@@ -432,8 +435,8 @@ void HexanodesWorld::disconnectBlock(BuildingBlock *block) {
             fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
 
             // Disconnect the interfaces
-            fromBlock->connectedInterface = NULL;
-            toBlock->connectedInterface = NULL;
+            fromBlock->connectedInterface = nullptr;
+            toBlock->connectedInterface = nullptr;
         }
     }
     lattice->remove(block->position);

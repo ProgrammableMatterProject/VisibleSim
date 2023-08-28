@@ -16,13 +16,6 @@ using namespace std;
 
 namespace BaseSimulator {
 
-#ifdef WIN32
-    string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/menuTextures/";
-#else
-    string directory = "../../simulatorCore/resources/textures/menuTextures/";
-#endif
-
-
 World *World::world = nullptr;
 map<bID, BuildingBlock*>World::buildingBlocksMap;
 unordered_map <bID, GlBlock*>World::mapGlBlocks;
@@ -303,11 +296,11 @@ void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
 void World::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
         GlutContext::popupMenu = new GlutPopupMenuWindow(nullptr,0,0,200,180);
-        GlutContext::popupMenu->addButton(1,directory+"menu_add.tga");
-        GlutContext::popupMenu->addButton(2,directory+"menu_del.tga");
-        GlutContext::popupMenu->addButton(3,directory+"menu_tap.tga");
-        GlutContext::popupMenu->addButton(4,directory+"menu_save.tga");
-        GlutContext::popupMenu->addButton(5,directory+"menu_cancel.tga");
+        GlutContext::popupMenu->addButton(1,menuTextureDirectory+"menu_add.tga");
+        GlutContext::popupMenu->addButton(2,menuTextureDirectory+"menu_del.tga");
+        GlutContext::popupMenu->addButton(3,menuTextureDirectory+"menu_tap.tga");
+        GlutContext::popupMenu->addButton(4,menuTextureDirectory+"menu_save.tga");
+        GlutContext::popupMenu->addButton(5,menuTextureDirectory+"menu_cancel.tga");
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;

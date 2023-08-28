@@ -26,11 +26,6 @@ using namespace BaseSimulator::utils;
 
 //! \namespace Catoms3D
 namespace Catoms3D {
-#ifdef WIN32
-    string textureDirectory = string(ROOT_DIR) + "/simulatorCore/resources/textures/";
-#else
-    string textureDirectory = "../../simulatorCore/resources/textures/";
-#endif
 
 /**
    \brief Constructor
@@ -96,33 +91,29 @@ namespace Catoms3D {
     }
 
     void Catoms3DWorld::createPopupMenu(int ix, int iy) {
-        static const string menuDir = textureDirectory + "menuTextures/";
-
         if (!GlutContext::popupMenu) {
-            GlutContext::popupMenu = new GlutPopupMenuWindow(NULL, 0, 0, 202, 215);
+            GlutContext::popupMenu = new GlutPopupMenuWindow(nullptr, 0, 0, 202, 215);
             // create submenu "Add"
-            GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(NULL, 0, 0, 202, 112);
+            GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(nullptr, 0, 0, 202, 112);
             addBlockSubMenu->id = 50;
-            addBlockSubMenu->addButton(11, menuDir + "menu_add_normal.tga");
-            addBlockSubMenu->addButton(12, menuDir + "menu_add_same.tga");
-            addBlockSubMenu->addButton(13, menuDir + "menu_add_random.tga");
+            addBlockSubMenu->addButton(11, menuTextureDirectory + "menu_add_normal.tga");
+            addBlockSubMenu->addButton(12, menuTextureDirectory + "menu_add_same.tga");
+            addBlockSubMenu->addButton(13, menuTextureDirectory + "menu_add_random.tga");
             // create submenu "Rotate"
-            GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(NULL, 0, 0, 116, 40);
+            GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(nullptr, 0, 0, 116, 40);
             rotateBlockSubMenu->id = 51;
 
-            GlutContext::popupMenu->addButton(1, menuDir + "menu_add_sub.tga", addBlockSubMenu);
-            GlutContext::popupMenu->addButton(2, menuDir + "menu_del.tga");
-
-            GlutContext::popupMenu->addButton(6, menuDir + "menu_rotate_sub.tga", rotateBlockSubMenu);
-            GlutContext::popupMenu->addButton(3, menuDir + "menu_tap.tga");
-            GlutContext::popupMenu->addButton(4, menuDir + "menu_save.tga");
-            GlutContext::popupMenu->addButton(5, menuDir + "menu_cancel.tga");
+            GlutContext::popupMenu->addButton(1, menuTextureDirectory + "menu_add_sub.tga", addBlockSubMenu);
+            GlutContext::popupMenu->addButton(2, menuTextureDirectory + "menu_del.tga");
+            GlutContext::popupMenu->addButton(6, menuTextureDirectory + "menu_rotate_sub.tga", rotateBlockSubMenu);
+            GlutContext::popupMenu->addButton(3, menuTextureDirectory + "menu_tap.tga");
+            GlutContext::popupMenu->addButton(4, menuTextureDirectory + "menu_save.tga");
+            GlutContext::popupMenu->addButton(5, menuTextureDirectory + "menu_cancel.tga");
         }
 
         // update rotateSubMenu depending on rotation catoms3DCapabilities
         Catoms3DBlock *bb = (Catoms3DBlock *) getSelectedBuildingBlock();
-        vector<std::pair<const Catoms3DMotionRulesLink *, Catoms3DRotation>> tab = Catoms3DMotionEngine::getAllRotationsForModule(
-                bb);
+        auto tab = Catoms3DMotionEngine::getAllRotationsForModule(bb);
         int nbreMenus = tab.size();
         if (nbreMenus == 0) {
             ((GlutButton *) GlutContext::popupMenu->getButton(6))->activate(false);
@@ -140,7 +131,7 @@ namespace Catoms3D {
                 elem.second.getFinalPositionAndOrientation(finalPos, finalOrient);
                 if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
                     rotateBlockSubMenu->addButton(
-                            new GlutRotationButton(NULL, i++, 0, 0, 0, 0, menuDir + "menu_link.tga",
+                            new GlutRotationButton(nullptr, i++, 0, 0, 0, 0, menuTextureDirectory + "menu_link.tga",
                                                    elem.first->isOctaFace(), elem.first->getConFromID(),
                                                    elem.first->getConToID(), finalPos, finalOrient));
                 }
@@ -278,7 +269,7 @@ namespace Catoms3D {
             Catoms3DBlock *neighborBlock;
             for (int i = 0; i < 12; i++) {
                 if (catom->getNeighborPos(i, neighborPos)
-                    && (neighborBlock = (Catoms3DBlock *) lattice->getBlock(neighborPos)) != NULL) {
+                    && (neighborBlock = (Catoms3DBlock *) lattice->getBlock(neighborPos)) != nullptr) {
                     catom->getInterface(i)->connect(neighborBlock->getInterface(pos));
 #ifdef DEBUG_NEIGHBORHOOD
                     OUTPUT << "connection #" << catom->blockId << "(" << i << ") to #"

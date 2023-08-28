@@ -121,9 +121,9 @@ void HexanodesBlock::setPositionAndOrientation(const Cell3DPosition &pos, uint8_
     orientationCode = code;
     position = pos;
 
-    cout << "setPositionAndOrientation:" << pos << endl;
+    //cout << "setPositionAndOrientation:" << pos << endl;
     Matrix M=getMatrixFromPositionAndOrientation(pos,code);
-    cout << M << endl;
+    //cout << M << endl;
     getWorld()->updateGlData(this,M);
     getWorld()->updateGlData(this,position);
 
