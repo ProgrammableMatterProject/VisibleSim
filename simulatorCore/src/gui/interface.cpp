@@ -693,6 +693,7 @@ GlutRotation2DButton::GlutRotation2DButton(GlutWindow *parent, GLuint pid, GLint
     finalPosition = pos;
     finalOrientation = orientation;
     characterWidth = cw;
+    cout << "rotation: id0=" << int(id0) << ", id1="<< int(id1) << ", fp=" << finalPosition << ",fo=" << finalOrientation << endl;
 }
 
 void GlutRotation2DButton::glDraw() {

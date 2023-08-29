@@ -109,7 +109,8 @@ void HexanodesWorld::createPopupMenu(int ix, int iy) {
             //cout << motion->direction << "/" << motion->fromConId << "finalPos="<< finalPos << "," << orient << "(" << (motion->direction==motionDirection::CCW?(motion->fromConId+1)%6:(motion->fromConId+5)%6) << ")" << endl;
             if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
                 rotateBlockSubMenu->addButton(
-                        new GlutRotation2DButton(nullptr,i++,0,0,0,0,menuTextureDirectory + "menu_link_hexanodes.tga", motion->direction==CCW,motion->fromConId,idDest,finalPos,orient,0.083333333)
+                        new GlutRotation2DButton(nullptr,i++,0,0,0,0,menuTextureDirectory + "menu_link_hexanodes.tga",
+                                                 motion->direction==CCW,motion->direction==CCW,2,finalPos,orient,0.06)
                         );
             }
         }
