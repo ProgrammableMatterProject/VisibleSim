@@ -117,7 +117,7 @@ void HexanodesWorld::createPopupMenu(int ix, int iy) {
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
-    cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace) << " selected" << endl;
+    //cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace) << " selected" << endl;
     GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
     GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
     GlutContext::popupMenu->show(true);

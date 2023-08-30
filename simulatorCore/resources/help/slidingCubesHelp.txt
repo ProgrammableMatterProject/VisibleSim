@@ -1,0 +1,46 @@
+1200 490
+Interface Help
+Keyboard:
+        [F12]: switch RUN Mode/EDIT Mode (see title bar)
+          [h]: show/hide help window
+[q]/[Q]/[ESC]: quit
+      [SPACE]: pause/resume the simulation (REALTIME mode only)
+          [z]: center camera focus on the selected module
+      [+]/[-]: zoom camera in/out
+          [l]: set the light position to the camera position
+          [w]: toggle full screen/window mode
+          [i]: show/enlarge/hide console window
+      [T]/[t]: toggle large/small console font
+          [B]: toggle/hide background
+          [p]: display/hide the data of the hovered module
+
+Run mode Only
+      [r]/[R]: start in realtime/fastest mode
+[PgUp]/[PgDw]: Increase/Decrease module motion speed
+          [s]: save a screenshot to the app folder
+          [S]: starts/ends a video capture to the app folder
+          [!]: export an STL model of the configuration
+-
+Edit mode Only
+     [insert]: add a new module at the red position
+     [delete]: remove the selected module
+        [1-9]: set the color of the selected module
+
+Mouse:
+        <MLB>: change the point of view
+        <MRB>: change the focus point
+      <Wheel>: zoom
+ [Ctrl]+<MLB>: (over a module) select a module
+ [Ctrl]+<MRB>: (over a module) open module context menu
+
+ Popup Menu
+             {Add cube} add a module connected to the selected face
+                   > choose the orientation
+             {Delete block} delete the selected module
+             {Move to...} apply a motion
+                   > by rotating (blue) around the axis
+                   > by translating (green) along the axis
+             {Tap} schedule a tap event for the selected module
+             {Save} save the current configuration in the config file.
+             {Cancel} close the menu
+-

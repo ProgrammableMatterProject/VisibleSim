@@ -54,25 +54,24 @@ namespace SlidingCubes {
     }
 
     void SlidingCubesWorld::createPopupMenu(int ix, int iy) {
-        static const string menuDir = textureDirectory + "menuTextures/";
         if (!GlutContext::popupMenu) {
-            GlutContext::popupMenu = new GlutPopupMenuWindow(NULL, 0, 0, 202, 215);
+            GlutContext::popupMenu = new GlutPopupMenuWindow(nullptr, 0, 0, 202, 215);
             // create submenu "Add"
-            GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(NULL, 0, 0, 202, 112);
+            GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(nullptr, 0, 0, 202, 112);
             addBlockSubMenu->id = 50;
-            addBlockSubMenu->addButton(11, menuDir + "menu_add_normal.tga");
-            addBlockSubMenu->addButton(12, menuDir + "menu_add_same.tga");
-            addBlockSubMenu->addButton(13, menuDir + "menu_add_random.tga");
+            addBlockSubMenu->addButton(11, menuTextureDirectory + "menu_add_normal.tga");
+            addBlockSubMenu->addButton(12, menuTextureDirectory + "menu_add_same.tga");
+            addBlockSubMenu->addButton(13, menuTextureDirectory + "menu_add_random.tga");
             // create submenu "Rotate"
-            GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(NULL, 0, 0, 116, 40);
+            GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(nullptr, 0, 0, 116, 40);
             rotateBlockSubMenu->id = 51;
 
-            GlutContext::popupMenu->addButton(1, menuDir + "menu_add_sub.tga", addBlockSubMenu);
-            GlutContext::popupMenu->addButton(2, menuDir + "menu_del.tga");
-            GlutContext::popupMenu->addButton(6, menuDir + "menu_rotate_sub.tga", rotateBlockSubMenu);
-            GlutContext::popupMenu->addButton(3, menuDir + "menu_tap.tga");
-            GlutContext::popupMenu->addButton(4, menuDir + "menu_save.tga");
-            GlutContext::popupMenu->addButton(5, menuDir + "menu_cancel.tga");
+            GlutContext::popupMenu->addButton(1, menuTextureDirectory + "menu_add_sub_sc.tga", addBlockSubMenu);
+            GlutContext::popupMenu->addButton(2, menuTextureDirectory + "menu_del.tga");
+            GlutContext::popupMenu->addButton(6, menuTextureDirectory + "menu_move_sub.tga", rotateBlockSubMenu);
+            GlutContext::popupMenu->addButton(3, menuTextureDirectory + "menu_tap.tga");
+            GlutContext::popupMenu->addButton(4, menuTextureDirectory + "menu_save.tga");
+            GlutContext::popupMenu->addButton(5, menuTextureDirectory + "menu_cancel.tga");
         }
 
         // update rotateSubMenu depending on rotation catoms3DCapabilities
@@ -95,7 +94,7 @@ namespace SlidingCubes {
                 rule->getFinalPositionAndOrientation(sc, finalPos, finalOrient);
                 cout << "printed: " << (rule->isRotation()?"Rot":"Trs") << ":" << rule->getToID() << "," << finalPos << endl;
                 rotateBlockSubMenu->addButton(
-                        new GlutRBMotionButton(NULL, i++, 0, 0, 0, 0, menuDir + "menu_move_rb.tga", rule->isRotation(),
+                        new GlutRBMotionButton(nullptr, i++, 0, 0, 0, 0, menuTextureDirectory + "menu_move_rb.tga", rule->isRotation(),
                                                rule->getToID(), finalPos, finalOrient));
             }
         }
@@ -436,6 +435,11 @@ namespace SlidingCubes {
         fout << "          endfacet" << endl;
     }
 
+    void SlidingCubesWorld::createHelpWindow() {
+        delete GlutContext::helpWindow;
+        GlutContext::helpWindow = new GlutHelpWindow(nullptr,10,40,540,500,"slidingCubesHelp.txt");
+    }
+
     bool SlidingCubesWorld::exportSTLModel(string title) {
         cout << "Writing STL output file..." << endl;
         Matrix mt;
@@ -473,7 +477,7 @@ namespace SlidingCubes {
 
             // top connector
             if (!block->getInterface(SCLattice2::Direction::PlusZ)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::PlusZ)->connectedInterface->hostBlock == NULL) {
+                block->getInterface(SCLattice2::Direction::PlusZ)->connectedInterface->hostBlock == nullptr) {
                 pos.set(glblock->position[0] - 5.0, glblock->position[1] - 5.0, glblock->position[2] + 5.0);
                 v1.set(10.0, 0.0, 0.0);
                 v2.set(0.0, 10.0, 0.0);
@@ -482,7 +486,7 @@ namespace SlidingCubes {
             }
             // bottom connector
             if (!block->getInterface(SCLattice2::Direction::MinusZ)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::MinusZ)->connectedInterface->hostBlock == NULL) {
+                block->getInterface(SCLattice2::Direction::MinusZ)->connectedInterface->hostBlock == nullptr) {
                 pos.set(glblock->position[0] + 5.0, glblock->position[1] - 5.0, glblock->position[2] - 5.0);
                 v1.set(-10.0, 0.0, 0.0);
                 v2.set(0.0, 10.0, 0.0);
@@ -491,7 +495,7 @@ namespace SlidingCubes {
             }
             // left connector
             if (!block->getInterface(SCLattice2::Direction::MinusX)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::MinusX)->connectedInterface->hostBlock == NULL) {
+                block->getInterface(SCLattice2::Direction::MinusX)->connectedInterface->hostBlock == nullptr) {
                 pos.set(glblock->position[0] - 5.0, glblock->position[1] + 5.0, glblock->position[2] - 5.0);
                 v1.set(0.0, -10.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
@@ -500,7 +504,7 @@ namespace SlidingCubes {
             }
             // right connector
             if (!block->getInterface(SCLattice2::Direction::PlusX)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::PlusX)->connectedInterface->hostBlock == NULL) {
+                block->getInterface(SCLattice2::Direction::PlusX)->connectedInterface->hostBlock == nullptr) {
                 pos.set(glblock->position[0] + 5.0, glblock->position[1] - 5.0, glblock->position[2] - 5.0);
                 v1.set(0.0, 10.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
@@ -509,7 +513,7 @@ namespace SlidingCubes {
             }
             // back connector
             if (!block->getInterface(SCLattice2::Direction::PlusY)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::PlusY)->connectedInterface->hostBlock == NULL) {
+                block->getInterface(SCLattice2::Direction::PlusY)->connectedInterface->hostBlock == nullptr) {
                 pos.set(glblock->position[0] + 5.0, glblock->position[1] + 5.0, glblock->position[2] - 5.0);
                 v1.set(-10.0, 0.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
@@ -518,7 +522,7 @@ namespace SlidingCubes {
             }
             // front connector
             if (!block->getInterface(SCLattice2::Direction::MinusY)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::MinusY)->connectedInterface->hostBlock == NULL) {
+                block->getInterface(SCLattice2::Direction::MinusY)->connectedInterface->hostBlock == nullptr) {
                 pos.set(glblock->position[0] - 5.0, glblock->position[1] - 5.0, glblock->position[2] - 5.0);
                 v1.set(10.0, 0.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);

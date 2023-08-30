@@ -100,6 +100,7 @@ public:
 
     void createPopupMenu(int ix, int iy) override;
     void menuChoice(int n) override;
+    void createHelpWindow() override;
 
         /**
          * \brief Export a 3D model in STL format to print the whole configuration
