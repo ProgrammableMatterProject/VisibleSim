@@ -5,7 +5,7 @@
  * @author yourName
  * @date 2022-09-20
  **/
-#include "e3_LightPathCode.hpp"
+#include "e3_lightpathCode.hpp"
 
 E3_LightPathCode::E3_LightPathCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host),module(host) {
     // @warning Do not remove block below, as a blockcode with a NULL host might be created
