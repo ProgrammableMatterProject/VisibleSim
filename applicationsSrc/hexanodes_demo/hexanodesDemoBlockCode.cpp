@@ -25,9 +25,6 @@ HexanodesDemoBlockCode::HexanodesDemoBlockCode(HexanodesBlock *host):HexanodesBl
     node = (HexanodesBlock*)hostBlock;
 }
 
-HexanodesDemoBlockCode::~HexanodesDemoBlockCode() {
-}
-
 // Function called by the module upon initialization
 void HexanodesDemoBlockCode::startup() {
     HexanodesWorld *wrl = Hexanodes::getWorld();
@@ -36,14 +33,16 @@ void HexanodesDemoBlockCode::startup() {
         // turn clockwise if possible !
         vector<HexanodesMotion*> tab = wrl->getAllMotionsForModule(node);
         console << "#motion=" << tab.size() << "\n";
-        vector<HexanodesMotion*>::const_iterator ci=tab.begin();
+        /*vector<HexanodesMotion*>::const_iterator ci=tab.begin();
         while (ci!=tab.end() && (*ci)->direction!=motionDirection::CW) {
                 ci++;
         }
         if (ci!=tab.end()) {
             Cell3DPosition destination = (*ci)->getFinalPos(node->position);
-						scheduler->schedule(new HexanodesMotionStartEvent(scheduler->now()+1000000, node,destination,(*ci)->getToConId()));
-        }
+            auto orient = (*ci)->getFinalOrientation(module->orientationCode);
+            scheduler->schedule(new HexanodesMotionStartEvent(scheduler->now()+1000000, node,destination,orient));
+        }*/
+        if (canMove(motionDirection::CW)) moveTo(motionDirection::CW,500000);
     }
 }
 
@@ -52,14 +51,13 @@ void HexanodesDemoBlockCode::onMotionEnd() {
 
     // turn clockwise from previousPivot attachment
     HexanodesWorld *wrl = Hexanodes::getWorld();
-    vector<HexanodesMotion*> tab = wrl->getAllMotionsForModule(node);
-    vector<HexanodesMotion*>::const_iterator ci=tab.begin();
-    while (ci!=tab.end() && !((*ci)->direction==motionDirection::CW)) {
+    auto tab = wrl->getAllMotionsForModule(node);
+    auto ci=tab.begin();
+    while (ci!=tab.end() && ((*ci)->direction!=motionDirection::CW)) {
         ci++;
     }
-    if (ci!=tab.end() && nMotions<=5000) {
-        Cell3DPosition destination = (*ci)->getFinalPos(node->position);
-        scheduler->schedule(new HexanodesMotionStartEvent(scheduler->now()+100000, node,destination,(*ci)->getToConId()));
+    if (ci!=tab.end() && nMotions<=500) {
+        moveTo(CW);
     } else {
         cout << "no possible motions..." << endl;
     }

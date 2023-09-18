@@ -36,7 +36,7 @@ void GlBlock::setPosition(const Vector3D &pos) {
 
 const Vector3D GlBlock::getPosition() const {
     return Vector3D(position[0],position[1],position[2],1);
-};
+}
 
 void GlBlock::setColor(const Vector3D &col) {
     color[0] = GLubyte(col[0] * 255.0);

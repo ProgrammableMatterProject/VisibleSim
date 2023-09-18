@@ -21,9 +21,7 @@ using namespace std;
 
 namespace Hexanodes {
 
-    enum motionDirection{CCW,CW};
-
-class HexanodesMotion {
+    class HexanodesMotion {
 public:
     HHLattice::Direction fromConId;
     motionDirection direction;

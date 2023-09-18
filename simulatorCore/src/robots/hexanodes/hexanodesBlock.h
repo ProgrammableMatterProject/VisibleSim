@@ -15,7 +15,6 @@
 
 #include "../../gui/openglViewer.h"
 #include "../../base/buildingBlock.h"
-#include "hexanodesBlockCode.h"
 #include "hexanodesGlBlock.h"
 #include "math/cell3DPosition.h"
 #include "../../grid/lattice.h"
@@ -27,6 +26,7 @@ using namespace BaseSimulator::utils;
 namespace Hexanodes {
 
     class HexanodesBlockCode;
+    enum motionDirection{CCW,CW};
 
 /*! \class HexanodesBlock
  */

@@ -31,7 +31,7 @@ public:
     inline static size_t nMotions = 0;
 
     HexanodesDemoBlockCode(Hexanodes::HexanodesBlock *host);
-    ~HexanodesDemoBlockCode();
+    ~HexanodesDemoBlockCode() override {};
 
     void startup() override;
     //void processLocalEvent(EventPtr pev) override;

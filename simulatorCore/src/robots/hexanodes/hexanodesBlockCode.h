@@ -18,6 +18,7 @@
 #include "../../comm/network.h"
 #include "../../events/scheduler.h"
 
+
 using namespace BaseSimulator;
 
 namespace Hexanodes {
@@ -27,11 +28,14 @@ class HexanodesBlock;
 class HexanodesBlockCode : public BaseSimulator::BlockCode {
 public:
 
-    HexanodesBlockCode(HexanodesBlock *host);
-    virtual ~HexanodesBlockCode();
+    explicit HexanodesBlockCode(HexanodesBlock *host);
+    ~HexanodesBlockCode() override;
 
-    virtual void processLocalEvent(EventPtr pev) override;
-    virtual void onMotionEnd() override {};
+    void processLocalEvent(EventPtr pev) override;
+    void onMotionEnd() override {};
+
+    bool canMove(Hexanodes::motionDirection dir);
+    void moveTo(Hexanodes::motionDirection dir,uint32_t delay=200000);
 
     void addDebugAttributes(Scheduler* scheduler) override;
 };
