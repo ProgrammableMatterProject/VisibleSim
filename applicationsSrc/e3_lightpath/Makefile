@@ -16,15 +16,15 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = myApp.cpp myAppCode.cpp
+SRCS = e3_lightpath.cpp e3_lightpathCode.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/myApp
+OUT = $(APPDIR)/e3_lightpath
 #
 # MODULELIB is the library for your target module type: -lsimBlinkyBlocks
 MODULELIB = -lsimBlinkyBlocks
 # TESTS contains the commands that will be executed when `make test` is called
-TESTS = ../../utilities/blockCodeTest.sh myApp $(OUT)
+TESTS = ../../utilities/blockCodeTest.sh e3_lightpath $(OUT)
 #
 # CUSTOM_LIBS are the external dependencies of your blockcode, empty by default
 CUSTOM_LIBS =
