@@ -244,9 +244,9 @@ namespace BaseSimulator {
 
         void removeTargetCell(const Cell3DPosition &tc);
 
-/**
- * @brief For configuration design only, takes an absolute target as input and make it relative to the cell at pos (min_z, min_y, min_x), and prints the output to stdout
- */
+        /**
+         * @brief For configuration design only, takes an absolute target as input and make it relative to the cell at pos (min_z, min_y, min_x), and prints the output to stdout
+        */
         void relatifyAndPrint();
     };  // class RelativeTargetGrid
 

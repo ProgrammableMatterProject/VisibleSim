@@ -182,6 +182,16 @@ namespace BaseSimulator {
                 }
             }
                 break;
+            case EVENT_REMOVE_NEIGHBOR: {
+                uint64_t face = (std::static_pointer_cast<RemoveNeighborEvent>(pev))->face;
+                onNeighborChanged(face, pev->eventType);
+            }
+                break;
+            case EVENT_ADD_NEIGHBOR: {
+                uint64_t face = (std::static_pointer_cast<RemoveNeighborEvent>(pev))->face;
+                onNeighborChanged(face, pev->eventType);
+            }
+                break;
             case EVENT_TAP: {
                 int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
                 onTap(face);

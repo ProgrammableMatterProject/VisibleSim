@@ -167,18 +167,19 @@ Catoms3DBlock *Catoms3DMotionEngine::findMotionPivot(const Catoms3DBlock *m,
     return nullptr;
 }
 
-bool Catoms3DMotionEngine::isNotLockedForMotion(const Cell3DPosition &origin, const Cell3DPosition &final) {
+bool Catoms3DMotionEngine::isNotLockedForMotion(const Cell3DPosition &origin, const Cell3DPosition &final, bool isHexaFace) {
     Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
     if (!lattice->isFree(final)) return false;
     auto conn = lattice->getRelativeConnectivity(final);
     Cell3DPosition pos0, pos1;
-    for (int i = 0; i < 6; i++) {
-        pos0 = final + conn[i];
-        pos1 = final + conn[i + 6];
-/*        cout << i << ": " << pos0 << " " << int(lattice->isFree(pos0)) << "->"
-             << pos1 << int(lattice->isFree(pos1)) << endl;*/
-        if (pos0 != origin && pos1 != origin && lattice->isInGrid(pos0) && !lattice->isFree(pos0) &&
-            lattice->isInGrid(pos1) && !lattice->isFree(pos1)) return false;
+    // Check if the destination cell is in grid and not locked by two opposite modules
+    if (!isHexaFace) {
+        for (int i = 0; i < 6; i++) {
+            pos0 = final + conn[i];
+            pos1 = final + conn[i + 6];
+            if (pos0 != origin && pos1 != origin && lattice->isInGrid(pos0) && !lattice->isFree(pos0) &&
+                lattice->isInGrid(pos1) && !lattice->isFree(pos1)) return false;
+        }
     }
     return true;
 }
@@ -191,19 +192,19 @@ Catoms3DMotionEngine::getAllRotationsForModule(const Catoms3DBlock *m) {
         Cell3DPosition finalPos;
         short finalOrient;
         auto freeCells = World::getWorld()->lattice->getFreeNeighborCells(m->position);
-        //cout << "nbFreeCells=" << freeCells.size() << endl;
+        cout << "#freeCells=" << freeCells.size() << endl;
         for (const Cell3DPosition &nPos: freeCells) {
             const vector<std::pair<Catoms3DBlock *, const Catoms3DMotionRulesLink *>>
                     pivotLinkPairs = findPivotLinkPairsForTargetCell(m, nPos);
-
+            cout << "#pivotLinkPairs=" << pivotLinkPairs.size() << endl;
             for (const auto &pair: pivotLinkPairs) {
-                //cout << "pair" << pair.first->position << endl;
+                cout << "pair" << pair.first->position << endl;
                 if (pair.first and pair.second) {
                     Catoms3DRotation r = pair.second->getRotations(m, pair.first);
                     // filter final position that are blocked by far away obstacle
                     r.init(((Catoms3DGlBlock *) m->ptrGlBlock)->mat);
                     r.getFinalPositionAndOrientation(finalPos, finalOrient);
-                    if (isNotLockedForMotion(m->position, finalPos)) {
+                    if (isNotLockedForMotion(m->position, finalPos, pair.second->isHexaFace())) {
                         allRotations.emplace_back(pair.second, r);
                     }
                 }

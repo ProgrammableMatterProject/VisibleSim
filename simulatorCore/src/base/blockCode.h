@@ -271,6 +271,13 @@ namespace BaseSimulator {
          */
         virtual void onInterruptionEvent(shared_ptr<Event> event) {};
 
+/**
+         * @brief Callback function called when an neighbor is added or removed
+         * @param face: the connected face number
+         * @param action: EVENT_ADD_NEIGHBOR or EVENT_REMOVE_NEIGHBOR
+         */
+        virtual void onNeighborChanged(uint64_t face, int action) {};
+
         virtual void onEndOfSimulation() {
             cout << "-----------------------------\nEnd of simulation" << endl;
         }

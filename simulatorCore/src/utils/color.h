@@ -32,7 +32,7 @@ public :
     void set(int r,int g,int b);
 //    Color(unsigned char r,unsigned char g,unsigned char b,unsigned char a=255) { color[0]=r/255.0; color[1]=g/255.0; color[2]=b/255.0; color[3]=a/255.0; };
     inline void glColor() { glColor3ubv(_rgb); };
-    void glMaterial(GLenum face, GLenum pname) const;
+    void glMaterial(GLenum face, GLenum pname, float alpha=1.0f) const;
     inline const GLubyte operator[](const int i) const { return _rgb[i]; };
     inline bool operator==(const Color &c) const { return (_rgb[0] == c._rgb[0] && _rgb[1] == c._rgb[1] && _rgb[2] == c._rgb[2]); };
     inline bool operator!=(const Color &c) const { return !(*this==c); };

@@ -244,7 +244,7 @@ void World::menuChoice(int n) {
 
     switch (n) {
     case 1 : {
-        OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
+        OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << int(numSelectedFace) << endl;
         Cell3DPosition nPos;
         if (bb->getNeighborPos(numSelectedFace,nPos)) {
             addBlock(0, bb->buildNewBlockCode, nPos, bb->color);
@@ -255,7 +255,7 @@ void World::menuChoice(int n) {
         }
     } break;
     case 2 : {
-        OUTPUT << "DEL num block : " << mapGlBlocks[numSelectedGlBlock]->blockId << endl;
+        OUTPUT << "DEL num block : " << int(mapGlBlocks[numSelectedGlBlock]->blockId) << endl;
         deleteBlock(bb);
     } break;
     case 3 : {

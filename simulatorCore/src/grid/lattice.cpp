@@ -949,7 +949,7 @@ Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, in
 /************************************************************
  *   SkewFCCLattice::glDraw()
  ************************************************************/
-void SkewFCCLattice::glDraw() {
+void SkewFCCLattice::glDraw() const {
 }
 
 /********************* SCLattice *********************/
@@ -1011,6 +1011,40 @@ string SCLattice::getDirectionString(short d) const {
 Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
     return pRef + nCells[direction];
 }
+
+void SCLattice::glDraw() const {
+    static const float pts[8][3]={{0.1f,0.1f,0.1f},{0.9f,0.1f,0.1f},{0.9f,0.9f,0.1f},{0.1f,0.9f,0.1f},
+                                  {0.1f,0.1f,0.9f},{0.9f,0.1f,0.9f},{0.9f,0.9f,0.9f},{0.1f,0.9f,0.9f}};
+    static const uint8_t quads[24]={3,2,1,0,4,5,6,7,2,3,7,6,0,1,5,4,3,0,4,7,1,2,6,5};
+    if (!mapHighlightedCells.empty()) {
+        glDisable(GL_TEXTURE_2D);
+        Vector3D v;
+        int i;
+        const uint8_t *ptr;
+        Color c;
+        for (const auto& pair : mapHighlightedCells) {
+            glPushMatrix();
+            v = gridToWorldPosition(pair.first);
+            glTranslatef(v[0],v[1],v[2]);
+            glScalef(gridScale[0],gridScale[1],gridScale[2]);
+
+            pair.second.glMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,0.75);
+            glBegin(GL_QUADS);
+            ptr = quads;
+            i=6;
+            while (i--) {
+                glVertex3fv(pts[*ptr++]);
+                glVertex3fv(pts[*ptr++]);
+                glVertex3fv(pts[*ptr++]);
+                glVertex3fv(pts[*ptr++]);
+            }
+            glEnd();
+            glPopMatrix();
+        }
+
+    }
+}
+
 
 /********************* SCLattice2 *********************/
 vector<Cell3DPosition> SCLattice2::nCells2{

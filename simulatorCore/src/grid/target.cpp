@@ -47,7 +47,6 @@ namespace BaseSimulator {
     }
 
     void Target::glDraw() {
-
     }
 
 /************************************************************
@@ -157,6 +156,7 @@ namespace BaseSimulator {
     }
 
     void TargetGrid::highlight() const {
+        Color c;
         for (const auto &pair: tCells) {
             getWorld()->lattice->highlightCell(pair.first, pair.second);
         }
@@ -167,7 +167,6 @@ namespace BaseSimulator {
             getWorld()->lattice->unhighlightCell(pair.first);
         }
     }
-
 
 /************************************************************
  *                      RelativeTargetGrid

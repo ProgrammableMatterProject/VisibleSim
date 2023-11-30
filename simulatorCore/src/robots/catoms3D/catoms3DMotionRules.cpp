@@ -154,6 +154,9 @@ const int *findTab3(int id1,int id2) {
     return tabConnectors3[i-1];
 }
 
+/*
+ * @brief Search the tabConnectors4 line which contains id1 and id2
+ */
 const int *findTab4(int id1,int id2) {
     int i=0,j;
     bool id1found=false,id2found=false;
@@ -264,7 +267,18 @@ void Catoms3DMotionRules::addLinks4(int id1, int id2, int id3, int id4,
     addLink(OctaFace,id4,id3,angle,radius,left,lup,6,tabBC4);
 }
 
-
+/**
+ * @brief add a link between connectors id1 and id2
+ * @param mrlt type of link OctaFace or HexaFace
+ * @param id1 first connector
+ * @param id2 second connector
+ * @param angle rotation angle
+ * @param radius curvature angle
+ * @param axis1 first rotation axis
+ * @param axis2 second rotation axis
+ * @param n number of blocking connectors
+ * @param tabBC list of blocking connector ids
+ */
 void Catoms3DMotionRules::addLink(RotationLinkType mrlt,int id1, int id2,
                                   double angle, double radius,
                                   const Vector3D &axis1,
@@ -283,14 +297,15 @@ void Catoms3DMotionRules::addLink(RotationLinkType mrlt,int id1, int id2,
                                                                tabConnectors[id2],
                                                                angle,radius,ax1,ax2);
     tabConnectors[id1]->addLink(lnk);
-    //OUTPUT << id1 << " -> " << id2 << endl;
+    /*OUTPUT << "Create connector:" << id1 << " -> " << id2 << endl;
+    OUTPUT << "Blocking: ";*/
     for (int i=0; i<n; i++) {
         if (tabBC[i]!=id2) {
             lnk->addBlockingConnector(tabBC[i]);
-            //OUTPUT << tabBC[i] << " ";
+            /*OUTPUT << tabBC[i] << " ";*/
         }
     }
-    //OUTPUT << endl;
+    /*OUTPUT << endl;*/
 }
 
 bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d,

@@ -289,7 +289,7 @@ namespace Catoms3D {
     }
 
     bool Catoms3DBlock::canMoveTo(const Cell3DPosition &dest) const {
-        return Catoms3DMotionEngine::isNotLockedForMotion(position, dest) && canRotateToPosition(dest);
+        return canRotateToPosition(dest);
     }
 
     bool Catoms3DBlock::moveTo(const Cell3DPosition &dest) {

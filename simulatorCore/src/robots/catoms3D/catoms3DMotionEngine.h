@@ -171,7 +171,7 @@ public:
      * @param origin initial position of the module
      * @param final final position after one motion
      */
-    static bool isNotLockedForMotion(const Cell3DPosition &origin,const Cell3DPosition &final);
+    static bool isNotLockedForMotion(const Cell3DPosition &origin,const Cell3DPosition &final, bool isHexaFace);
 };
 
 }

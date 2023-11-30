@@ -911,7 +911,7 @@ namespace BaseSimulator {
          */
         virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2) const override;
 
-        virtual void glDraw();
+        virtual void glDraw() const override;
 
         /**
          * An FCC lattice cell is blocked if there are two occupied cells on opposite directions
@@ -986,6 +986,8 @@ namespace BaseSimulator {
          */
         virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
                                                   int direction) const override;
+
+        virtual void glDraw() const override;
     };
 
 /*! @brief 3D Cubic Lattice for Sliding cubes

@@ -35,11 +35,11 @@ void Color::serialize_cleartext(std::ofstream &dbStream) {
     throw BaseSimulator::NotImplementedException(); // @TODO BP
 }
 
-void Color::glMaterial(GLenum face, GLenum pname) const {
+void Color::glMaterial(GLenum face, GLenum pname, float alpha) const {
     GLfloat v[4];
     v[0] = float(_rgb[0])/255.0f;
     v[1] = float(_rgb[1])/255.0f;
     v[2] = float(_rgb[2])/255.0f;
-    v[3]=1.0;
+    v[3] = alpha;
     glMaterialfv(face,pname,v);
 }
