@@ -9,6 +9,8 @@
  
 #include "myCSGappBBCode.hpp"
 
+int nbIntern=0;
+int currentLayer=-1;
 MyCSGappBBCode::MyCSGappBBCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host),module(host) {
     // @warning Do not remove block below, as a blockcode with a NULL host might be created
     //  for command line parsing
@@ -27,9 +29,27 @@ MyCSGappBBCode::MyCSGappBBCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(ho
 }
 
 void MyCSGappBBCode::startup() {
-    if (getId()==476) {
+    /*if (getId()==476) {
         setColor(RED);
         nbWaitedAnswers=sendMessageToAllNeighbors(new MessageOf<pair<uint16_t,uint16_t>>(BROADCAST_MSG_ID,pair(0,1)),100,0,0);
+    }*/
+    auto lattice = BlinkyBlocksWorld::getWorld()->lattice;
+    static const int relativSize=18;
+    static Cell3DPosition relativ[relativSize]={{-1,0,0},{1,0,0},{0,-1,0},{0,1,0},{0,0,-1},{0,0,1},
+                                                {-1,-1,0},{-1,1,0},{1,-1,0},{1,1,0},
+                                                {-1,0,-1},{-1,0,1},{1,0,-1},{1,0,1},
+                                                {0,-1,-1},{0,-1,1},{0,1,-1},{0,1,1}};
+
+    int n=0;
+    for (int i=0; i<relativSize; i++) {
+        if (!lattice->isFree(module->position+relativ[i])) n++;
+    }
+    isIntern = (n==relativSize);
+    if (isIntern) {
+        nbIntern++;
+        setColor(RED);
+    } else {
+        setColor(GREEN);
     }
 }
 
@@ -69,5 +89,52 @@ void MyCSGappBBCode::myBackFunc(std::shared_ptr<Message>_msg, P2PNetworkInterfac
         } else {
             sendMessage(new MessageOf<uint16_t>(BACK_MSG_ID,maxDistance),parent,1000,100);
         }
+    }
+}
+
+void MyCSGappBBCode::selectLayer() {
+    auto bbs=BlinkyBlocksWorld::getWorld()->getMap();
+    cout << "nbIntern=" << nbIntern << endl;
+    if (currentLayer==-1) {
+        for (auto &bb:bbs) {
+            bb.second->ptrGlBlock->setVisible(true);
+        }
+    } else {
+        for (auto &bb: bbs) {
+            bb.second->ptrGlBlock->setVisible(bb.second->position[2] <= currentLayer);
+            bb.second->ptrGlBlock->setColor((bb.second->position[2] == currentLayer)?(((MyCSGappBBCode*)(bb.second->blockCode))->isIntern?RED:GREEN):YELLOW);
+        }
+    }
+}
+
+
+void MyCSGappBBCode::onBlockSelected() {
+    currentLayer = module->position[2];
+    selectLayer();
+}
+
+void MyCSGappBBCode::onUserKeyPressed(unsigned char c, int x, int y) {
+    if (getId()!=1) return;
+    switch (c) {
+        case 'a' : // update with your code
+            currentLayer=-1;
+            selectLayer();
+            break;
+    }
+}
+
+void MyCSGappBBCode::onUserArrowKeyPressed(unsigned char c, int x, int y) {
+    if (getId()!=1) return;
+    switch (c) {
+        case GLUT_KEY_UP:
+            std::cout << "key up" << endl;
+            currentLayer++;
+            selectLayer();
+            break;
+        case GLUT_KEY_DOWN:
+            std::cout << "key down" << endl;
+            currentLayer--;
+            selectLayer();
+            break;
     }
 }

@@ -232,7 +232,14 @@ namespace BaseSimulator {
          * @return number of neighbor for this block
          */
         uint8_t getNbNeighbors() const;
-        uint8_t neighborCount() const { return getNbNeighbors(); };
+        inline uint8_t neighborCount() const { return getNbNeighbors(); };
+
+        /**
+         * @brief Returns the number of neighbors that are visible for this block
+         * @return number of visible neighbor for this block
+         */
+        uint8_t getNbVisibleNeighbors() const;
+
 
         /**
          * @return Returns a vector of pointers to all neighbor module

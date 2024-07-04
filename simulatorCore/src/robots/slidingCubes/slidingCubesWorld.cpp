@@ -241,7 +241,7 @@ namespace SlidingCubes {
         glDisable(GL_TEXTURE_2D);
         lock();
         for (const auto &pair: mapGlBlocks) {
-            ((SlidingCubesGlBlock *) pair.second)->glDraw(objBlock);
+            if (pair.second->isVisible()) ((SlidingCubesGlBlock *) pair.second)->glDraw(objBlock);
         }
         unlock();
 
@@ -454,7 +454,7 @@ namespace SlidingCubes {
             if (pair.second->getState() != BuildingBlock::REMOVED
                 and (pair.second->ptrGlBlock and pair.second->ptrGlBlock->isVisible())) {
                 SlidingCubesBlock *rb = (SlidingCubesBlock *) pair.second;
-                if (rb->getNbNeighbors() < 6) { // moins de 6 voisins
+                if (rb->getNbVisibleNeighbors() < 6) { // moins de 6 voisins
                     rb->setColor(RED);
                     borderBlocks.push_back(rb);
                 }
@@ -477,7 +477,8 @@ namespace SlidingCubes {
 
             // top connector
             if (!block->getInterface(SCLattice2::Direction::PlusZ)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::PlusZ)->connectedInterface->hostBlock == nullptr) {
+                block->getInterface(SCLattice2::Direction::PlusZ)->connectedInterface->hostBlock == nullptr ||
+                !block->getInterface(SCLattice2::Direction::PlusZ)->connectedInterface->hostBlock->ptrGlBlock->isVisible()) {
                 pos.set(glblock->position[0] - 5.0, glblock->position[1] - 5.0, glblock->position[2] + 5.0);
                 v1.set(10.0, 0.0, 0.0);
                 v2.set(0.0, 10.0, 0.0);
@@ -486,7 +487,8 @@ namespace SlidingCubes {
             }
             // bottom connector
             if (!block->getInterface(SCLattice2::Direction::MinusZ)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::MinusZ)->connectedInterface->hostBlock == nullptr) {
+                block->getInterface(SCLattice2::Direction::MinusZ)->connectedInterface->hostBlock == nullptr||
+                !block->getInterface(SCLattice2::Direction::MinusZ)->connectedInterface->hostBlock->ptrGlBlock->isVisible()) {
                 pos.set(glblock->position[0] + 5.0, glblock->position[1] - 5.0, glblock->position[2] - 5.0);
                 v1.set(-10.0, 0.0, 0.0);
                 v2.set(0.0, 10.0, 0.0);
@@ -495,7 +497,8 @@ namespace SlidingCubes {
             }
             // left connector
             if (!block->getInterface(SCLattice2::Direction::MinusX)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::MinusX)->connectedInterface->hostBlock == nullptr) {
+                block->getInterface(SCLattice2::Direction::MinusX)->connectedInterface->hostBlock == nullptr||
+                !block->getInterface(SCLattice2::Direction::MinusX)->connectedInterface->hostBlock->ptrGlBlock->isVisible()) {
                 pos.set(glblock->position[0] - 5.0, glblock->position[1] + 5.0, glblock->position[2] - 5.0);
                 v1.set(0.0, -10.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
@@ -504,7 +507,8 @@ namespace SlidingCubes {
             }
             // right connector
             if (!block->getInterface(SCLattice2::Direction::PlusX)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::PlusX)->connectedInterface->hostBlock == nullptr) {
+                block->getInterface(SCLattice2::Direction::PlusX)->connectedInterface->hostBlock == nullptr||
+                !block->getInterface(SCLattice2::Direction::PlusX)->connectedInterface->hostBlock->ptrGlBlock->isVisible()) {
                 pos.set(glblock->position[0] + 5.0, glblock->position[1] - 5.0, glblock->position[2] - 5.0);
                 v1.set(0.0, 10.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
@@ -513,7 +517,8 @@ namespace SlidingCubes {
             }
             // back connector
             if (!block->getInterface(SCLattice2::Direction::PlusY)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::PlusY)->connectedInterface->hostBlock == nullptr) {
+                block->getInterface(SCLattice2::Direction::PlusY)->connectedInterface->hostBlock == nullptr||
+                !block->getInterface(SCLattice2::Direction::PlusY)->connectedInterface->hostBlock->ptrGlBlock->isVisible()) {
                 pos.set(glblock->position[0] + 5.0, glblock->position[1] + 5.0, glblock->position[2] - 5.0);
                 v1.set(-10.0, 0.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);
@@ -522,7 +527,8 @@ namespace SlidingCubes {
             }
             // front connector
             if (!block->getInterface(SCLattice2::Direction::MinusY)->isConnected() ||
-                block->getInterface(SCLattice2::Direction::MinusY)->connectedInterface->hostBlock == nullptr) {
+                block->getInterface(SCLattice2::Direction::MinusY)->connectedInterface->hostBlock == nullptr||
+                !block->getInterface(SCLattice2::Direction::MinusY)->connectedInterface->hostBlock->ptrGlBlock->isVisible()) {
                 pos.set(glblock->position[0] - 5.0, glblock->position[1] - 5.0, glblock->position[2] - 5.0);
                 v1.set(10.0, 0.0, 0.0);
                 v2.set(0.0, 0.0, 10.0);

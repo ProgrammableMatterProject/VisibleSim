@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no" ?>
 <world gridSize="15,15,6" windowSize="1280,720" >
-	<camera target="41.4196,26.8882,15.9999" directionSpherical="-22.9183,30,100" angle="30.000000" near="1.000000" far="300.000000" />
+	<camera target="41.4196,26.8882,15.9999" directionSpherical="-22.9183,30,100" angle="30.000000" near="1.000000" far="600.000000" />
 
 	<blockList color="128,128,128" blockSize="10,10,10">
 		<block position="2,2,0" orientation="1" color="128,128,64"/>

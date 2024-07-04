@@ -25,24 +25,28 @@ namespace BaseSimulator {
             Target::targetNode = targetListNode->IterateChildren(targetNode);
 
             if (Target::targetNode) {
+                Color defaultColor = Color();
                 TiXmlElement *element = Target::targetNode->ToElement();
-                const char *attr = element->Attribute("format");
+                const char *attr = element->Attribute("color");
+                if (attr) {
+                    defaultColor = BaseSimulator::Simulator::extractColorFromString(attr);
+                }
+
+                attr = element->Attribute("format");
                 if (attr) {
                     string str(attr);
                     if (str.compare("grid") == 0) {
-                        return new TargetGrid(Target::targetNode);
+                        return new TargetGrid(Target::targetNode,defaultColor);
                     } else if (str.compare("csg") == 0) {
                         return new TargetCSG(Target::targetNode);
                     } else if (str.compare("relativeGrid") == 0) {
-                        return new RelativeTargetGrid(Target::targetNode);
+                        return new RelativeTargetGrid(Target::targetNode,defaultColor);
                     }
                 } else {
                     throw UnknownTargetFormatException(attr);
                 }
             }
         }
-
-
         return NULL;
     }
 
@@ -62,12 +66,11 @@ namespace BaseSimulator {
  *                      TargetGrid
  ************************************************************/
 
-    TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
+    TargetGrid::TargetGrid(TiXmlNode *targetNode,const Color &defaultColor) : Target(targetNode) {
         TiXmlNode *cellNode = targetNode->FirstChild("cell");
         const char *attr;
         TiXmlElement *element;
         Cell3DPosition position;
-        Color defaultColor = Color();
         Color color;
 
         // Parse individual cells

@@ -198,10 +198,11 @@ string Lattice::getDirectionString(short d) const {
 }
 
 void Lattice::highlightCell(const Cell3DPosition& pos, const Color &color) {
-    if (mapHighlightedCells.find(pos) != mapHighlightedCells.end())
+    if (mapHighlightedCells.find(pos) != mapHighlightedCells.end()) {
         mapHighlightedCells[pos] = color;
-    else
+    } else {
         mapHighlightedCells.insert(make_pair(pos, color));
+    }
 }
 
 void Lattice::unhighlightCell(const Cell3DPosition& pos) {
@@ -494,6 +495,71 @@ vector<Cell3DPosition> HHLattice::getRelativeConnectivity(const Cell3DPosition &
 
 Cell3DPosition HHLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {
     return pRef + getRelativeConnectivity(pRef)[direction];
+}
+
+void HHLattice::glDraw() const {
+   /*static const GLfloat white[] = {10.0, 0.0, 0.0, 1.0},
+            gray[] = {0.2, 0.2, 0.2, 1.0}, black[] = {0.0, 0.0, 0.0, 1.0};
+    glMaterialfv(GL_FRONT, GL_AMBIENT, gray);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, black);
+    glMaterialf(GL_FRONT, GL_SHININESS, 40.0);*/
+    glPushMatrix();
+    enableTexture(false);
+
+    if (!mapHighlightedCells.empty()) {
+        glDisable(GL_TEXTURE_2D);
+        Vector3D v;
+        int i;
+        const uint8_t *ptr;
+        Color c(1.0,1.0,0);
+        for (const auto& pair : mapHighlightedCells) {
+            glPushMatrix();
+                v = gridToWorldPosition(pair.first);
+                glTranslatef(v[0],v[1],v[2]);
+                glScalef(gridScale[0],gridScale[1],1.0);
+
+                pair.second.glMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,0.75);
+                //c.glMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,0.75);
+            glNormal3f(0, 0, 1.0f);
+
+            glBegin(GL_TRIANGLE_FAN);
+                glVertex3f(0.0, 0.0f,1.0f);
+                glVertex3f(-0.5f, 0.0f,1.0f);
+                glVertex3f(-0.25,-0.5*M_SQRT3_2, 1.0f);
+                glVertex3f(+0.25,-0.5*M_SQRT3_2, 1.0f);
+                glVertex3f(0.5f, 0.0f,1.0f);
+                glVertex3f(+0.25,0.5*M_SQRT3_2, 1.0f);
+                glVertex3f(-0.25,0.5*M_SQRT3_2, 1.0f);
+                glVertex3f(-0.5f, 0.0f,1.0f);
+            glEnd();
+
+            glPopMatrix();
+        }
+
+    }
+    /*
+static const GLfloat white[] = {1.0, 1.0, 1.0, 1.0},
+        gray[] = {0.2, 0.2, 0.2, 1.0}, black[] = {0.0, 0.0, 0.0, 1.0};
+glMaterialfv(GL_FRONT, GL_AMBIENT, gray);
+glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+glMaterialfv(GL_FRONT, GL_SPECULAR, black);
+glMaterialf(GL_FRONT, GL_SHININESS, 40.0);
+glPushMatrix();
+enableTexture(false);
+glNormal3f(0, 0, 1.0f);
+
+glBegin(GL_QUADS);
+//glTexCoord2f(0, 0);
+glVertex3f(0.0f, 0.0f,1.0f);
+//glTexCoord2f(0.5 * gridSize[0], 0);
+glVertex3f(gridSize[0] * gridScale[0], 0.0f, 1.0f);
+//glTexCoord2f(0.5 * (gridSize[0] + 0.5 * gridSize[1]), 0.5 * gridSize[1]);
+glVertex3f((gridSize[0] + 0.5 * gridSize[1]) * gridScale[0],gridSize[1] * gridScale[1] * M_SQRT3_2, 1.0f);
+//glTexCoord2f(0.25 * gridSize[1], 0.5 * gridSize[1]);
+glVertex3f(0.5 * gridSize[1] * gridScale[0],gridSize[1] * gridScale[1] * M_SQRT3_2, 10.0f);
+glEnd();
+glPopMatrix();*/
 }
 
 
@@ -1005,7 +1071,6 @@ short SCLattice::getOppositeDirection(short d) const {
 string SCLattice::getDirectionString(short d) const {
     return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
            directionName[d] : "undefined";
-
 }
 
 Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction) const {

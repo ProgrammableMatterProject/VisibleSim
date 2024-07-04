@@ -176,6 +176,16 @@ namespace BaseSimulator {
         return n;
     }
 
+    uint8_t BuildingBlock::getNbVisibleNeighbors() const {
+        uint8_t n = 0;
+
+        for (const P2PNetworkInterface* p2p : P2PNetworkInterfaces) {
+            n+=p2p->isConnected() && p2p->connectedInterface->hostBlock->ptrGlBlock->isVisible();
+        }
+        return n;
+    }
+
+
     vector<BuildingBlock*> BuildingBlock::getNeighbors() const {
         vector<BuildingBlock*> res;
         for (P2PNetworkInterface* p2p:P2PNetworkInterfaces) {
@@ -185,7 +195,6 @@ namespace BaseSimulator {
         }
         return res;
     }
-
 
     bool BuildingBlock::getNeighborPos(uint8_t connectorId,Cell3DPosition &pos) const {
         Lattice *lattice = getWorld()->lattice;

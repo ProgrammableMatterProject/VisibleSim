@@ -7,6 +7,9 @@
  **/
  #include "demo01_SCCode.hpp"
 
+int nbIntern=0;
+int currentLayer=-1;
+
 Demo01_SCCode::Demo01_SCCode(SlidingCubesBlock *host):SlidingCubesBlockCode(host),module(host) {
     // @warning Do not remove block below, as a blockcode with a NULL host might be created
     //  for command line parsing
@@ -14,51 +17,118 @@ Demo01_SCCode::Demo01_SCCode(SlidingCubesBlock *host):SlidingCubesBlockCode(host
 
     // Registers a callback (myBroadcastFunc) to the message of type R
     addMessageEventFunc2(BROADCAST_MSG_ID,
-                       std::bind(&Demo01_SCCode::myBroadcastFunc,this,
-                       std::placeholders::_1, std::placeholders::_2));
+                         std::bind(&Demo01_SCCode::myBroadcastFunc,this,
+                                   std::placeholders::_1, std::placeholders::_2));
 
+    // Registers a callback (myBackFunc) to the message of type C
+    addMessageEventFunc2(BACK_MSG_ID,
+                         std::bind(&Demo01_SCCode::myBackFunc,this,
+                                   std::placeholders::_1, std::placeholders::_2));
 }
 
 void Demo01_SCCode::startup() {
-    console << "start " << module->blockId << "\n";
-    setColor(startColor);
-    if (sourceDir!=Cell3DPosition(0,0,0)) { // code for module whith sourceDir
-        setColor(RED);
-        auto connectors = getAllConnectedInterfaces();
-        if (connectors.find(SCLattice2::PlusX)!=connectors.end()) { // if connected send PURPLE color
-            sendMessage(new MessageOf<int>(BROADCAST_MSG_ID, 18), connectors[SCLattice2::PlusX], 1000, 0);
-        }
-	}
-    if (sourceOmni) { // code for module#3 only
-        setColor(WHITE);
-        auto connectors = getAllConnectedInterfaces();
-        int i=1;
-        for (auto p:connectors) {
-            sendMessage(new MessageOf<int>(BROADCAST_MSG_ID, i++), p.second, 1000, 0);
-        }
+    auto lattice = SlidingCubesWorld::getWorld()->lattice;
+    static const int relativSize=18;
+    static Cell3DPosition relativ[relativSize]={{-1,0,0},{1,0,0},{0,-1,0},{0,1,0},{0,0,-1},{0,0,1},
+                                                {-1,-1,0},{-1,1,0},{1,-1,0},{1,1,0},
+                                                {-1,0,-1},{-1,0,1},{1,0,-1},{1,0,1},
+                                                {0,-1,-1},{0,-1,1},{0,1,-1},{0,1,1}};
+
+    int n=0;
+    for (int i=0; i<relativSize; i++) {
+        if (!lattice->isFree(module->position+relativ[i])) n++;
+    }
+    isIntern = (n==relativSize);
+    if (isIntern) {
+        nbIntern++;
+        setVisible(false);
+    } else {
+        setColor(GREEN);
     }
 }
 
 void Demo01_SCCode::myBroadcastFunc(std::shared_ptr<Message>_msg, P2PNetworkInterface*sender) {
-    MessageOf<int>* msg = static_cast<MessageOf<int>*>(_msg.get());
-    int msgData = *msg->getData();
-    setColor(msgData);
+    MessageOf<pair<uint16_t,uint16_t>>*msg = static_cast<MessageOf<pair<uint16_t,uint16_t>>*>(_msg.get());
+    pair<uint16_t,uint16_t> msgData = *msg->getData();
+    uint16_t msgDist=msgData.first;
+    uint16_t msgRound=msgData.second;
+
+//    console << "rec. Flood (" << msgDist << "," << msgRound << ") from " << sender->getConnectedBlockId() << "\n";
+    if (parent==nullptr || msgDist<distance) {
+        distance=msgDist;
+        maxDistance=distance;
+        setColor(distance);
+        currentRound=msgRound;
+        parent=sender;
+        nbWaitedAnswers=sendMessageToAllNeighbors(new MessageOf<pair<int,int>>(BROADCAST_MSG_ID,make_pair(distance+1,currentRound)),1000,100,1,sender);
+        if (nbWaitedAnswers==0) {
+            sendMessage(new MessageOf<uint16_t>(BACK_MSG_ID,distance),parent,10,0);
+        }
+    } else {
+        sendMessage(new MessageOf<uint16_t>(BACK_MSG_ID,0),sender,10,0);
+    }
 }
 
-void Demo01_SCCode::parseUserBlockElements(TiXmlElement *config) {
-    sourceDir=Cell3DPosition(0,0,0);
-    sourceOmni=false;
-    const char *attr = config->Attribute("sourceDir");
+void Demo01_SCCode::myBackFunc(std::shared_ptr<Message>_msg, P2PNetworkInterface*sender) {
+    MessageOf<uint16_t>* msg = static_cast<MessageOf<uint16_t>*>(_msg.get());
+    uint16_t msgData = *msg->getData();
 
-    sourceDir = (attr!=nullptr?Simulator::extractCell3DPositionFromString(attr):Cell3DPosition(0,0,0));
-    attr = config->Attribute("sourceOmni");
-    sourceOmni = (attr!=nullptr?Simulator::extractBoolFromString(attr):false);
+    nbWaitedAnswers--;
+    if (msgData>maxDistance) maxDistance=msgData;
+    console << "rec. Ack(" << int(msgData) << ") from " << sender->getConnectedBlockId() << "\n";
+    if (nbWaitedAnswers==0) {
+        if (parent==nullptr) {
+            setColor(WHITE);
+            cout << "#------------------------------------#\nExcentricity="<< maxDistance << endl;
+        } else {
+            sendMessage(new MessageOf<uint16_t>(BACK_MSG_ID,maxDistance),parent,1000,100);
+        }
+    }
 }
 
-void Demo01_SCCode::parseUserElements(TiXmlDocument *config) {
-    TiXmlNode *node = config->FirstChild("parameters");
-    if (!node) return;
-    TiXmlElement *element = node->ToElement();
-    const char *attr = element->Attribute("startColor");
-    startColor=(attr!=nullptr?Simulator::extractColorFromString(attr):GREY);
+void Demo01_SCCode::selectLayer() {
+    auto bbs=SlidingCubesWorld::getWorld()->getMap();
+    cout << "nbIntern=" << nbIntern << endl;
+    if (currentLayer==-1) {
+        for (auto &bb:bbs) {
+            bb.second->ptrGlBlock->setVisible(!((Demo01_SCCode*)(bb.second->blockCode))->isIntern);
+        }
+    } else {
+        for (auto &bb: bbs) {
+            bb.second->ptrGlBlock->setVisible(!((Demo01_SCCode*)(bb.second->blockCode))->isIntern && bb.second->position[2] <= currentLayer);
+            bb.second->ptrGlBlock->setColor((bb.second->position[2] == currentLayer)?(((Demo01_SCCode*)(bb.second->blockCode))->isIntern?RED:GREEN):YELLOW);
+        }
+    }
+}
+
+
+void Demo01_SCCode::onBlockSelected() {
+    currentLayer = module->position[2];
+    selectLayer();
+}
+
+void Demo01_SCCode::onUserKeyPressed(unsigned char c, int x, int y) {
+    if (getId()!=1) return;
+    switch (c) {
+        case 'a' : // update with your code
+            currentLayer=-1;
+            selectLayer();
+            break;
+    }
+}
+
+void Demo01_SCCode::onUserArrowKeyPressed(unsigned char c, int x, int y) {
+    if (getId()!=1) return;
+    switch (c) {
+        case GLUT_KEY_UP:
+            std::cout << "key up" << endl;
+            currentLayer++;
+            selectLayer();
+            break;
+        case GLUT_KEY_DOWN:
+            std::cout << "key down" << endl;
+            currentLayer--;
+            selectLayer();
+            break;
+    }
 }

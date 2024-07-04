@@ -30,6 +30,9 @@ void HexanodesDemoBlockCode::startup() {
     HexanodesWorld *wrl = Hexanodes::getWorld();
     // Dummy translation example
     if (node->blockId == 1) {
+        if (target) {
+            target->highlight();
+        }
         // turn clockwise if possible !
         vector<HexanodesMotion*> tab = wrl->getAllMotionsForModule(node);
         console << "#motion=" << tab.size() << "\n";

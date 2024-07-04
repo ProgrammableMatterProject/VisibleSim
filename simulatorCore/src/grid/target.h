@@ -174,7 +174,7 @@ namespace BaseSimulator {
          *   ...
          * </target>
          */
-        TargetGrid(TiXmlNode *targetNode);
+        TargetGrid(TiXmlNode *targetNode,const Color &defaultColor);
 
         virtual ~TargetGrid() {};
 
@@ -212,7 +212,7 @@ namespace BaseSimulator {
     public:
         std::list<Cell3DPosition> *targetCellsInConstructionOrder = NULL; //todo protected
 
-        RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
+        RelativeTargetGrid(TiXmlNode *targetNode,const Color &defaultColor) : TargetGrid(targetNode,defaultColor) {};
 
         virtual ~RelativeTargetGrid() {
             delete origin;

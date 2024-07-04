@@ -648,10 +648,38 @@ add_executable(myCSGapp applicationsSrc/myCSGapp/myCSGapp.cpp applicationsSrc/my
 target_link_libraries(myCSGapp -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS myCSGapp RUNTIME DESTINATION applicationsBin/myCSGapp)
 
+add_executable(myCylinder applicationsSrc/myCylinder/myCylinder.cpp applicationsSrc/myCylinder/myCylinderCode.cpp)
+target_link_libraries(myCylinder -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS myCylinder RUNTIME DESTINATION applicationsBin/myCylinder)
+
+add_executable(myBridgeApp applicationsSrc/myBridgeApp/myBridgeApp.cpp applicationsSrc/myBridgeApp/myBridgeAppCode.cpp applicationsSrc/myBridgeApp/mypolygon.cpp applicationsSrc/myBridgeApp/vector2D.cpp)
+target_link_libraries(myBridgeApp -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS myBridgeApp RUNTIME DESTINATION applicationsBin/myCylinder)
+
+add_executable(TextAppGenerator applicationsSrc/TextAppGenerator/TextAppGenerator.cpp applicationsSrc/TextAppGenerator/TextAppGeneratorCode.cpp)
+target_link_libraries(TextAppGenerator -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS TextAppGenerator RUNTIME DESTINATION applicationsBin/TextAppGenerator)
+
 add_executable(myCSGappBB applicationsSrc/myCSGappBB/myCSGappBB.cpp applicationsSrc/myCSGappBB/myCSGappBBCode.cpp)
 target_link_libraries(myCSGappBB -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS myCSGappBB RUNTIME DESTINATION applicationsBin/myCSGappBB)
 
+add_executable(BBbalance applicationsSrc/BBbalance/BBbalance.cpp applicationsSrc/BBbalance/BBbalanceCode.cpp applicationsSrc/BBbalance/SupportPolygon.cpp applicationsSrc/BBbalance/SupportPolygon.h)
+target_link_libraries(BBbalance -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d)
+install(TARGETS BBbalance RUNTIME DESTINATION applicationsBin/BBbalance)
+
+add_executable(BBshapeRecognition applicationsSrc/BBshapeRecognition/BBshapeRecognition.cpp applicationsSrc/BBshapeRecognition/BBshapeRecognitionCode.cpp
+        applicationsSrc/BBshapeRecognition/neuralNetworkData.h)
+target_link_libraries(BBshapeRecognition -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d)
+install(TARGETS BBshapeRecognition RUNTIME DESTINATION applicationsBin/BBshapeRecognition)
+
+add_executable(XBlock applicationsSrc/XBlock/XBlock.cpp applicationsSrc/XBlock/XBlockCode.cpp)
+target_link_libraries(XBlock -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d)
+install(TARGETS XBlock RUNTIME DESTINATION applicationsBin/XBlock)
+
+add_executable(datomMotions applicationsSrc/datomMotions/datomMotions.cpp applicationsSrc/datomMotions/datomMotionsCode.cpp)
+target_link_libraries(datomMotions -lDatoms -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d)
+install(TARGETS datomMotions RUNTIME DESTINATION applicationsBin/datomMotions)
 #################################################################################
 ############################ REPLAYER ###########################################
 #################################################################################

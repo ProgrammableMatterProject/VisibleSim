@@ -25,8 +25,6 @@ void HexanodesGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     static GLint idTextureDigits = loadTexture("../../simulatorCore/resources/textures/smartBlocksTextures/digits.tga",lx,ly);
 #endif
     glPushMatrix();
-
-
     mat.glMultMatrix();
     if (highlighted) {
         GLfloat n = 0.5+1.5*(1.0-(glutGet(GLUT_ELAPSED_TIME)%1000)/1000.0);

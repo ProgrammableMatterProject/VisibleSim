@@ -1,4 +1,6 @@
 #include "blinkyBlocksGlBlock.h"
+#include "blinkyBlocksBlock.h"
+#include "blinkyBlocksWorld.h"
 #include <sstream>
 
 namespace BlinkyBlocks {
@@ -56,4 +58,12 @@ namespace BlinkyBlocks {
         return out.str();
     }
 
+    void BlinkyBlocksGlBlock::fireSelectedTrigger() {
+        Lattice *lattice = World::getWorld()->lattice;
+        const Cell3DPosition& bbPos = lattice->worldToGridPosition(getPosition());
+        BlinkyBlocksBlock* BB = static_cast<BlinkyBlocksBlock*>(lattice->getBlock(bbPos));
+
+        // custom user debug procedure
+        if (BB and BB->blockCode) BB->blockCode->onBlockSelected();
+    }
 }

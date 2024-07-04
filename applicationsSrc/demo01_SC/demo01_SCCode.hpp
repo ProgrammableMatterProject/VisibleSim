@@ -14,16 +14,21 @@
 #include "robots/slidingCubes/slidingCubesBlockCode.h"
 
 static const int BROADCAST_MSG_ID = 1001;
+static const int BACK_MSG_ID = 1002;
 
 using namespace SlidingCubes;
 
 class Demo01_SCCode : public SlidingCubesBlockCode {
 private:
     SlidingCubesBlock *module = nullptr;
-    bool sourceOmni;
-    Color startColor;
-    Cell3DPosition sourceDir;
+    uint16_t distance=0;
+    uint16_t currentRound=0;
+    int nbWaitedAnswers=0;
+    P2PNetworkInterface *parent= nullptr;
+    uint16_t maxDistance=0;
 public :
+    bool isIntern=false;
+
     Demo01_SCCode(SlidingCubesBlock *host);
     ~Demo01_SCCode() {};
 
@@ -42,20 +47,38 @@ public :
     void myBroadcastFunc(std::shared_ptr<Message>_msg,P2PNetworkInterface *sender);
 
 /**
-  * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it.
-  * @param config : pointer to the TiXmlDocument representing the configuration file, all information related to VisibleSim's core have already been parsed
-  *
-  * Called from BuildingBlock constructor, only once.
+  * @brief Message handler for the message 'back'
+  * @param _msg Pointer to the message received by the module, requires casting
+  * @param sender Connector of the module that has received the message and that is connected to the sender
   */
-    void parseUserElements(TiXmlDocument *config) override;
+    void myBackFunc(std::shared_ptr<Message>_msg,P2PNetworkInterface *sender);
 
 /**
-  * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from each block config. Has to be overridden in the child class.
-  * @param config : pointer to the TiXmlElement representing the block configuration file, all information related to concerned block have already been parsed
-  *
+  * User-implemented debug function that gets called when a module is selected in the GUI
   */
-    void parseUserBlockElements(TiXmlElement *config) override;
+    void onBlockSelected() override;
 
+    /**
+  * User-implemented keyboard handler function that gets called when
+  *  a key press event could not be caught by openglViewer
+  * @param c key that was pressed (see openglViewer.cpp)
+  * @param x location of the pointer on the x axis
+  * @param y location of the pointer on the y axis
+  * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
+  */
+    void onUserKeyPressed(unsigned char c, int x, int y) override;
+
+/**
+  * User-implemented keyboard handler function that gets called when
+  *  a special key press event is produced
+  * @param c key code that was pressed (see openglViewer.cpp)
+  * @param x location of the pointer on the x axis
+  * @param y location of the pointer on the y axis
+  * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
+  */
+    void onUserArrowKeyPressed(unsigned char c, int x, int y) override;
+
+    void selectLayer();
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {

@@ -645,6 +645,8 @@ namespace BaseSimulator {
         virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,int direction) const override;
 
         Cell3DPosition getNeighborRelativePos(Direction d) const  { return nCells[d]; }
+
+        void glDraw() const override;
     };
 
 

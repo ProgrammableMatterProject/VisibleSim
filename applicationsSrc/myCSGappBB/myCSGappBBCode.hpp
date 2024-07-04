@@ -27,7 +27,9 @@ private:
     P2PNetworkInterface *parent= nullptr;
     uint16_t maxDistance=0;
 public :
-	MyCSGappBBCode(BlinkyBlocksBlock *host);
+    bool isIntern=false;
+
+    MyCSGappBBCode(BlinkyBlocksBlock *host);
 	~MyCSGappBBCode() {};
 
 /**
@@ -51,7 +53,32 @@ public :
   */
     void myBackFunc(std::shared_ptr<Message>_msg,P2PNetworkInterface *sender);
 
+    /**
+  * User-implemented debug function that gets called when a module is selected in the GUI
+  */
+    void onBlockSelected() override;
 
+    /**
+  * User-implemented keyboard handler function that gets called when
+  *  a key press event could not be caught by openglViewer
+  * @param c key that was pressed (see openglViewer.cpp)
+  * @param x location of the pointer on the x axis
+  * @param y location of the pointer on the y axis
+  * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
+  */
+    void onUserKeyPressed(unsigned char c, int x, int y) override;
+
+/**
+  * User-implemented keyboard handler function that gets called when
+  *  a special key press event is produced
+  * @param c key code that was pressed (see openglViewer.cpp)
+  * @param x location of the pointer on the x axis
+  * @param y location of the pointer on the y axis
+  * @note call is made from GlutContext::keyboardFunc (openglViewer.h)
+  */
+    void onUserArrowKeyPressed(unsigned char c, int x, int y) override;
+
+    void selectLayer();
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {

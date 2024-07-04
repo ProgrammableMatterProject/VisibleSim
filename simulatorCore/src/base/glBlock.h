@@ -50,7 +50,7 @@ public :
     /**
      * Triggers the function of this GlBlock's BlockCode that should be called when this block is selected
      */
-    virtual void fireSelectedTrigger() {};
+    virtual void fireSelectedTrigger() { };
 
     virtual void glDraw(ObjLoader::ObjLoader *ptrObj) {};
     virtual void glDrawShadows(ObjLoader::ObjLoader *ptrObj) { glDraw(ptrObj); };

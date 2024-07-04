@@ -19,6 +19,8 @@ public :
     BlinkyBlocksGlBlock(bID id) : GlBlock(id) {};
     virtual ~BlinkyBlocksGlBlock() {};
 
+    void fireSelectedTrigger() override;
+
     virtual void glDraw(ObjLoader::ObjLoader *ptrObj) override;
     virtual void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;
     virtual void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) override;
@@ -26,7 +28,6 @@ public :
     string getInfo() const override;
 
     string getPopupInfo() const override;
-
 
 };
 }

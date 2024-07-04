@@ -114,7 +114,7 @@ namespace BlinkyBlocks {
         glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
         lock();
         for (const auto& pair : mapGlBlocks) {
-            ((BlinkyBlocksGlBlock*)pair.second)->glDraw(objBlock);
+            if (pair.second->isVisible()) ((BlinkyBlocksGlBlock*)pair.second)->glDraw(objBlock);
             isBlinkingBlocks |= ((BlinkyBlocksGlBlock*)pair.second)->isHighlighted();
         }
         unlock();

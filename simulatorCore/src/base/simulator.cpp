@@ -113,6 +113,10 @@ namespace BaseSimulator {
         return (str == "true" || str == "yes" || str == "ok" || str == "1" || str == "show" || str == "on");
     }
 
+    int Simulator::extractIntFromString(string str) {
+        return stoi(str);
+    }
+
 /********************************************************************************************/
 
     Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb) : bcb(_bcb), cmdLine(argc, argv, _bcb) {
@@ -150,7 +154,6 @@ namespace BaseSimulator {
         generator = uintRNG((ruint) seed);
 
         cerr << TermColor::BWhite << "Simulation Seed: " << seed << TermColor::Reset << endl;
-
         if (!isLoaded) {
             cerr << "error: Could not load configuration file: " << confFileName << endl;
             exit(EXIT_FAILURE);
@@ -1113,6 +1116,16 @@ namespace BaseSimulator {
 #endif
                 }
 
+                Cell3DPosition gridOrigin(0,0,0);
+                attr = element->Attribute("origin");
+                if (attr) {
+                    gridOrigin = extractVector3DFromString(attr);
+#ifdef DEBUG_CONF_PARSING
+                    OUTPUT << "model origin :" << gridOrigin << endl;
+#endif
+                }
+
+
 
                 if (obj) {
                     Vector3D BBmin, BBmax;
@@ -1129,11 +1142,11 @@ namespace BaseSimulator {
                             for (short ix = glb[0]; ix <= ulb[0]; ix++) {
                                 position.set(ix, iy, iz);
                                 if (world->lattice->isInGrid(position)) {
-                                    worldPos = origin+(1.0/scale)*world->lattice->gridToUnscaledWorldPosition(position)+Vector3D(0.5,0.5,0.5);
+                                    worldPos = origin+(1.0/scale)*(world->lattice->gridToUnscaledWorldPosition(position))+Vector3D(0.5,0.5,0.5);
                                     if (obj->isInside(worldPos)) {
                                         loadBlock(element,
                                                   ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
-                                                  bcb, position, color, orient);
+                                                  bcb, position+gridOrigin, color, orient);
                                     }
                                 }
                             }
@@ -1145,7 +1158,6 @@ namespace BaseSimulator {
             }
 
         } else { // end if
-
             cerr << "warning: no Block List in configuration file" << endl;
         }
     }

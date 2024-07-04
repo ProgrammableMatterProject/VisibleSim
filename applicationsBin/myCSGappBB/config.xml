@@ -5,11 +5,11 @@
 		<window size="1280x720" backgroundColor="#4d4dd0" />
 		<render shadows="on" grid="on"/>
 	</visuals>
-	<world gridSize="30,20,42">
+	<world gridSize="25,20,25">
 		<camera target="704.065,454.681,632.024" thetaPhiDist="105.218,35.7296,3579.52" fov="35" near="209" far="8000" />
 		<spotlight target="600,400,430.5" thetaPhiDist="60,30,2519.52" fov="33" />
 		<blockList>
-			<mesh file="thinker.obj" scale="0.5" color="0x77FF77"/>
+			<mesh file="thinker_cut.obj" scale="0.51" color="0x77FF77"/>
 		</blockList>
 	</world>
 </vs>

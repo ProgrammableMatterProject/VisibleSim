@@ -266,6 +266,8 @@ namespace BaseSimulator {
         static Color extractColorFromString(string str);
 
         static bool extractBoolFromString(string str);
+
+        static int extractIntFromString(string str);
     };
 
     inline void deleteSimulator() {
