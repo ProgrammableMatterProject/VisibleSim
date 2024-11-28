@@ -26,7 +26,7 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     ptrObj->glDraw();
 
     if (displayedValue<noDisplay) {
-        int digits = 2;
+        int digits = 1;
         if (displayedValue>9) digits=2;
         if (displayedValue>99) digits=3;
         GLfloat dx = 20.0/digits;
