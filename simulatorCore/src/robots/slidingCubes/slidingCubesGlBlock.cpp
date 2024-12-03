@@ -52,4 +52,12 @@ namespace SlidingCubes {
         return out.str();
     }
 
+    void SmartBlocksGlBlock::fireSelectedTrigger() {
+        Lattice *lattice = World::getWorld()->lattice;
+        const Cell3DPosition &bbPos = lattice->worldToGridPosition(getPosition());
+        SmartBlocksBlock *SB = static_cast<SmartBlocksBlock *>(lattice->getBlock(bbPos));
+
+        // custom user debug procedure
+        if (SB and SB->blockCode) SB->blockCode->onBlockSelected();
+    }
 }
