@@ -28,6 +28,7 @@ namespace SlidingCubes {
         void glDraw(ObjLoader::ObjLoader *ptrObj) override;
         void glDrawId(ObjLoader::ObjLoader *ptrObj, int n) override;
         void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj, int &n) override;
+        void fireSelectedTrigger() override;
     };
 }
 #endif /* SLIDINGCUBESGLBLOCK_H_ */
