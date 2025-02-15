@@ -226,6 +226,12 @@ namespace BaseSimulator {
         virtual void onBlockSelected() {};
 
         /**
+         * User-implemented debug function that gets called when a module is unselected in the GUI
+         * @note call is made from GlBlock::getInfo() as it is convenient there. Adding an actual GUI button could more convenient and less "hacky"
+         */
+        virtual void onBlockUnselected() {};
+
+        /**
          * User-implemented debug function that gets called when a VS_ASSERT is triggered
          * @note call is made from utils::assert_handler()
          */

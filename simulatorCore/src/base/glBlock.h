@@ -52,6 +52,11 @@ public :
      */
     virtual void fireSelectedTrigger() { };
 
+    /**
+     * Triggers the function of this GlBlock's BlockCode that should be called when this block is unselected
+     */
+    virtual void fireUnselectedTrigger() { };
+
     virtual void glDraw(ObjLoader::ObjLoader *ptrObj) {};
     virtual void glDrawShadows(ObjLoader::ObjLoader *ptrObj) { glDraw(ptrObj); };
     virtual void glDrawId(ObjLoader::ObjLoader *ptrObj,int n);

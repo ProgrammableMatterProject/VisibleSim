@@ -241,9 +241,9 @@ void Camera::initFromGridSize(const Vector3D &v) {
     Vector3D target= 0.5 * v;
     setTarget(target);
     double d = target.norme();
-    setDistance(3.0 * d);
+    setDistance(3.0 * d);                // config Distance, -120,30
     setDirection(-30.0 - 90.0, 30.0);
-    setNearFar(0.25 * d, 5.0 * d);
+    setNearFar(0.25 * d, 5.0 * d); // near = 0.25 * d, far=0.5*d
     setFOV(35.0);
     setLightParameters(target, -30.0, 30.0, 3.0 * d, 30.0, 0.25 * d, 4.0 * d);
 }

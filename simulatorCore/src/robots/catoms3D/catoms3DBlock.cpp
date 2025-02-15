@@ -182,9 +182,8 @@ namespace Catoms3D {
 
     uint8_t Catoms3DBlock::getConnectorId(const Cell3DPosition &pos) const {
         Catoms3DWorld *wrl = getWorld();
-
         if (!wrl->lattice->isInGrid(pos))
-            return -1;
+            return 128;
 
         Vector3D realPos = wrl->lattice->gridToWorldPosition(pos);
 
@@ -200,7 +199,6 @@ namespace Catoms3D {
 
         double x, y, z, d = 1;
         int i = 0;
-
         while (i < 12 && d > 0.1) {
             x = tabConnectorPositions[i][0] - realPos[0];
             y = tabConnectorPositions[i][1] - realPos[1];

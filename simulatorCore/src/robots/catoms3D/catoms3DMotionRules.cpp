@@ -457,10 +457,10 @@ getMobileModuleLinkMatchingPivotLink(const Catoms3DMotionRulesLink* pivLink,
                                                              pivLink->getConFromID(),
                                                              conFrom, pivLink->getConToID());
 
-        // cout << "Conconv: #" << pivot->blockId << " l: " << *pivLink <<endl;
-        // cout << pivLink->getConFromID() << " === " << conFrom << endl;
-        // cout << pivLink->getConToID() << " === " << conTo << endl;
-
+         /*cout << "Conconv: #" << pivot->blockId << " l: " << *pivLink <<endl;
+         cout << pivLink->getConFromID() << " === " << conFrom << endl;
+         cout << pivLink->getConToID() << " === " << conTo << endl;
+*/
         vector<Catoms3DMotionRulesLink*> motionRulesLinksFrom;
         getValidMotionList(m, conFrom, motionRulesLinksFrom);
 

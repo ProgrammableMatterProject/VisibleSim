@@ -192,13 +192,13 @@ Catoms3DMotionEngine::getAllRotationsForModule(const Catoms3DBlock *m) {
         Cell3DPosition finalPos;
         short finalOrient;
         auto freeCells = World::getWorld()->lattice->getFreeNeighborCells(m->position);
-        cout << "#freeCells=" << freeCells.size() << endl;
+        //cout << "#freeCells=" << freeCells.size() << endl;
         for (const Cell3DPosition &nPos: freeCells) {
             const vector<std::pair<Catoms3DBlock *, const Catoms3DMotionRulesLink *>>
                     pivotLinkPairs = findPivotLinkPairsForTargetCell(m, nPos);
-            cout << "#pivotLinkPairs=" << pivotLinkPairs.size() << endl;
+            //cout << "#pivotLinkPairs=" << pivotLinkPairs.size() << endl;
             for (const auto &pair: pivotLinkPairs) {
-                cout << "pair" << pair.first->position << endl;
+                //cout << "pair" << pair.first->position << endl;
                 if (pair.first and pair.second) {
                     Catoms3DRotation r = pair.second->getRotations(m, pair.first);
                     // filter final position that are blocked by far away obstacle

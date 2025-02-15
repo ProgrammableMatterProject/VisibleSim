@@ -18,7 +18,8 @@
 
 namespace Catoms3D {
 
-inline constexpr Cell3DPosition relReachablePosition[18] = {
+/*WARNING for vertical alignment only
+ * inline constexpr Cell3DPosition relReachablePosition[18] = {
     // -2
     Cell3DPosition(1,1,-2),
 
@@ -46,8 +47,40 @@ inline constexpr Cell3DPosition relReachablePosition[18] = {
 
     // 2
     Cell3DPosition(-1, -1, 2),
-};
+};*/
 
+    inline constexpr Cell3DPosition relReachablePosition[] = {
+            // up
+            Cell3DPosition(-1,-1,+1),
+            Cell3DPosition(-1,+1,+1),
+            Cell3DPosition(-1, 0,+1),
+            Cell3DPosition( 0, 0,+1),
+            Cell3DPosition( 0,+1,+1),
+            Cell3DPosition( 0,-1,+1),
+            Cell3DPosition(+1, 0,+1),
+            Cell3DPosition(+1,+1,+1),
+
+            // down
+            Cell3DPosition(-1,-1,-1),
+            Cell3DPosition(-1, 0,-1),
+            Cell3DPosition( 0, 0,-1),
+            Cell3DPosition( 0,+1,-1),
+            Cell3DPosition( 0,-1,-1),
+            Cell3DPosition(+1, 0,-1),
+            Cell3DPosition(+1,+1,-1),
+
+            // 0
+            Cell3DPosition(-1,-1, 0),
+            Cell3DPosition(-1, 0 ,0),
+            Cell3DPosition(-1,+1, 0),
+            Cell3DPosition( 0,-1,0),
+            Cell3DPosition( 0, 0,-2),
+            Cell3DPosition( 0, 0,+2),
+            Cell3DPosition( 0,+1,0),
+            Cell3DPosition(+1,-1,0),
+            Cell3DPosition(+1, 0,0),
+            Cell3DPosition(+1,+1,0),
+    };
 
 class Catoms3DMotionEngine {
     // FIXME: World is a poor container for this

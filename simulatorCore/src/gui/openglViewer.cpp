@@ -285,7 +285,10 @@ void GlutContext::mouseFunc(int button, int state, int x, int y) {
             int n = selectFunc(x, y);
             GlBlock *slct = BaseSimulator::getWorld()->getselectedGlBlock();
             // unselect current if exists
-            if (slct) slct->toggleHighlight();
+            if (slct) {
+                slct->toggleHighlight();
+                slct->fireUnselectedTrigger();
+            }
             // set n-1 block selected block (no selected block if n=0
             if (n) {
                 GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n);
