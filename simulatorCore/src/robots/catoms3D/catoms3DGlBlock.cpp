@@ -1,6 +1,6 @@
 #include "catoms3DGlBlock.h"
 #include "catoms3DBlock.h"
-//#include "catoms3DWorld.h"
+#include "catoms3DWorld.h"
 
 namespace Catoms3D {
 
@@ -39,12 +39,12 @@ namespace Catoms3D {
     }
 
     void Catoms3DGlBlock::fireSelectedTrigger() {
-        /*Lattice *lattice = World::getWorld()->lattice;
+        Lattice *lattice = World::getWorld()->lattice;
         const Cell3DPosition& bbPos = lattice->worldToGridPosition(getPosition());
         Catoms3DBlock* catom = static_cast<Catoms3DBlock*>(lattice->getBlock(bbPos));
 
         // custom user debug procedure
-        if (catom and catom->blockCode) catom->blockCode->onBlockSelected();*/
+        if (catom and catom->blockCode) catom->blockCode->onBlockSelected();
     }
 
     string Catoms3DGlBlock::getInfo() const {
@@ -68,6 +68,6 @@ namespace Catoms3D {
 
     const Vector3D Catoms3DGlBlock::getPosition() const {
         return Vector3D(mat[3], mat[7], mat[11], 1);
-    };
+    }
 
 }

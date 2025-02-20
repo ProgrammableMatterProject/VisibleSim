@@ -6,6 +6,7 @@
  */
 
 #include <cstdlib>
+#include <stack>
 
 #include "world.h"
 #include "../utils/trace.h"
@@ -329,6 +330,36 @@ void World::getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float
         if (zmax<pos[2]) zmax=pos[2];
     }
     unlock();
+}
+
+bool World::isSetConnected() {
+    map<bID, bool> isConnected;
+    stack<bID> st;
+    // mark the first module as connected
+    // and other to not connected
+    auto it_bb = buildingBlocksMap.begin();
+    isConnected[it_bb->first] = true;
+    st.push(it_bb->first);
+    it_bb++;
+    while (it_bb != buildingBlocksMap.end()) {
+        isConnected[it_bb->first] = false;
+        it_bb++;
+    }
+    // treats stack
+    int nbConnected=1;
+    while (!st.empty()) {
+        auto bb = buildingBlocksMap[st.top()];
+        st.pop();
+        auto neighbors = bb->getNeighbors();
+        for (auto &neighor : neighbors) {
+            if (!isConnected[neighor->blockId]) {
+                isConnected[neighor->blockId]=true;
+                st.push(neighor->blockId);
+                nbConnected++;
+            }
+        }
+    }
+    return nbConnected==buildingBlocksMap.size();
 }
 
 } // BaseSimulator namespace

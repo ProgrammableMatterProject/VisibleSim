@@ -121,7 +121,7 @@ namespace Catoms3D {
            \param The evaluated 3D catom, get position and orientation for the rule
            \return vector of Cell3DPosition containing blocking positions in the grid
         **/
-        vector<Cell3DPosition> getBlockingCellsList(const Catoms3DBlock *c3d);
+        vector<Cell3DPosition> getBlockingCellsList(const Catoms3DBlock *c3d) const;
 
         /**
            \brief Get the final position of the catom c3D after applying the rule

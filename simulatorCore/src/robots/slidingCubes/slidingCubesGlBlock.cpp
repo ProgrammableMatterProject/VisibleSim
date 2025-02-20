@@ -1,4 +1,5 @@
 #include "slidingCubesGlBlock.h"
+#include "slidingCubesWorld.h"
 
 namespace SlidingCubes {
 
@@ -52,12 +53,12 @@ namespace SlidingCubes {
         return out.str();
     }
 
-    void SmartBlocksGlBlock::fireSelectedTrigger() {
+    void SlidingCubesGlBlock::fireSelectedTrigger() {
         Lattice *lattice = World::getWorld()->lattice;
         const Cell3DPosition &bbPos = lattice->worldToGridPosition(getPosition());
-        SmartBlocksBlock *SB = static_cast<SmartBlocksBlock *>(lattice->getBlock(bbPos));
+        SlidingCubesBlock *SC = static_cast<SlidingCubesBlock *>(lattice->getBlock(bbPos));
 
         // custom user debug procedure
-        if (SB and SB->blockCode) SB->blockCode->onBlockSelected();
+        if (SC and SC->blockCode) SC->blockCode->onBlockSelected();
     }
 }

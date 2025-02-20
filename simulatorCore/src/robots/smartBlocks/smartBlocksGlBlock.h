@@ -1,4 +1,4 @@
-/*
+    /*
  * smartBlocksGlBlock.h
  *
  *  Created on: 23 avr. 2013
@@ -25,6 +25,8 @@ public :
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
     virtual void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;
     virtual void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) override;
+    void fireSelectedTrigger() override;
+    void fireUnselectedTrigger() override;
 };
 }
 #endif /* SMARTBLOCKSGLBLOCK_H_ */

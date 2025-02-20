@@ -536,7 +536,7 @@ Catoms3DRotation Catoms3DMotionRulesLink::getRotations(const Catoms3DBlock* mobi
     return Catoms3DRotation(mobile,pivot,radius,axis1,angle,axis2,angle);
 }
 
-vector<Cell3DPosition> Catoms3DMotionRulesLink::getBlockingCellsList(const Catoms3DBlock *c3d) {
+vector<Cell3DPosition> Catoms3DMotionRulesLink::getBlockingCellsList(const Catoms3DBlock *c3d) const {
     vector<int>::const_iterator ci = tabBlockingIDs.begin();
     vector<Cell3DPosition> tabPos;
     Cell3DPosition pos;

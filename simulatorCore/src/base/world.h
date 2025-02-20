@@ -452,6 +452,11 @@ namespace BaseSimulator {
         virtual void onEndOfSimulation() {
             buildingBlocksMap.begin()->second->blockCode->onEndOfSimulation();
         }
+
+        /**
+         * @brief check if the set of modules are connected
+         */
+         bool isSetConnected();
     };
 
 /**
