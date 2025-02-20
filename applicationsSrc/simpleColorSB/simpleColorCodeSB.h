@@ -9,13 +9,14 @@ using namespace SmartBlocks;
 class SimpleColorCode : public SmartBlocksBlockCode {
 private:
     int distance;
+    SmartBlocksBlock *module;
 public :
     SimpleColorCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {};
     ~SimpleColorCode() {};
 
     void startup() override;
     void myBroadcastFunc(const std::shared_ptr<Message> msg,P2PNetworkInterface *sender);
-
+    void onUserKeyPressed(unsigned char c, int x, int y);
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
