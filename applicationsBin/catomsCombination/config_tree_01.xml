@@ -1,0 +1,30 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="6,6,10" windowSize="1280,720" >
+	<camera target="25,20,10" thetaPhiDist="0,30,100" fov="30" near="1.0" far="300.0"/>
+	<spotlight target="25,25,0" thetaPhiDist="-35,40,150" fov="20"/>
+
+	<blockList color="128,128,128" blockSize="10,10,10">
+		<block position="3,1,0" color="#FFFF00" orientation="0" mobile="true" />
+		<block position="4,3,0" color="#FFFF00" orientation="0" mobile="true" />
+		<block position="2,4,0" color="#FFFF00" orientation="0" mobile="true" />
+		<block position="1,2,0" color="#FFFF00" orientation="0" mobile="true" />
+		<block position="2,2,0" orientation="0" mobile="false" />
+		<block position="3,2,0" orientation="0" mobile="false" />
+		<block position="2,3,0" orientation="0" mobile="false" />
+		<block position="3,3,0" orientation="0" mobile="false" />
+		<block position="2,2,1" orientation="0" mobile="false" />
+		<block position="2,2,2" orientation="0" mobile="false" />
+		<block position="3,2,2" orientation="0" mobile="false" />
+		<block position="2,3,2" orientation="0" mobile="false" />
+		<block position="3,3,2" orientation="0" mobile="false" />
+		<block position="2,2,3" orientation="0" mobile="false" />
+	</blockList>
+	<targetList>
+		<target format="grid">
+			<cell position="2,3,4" color="255,255,64"/>
+			<cell position="3,2,4" color="255,255,64"/>
+			<cell position="3,3,4" color="255,255,64"/>
+			<cell position="2,2,4" color="255,255,64"/>
+		</target>
+	</targetList>
+</world>
