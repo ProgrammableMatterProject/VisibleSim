@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
 project(VisibleSim)
 
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long -Wpedantic")
-add_definitions(-DDEBUG_CONF_PARSING)
-add_definitions(-DDEBUG_CSG)
 
-include_directories(simulatorCore/src)
 
 if (UNIX AND NOT APPLE)
     set(LINUX TRUE)
@@ -66,37 +64,38 @@ ENDIF (WIN32)
 
 IF (LINUX)
     message(STATUS ">>> Linux")
-    add_compile_definitions(USE_FREEGLUT)
 
-    SET(GLUT_INCLUDE_DIR /usr/include)
-    SET(GLUT_glut_LIBRARY /usr/lib/x86_64-linux-gnu/libglut.so)
-    set(LIBSMARTBLOCKS_DIRS ./cmake-build-debug)
-    SET(LIBSMARTBLOCKS libSmartBlocks.so)
-    # GLUT
-    #########################################################
-    # FIND GLUT
-    #########################################################
     find_package(GLUT REQUIRED)
-    #include_directories(${GLUT_INCLUDE_DIRS})
-    link_directories(${GLUT_LIBRARY_DIRS})
-    add_definitions(${GLUT_DEFINITIONS})
+    find_package(OpenGL REQUIRED)
+    find_package(GLEW REQUIRED)
+    find_package(GLU REQUIRED)
+    include_directories( ${OPENGL_INCLUDE_DIRS} ${GLU_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
+    link_libraries(${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLU_LIBRARIES} -lmuparser -lpthread)
     if (NOT GLUT_FOUND)
         message(ERROR " GLUT not found!")
     endif (NOT GLUT_FOUND)
 
-    # OpenGL
-    find_package(OpenGL REQUIRED)
+    if (NOT OpenGL_FOUND)
+        message(ERROR " openGL not found!")
+    endif (NOT OpenGL_FOUND)
 
-    include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${LIBSMARTBLOCKS_DIRS})
+    include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} )
 
 ENDIF (LINUX)
 
 IF (APPLE)
-    message(STATUS ">>> APPLE")
+    message(STATUS ">>> APPLE SILICON")
     find_package(OpenGL REQUIRED)
-    find_package(GLUT REQUIRED)
-    include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
-ENDIF (APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "arm64")
+    set(GLEW_INCLUDE_DIRS /opt/homebrew/include)
+    set(GLEW_LIBRARY_DIRS /opt/homebrew/lib)
+    set(GLUT_INCLUDE_DIRS /opt/homebrew/include)
+    set(GLUT_LIBRARY_DIRS /opt/homebrew/lib)
+    set(muparser_LIBRARY_DIRS /opt/homebrew/lib)
+    set(muparser_INCLUDE_DIRS /opt/homebrew/include)
+    link_directories(${ROBOTS_LIBRARY_DIRS} ${FREEGLUT_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${muparser_LIBRARY_DIRS})
+    include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${muparser_INCLUDE_DIRS})
+    ENDIF (APPLE)
 
 add_definitions(${FREEGLUT_DEFINITIONS} ${OPENGL_DEFINITIONS})
 set(COMMON_SRC_FILES
