@@ -94,6 +94,6 @@ void E3_LightPathCode::parseUserBlockElements(TiXmlElement *config) {
     const char *attr = config->Attribute("leader");
     if (attr!=nullptr) {
         std::cout << getId() << " is leader!" << std::endl; // complete with your code
-        isLeader=true;
+        isLeader=Simulator::extractBoolFromString(attr);
     }
 }

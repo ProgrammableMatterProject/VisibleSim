@@ -1,18 +1,17 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="6,5,6" windowSize="1280,720" >
-	<camera target="25,20,10" thetaPhiDist="0,30,100" fov="30" near="1.0" far="300.0"/>
+<world gridSize="6,6,6" windowSize="1280,720" >
+	<camera target="21.9,29.2327,19.9487" thetaPhiDist="0,65.5234,60" fov="30" near="1" far="300" />
 	<spotlight target="25,25,0" thetaPhiDist="-35,40,150" fov="20"/>
-
 	<blockList color="128,128,128" blockSize="10,10,10">
-		<block position="3,1,2" orientation="0" mobile="true" />
-		<block position="3,2,2" orientation="0" mobile="true" />
 		<block position="3,3,2" orientation="0" mobile="true" />
+		<block position="2,3,2" orientation="0" mobile="true" />
+		<block position="1,3,2" orientation="0" mobile="true" />
 	</blockList>
 	<targetList>
 		<target format="grid">
+			<cell position="3,2,2" color="255,255,64"/>
 			<cell position="2,2,2" color="255,255,64"/>
 			<cell position="1,2,2" color="255,255,64"/>
-			<cell position="0,2,2" color="255,255,64"/>
 		</target>
 	</targetList>
 </world>

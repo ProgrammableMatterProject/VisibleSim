@@ -8,58 +8,64 @@
 
 using namespace Catoms3D;
 
-const int confSize=4;
+const int confSize=3;
 
-class ModuleData {
+class Solution {
 public:
-    uint16_t id;
-    Cell3DPosition pos;
-    uint8_t orientCode;
-    bool hasMoved;
-    bool isConnected;
-    ModuleData(uint16_t _id, Cell3DPosition _pos, uint8_t _orientCode,bool _hm):id(_id),pos(_pos),orientCode(_orientCode),hasMoved(_hm) {};
-    ModuleData() { id=0; orientCode=0; };
-    bool operator==(const ModuleData& other) { return pos==other.pos; }
+    uint8_t step;
+    Cell3DPosition fromPos;
+    Cell3DPosition toPos;
+    Solution(uint8_t s, const Cell3DPosition &from, const Cell3DPosition &to):step(s),fromPos(from),toPos(to) {};
+};
+
+class ModuleConfig {
+public:
+    array<Cell3DPosition,confSize> pos;
+    //uint8_t orientCode;
+    //bool isConnected;
+//    ModuleData(uint16_t _id, Cell3DPosition _pos, uint8_t _orientCode,bool _hm):id(_id),pos(_pos),orientCode(_orientCode),hasMoved(_hm) {};
+    //ModuleData(Cell3DPosition _pos),pos(_pos) {};
+
+    ModuleConfig() {
+        for (auto &p:pos) {
+            p.set(numeric_limits<short>::max(),numeric_limits<short>::max(),numeric_limits<short>::max());
+        }
+    };
+    void set(uint8_t i,Cell3DPosition p) { pos[i]=p; };
+    void sortPositions() {
+        sort(pos.begin(),pos.end(),[](Cell3DPosition &n1,Cell3DPosition &n2) { return n1<n2; });
+    };
+    bool operator==(const ModuleConfig& other);
+    bool reachedTarget(const Target &target) {
+        auto it=pos.begin();
+        while (it!=pos.end() && target.isInTarget((*it))) { it++; }
+        return it==pos.end();
+    }
 };
 
 class Node {
 public:
     uint16_t level;
-    array<ModuleData,confSize> modules;
+    ModuleConfig modules;
     uint32_t id;
-    vector<uint32_t> parents;
+    map<uint32_t,vector<pair<Cell3DPosition,Cell3DPosition>>> mobilesPerParent; ///< List of parent with array of mobiles and itself !
 
-    Node(uint16_t _level,uint32_t _parent):id(0),level(_level) {
-        parents.push_back(_parent);
+    Node(uint16_t _level,const ModuleConfig &conf,uint32_t _parent,const vector<pair<Cell3DPosition,Cell3DPosition>> &motions):id(0),level(_level),modules(conf) {
+        mobilesPerParent[_parent]=motions;
     };
-    Node(const Node &src,const Node &add,int mobileId):
-        id(0),level(src.level),parents(src.parents),modules(src.modules) {
-        // seach mobile in local
-        auto itSrc=modules.begin();
-        while (itSrc!=modules.end() && (*itSrc).id!=mobileId) { itSrc++; }
-        // search mobile in add
-        auto itAdd=add.modules.begin();
-        while (itAdd!=add.modules.end() && (*itAdd).id!=mobileId) { itAdd++; }
-        *itSrc = (*itAdd);
+    Node(const Node &src,const Cell3DPosition &mobileFrom,const Cell3DPosition &mobileTo):
+        id(0),level(src.level),modules(src.modules) {
+        mobilesPerParent.begin()->second.push_back({mobileFrom,mobileTo});
     }
-    void sortPositions() {
-        sort(modules.begin(),modules.end(),[](ModuleData &n1,ModuleData &n2) { return n1.pos<n2.pos; }); };
 
-    void set(int i,ModuleData md) { modules[i]=md; };
     bool operator==(const Node& other);
-    ModuleData operator[](int i) { return modules[i]; };
-    void addParent(uint32_t p) {
-        if (find(parents.begin(), parents.end(), p) == parents.end()) {
-            parents.push_back(p);
-        }
-    }
-    bool reachedTarget(const Target &target) {
-        auto it=modules.begin();
-        while (it!=modules.end() && target.isInTarget((*it).pos)) { it++; }
-        return it==modules.end();
+    /*ModuleData operator[](int i) { return modules[i]; };*/
+    void addParent(uint32_t p,const vector<pair<Cell3DPosition,Cell3DPosition>> &motions) {
+        mobilesPerParent[p]=motions;
     }
     friend ostream& operator<<(ostream& os, const Node &node);
     void config(ostream &os);
+
 };
 
 class CatomsCombinationCode : public Catoms3DBlockCode {
@@ -79,13 +85,14 @@ public :
     void parseUserBlockElements(TiXmlElement *config);
     void worldRun();
     bool addConfiguration(Node &newNode);
-    bool addConfigurationFromMotion(uint32_t level,map<bID,BuildingBlock*> &modules, BuildingBlock*mobile, Cell3DPosition targetPos, uint8_t targetRot, uint32_t parent);
+    bool addConfigurationFromMotion(uint32_t level,map<bID,BuildingBlock*> &modules, BuildingBlock*mobile, Cell3DPosition targetPos, uint32_t parent);
     void printConfigurations();
     pair<uint32_t,uint32_t> getConfigurations(uint32_t level);
     bool isInModulePos(const Cell3DPosition& pos,const map<bID,BuildingBlock*> &modules);
-    bool generateSolutions();
+    uint16_t generateSolutions();
     bool isSetConnectedWithout(BuildingBlock *bb);
     void resetConfiguration(uint32_t ind);
+
     /*****************************************************************************/
     /** needed to associate code to module                                      **/
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
