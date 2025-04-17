@@ -70,6 +70,8 @@ namespace BaseSimulator {
          */
         void parseConfiguration(int argc, char *argv[]);
         void resetConfiguration();
+        virtual void loadObstacle(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &color, short orientation, bool master) = 0;
+
         /*!
          *  @brief Starts the simulation
          *   (i.e. link the blocks, start the scheduler if needed, and enter the GLUT main loop)

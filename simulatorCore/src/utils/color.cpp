@@ -10,15 +10,15 @@ Color::Color(int r, int g, int b) {
 }
 
 void Color::set(GLfloat r,GLfloat g, GLfloat b) {
-    _rgb[0]=uint8_t(clamp(int(r*255.0),0,255));
-    _rgb[1]=uint8_t(clamp(int(g*255.0),0,255));
-    _rgb[2]=uint8_t(clamp(int(b*255.0),0,255));
+    _rgb[0]=uint8_t(r);
+    _rgb[1]=uint8_t(g);
+    _rgb[2]=uint8_t(b);
 }
 
 void Color::set(int r,int g, int b) {
-    _rgb[0]=uint8_t(clamp(r,0,255));
-    _rgb[1]=uint8_t(clamp(g,0,255));
-    _rgb[2]=uint8_t(clamp(b,0,255));
+    _rgb[0]=uint8_t(r);
+    _rgb[1]=uint8_t(g);
+    _rgb[2]=uint8_t(b);
 }
 
 // écriture d'une couleur dans un flux

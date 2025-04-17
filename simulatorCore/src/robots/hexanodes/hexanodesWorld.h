@@ -39,6 +39,7 @@ protected:
         HexanodesMotionEngine *nodeMotionEngine;
     virtual ~HexanodesWorld();
 public:
+    inline static vector<Cell3DPosition> obstacles = {}; 
     HexanodesWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                   int argc, char *argv[]);
 
@@ -72,6 +73,8 @@ public:
      * \param pos : Position of the block to connect
      */
     void linkBlock(const Cell3DPosition &pos) override;
+    virtual void addObstacle(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+        short orientation);
 
     void glDraw() override;
     void glDrawShadows() override;

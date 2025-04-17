@@ -442,8 +442,15 @@ namespace BaseSimulator {
         bID moduleCount = 0;
 
         // Count modules from block elements
-        for (TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block"))
-            moduleCount++;
+        for (TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block")){
+            const char* obst;
+            TiXmlElement *element;
+            element = child->ToElement();
+            obst = element->Attribute("obstacle");
+            if(!attr){
+                moduleCount++;
+            }
+        }
 
         // Count modules from blocksLine elements
         for (TiXmlNode *child = xmlBlockListNode->FirstChild("blocksLine"); child; child = child->NextSibling(
@@ -528,6 +535,10 @@ namespace BaseSimulator {
                 for (TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling(
                         "block")) {
                     element = child->ToElement();
+                    attr=element->Attribute("obstacle");
+                    if(!attr) {
+
+                    
                     attr = element->Attribute("id");
                     if (attr) {
                         try {
@@ -544,6 +555,7 @@ namespace BaseSimulator {
                                   << attr << "\n";
                             throw ParsingException(error.str());
                         }
+                    }
                     } else {
                         stringstream error;
                         error << "missing id attribute for block node in configuration file while in MANUAL mode"

@@ -226,7 +226,22 @@ namespace Hexanodes {
         linkBlock(pos);
 
     }
+    
+    void HexanodesWorld::addObstacle(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col, short orientation){
 
+        HexanodesBlock *module = new HexanodesBlock(blockId,bcb);
+        buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
+                                 (module->blockId, (BaseSimulator::BuildingBlock*)module));
+    
+        HexanodesGlBlock *glBlock = new HexanodesGlBlock(blockId);
+        mapGlBlocks.insert(make_pair(blockId, glBlock));
+        module->setGlBlock(glBlock);
+        module->setColor(col);
+        module->setPositionAndOrientation(pos,orientation);
+        glBlock->setPosition(lattice->gridToWorldPosition(pos));
+        obstacles.push_back(pos);
+    }
+    
 /**
  * \brief Connect the block placed on the cell at position pos
  */
