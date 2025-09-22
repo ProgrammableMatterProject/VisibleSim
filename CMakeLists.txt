@@ -576,13 +576,17 @@ add_executable(simpleColorBB applicationsSrc/simpleColorBB/simpleColorBB.cpp app
 target_link_libraries(simpleColorBB -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
 install(TARGETS simpleColorBB RUNTIME DESTINATION applicationsBin/simpleColorBB)
 
-add_executable(energyRegulatorBB applicationsSrc/energyRegulatorBB/energyRegulatorBB.cpp applicationsSrc/energyRegulatorBB/energyRegulatorBBBlockCode.cpp)
-target_link_libraries(energyRegulatorBB -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
-install(TARGETS energyRegulatorBB RUNTIME DESTINATION applicationsBin/energyRegulatorBB)
+add_executable(dodder applicationsSrc/dodder/dodder.cpp applicationsSrc/dodder/dodderBlockCode.cpp)
+target_link_libraries(dodder -lCatoms3D -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+install(TARGETS dodder RUNTIME DESTINATION applicationsBin/dodder)
 
-add_executable(shapeReconfiguration applicationsSrc/shapeReconfiguration/shapeReconfiguration.cpp applicationsSrc/shapeReconfiguration/shapeReconfigurationBlockCode.cpp)
-target_link_libraries(shapeReconfiguration -lHexanodes -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
-install(TARGETS shapeReconfiguration RUNTIME DESTINATION applicationsBin/shapeReconfiguration)
+# add_executable(energyRegulatorBB applicationsSrc/energyRegulatorBB/energyRegulatorBB.cpp applicationsSrc/energyRegulatorBB/energyRegulatorBBBlockCode.cpp)
+# target_link_libraries(energyRegulatorBB -lBlinkyBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+# install(TARGETS energyRegulatorBB RUNTIME DESTINATION applicationsBin/energyRegulatorBB)
+
+# add_executable(shapeReconfiguration applicationsSrc/shapeReconfiguration/shapeReconfiguration.cpp applicationsSrc/shapeReconfiguration/shapeReconfigurationBlockCode.cpp)
+# target_link_libraries(shapeReconfiguration -lHexanodes -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
+# install(TARGETS shapeReconfiguration RUNTIME DESTINATION applicationsBin/shapeReconfiguration)
 
 add_executable(simpleColorSB applicationsSrc/simpleColorSB/simpleColorSB.cpp applicationsSrc/simpleColorSB/simpleColorCodeSB.cpp)
 target_link_libraries(simpleColorSB -lSmartBlocks -lfreeglut -lmuparser -lOpenGL32 -lglu32 -lglew32d) #
