@@ -9,7 +9,8 @@
 #include <mutex>
 #include <set>
 #include <unordered_set>
-
+#include <utility>
+#include "limited_vilabity.hpp"
 #include "grid/lattice.h"
 #include "robots/slidingCubes/slidingCubesBlockCode.h"
 #include "robots/slidingCubes/slidingCubesSimulator.h"
@@ -25,95 +26,29 @@ enum class BlockState {
 	TERMINATE  = 1004
 };
 
-class CompressFullRangeBlockCode : public SlidingCubesBlockCode {
+class CompressFullRangeBlockCode : public SlidingCubes::SlidingCubesBlockCode {
 private:
-	SlidingCubesBlock *module = nullptr;
-	static const int range    = 99;  // 視野範囲(自身を中心とする)
+	SlidingCubesBlock* module        = nullptr;
+	static const int range           = 99;  // 視野範囲(自身を中心とする)
+	static const bool internal_light = false;
+	static const bool external_light = false;
 
 	static const int LOOK_EST       = 300;
 	static const int COMPUTE_EST    = 10000;
 	static const int MOVE_EST       = 1000000;
 	static const int ROUND_INTERVAL = 2000000;  // 移動間隔[us]
 	static const bool debug         = true;
-	vector<Cell3DPosition> views;
-	vector<Cell3DPosition> views_at_north;     // 自身より北にある視野
-	vector<Cell3DPosition> views_at_south;     // 自身より南にある視野
-	vector<Cell3DPosition> views_at_east;      // 自身より東にある視野
-	vector<Cell3DPosition> views_at_west;      // 自身より西にある視野
-	vector<Cell3DPosition> views_same_row;     // 自身と同じ行にある視野
-	vector<Cell3DPosition> views_same_column;  // 自身と同じ列にある視野
-	Cell3DPosition nextPos;
-	string moving_strategy = "none";
+	LimitedVisibility *views;//全体の観測した視野
 
-	BlockState state                 = BlockState::INITALIZED;
-	BaseSimulator::Lattice *lattice_ = nullptr;
-	static string on_note;
-
-	/**
-	 * @brief
-	 * 自身にオフセットを加えた座標が，最も北かつ，最も北のモジュールの中で最も西かどうかを判定する
-	 *
-	 * @param lattice 現在の座標系で見てているビュー
-	 * @param offset オフセットの座標
-	 * @return true 対象の座標が最も北かつ，最も西
-	 * @return false
-	 * 対象の座標が最も北でない，もしくは対象の座標が最も北であるが，自身より西にモジュールがある
-	 */
-	bool is_indexed_first(BaseSimulator::Lattice *lattice,
-	                      Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
+	Cell3DPosition nextPos;  // 移動先座標の相対座標
+	Cell3DPosition module_pos;//モジュールの現在位置
+	BlockState state = BlockState::INITALIZED;
 	void scheduleNextMove();
 
-	/**
-	 * @brief 停止するかの判定を行う
-	 *
-	 * @return true
-	 * @return false
-	 */
-	bool determinate_terminate();
-
-	// 自身がx軸方向の多角形の壁を構成しているかの判定を行う
-	bool is_in_column_wall(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	// 自身がy軸方向の多角形の壁を構成しているかの判定を行う
-	bool is_in_row_wall(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	// 自身が多角形の角を構成しているかの判定を行う(階段であるかの判定は別で行う)
-	// bool is_in_angle(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	// 自身が北東にある角かの判定を行う
-	bool is_in_angle_nw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	bool is_in_angle_ne(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	bool is_in_angle_sw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	bool is_in_angle_se(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	// 自身の左が西北の角のときに移動できるかの判定を行う
-	bool can_process_phase1_nw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_process_phase1_ne(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_process_phase1_sw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_process_phase1_se(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	bool can_process_phase2_nw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_process_phase2_ne(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_process_phase2_sw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_process_phase2_se(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	// 枝を伸ばすことができるかの判定(Sw,Ne, Nwの順)
-	bool can_extend_phase1_sw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_extend_phase1_ne(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_extend_phase1_nw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
-	bool can_extend_phase2_sw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_extend_phase2_ne(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-	bool can_extend_phase2_nw(Cell3DPosition offset = Cell3DPosition(0, 0, 0));
-
 public:
-	Scheduler *scheduler;
+	Scheduler* scheduler;
 
-	CompressFullRangeBlockCode(SlidingCubesBlock *host);
+	CompressFullRangeBlockCode(SlidingCubesBlock* host);
 	~CompressFullRangeBlockCode() {};
 
 	/**
@@ -127,16 +62,17 @@ public:
 	void onGlDraw() override;
 	void onMotionEnd() override;
 	void processLocalEvent(std::shared_ptr<Event> pev) override;
-	void move();
-	void look();
-	bool compute();
-	void setColor(const Color &c);
+	bool move(); //移動を行う、移動が成功したならtrueを返す 
+	void
+	look();  // 現在のviewを返す-->返した型で視野の範囲外のアクセスを定義外とする
+	std::pair<Cell3DPosition, Color> compute();// 次に移動する場所の相対座標と色を返すようにする
+	void setColor(const Color& c);
 	string onInterfaceDraw() override;
 
 	/*****************************************************************************/
 	/** needed to associate code to module **/
-	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-		return (new CompressFullRangeBlockCode((SlidingCubesBlock *)host));
+	static BlockCode* buildNewBlockCode(BuildingBlock* host) {
+		return (new CompressFullRangeBlockCode((SlidingCubesBlock*)host));
 	}
 	/*****************************************************************************/
 };
