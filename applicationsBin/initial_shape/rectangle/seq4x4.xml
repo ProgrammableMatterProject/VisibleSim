@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no" ?>
+<vs>
+    <visuals>
+        <window size="1024,800" backgroundColor="255,255,255" gradientColor="128,128,255" />
+        <render shadows="false" grid="true" />
+
+    </visuals>
+    <world gridSize="200,200,60">
+        <camera target="1000,1000,40" thetaPhiDist="0,80,90" fov="90.000000" near="10.000000" far="1500.000000" />
+        <spotlight target="200,200,2" thetaPhiDist="-45,40,500" fov="56.309932" />
+        <blockList blockSize="50,50,12.5" color="0,0,0" ids="ORDERED">
+            <block position="99,102,0" />
+
+            <block position="100,102,0" />
+            <block position="101,102,0" />
+
+            <block position="102,102,0" />
+
+            <block position="102,101,0" />
+            <block position="102,100,0" />
+
+            <block position="102,99,0" />
+
+            <block position="101,99,0" />
+            <block position="100,99,0" />
+
+
+            <block position="99,99,0" />
+
+            <block position="99,100,0" />
+            <block position="99,101,0" />
+
+
+
+
+        </blockList>
+        <targetList>
+            <target format="grid">
+                <cell position="100,100,0" color="100,0,0"/>
+            </target>
+        </targetList>
+
+    </world>
+</vs>
