@@ -35,6 +35,32 @@ void CompressFullRangeBlockCode::scheduleNextMove() {
 	    new InterruptionEvent(currentTime + ROUND_INTERVAL, module, 0));
 }
 
+int CompressFullRangeBlockCode::distance(const Cell3DPosition& p) const {
+	return std::max({std::abs(module_pos[0] - p[0]),
+	                 std::abs(module_pos[1] - p[1]),
+	                 std::abs(module_pos[2] - p[2])});
+}
+
+bool CompressFullRangeBlockCode::hasModule(const Cell3DPosition& p) const {
+	if (distance(p) > range) return false;
+	return views->cellHasBlock(p);
+}
+bool CompressFullRangeBlockCode::isEmpty(const Cell3DPosition& p) const {
+	if (distance(p) > range) return false;
+	return not views->cellHasBlock(p);
+}
+Color CompressFullRangeBlockCode::getLight(const Cell3DPosition& p) const {
+	int dist = distance(p);
+	if (dist == 0 and internal_light) {
+		return this->getColor();
+	} else if (dist > 0 and dist <= range and external_light) {
+		auto target_module = views->getBlock(p);
+		if (target_module) {
+			return target_module->color;
+		}
+	}
+	return Color();
+}
 // 最初に呼び出す
 void CompressFullRangeBlockCode::startup() {
 	console << "start " << module->blockId << "\n";
@@ -42,12 +68,11 @@ void CompressFullRangeBlockCode::startup() {
 	nextPos = module->position;
 	scheduleNextMove();
 }
+
 // 観測フェーズ
 void CompressFullRangeBlockCode::look() {
 	module_pos = module->position;
-	views      = (LimitedVisibility*)new LimitedVisibility(
-        SlidingCubes::getWorld()->lattice, module_pos, range, internal_light,
-        external_light);
+	views      = SlidingCubes::getWorld()->lattice;
 }
 // 計算フェーズ
 std::pair<Cell3DPosition, Color> CompressFullRangeBlockCode::compute() {
@@ -157,7 +182,7 @@ string CompressFullRangeBlockCode::onInterfaceDraw() {
 	string res = "strategy: ";
 	return res;
 }
-void CompressFullRangeBlockCode::setColor(const Color& c) {
+void CompressFullRangeBlockCode::setLight(const Color& c) {
 	if (!debug) return;
 	return SlidingCubesBlockCode::setColor(c);
 }
