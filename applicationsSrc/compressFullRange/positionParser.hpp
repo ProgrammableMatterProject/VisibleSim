@@ -25,7 +25,7 @@ public:
 	const char IGNORE = '*';
 	const char ORIGIN = 'x';
 
-	PositionParser(const std::vector<std::string>& grid) {
+	PositionParser(const std::vector<std::string> grid) {
 		int origin_x;
 		int origin_y;
 
@@ -61,7 +61,7 @@ public:
 				if (mark != ORIGIN && mark != IGNORE) {
 					int rel_x = static_cast<int>(x) - origin_x;
 					int rel_y = static_cast<int>(y) - origin_y;
-					pos_map[mark].emplace_back(rel_x, rel_y, 0);
+					pos_map[mark].emplace_back(rel_x, -rel_y, 0);
 				}
 			}
 		}
