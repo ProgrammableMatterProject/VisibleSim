@@ -1,9 +1,8 @@
-#include "compressFullRangeBlockCode.hpp"
-
 #include <bitset>
 #include <mutex>
 #include <vector>
 
+#include "compressFullRangeBlockCode.hpp"
 #include "lcmEvent.hpp"
 int CompressFullRangeBlockCode::range = 99;  // 視野範囲(自身を中心とする)
 bool CompressFullRangeBlockCode::internal_light = false;

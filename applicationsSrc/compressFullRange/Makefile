@@ -2,7 +2,7 @@
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 APPDIR = ../../applicationsBin/$(current_dir)
-
+TARGET = compressFullRange
 #####################################################################
 #
 # --- Sample User Makefile ---
@@ -15,10 +15,10 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = compressFullRange.cpp compressFullRangeBlockCode.cpp
+SRCS = compressFullRange.cpp compressFullRangeBlockCodeBase.cpp $(TARGET)BlockCode.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/compressFullRange
+OUT = $(APPDIR)/$(TARGET)
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimSlidingCubes

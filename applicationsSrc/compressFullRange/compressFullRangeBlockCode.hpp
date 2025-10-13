@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "grid/lattice.h"
+#include "positionParser.hpp"
 #include "robots/slidingCubes/slidingCubesBlockCode.h"
 #include "robots/slidingCubes/slidingCubesSimulator.h"
 #include "robots/slidingCubes/slidingCubesWorld.h"
@@ -28,10 +29,10 @@ enum class BlockState {
 
 class CompressFullRangeBlockCode : public SlidingCubes::SlidingCubesBlockCode {
 private:
-	SlidingCubesBlock* module        = nullptr;
-	static const int range           = 99;  // 視野範囲(自身を中心とする)
-	static const bool internal_light = false;
-	static const bool external_light = false;
+	SlidingCubesBlock* module = nullptr;
+	static int range;  // 視野範囲(自身を中心とする)
+	static bool internal_light;
+	static bool external_light;
 
 	static const int LOOK_EST       = 300;
 	static const int COMPUTE_EST    = 10000;
@@ -60,6 +61,8 @@ private:
 	bool hasModule(const Cell3DPosition& p) const;
 	bool isEmpty(const Cell3DPosition& p) const;
 	Color getLight(const Cell3DPosition& p) const;
+	ParserResult parseView(const PositionParser& grid, const char target_marker,
+	                       const Cell3DPosition& offset);
 
 public:
 	Scheduler* scheduler;
@@ -77,7 +80,6 @@ public:
 
 	void onGlDraw() override;
 
-	
 	void processLocalEvent(std::shared_ptr<Event> pev) override;
 	/**
 	 * @brief 現在のビューと現在地を更新する
@@ -103,12 +105,12 @@ public:
 	bool move();
 	/**
 	 * @brief 移動終了時の処理を行う
-	 * 
+	 *
 	 */
 	void onMotionEnd() override;
 	/**
 	 * @brief Set the Light object
-	 * 
+	 *
 	 * @param c 点灯したい色
 	 */
 	void setLight(const Color& c);
