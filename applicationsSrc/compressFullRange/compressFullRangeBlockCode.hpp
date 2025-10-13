@@ -62,7 +62,8 @@ private:
 	bool isEmpty(const Cell3DPosition& p) const;
 	Color getLight(const Cell3DPosition& p) const;
 	ParserResult parseView(const PositionParser& grid, const char target_marker,
-	                       const Cell3DPosition& offset);
+	                       const Cell3DPosition offset = Cell3DPosition(0, 0,
+	                                                                    0));
 
 public:
 	Scheduler* scheduler;

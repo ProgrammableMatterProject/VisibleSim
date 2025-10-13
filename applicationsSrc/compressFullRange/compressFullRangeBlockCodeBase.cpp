@@ -62,7 +62,7 @@ Color CompressFullRangeBlockCode::getLight(const Cell3DPosition& p) const {
 }
 ParserResult CompressFullRangeBlockCode::parseView(
     const PositionParser& grid, const char target_marker,
-    const Cell3DPosition& offset) {
+    const Cell3DPosition offset) {
 	ParserResult result;
 	auto it = grid.pos_map.find(target_marker);
 	if (it == grid.pos_map.end()) {
