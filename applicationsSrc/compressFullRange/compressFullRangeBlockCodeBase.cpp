@@ -166,6 +166,10 @@ void CompressFullRangeBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
 
 				nextPos = module->position + pos;
 				if (color != Color()) setColor(color);
+				if (state==BlockState::TERMINATE) {
+					console << "terminate " << module->blockId << "\n";
+					return;
+				}
 				state = BlockState::MOVE;
 				console << "end compute " << module->blockId << "\n";
 			}
