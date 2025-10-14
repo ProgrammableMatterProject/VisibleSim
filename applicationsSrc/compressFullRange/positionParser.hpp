@@ -78,6 +78,8 @@ struct ParserResult {
 		// Destructor
 		light_map.clear();
 	}
+	bool all_empty() const { return target_cells == empty_cells; }
+	bool all_module() const { return target_cells == module_cells; }
 };
 /*
 class PositionParser{
