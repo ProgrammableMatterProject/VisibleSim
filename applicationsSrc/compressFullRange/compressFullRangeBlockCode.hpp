@@ -34,10 +34,10 @@ private:
 	static bool internal_light;
 	static bool external_light;
 
-	static const int LOOK_EST       = 300;
-	static const int COMPUTE_EST    = 10000;
-	static const int MOVE_EST       = 1000000;
-	static const int ROUND_INTERVAL = 2000000;  // 移動間隔[us]
+	static const int LOOK_EST       = 1000;
+	static const int COMPUTE_EST    = 1000;
+	static const int MOVE_EST       = 1050000;
+	static const int ROUND_INTERVAL = 1080000;  // 移動間隔[us] (コンソール上ではms単位)
 	static const bool debug         = true;
 	Lattice* views;  // 全体の観測した視野
 
