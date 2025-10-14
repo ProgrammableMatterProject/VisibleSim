@@ -153,31 +153,38 @@ void CompressFullRangeBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
 	switch (pev->eventType) {
 		case EVENT_LOOK:
 			if (state == BlockState::LOOK) {
+				console << "start look " << module->blockId << "\n";
 				look();
 				state = BlockState::COMPUTE;
+				console << "end look " << module->blockId << "\n";
 			}
 			break;
 		case EVENT_COMPUTE:
 			if (state == BlockState::COMPUTE) {
+				console << "start compute " << module->blockId << "\n";
 				auto [pos, color] = compute();
 
 				nextPos = module->position + pos;
 				if (color != Color()) setColor(color);
 				state = BlockState::MOVE;
+				console << "end compute " << module->blockId << "\n";
 			}
 			break;
 		case EVENT_MOVE:
 			if (state == BlockState::MOVE) {
+				console << "start move " << module->blockId << "\n";
 				bool res = move();
 				state    = BlockState::MOVING;
 				if (!res) {
 					onMotionEnd();
+					console << "end move(stay) " << module->blockId << "\n";
 				}
 			}
 			break;
 		case EVENT_TELEPORTATION_END:
 		case EVENT_TELEPORTATION_STOP:
 			onMotionEnd();
+			console << "end move " << module->blockId << "\n";
 			break;
 		case EVENT_INTERRUPTION:
 			scheduleNextMove();
