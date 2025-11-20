@@ -529,7 +529,8 @@ std::pair<Cell3DPosition, Color> CompressFullRangeBlockCode::compute() {
 }
 
 string CompressFullRangeBlockCode::onInterfaceDraw() {
-	string res = "strategy: ";
+	string res = "round : " + to_string(rounds) +
+	             "\nstrategy: " + to_string(this->getId());
 	return res;
 }
 
