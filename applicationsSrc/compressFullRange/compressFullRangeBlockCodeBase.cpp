@@ -7,7 +7,7 @@
 // string CompressFullRangeBlockCode::on_note = "not started";
 
 CompressFullRangeBlockCode::CompressFullRangeBlockCode(SlidingCubesBlock* host)
-    : SlidingCubesBlockCode(host), module(host) {
+    : SlidingCubesBlockCode(host), module(host), rounds(0) {
 	scheduler = getScheduler();
 	if (not host) return;
 
@@ -21,7 +21,7 @@ CompressFullRangeBlockCode::CompressFullRangeBlockCode(SlidingCubesBlock* host)
 void CompressFullRangeBlockCode::scheduleNextMove() {
 	if (state == BlockState::TERMINATE) return;
 	onMotionEnd();
-
+	rounds++;
 	Time currentTime = scheduler->now();
 	getScheduler()->schedule(
 	    new MoveEvent(currentTime + ROUND_INTERVAL - MOVE_EST, module));
@@ -90,7 +90,6 @@ void CompressFullRangeBlockCode::look() {
 	module_pos = module->position;
 	views      = SlidingCubes::getWorld()->lattice;
 }
-
 
 void CompressFullRangeBlockCode::onGlDraw() {
 	static const float thick    = 0.8;
@@ -166,7 +165,7 @@ void CompressFullRangeBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
 
 				nextPos = module->position + pos;
 				if (color != Color()) setColor(color);
-				if (state==BlockState::TERMINATE) {
+				if (state == BlockState::TERMINATE) {
 					console << "terminate " << module->blockId << "\n";
 					return;
 				}
@@ -180,14 +179,14 @@ void CompressFullRangeBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
 				bool res = move();
 				state    = BlockState::MOVING;
 				if (!res) {
-					onMotionEnd();
+					//onMotionEnd();
 					console << "end move(stay) " << module->blockId << "\n";
 				}
 			}
 			break;
 		case EVENT_TELEPORTATION_END:
 		case EVENT_TELEPORTATION_STOP:
-			onMotionEnd();
+			//onMotionEnd();
 			console << "end move " << module->blockId << "\n";
 			break;
 		case EVENT_INTERRUPTION:
@@ -202,7 +201,6 @@ void CompressFullRangeBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
 			break;
 	}
 }
-
 
 void CompressFullRangeBlockCode::setLight(const Color& c) {
 	if (!debug) return;

@@ -420,18 +420,18 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                      << " has ended, attempting conversion" << endl;
                 // Add a script for converting into a video, asynchronously
 #ifndef WIN32
-                (void)std::async([](const std::string& animDir){
+				(void)std::async([](const std::string& animDir){
                                      const string& bsname = myBasename(Simulator::configFileName);
                                      const string& vidName =
-                                         generateTimestampedFilename("video_" + bsname.substr(0, bsname.size()-4), "mkv");
+                                         generateTimestampedFilename("video_" + bsname.substr(0, bsname.size()-4), "mp4");
                                      // cout << vidName << endl;
                                      cerr << TermColor::BWhite << "running:"
                                           << TermColor::BYellow << "`ffmpeg -pattern_type glob -framerate 30 -i \""
-                                         + animationDirName + "/*.jpg\" " + vidName << "`"
+                                         + animationDirName + "/*.jpg\" " + "-vf setpts=PTS/3.0 -af atempo=3.0 " + vidName << "`"
                                           << TermColor::Reset << endl;
                                      int r = system(
                                          string("ffmpeg -pattern_type glob -framerate 30 -i \""
-                                                + animationDirName + "/*.jpg\" " + vidName
+                                                + animationDirName + "/*.jpg\" " + "-vf setpts=PTS/3.0 -af atempo=3.0 "+ vidName
                                                 + ">/dev/null 2>/dev/null").c_str());
                                      if (r == 0) {
                                          system(string("rm -rf " + animationDirName).c_str());
