@@ -24,7 +24,8 @@ enum class BlockState {
 	COMPUTE    = 1002,
 	MOVE       = 1003,
 	MOVING     = 1005,
-	TERMINATE  = 1004
+	TERMINATE  = 1004,
+	CHANGE_LIGHT = 1006,
 };
 
 class CompressFullRangeBlockCode : public SlidingCubes::SlidingCubesBlockCode {
@@ -37,6 +38,7 @@ private:
 	static const int LOOK_EST    = 1000;
 	static const int COMPUTE_EST = 1000;
 	static const int MOVE_EST    = 1050000;
+	static const int CHANGE_LIGHT_EST = 1000;
 	static const int ROUND_INTERVAL =
 	    1080000;  // 移動間隔[us] (コンソール上ではms単位)
 	static const bool debug = true;
@@ -45,6 +47,7 @@ private:
 
 	Cell3DPosition nextPos;                     // 移動先座標の相対座標
 	Cell3DPosition module_pos;                  // モジュールの現在位置
+	Color next_color;                                // 点灯する色
 	BlockState state = BlockState::INITALIZED;  // 現在の状態
 	/**
 	 * @brief 次のLCMサイクルをスケジュールする

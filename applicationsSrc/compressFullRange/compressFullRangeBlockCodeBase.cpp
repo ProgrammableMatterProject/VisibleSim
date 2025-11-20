@@ -25,11 +25,16 @@ void CompressFullRangeBlockCode::scheduleNextMove() {
 	Time currentTime = scheduler->now();
 	getScheduler()->schedule(
 	    new MoveEvent(currentTime + ROUND_INTERVAL - MOVE_EST, module));
-	getScheduler()->schedule(new ComputeEvent(
-	    currentTime + ROUND_INTERVAL - COMPUTE_EST - MOVE_EST, module));
-	getScheduler()->schedule(new LookEvent(
-	    currentTime + ROUND_INTERVAL - LOOK_EST - COMPUTE_EST - MOVE_EST,
-	    module));
+	getScheduler()->schedule(new ChangeLightEvent(
+	    currentTime + ROUND_INTERVAL - CHANGE_LIGHT_EST - MOVE_EST, module));
+	getScheduler()->schedule(new ComputeEvent(currentTime + ROUND_INTERVAL -
+	                                              CHANGE_LIGHT_EST -
+	                                              COMPUTE_EST - MOVE_EST,
+	                                          module));
+	getScheduler()->schedule(new LookEvent(currentTime + ROUND_INTERVAL -
+	                                           CHANGE_LIGHT_EST - LOOK_EST -
+	                                           COMPUTE_EST - MOVE_EST,
+	                                       module));
 	getScheduler()->schedule(
 	    new InterruptionEvent(currentTime + ROUND_INTERVAL, module, 0));
 }
@@ -163,14 +168,28 @@ void CompressFullRangeBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
 				console << "start compute " << module->blockId << "\n";
 				auto [pos, color] = compute();
 
-				nextPos = module->position + pos;
-				if (color != Color()) setColor(color);
+				nextPos    = module->position + pos;
+				next_color = color;
+				// if (color != Color()) setColor(color);
 				if (state == BlockState::TERMINATE) {
 					console << "terminate " << module->blockId << "\n";
 					return;
 				}
-				state = BlockState::MOVE;
+				// state = BlockState::MOVE;
+				state = BlockState::CHANGE_LIGHT;
 				console << "end compute " << module->blockId << "\n";
+			}
+			break;
+		case EVENT_CHANGE_LIGHT:
+			if (state == BlockState::CHANGE_LIGHT) {
+				console << "start change light " << module->blockId << "\n";
+
+				if (next_color != Color()) setLight(next_color);
+				state = BlockState::MOVE;
+				console << "end change light " << module->blockId << "\n";
+			}else if(state== BlockState::TERMINATE and next_color != Color()){
+				setLight(next_color);
+				return;
 			}
 			break;
 		case EVENT_MOVE:
@@ -179,14 +198,14 @@ void CompressFullRangeBlockCode::processLocalEvent(std::shared_ptr<Event> pev) {
 				bool res = move();
 				state    = BlockState::MOVING;
 				if (!res) {
-					//onMotionEnd();
+					// onMotionEnd();
 					console << "end move(stay) " << module->blockId << "\n";
 				}
 			}
 			break;
 		case EVENT_TELEPORTATION_END:
 		case EVENT_TELEPORTATION_STOP:
-			//onMotionEnd();
+			// onMotionEnd();
 			console << "end move " << module->blockId << "\n";
 			break;
 		case EVENT_INTERRUPTION:
