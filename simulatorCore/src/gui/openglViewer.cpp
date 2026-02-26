@@ -427,11 +427,11 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                                      // cout << vidName << endl;
                                      cerr << TermColor::BWhite << "running:"
                                           << TermColor::BYellow << "`ffmpeg -pattern_type glob -framerate 30 -i \""
-                                         + animationDirName + "/*.jpg\" " + "-vf setpts=PTS/3.0 -af atempo=3.0 " + vidName << "`"
+                                         + animationDirName + "/*.jpg\" "  + vidName << "`"
                                           << TermColor::Reset << endl;
                                      int r = system(
                                          string("ffmpeg -pattern_type glob -framerate 30 -i \""
-                                                + animationDirName + "/*.jpg\" " + "-vf setpts=PTS/3.0 -af atempo=3.0 "+ vidName
+                                                + animationDirName + "/*.jpg\" "  + vidName
                                                 + ">/dev/null 2>/dev/null").c_str());
                                      if (r == 0) {
                                          system(string("rm -rf " + animationDirName).c_str());
