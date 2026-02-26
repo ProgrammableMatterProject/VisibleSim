@@ -525,7 +525,7 @@ std::pair<Cell3DPosition, Color> CompressFullRangeBlockCode::compute() {
 		}
 	}
 
-	return {STAY, BLUE};
+	return {STAY, WAITING_COLOR};
 }
 
 string CompressFullRangeBlockCode::onInterfaceDraw() {
