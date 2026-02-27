@@ -8,12 +8,12 @@ int CompressFullRangeBlockCode::range = 3;  // 視野範囲(自身を中心と�
 bool CompressFullRangeBlockCode::internal_light = true;
 bool CompressFullRangeBlockCode::external_light = true;
 // string CompressFullRangeBlockCode::on_note = "not started";
-const Color INITIAL_COLOR      = Color();                    // 初期色
+const Color INITIAL_COLOR      = Color();                      // 初期色
 const Color LEADER_NORTH_COLOR = Color(128 + 64, 128, 255);  // リーダー色
 const Color LEADER_SOUTH_COLOR = Color(128 - 64, 128, 255);  // リーダー色
 const Color LEADER_EAST_COLOR  = Color(128, 128 + 64, 255);  // リーダー色
 const Color LEADER_WEST_COLOR  = Color(128, 128 - 64, 255);  // リーダー色
-const Color FOLLOWER_COLOR     = GREEN;                      // フォロワー色
+const Color FOLLOWER_COLOR     = YELLOW;                      // フォロワー色
 const Color HALT_COLOR         = ORANGE;
 
 // 方向リスト

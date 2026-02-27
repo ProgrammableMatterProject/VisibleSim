@@ -10,22 +10,22 @@ bool CompressFullRangeBlockCode::internal_light = false;
 bool CompressFullRangeBlockCode::external_light = false;
 // string CompressFullRangeBlockCode::on_note = "not started";
 const Color INITIAL_COLOR      = Color();  // 初期色
-const Color HALT_COLOR         = ORANGE;
-const Color WAITING_COLOR      = BLUE;
-const Color COMPRESS_PH1_COLOR = Color(192, 255, 64);  // LIGHTGREEN
-const Color COMPRESS_PH2_COLOR = Color(96, 128, 32);
+const Color HALT_COLOR         = GREY;
+const Color WAITING_COLOR      = WHITE;
+const Color COMPRESS_PH1_COLOR = RED;  // LIGHTGREEN
+const Color COMPRESS_PH2_COLOR = Color(200, 0, 0);
 
-const Color EXTEND_NW_PH1_COLOR = Color(0, 255, 0);
-const Color EXTEND_NW_PH2_COLOR = Color(0, 128, 0);
+const Color EXTEND_NW_PH1_COLOR = ORANGE;
+const Color EXTEND_NW_PH2_COLOR = Color(200, 165, 0);
 
 const Color EXTEND_SE_PH1_COLOR = Color(255, 0, 0);
 const Color EXTEND_SE_PH2_COLOR = Color(128, 0, 0);
 
-const Color EXTEND_NE_PH1_COLOR = Color(255, 255, 0);
-const Color EXTEND_NE_PH2_COLOR = Color(128, 128, 0);
+const Color EXTEND_NE_PH1_COLOR = CYAN;
+const Color EXTEND_NE_PH2_COLOR = Color(0, 200, 200);
 
-const Color EXTEND_SW_PH1_COLOR = Color(64, 64, 0);
-const Color EXTEND_SW_PH2_COLOR = Color(32, 32, 0);
+const Color EXTEND_SW_PH1_COLOR = BLUE;
+const Color EXTEND_SW_PH2_COLOR = Color(0,0, 200);
 // 方向リスト
 const Cell3DPosition STAY  = Cell3DPosition(0, 0, 0);
 const Cell3DPosition NORTH = Cell3DPosition(0, 1, 0);
@@ -98,18 +98,19 @@ const PositionParser extend_phase2_sw_parser({
     "*******",
     "***rr**",
     "**mmmR*",
-    "*lmxeR*",
-    "*lmmm**",
-    "**LL***",
+    "**mxeR*",
+    "**mmm**",
+    "*******",
     "*******",
 });
+
 const PositionParser extend_phase1_sw_parser({
     "*******",
     "***rr**",
     "**mmmR*",
-    "*lmmxR*",
-    "*lmme**",
-    "**LL***",
+    "**mmxR*",
+    "**mme**",
+    "*******",
     "*******",
 });
 // 最初に呼び出す
@@ -492,10 +493,10 @@ std::pair<Cell3DPosition, Color> CompressFullRangeBlockCode::compute() {
 				}
 			}
 	}
-	cerr << module->blockId << " : "
-	     << "can_process_this_flag=" << can_process_this_flag
-	     << ", flagged_before_mine_flag=" << flagged_before_mine_flag
-	     << ", flagged_all_flag=" << flagged_all_flag << endl;
+	//	cerr << module->blockId << " : "
+	//	     << "can_process_this_flag=" << can_process_this_flag
+	//	     << ", flagged_before_mine_flag=" << flagged_before_mine_flag
+	//	     << ", flagged_all_flag=" << flagged_all_flag << endl;
 	if (can_process_this_flag == strategy_wait::STRATEGY_WAIT_SIZE) {
 		// 処理可能な戦略がない場合
 		return {STAY, WAITING_COLOR};
@@ -536,3 +537,5 @@ string CompressFullRangeBlockCode::onInterfaceDraw() {
 
 // note:凸型で操作がおかしかった
 // Lpocketの動作が速いか、r angleの動作条件がおかしい
+// todo :
+// 角の開拓の順を変更する(部分的な長方形の圧縮完了を持っていどうを開始する)
