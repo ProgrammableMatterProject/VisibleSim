@@ -425,14 +425,13 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
                                      const string& vidName =
                                          generateTimestampedFilename("video_" + bsname.substr(0, bsname.size()-4), "mp4");
                                      // cout << vidName << endl;
-                                     cerr << TermColor::BWhite << "running:"
-                                          << TermColor::BYellow << "`ffmpeg -pattern_type glob -framerate 30 -i \""
-                                         + animationDirName + "/*.jpg\" "  + vidName << "`"
-                                          << TermColor::Reset << endl;
-                                     int r = system(
-                                         string("ffmpeg -pattern_type glob -framerate 30 -i \""
-                                                + animationDirName + "/*.jpg\" "  + vidName
-                                                + ">/dev/null 2>/dev/null").c_str());
+					                 const string execute_command = "ffmpeg -pattern_type glob -framerate 30 -i \""
+                                                + animationDirName + "/*.jpg\" " +"-vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\" -c:v libx264 -profile:v high -level 4.0 -pix_fmt yuv420p -movflags +faststart "+   vidName
+                                                + ">/dev/null 2>/dev/null";
+					                 cerr << TermColor::BWhite
+					                      << "running:" << TermColor::BYellow
+					                      << "`" << execute_command << "`" << TermColor::Reset << endl;
+					                 int r = system(execute_command.c_str());
                                      if (r == 0) {
                                          system(string("rm -rf " + animationDirName).c_str());
                                          cerr << "Animation video exported to "
