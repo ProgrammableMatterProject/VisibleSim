@@ -9,8 +9,8 @@ subdirs: $(SUBDIRS)
 $(SUBDIRS):
 	@mkdir -p ../applicationsBin/$@
 	@echo "Checking $@ block code"
-	@$(MAKE) -C $@ APPDIR=../../applicationsBin/$@ GLOBAL_INCLUDES="$(GLOBAL_INCLUDES)" GLOBAL_LIBS="$(GLOBAL_LIBS)" GLOBAL_CCFLAGS="$(GLOBAL_CCFLAGS)"
-
+	@$(MAKE) -C $@ APPDIR=../../applicationsBin/$@ GLOBAL_INCLUDES="$(GLOBAL_INCLUDES)" GLOBAL_LIBS="$(GLOBAL_LIBS)" GLOBAL_CCFLAGS="$(GLOBAL_CCFLAGS)" TARGET=compressWithLight
+	@$(MAKE) -C $@ APPDIR=../../applicationsBin/$@ GLOBAL_INCLUDES="$(GLOBAL_INCLUDES)" GLOBAL_LIBS="$(GLOBAL_LIBS)" GLOBAL_CCFLAGS="$(GLOBAL_CCFLAGS)" TARGET=compressFullRange
 test:
 	@echo "\nBlockCodes Regression Testing:"
 	@for dir in $(SUBDIRS); do \

@@ -70,7 +70,10 @@ SUBDIRS = simulatorCore/src applicationsSrc
 
 GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 
-.PHONY: subdirs $(SUBDIRS) test doc replay
+MODEL = compressFullRange
+FIELD = convex/dirmond13x13.xml
+
+.PHONY: subdirs $(SUBDIRS) test doc replay run
 #.PHONY: subdirs $(SUBDIRS) test doc
 
 .NOTPARALLEL: applicationsSrc/
@@ -99,3 +102,6 @@ realclean: clean
 	$(MAKE) -C applicationsSrc APPDIR=../../applicationsBin realclean; \
 	$(MAKE) -C doc clean; \
 	$(MAKE) -C replay clean; \
+
+run: $(SUBDIRS)
+	cd applicationsBin/compressFullRange && ./$(MODEL) -c $(shell pwd)/$(FIELD)
