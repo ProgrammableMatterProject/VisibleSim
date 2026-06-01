@@ -151,6 +151,7 @@ bool MyAppSCCode::tryToMove() {
 
 void MyAppSCCode::parseUserElements(TiXmlDocument *config) {
     TiXmlNode *vs = config->FirstChild("vs");
+    config->Print();
     if (!vs) return;
     TiXmlNode *node = vs->FirstChild("goal");
     if (!node) return;

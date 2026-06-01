@@ -12,9 +12,9 @@
 
 using namespace BaseSimulator::utils;
 
-const int ANIMATION_DELAY=50000;
+const int ANIMATION_DELAY=100000;
 const int COM_DELAY=2000;
-
+const int stepGrp=20;
 //===========================================================================================================
 //
 //          DeformationStartEvent  (class)
@@ -39,9 +39,9 @@ void DeformationStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     DatomsBlock *datom = (DatomsBlock *)concernedBlock;
-    DatomsWorld::getWorld()->disconnectBlock(datom, false);
+    // disconnect all but the pivot
+    DatomsWorld::getWorld()->disconnectBlock(datom, deform.ptrPivot);
 
-    //    datom->setColor(DARKGREY);
     deform.init();
     scheduler->schedule(new DeformationStepEvent(scheduler->now() + COM_DELAY,datom, deform));
 }
@@ -77,12 +77,17 @@ void DeformationStepEvent::consume() {
     Scheduler *scheduler = getScheduler();
 
     Matrix mat;
-    bool rotationEnd=deform.nextStep(mat);
-cout << datom->blockId << endl << mat << endl;
-    DatomsWorld::getWorld()->updateGlData(datom,mat);
-    if (rotationEnd) {
+    auto res=deform.computeMatrixAtStep(mat);
+    //OUTPUT << datom->blockId << endl << mat << endl;
+    auto wrl=DatomsWorld::getWorld();
+    if (res.first>=2) {
+        wrl->updateGlData(deform.ptrMobile,AllPistonsOff,0);
+        wrl->updateGlData(deform.ptrPivot,AllPistonsOff,0);
         scheduler->schedule(new DeformationStopEvent(scheduler->now() + ANIMATION_DELAY, datom, deform));
     } else {
+        wrl->updateGlData(datom,mat);
+        wrl->updateGlData(deform.ptrMobile,deform.mobilePiston,res.second);
+        wrl->updateGlData(deform.ptrPivot,deform.pivotPiston,res.second);
         scheduler->schedule(new DeformationStepEvent(scheduler->now() + ANIMATION_DELAY, datom, deform));
     }
 }
@@ -129,6 +134,11 @@ void DeformationStopEvent::consume() {
     info << "connect Block " << datom->blockId;
     getScheduler()->trace(info.str(),datom->blockId,LIGHTBLUE);
     wrld->connectBlock(datom, false);
+    OUTPUT<< "connected" << endl;
+    int i=1;
+    for (int i=0; i<12; i++) {
+        OUTPUT << i << ":" << datom->getInterface(i)->getConnectedBlockBId() << endl;
+    }
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new DeformationEndEvent(scheduler->now() + COM_DELAY, datom));
 }
@@ -176,79 +186,90 @@ const string DeformationEndEvent::getEventName() {
 Deformation::Deformation(const DatomsBlock *mobile,const DatomsBlock *pivot,const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2,PistonId mid,PistonId pid, vector<pair<DatomsBlock*,PistonId>> blockingModules) {
     ptrPivot = pivot;
     ptrMobile = mobile;
-    mobileShape = mid;
-    pivotShape = pid;
+    mobilePiston = mid;
+    pivotPiston = pid;
     copy(blockingModules.begin(), blockingModules.end(),std::back_inserter(animated));
-
-    setup(C1,V1,C2,V2);
+    Caxis1 = C1;
+    Caxis2 = C2;
+    Vaxis1 = V1;
+    Vaxis2 = V2;
+    setup();
 }
 
-void Deformation::setup(const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2) {
-    Matrix MA = ptrPivot->getGlBlock()->mat;
+void Deformation::setup() {
+    //Matrix MA = ptrPivot->getGlBlock()->mat;
     Matrix MB = ptrMobile->getGlBlock()->mat;
     Matrix MA_1;
 
+    //OUTPUT << "mobile:\n" << MB;
+    //OUTPUT << "pivot:\n" << MA;
     initialMatrix=MB;
-    // we calculate BA translation
-    MA.inverse(MA_1);
-    Matrix m = MA_1*MB;
 
     Matrix matTC,matTC_1;
-    matTC.setTranslation(C1);
-    matTC_1.setTranslation(-C1);
+    matTC.setTranslation(Caxis1);
+    matTC_1.setTranslation(-Caxis1);
     //OUTPUT << "matT_C1:\n" << matTC;
     //OUTPUT << "matT_C1-1:\n" << matTC_1;
     Matrix R;
-    R.setRotation(90.0,V1);
+    R.setRotation(-90.0,Vaxis1);
     //OUTPUT << "R1:\n" << R;
 
-    m = matTC*(R*(matTC_1*m));
-    interMatrix = MA*m;
-    //OUTPUT << C1 << "/" << V1 << endl;
-    //OUTPUT << (interMatrix) << endl;
-
-    matTC.setTranslation(C2);
-    matTC_1.setTranslation(-C2);
+    Matrix matR1 = matTC*(R*matTC_1);
+    //OUTPUT << "Rotation 1:\n" << matR1;
+    interMatrix = MB*matR1;
+    //OUTPUT << "C1="<< C1 << "/ V1=" << V1 << endl;
+    //OUTPUT << "inter=\n" << (interMatrix) << endl;
+    //Vector3D p(0,0,0,1),q = interMatrix * p;
+    //OUTPUT << "interPos=" << q << endl;
+    matTC.setTranslation(Caxis2);
+    matTC_1.setTranslation(-Caxis2);
     //OUTPUT << "matT_C2:\n" << matTC;
     //OUTPUT << "matT_C2-1:\n" << matTC_1;
 
-    R.setRotation(-90.0,V2);
-    finalMatrix = MA*matTC*(R*(matTC_1*m));
+    R.setRotation(90.0,Vaxis2);
+    Matrix matR2 = matTC*(R*matTC_1);
+    finalMatrix = MB*(matR1*matR2);
+    //OUTPUT << "C2="<< C2 << "/ V2=" << V2 << endl;
+    //OUTPUT << "Rotation 2:\n" << matR2 ;
+    //OUTPUT << "finalM=\n" << finalMatrix;
 
-    //OUTPUT << C2 << "/" << V2 << endl;
-    //OUTPUT << finalMatrix << endl;
+    /*q = finalMatrix * p;
+    OUTPUT << "final=" << q  << endl;*/
 }
 
-bool Deformation::nextStep(Matrix &m) {
-    step++;
-    cout << getScheduler()->now() << ":" << step << endl;
-    DatomsWorld *wrl = DatomsWorld::getWorld();
-    switch (step) {
-        case 1:
-            m = initialMatrix;
-            for (pair<const DatomsBlock*,PistonId> data:animated) {
-                wrl->updateGlData(data.first,data.second);
-            }
-        break;
-        case 2:
-            m = interMatrix;
-            wrl->updateGlData(ptrMobile,mobileShape);
-            wrl->updateGlData(ptrPivot,pivotShape);
-        break;
-        case 3:
-            m = finalMatrix;
-            wrl->updateGlData(ptrMobile,AllPistonsOff);
-            wrl->updateGlData(ptrPivot,AllPistonsOff);
-        break;
-        case 4:
-            m = finalMatrix;
-            for (pair<const DatomsBlock*,PistonId> data:animated) {
-                wrl->updateGlData(data.first,AllPistonsOff);
-            }
-            break;
 
+pair<int,float> Deformation::computeMatrixAtStep(Matrix &m) {
+    float morphing=0.0;
+    step++;
+    //OUTPUT << "step: " << step <<endl;
+    int grp = step/stepGrp;
+    if (grp==0) {
+        float coef = float(step)/stepGrp;
+        morphing=coef;
+        Matrix matTC,matTC_1;
+        matTC.setTranslation(Caxis1);
+        matTC_1.setTranslation(-Caxis1);
+        Matrix R;
+        R.setRotation(-90.0*coef,Vaxis1);
+        //OUTPUT << "R1:\n" << R;
+
+        Matrix matR1 = matTC*(R*matTC_1);
+        //OUTPUT << "Rotation 1:\n" << matR1;
+        m = initialMatrix*matR1;
+    } else if (grp==1) {
+        float coef = float(step-stepGrp)/stepGrp;
+        morphing=1.0-coef;
+        Matrix matTC,matTC_1;
+        matTC.setTranslation(Caxis2);
+        matTC_1.setTranslation(-Caxis2);
+        //OUTPUT << "matT_C2:\n" << matTC;
+        //OUTPUT << "matT_C2-1:\n" << matTC_1;
+        Matrix R;
+        R.setRotation(90.0*coef,Vaxis2);
+        Matrix matR2 = matTC*(R*matTC_1);
+        m = interMatrix*matR2;
     }
-    return step==4;
+    return {grp,morphing};
 }
 
 void Deformation::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {

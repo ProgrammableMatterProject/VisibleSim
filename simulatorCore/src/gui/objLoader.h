@@ -127,6 +127,7 @@ public :
     vertexPosNrmTx *tabVertices;
     GLuint *tabIndices;
     GLuint nbreIndices;
+    GLuint nbreVertices;
     GLuint vboId,indexVboId;
     GLuint objectNumber;
     char nom[128],nomOriginal[64];
@@ -139,6 +140,7 @@ public :
     void addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3);
     GLuint addVertex(const Sommet &s);
     void glDraw(void);
+    void glDrawMorphing(const ObjData* second,float coef) const;
     void glDrawId(void);
     void createVertexArray();
     void saveSTLfacets(ofstream &file,const Vector3D &p,int ind0,int ind1=-1,bool invNormal=false) const;
@@ -162,6 +164,7 @@ public:
     void createVertexArrays();
     void glDraw(void);
     void glDraw(GLuint n);
+    void glDraw(GLuint n0,GLuint n1,float coef);
     void glDrawIdByMaterial(int &i);
     void glDrawId(int i);
     void setLightedColor(const GLfloat *color);

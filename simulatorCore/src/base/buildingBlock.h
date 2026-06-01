@@ -347,6 +347,10 @@ namespace BaseSimulator {
         virtual bool hasNeighbor(int dir);
 
         /**
+         * @return the number of possible motion for the current module from its current position
+         */
+        virtual int nbPossibleMotions() const { return 0; };
+        /**
          * @param dest destination of the candidate motion
          * @return true if the module can move to cell dest
          */

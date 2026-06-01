@@ -10,6 +10,7 @@
 #include "../../base/buildingBlock.h"
 #include "datomsWorld.h"
 #include "datomsSimulator.h"
+#include "datomsMotionEngine.h"
 #include "../../utils/trace.h"
 #include "../../replay/replayExporter.h"
 
@@ -191,11 +192,7 @@ namespace Datoms {
         realPos = m_1 * realPos;
 
         const Vector3D bs = wrl->lattice->gridScale;
-        /*realPos.pt[0] /= bs[0];
-        realPos.pt[1] /= bs[1];
-        realPos.pt[2] /= bs[2];*/
         realPos /= bs;
-
         double x, y, z, d = 1;
         int i = 0;
 
@@ -248,17 +245,53 @@ namespace Datoms {
 // }
 
     bool DatomsBlock::canMoveTo(const Cell3DPosition &dest) const {
-        throw NotImplementedException("canMoveTo not implemented yet");
+        auto v=getAllMotions();
+        auto it=v.begin();
+        while (it!=v.end() && it->first!=dest) { it++; }
+        return it!=v.end();
     }
 
     bool DatomsBlock::moveTo(const Cell3DPosition &dest) {
-        throw NotImplementedException("moveTo not implemented yet");
+        auto tab = DatomsWorld::getWorld()->getAllDeformationsForModule(this);
+        if (tab.empty()) return false;
+        Cell3DPosition finalPos;
+        short finalOrient;
+        auto lattice = DatomsWorld::getWorld()->lattice;
+        auto it=tab.begin();
+        bool found=false;
+        while (it!=tab.end() && !found) {
+            (*it).second.init();
+            (*it).second.getFinalPositionAndOrientation(finalPos, finalOrient);
+            found = (finalPos==dest && lattice->isInGrid(finalPos) && lattice->isFree(finalPos));
+            it++;
+        }
+        if (found) {
+            OUTPUT << "start motion to" << finalPos << endl;
+            getScheduler()->schedule(new DeformationStartEvent(getScheduler()->now(),this,(*(it-1)).second));
+        }
+        return found;
     }
 
     vector<pair<Cell3DPosition, uint8_t>> DatomsBlock::getAllMotions() const {
         vector<pair<Cell3DPosition, uint8_t>> res;
-        throw NotImplementedException("moveTo not implemented yet");
+        auto tab = DatomsWorld::getWorld()->getAllDeformationsForModule(this);
+        if (tab.empty()) return res;
+        Cell3DPosition finalPos;
+        short finalOrient;
+        auto lattice = DatomsWorld::getWorld()->lattice;
+        for (auto &elem: tab) {
+            elem.second.init();
+            elem.second.getFinalPositionAndOrientation(finalPos, finalOrient);
+            cout << "Xpos:" << finalPos << endl;
+            if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
+                res.emplace_back(pair<Cell3DPosition, uint8_t>(finalPos, finalOrient));
+            }
+        }
         return res;
     }
 
+    int DatomsBlock::nbPossibleMotions() const {
+        auto motions=getAllMotions();
+        return motions.size();
+    }
 }

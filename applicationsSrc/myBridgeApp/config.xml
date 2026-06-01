@@ -1,0 +1,10 @@
+<!-- config.xml -->
+<?xml version="1.0" standalone="no" ?>
+<vs>
+	<visuals>
+		<window size="1280x720" backgroundColor="#4d4dd0" />
+		<render shadows="on" grid="on"/>
+	</visuals>
+	<world gridSize="20,20,20">
+	</world>
+</vs>

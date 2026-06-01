@@ -85,7 +85,7 @@ namespace BaseSimulator {
         /**
          * Pointer to the module for which the scheduler is currently handling an event
          */
-        BuildingBlock* contextModule = NULL;
+        BuildingBlock* contextModule = nullptr;
     public:
         //!< Defines possible states of the scheduler
         enum State {
@@ -102,7 +102,7 @@ namespace BaseSimulator {
 
         //!< @brief Static getter for the global instance of Scheduler
         static Scheduler* getScheduler() {
-            assert(scheduler != NULL);
+            assert(scheduler != nullptr);
             return(scheduler);
         }
 
@@ -111,17 +111,17 @@ namespace BaseSimulator {
         }
 
         BlockCode* getContextBlockCode() const {
-            return contextModule ? contextModule->blockCode : NULL;
+            return contextModule ? contextModule->blockCode : nullptr;
         }
 
         //!< @brief Global function for triggering scheduler deletion (Takes a bit of synchronisation, see Scheduler::terminate)
         static void deleteScheduler() {
             // Ensure Scheduler has not been deleted yet
-            if (scheduler != NULL) {
+            if (scheduler != nullptr) {
                 // Take the deletion lock
                 delMutex.lock();
                 // Ensure again that it has not been deleted meanwhile
-                if (scheduler != NULL) {
+                if (scheduler != nullptr) {
                     // If scheduler is not yet in termination mode (means it is still running), instruct it to terminate
                     if (!scheduler->terminate.load()) {
                         scheduler->terminate.store(true);
@@ -138,7 +138,7 @@ namespace BaseSimulator {
 
                     // Scheduler can now be safely deleted
                     delete scheduler;
-                    scheduler = NULL;
+                    scheduler = nullptr;
                 }
                 // Release lock, even though another thread was waiting, double deletion cannot occur
                 delMutex.unlock();

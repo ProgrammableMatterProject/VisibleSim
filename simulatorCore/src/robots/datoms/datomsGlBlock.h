@@ -12,18 +12,21 @@
 #include "../../math/matrix44.h"
 #include "../../base/glBlock.h"
 #include "math/cell3DPosition.h"
+#include "datomsUtils.h"
 
 namespace Datoms {
 class DatomsGlBlock:public GlBlock {
-protected :
 public :
     Matrix mat{};
-    GLshort currentModel;
+    PistonId piston;
+    float coef;
 
-    DatomsGlBlock(bID id) : GlBlock(id) { currentModel=1; };
+    DatomsGlBlock(bID id) : GlBlock(id) { piston=AllPistonsOff; };
     virtual ~DatomsGlBlock() {};
 
     void glDraw(ObjLoader::ObjLoader *ptrObj) override;
+    void glDrawId(ObjLoader::ObjLoader *ptrObj,int n) override;
+    void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) override;
     string getPopupInfo() const override;
 };
 }

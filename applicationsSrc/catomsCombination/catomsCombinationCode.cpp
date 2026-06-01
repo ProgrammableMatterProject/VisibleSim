@@ -18,6 +18,9 @@ public:
                                                                             parentId(_parent), level(_level) {};
 };
 
+Cell3DPosition MM_0(0,0,0);
+Cell3DPosition MM_1(100,100,100);
+
 uint16_t CatomsCombinationCode::generateSolutions() {
     uint16_t n = 0;
     uint8_t nStepMax=0;
@@ -165,6 +168,9 @@ bool CatomsCombinationCode::addConfiguration(Node &newNode) {
     if (conf == configurations.end()) {
         newNode.id = counter++;
         configurations.push_back(newNode);
+        for (auto &m: newNode.modules.pos) {
+            lattice->highlightCell(m,Colors[newNode.level]);
+        }
         return newNode.modules.reachedTarget(*target);
     } else {
         if (newNode.level == (*conf).level) {
@@ -187,6 +193,7 @@ bool CatomsCombinationCode::addConfigurationFromMotion(uint32_t level, map<bID, 
     auto it = modules.begin();
     for (int i = 0; i < confSize && it != modules.end(); i++) {
         bool isMobile = ((*it).second->position == mobile->position);
+        // cout << "isMobile=" << isMobile << endl; place mobile at start ?
         config.set(i, isMobile ? targetPos : (*it).second->position);
         if (isMobile) {
             //cout << "add (" << (*it).second->position << "," << targetPos << ")" << endl;
@@ -196,7 +203,9 @@ bool CatomsCombinationCode::addConfigurationFromMotion(uint32_t level, map<bID, 
     }
     Node newNode(level, config, parent, mobilePositions);
     // sort array for comparisons
-    return addConfiguration(newNode);
+    auto res = addConfiguration(newNode);
+    if (res) lattice->highlightCell(targetPos,Colors[level]);
+    return res;
 }
 
 // return the first and last indexes of configuration of a given level
@@ -268,6 +277,7 @@ bool CatomsCombinationCode::isSetConnectedWithout(BuildingBlock *bb) {
 }
 
 void CatomsCombinationCode::resetConfiguration(uint32_t ind) {
+    // modules : all modules stored in the world
     auto modules = wrld->buildingBlocksMap;
     // extract all mobile modules from lattice
     for (auto &m: modules) {
@@ -306,6 +316,7 @@ void CatomsCombinationCode::worldRun() {
         cout << (*it).second->blockId << ":" << (*it).second->position << ", mob:" << isMobile << endl;
         if (isMobile) {
             config.set(i++, (*it).second->position);
+            lattice->highlightCell((*it).second->position,Colors[0]);
 //            mobilePositions.push_back({(*it).second->position,(*it).second->position});
         }
         it++;
@@ -318,8 +329,9 @@ void CatomsCombinationCode::worldRun() {
     // motions
     int step = 1;
     bool solutionFound = false;
+    auto indexes = getConfigurations(step - 1);
     do {
-        auto indexes = getConfigurations(step - 1);
+        indexes = getConfigurations(step - 1);
         //cout << "InitialConfs:"<< indexes.first << " to " << indexes.second << endl;
         uint32_t l = (indexes.second - indexes.first) / 10;
         uint32_t stp = 0;
@@ -346,11 +358,15 @@ void CatomsCombinationCode::worldRun() {
                         for (auto &elem: tab) {
                             elem.second.init(((Catoms3DGlBlock *) bb->ptrGlBlock)->mat);
                             elem.second.getFinalPositionAndOrientation(finalPos, finalOrient);
-                            //cout << finalPos << endl;
-                            if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
-                                if (addConfigurationFromMotion(step, modules, m.second, finalPos,
-                                                               configurations[ind].id)) {
-                                    solutionFound = true;
+                            if (elem.second.pivot->color!=BLACK) {
+                                bool inBB = finalPos[0]>=MM_0[0] && finalPos[1]>=MM_0[1] && finalPos[2]>=MM_0[2] &&
+                                    finalPos[0]<=MM_1[0] && finalPos[1]<=MM_1[1] && finalPos[2]<=MM_1[2];
+                                if (inBB && lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
+                                    //cout << "step=" << step << ", module=" << m.second->blockId << ", Pos=" << finalPos << endl;
+                                    if (addConfigurationFromMotion(step, modules, m.second, finalPos,
+                                                                   configurations[ind].id)) {
+                                        solutionFound = true;
+                                                                   }
                                 }
                             }
                         }
@@ -358,10 +374,11 @@ void CatomsCombinationCode::worldRun() {
                 }
             }
             /**********************************************************************/
+
             auto indexConfEnd = configurations.size() - 1;
             // combinaisons de mouvements pour la configuration courante
             //cout << "combinations: " << indexConfBegin << " to " << indexConfEnd << endl;
-            while (indexConfBegin < indexConfEnd) {
+            while (indexConfBegin <= indexConfEnd) {
                 auto conf1 = configurations[indexConfBegin];
                 //cout << "conf1:" << conf1;
                 // on essaye de combiner conf1 avec les autres
@@ -373,7 +390,7 @@ void CatomsCombinationCode::worldRun() {
                 for (auto &c1: conf1Mobiles->second) {
                     mobiles1.push_back({1, c1.first, c1.second});
                 }
-                //cout << "mobiles1:" << mobiles1.size() << ", " << mobiles1[0].id << endl;
+                //cout << "mobiles1:" << mobiles1.size() << ", " << mobiles1[0].fromPos << "->" << mobiles1[0].toPos << endl;
                 if (mobiles1.size() == 1) {
                     //auto bb1 = static_cast<Catoms3DBlock *>(modules[mobiles1[0].id]);
                     // bb1 est le module en mobiles1[0].fromPos
@@ -408,76 +425,76 @@ void CatomsCombinationCode::worldRun() {
                     }
                     cout << "\n";*/
 
-                    int indexConf = indexConfBegin + 1;
-                    while (indexConf <= indexConfEnd &&
-                           configurations[indexConf].mobilesPerParent.begin()->first ==
-                           configurations[indexConfBegin].mobilesPerParent.begin()->first) {
-                        auto conf2 = configurations[indexConf];
-                        //cout << "conf2(" << indexConf << "): " << conf2;
-                        // déterminer le module mobile dans indConf
-                        /*vector<ModuleData> mobiles2;
-                        for (auto &md: conf2.modules) {
-                            if (md.hasMoved) {
-                                mobiles2.push_back(md);
-                            }
-                        }*/
-                        vector<Solution> mobiles2;
-                        auto conf2Mobiles = conf2.mobilesPerParent.begin();
-                        for (auto &c2: conf1Mobiles->second) {
-                            mobiles2.push_back({1, c2.first, c2.second});
-                        }
-
-                        // si différent de mobile1
-                        if (mobiles2.size() == 1 && mobiles1[0].fromPos != mobiles2[0].fromPos) {
-                            //cout << "mobile2: " << mobiles2[0].id << endl;
-                            // déterminer son mouvement
-                            //auto bb2 = static_cast<Catoms3DBlock *>(modules[mobiles2[0].id]);
-                            // bb2 est le module en mobiles1[0].fromPos
-                            auto it = modules.begin();
-                            while (it != modules.end() && it->second->position != mobiles2[0].fromPos) {
-                                it++;
-                            }
-                            auto bb2 = static_cast<Catoms3DBlock *>(it->second);
-                            tab = Catoms3DMotionEngine::getAllRotationsForModule(bb2);
-                            it_tab = tab.begin();
-                            Cell3DPosition finalPos;
-                            short finalOrient;
-                            bool found = false;
-                            while (it_tab != tab.end() && !found) {
-                                (*it_tab).second.init(((Catoms3DGlBlock *) bb2->ptrGlBlock)->mat);
-                                (*it_tab).second.getFinalPositionAndOrientation(finalPos, finalOrient);
-//                                found = (finalPos == mobiles2[0].pos && finalOrient == mobiles2[0].orientCode);
-                                found = (finalPos == mobiles2[0].toPos);
-                                if (!found) it_tab++;
-                            };
-                            if (!found) cerr << "error: impossible motion!" << endl;
-                            //cout << "motion from " << bb2->position << " to " << finalPos << endl;
-                            // construire la liste de cellules brulée
-                            auto burnt2 = (*it_tab).first->getBlockingCellsList(bb2);
-                            burnt2.push_back(bb2->position);
-                            burnt2.push_back(finalPos);
-                            burnt2.push_back(it_tab->second.pivot->position);
-
-                            // afficher
-                            /*cout << "burnt cells:";
-                            for (auto &b: burnt2) {
-                                cout << b << ",";
-                            }
-                            cout << "\n";*/
-                            // si les cellules brulée sont disjointes ajouter la combinaison des deux mouvements.
-                            auto b1 = burnt1.begin();
-                            while (b1 != burnt1.end() && (find(burnt2.begin(), burnt2.end(), *b1) == burnt2.end())) {
-                                b1++;
-                            }
-                            if (b1 == burnt1.end()) {
-                                //cout << "fusion: " << conf1 << " : " << conf2;
-                                Node newNode(conf1, mobiles2[0].fromPos, mobiles2[0].toPos);
-                                //cout << "generate: " << newNode << endl;
-                                addConfiguration(newNode);
-                            }
-                        }
-                        indexConf++;
-                    }
+//                    int indexConf = indexConfBegin + 1;
+//                    while (indexConf <= indexConfEnd &&
+//                           configurations[indexConf].mobilesPerParent.begin()->first ==
+//                           configurations[indexConfBegin].mobilesPerParent.begin()->first) {
+//                        auto conf2 = configurations[indexConf];
+//                        cout << "conf2(" << indexConf << "): " << conf2;
+//                        // déterminer le module mobile dans indConf
+//                        /*vector<ModuleData> mobiles2;
+//                        for (auto &md: conf2.modules) {
+//                            if (md.hasMoved) {
+//                                mobiles2.push_back(md);
+//                            }
+//                        }*/
+//                        vector<Solution> mobiles2;
+//                        auto conf2Mobiles = conf2.mobilesPerParent.begin();
+//                        for (auto &c2: conf1Mobiles->second) {
+//                            mobiles2.push_back({1, c2.first, c2.second});
+//                        }
+//
+//                        // si différent de mobile1
+//                        if (mobiles2.size() == 1 && mobiles1[0].fromPos != mobiles2[0].fromPos) {
+//                            //cout << "mobile2: " << mobiles2[0].id << endl;
+//                            // déterminer son mouvement
+//                            //auto bb2 = static_cast<Catoms3DBlock *>(modules[mobiles2[0].id]);
+//                            // bb2 est le module en mobiles1[0].fromPos
+//                            auto it = modules.begin();
+//                            while (it != modules.end() && it->second->position != mobiles2[0].fromPos) {
+//                                it++;
+//                            }
+//                            auto bb2 = static_cast<Catoms3DBlock *>(it->second);
+//                            tab = Catoms3DMotionEngine::getAllRotationsForModule(bb2);
+//                            it_tab = tab.begin();
+//                            Cell3DPosition finalPos;
+//                            short finalOrient;
+//                            bool found = false;
+//                            while (it_tab != tab.end() && !found) {
+//                                (*it_tab).second.init(((Catoms3DGlBlock *) bb2->ptrGlBlock)->mat);
+//                                (*it_tab).second.getFinalPositionAndOrientation(finalPos, finalOrient);
+////                                found = (finalPos == mobiles2[0].pos && finalOrient == mobiles2[0].orientCode);
+//                                found = (finalPos == mobiles2[0].toPos);
+//                                if (!found) it_tab++;
+//                            };
+//                            if (!found) cerr << "error: impossible motion!" << endl;
+//                            //cout << "motion from " << bb2->position << " to " << finalPos << endl;
+//                            // construire la liste de cellules brulée
+//                            auto burnt2 = (*it_tab).first->getBlockingCellsList(bb2);
+//                            burnt2.push_back(bb2->position);
+//                            burnt2.push_back(finalPos);
+//                            burnt2.push_back(it_tab->second.pivot->position);
+//
+//                            // afficher
+//                            /*cout << "burnt cells:";
+//                            for (auto &b: burnt2) {
+//                                cout << b << ",";
+//                            }
+//                            cout << "\n";*/
+//                            // si les cellules brulée sont disjointes ajouter la combinaison des deux mouvements.
+//                            auto b1 = burnt1.begin();
+//                            while (b1 != burnt1.end() && (find(burnt2.begin(), burnt2.end(), *b1) == burnt2.end())) {
+//                                b1++;
+//                            }
+//                            if (b1 == burnt1.end()) {
+//                                //cout << "fusion: " << conf1 << " : " << conf2;
+//                                Node newNode(conf1, mobiles2[0].fromPos, mobiles2[0].toPos);
+//                                //cout << "generate: " << newNode << endl;
+//                                addConfiguration(newNode);
+//                            }
+//                        }
+//                        indexConf++;
+//                    }
                 }
                 indexConfBegin++;
             }
@@ -487,13 +504,22 @@ void CatomsCombinationCode::worldRun() {
         cout << "\n----------------------------------- depth " << step << "-----------------------------------\n";
 
         step++;
-    } while (!solutionFound);
-    //} while (step<2);
+    } while (!solutionFound && (indexes.second -indexes.first >0));
+    //} while (step<5);
     printConfigurations();
     cout << "Goal reached! " << generateSolutions() << " times." << endl;
 }
 
 void CatomsCombinationCode::startup() {
+    // count number of mobile block
+    int n=0;
+    for (auto &c:wrld->buildingBlocksMap) {
+        n+=static_cast<CatomsCombinationCode*>(c.second->blockCode)->isMobile;
+    }
+    if (confSize!=n) {
+        cerr << "WARNING set confSize=" << n << " (number of mobiles)!" << endl;
+    }
+    assert(confSize==n);
     if (getId() == 1) worldRun();
 }
 
@@ -506,4 +532,29 @@ void CatomsCombinationCode::parseUserBlockElements(TiXmlElement *config) {
             std::cout << getId() << " is mobile!" << std::endl; // complete with your code
         }
     }
+}
+
+void CatomsCombinationCode::parseUserElements(TiXmlDocument *config) {
+    TiXmlNode *xmlWorldNode = nullptr;
+    auto xmlVSNode = config->FirstChild("vs");
+    TiXmlNode *node =xmlVSNode->FirstChild("param");
+    if (!node) {
+        cout << "no [param]\n" << endl;
+        return;
+    }
+    TiXmlElement *element = node->ToElement();
+    const char *attr = element->Attribute("MM0");
+    if (attr) {
+        MM_0=Simulator::extractCell3DPositionFromString(attr);
+    } else {
+        MM_0={0,0,0};
+    }
+    attr = element->Attribute("MM1");
+    if (attr) {
+        MM_1=Simulator::extractCell3DPositionFromString(attr);
+    } else {
+        MM_1=lattice->gridSize;
+    }
+    std::cout << "MM_0 = " << MM_0 << std::endl;
+    std::cout << "MM_1 = " << MM_1 << std::endl;
 }

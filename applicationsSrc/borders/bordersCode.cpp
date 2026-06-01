@@ -75,6 +75,7 @@ void BordersCode::myPositionFunc(std::shared_ptr<Message> _msg, P2PNetworkInterf
     setColor(neighborhood.isDefined() ? WHITE : ORANGE);
 
     if (neighborhood.isDefined()) {
+        showArrow=true;
         // search code in list
         auto it = tabBorders.begin();
         auto v = neighborhood.getState();
@@ -255,48 +256,51 @@ void BordersCode::onGlDraw() {
     auto bbs=BlinkyBlocksWorld::getWorld()->getMap();
     int ix,iy;
     float jx,jy;
-    for (auto &bb:bbs) {
-        auto nh = static_cast<BordersCode*>(bb.second->blockCode)->getNeiborhood();
+    if (showArrow) {
+        for (auto &bb: bbs) {
+            auto nh = static_cast<BordersCode *>(bb.second->blockCode)->getNeiborhood();
 
-        if (nh.isBorder()) {
-            auto glBc = static_cast<BlinkyBlocksGlBlock*>(bb.second->getGlBlock());
+            if (nh.isBorder()) {
+                auto glBc = static_cast<BlinkyBlocksGlBlock *>(bb.second->getGlBlock());
 
-            glPushMatrix();
-            glTranslatef(glBc->position[0]+20,glBc->position[1]+20,50);
-            glRotatef(-90.0f*(float)(glBc->rotCoef),0,0,1.0f);
+                glPushMatrix();
+                glTranslatef(glBc->position[0] + 20, glBc->position[1] + 20, 50);
+                glRotatef(-90.0f * (float) (glBc->rotCoef), 0, 0, 1.0f);
 
-            nh.getFromPosition(ix,iy);
-            jx=ix/10.0;
-            jy=iy/10.0;
-            glDisable(GL_TEXTURE_2D);
-            glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE,red);
-            glNormal3f(0,0,1);
-            glBegin(GL_QUADS);
-            glVertex3f(ix+jy,iy-jx,0.0);
-            glVertex3f(ix-jy,iy+jx,0.0);
-            glVertex3f(-jy-jx,+jx-jy,0.0);
-            glVertex3f(+jy-jx,-jx-jy,0.0);
-            glEnd();
-            nh.getToPosition(ix,iy);
-            jx=ix/3.0;
-            jy=iy/3.0;
-            glNormal3f(0,0,1);
-            glBegin(GL_TRIANGLES);
-            glVertex3f(ix,iy,0.0);
-            glVertex3f(-jy+jx,jx+jy,0.0);
-            glVertex3f(jy+jx,-jx+jy,0.0);
-            glEnd();
+                nh.getFromPosition(ix, iy); // (ix,iy) is the position of the previous step in the border
+                jx = ix / 10.0;
+                jy = iy / 10.0;
+                glDisable(GL_TEXTURE_2D);
+                glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
+                glNormal3f(0, 0, 1);
+                glBegin(GL_QUADS);
+                glVertex3f(ix + jy, iy - jx, 0.0);
+                glVertex3f(ix - jy, iy + jx, 0.0);
+                glVertex3f(-jy - jx, +jx - jy, 0.0);
+                glVertex3f(+jy - jx, -jx - jy, 0.0);
+                glEnd();
+                nh.getToPosition(ix, iy); // (ix,iy) is the position of the next step in the border
+                jx = ix / 3.0;
+                jy = iy / 3.0;
+                glNormal3f(0, 0, 1);
+                glBegin(GL_TRIANGLES);
+                glVertex3f(ix, iy, 0.0);
+                glVertex3f(-jy + jx, jx + jy, 0.0);
+                glVertex3f(jy + jx, -jx + jy, 0.0);
+                glEnd();
 
-            jx=ix/10.0;
-            jy=iy/10.0;
-            glBegin(GL_QUADS);
-            glVertex3f(ix/3.0+jy,iy/3.0-jx,0.0);
-            glVertex3f(ix/3.0-jy,iy/3.0+jx,0.0);
-            glVertex3f(-jy,+jx,0.0);
-            glVertex3f(+jy,-jx,0.0);
-            glEnd();
+                jx = ix / 10.0;
+                jy = iy / 10.0;
+                glBegin(GL_QUADS);
+                glVertex3f(ix / 3.0 + jy, iy / 3.0 - jx, 0.0);
+                glVertex3f(ix / 3.0 - jy, iy / 3.0 + jx, 0.0);
+                glVertex3f(-jy, +jx, 0.0);
+                glVertex3f(+jy, -jx, 0.0);
+                glEnd();
 
-            glPopMatrix();
+                glPopMatrix();
+            }
         }
     }
 }
+

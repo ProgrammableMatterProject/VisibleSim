@@ -25,10 +25,23 @@ void DatomsGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     }
     glDisable(GL_CULL_FACE);
     //if (color[3] > 0) ptrObj->glDraw(currentModel);
-    glRotatef(45.0f,0.0f,0.0f,1.0f);
-    glRotatef(45.0f,0.0f,1.0f,0.0f);
-    ptrObj->glDraw(1);
+    if (piston==AllPistonsOff) ptrObj->glDraw(piston);
+    else ptrObj->glDraw(AllPistonsOff,piston,coef);
     glEnable(GL_CULL_FACE);
+    glPopMatrix();
+}
+
+void DatomsGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj, int n) {
+    glPushMatrix();
+    mat.glMultMatrix();
+    ptrObj->glDrawId(n);
+    glPopMatrix();
+}
+
+void DatomsGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj, int &n) {
+    glPushMatrix();
+    mat.glMultMatrix();
+    ptrObj->glDrawIdByMaterial(n);
     glPopMatrix();
 }
 

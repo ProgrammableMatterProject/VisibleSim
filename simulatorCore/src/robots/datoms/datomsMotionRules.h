@@ -17,7 +17,9 @@ public :
     vector <DatomsMotionRulesLink*> tabLinks;
     DatomsMotionRulesPiston* tabPtrPistons[4];
 
-    DatomsMotionRulesConnector(int n):ID(n) {};
+    DatomsMotionRulesConnector(int n):ID(n) {
+        for(int i=0; i<4; i++) tabPtrPistons[i]=nullptr;
+    };
     void addLink(DatomsMotionRulesLink *lnk);
     void addPiston(DatomsMotionRulesPiston*ptr);
 };

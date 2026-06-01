@@ -44,9 +44,6 @@ void Catoms3DBlockCode::processLocalEvent(EventPtr pev) {
             //c3d->setPositionAndOrientation(c3d->position,c3d->orientationCode);
             onMotionEnd();
         }  break;
-                case EVENT_TELEPORTATION_END: {
-                    onMotionEnd();
-                }
     }
 }
 

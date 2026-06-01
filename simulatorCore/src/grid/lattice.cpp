@@ -781,7 +781,7 @@ void FCCLattice::glDraw() const {
             glTranslatef(v[0],v[1],v[2]);
             /*c.set(pair.second.rgba[0],pair.second.rgba[1],pair.second.rgba[2],0.5f);
             glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c.rgba);*/
-            pair.second.glMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
+            pair.second.glMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,0.75);
             glBegin(GL_QUADS);
             ptr = quads;
             i=18;

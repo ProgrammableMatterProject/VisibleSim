@@ -43,9 +43,8 @@ DatomsWorld::DatomsWorld(const Cell3DPosition &gridSize, const Vector3D &gridSca
     OUTPUT << TermColor::LifecycleColor << "DatomsWorld constructor" << TermColor::Reset << endl;
 
     if (GlutContext::GUIisEnabled) {
-        //objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/datomsTextures","datomVS_piston.obj");
-        //objBlock = new ObjLoader::ObjLoader(directory.c_str(),"datomsThick.obj");
-        objBlock = new ObjLoader::ObjLoader(directory.c_str(),"datomVS_piston.obj");
+        //objBlock = new ObjLoader::ObjLoader(directory.c_str(),"datoms.obj");
+        objBlock = new ObjLoader::ObjLoader(directory.c_str(),"datomVS_piston_quad.obj");
         objBlockForPicking = new ObjLoader::ObjLoader(directory.c_str(), "datoms_picking.obj");
 #ifdef WIN32
         string directory = string(ROOT_DIR) + "/simulatorCore/resources/textures/catoms3DTextures";
@@ -55,18 +54,48 @@ DatomsWorld::DatomsWorld(const Cell3DPosition &gridSize, const Vector3D &gridSca
         objRepere = new ObjLoader::ObjLoader(directory.c_str(),"repereCatom3D.obj");
     }
 
-    lattice = new SkewFCCLattice(gridSize, gridScale.isZero() ? defaultBlockSize : gridScale);
-    motionRules = new DatomsMotionRules();
+    lattice = new FCCLattice(gridSize, gridScale.isZero() ? defaultBlockSize : gridScale);
+    motionEngine = new DatomsMotionEngine();
 }
 
 DatomsWorld::~DatomsWorld() {
     OUTPUT << "DatomsWorld destructor" << endl;
     /*	block linked are deleted by world::~world() */
+    delete motionEngine;
 }
 
 void DatomsWorld::deleteWorld() {
     delete((DatomsWorld*)world);
 }
+
+/*void DatomsWorld::disconnectBlock(DatomsBlock *mobile, const DatomsBlock*pivot) {
+    P2PNetworkInterface *fromBlock,*toBlock;
+
+    for(int i = 0; i < mobile->getNbInterfaces(); i++) {
+        fromBlock = mobile->getInterface(i);
+        if (fromBlock && fromBlock->connectedInterface) {
+            toBlock = fromBlock->connectedInterface;
+            if (toBlock->hostBlock!=pivot) {
+                // Clear message queue
+                fromBlock->outgoingQueue.clear();
+                toBlock->outgoingQueue.clear();
+
+                // Notify respective codeBlocks
+                mobile->removeNeighbor(fromBlock);
+                fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
+
+                // Disconnect the interfaces
+                fromBlock->connectedInterface = nullptr;
+                toBlock->connectedInterface = nullptr;
+            }
+        }
+    }
+
+    lattice->remove(mobile->position, false);
+
+    OUTPUT << getScheduler()->now() << " : Datom Disconnect Block " << mobile->blockId <<
+           " pos = " << mobile->position << endl;
+}*/
 
 void DatomsWorld::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
@@ -74,25 +103,25 @@ void DatomsWorld::createPopupMenu(int ix, int iy) {
         // create submenu "Add"
         GlutPopupMenuWindow *addBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,202,112);
         addBlockSubMenu->id=50;
-        addBlockSubMenu->addButton(11,"../../simulatorCore/resources/textures/menuTextures/menu_add_normal.tga");
-        addBlockSubMenu->addButton(12,"../../simulatorCore/resources/textures/menuTextures/menu_add_same.tga");
-        addBlockSubMenu->addButton(13,"../../simulatorCore/resources/textures/menuTextures/menu_add_random.tga");
+        addBlockSubMenu->addButton(11,menuTextureDirectory + "menu_add_normal.tga");
+        addBlockSubMenu->addButton(12,menuTextureDirectory + "menu_add_same.tga");
+        addBlockSubMenu->addButton(13,menuTextureDirectory + "menu_add_random.tga");
     // create submenu "Rotate"
         GlutPopupMenuWindow *rotateBlockSubMenu = new GlutPopupMenuWindow(NULL,0,0,116,40);
         rotateBlockSubMenu->id=51;
 
-        GlutContext::popupMenu->addButton(1,"../../simulatorCore/resources/textures/menuTextures/menu_add_sub.tga",addBlockSubMenu);
-        GlutContext::popupMenu->addButton(2,"../../simulatorCore/resources/textures/menuTextures/menu_del.tga");
+        GlutContext::popupMenu->addButton(1,menuTextureDirectory + "menu_add_sub.tga",addBlockSubMenu);
+        GlutContext::popupMenu->addButton(2,menuTextureDirectory + "menu_del.tga");
 
-        GlutContext::popupMenu->addButton(6,"../../simulatorCore/resources/textures/menuTextures/menu_rotate_sub.tga",rotateBlockSubMenu);
-        GlutContext::popupMenu->addButton(3,"../../simulatorCore/resources/textures/menuTextures/menu_tap.tga");
-        GlutContext::popupMenu->addButton(4,"../../simulatorCore/resources/textures/menuTextures/menu_save.tga");
-        GlutContext::popupMenu->addButton(5,"../../simulatorCore/resources/textures/menuTextures/menu_cancel.tga");
+        GlutContext::popupMenu->addButton(6,menuTextureDirectory + "menu_rotate_sub.tga",rotateBlockSubMenu);
+        GlutContext::popupMenu->addButton(3,menuTextureDirectory + "menu_tap.tga");
+        GlutContext::popupMenu->addButton(4,menuTextureDirectory + "menu_save.tga");
+        GlutContext::popupMenu->addButton(5,menuTextureDirectory + "menu_cancel.tga");
     }
 
   // update rotateSubMenu depending on rotation datomsCapabilities
-    DatomsBlock *bb = (DatomsBlock *)getSelectedBuildingBlock();
-    vector<std::pair<const DatomsMotionRulesLink*, Deformation>> tab = DatomsMotionEngine::getAllDeformationsForModule(bb);
+  DatomsBlock *bb = (DatomsBlock *)getSelectedBuildingBlock();
+    auto tab = getAllDeformationsForModule(bb);
     int nbreMenus=tab.size();
     if (nbreMenus==0) {
         ((GlutButton*)GlutContext::popupMenu->getButton(6))->activate(false);
@@ -108,17 +137,19 @@ void DatomsWorld::createPopupMenu(int ix, int iy) {
         for(auto &elem:tab) {
             elem.second.init();
             elem.second.getFinalPositionAndOrientation(finalPos,finalOrient);
-            cout << elem.first->getConFromID() << "=>" << elem.first->getConToID() << " " << finalPos << "," << finalOrient << endl;
+            int mobileConId = elem.first->mobileConId;
+            int pivotConId = elem.first->pivotConId;
+            cout << mobileConId << "=>" << pivotConId << " " << finalPos << "," << finalOrient << endl;
             if (lattice->isInGrid(finalPos) && lattice->isFree(finalPos)) {
                     rotateBlockSubMenu->addButton(new GlutRotationButton(NULL,i++,0,0,0,0,"../../simulatorCore/resources/textures/menuTextures/menu_link.tga",
-                true,elem.first->getConFromID(),elem.first->getConToID(),finalPos,finalOrient));
+                true,mobileConId,pivotConId,finalPos,finalOrient));
             }
         }
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
-    cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
-                 << " selected" << endl;
+    cerr << "Block " << numSelectedGlBlock << ": '" << lattice->getDirectionString(numSelectedFace)
+                 << "' selected" << endl;
     GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
     GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
     GlutContext::popupMenu->show(true);
@@ -184,11 +215,11 @@ void DatomsWorld::menuChoice(int n) {
                 Cell3DPosition pos = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalPosition;
                 short orient = ((GlutRotationButton*)GlutContext::popupSubMenu->getButton(n))->finalOrientation;
                 DatomsWorld *wrld = getWorld();
-                wrld->disconnectBlock(bb, false);
+                wrld->disconnectBlock(bb);
                 bb->setPositionAndOrientation(pos,orient);
                 wrld->connectBlock(bb, false);
                 //}
-            } else World::menuChoice(n); // For all non-catoms2D-specific cases
+            } else World::menuChoice(n);
         break;
     }
 }
@@ -206,7 +237,7 @@ void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
     PistonId pId = (PistonId)(orient/64);
     orient = orient % 64;
     if (pId==0) pId=AllPistonsOff;
-    cout << "ID=" << blockId << "  piston=" << pId << "  pos=" << pos << "  orient=" << orient << endl;
+    cout << "ID=" << blockId << "  piston=" << pId << "  pos=" << pos << "  orient=" << int(orient) << endl;
 
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                             (datom->blockId, (BaseSimulator::BuildingBlock*)datom));
@@ -217,9 +248,9 @@ void DatomsWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
 
     DatomsGlBlock *glBlock = new DatomsGlBlock(blockId);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
-    glBlock->currentModel=pId;
-    //datom->setModel(pId);
+    glBlock->piston=pId;
     datom->setGlBlock(glBlock);
+    //datom->setPiston(pId);
     if (ReplayExporter::isReplayEnabled())
         ReplayExporter::getInstance()->writeAddModule(getScheduler()->now(), blockId);
     datom->setPositionAndOrientation(pos,orient);
@@ -236,20 +267,24 @@ void DatomsWorld::linkBlock(const Cell3DPosition& pos) {
     DatomsBlock *datom = (DatomsBlock *)lattice->getBlock(pos);
 
     if (datom) {
-#ifdef verbose
+//#ifdef verbose
         OUTPUT << "link datom " << datom->blockId << endl;
-#endif
+//#endif
         Cell3DPosition neighborPos;
         DatomsBlock* neighborBlock;
 
         for (int i=0; i<12; i++) {
-            if (datom->getNeighborPos(i,neighborPos)
-                && (neighborBlock = (DatomsBlock *)lattice->getBlock(neighborPos))!=NULL) {
-                datom->getInterface(i)->connect(neighborBlock->getInterface(pos));
+            if (datom->getNeighborPos(i,neighborPos)) {
+                OUTPUT << "i=" << i << ": neighborPos=" <<  neighborPos << endl;
+                neighborBlock = (DatomsBlock *)lattice->getBlock(neighborPos);
+                if (neighborBlock) {
+                    OUTPUT << "Block#" << neighborBlock->blockId << endl;
+                    datom->getInterface(i)->connect(neighborBlock->getInterface(pos));
 #ifdef verbose
-                OUTPUT << "connection #" << datom->blockId << "(" << i << ") to #"
+                    OUTPUT << "connection #" << datom->blockId << "(" << i << ") to #"
                        << neighborBlock->blockId << endl;
 #endif
+                }
             }
         }
     }
@@ -274,16 +309,17 @@ void DatomsWorld::glDraw() {
     enableTexture(false);
     lattice->glDraw();
 
-    BuildingBlock *bb = getSelectedBuildingBlock() ?: getMap().begin()->second;
+    BuildingBlock *bb = getSelectedBuildingBlock() ? getSelectedBuildingBlock(): getMap().begin()->second;
     if (bb) bb->blockCode->onGlDraw();
 }
 
 void DatomsWorld::glDrawId() {
     glPushMatrix();
-    glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_TEXTURE_2D);
+    enableTexture(false);
     lock();
     for (const auto& pair : mapGlBlocks) {
-        ((DatomsGlBlock*)pair.second)->glDrawId(objBlock, pair.first);
+        ((DatomsGlBlock*)pair.second)->glDrawId(objBlockForPicking, pair.first);
     }
     unlock();
     glPopMatrix();
@@ -457,15 +493,15 @@ void DatomsWorld::updateGlData(DatomsBlock*blc, const Matrix &mat) {
     }
 }
 
-void DatomsWorld::updateGlData(const DatomsBlock*blc, PistonId id) {
+void DatomsWorld::updateGlData(const DatomsBlock*blc, PistonId id, float coef) {
     DatomsGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
         lock();
-        glblc->currentModel = id;
+        glblc->piston = id;
+        glblc->coef = coef;
         unlock();
     }
 }
-
 
 void DatomsWorld::setSelectedFace(int n) {
     numSelectedGlBlock = n / numPickingTextures;
@@ -488,12 +524,76 @@ void DatomsWorld::setSelectedFace(int n) {
         numSelectedFace = numPickingTextures;	// UNDEFINED
     }
 
-    cerr << name << " = " << numSelectedFace << " = " << endl;
+    cerr << name << " = " << int(numSelectedFace) << endl;
 }
 
 void DatomsWorld::exportConfiguration() {
     DatomsConfigExporter exporter = DatomsConfigExporter(this);
     exporter.exportConfiguration();
 }
+
+const vector<std::pair<const DatomsDestinations*, Deformation>> DatomsWorld::getAllDeformationsForModule(const DatomsBlock* m) const {
+        vector<std::pair<const DatomsDestinations*, Deformation>> allDeformations;
+
+    OUTPUT << "For module #" << m->blockId << endl;
+        for (short i=0; i<12; i++) {
+            P2PNetworkInterface *p2p = m->getInterface(i);
+            //OUTPUT << "Interface #" << i << ";" << ((p2p && p2p->connectedInterface!=nullptr)?"yes":"null") << endl;
+            if (p2p && p2p->connectedInterface!=nullptr) { // if connected
+                DatomsBlock *pivot=(DatomsBlock *)m->getInterface(i)->connectedInterface->hostBlock;
+                short j = pivot->getInterfaceId(m->getInterface(i)->connectedInterface);
+
+                //OUTPUT << "Interface #" << m->blockId << ":" << i << " / #" << pivot->blockId << ":" << j << endl;
+
+                if (m->orientationCode<12 && pivot->orientationCode<12) {
+                    OUTPUT << "same orientation :" << motionEngine->destSameRules.size() << " rules." << endl;
+                    for (auto &rule:motionEngine->destSameRules) {
+                        //if (motionEngine->validateMotion(i,j,m)) { // check rule + free cells
+                        if (rule.isUsable(i,j)) {
+                            OUTPUT << i << "=>" << j << "-------------------------" << endl;
+                            // check if piston cells are freed
+                            auto freeCon = rule.getPistonConnectors();
+                            auto it = freeCon.begin();
+                            while (it!=freeCon.end() && m->getNeighborIDForFace(*it)==0) {
+                                OUTPUT << "con=" << int(*it) << " value =" << m->getNeighborIDForFace(*it) << endl;
+                                it++;
+                            }
+
+                            if (it==freeCon.end()) {
+                                //vector<pair<DatomsBlock*,PistonId>> blockingDatoms = validRule->getBlockingDatoms(pivot);
+                                auto piston = motionEngine->getPiston(rule.dests.first.first);
+                                Vector3D P(piston->direction[0], piston->direction[1], piston->direction[2], 1);
+                                //Vector3D posPiston = pivot->getGlBlock()->mat*P;
+                                uint8_t jointFrom = piston->getAxisConn(i);
+
+                                // créer 3 mouvements possibles, donner les destinations !
+                                for (auto &motion: rule.dests.second) {
+                                    uint8_t jointTo = piston->getAxisConn(motion.first);
+                                    OUTPUT << int(motion.first) << "(" << int(jointFrom) << ") ->" << int(motion.second)
+                                           << "(" << int(jointTo) << ")" << endl;
+                                    assert(jointFrom < 4 && jointTo < 4);
+                                    auto v = Deformation(m, pivot, piston->Caxis[jointFrom], piston->Vaxis[jointFrom],
+                                                         piston->Caxis[jointTo], piston->Vaxis[jointTo],
+                                                         piston->modelId,
+                                                         rule.dests.first.second, {});
+                                    Cell3DPosition pos;
+                                    short orient;
+                                    auto mat = v.getFinalMatrix();
+                                    v.getFinalPositionAndOrientation(pos, orient);
+                                    OUTPUT << "Verif: " << pos << ":" << orient << " e="
+                                           << (lattice->gridToWorldPosition(pos) - (mat * Vector3D(0, 0, 0, 1))).norme()
+                                           << endl;
+                                    allDeformations.push_back({&rule, v});
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+        return allDeformations;
+    }
+
 
 } // Datom namespace

@@ -318,4 +318,9 @@ namespace Catoms3D {
         }
         return res;
     }
+
+    int Catoms3DBlock::nbPossibleMotions() const {
+        auto motions=getAllMotions();
+        return motions.size();
+    }
 }

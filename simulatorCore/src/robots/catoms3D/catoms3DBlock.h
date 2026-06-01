@@ -210,6 +210,10 @@ namespace Catoms3D {
                                  RotationLinkType faceReq = RotationLinkType::Any) const;
 
         /**
+         * @copydoc BuildingBlock::nbPossibleMotions
+        */
+        virtual int nbPossibleMotions() const override;
+/**
          * @copydoc BuildingBlock::canMoveTo
          */
         virtual bool canMoveTo(const Cell3DPosition &dest) const override;

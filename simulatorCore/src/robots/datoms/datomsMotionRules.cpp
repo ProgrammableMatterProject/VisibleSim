@@ -35,10 +35,6 @@ DatomsMotionRules::DatomsMotionRules() {
 // allocation of connectors
     for (int i=0; i<12; i++) {
         tabConnectors[i] = new DatomsMotionRulesConnector(i);
-        tabConnectors[i]->tabPtrPistons[0]=NULL;
-        tabConnectors[i]->tabPtrPistons[1]=NULL;
-        tabConnectors[i]->tabPtrPistons[2]=NULL;
-        tabConnectors[i]->tabPtrPistons[3]=NULL;
     }
 
     tabPistons[0] = new DatomsMotionRulesPiston(0,Vector3D(r,r,0),Piston012A);

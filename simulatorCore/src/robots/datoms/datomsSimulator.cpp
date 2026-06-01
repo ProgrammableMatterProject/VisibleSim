@@ -58,7 +58,7 @@ void DatomsSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBu
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
     //  here, using the blockElt TiXmlElement.
-
+OUTPUT << "add Datom#" << blockId << endl;
     // set the orientation
     short rotCode = 0;
     const char *attr = blockElt->Attribute("orientation");
@@ -73,6 +73,11 @@ void DatomsSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBu
     if (attr) {
         string str = attr;
         if (str=="2345") piston = Piston2345;
+        else if (str=="012A") piston = Piston012A;
+        else if (str=="0579") piston = Piston0579;
+        else if (str=="4678") piston = Piston4678;
+        else if (str=="89AB") piston = Piston89AB;
+        else if (str=="136B") piston = Piston136B;
     }
     OUTPUT << "piston: " << piston << endl;
     rotCode+=piston*64;

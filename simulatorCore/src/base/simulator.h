@@ -53,6 +53,11 @@ namespace BaseSimulator {
          */
         static void deleteSimulator();
 
+        /*!
+         * @brief relaod the initial configuration
+         */
+        void reset();
+
         inline CommandLine &getCmdLine() { return cmdLine; }
 
         virtual void printInfo() { cout << "I'm a Simulator" << endl; }
@@ -64,7 +69,7 @@ namespace BaseSimulator {
          *  @param argv The command line arguments
          */
         void parseConfiguration(int argc, char *argv[]);
-
+        void resetConfiguration();
         /*!
          *  @brief Starts the simulation
          *   (i.e. link the blocks, start the scheduler if needed, and enter the GLUT main loop)

@@ -116,6 +116,8 @@ private:
     Neighborhood neighborhood;
     uint16_t order;
     bool isLeader;
+    int time=0;
+    bool showArrow=false;
 public :
 	BordersCode(BlinkyBlocksBlock *host);
 	~BordersCode() {};
@@ -156,6 +158,30 @@ public :
   */
     void onGlDraw() override;
 
+    void onUserKeyPressed(unsigned char c, int x, int y) {
+        if (c=='a') {
+            for (auto bb: BaseSimulator::getWorld()->getMap()) {
+                BordersCode *bc=static_cast<BordersCode *>(bb.second->blockCode);
+                bc->showArrow=false;
+                if (bc->neighborhood.isBorder()) {
+                    scheduler->schedule(new InterruptionEvent<int>(scheduler->now() + 200000, bb.second, 0));
+                }
+            }
+        }
+    }
+
+    void onInterruptionEvent(shared_ptr<Event> event) {
+        int u;
+        time++;
+        u=order-time;
+        if (u<0) {
+            u=4-(-u)%5;
+        } else {
+            u=u%5;
+        }
+        setColor(neighborhood.isExternalBorder()?Color((u+1)*51,(u+1)*51,0):Color(0,(u+1)*51,(u+1)*51));
+        scheduler->schedule(new InterruptionEvent<int>(scheduler->now()+200000, module, 0));
+    }
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {

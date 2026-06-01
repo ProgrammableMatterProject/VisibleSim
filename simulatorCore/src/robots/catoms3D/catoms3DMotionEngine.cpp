@@ -102,7 +102,7 @@ Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(const Catoms3DBlock *m,
         const vector<Cell3DPosition> &adjacentCells =
                 utils::intersection(mActiveCells, tPosActiveCells);
 
-                // Check for a pivot with a direct connector path between the two cells
+        // Check for a pivot with a direct connector path between the two cells
         Catoms3DBlock *pivot = nullptr;
         for (const Cell3DPosition &pPos: adjacentCells) {
             pivot = static_cast<Catoms3DBlock *>(lattice->getBlock(pPos));
@@ -110,6 +110,10 @@ Catoms3DMotionEngine::findPivotLinkPairsForTargetCell(const Catoms3DBlock *m,
             // Do no allow rotating modules to actuate for others
             if (pivot->getState() == BuildingBlock::State::MOVING) {
                 cout << pPos << " is rotating" << endl;
+                continue;
+            }
+
+            if (isBetweenOppositeOrDiagonalBlocks(lattice, tPos, m->position)) {
                 continue;
             }
 
@@ -167,7 +171,8 @@ Catoms3DBlock *Catoms3DMotionEngine::findMotionPivot(const Catoms3DBlock *m,
     return nullptr;
 }
 
-bool Catoms3DMotionEngine::isNotLockedForMotion(const Cell3DPosition &origin, const Cell3DPosition &final, bool isHexaFace) {
+bool
+Catoms3DMotionEngine::isNotLockedForMotion(const Cell3DPosition &origin, const Cell3DPosition &final, bool isHexaFace) {
     Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
     if (!lattice->isFree(final)) return false;
     auto conn = lattice->getRelativeConnectivity(final);
@@ -178,7 +183,8 @@ bool Catoms3DMotionEngine::isNotLockedForMotion(const Cell3DPosition &origin, co
             pos0 = final + conn[i];
             pos1 = final + conn[i + 6];
             if (pos0 != origin && pos1 != origin && lattice->isInGrid(pos0) && !lattice->isFree(pos0) &&
-                lattice->isInGrid(pos1) && !lattice->isFree(pos1)) return false;
+                lattice->isInGrid(pos1) && !lattice->isFree(pos1))
+                return false;
         }
     }
     return true;
@@ -232,3 +238,64 @@ Catoms3DMotionEngine::getAllReachablePositions(const Catoms3DBlock *m,
     }
     return reachablePositions;
 }
+
+//Finding the positions between 2 opposite modules, this version does not check for the current module's position used to build graphs in a distributed way
+bool Catoms3DMotionEngine::isBetweenOppositeOrDiagonalBlocks(Lattice *lattice, const Cell3DPosition &tPos) {
+
+    Cell3DPosition directions[] = {
+            Cell3DPosition(1, 0, 0),
+            Cell3DPosition(0, 1, 0),
+    };
+
+    for (const auto &dir: directions) {
+        if (lattice->cellHasBlock(tPos + dir) && lattice->cellHasBlock(tPos - dir)) {
+            return true;
+        }
+    }
+
+    vector<pair<Cell3DPosition, Cell3DPosition>> diagonals = {
+            {Cell3DPosition(0, 0, 1),  Cell3DPosition(1, 1, -1)},
+            {Cell3DPosition(0, 0, -1), Cell3DPosition(1, 1, 1)},
+            {Cell3DPosition(1, 0, -1), Cell3DPosition(0, 1, 1)},
+            {Cell3DPosition(0, 1, -1), Cell3DPosition(1, 0, 1)}
+    };
+
+    for (const auto &dir: diagonals) {
+        if (lattice->cellHasBlock(tPos + dir.first) && lattice->cellHasBlock(tPos + dir.second)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+//Finding the positions between 2 opposite modules, this version is to use during the movement of a module
+bool Catoms3DMotionEngine::isBetweenOppositeOrDiagonalBlocks(Lattice *lattice, const Cell3DPosition &tPos,
+                                                             const Cell3DPosition &mPos) {
+
+    vector<pair<Cell3DPosition, Cell3DPosition>> couples = {
+            {Cell3DPosition(1, 0, 0),  Cell3DPosition(-1, 0, 0)},
+            {Cell3DPosition(0, 1, 0),  Cell3DPosition(0, -1, 0)},
+            {Cell3DPosition(1, 1, -1), Cell3DPosition(0, 0, 1)},
+            {Cell3DPosition(0, 0, -1), Cell3DPosition(1, 1, 1)},
+            {Cell3DPosition(1, 0, -1), Cell3DPosition(0, 1, 1)},
+            {Cell3DPosition(0, 1, -1), Cell3DPosition(1, 0, 1)}
+    };
+
+    auto it = couples.begin();
+    Cell3DPosition pos1 = tPos + it->first;
+    Cell3DPosition pos2 = tPos + it->second;
+    bool hasBlock1 = (pos1 != mPos) && lattice->cellHasBlock(pos1);
+    bool hasBlock2 = (pos2 != mPos) && lattice->cellHasBlock(pos2);
+    it++;
+    while (it != couples.end() && !(hasBlock1 && hasBlock2)) {
+        pos1 = tPos + it->first;
+        pos2 = tPos + it->second;
+        hasBlock1 = (pos1 != mPos) && lattice->cellHasBlock(pos1);
+        hasBlock2 = (pos2 != mPos) && lattice->cellHasBlock(pos2);
+        it++;
+    }
+    return hasBlock1 && hasBlock2;
+}
+
+

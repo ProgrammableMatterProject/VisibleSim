@@ -20,6 +20,7 @@
 #include "../utils/trace.h"
 #include "../utils/utils.h"
 #include "../utils/global.h"
+#include "robots/datoms/datomsSimulator.h"
 
 // #define showStatsFPS  0
 
@@ -449,7 +450,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             break;
         case 's' :
             if (editMode) {
-                getWorld()->exportConfiguration();
+                BaseSimulator::getWorld()->exportConfiguration();
             } else {
                 const string &bsname = myBasename(Simulator::configFileName);
                 const string &ssName = generateTimestampedFilename("capture_" + bsname.substr(0, bsname.size() - 4),
@@ -497,7 +498,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
             showGrid = !showGrid;
         }
             break;
-        case 32: { // SPACE
+        case 32: { // SPACE KEY
             Scheduler *scheduler = getScheduler();
             scheduler->toggle_pause();
             if (scheduler->state == Scheduler::State::PAUSED) {
@@ -552,6 +553,11 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y) {
         break;
         case 'p' : {
             enablePopup=!enablePopup;
+        }
+        break;
+        case '$': {
+            // HOME KEY: reset configuration and time
+            getSimulator()->reset();
         }
         break;
         default: { // Pass on key press to user blockcode handler
@@ -750,7 +756,7 @@ void GlutContext::showSimulationInfo(void) {
     auto font = GLUT_BITMAP_HELVETICA_18;
     glColor4f(1.0, 1.0, 1.0, 0.75);
 
-    World *wrl = getWorld();
+    World *wrl = BaseSimulator::getWorld();
     //BuildingBlock *bb = wrl->getSelectedBuildingBlock() ? : wrl->getMap().begin()->second;
     BuildingBlock *bb = wrl->getSelectedBuildingBlock();
     if (bb == nullptr && !wrl->getMap().empty()) bb = wrl->getMap().begin()->second;

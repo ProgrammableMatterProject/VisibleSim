@@ -330,6 +330,19 @@ namespace ObjLoader {
         }
     }
 
+    void ObjLoader::glDraw(GLuint n0,GLuint n1,float coef) {
+        // search ptr0 and ptr1 objects
+        for (const auto &obj:tabObj) {
+            if (obj->objectNumber == n0) {
+                auto it=tabObj.begin();
+
+                while (it!=tabObj.end() && ((*it)->objectNumber!=n1 || (*it)->objMtl!=obj->objMtl)) it++;
+                if (it!=tabObj.end()) obj->glDrawMorphing(*it,coef);
+            }
+        }
+
+    }
+
     void ObjLoader::glDrawId(int n) {
         glLoadName(n);
         for (const auto &obj:tabObj) {
@@ -439,6 +452,7 @@ namespace ObjLoader {
     ObjData::ObjData(const char *str) {
         objMtl = nullptr;
         nbreIndices = 0;
+        nbreVertices = 0;
         tabVertices = nullptr;
         tabIndices = nullptr;
         center = nullptr;
@@ -496,36 +510,54 @@ namespace ObjLoader {
     }
 
     void ObjData::glDrawId(void) {
-        /*glEnableClientState(GL_NORMAL_ARRAY);
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glNormalPointer(GL_FLOAT, 0, tabNormals);
-        glTexCoordPointer(2, GL_FLOAT, 0, tabTexCoords);
-        glVertexPointer(3, GL_FLOAT, 0, tabVertices);
-        glDrawElements(GL_TRIANGLES, nbreIndices,GL_UNSIGNED_INT,tabIndices);
-        glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        glDisableClientState(GL_NORMAL_ARRAY);*/
-
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVboId);
-
-//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-//	glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
-
-        // Resetup our pointers.  This doesn't reinitialise any data, only how we walk through it
-//	glTexCoordPointer(2, GL_FLOAT, sizeof(vertexPosNrmTx), BUFFER_OFFSET(24));
-//	glNormalPointer(GL_FLOAT, sizeof(vertexPosNrmTx), BUFFER_OFFSET(12));
         glVertexPointer(3, GL_FLOAT, sizeof(vertexPosNrmTx), BUFFER_OFFSET(0));
-
-        // Actually do our drawing, parameters are Primative (Triangles, Quads, Triangle Fans etc), Elements to
-        // draw, Type of each element, Start Offset
         glDrawElements(GL_TRIANGLES, nbreIndices, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
-        // Disable our client state back to normal drawing
-//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-//	glDisableClientState(GL_NORMAL_ARRAY);
-        glDisableClientState(GL_VERTEX_ARRAY);
+       glDisableClientState(GL_VERTEX_ARRAY);
+    }
+
+    void ObjData::glDrawMorphing(const ObjData *second, float coef) const {
+        // create a new tabVertices from local and second
+        vertexPosNrmTx *tmp = new vertexPosNrmTx[nbreVertices];
+        const vertexPosNrmTx *ptr0=tabVertices,*ptr1=second->tabVertices;
+        vertexPosNrmTx *ptrTmp=tmp;
+
+        float c1 = 1.0-coef;
+        float norm;
+        for (int i=0; i<nbreVertices; i++) {
+            ptrTmp->x = c1*ptr0->x + coef*ptr1->x;
+            ptrTmp->y = c1*ptr0->y + coef*ptr1->y;
+            ptrTmp->z = c1*ptr0->z + coef*ptr1->z;
+            ptrTmp->nx = c1*ptr0->nx + coef*ptr1->nx;
+            ptrTmp->ny = c1*ptr0->ny + coef*ptr1->ny;
+            ptrTmp->nz = c1*ptr0->nz + coef*ptr1->nz;
+            norm = sqrt(ptrTmp->nx*ptrTmp->nx+ptrTmp->ny*ptrTmp->ny+ptrTmp->nz*ptrTmp->nz);
+            ptrTmp->nx /= norm;
+            ptrTmp->ny /= norm;
+            ptrTmp->nz /= norm;
+            /*ptrTmp->s = c1*ptr0->s + coef*ptr1->s;
+            ptrTmp->t = c1*ptr0->t + coef*ptr1->t;*/
+            ptrTmp->s = ptr1->s;
+            ptrTmp->t = ptr1->t;
+            ptrTmp++;
+            ptr0++;
+            ptr1++;
+        }
+
+        objMtl->glBind();
+        // Bind our buffers much like we would for texturing
+        glBegin(GL_TRIANGLES);
+        const GLuint *ptrIndices = tabIndices;
+        for (int i=0; i<nbreIndices; i++) {
+            ptr0 = tmp+*ptrIndices++;
+            glVertex3f(ptr0->x,ptr0->y,ptr0->z);
+            glNormal3f(ptr0->nx,ptr0->ny,ptr0->nz);
+            glTexCoord2f(ptr0->s,ptr0->t);
+        }
+        glEnd();
+        delete [] tmp;
     }
 
     void ObjData::saveSTLfacets(ofstream &file, const Vector3D &p, int ind0, int ind1, bool invNormal) const {
@@ -609,8 +641,8 @@ namespace ObjLoader {
     }
 
     void ObjData::createVertexArray() {
-        GLuint sizeVert = tabVertex.size();
-        tabVertices = new vertexPosNrmTx[sizeVert];
+        nbreVertices = tabVertex.size();
+        tabVertices = new vertexPosNrmTx[nbreVertices];
         vertexPosNrmTx *ptrV = tabVertices;
 
         center = new Point3(0, 0, 0);
@@ -650,8 +682,8 @@ namespace ObjLoader {
         // prepare the VBO
         glGenBuffers(1, &vboId);
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPosNrmTx) * sizeVert, nullptr, GL_STATIC_DRAW);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexPosNrmTx) * sizeVert, tabVertices);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPosNrmTx) * nbreVertices, nullptr, GL_STATIC_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexPosNrmTx) * nbreVertices, tabVertices);
         glTexCoordPointer(2, GL_FLOAT, sizeof(vertexPosNrmTx), BUFFER_OFFSET(24));
         glNormalPointer(GL_FLOAT, sizeof(vertexPosNrmTx), BUFFER_OFFSET(12));
         glVertexPointer(3, GL_FLOAT, sizeof(vertexPosNrmTx), BUFFER_OFFSET(0));

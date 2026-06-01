@@ -8,7 +8,16 @@
 
 using namespace Catoms3D;
 
-const int confSize=3;
+const int confSize=1;
+
+class BannedCells {
+    vector<Cell3DPosition> cells;
+public:
+    BannedCells(const Cell3DPosition &fromCell,const Cell3DPosition &toCell,const Cell3DPosition &pivotCell);
+    bool isEmpty() { return cells.empty(); }
+    bool isDisjointed(const BannedCells &other);
+    BannedCells join(const BannedCells &other);
+};
 
 class Solution {
 public:
@@ -83,6 +92,14 @@ public :
 
     void startup();
     void parseUserBlockElements(TiXmlElement *config);
+    /**
+  * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it.
+  * @param config : pointer to the TiXmlDocument representing the configuration file, all information related to VisibleSim's core have already been parsed
+  *
+  * Called from BuildingBlock constructor, only once.
+  */
+    void parseUserElements(TiXmlDocument *config) override;
+
     void worldRun();
     bool addConfiguration(Node &newNode);
     bool addConfigurationFromMotion(uint32_t level,map<bID,BuildingBlock*> &modules, BuildingBlock*mobile, Cell3DPosition targetPos, uint32_t parent);

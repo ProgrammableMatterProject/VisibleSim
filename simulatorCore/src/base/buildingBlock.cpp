@@ -326,7 +326,6 @@ namespace BaseSimulator {
 
     unsigned short BuildingBlock::getNeighborIDForFace(int faceNum) const {
         short nodeID = P2PNetworkInterfaces[faceNum]->getConnectedBlockId();
-
         return nodeID > 0  ? (unsigned short)nodeID : 0;
     }
 
@@ -335,7 +334,6 @@ namespace BaseSimulator {
             if (nId == getNeighborIDForFace(face))
                 return face;
         }
-
         return -1;
     }
 

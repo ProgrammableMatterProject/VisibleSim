@@ -824,7 +824,7 @@ namespace BaseSimulator {
 
 /*! @brief 3D Face-Centered Cubic Lattice with skew coordinate system (bent z-axis)
  *
- * Used by Catoms3D
+ * Used by Datoms
  *
  */
     class SkewFCCLattice : public FCCLattice {

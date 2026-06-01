@@ -12,18 +12,79 @@
 #define __DATOMS_MOTION_ENGINE_H__
 
 #include <utility>
-
-#include "datomsMotionRules.h"
-#include "datomsWorld.h"
+#include <vector>
+#include "../../utils/utils.h"
+#include "datomsUtils.h"
+#include "math/cell3DPosition.h"
 
 namespace Datoms {
 
+    /*
+
+(0,0)
+ A : {{P012A,P0579},[(1,7),(2,5),(10,9)]},{{P0579,P012A},[(7,1),(5,2),(9,10)]}
+ B : {{P012A,P012A},[(1,1),(2,10),(10,2)]},{{P0579,P0579},[(7,7),(5,9),(9,5)]}
+
+ * */
+
+class DatomsDestinations {
+public :
+    uint8_t mobileConId;
+    uint8_t pivotConId;
+    pair<pair<PistonId,PistonId>,vector<pair<uint8_t,uint8_t>>> dests;
+
+    DatomsDestinations(uint8_t mobile,uint8_t pivot,const pair<pair<PistonId,PistonId>,vector<pair<uint8_t,uint8_t>>> &lst):
+    mobileConId(mobile),pivotConId(pivot),dests(lst) {};
+    bool isUsable(uint8_t mobile,uint8_t pivot) const  { return mobile==mobileConId && pivot==pivotConId; }
+    vector<uint8_t> getPistonConnectors() const;
+};
+
+class DatomsMotionPiston {
+public :
+    Vector3D direction; // direction of the piston in the datom coordinate system
+    PistonId modelId;
+    Vector3D Caxis[4],Vaxis[4];
+    short axisConnId[4];
+
+    DatomsMotionPiston(const Vector3D& V,PistonId model):direction(V),modelId(model) {};
+    void setAxis(uint8_t i,uint8_t conId,const Vector3D& C, const Vector3D& V) {
+        axisConnId[i]=conId, Caxis[i]=C; Vaxis[i]=V.normer();
+    };
+    uint8_t getAxisConn(short conId) const {
+        int i=0;
+
+        while (i<4 && axisConnId[i]!=conId) i++;
+        return (i<4?i:255);
+    }
+};
+
 class DatomsMotionEngine {
     // FIXME: World is a poor container for this
-    static inline DatomsMotionRules* getMotionRules() {
+    /*static inline DatomsMotionRules* getMotionRules() {
         return DatomsWorld::getWorld()->getMotionRules();
-    }
+    }*/
 public:
+    vector<DatomsDestinations> destSameRules;
+    vector<DatomsMotionPiston> pistons;
+
+    DatomsMotionEngine();
+
+    void addSame(uint8_t mobile,uint8_t pivot,const pair<pair<PistonId,PistonId>,vector<pair<uint8_t,uint8_t>>> &pistonLst) {
+        destSameRules.push_back(DatomsDestinations(mobile,pivot,pistonLst));
+        if (pivot!=mobile) {
+            destSameRules.push_back(DatomsDestinations(pivot,mobile,{{pistonLst.first.second,pistonLst.first.first},
+                {{pistonLst.second[0].second,pistonLst.second[0].first},
+                 {pistonLst.second[1].second,pistonLst.second[1].first},
+                 {pistonLst.second[2].second,pistonLst.second[2].first}}}));
+        }
+    }
+    const DatomsMotionPiston* getPiston(PistonId pid) const {
+        auto it = pistons.begin();
+        while (it!=pistons.end() && (*it).modelId!=pid) {it++;}
+        return it!=pistons.end()?&(*it):nullptr;
+    }
+
+
     // /**
     //    @brief Given a set of motion rules link passed as argument, searches a path (sequence of individual rotations) that leads from connector conFrom to connector conTo
     //    @param motionRulesLinks a set of surface links between connectors of a pivot module that another module can follow to rotate
@@ -46,9 +107,9 @@ public:
      * @attention @todo This function does not currently check for further blocking modules
      * @return a connector link that can be used for the desired motion if it exists, NULL otherwise
      */
-    static const DatomsMotionRulesLink* findConnectorLink(const DatomsBlock *module,
+    /*const DatomsMotionRulesLink* findConnectorLink(const DatomsBlock *module,
                                                             short conFrom, short conTo);
-
+*/
     /**
      * Same as findConnectorLink, but with planning directly using the connectors of the pivot
      *
@@ -60,9 +121,9 @@ public:
      * @deprecated
      * @return
      */
-    static const DatomsMotionRulesLink* findPivotConnectorLink(const DatomsBlock *pivot,
+    /*const DatomsMotionRulesLink* findPivotConnectorLink(const DatomsBlock *pivot,
                                                                  short conFrom, short conTo);
-
+*/
     /**
      * Attempts to find all pairs of pivot and connector link on that pivot that would allow
      *  module m to rotate to position tPos under face requirement faceReq
@@ -86,13 +147,7 @@ public:
     /*static DatomsBlock*
     findMotionPivot(const DatomsBlock* m, const Cell3DPosition& tPos);*/
 
-    /**
-        \brief Computes a list of all possible rotations for module m
-        \param m module to evaluate
-        \return a vector containing all possible deformations for datom m
-    **/
-    static const vector<std::pair<const DatomsMotionRulesLink*, Deformation>>
-    getAllDeformationsForModule(const DatomsBlock* m);
+    //bool validateMotion(short mobileConnector, short pivotConnector, const DatomsBlock *mobile);
 };
 
 }

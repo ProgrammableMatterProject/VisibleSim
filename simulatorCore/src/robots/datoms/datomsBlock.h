@@ -18,6 +18,7 @@
 #include "datomsGlBlock.h"
 #include "math/cell3DPosition.h"
 #include "../../utils/utils.h"
+#include "datomsUtils.h"
 
 using namespace BaseSimulator::utils;
 
@@ -65,16 +66,10 @@ namespace Datoms {
     class DatomsBlockCode;
 
 
-    enum PistonId {
-        AllPistonsOff = 1, Piston012A, Piston136B, Piston4678, Piston0579, Piston2345, Piston89AB
-    }; //!< ID of piston for deformation
-
 /*! @class DatomsBlock
   @brief Special treatement and data for 3D quasi-spherical robot
 */
     class DatomsBlock : public BaseSimulator::BuildingBlock {
-    public :
-        // uint8_t orientationCode; //!< number of the connector that is along the x axis.
     public:
         /**
            @brief Constructor
@@ -99,13 +94,13 @@ namespace Datoms {
         /**
            @brief Get the interface from the neighbor position in the grid
            @param pos: position of the cell (if in the grid)
-           @return return interface if it exists one connected, NULL otherwise */
+           @return return interface if it exists one connected, nullptr otherwise */
         P2PNetworkInterface *getInterface(const Cell3DPosition &pos) const;
 
         /**
            @brief Get the interface from the interface id
            @param id: interface number
-           @return return interface if it exists one connected, NULL otherwise */
+           @return return interface if it exists one connected, nullptr otherwise */
         inline P2PNetworkInterface *getInterface(int id) const { return P2PNetworkInterfaces[id]; };
 
         /**
@@ -114,13 +109,6 @@ namespace Datoms {
            @param pos: position of the cell (if in the grid)
            @return return true if the cell is in the grid, false otherwise. */
         bool getNeighborPos(uint8_t connectorId, Cell3DPosition &pos) const override;
-
-        /**
-        * Gets a pointer to direct neighbor on connector conId
-        * @param connectorId connector identifier
-        * @return a pointer to neighbor on connector conId of datom, or NULL if there is none
-        */
-        DatomsBlock *getNeighborBlock(uint8_t conId) const;
 
         /**
          * Gets a pointer to neighbor (direct neighborhood or distant) at cell nPos
@@ -233,6 +221,11 @@ namespace Datoms {
         virtual void removeNeighbor(P2PNetworkInterface *ni) override;
 
         /**
+         * @copydoc BuildingBlock::nbPossibleMotions
+        */
+        virtual int nbPossibleMotions() const override;
+
+        /**
          * @copydoc BuildingBlock::canMoveTo
          */
         virtual bool canMoveTo(const Cell3DPosition &dest) const override;
@@ -246,11 +239,11 @@ namespace Datoms {
             * @copydoc BuildingBlock::getAllMotions
             */
         virtual vector<pair<Cell3DPosition, uint8_t>> getAllMotions() const override;
-
+        //const vector<pair<const DatomsDestinations*, Deformation>> getAllDeformations() const;
+        void setPiston(PistonId id) { static_cast<DatomsGlBlock*>(ptrGlBlock)->piston=id; };
     };
 
     std::ostream &operator<<(std::ostream &stream, DatomsBlock const &bb);
-
 }
 
 #endif /* DATOMSBLOCK_H_ */

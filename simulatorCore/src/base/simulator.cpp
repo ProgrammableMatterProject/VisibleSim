@@ -165,10 +165,30 @@ namespace BaseSimulator {
         OUTPUT << TermColor::LifecycleColor  << "Simulator destructor" << TermColor::Reset << endl;
 #endif
         delete xmlDoc;
+        delete xmlBlockListNode;
         if (ReplayExporter::isReplayEnabled())
             delete ReplayExporter::getInstance();
 
         deleteWorld();
+    }
+
+    void Simulator::reset() {
+        cout << "resetting simulator" << endl;
+/*        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> dis(1, INT_MAX); // [1,intmax]
+        if (cmdLine.isSimulationSeedSet()) {
+            seed = cmdLine.getSimulationSeed();
+        } else {
+            // Set random seed
+            seed = dis(gen);
+        }
+        generator = uintRNG((ruint) seed);
+*/
+        cerr << TermColor::BWhite << "Simulation Seed: " << seed << TermColor::Reset << endl;
+
+        simulator->resetConfiguration();
+        simulator->startSimulation();
     }
 
     void Simulator::deleteSimulator() {
@@ -206,6 +226,48 @@ namespace BaseSimulator {
 
         if (sl == SCHEDULER_LENGTH_BOUNDED) {
             scheduler->setMaximumDate(cmdLine.getMaximumDate());
+        }
+    }
+
+    void Simulator::resetConfiguration() {
+        try {
+            /*TiXmlNode *xmlWorldNode = nullptr;
+            auto xmlVSNode = xmlDoc->FirstChild("vs");
+#ifdef DEBUG_CONF_PARSING
+            OUTPUT << "VS :" << (xmlVSNode ? "OK" : "NO") << endl;
+#endif
+            if (xmlVSNode) {
+                cout << "vs tag: ok" << endl;
+                xmlWorldNode = parseVS(xmlVSNode, argc, argv);
+            } else {
+                cout << "vs tag: no" << endl;
+                xmlWorldNode = parseWorld(xmlDoc, argc, argv);
+            }
+
+            if (xmlWorldNode) {
+#ifdef DEBUG_CONF_PARSING
+                OUTPUT << "Configuration file successfully loaded "
+                       << TermColor::Reset << endl;
+#endif
+            } else {
+                ERRPUT << TermColor::ErrorColor << "error: Could not find root 'world' element in configuration file"
+                       << TermColor::Reset << endl;
+                exit(EXIT_FAILURE);
+            }*/
+
+            // Configure the simulation world
+            initializeIDPool();
+
+            // Instantiate and configure the Scheduler
+            deleteScheduler();
+            loadScheduler(schedulerMaxDate);
+
+            getWorld()->deleteAllBlocks();
+            // Parse and configure the remaining items
+            parseBlockList();
+        } catch (ParsingException const &e) {
+            cerr << e.what();
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -250,7 +312,6 @@ namespace BaseSimulator {
             exit(EXIT_FAILURE);
         }
     }
-
     Simulator::IDScheme Simulator::determineIDScheme() {
         TiXmlElement *element = xmlBlockListNode->ToElement();
         const char *attr = element->Attribute("ids");
@@ -825,12 +886,6 @@ namespace BaseSimulator {
             const char *attr = element->Attribute("color");
             if (attr) {
                 defaultColor = extractColorFromString(attr);
-                /*string str(attr);
-                int pos1 = str.find_first_of(','),
-                    pos2 = str.find_last_of(',');
-                defaultColor.set(stoi(str.substr(0,pos1)),
-                                 stoi(str.substr(pos1+1,pos2-pos1-1)),
-                                 stoi(str.substr(pos2+1,str.length()-pos1-1)));*/
 #ifdef DEBUG_CONF_PARSING
                 OUTPUT << "new default color :" << defaultColor << endl;
 #endif
@@ -1128,10 +1183,10 @@ namespace BaseSimulator {
 
 
                 if (obj) {
-                    Vector3D BBmin, BBmax;
+                    Vector3D BBmin(1e10,1e10,1e10), BBmax(-1e10,-1e10,-1e10);
                     obj->getBB(BBmin, BBmax);
                     cout << "Mesh BB" << BBmin << "/" << BBmax << endl;
-                    Vector3D origin = -scale*BBmin;
+                    Vector3D origin = BBmin;
                     Vector3D worldPos;
                     for (short iz = 0; iz <= world->lattice->getGridUpperBounds()[2]; iz++) {
                         const Cell3DPosition &glb = world->lattice->getGridLowerBounds(iz);
@@ -1142,8 +1197,8 @@ namespace BaseSimulator {
                             for (short ix = glb[0]; ix <= ulb[0]; ix++) {
                                 position.set(ix, iy, iz);
                                 if (world->lattice->isInGrid(position)) {
-                                    worldPos = origin+(1.0/scale)*(world->lattice->gridToUnscaledWorldPosition(position))+Vector3D(0.5,0.5,0.5);
-                                    if (obj->isInside(worldPos)) {
+                                    worldPos = (1.0/scale)*(world->lattice->gridToUnscaledWorldPosition(position))+Vector3D(0.5,0.5,0.5);
+                                    if (obj->isInside(worldPos-origin)) {
                                         loadBlock(element,
                                                   ids == ORDERED ? ++indexBlock : IDPool[indexBlock++],
                                                   bcb, position+gridOrigin, color, orient);
@@ -1224,6 +1279,7 @@ namespace BaseSimulator {
         }
     }
 
+    bool firstStart=true;
     void Simulator::startSimulation() {
         // Connect all blocks – TODO: Check if needed to do it here (maybe all blocks are linked on addition)
         world->linkBlocks();
@@ -1232,7 +1288,6 @@ namespace BaseSimulator {
         Scheduler *scheduler = getScheduler();
         //scheduler->sem_schedulerStart->post();
         scheduler->setState(Scheduler::NOTSTARTED);
-
 
         // Start replay export if enabled
         if (cmdLine.isReplayEnabled()) {
@@ -1246,7 +1301,10 @@ namespace BaseSimulator {
         if (scheduler->willAutoStart())
             scheduler->start(scheduler->getSchedulerMode());
         // Enter graphical main loop
-        GlutContext::mainLoop();
+        if (firstStart) {
+            GlutContext::mainLoop();
+            firstStart = false;
+        }
     }
 
     ruint Simulator::getRandomUint() {

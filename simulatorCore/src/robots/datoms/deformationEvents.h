@@ -10,8 +10,9 @@
 #define DEFORMATIONEVENTS_H_
 
 #include "../../math/matrix44.h"
-#include "datomsBlock.h"
+#include "datomsUtils.h"
 #include "../../events/events.h"
+#include "datomsBlock.h"
 
 using namespace Datoms;
 
@@ -30,12 +31,11 @@ public :
     Deformation(const DatomsBlock *mobile,const DatomsBlock *fixe,const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2,PistonId mid,PistonId  pid, vector<pair<DatomsBlock*,PistonId>> blockingModules);
     Deformation() {};
 
-    void setup(const Vector3D &C1,const Vector3D &V1,const Vector3D &C2,const Vector3D &V2);
+    void setup();
 
     void init() {
         step=0;
     }
-
 
 /**
     \brief Return current transformation matrix in m
@@ -47,16 +47,17 @@ public :
     \param m : result matrix
     \return true at the end of the animation.
 */
-    bool nextStep(Matrix &m);
+    pair<int,float> computeMatrixAtStep(Matrix &m);
     void getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation);
 
-    PistonId mobileShape,pivotShape;
+    Matrix getFinalMatrix() const { return finalMatrix; }
+    PistonId mobilePiston,pivotPiston;
     const DatomsBlock *ptrPivot,*ptrMobile;
     uint8_t modelId;
 protected :
     short step;
     Matrix initialMatrix,interMatrix,finalMatrix;
-    Vector3D Caxis0,Caxis1,Vaxis0,Vaxis1;
+    Vector3D Caxis1,Caxis2,Vaxis1,Vaxis2;
     vector<pair<DatomsBlock*,PistonId>> animated;
 };
 
@@ -125,5 +126,6 @@ public:
     void consume() override;
     const virtual string getEventName() override;
 };
+
 
 #endif /* DEFORMATIONEVENTS_H_ */
