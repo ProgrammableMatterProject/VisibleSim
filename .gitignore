@@ -93,3 +93,4 @@ build/
 lib/
 
 .vscode/
+.cache/
