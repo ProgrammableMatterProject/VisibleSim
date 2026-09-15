@@ -213,7 +213,12 @@ namespace BaseSimulator {
          * @param msgString string to be printed to the console upon sending */
         int sendMessage(const char *msgString, Message *msg, P2PNetworkInterface *dest,
                         Time t0, Time dt);
-
+        
+        int sendMessageToId(Message *msg, bID destId,
+                            Time t0, Time dt);
+    
+        int sendWirelessMessage(Message *msg, int radius,
+                            Time t0, Time dt);
         /**
          * Callback function called at the end of the motion of a module
          */
