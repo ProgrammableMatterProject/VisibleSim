@@ -216,7 +216,16 @@ namespace BaseSimulator {
         
         int sendMessageToId(Message *msg, bID destId,
                             Time t0, Time dt);
-    
+        
+        /**
+         * @brief Send a message to all neighbors within a certain radius.
+         * 
+         * @param msg 
+         * @param radius 
+         * @param t0 
+         * @param dt 
+         * @return int 
+         */
         int sendWirelessMessage(Message *msg, int radius,
                             Time t0, Time dt);
         /**
