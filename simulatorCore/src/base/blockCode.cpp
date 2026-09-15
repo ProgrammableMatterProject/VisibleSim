@@ -124,6 +124,72 @@ namespace BaseSimulator {
         return ret;
     }
 
+    int BlockCode::sendMessageToId(Message *msg, bID destId, Time t0, Time dt) { 
+        this->hostBlock->addP2PNetworkInterfaceAndConnectTo(destId);
+        P2PNetworkInterface *dest;
+        for (auto &itf : this->hostBlock->getP2PNetworkInterfaces()) {
+            if (itf->getConnectedBlockId() == destId) {
+                dest = itf;
+                break;
+            }
+        }
+        if (not dest) {
+            cerr << "ERROR: BlockCode::sendMessageToId: "
+                 << "No interface found for destination block id " << destId << endl;
+            return -1;
+        }
+        if (not dest->connectedInterface) {
+            throw InterfaceNotConnectedException(this, msg, dest);
+        }
+        Time t1 = scheduler->now() + t0;
+
+#ifdef DEBUG_MESSAGES
+        OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
+           << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
+#endif
+
+        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
+        return 0;
+     }
+
+     int BlockCode::sendWirelessMessage(Message *msg, int radius, Time t0, Time dt) { 
+        if (radius <= 0) {
+            cerr << "ERROR: BlockCode::sendWirelessMessage: "
+                 << "Radius must be greater than 0." << endl;
+            return -1;
+        }
+        if(radius > lattice->gridSize[0] || radius > lattice->gridSize[1] || radius > lattice->gridSize[2]) {
+            radius = std::min({lattice->gridSize[0], lattice->gridSize[1], lattice->gridSize[2]});
+        }
+        // if(radius == 1){
+        //     sendMessageToAllNeighbors(msg, t0, dt, 0);
+        //     return 0;
+        // }
+        
+        
+        int cx = hostBlock->position.pt[0];
+        int cy = hostBlock->position.pt[1];
+        int cz = hostBlock->position.pt[2];
+        int r2 = radius * radius;
+        for (int x = cx - radius; x <= cx + radius; x++) {
+            for (int y = cy - radius; y <= cy + radius; y++) {
+                for (int z = cz - radius; z <= cz + radius; z++) {
+                    int dx = x - cx;
+                    int dy = y - cy;
+                    int dz = z - cz;
+                    if (dx * dx + dy * dy + dz * dz > r2) continue;  // outside sphere
+                    Cell3DPosition pos(x, y, z);
+                    if (pos == hostBlock->position) continue;  // skip self
+                    BuildingBlock *block = lattice->getBlock(pos);
+                    if (block) {
+                        sendMessageToId(msg->clone(), block->blockId, t0, dt);
+                    }
+                }
+            }
+        }
+        return 0; 
+    }
+
     map<short, P2PNetworkInterface *> BlockCode::getAllConnectedInterfaces() {
         map<short, P2PNetworkInterface *> res;
         P2PNetworkInterface *p2p;
